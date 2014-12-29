@@ -49,7 +49,7 @@ public:
         }
 
         template<class Iterator>
-        auto try_next(Iterator jumper, promotion_en_passant_tag) const
+        auto try_next(Iterator jumper, passing_promotion_tag) const
         {
                 assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::king));
                 try_next(jumper);
