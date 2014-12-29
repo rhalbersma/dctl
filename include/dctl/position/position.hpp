@@ -43,6 +43,11 @@ private:
         enum { M = MostRecentlyPushedKing<Rules, Board>::M };
         enum { N = MostRecentlyPushedKing<Rules, Board>::N };
 
+        bool hash_invariant() const
+        {
+                return hash_ == hash_xor_accumulate(*this);
+        }
+
 public:
         // initialize with a set of bitboards and a color
         Position(set_type const& black, set_type const& white, set_type const& pawns, set_type const& kings, Color c)
@@ -242,11 +247,6 @@ private:
         {
                 make_active_mrp_king(mrp_king_[static_cast<bool>(m.to_move())], m);
                 make_passive_mrp_king(mrp_king_[static_cast<bool>(!m.to_move())], m);
-        }
-
-        bool hash_invariant() const
-        {
-                return hash_ == hash_xor_accumulate(*this);
         }
 };
 
