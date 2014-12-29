@@ -3,17 +3,10 @@
 
 namespace dctl {
 
-struct promotion_sur_place_tag
-{};
+struct stopped_promotion_tag {};
+struct delayed_promotion_tag {};
+struct passing_promotion_tag : delayed_promotion_tag {};
 
-struct promotion_apres_fini_tag
-{};
-
-struct promotion_en_passant_tag
-:
-        promotion_apres_fini_tag
-{};
-
-XSTD_PP_TTI_TYPE(promotion_category, promotion_sur_place_tag)
+XSTD_PP_TTI_TYPE(promotion_category, stopped_promotion_tag)
 
 }       // namespace dctl
