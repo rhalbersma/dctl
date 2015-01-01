@@ -1,8 +1,8 @@
 #pragma once
 #include <dctl/angle.hpp>                               // left_up, right_up
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PiecePawnType
-#include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
+#include <dctl/piece.hpp>                               // pawn
+#include <dctl/successor/detect/detail/primary_fwd.hpp> // Detect (primary template)
 #include <dctl/successor/select/push.hpp>               // push
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -12,32 +12,41 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<Color ToMove, bool IsReverse, class Position>
-class Count<ToMove, select::push, IsReverse, PiecePawnType, Position>
+class Detect<ToMove, Piece::pawn, select::push, IsReverse, Position>
 {
         using board_type = board_type_t<Position>;
         using   set_type =   set_type_t<Position>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
-        set_type const& not_occupied;
+        Position const& position;
 
 public:
-        explicit Count(set_type const& s)
+        explicit Detect(Position const& p)
         :
-                not_occupied{s}
+                position{p}
         {}
+
+        auto operator()() const
+        {
+                return detect(position.pieces(ToMove, Piece::pawn));
+        }
 
         auto operator()(set_type const& active_pawns) const
         {
-                return active_pawns.any() ? branch(active_pawns) : 0;
+                return detect(active_pawns);
         }
 
 private:
-        auto branch(set_type const& active_pawns) const
+        auto detect(set_type const& active_pawns) const
         {
+                if (active_pawns.none())
+                        return false;
+
                 return
-                        parallelize<left_up (orientation)>(active_pawns) +
+                        parallelize<left_up (orientation)>(active_pawns) ||
                         parallelize<right_up(orientation)>(active_pawns)
                 ;
         }
@@ -45,11 +54,12 @@ private:
         template<int Direction>
         auto parallelize(set_type const& active_pawns) const
         {
-                return Sink<board_type, Direction, std::false_type>{}(
-                        active_pawns, not_occupied
-                ).count();
+                return Sink<board_type, Direction, short_ranged_tag>{}(
+                        active_pawns, position.not_occupied()
+                ).any();
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

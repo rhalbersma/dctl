@@ -20,6 +20,7 @@ namespace detail {
 template<Color ToMove, class Position>
 class Tracker
 {
+public:
         using board_type = board_type_t<Position>;
         using rules_type = rules_type_t<Position>;
         using   set_type =   set_type_t<Position>;
@@ -41,7 +42,6 @@ class Tracker
                 return remaining_targets_.is_subset_of(initial_targets_);
         }
 
-public:
         explicit Tracker(Position const& p)
         :
                 by_piece_{p.pieces(!ToMove, Piece::pawn), p.pieces(!ToMove, Piece::king)},

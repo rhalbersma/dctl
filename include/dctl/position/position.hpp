@@ -1,14 +1,15 @@
 #pragma once
 #include <dctl/position/position_fwd.hpp>
 #include <dctl/color.hpp>
+#include <dctl/piece.hpp>
 #include <dctl/board/mask.hpp>
 #include <dctl/move/move.hpp>
-#include <dctl/position/active_color/active_color.hpp>
-#include <dctl/position/active_color/zobrist.hpp>
 #include <dctl/position/mrp_king/mrp_king.hpp>
 #include <dctl/position/mrp_king/zobrist.hpp>
 #include <dctl/position/piece_placement/piece_placement.hpp>
 #include <dctl/position/piece_placement/zobrist.hpp>
+#include <dctl/position/to_move/to_move.hpp>
+#include <dctl/position/to_move/zobrist.hpp>
 #include <dctl/position/reversible_moves.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
@@ -22,7 +23,7 @@ namespace dctl {
 template<class Rules, class Board>
 auto hash_xor_accumulate(Position<Rules, Board> const& p);
 
-template <class Rules, class Board>
+template<class Rules, class Board>
 class Position
 {
 public:
@@ -35,13 +36,10 @@ private:
         PiecePlacement<Rules, Board> piece_placement_{};
         Color to_move_{};
         ReversibleMoves reversible_moves_{};
-        MostRecentlyPushedKing<Rules, Board> mrp_king_[2]{};
+        //MostRecentlyPushedKings<Rules, Board> mrp_kings_;
         TreeIterator parent_{};
         uint64_t hash_{};
         int distance_to_root_{};
-
-        enum { M = MostRecentlyPushedKing<Rules, Board>::M };
-        enum { N = MostRecentlyPushedKing<Rules, Board>::N };
 
         bool hash_invariant() const
         {
@@ -53,7 +51,8 @@ public:
         Position(set_type const& black, set_type const& white, set_type const& pawns, set_type const& kings, Color c)
         :
                 piece_placement_{black, white, pawns, kings},
-                to_move_{c}
+                to_move_{c}//,
+                //mrp_kings_{piece_placement_}
         {
                 hash_ = hash_xor_accumulate(*this);
         }
@@ -63,6 +62,26 @@ public:
                 auto const b = board::Initial<Board>::mask(Color::black, separation);
                 auto const w = board::Initial<Board>::mask(Color::white, separation);
                 return { b, w, b | w, set_type{}, Color::white };
+        }
+
+        template<class Move>
+        void make(Move const& m)
+        {
+                //assert(is_pseudo_legal(*this, m));
+
+                make_irreversible(m);
+
+                piece_placement_.make(m, hash_);
+
+                hash_ ^= zobrist::ToMove<>::to_move(Color::white);
+                flip(to_move_);
+
+                assert(hash_invariant());
+        }
+
+        void attach(Position const& other)
+        {
+                parent_ = &other;       // link the pointers
         }
 
         // observers
@@ -82,21 +101,6 @@ public:
                 return piece_placement_.pieces(c, p);
         }
 
-        // unrestricted consecutive moves with the same king
-        auto pieces(Color c, PieceKingType, std::false_type) const
-        {
-                return pieces(c, Piece::king);
-        }
-
-        // restricted consecutive moves with the same king
-        auto pieces(Color c, PieceKingType, std::true_type) const
-        {
-                auto kings = pieces(c, Piece::king);
-                if (mrp_king(c).is_active() && mrp_king(c).is_max())
-                        kings.reset(mrp_king(c).square());
-                return kings;
-        }
-
         auto pieces() const
         {
                 return piece_placement_.pieces();
@@ -107,9 +111,9 @@ public:
                 return piece_placement_.not_occupied();
         }
 
-        auto const& piece_placement() const
+        auto num_pieces(Color c, Piece p) const noexcept
         {
-                return piece_placement_;
+                return piece_placement_.num_pieces(c, p);
         }
 
         auto to_move() const
@@ -132,34 +136,22 @@ public:
                 return hash_;
         }
 
-        auto const& mrp_king(Color c) const
-        {
-                return mrp_king_[static_cast<bool>(c)];
-        }
-
         auto distance_to_root() const
         {
                 return distance_to_root_;
         }
 
-        template<class Move>
-        void make(Move const& m)
+        friend auto hash_xor_accumulate(Position const& p)
         {
-                //assert(is_pseudo_legal(*this, m));
+                enum { NumSquares = set_type::size() };
+                enum { M = MostRecentlyPushedKings<Rules, Board>::M };
+                enum { N = MostRecentlyPushedKings<Rules, Board>::N };
 
-                make_irreversible(m);
-
-                piece_placement_.make(m, hash_);
-
-                hash_ ^= zobrist::ActiveColor<>::color[true];
-                flip(to_move_);
-
-                assert(hash_invariant());
-        }
-        
-        void attach(Position const& other)
-        {
-                parent_ = &other;       // link the pointers
+                return
+                        hash_xor_accumulate(zobrist::PiecePlacement<NumSquares>{}   , p.piece_placement_) ^
+                        hash_xor_accumulate(zobrist::ToMove<>{}                     , p.to_move_        ) //^
+                        //hash_xor_accumulate(zobrist::MostRecentlyPushedKings<M, N>{}, p.mrp_kings_      )
+                ;
         }
 
 private:
@@ -177,7 +169,7 @@ private:
         void make_irreversible(Move const& m, std::true_type)
         {
                 make_irreversible(m, std::false_type());
-                make_mrp_kings(m);
+                //make_mrp_kings(m);
         }
 
         // unrestricted consecutive moves with the same king
@@ -187,66 +179,21 @@ private:
                 reversible_moves_.make(m);
                 make_distance_to_root();
         }
-
-        void make_distance_to_root()
-        {
-                ++distance_to_root_;
-        }
-
-        template<class Move>
-        void make_active_mrp_king(MostRecentlyPushedKing<Rules, Board>& mru, Move const& m)
-        {
-                if (mru.is_active()) {
-                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, m.to_move());
-                        if (m.is_reversible()) {
-                                if (m.from() != mru.square())
-                                        mru.init(m.dest());
-                                else
-                                        mru.increment(m.dest());
-                        } else {
-                                mru.reset();
-                        }
-                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, m.to_move());
-                }
-
-                if (m.is_promotion()) {
-                        // the first of multiple pawns
-                        if (!mru.is_active() && set_multiple(pieces(m.to_move(), Piece::pawn)))
-                                mru.activate();
-                        // the single last pawn
-                        if (mru.is_active() && set_single(pieces(m.to_move(), Piece::pawn)))
-                                mru.deactivate();
-                }
-        }
-
-        template<class Move>
-        void make_passive_mrp_king(MostRecentlyPushedKing<Rules, Board>& mru, Move const& m)
-        {
-                if (!mru.is_active() || !m.is_jump())
-                        return;
-
-                // capture all kings or all pawns
-                auto const deactivate =
-                        pieces(m.to_move(), Piece::king).is_subset_of(m.captured(Piece::king)) ||
-                        pieces(m.to_move(), Piece::pawn).is_subset_of(m.captured(Piece::pawn))
-                ;
-
-                // capture the most recently used king
-                if (deactivate || m.captured(Piece::king).test(mru.square())) {
-                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, !m.to_move());
-                        mru.reset();
-                        hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, mru, !m.to_move());
-                }
-
-                if (deactivate)
-                        mru.deactivate();
-        }
-
+/*
         template<class Move>
         void make_mrp_kings(Move const& m)
         {
-                make_active_mrp_king(mrp_king_[static_cast<bool>(m.to_move())], m);
-                make_passive_mrp_king(mrp_king_[static_cast<bool>(!m.to_move())], m);
+                enum { M = MostRecentlyPushedKings<Rules, Board>::M };
+                enum { N = MostRecentlyPushedKings<Rules, Board>::N };
+
+                hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKings<M, N>{}, mrp_kings_);
+                mrp_kings_.make(m);
+                hash_ ^= hash_xor_accumulate(zobrist::MostRecentlyPushedKings<M, N>{}, mrp_kings_);
+        }
+*/
+        void make_distance_to_root()
+        {
+                ++distance_to_root_;
         }
 };
 
@@ -254,33 +201,6 @@ template<class Position>
 auto grand_parent(Position const& p)
 {
         return p.parent() ? p.parent()->parent() : nullptr;
-}
-
-template<class Position>
-decltype(auto) active_restricted(Position const& p)
-{
-        return p.restricted()[static_cast<bool>(p.to_move())];
-}
-
-template<class Position>
-decltype(auto) passive_restricted(Position const& p)
-{
-        return p.restricted()[static_cast<bool>(!p.to_move())];
-}
-
-template<class Rules, class Board>
-auto hash_xor_accumulate(Position<Rules, Board> const& p)
-{
-        enum { NumSquares = set_type<Board>::size() };
-        enum { M = MostRecentlyPushedKing<Rules, Board>::M };
-        enum { N = MostRecentlyPushedKing<Rules, Board>::N };
-
-        return
-                hash_xor_accumulate(zobrist::PiecePlacement<NumSquares>{}, p.piece_placement())                      ^
-                hash_xor_accumulate(zobrist::ActiveColor<>{}             , p.to_move())                              ^
-                hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, p.mrp_king(Color::black), Color::black) ^
-                hash_xor_accumulate(zobrist::MostRecentlyPushedKing<M, N>{}, p.mrp_king(Color::white), Color::white)
-        ;
 }
 
 }       // namespace dctl

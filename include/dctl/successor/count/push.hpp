@@ -1,10 +1,10 @@
 #pragma once
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
+#include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_restricted_king_push_t
 #include <dctl/successor/count/primary_fwd.hpp>         // Count (primary template)
-#include <dctl/successor/count/king_push.hpp>           // Count (king push specialization)
-#include <dctl/successor/count/pawn_push.hpp>           // Count (pawn push specialization)
+#include <dctl/successor/count/detail/king_push.hpp>    // Count (king push specialization)
+#include <dctl/successor/count/detail/pawn_push.hpp>    // Count (pawn push specialization)
 #include <dctl/successor/select/push.hpp>               // moves
 
 namespace dctl {
@@ -17,15 +17,10 @@ public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using KingPush = Count<ToMove, select::push, IsReverse, PieceKingType, Position>;
-                using PawnPush = Count<ToMove, select::push, IsReverse, PiecePawnType, Position>;
-                using rules_type = rules_type_t<Position>;
+                using KingPush = detail::Count<ToMove, Piece::king, select::push, IsReverse, Position>;
+                using PawnPush = detail::Count<ToMove, Piece::pawn, select::push, IsReverse, Position>;
 
-                auto const not_occupied = p.not_occupied();
-                return
-                        KingPush{not_occupied}(p.pieces(ToMove, PieceKingType{}, is_restricted_king_push_t<rules_type>{})) +
-                        PawnPush{not_occupied}(p.pieces(ToMove, Piece::pawn))
-                ;
+                return KingPush{p}() + PawnPush{p}();
         }
 };
 

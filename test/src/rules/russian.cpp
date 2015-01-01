@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(Traits)
         // required
         static_assert(is_backward_pawn_jump_v<T>, "");
         static_assert(!is_jump_precedence_v<T>, "");
-        static_assert(is_long_ranged_king_v<T>, "");
+        static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
 
         // optional
         static_assert(std::is_same<promotion_category_t<T>, passing_promotion_tag>::value, "");

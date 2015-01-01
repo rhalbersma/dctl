@@ -14,7 +14,7 @@ namespace successor {
 
 template
 <
-        Color ToMove, class Select = select::legal, bool IsReverse = false, class... Args,
+        Color ToMove, class Select = select::legal, bool IsReverse = false,
         class Position, class Allocator = std::allocator<Move_t<Position>>
 >
 auto generate(Position const& p, Allocator const& alloc = Allocator())
@@ -22,22 +22,22 @@ auto generate(Position const& p, Allocator const& alloc = Allocator())
         using Move = value_type_t<std::allocator_traits<Allocator>>;
         std::vector<Move, Allocator> moves(alloc);
         moves.reserve(DCTL_PP_STACK_RESERVE);
-        Generate<ToMove, Select, IsReverse, Args...>{}(p, moves);
-        assert((detail::invariant<ToMove, Select, IsReverse, Args...>(p, moves.size())));
+        Generate<ToMove, Select, IsReverse>{}(p, moves);
+        assert((detail::invariant<ToMove, Select, IsReverse>(p, moves.size())));
         return moves;
 }
 
 template
 <
-        class Select = select::legal, bool IsReverse = false, class... Args,
+        class Select = select::legal, bool IsReverse = false,
         class Position, class Allocator = std::allocator<Move_t<Position>>
 >
 auto generate(Position const& p, Allocator const& alloc = Allocator())
 {
         return
                 (p.to_move() == Color::black) ?
-                generate<Color::black, Select, IsReverse, Args...>(p, alloc) :
-                generate<Color::white, Select, IsReverse, Args...>(p, alloc)
+                generate<Color::black, Select, IsReverse>(p, alloc) :
+                generate<Color::white, Select, IsReverse>(p, alloc)
         ;
 }
 
