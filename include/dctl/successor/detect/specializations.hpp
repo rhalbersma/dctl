@@ -3,7 +3,3 @@
 #include <dctl/successor/detect/legal.hpp>
 #include <dctl/successor/detect/jump.hpp>
 #include <dctl/successor/detect/push.hpp>
-#include <dctl/successor/detect/king_jump.hpp>
-#include <dctl/successor/detect/king_push.hpp>
-#include <dctl/successor/detect/pawn_jump.hpp>
-#include <dctl/successor/detect/pawn_push.hpp>

@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/rule_traits.hpp>
 
 namespace dctl {
 namespace thai {
@@ -7,7 +8,7 @@ struct Rules
 {
         // required
         static constexpr auto is_backward_pawn_jump = false;
-        static constexpr auto is_long_ranged_king = true;
+        using king_range_category = long_ranged_tag;
 
         // optional
         static constexpr auto initial_gap = 4;

@@ -29,8 +29,8 @@ public:
         static int material(Position<Rules, Board> const& p)
         {
                 return
-                        Weight<Rules, Board>::material[0] * static_cast<int>(p.pieces(ToMove, Piece::pawn).count()) +
-                        Weight<Rules, Board>::material[1] * static_cast<int>(p.pieces(ToMove, Piece::king).count())
+                        Weight<Rules, Board>::material[0] * static_cast<int>(p.num_pieces(ToMove, Piece::pawn)) +
+                        Weight<Rules, Board>::material[1] * static_cast<int>(p.num_pieces(ToMove, Piece::king))
                 ;
         }
 

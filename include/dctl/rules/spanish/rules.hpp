@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/rules/spanish/precedence.hpp>    // less
+#include <dctl/rule_traits.hpp>
 
 namespace dctl {
 namespace spanish {
@@ -10,7 +11,7 @@ struct Rules
 {
         // required
         static constexpr auto is_backward_pawn_jump = false;
-        static constexpr auto is_long_ranged_king = true;
+        using king_range_category = long_ranged_tag;
 
         // optional
         using jump_precedence = precedence::less;

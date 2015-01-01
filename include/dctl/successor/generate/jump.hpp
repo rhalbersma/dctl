@@ -1,11 +1,11 @@
 #pragma once
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
+#include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/successor/detail/filter.hpp>             // Precedence, Unique
 #include <dctl/successor/detail/tracker.hpp>            // Tracker
 #include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/successor/generate/king_jump.hpp>        // Generate (king jump specialization)
-#include <dctl/successor/generate/pawn_jump.hpp>        // Generate (pawn jump specialization)
+#include <dctl/successor/generate/detail/king_jump.hpp> // Generate (king jump specialization)
+#include <dctl/successor/generate/detail/pawn_jump.hpp> // Generate (pawn jump specialization)
 #include <dctl/successor/select/jump.hpp>               // jump
 
 namespace dctl {
@@ -18,8 +18,8 @@ public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using KingJump = Generate<ToMove, select::jump, IsReverse, PieceKingType, Position, Sequence>;
-                using PawnJump = Generate<ToMove, select::jump, IsReverse, PiecePawnType, Position, Sequence>;
+                using KingJump = detail::Generate<ToMove, Piece::king, select::jump, IsReverse, Position, Sequence>;
+                using PawnJump = detail::Generate<ToMove, Piece::pawn, select::jump, IsReverse, Position, Sequence>;
 
                 detail::Tracker<ToMove, Position> tracker{p};
                 KingJump{tracker, moves}(p.pieces(ToMove, Piece::king));

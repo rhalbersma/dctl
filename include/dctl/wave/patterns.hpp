@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/rule_traits.hpp>
 #include <dctl/wave/algorithm.hpp>      // Fill
 #include <dctl/wave/iterator.hpp>       // make_iterator
 #include <iterator>                     // next, prev
@@ -9,9 +10,8 @@ namespace dctl {
 template<class Board, int Direction, class IsLongRangedKing>
 struct Sink;
 
-// short ranged kings
 template<class Board, int Direction>
-struct Sink<Board, Direction, std::false_type>
+struct Sink<Board, Direction, short_ranged_tag>
 {
         template<class Set>
         auto operator()(Set const& from, Set const& dest) const
@@ -20,9 +20,8 @@ struct Sink<Board, Direction, std::false_type>
         }
 };
 
-// long ranged kings
 template<class Board, int Direction>
-struct Sink<Board, Direction, std::true_type>
+struct Sink<Board, Direction, long_ranged_tag>
 {
         template<class Set>
         auto operator()(Set const& from, Set const& dest) const
@@ -34,9 +33,8 @@ struct Sink<Board, Direction, std::true_type>
 template<class Board, int Direction, class IsLongRangedKing>
 struct Sandwich;
 
-// short ranged kings
 template<class Board, int Direction>
-struct Sandwich<Board, Direction, std::false_type>
+struct Sandwich<Board, Direction, short_ranged_tag>
 {
         template<class Set>
         auto operator()(Set const& from, Set const& through, Set const& dest) const
@@ -49,9 +47,8 @@ struct Sandwich<Board, Direction, std::false_type>
         }
 };
 
-// long ranged kings
 template<class Board, int Direction>
-struct Sandwich<Board, Direction, std::true_type>
+struct Sandwich<Board, Direction, long_ranged_tag>
 {
         template<class Set>
         auto operator()(Set const& from, Set const& through, Set const& dest) const

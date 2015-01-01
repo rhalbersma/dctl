@@ -1,11 +1,11 @@
 #pragma once
 #include <dctl/angle.hpp>                               // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PiecePawnType
+#include <dctl/piece.hpp>                               // pawn
 #include <dctl/successor/detail/filter.hpp>             // Precedence, Unique
 #include <dctl/successor/detail/raii.hpp>               // ToggleKingTargets
 #include <dctl/successor/detail/tracker.hpp>            // Tracker
-#include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
+#include <dctl/successor/detect/detail/primary_fwd.hpp> // Detect (primary template)
 #include <dctl/successor/select/jump.hpp>               // jump
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -15,9 +15,10 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<Color ToMove, bool IsReverse, class Position>
-class Detect<ToMove, select::jump, IsReverse, PiecePawnType, Position>
+class Detect<ToMove, Piece::pawn, select::jump, IsReverse, Position>
 {
         using   board_type = board_type_t<Position>;
         using   rules_type = rules_type_t<Position>;
@@ -109,11 +110,12 @@ private:
         template<int Direction>
         auto parallelize(set_type const& active_pawns) const
         {
-                return Sandwich<board_type, Direction, std::false_type>{}(
+                return Sandwich<board_type, Direction, short_ranged_tag>{}(
                         active_pawns, tracker.template targets<Direction>(), tracker.path()
                 ).any();
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

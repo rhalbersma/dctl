@@ -8,12 +8,12 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<Color ToMove, class Select, bool IsReverse, class... Args, class Position>
+template<Color ToMove, class Select, bool IsReverse, class Position>
 auto invariant(Position const& p, std::size_t n)
 {
         return
-                ( count<ToMove, Select, IsReverse, Args...>(p) ==  n     ) &&
-                (detect<ToMove, Select, IsReverse, Args...>(p) == (n > 0))
+                ( count<ToMove, Select, IsReverse>(p) ==  n     ) &&
+                (detect<ToMove, Select, IsReverse>(p) == (n > 0))
         ;
 }
 

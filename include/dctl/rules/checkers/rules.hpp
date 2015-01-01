@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/rule_traits.hpp>
 
 namespace dctl {
 namespace checkers {
@@ -9,7 +10,7 @@ struct Rules
 {
         // required
         static constexpr auto is_backward_pawn_jump = false;    // 1.18
-        static constexpr auto is_long_ranged_king = false;      // 1.17
+        using king_range_category = short_ranged_tag;           // 1.17
 
         // draw
         static constexpr auto max_repetitions = 3;              // 1.32.1

@@ -1,10 +1,10 @@
 #pragma once
 #include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down, _deg, rotate, inverse
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PieceKingType
+#include <dctl/piece.hpp>                               // king
 #include <dctl/successor/detail/raii.hpp>               // Launch, Capture, Visit, SetKingJump
 #include <dctl/successor/detail/tracker.hpp>            // Tracker
-#include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
+#include <dctl/successor/generate/detail/primary_fwd.hpp>       // Generate (primary template)
 #include <dctl/successor/select/jump.hpp>               // jump
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -18,9 +18,10 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<Color ToMove, bool IsReverse, class Position, class Sequence>
-class Generate<ToMove, select::jump, IsReverse, PieceKingType, Position, Sequence>
+class Generate<ToMove, Piece::king, select::jump, IsReverse, Position, Sequence>
 {
         using   board_type = board_type_t<Position>;
         using   rules_type = rules_type_t<Position>;
@@ -226,17 +227,17 @@ private:
         auto slide(Iterator& jumper, set_type const& path) const
         {
                 assert(is_onboard(jumper));
-                slide_dispatch(jumper, path, is_long_ranged_king_t<rules_type>{});
+                slide_dispatch(jumper, path, king_range_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const& /* path */, std::false_type) const
+        auto slide_dispatch(Iterator& jumper, set_type const& /* path */, short_ranged_tag) const
         {
                 ++jumper;
         }
 
         template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const& path, std::true_type) const
+        auto slide_dispatch(Iterator& jumper, set_type const& path, long_ranged_tag) const
         {
                 do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
         }
@@ -304,5 +305,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

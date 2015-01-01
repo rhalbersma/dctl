@@ -102,6 +102,22 @@ public:
                 return squares ^ pieces();
         }
 
+        auto num_pieces(Color c, Piece p) const noexcept
+        {
+                return pieces(c, p).count();
+        }
+
+        template<class TabulationHash>
+        friend auto hash_xor_accumulate(TabulationHash const& h, PiecePlacement const& p)
+        {
+                return
+                        zobrist::hash_xor_accumulate(h.pieces(Color::black), p.pieces(Color::black)) ^
+                        zobrist::hash_xor_accumulate(h.pieces(Color::white), p.pieces(Color::white)) ^
+                        zobrist::hash_xor_accumulate(h.pieces(Piece::pawn ), p.pieces(Piece::pawn )) ^
+                        zobrist::hash_xor_accumulate(h.pieces(Piece::king ), p.pieces(Piece::king ))
+                ;
+        }
+
 private:
         auto& pieces(Color c) noexcept
         {
@@ -113,16 +129,5 @@ private:
                 return by_piece[static_cast<std::size_t>(p)];
         }
 };
-
-template<class TabulationHash, class Rules, class Board>
-auto hash_xor_accumulate(TabulationHash const& h, PiecePlacement<Rules, Board> const& p)
-{
-        return
-                zobrist::hash_xor_accumulate(h.pieces(Color::black), p.pieces(Color::black)) ^
-                zobrist::hash_xor_accumulate(h.pieces(Color::white), p.pieces(Color::white)) ^
-                zobrist::hash_xor_accumulate(h.pieces(Piece::pawn ), p.pieces(Piece::pawn )) ^
-                zobrist::hash_xor_accumulate(h.pieces(Piece::king ), p.pieces(Piece::king ))
-        ;
-}
 
 }       // namespace dctl

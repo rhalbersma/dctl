@@ -1,9 +1,9 @@
 #pragma once
 #include <dctl/angle.hpp>                               // left_up, right_up
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PiecePawnType
+#include <dctl/piece.hpp>                               // pawn
 #include <dctl/position/promotion.hpp>                  // is_promotion
-#include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
+#include <dctl/successor/generate/detail/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/successor/select/push.hpp>               // select
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -14,38 +14,49 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<Color ToMove, bool IsReverse, class Position, class Sequence>
-class Generate<ToMove, select::push, IsReverse, PiecePawnType, Position, Sequence>
+class Generate<ToMove, Piece::pawn, select::push, IsReverse, Position, Sequence>
 {
         using board_type = board_type_t<Position>;
         using   set_type =   set_type_t<Position>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
-        set_type const& not_occupied;
+        Position const& position;
         Sequence& moves;
 
 public:
-        Generate(set_type const& s, Sequence& m)
+        Generate(Position const& p, Sequence& m)
         :
-                not_occupied{s},
+                position{p},
                 moves{m}
         {}
 
+        auto operator()() const
+        {
+                generate(position.pieces(ToMove, Piece::pawn));
+        }
+
         auto operator()(set_type const& active_pawns) const
+        {
+                generate(active_pawns);
+        }
+
+private:
+        auto generate(set_type const& active_pawns) const
         {
                 if (active_pawns.none())
                         return;
 
-                transform_movers<left_up (orientation)>(active_pawns);
-                transform_movers<right_up(orientation)>(active_pawns);
+                generate_movers<left_up (orientation)>(active_pawns);
+                generate_movers<right_up(orientation)>(active_pawns);
         }
 
-private:
         template<int Direction>
-        auto transform_movers(set_type const& active_pawns) const
+        auto generate_movers(set_type const& active_pawns) const
         {
-                auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(not_occupied)));
+                auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(position.not_occupied())));
                 for (auto&& from_sq : movers) {
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
                         moves.emplace_back(from_sq, dest_sq, ToMove, is_promotion(dest_sq) ? Piece::king : Piece::pawn);
@@ -70,5 +81,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl

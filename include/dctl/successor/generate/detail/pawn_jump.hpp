@@ -1,12 +1,12 @@
 #pragma once
 #include <dctl/angle.hpp>                               // _deg, rotate, inverse
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
+#include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/position/promotion.hpp>                  // is_promotion
 #include <dctl/successor/detail/raii.hpp>               // Launch, Capture, Visit, ToggleKingTargets, SetPromotion
 #include <dctl/successor/detail/tracker.hpp>            // Tracker
-#include <dctl/successor/generate/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/successor/generate/king_jump.hpp>        // promote_en_passant
+#include <dctl/successor/generate/detail/primary_fwd.hpp>      // Generate (primary template)
+#include <dctl/successor/generate/detail/king_jump.hpp>        // promote_en_passant
 #include <dctl/successor/select/jump.hpp>               // jumps
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -20,11 +20,12 @@
 
 namespace dctl {
 namespace successor {
+namespace detail {
 
 template<Color ToMove, bool IsReverse, class Position, class Sequence>
-class Generate<ToMove, select::jump, IsReverse, PiecePawnType, Position, Sequence>
+class Generate<ToMove, Piece::pawn, select::jump, IsReverse, Position, Sequence>
 {
-        using    KingJumps = Generate<ToMove, select::jump, IsReverse, PieceKingType, Position, Sequence>;
+        using    KingJumps = Generate<ToMove, Piece::king, select::jump, IsReverse, Position, Sequence>;
         using   board_type = board_type_t<Position>;
         using   rules_type = rules_type_t<Position>;
         using     set_type =   set_type_t<Position>;
@@ -136,6 +137,12 @@ private:
         {
                 assert(is_onboard(jumper));
                 raii::Visit<tracker_type> guard{tracker, *jumper};
+                try_promotion(jumper);
+        }
+
+        template<class Iterator>
+        auto try_promotion(Iterator jumper) const
+        {
                 try_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
         }
 
@@ -178,6 +185,12 @@ private:
 
         template<class Iterator>
         auto on_promotion_dispatch(Iterator jumper, passing_promotion_tag) const
+        {
+                king_jumps(jumper);
+        }
+
+        template<class Iterator>
+        auto king_jumps(Iterator jumper) const
         {
                 king_jumps_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});
         }
@@ -353,5 +366,6 @@ private:
         }
 };
 
+}       // namespace detail
 }       // namespace successor
 }       // namespace dctl
