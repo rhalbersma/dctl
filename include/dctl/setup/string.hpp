@@ -107,7 +107,7 @@ struct write<pdn::protocol, Token>
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                   // opening quotes
-                sstr << write_color<Token>(p.to_move());           // side to move
+                sstr << write_color<Token>(p.to_move());                // side to move
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i ? Color::white : Color::black;
@@ -121,6 +121,8 @@ struct write<pdn::protocol, Token>
                                 if (p.pieces(Piece::king).test(sq))
                                         sstr << Token::king;            // king tag
                                 sstr << Board::square_from_bit(sq) + 1; // square number
+                                if (p.is_counted(c) && p.index(c) == sq)
+                                        sstr << "^" << p.count(c);
                                 if (++n != bs.count())                  // still pieces remaining
                                         sstr << Token::comma;           // comma separator
                         }

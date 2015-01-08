@@ -26,7 +26,15 @@ template<int N>
 auto cat_zero_runif()
 {
         return make_array<1 + N>([](auto n){
-                return n ? uniform_uint64() : 0;
+                return n == 0 ? 0 : uniform_uint64();
+        });
+}
+
+template<int N>
+auto cat_runif_zero()
+{
+        return make_array<1 + N>([](auto n){
+                return n != N ? uniform_uint64() : 0;
         });
 }
 
