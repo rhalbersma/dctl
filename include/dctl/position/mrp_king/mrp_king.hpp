@@ -10,14 +10,16 @@ namespace dctl {
 template<class Rules, class Board>
 class MostRecentlyPushedKings
 {
-        std::size_t index_[2]{};
-        std::size_t moves_[2]{};
-        std::size_t by_color_piece_[2][2];
-
 public:
         enum { M = max_same_king_push_v<Rules> };
         enum { N = set_type<Board>::size() };
 
+private:
+        std::size_t index_[2]{ N, N };
+        std::size_t count_[2]{};
+        std::size_t by_color_piece_[2][2];
+
+public:
         template<class PiecePlacement>
         constexpr MostRecentlyPushedKings(PiecePlacement const& p)
         :
@@ -30,14 +32,19 @@ public:
         template<class Move>
         void make(Move const& m)
         {
-                make_increment(m);
-                make_promotion(m);
-                make_jump(m);
+                make_advance(m);
+                make_promote(m);
+                make_capture(m);
         }
 
-        constexpr auto square(Color c) const noexcept
+        constexpr auto const& index(Color c) const noexcept
         {
-                return index(c) - 1;
+                return index_[static_cast<std::size_t>(c)];
+        }
+
+        constexpr auto const& count(Color c) const noexcept
+        {
+                return count_[static_cast<std::size_t>(c)];
         }
 
         constexpr auto is_tracked(Color c) const noexcept
@@ -45,9 +52,14 @@ public:
                 return 0 < num_pieces(c, Piece::pawn) && 0 < num_pieces(c, Piece::king);
         }
 
-        constexpr auto is_restricted(Color c) const noexcept
+        constexpr auto is_counted(Color c) const noexcept
         {
-                return moves(c) == M;
+                return 0 < count(c);
+        }
+
+        constexpr auto is_limited(Color c) const noexcept
+        {
+                return count(c) == M;
         }
 
         template<class TabulationHash>
@@ -55,15 +67,15 @@ public:
         {
                 return
                         h.index(Color::black)[mrp_kings.index(Color::black)] ^
-                        h.moves(Color::black)[mrp_kings.moves(Color::black)] ^
                         h.index(Color::white)[mrp_kings.index(Color::white)] ^
-                        h.moves(Color::white)[mrp_kings.moves(Color::white)]
+                        h.count(Color::black)[mrp_kings.count(Color::black)] ^
+                        h.count(Color::white)[mrp_kings.count(Color::white)]
                 ;
         }
 
 private:
         template<class Move>
-        void make_increment(Move const& m)
+        void make_advance(Move const& m)
         {
                 if (!is_tracked(m.to_move()))
                         return;
@@ -71,14 +83,14 @@ private:
                 if (!m.is_reversible())
                         return reset(m.to_move());
 
-                if (m.from() != square(m.to_move()))
+                if (m.from() != index(m.to_move()))
                         return init(m.to_move(), m.dest());
 
                 increment(m.to_move(), m.dest());
         }
 
         template<class Move>
-        void make_promotion(Move const& m)
+        void make_promote(Move const& m)
         {
                 if (!m.is_promotion())
                         return;
@@ -88,7 +100,7 @@ private:
         }
 
         template<class Move>
-        void make_jump(Move const& m)
+        void make_capture(Move const& m)
         {
                 if (!m.is_jump())
                         return;
@@ -97,7 +109,7 @@ private:
                         is_tracked(!m.to_move()) && (
                                 num_pieces(!m.to_move(), Piece::pawn) == m.num_captured(Piece::pawn) ||
                                 num_pieces(!m.to_move(), Piece::king) == m.num_captured(Piece::king) ||
-                                (0 < m.num_captured(Piece::king) && m.captured(Piece::king).test(square(!m.to_move())))
+                                (0 < m.num_captured(Piece::king) && m.captured(Piece::king).test(index(!m.to_move())))
                         )
                 )
                         reset(!m.to_move());
@@ -109,27 +121,25 @@ private:
         constexpr void reset(Color c)
         {
                 assert(is_tracked(c));
-                index(c) = 0;
-                moves(c) = 0;
+                index(c) = N;
+                count(c) = 0;
         }
 
         constexpr void init(Color c, std::size_t dest_sq)
         {
                 assert(is_tracked(c));
-                assert(dest_sq < N);
-                index(c) = dest_sq + 1;
-                moves(c) = 1;
-                assert(1 <= moves(c) && moves(c) <= M);
+                assert(is_onboard(dest_sq));
+                index(c) = dest_sq;
+                count(c) = 1;
+                assert(is_counted(c));
         }
 
         constexpr void increment(Color c, std::size_t dest_sq)
         {
-                assert(is_tracked(c));
-                assert(dest_sq < N);
-                assert(1 <= moves(c) && moves(c) < M);
-                index(c) = dest_sq + 1;
-                ++moves(c);
-                assert(2 <= moves(c) && moves(c) <= M);
+                assert(is_counted(c));
+                assert(is_onboard(dest_sq));
+                index(c) = dest_sq;
+                ++count(c);
         }
 
         constexpr auto& index(Color c) noexcept
@@ -137,19 +147,9 @@ private:
                 return index_[static_cast<std::size_t>(c)];
         }
 
-        constexpr auto const& index(Color c) const noexcept
+        constexpr auto& count(Color c) noexcept
         {
-                return index_[static_cast<std::size_t>(c)];
-        }
-
-        constexpr auto& moves(Color c) noexcept
-        {
-                return moves_[static_cast<std::size_t>(c)];
-        }
-
-        constexpr auto const& moves(Color c) const noexcept
-        {
-                return moves_[static_cast<std::size_t>(c)];
+                return count_[static_cast<std::size_t>(c)];
         }
 
         constexpr auto& num_pieces(Color c, Piece p) noexcept
@@ -160,6 +160,11 @@ private:
         constexpr auto const& num_pieces(Color c, Piece p) const noexcept
         {
                 return by_color_piece_[static_cast<std::size_t>(c)][static_cast<std::size_t>(p)];
+        }
+
+        constexpr auto is_onboard(std::size_t sq) const noexcept
+        {
+                return sq < N;
         }
 };
 

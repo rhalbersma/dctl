@@ -17,7 +17,7 @@ struct Weight
 template<class Rules, class Board>
 int const Weight<Rules, Board>::material[] =
 {
-        100, 400
+        100, 250
 };
 
 template<class Rules, class Board>

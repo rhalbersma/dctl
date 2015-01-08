@@ -2,9 +2,9 @@
 #include <dctl/board/mask.hpp>
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/position/piece_placement/zobrist.hpp>
 #include <dctl/set_type.hpp>
 #include <dctl/zobrist/accumulate.hpp>
+#include <xstd/type_traits.hpp>
 #include <cassert>                      // assert
 
 namespace dctl {
@@ -48,26 +48,15 @@ public:
                 assert(invariant());
         }
 
-        template<class Move, class Index>
-        void make(Move const& m, Index& hash)
+        template<class Move>
+        void make(Move const& m)
         {
-                using Zobrist = zobrist::PiecePlacement<set_type<Board>::size()>;
-
-                hash ^= Zobrist::pieces(m.to_move())[m.from()];
-                hash ^= Zobrist::pieces(m.to_move())[m.dest()];
-                hash ^= Zobrist::pieces(m.with())[m.from()];
-                hash ^= Zobrist::pieces(m.into())[m.dest()];
-
                 pieces(m.to_move()).reset(m.from());
                 pieces(m.to_move()).set  (m.dest());
                 pieces(m.with()).reset(m.from());
                 pieces(m.into()).set  (m.dest());
 
                 if (m.is_jump()) {
-                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces(!m.to_move()), m.captured());
-                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces(Piece::pawn ), m.captured(Piece::pawn));
-                        hash ^= zobrist::hash_xor_accumulate(Zobrist::pieces(Piece::king ), m.captured(Piece::king));
-
                         pieces(!m.to_move()) ^= m.captured();
                         pieces(Piece::pawn ) ^= m.captured(Piece::pawn);
                         pieces(Piece::king ) ^= m.captured(Piece::king);
@@ -116,6 +105,25 @@ public:
                         zobrist::hash_xor_accumulate(h.pieces(Piece::pawn ), p.pieces(Piece::pawn )) ^
                         zobrist::hash_xor_accumulate(h.pieces(Piece::king ), p.pieces(Piece::king ))
                 ;
+        }
+
+        template<class TabulationHash, class Move>
+        friend auto hash_xor_accumulate(TabulationHash const& h, Move const& m, xstd::type_is<PiecePlacement>)
+        {
+                std::size_t hash = 0;
+
+                hash ^= h.pieces(m.to_move())[m.from()];
+                hash ^= h.pieces(m.to_move())[m.dest()];
+                hash ^= h.pieces(m.with())[m.from()];
+                hash ^= h.pieces(m.into())[m.dest()];
+
+                if (m.is_jump()) {
+                        hash ^= zobrist::hash_xor_accumulate(h.pieces(!m.to_move()), m.captured());
+                        hash ^= zobrist::hash_xor_accumulate(h.pieces(Piece::pawn ), m.captured(Piece::pawn));
+                        hash ^= zobrist::hash_xor_accumulate(h.pieces(Piece::king ), m.captured(Piece::king));
+                }
+
+                return hash;
         }
 
 private:

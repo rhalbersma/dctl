@@ -22,18 +22,24 @@ int main()
         using Board = board::International;
         using Pos = Position<Rules, Board>;
 
-        auto initial = Pos::initial();
+        //auto initial = Pos::initial();
 
         //auto const initial = setup::read<international::Rules, board::International, pdn::protocol>()(
         //        "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
         //);
+
+        auto const initial = setup::read<international::Rules, board::International, pdn::protocol>()(
+                "W:B1,2,K3,K4:W46,47,K48,K49"
+        );
 
         std::stack<Pos> game;
         game.push(initial);
 
         while (true) {
                 auto const p = game.top();
-                std::cout << p;
+                std::cout << dctl::diag << p;
+                std::cout << dctl::fen << p;
+                std::cout << "[" << p.reversible_moves() << "]\n";
 
                 auto moves = successor::generate(p);
                 boost::sort(moves, [](auto const& L, auto const& R) {
