@@ -19,12 +19,12 @@ public:
         using Set = set_type<Board>;
 
 private:
-        Set captured_[2];
         std::size_t from_;
         std::size_t dest_;
         Color to_move_;
         Piece with_;
         Piece into_;
+        Set captured_[2];
 
         auto invariant() const
         {
@@ -63,12 +63,12 @@ public:
         template<class Tracker>
         explicit constexpr BaseMove(Tracker const& t)
         :
-                captured_{t.captured(Piece::pawn), t.captured(Piece::king)},
                 from_{t.from()},
                 dest_{t.dest()},
                 to_move_{t.to_move()},
                 with_{t.with()},
-                into_{t.into()}
+                into_{t.into()},
+                captured_{t.captured(Piece::pawn), t.captured(Piece::king)}
         {
                 assert(invariant());
         }
@@ -205,34 +205,20 @@ public:
 template<class Board>
 class Move<italian::Rules, Board>
 :
-        public EmptyBase<italian::Rules, Board>,
-        public BaseMove<italian::Rules, Board>
+        public BaseMove<italian::Rules, Board>,
+        public EmptyBase<italian::Rules, Board>
 {
 public:
-        using empty = EmptyBase<italian::Rules, Board>;
         using base = BaseMove<italian::Rules, Board>;
         using base::base;
+        using empty = EmptyBase<italian::Rules, Board>;
         using Set = typename base::Set;
-
-        // king jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, Color c, Set ko)
-        :
-                empty(ko),
-                base(pieces, kings, src, dst, c, ko)
-        {}
-
-        // pawn jump
-        constexpr Move(Set pieces, Set kings, int src, int dst, Color c, bool prom, Set ko)
-        :
-                empty(ko),
-                base(pieces, kings, src, dst, c, prom, ko)
-        {}
 
         template<class Tracker>
         explicit constexpr Move(Tracker const& t)
         :
-                empty(t),
-                base(t)
+                base(t),
+                empty(t)
         {}
 };
 

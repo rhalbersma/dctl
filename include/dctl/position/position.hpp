@@ -4,8 +4,8 @@
 #include <dctl/piece.hpp>
 #include <dctl/board/mask.hpp>
 #include <dctl/move/move.hpp>
-#include <dctl/position/mrp_king/mrp_king.hpp>
-#include <dctl/position/mrp_king/zobrist.hpp>
+#include <dctl/position/mrp_kings/mrp_kings.hpp>
+#include <dctl/position/mrp_kings/zobrist.hpp>
 #include <dctl/position/piece_placement/piece_placement.hpp>
 #include <dctl/position/piece_placement/zobrist.hpp>
 #include <dctl/position/to_move/to_move.hpp>

@@ -6,7 +6,7 @@ namespace dctl {
 
 class Angle
 {
-        int degrees{};
+        int degrees = 0;
 
         constexpr auto invariant() const noexcept
         {
