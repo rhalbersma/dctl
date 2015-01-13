@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
+#include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/successor/detail/tracker.hpp>            // Tracker
 #include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
 #include <dctl/successor/detect/detail/king_jump.hpp>   // Detect (king jump specialization)

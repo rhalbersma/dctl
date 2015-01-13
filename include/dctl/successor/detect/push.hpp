@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/color.hpp>                               // Color
-#include <dctl/piece.hpp>                               // PieceKingType, PiecePawnType
+#include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_restricted_king_push_t
 #include <dctl/successor/detect/primary_fwd.hpp>        // Detect (primary template)
 #include <dctl/successor/detect/detail/king_push.hpp>   // Detect (king push specialization)
