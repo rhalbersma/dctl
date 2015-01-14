@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/color.hpp>               // Color
 #include <dctl/random/uniform.hpp>      // cat_zero_runif
+#include <xstd/type_traits.hpp>         // to_underlying_type
 #include <array>                        // array
 #include <cstddef>                      // size_t
 #include <cstdint>                      // uint64_t
@@ -15,7 +16,7 @@ class ToMove
 public:
         static auto to_move(Color c) noexcept
         {
-                return to_move_[static_cast<std::size_t>(c)];
+                return to_move_[xstd::to_underlying_type(c)];
         }
 };
 

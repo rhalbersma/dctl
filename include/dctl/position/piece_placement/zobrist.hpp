@@ -2,6 +2,7 @@
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/random/uniform.hpp>      // runif
+#include <xstd/type_traits.hpp>         // to_underlying_type
 #include <array>                        // array
 #include <cstddef>                      // size_t
 #include <cstdint>                      // uint64_t
@@ -17,12 +18,12 @@ class PiecePlacement
 public:
         static auto const& pieces(Color c)
         {
-                return by_color[static_cast<std::size_t>(c)];
+                return by_color[xstd::to_underlying_type(c)];
         }
 
         static auto const& pieces(Piece p)
         {
-                return by_piece[static_cast<std::size_t>(p)];
+                return by_piece[xstd::to_underlying_type(p)];
         }
 };
 

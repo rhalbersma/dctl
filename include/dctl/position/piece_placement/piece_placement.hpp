@@ -4,7 +4,7 @@
 #include <dctl/piece.hpp>
 #include <dctl/set_type.hpp>
 #include <dctl/zobrist/accumulate.hpp>
-#include <xstd/type_traits.hpp>
+#include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
 
 namespace dctl {
@@ -67,12 +67,12 @@ public:
 
         auto pieces(Color c) const noexcept
         {
-                return by_color[static_cast<std::size_t>(c)];
+                return by_color[xstd::to_underlying_type(c)];
         }
 
         auto pieces(Piece p) const noexcept
         {
-                return by_piece[static_cast<std::size_t>(p)];
+                return by_piece[xstd::to_underlying_type(p)];
         }
 
         auto pieces(Color c, Piece p) const noexcept
@@ -129,12 +129,12 @@ public:
 private:
         auto& pieces(Color c) noexcept
         {
-                return by_color[static_cast<std::size_t>(c)];
+                return by_color[xstd::to_underlying_type(c)];
         }
 
         auto& pieces(Piece p) noexcept
         {
-                return by_piece[static_cast<std::size_t>(p)];
+                return by_piece[xstd::to_underlying_type(p)];
         }
 };
 

@@ -4,6 +4,7 @@
 #include <dctl/color.hpp>                       // black, white
 #include <dctl/set_type.hpp>                    // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
+#include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -54,7 +55,7 @@ public:
                 assert(Board::height() % 2 <= separation && separation <= Board::height());
                 auto const rows = (Board::height() - separation) / 2;
                 assert(0 <= rows && rows <= Board::height() / 2);
-                return table[static_cast<std::size_t>(c)][static_cast<std::size_t>(rows)];
+                return table[xstd::to_underlying_type(c)][static_cast<std::size_t>(rows)];
         }
 };
 

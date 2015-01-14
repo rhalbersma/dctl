@@ -8,6 +8,7 @@
 #include <dctl/type_traits.hpp>                 // board_type_t, rules_type_t, set_type_t
 #include <dctl/utility/stack_vector.hpp>        // DCTL_PP_STACK_RESERVE
 #include <dctl/wave/iterator.hpp>
+#include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
 #include <cstddef>
 #include <iterator>                             // begin, end, prev
@@ -94,7 +95,7 @@ public:
         auto toggle_king_targets() noexcept
         {
                 static_assert(!is_pawn_jump_king_v<rules_type>, "");
-                initial_targets_ = remaining_targets_ ^= by_piece_[static_cast<std::size_t>(Piece::king)];
+                initial_targets_ = remaining_targets_ ^= by_piece(Piece::king);
         }
 
         auto set_with(Piece p) noexcept
@@ -144,7 +145,7 @@ public:
 
         auto is_king(std::size_t sq) const
         {
-                return by_piece_[static_cast<std::size_t>(Piece::king)].test(sq);
+                return by_piece(Piece::king).test(sq);
         }
 
         auto king_order() const
@@ -159,7 +160,7 @@ public:
 
         auto captured(Piece p) const noexcept
         {
-                return captured() & by_piece_[static_cast<std::size_t>(p)];
+                return captured() & by_piece(p);
         }
 
         auto from() const
@@ -257,6 +258,11 @@ private:
         {
                 assert(!removed_pieces_.empty());
                 return removed_pieces_.back();
+        }
+
+        auto const& by_piece(Piece p) const
+        {
+                return by_piece_[xstd::to_underlying_type(p)];
         }
 };
 

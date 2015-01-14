@@ -5,6 +5,7 @@
 #include <dctl/set_type.hpp>            // set_type
 #include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
 #include <dctl/utility/logic.hpp>
+#include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
 #include <tuple>                        // forward_as_tuple
 
@@ -75,7 +76,7 @@ public:
 
         constexpr auto captured(Piece p) const noexcept
         {
-                return captured_[static_cast<std::size_t>(p)];
+                return captured_[xstd::to_underlying_type(p)];
         }
 
         constexpr auto captured() const noexcept

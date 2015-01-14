@@ -3,6 +3,7 @@
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
+#include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cstddef>
 
 namespace dctl {
@@ -39,12 +40,12 @@ public:
 
         constexpr auto const& index(Color c) const noexcept
         {
-                return index_[static_cast<std::size_t>(c)];
+                return index_[xstd::to_underlying_type(c)];
         }
 
         constexpr auto const& count(Color c) const noexcept
         {
-                return count_[static_cast<std::size_t>(c)];
+                return count_[xstd::to_underlying_type(c)];
         }
 
         constexpr auto is_tracked(Color c) const noexcept
@@ -144,22 +145,22 @@ private:
 
         constexpr auto& index(Color c) noexcept
         {
-                return index_[static_cast<std::size_t>(c)];
+                return index_[xstd::to_underlying_type(c)];
         }
 
         constexpr auto& count(Color c) noexcept
         {
-                return count_[static_cast<std::size_t>(c)];
+                return count_[xstd::to_underlying_type(c)];
         }
 
         constexpr auto& num_pieces(Color c, Piece p) noexcept
         {
-                return by_color_piece_[static_cast<std::size_t>(c)][static_cast<std::size_t>(p)];
+                return by_color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 
         constexpr auto const& num_pieces(Color c, Piece p) const noexcept
         {
-                return by_color_piece_[static_cast<std::size_t>(c)][static_cast<std::size_t>(p)];
+                return by_color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 
         constexpr auto is_onboard(std::size_t sq) const noexcept
