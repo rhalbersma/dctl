@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/random/uniform.hpp>      // cat_zero_runif
+#include <xstd/type_traits.hpp>         // to_underlying_type
 #include <array>                        // array
 #include <cstddef>                      // size_t
 #include <cstdint>                      // uint64_t
@@ -15,12 +16,12 @@ class MostRecentlyPushedKings
 public:
         static auto const& index(Color c)
         {
-                return index_[static_cast<std::size_t>(c)];
+                return index_[xstd::to_underlying_type(c)];
         }
 
         static auto const& count(Color c)
         {
-                return count_[static_cast<std::size_t>(c)];
+                return count_[xstd::to_underlying_type(c)];
         }
 };
 

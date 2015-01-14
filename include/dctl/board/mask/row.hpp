@@ -4,6 +4,7 @@
 #include <dctl/color.hpp>                       // black, white
 #include <dctl/set_type.hpp>                    // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
+#include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -46,7 +47,7 @@ public:
         static constexpr auto mask(Color c, int row) noexcept
         {
                 assert(row < N);
-                return table[static_cast<std::size_t>(c)][static_cast<std::size_t>(row)];
+                return table[xstd::to_underlying_type(c)][static_cast<std::size_t>(row)];
         }
 };
 

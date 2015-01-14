@@ -1,5 +1,6 @@
 #pragma once
-#include <cstddef>      // size_t
+#include <xstd/type_traits.hpp> // to_underlying_type
+#include <cstddef>              // size_t
 
 namespace dctl {
 
@@ -14,7 +15,7 @@ enum class Color
 inline
 constexpr auto operator!(Color c) noexcept
 {
-        return static_cast<Color>(!static_cast<std::size_t>(c));
+        return static_cast<Color>(!xstd::to_underlying_type(c));
 }
 
 inline
