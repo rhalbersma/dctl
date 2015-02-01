@@ -22,10 +22,6 @@ class Cursor
 
         int cursor_{};
 public:
-        // constructors
-
-        Cursor() = default;
-
         explicit Cursor(Square c) noexcept
         :
                 cursor_{static_cast<int>(c)}
@@ -44,6 +40,8 @@ public:
         {
                 return static_cast<Square>(cursor_);
         }
+
+        Cursor() = default;
 
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
