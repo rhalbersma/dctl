@@ -7,8 +7,6 @@ class ReversibleMoves
 {
         std::size_t ply = 0;
 public:
-        ReversibleMoves() = default;
-
         explicit ReversibleMoves(std::size_t n) noexcept
         :
                 ply{n}
@@ -18,6 +16,8 @@ public:
         {
                 return ply;
         }
+
+        ReversibleMoves() = default;
 
         template<class Move>
         void make(Move const& m) noexcept

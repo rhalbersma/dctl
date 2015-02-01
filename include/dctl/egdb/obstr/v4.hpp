@@ -1,5 +1,5 @@
 #pragma once
-#include <xstd/bitset/intrinsic.hpp>
+#include <xstd/bit/primitive.hpp>
 #include <cstdint>
 #include <iterator>
 
@@ -19,13 +19,13 @@ int mirror(int sq)
 inline
 int LSB(BB x)
 {
-        return static_cast<int>(xstd::intrinsic::bsfnz(x));
+        return static_cast<int>(xstd::bit::bsfnz(x));
 }
 
 inline
 int MSB(BB x)
 {
-        return static_cast<int>(xstd::intrinsic::bsrnz(x));
+        return static_cast<int>(xstd::bit::bsrnz(x));
 }
 
 inline

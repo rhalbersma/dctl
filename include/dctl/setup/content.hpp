@@ -10,7 +10,7 @@ namespace setup {
 template<class Token, class Position>
 std::string content(Position const& p, std::size_t n)
 {
-        assert(0 <= n && n < set_type_t<Position>::size());
+        assert(n < set_type_t<Position>::size());
 
         std::stringstream sstr;
         if (p.pieces(Color::black).test(n)) {

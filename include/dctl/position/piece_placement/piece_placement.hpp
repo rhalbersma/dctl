@@ -38,8 +38,6 @@ class PiecePlacement
         }
 
 public:
-        PiecePlacement() = default;
-
         PiecePlacement(Set const& black, Set const& white, Set const& pawns, Set const& kings)
         :
                 by_color{black, white},
@@ -47,6 +45,8 @@ public:
         {
                 assert(invariant());
         }
+
+        PiecePlacement() = default;
 
         template<class Move>
         void make(Move const& m)
