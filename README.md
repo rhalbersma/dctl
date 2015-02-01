@@ -49,7 +49,7 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
       sudo apt-get install libc++-dev libc++abi-dev
       
       # Add LLVM repository and GPG key and install Clang 3.6
-      echo "deb http://llvm.org/apt/saucy/ llvm-toolchain-saucy main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
+      echo "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
       wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
       apt-get install clang-3.6 lldb-3.6     
 
