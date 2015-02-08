@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/rules.hpp>
+#include <dctl/rule_traits.hpp>         // is_king_order_precedence
 #include <dctl/set_type.hpp>            // set_type
 #include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
 #include <dctl/utility/logic.hpp>
@@ -74,7 +74,7 @@ public:
                 assert(invariant());
         }
 
-        constexpr auto captured(Piece p) const noexcept
+        constexpr auto const& captured(Piece p) const noexcept
         {
                 return captured_[xstd::to_underlying_type(p)];
         }
@@ -169,57 +169,53 @@ public:
         }
 };
 
-template<class Rules, class Board>
-class EmptyBase {};
-
-template<class Rules, class Board>
+template<class Rules, class Board, bool = !is_king_order_precedence_v<Rules>>
 class Move
 :
-        public BaseMove<Rules, Board>,
-        public EmptyBase<Rules, Board>
+        public BaseMove<Rules, Board>
 {
-public:
         using base = BaseMove<Rules, Board>;
+public:
         using base::base;
 };
 
 template<class Board>
-class EmptyBase<italian::Rules, Board>
+class KingOrder
 {
         set_type<Board> king_order_{};
 public:
-        EmptyBase() = default;
-        explicit EmptyBase(set_type<Board> const& ko)
+        explicit KingOrder(set_type<Board> const& ko)
         :
                 king_order_(ko)
         {}
 
         template<class Tracker>
-        explicit EmptyBase(Tracker const& t)
+        explicit KingOrder(Tracker const& t)
         :
                 king_order_(t.king_order())
         {}
 
-        set_type<Board> king_order() const { return king_order_; }
+        KingOrder() = default;
+
+        auto king_order() const { return king_order_; }
 };
 
-template<class Board>
-class Move<italian::Rules, Board>
+template<class Rules, class Board>
+class Move<Rules, Board, false>
 :
-        public BaseMove<italian::Rules, Board>,
-        public EmptyBase<italian::Rules, Board>
+        public BaseMove<Rules, Board>,
+        public KingOrder<Board>
 {
+        using base = BaseMove<Rules, Board>;
+        using next = KingOrder<Board>;
 public:
-        using base = BaseMove<italian::Rules, Board>;
         using base::base;
-        using empty = EmptyBase<italian::Rules, Board>;
-        using Set = typename base::Set;
 
         template<class Tracker>
         explicit constexpr Move(Tracker const& t)
         :
                 base(t),
-                empty(t)
+                next(t)
         {}
 };
 

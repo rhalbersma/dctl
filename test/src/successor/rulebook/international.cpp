@@ -70,7 +70,7 @@ BOOST_FIXTURE_TEST_CASE(ApresFiniJumpRemoval, F)
 
 BOOST_FIXTURE_TEST_CASE(NumberOfPieces, F)
 {
-        // Art. 4.13 (jump most pieces)
+        // Art. 4.13
         auto const FEN = "W:WK48:B7,8,31,34,K42,44";
         auto const legal = std::vector<std::string>{ "48x50" };
         run(FEN, begin(legal), end(legal));

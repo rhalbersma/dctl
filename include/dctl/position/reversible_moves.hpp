@@ -7,12 +7,12 @@ class ReversibleMoves
 {
         std::size_t ply = 0;
 public:
-        explicit ReversibleMoves(std::size_t n) noexcept
+        explicit constexpr ReversibleMoves(std::size_t n) noexcept
         :
                 ply{n}
         {}
 
-        /* implicit */ operator auto() const noexcept
+        /* implicit */ constexpr operator auto() const noexcept
         {
                 return ply;
         }
@@ -20,7 +20,7 @@ public:
         ReversibleMoves() = default;
 
         template<class Move>
-        void make(Move const& m) noexcept
+        constexpr auto make(Move const& m) noexcept
         {
                 if (m.is_reversible())
                         ++ply;

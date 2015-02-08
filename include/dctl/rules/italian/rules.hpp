@@ -15,6 +15,7 @@ struct Rules
 
         // optional
         using jump_precedence = precedence::less;               // 6.1 - 6.10
+        static constexpr auto is_king_order_precedence = true;  // 6.9
         static constexpr auto is_pawn_jump_king = false;        // 5.3(b)
 
         // draw

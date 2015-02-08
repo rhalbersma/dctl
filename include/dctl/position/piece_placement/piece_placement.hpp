@@ -23,14 +23,14 @@ class PiecePlacement
                 return board::Promotion<Board>::mask(ToMove);
         }
 
-        bool invariant() const
+        auto invariant() const
         {
                 auto constexpr squares = board::Squares<Board>::mask();
 
                 return
                          disjoint(pieces(Color::black), pieces(Color::white)) &&
                          disjoint(pieces(Piece::pawn ), pieces(Piece::king )) &&
-                         pieces() == (pieces(Piece::pawn) | pieces(Piece::king)) &&
+                         (pieces(Color::black) | pieces(Color::white)) == (pieces(Piece::pawn) | pieces(Piece::king)) &&
                          disjoint(pieces(Color::black, Piece::pawn), promotion<Color::black>()) &&
                          disjoint(pieces(Color::white, Piece::pawn), promotion<Color::white>()) &&
                          pieces().is_subset_of(squares)
@@ -49,7 +49,7 @@ public:
         PiecePlacement() = default;
 
         template<class Move>
-        void make(Move const& m)
+        auto make(Move const& m)
         {
                 pieces(m.to_move()).reset(m.from());
                 pieces(m.to_move()).set  (m.dest());
@@ -65,12 +65,12 @@ public:
                 assert(invariant());
         }
 
-        auto pieces(Color c) const noexcept
+        auto const& pieces(Color c) const noexcept
         {
                 return by_color[xstd::to_underlying_type(c)];
         }
 
-        auto pieces(Piece p) const noexcept
+        auto const& pieces(Piece p) const noexcept
         {
                 return by_piece[xstd::to_underlying_type(p)];
         }
