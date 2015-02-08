@@ -86,27 +86,27 @@ public:
 
         // observers
 
-        auto pieces(Color c) const
+        decltype(auto) pieces(Color c) const
         {
                 return piece_placement_.pieces(c);
         }
 
-        auto pieces(Piece p) const
+        decltype(auto) pieces(Piece p) const
         {
                 return piece_placement_.pieces(p);
         }
 
-        auto pieces(Color c, Piece p) const
+        decltype(auto) pieces(Color c, Piece p) const
         {
                 return piece_placement_.pieces(c, p);
         }
 
-        auto pieces() const
+        decltype(auto) pieces() const
         {
                 return piece_placement_.pieces();
         }
 
-        auto not_occupied() const
+        decltype(auto) not_occupied() const
         {
                 return piece_placement_.not_occupied();
         }
@@ -193,7 +193,7 @@ private:
         template<class Move>
         void make_irreversible(Move const& m, std::true_type)
         {
-                make_irreversible(m, std::false_type());
+                make_irreversible(m, std::false_type{});
                 make_mrp_kings(m);
         }
 

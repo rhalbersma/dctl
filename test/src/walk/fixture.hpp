@@ -12,7 +12,7 @@ void test(Position const& p, NodeCount const (& leafs)[N])
         using impl_tag = hash_tag;
         Data<impl_tag, Position> d;
         Enhancements<impl_tag, Position> e(&d);
-        e.resize_TT(1024);
+        e.resize_TT(64);
 
         auto depth = 0;
         for (auto&& node_count : leafs) {
