@@ -31,7 +31,7 @@ public:
                 return degrees;
         }
 
-        constexpr Angle() = default;
+        Angle() = default;
 
         constexpr auto& operator+=(Angle const& other) noexcept
         {
