@@ -121,8 +121,8 @@ struct write<pdn::protocol, Token>
                                 if (p.pieces(Piece::king).test(sq))
                                         sstr << Token::king;            // king tag
                                 sstr << Board::square_from_bit(sq) + 1; // square number
-                                if (p.is_counted(c) && p.index(c) == sq)
-                                        sstr << "^" << p.count(c);
+                                //if (p.is_counted(c) && p.index(c) == sq)
+                                //        sstr << "^" << p.count(c);
                                 if (++n != bs.count())                  // still pieces remaining
                                         sstr << Token::comma;           // comma separator
                         }

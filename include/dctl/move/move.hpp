@@ -7,12 +7,16 @@
 #include <dctl/utility/logic.hpp>
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
+#include <cstddef>                      // size_t
 #include <tuple>                        // forward_as_tuple
 
 namespace dctl {
 
+template<class, class, bool>
+class BaseMove;
+
 template<class Rules, class Board>
-class BaseMove
+class BaseMove<Rules, Board, false>
 {
 public:
         using board_type = Board;
@@ -20,14 +24,14 @@ public:
         using Set = set_type<Board>;
 
 private:
+        Set captured_[2];
         std::size_t from_;
         std::size_t dest_;
         Color to_move_;
         Piece with_;
         Piece into_;
-        Set captured_[2];
 
-        auto invariant() const
+        auto invariant() const noexcept
         {
                 return
                         util::implies(from() == dest(), is_jump()) &&
@@ -37,7 +41,7 @@ private:
 
 public:
         // pawn push
-        constexpr BaseMove(std::size_t src, std::size_t dst, Color c, Piece promotion)
+        constexpr BaseMove(std::size_t src, std::size_t dst, Color c, Piece promotion) noexcept
         :
                 from_{src},
                 dest_{dst},
@@ -49,7 +53,7 @@ public:
         }
 
         // king push
-        constexpr BaseMove(std::size_t src, std::size_t dst, Color c)
+        constexpr BaseMove(std::size_t src, std::size_t dst, Color c) noexcept
         :
                 from_{src},
                 dest_{dst},
@@ -64,12 +68,12 @@ public:
         template<class Tracker>
         explicit constexpr BaseMove(Tracker const& t)
         :
+                captured_{t.captured(Piece::pawn), t.captured(Piece::king)},
                 from_{t.from()},
                 dest_{t.dest()},
                 to_move_{t.to_move()},
                 with_{t.with()},
-                into_{t.into()},
-                captured_{t.captured(Piece::pawn), t.captured(Piece::king)}
+                into_{t.into()}
         {
                 assert(invariant());
         }
@@ -169,55 +173,41 @@ public:
         }
 };
 
-template<class Rules, class Board, bool = !is_king_order_precedence_v<Rules>>
-class Move
+template<class Rules, class Board>
+class BaseMove<Rules, Board, true>
 :
-        public BaseMove<Rules, Board>
-{
-        using base = BaseMove<Rules, Board>;
-public:
-        using base::base;
-};
-
-template<class Board>
-class KingOrder
+        public BaseMove<Rules, Board, false>
 {
         set_type<Board> king_order_{};
+
+        using base = BaseMove<Rules, Board, false>;
 public:
-        explicit KingOrder(set_type<Board> const& ko)
-        :
-                king_order_(ko)
-        {}
+        using base::base;
 
         template<class Tracker>
-        explicit KingOrder(Tracker const& t)
+        explicit constexpr BaseMove(Tracker const& t) noexcept
         :
-                king_order_(t.king_order())
+                base{t},
+                king_order_{t.king_order()}
         {}
 
-        KingOrder() = default;
-
-        auto king_order() const { return king_order_; }
+        constexpr auto king_order() const noexcept
+        {
+                return king_order_;
+        }
 };
 
 template<class Rules, class Board>
-class Move<Rules, Board, false>
+class Move
 :
-        public BaseMove<Rules, Board>,
-        public KingOrder<Board>
+        public BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>
 {
-        using base = BaseMove<Rules, Board>;
-        using next = KingOrder<Board>;
+        using base = BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>;
 public:
         using base::base;
-
-        template<class Tracker>
-        explicit constexpr Move(Tracker const& t)
-        :
-                base(t),
-                next(t)
-        {}
 };
+
+
 
 template<class T>
 using Move_t = Move<rules_type_t<T>, board_type_t<T>>;

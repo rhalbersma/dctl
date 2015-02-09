@@ -34,12 +34,12 @@ public:
 
 private:
         PiecePlacement<Rules, Board> piece_placement_{};
-        Color to_move_{};
         ReversibleMoves reversible_moves_{};
-        MostRecentlyPushedKings<Rules, Board> mrp_kings_;
+        //MostRecentlyPushedKings<Rules, Board> mrp_kings_;
         TreeIterator parent_{};
         uint64_t hash_{};
-        int distance_to_root_{};
+        unsigned distance_to_root_{};
+        Color to_move_{};
 
         bool hash_invariant() const
         {
@@ -51,8 +51,8 @@ public:
         Position(set_type const& black, set_type const& white, set_type const& pawns, set_type const& kings, Color c)
         :
                 piece_placement_{black, white, pawns, kings},
-                to_move_{c},
-                mrp_kings_{piece_placement_}
+                //mrp_kings_{piece_placement_},
+                to_move_{c}
         {
                 hash_ = hash_xor_accumulate(*this);
         }
@@ -65,7 +65,7 @@ public:
         }
 
         template<class Move>
-        void make(Move const& m)
+        auto make(Move const& m)
         {
                 //assert(is_pseudo_legal(*this, m));
 
@@ -120,7 +120,7 @@ public:
         {
                 return to_move_;
         }
-
+/*
         auto index(Color c) const
         {
                 return mrp_kings_.index(c);
@@ -145,7 +145,7 @@ public:
         {
                 return mrp_kings_.is_limited(c);
         }
-
+*/
         auto reversible_moves() const
         {
                 return reversible_moves_;
@@ -169,13 +169,13 @@ public:
         friend auto hash_xor_accumulate(Position const& p)
         {
                 enum { NumSquares = set_type::size() };
-                enum { M = MostRecentlyPushedKings<Rules, Board>::M };
-                enum { N = MostRecentlyPushedKings<Rules, Board>::N };
+                //enum { M = MostRecentlyPushedKings<Rules, Board>::M };
+                //enum { N = MostRecentlyPushedKings<Rules, Board>::N };
 
                 return
                         hash_xor_accumulate(zobrist::PiecePlacement<NumSquares>{}   , p.piece_placement_) ^
-                        hash_xor_accumulate(zobrist::ToMove<>{}                     , p.to_move_        ) ^
-                        hash_xor_accumulate(zobrist::MostRecentlyPushedKings<M, N>{}, p.mrp_kings_      )
+                        hash_xor_accumulate(zobrist::ToMove<>{}                     , p.to_move_        ) //^
+                        //hash_xor_accumulate(zobrist::MostRecentlyPushedKings<M, N>{}, p.mrp_kings_      )
                 ;
         }
 
@@ -183,7 +183,7 @@ private:
         // implementation
 
         template<class Move>
-        void make_irreversible(Move const& m)
+        auto make_irreversible(Move const& m)
         {
                 // tag dispatching on restrictions on consecutive moves with the same king
                 make_irreversible(m, is_restricted_king_push_t<Rules>{});
@@ -191,20 +191,20 @@ private:
 
         // restricted consecutive moves with the same king
         template<class Move>
-        void make_irreversible(Move const& m, std::true_type)
+        auto make_irreversible(Move const& m, std::true_type)
         {
                 make_irreversible(m, std::false_type{});
-                make_mrp_kings(m);
+                //make_mrp_kings(m);
         }
 
         // unrestricted consecutive moves with the same king
         template<class Move>
-        void make_irreversible(Move const& m, std::false_type)
+        auto make_irreversible(Move const& m, std::false_type)
         {
                 reversible_moves_.make(m);
                 make_distance_to_root();
         }
-
+/*
         template<class Move>
         void make_mrp_kings(Move const& m)
         {
@@ -216,8 +216,8 @@ private:
                 mrp_kings_.make(m);
                 hash_ ^= hash_xor_accumulate(z, mrp_kings_);
         }
-
-        void make_distance_to_root()
+*/
+        auto make_distance_to_root()
         {
                 ++distance_to_root_;
         }

@@ -5,7 +5,7 @@ namespace dctl {
 
 enum class Piece
 :
-        std::size_t
+        unsigned char
 {
         pawn = 0,
         king = 1

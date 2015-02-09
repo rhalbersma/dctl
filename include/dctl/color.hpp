@@ -6,7 +6,7 @@ namespace dctl {
 
 enum class Color
 :
-        std::size_t
+        unsigned char
 {
         black = 0,
         white = 1
