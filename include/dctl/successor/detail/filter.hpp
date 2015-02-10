@@ -2,6 +2,7 @@
 #include <dctl/rule_traits.hpp> // jump_precedence_t, is_jump_precedence_v, large_jump_v
 #include <algorithm>            // max_element, stable_sort, unique, upper_bound
 #include <iterator>             // begin, end, distance
+#include <tuple>                // forward_as_tuple
 
 namespace dctl {
 namespace successor {
