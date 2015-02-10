@@ -5,7 +5,6 @@
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <array>                        // array
 #include <cstddef>                      // size_t
-#include <cstdint>                      // uint64_t
 
 namespace dctl {
 namespace zobrist {
@@ -13,8 +12,8 @@ namespace zobrist {
 template<std::size_t N>
 class PiecePlacement
 {
-        static std::array<uint64_t, N> const by_color[2];
-        static std::array<uint64_t, N> const by_piece[2];
+        static std::array<std::size_t, N> const by_color[2];
+        static std::array<std::size_t, N> const by_piece[2];
 public:
         static auto const& pieces(Color c)
         {
@@ -28,7 +27,7 @@ public:
 };
 
 template<std::size_t N>
-std::array<uint64_t, N> const
+std::array<std::size_t, N> const
 PiecePlacement<N>::by_color[2] =
 {
         random::runif<N>(),
@@ -36,7 +35,7 @@ PiecePlacement<N>::by_color[2] =
 };
 
 template<std::size_t N>
-std::array<uint64_t, N> const
+std::array<std::size_t, N> const
 PiecePlacement<N>::by_piece[2] =
 {
         random::runif<N>(),

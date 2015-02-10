@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>                      // uint64_t
 #include <cstddef>                      // size_t
 #include <limits>                       // digits
 #include <type_traits>                  // is_integral
@@ -9,7 +8,7 @@ namespace extract {
 
 struct Hash
 {
-        using result_type = uint64_t;
+        using result_type = std::size_t;
 
         template<class Key>
         auto operator()(Key const& key) const

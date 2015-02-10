@@ -37,7 +37,7 @@ private:
         ReversibleMoves reversible_moves_{};
         //MostRecentlyPushedKings<Rules, Board> mrp_kings_;
         TreeIterator parent_{};
-        uint64_t hash_{};
+        std::size_t hash_{};
         unsigned distance_to_root_{};
         Color to_move_{};
 
