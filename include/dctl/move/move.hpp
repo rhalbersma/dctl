@@ -11,6 +11,7 @@
 #include <tuple>                        // forward_as_tuple
 
 namespace dctl {
+namespace detail {
 
 template<class, class, bool>
 class BaseMove;
@@ -21,10 +22,10 @@ class BaseMove<Rules, Board, false>
 public:
         using board_type = Board;
         using rules_type = Rules;
-        using Set = set_type<Board>;
+        using   set_type = set_type<Board>;
 
 private:
-        Set captured_[2];
+        set_type captured_[2];
         std::size_t from_;
         std::size_t dest_;
         Color to_move_;
@@ -64,7 +65,7 @@ public:
                 assert(invariant());
         }
 
-        // any jump
+        // jump
         template<class Tracker>
         explicit constexpr BaseMove(Tracker const& t)
         :
@@ -147,31 +148,25 @@ public:
         {
                 return captured(Piece::pawn).count() + captured(Piece::king).count();
         }
-
-        friend constexpr auto
-        operator==(BaseMove const& lhs, BaseMove const& rhs) noexcept
-        {
-                return
-                        std::forward_as_tuple(lhs.from_, lhs.dest_, lhs.captured()) ==
-                        std::forward_as_tuple(rhs.from_, rhs.dest_, rhs.captured())
-                ;
-        }
-
-        friend constexpr auto
-        operator!=(BaseMove const& lhs, BaseMove const& rhs) noexcept
-        {
-                return !(lhs == rhs);
-        }
-
-        friend constexpr auto
-        operator<(BaseMove const& lhs, BaseMove const& rhs) noexcept
-        {
-                return
-                        std::forward_as_tuple(lhs.from_, lhs.dest_, lhs.captured()) <
-                        std::forward_as_tuple(rhs.from_, rhs.dest_, rhs.captured())
-                ;
-        }
 };
+
+template<class Rules, class Board>
+constexpr auto operator==(BaseMove<Rules, Board, false> const& lhs, BaseMove<Rules, Board, false> const& rhs) noexcept
+{
+        return
+                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) ==
+                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured())
+        ;
+}
+
+template<class Rules, class Board>
+constexpr auto operator<(BaseMove<Rules, Board, false> const& lhs, BaseMove<Rules, Board, false> const& rhs) noexcept
+{
+        return
+                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) <
+                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured())
+        ;
+}
 
 template<class Rules, class Board>
 class BaseMove<Rules, Board, true>
@@ -198,16 +193,58 @@ public:
 };
 
 template<class Rules, class Board>
+constexpr auto operator==(BaseMove<Rules, Board, true> const& lhs, BaseMove<Rules, Board, true> const& rhs) noexcept
+{
+        return
+                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.king_order()) ==
+                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured(), rhs.king_order())
+        ;
+}
+
+template<class Rules, class Board>
+constexpr auto operator<(BaseMove<Rules, Board, true> const& lhs, BaseMove<Rules, Board, true> const& rhs) noexcept
+{
+        return
+                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.king_order()) <
+                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured(), rhs.king_order())
+        ;
+}
+
+}       // namespace detail
+
+template<class Rules, class Board>
 class Move
 :
-        public BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>
+        public detail::BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>
 {
-        using base = BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>;
+        using base = detail::BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>;
 public:
         using base::base;
 };
 
+template<class Rules, class Board>
+constexpr auto operator!=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+{
+        return !(lhs == rhs);
+}
 
+template<class Rules, class Board>
+constexpr auto operator>(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+{
+        return rhs < lhs;
+}
+
+template<class Rules, class Board>
+constexpr auto operator>=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+{
+        return !(lhs < rhs);
+}
+
+template<class Rules, class Board>
+constexpr auto operator<=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+{
+        return !(rhs < lhs);
+}
 
 template<class T>
 using Move_t = Move<rules_type_t<T>, board_type_t<T>>;
