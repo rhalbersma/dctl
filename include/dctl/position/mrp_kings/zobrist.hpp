@@ -3,7 +3,6 @@
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <array>                        // array
 #include <cstddef>                      // size_t
-#include <cstdint>                      // uint64_t
 
 namespace dctl {
 namespace zobrist {
@@ -11,8 +10,8 @@ namespace zobrist {
 template<std::size_t M, std::size_t N>
 class MostRecentlyPushedKings
 {
-        static std::array<uint64_t, 1 + N> const index_[];
-        static std::array<uint64_t, 1 + M> const count_[];
+        static std::array<std::size_t, 1 + N> const index_[];
+        static std::array<std::size_t, 1 + M> const count_[];
 public:
         static auto const& index(Color c)
         {
@@ -26,7 +25,7 @@ public:
 };
 
 template<std::size_t M, std::size_t N>
-std::array<uint64_t, 1 + N> const
+std::array<std::size_t, 1 + N> const
 MostRecentlyPushedKings<M, N>::index_[] =
 {
         random::cat_runif_zero<N>(),
@@ -34,7 +33,7 @@ MostRecentlyPushedKings<M, N>::index_[] =
 };
 
 template<std::size_t M, std::size_t N>
-std::array<uint64_t, 1 + M> const
+std::array<std::size_t, 1 + M> const
 MostRecentlyPushedKings<M, N>::count_[] =
 {
         random::cat_zero_runif<M>(),
