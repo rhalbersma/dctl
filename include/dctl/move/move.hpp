@@ -148,25 +148,23 @@ public:
         {
                 return captured(Piece::pawn).count() + captured(Piece::king).count();
         }
+
+        auto is_equal_to(BaseMove const& other) const noexcept
+        {
+                return
+                        std::forward_as_tuple(this->from(), this->dest(), this->captured()) ==
+                        std::forward_as_tuple(other.from(), other.dest(), other.captured())
+                ;
+        }
+
+        auto is_less(BaseMove const& other) const noexcept
+        {
+                return
+                        std::forward_as_tuple(this->from(), this->dest(), this->captured()) <
+                        std::forward_as_tuple(other.from(), other.dest(), other.captured())
+                ;
+        }
 };
-
-template<class Rules, class Board>
-constexpr auto operator==(BaseMove<Rules, Board, false> const& lhs, BaseMove<Rules, Board, false> const& rhs) noexcept
-{
-        return
-                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) ==
-                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured())
-        ;
-}
-
-template<class Rules, class Board>
-constexpr auto operator<(BaseMove<Rules, Board, false> const& lhs, BaseMove<Rules, Board, false> const& rhs) noexcept
-{
-        return
-                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) <
-                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured())
-        ;
-}
 
 template<class Rules, class Board>
 class BaseMove<Rules, Board, true>
@@ -190,27 +188,34 @@ public:
         {
                 return king_order_;
         }
+
+        auto is_equal_to(BaseMove const& other) const noexcept
+        {
+                return
+                        std::forward_as_tuple(this->from(), this->dest(), this->captured(), this->king_order()) ==
+                        std::forward_as_tuple(other.from(), other.dest(), other.captured(), other.king_order())
+                ;
+        }
+
+        auto is_less(BaseMove const& other) const noexcept
+        {
+                return
+                        std::forward_as_tuple(this->from(), this->dest(), this->captured(), this->king_order()) <
+                        std::forward_as_tuple(other.from(), other.dest(), other.captured(), other.king_order())
+                ;
+        }
 };
 
-template<class Rules, class Board>
-constexpr auto operator==(BaseMove<Rules, Board, true> const& lhs, BaseMove<Rules, Board, true> const& rhs) noexcept
-{
-        return
-                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.king_order()) ==
-                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured(), rhs.king_order())
-        ;
-}
-
-template<class Rules, class Board>
-constexpr auto operator<(BaseMove<Rules, Board, true> const& lhs, BaseMove<Rules, Board, true> const& rhs) noexcept
-{
-        return
-                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.king_order()) <
-                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured(), rhs.king_order())
-        ;
-}
-
 }       // namespace detail
+
+template<class, class>
+class Move;
+
+template<class Rules, class Board>
+constexpr auto operator==(Move<Rules, Board> const&, Move<Rules, Board> const&) noexcept;
+
+template<class Rules, class Board>
+constexpr auto operator< (Move<Rules, Board> const&, Move<Rules, Board> const&) noexcept;
 
 template<class Rules, class Board>
 class Move
@@ -220,7 +225,16 @@ class Move
         using base = detail::BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>;
 public:
         using base::base;
+
+        friend constexpr auto operator== <>(Move const&, Move const&) noexcept;
+        friend constexpr auto operator<  <>(Move const&, Move const&) noexcept;
 };
+
+template<class Rules, class Board>
+constexpr auto operator==(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+{
+        return lhs.is_equal_to(rhs);
+}
 
 template<class Rules, class Board>
 constexpr auto operator!=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
@@ -229,7 +243,13 @@ constexpr auto operator!=(Move<Rules, Board> const& lhs, Move<Rules, Board> cons
 }
 
 template<class Rules, class Board>
-constexpr auto operator>(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+constexpr auto operator< (Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+{
+        return lhs.is_less(rhs);
+}
+
+template<class Rules, class Board>
+constexpr auto operator> (Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
 {
         return rhs < lhs;
 }
