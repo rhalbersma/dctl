@@ -16,5 +16,5 @@ struct Rules
         static constexpr auto is_directly_halt_after_final_king = true;
 };
 
-}       // namespace rules
+}       // namespace killer
 }       // namespace dctl
