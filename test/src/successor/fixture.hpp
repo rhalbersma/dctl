@@ -17,7 +17,7 @@ template<class Rules, class Board>
 struct Fixture
 {
         template<class Iterator>
-        void run(std::string const& FEN, Iterator first, Iterator last)
+        void test(std::string const& FEN, Iterator first, Iterator last)
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>{}(FEN);
                 auto const moves = successor::generate(p);
