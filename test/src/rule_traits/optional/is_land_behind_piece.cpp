@@ -1,4 +1,4 @@
-#include <dctl/rule_traits/optional/is_orthogonal_jump.hpp>     // is_orthogonal_jump
+#include <dctl/rule_traits/optional/is_land_behind_piece.hpp>   // is_land_behind_piece
 #include <dctl/rules.hpp>                                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                                 // vector
 #include <boost/test/test_case_template.hpp>                    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -7,26 +7,26 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(IsOrthogonalJumpV)
+BOOST_AUTO_TEST_SUITE(IsLandBehindPieceV)
 
 using VariantsFalse = boost::mpl::vector
 <
-        checkers::Rules, czech::Rules, international::Rules, italian::Rules, pool::Rules, russian::Rules, spanish::Rules, thai::Rules
+        checkers::Rules, czech::Rules, frisian::Rules, international::Rules, italian::Rules, pool::Rules, russian::Rules, spanish::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
 {
-        static_assert(!is_orthogonal_jump_v<T>, "");
+        static_assert(!is_land_behind_piece_v<T>, "");
 }
 
 using VariantsTrue = boost::mpl::vector
 <
-        frisian::Rules
+        thai::Rules
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
 {
-        static_assert(is_orthogonal_jump_v<T>, "");
+        static_assert(is_land_behind_piece_v<T>, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

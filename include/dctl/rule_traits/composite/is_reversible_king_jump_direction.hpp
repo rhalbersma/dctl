@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/rule_traits/optional/is_en_passant_jump_removal.hpp>     // is_en_passant_jump_removal_v
-#include <dctl/rule_traits/required/king_range_category.hpp>            // is_long_ranged_king
-#include <type_traits>                                                  // integral_constant
+#include <dctl/rule_traits/optional/is_en_passant_jump_removal.hpp>     // is_en_passant_jump_removal
+#include <dctl/rule_traits/required/king_range_category.hpp>            // king_range_category, long_ranged_tag
+#include <type_traits>                                                  // integral_constant, is_same
 
 namespace dctl {
 

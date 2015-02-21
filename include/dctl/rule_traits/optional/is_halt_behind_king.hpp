@@ -3,6 +3,6 @@
 
 namespace dctl {
 
-XSTD_PP_TTI_STATIC_CONSTANT(is_king_order_precedence, false)
+XSTD_PP_TTI_STATIC_CONSTANT(is_halt_behind_king, false)
 
 }       // namespace dctl

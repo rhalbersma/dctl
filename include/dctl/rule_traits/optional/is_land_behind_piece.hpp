@@ -3,6 +3,6 @@
 
 namespace dctl {
 
-XSTD_PP_TTI_STATIC_CONSTANT(is_absolute_king_jump_precedence, false)
+XSTD_PP_TTI_STATIC_CONSTANT(is_land_behind_piece, false)
 
 }       // namespace dctl
