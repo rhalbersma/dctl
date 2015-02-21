@@ -5,7 +5,6 @@
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/position/make_copy.hpp>
 #include <dctl/successor.hpp>
-#include <dctl/utility/int.hpp>         // NodeCount
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/stopwatch.hpp>
 
@@ -48,17 +47,17 @@ struct Enhancements<default_tag, Position>
         void reset_statistics() { handle_->statistics_.reset(); }
         void update_statistics(int ply) { handle_->statistics_.update(ply); }
 
-        std::pair<bool, NodeCount> find(Position const& /* p */, int /* depth */) const
+        std::pair<bool, std::size_t> find(Position const& /* p */, int /* depth */) const
         {
-                return std::make_pair(false, NodeCount(0));
+                return std::make_pair(false, std::size_t(0));
         }
 
-        std::pair<bool, NodeCount> terminal(Position const& /* p */, int depth) const
+        std::pair<bool, std::size_t> terminal(Position const& /* p */, int depth) const
         {
-                return std::make_pair(depth == 0, NodeCount(1));
+                return std::make_pair(depth == 0, std::size_t(1));
         }
 
-        void insert(Position const& /* p */, NodeCount /* nodes */, int /* depth */) const
+        void insert(Position const& /* p */, std::size_t /* nodes */, int /* depth */) const
         {
                 /* no-op */
         }
@@ -84,17 +83,17 @@ struct Enhancements<bulk_tag, Position>
         void reset_statistics() { handle_->statistics_.reset(); }
         void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
 
-        std::pair<bool, NodeCount> find(Position const& /* p */, int /* depth */) const
+        std::pair<bool, std::size_t> find(Position const& /* p */, int /* depth */) const
         {
-                return std::make_pair(false, NodeCount(0));
+                return std::make_pair(false, std::size_t(0));
         }
 
-        std::pair<bool, NodeCount> terminal(Position const& p, int depth) const
+        std::pair<bool, std::size_t> terminal(Position const& p, int depth) const
         {
                 return std::make_pair(depth == 1, successor::count(p));
         }
 
-        void insert(Position const& /* p */, NodeCount /* nodes */, int /* depth */) const
+        void insert(Position const& /* p */, std::size_t /* nodes */, int /* depth */) const
         {
                 /* no-op */
         }
@@ -130,24 +129,24 @@ struct Enhancements<hash_tag, Position>
         void clear_TT() { handle_->TT_.clear(); }
         void resize_TT(std::size_t n) { handle_->TT_.resize(n); }
 
-        std::pair<bool, NodeCount> find(Position const& p, int depth) const
+        std::pair<bool, std::size_t> find(Position const& p, int depth) const
         {
                 auto const TT_entry = handle_->TT_.find(p);
                 return (TT_entry && TT_entry->depth() == depth) ?
-                        std::make_pair(true, NodeCount(TT_entry->nodes())) :
-                        std::make_pair(false, NodeCount(0))
+                        std::make_pair(true, std::size_t(TT_entry->nodes())) :
+                        std::make_pair(false, std::size_t(0))
                 ;
         }
 
-        std::pair<bool, NodeCount> terminal(Position const& p, int depth) const
+        std::pair<bool, std::size_t> terminal(Position const& p, int depth) const
         {
                 return (depth == 1) ?
-                        std::make_pair(true, NodeCount(successor::count(p))) :
-                        std::make_pair(false, NodeCount(0))
+                        std::make_pair(true, std::size_t(successor::count(p))) :
+                        std::make_pair(false, std::size_t(0))
                 ;
         }
 
-        void insert(Position const& p, NodeCount nodes, int depth) const
+        void insert(Position const& p, std::size_t nodes, int depth) const
         {
                 handle_->TT_.insert(p, { nodes, depth } );
         }
@@ -156,7 +155,7 @@ struct Enhancements<hash_tag, Position>
 };
 
 template<class Position, class Enhancements>
-NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
+std::size_t walk(Position const& p, int depth, int ply, Enhancements e)
 {
         // (0)
         e.collect_statistics(ply);
@@ -166,7 +165,7 @@ NodeCount walk(Position const& p, int depth, int ply, Enhancements e)
         if (found.first)
                 return found.second;
 
-        NodeCount nodes = 0;
+        std::size_t nodes = 0;
 
         // (2)
         auto const terminal = e.terminal(p, depth);
@@ -210,7 +209,7 @@ void print_move(Move const& move, int i)
 }
 
 template<class Stopwatch, class Enhancements>
-void report(int depth, NodeCount leafs, Stopwatch const& stopwatch, Enhancements e)
+void report(int depth, std::size_t leafs, Stopwatch const& stopwatch, Enhancements e)
 {
         std::cout << "info";
 
@@ -241,15 +240,15 @@ void report(int depth, NodeCount leafs, Stopwatch const& stopwatch, Enhancements
 }
 
 inline
-void summary(NodeCount leafs)
+void summary(std::size_t leafs)
 {
         std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
 template<class Position, class Enhancements>
-NodeCount perft(Position const& p, int depth, Enhancements e)
+std::size_t perft(Position const& p, int depth, Enhancements e)
 {
-        NodeCount nodes = 0;
+        std::size_t nodes = 0;
         announce(p, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
@@ -263,10 +262,10 @@ NodeCount perft(Position const& p, int depth, Enhancements e)
 }
 
 template<class Position, class Enhancements>
-NodeCount divide(Position const& p, int depth, Enhancements e)
+std::size_t divide(Position const& p, int depth, Enhancements e)
 {
-        NodeCount leaf_nodes = 0;
-        NodeCount sub_count;
+        std::size_t leaf_nodes = 0;
+        std::size_t sub_count;
 
         using R = typename Position::rules_type;
         using B = typename Position::board_type;
