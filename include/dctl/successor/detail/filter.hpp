@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rule_traits.hpp> // jump_precedence_t, is_jump_precedence_v, large_jump_v
+#include <dctl/rule_traits.hpp> // precedence::is_less_v, precedence_less_t, large_jump_v
 #include <algorithm>            // max_element, stable_sort, unique, upper_bound
 #include <iterator>             // begin, end, distance
 #include <tuple>                // forward_as_tuple
@@ -15,15 +15,11 @@ public:
         template<class RandomAccessIterator>
         auto operator()(RandomAccessIterator first, RandomAccessIterator last) const
         {
-                if (!is_jump_precedence_v<Rules> || std::distance(first, last) < 2)
+                if (!precedence::is_less_v<Rules> || std::distance(first, last) < 2)
                         return last;
 
-                auto const greater = [](auto const& L, auto const& R){
-                        return jump_precedence_t<Rules>{}(R, L);
-                };
-
-                std::stable_sort(first, last, greater);
-                return std::upper_bound(first, last, *first, greater);
+                std::stable_sort(first, last, precedence::greater_t<Rules>{});
+                return std::upper_bound(first, last, *first, precedence::greater_t<Rules>{});
         }
 };
 
@@ -37,11 +33,12 @@ public:
                 if (std::distance(first, last) < 2)
                         return last;
 
-                auto const smaller = [](auto const& L, auto const& R){
-                        return L.num_captured() < R.num_captured();
+                auto const smaller = [](auto const& lhs, auto const& rhs){
+                        return lhs.num_captured() < rhs.num_captured();
                 };
 
                 auto const m = std::max_element(first, last, smaller);
+                assert(m != last);
                 if (m->num_captured() < large_jump_v<Rules>)
                         return last;
 

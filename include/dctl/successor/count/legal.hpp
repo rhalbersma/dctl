@@ -10,15 +10,15 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse>
-class Count<ToMove, select::legal, IsReverse>
+template<Color ToMove, bool RemoveDuplicateJumps, bool Reverse>
+class Count<ToMove, select::legal, RemoveDuplicateJumps, Reverse>
 {
 public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using Jump = Count<ToMove, select::jump, IsReverse>;
-                using Push = Count<ToMove, select::push, IsReverse>;
+                using Jump = Count<ToMove, select::jump, RemoveDuplicateJumps, Reverse>;
+                using Push = Count<ToMove, select::push, false               , Reverse>;
 
                 auto num_moves = Jump{}(p);
                 if (!num_moves)

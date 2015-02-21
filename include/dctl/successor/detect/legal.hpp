@@ -10,15 +10,15 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse>
-class Detect<ToMove, select::legal, IsReverse>
+template<Color ToMove, bool Reverse>
+class Detect<ToMove, select::legal, Reverse>
 {
 public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using Push = Detect<ToMove, select::push, IsReverse>;
-                using Jump = Detect<ToMove, select::jump, IsReverse>;
+                using Push = Detect<ToMove, select::push, Reverse>;
+                using Jump = Detect<ToMove, select::jump, Reverse>;
 
                 return Push{}(p) || Jump{}(p);
         }

@@ -37,13 +37,13 @@ int main()
 
         while (true) {
                 auto const p = game.top();
-                std::cout << dctl::diag << p;
-                std::cout << dctl::fen << p;
+                std::cout << diag << p;
+                std::cout << fen << p;
                 std::cout << "[" << p.reversible_moves() << "]\n";
 
                 auto moves = successor::generate(p);
-                boost::sort(moves, [](auto const& L, auto const& R) {
-                        return move::str_numeric(L) < move::str_numeric(R);
+                boost::sort(moves, [](auto const& lhs, auto const& rhs) {
+                        return move::str_numeric(lhs) < move::str_numeric(rhs);
                 });
 
                 if (moves.empty()) {

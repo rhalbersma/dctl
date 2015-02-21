@@ -10,7 +10,7 @@
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
-                                                        // is_long_ranged_land_after_piece_t, is_directly_halt_after_final_king_t
+                                                        // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
@@ -20,15 +20,15 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<Color ToMove, bool IsReverse, class Position, class Sequence>
-class Generate<ToMove, Piece::king, select::jump, IsReverse, Position, Sequence>
+template<Color ToMove, bool Reverse, class Position, class Sequence>
+class Generate<ToMove, Piece::king, select::jump, Reverse, Position, Sequence>
 {
         using   board_type = board_type_t<Position>;
         using   rules_type = rules_type_t<Position>;
         using     set_type =   set_type_t<Position>;
         using tracker_type = detail::Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
@@ -155,13 +155,17 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                // tag dispatching on king jump landing range after intermediate captures
-                return scan_turn_dispatch(jumper, is_long_ranged_land_after_piece_t<rules_type>{});
+                return scan_turn_dispatch(jumper, king_range_category_land_behind_piece_t<rules_type>{});
         }
 
-        // kings that can land on any square along the current direction
         template<class Iterator>
-        auto scan_turn_dispatch(Iterator jumper, std::true_type) const
+        auto scan_turn_dispatch(Iterator jumper, short_ranged_tag) const
+        {
+                return scan(jumper) | turn(jumper);
+        }
+
+        template<class Iterator>
+        auto scan_turn_dispatch(Iterator jumper, long_ranged_tag) const
         {
                 // tracker.template path<Direction>() would be an ERROR here
                 // because we need all landing squares rather than the directional launching squares subset
@@ -175,13 +179,6 @@ private:
                 }
                 tracker.last_visit(*jumper);
                 return found_next |= is_en_prise(slider);
-        }
-
-        // kings that can only land on the immediately adjacent square
-        template<class Iterator>
-        auto scan_turn_dispatch(Iterator jumper, std::false_type) const
-        {
-                return scan(jumper) | turn(jumper);
         }
 
         template<class Iterator>
@@ -256,31 +253,27 @@ private:
         template<class Iterator>
         auto add(Iterator dest_sq) const
         {
-                // tag dispatching on king halt after final capture
-                halt_dispatch(dest_sq, is_long_ranged_land_after_piece_t<rules_type>{}, is_directly_halt_after_final_king_t<rules_type>{});
+                halt_dispatch(dest_sq, king_range_category_land_behind_piece_t<rules_type>{}, king_range_category_halt_behind_king_t<rules_type>{});
         }
 
-        // kings that halt immediately if the final capture is a king, and slide through otherwise
         template<class Iterator>
-        auto halt_dispatch(Iterator dest_sq, std::true_type, std::true_type) const
+        auto halt_dispatch(Iterator dest_sq, long_ranged_tag, short_ranged_tag) const
         {
                 assert(is_onboard(std::prev(dest_sq)));
                 if (tracker.is_king(*std::prev(dest_sq)))
-                        halt_dispatch(dest_sq, std::false_type{}, std::true_type{});
+                        halt_dispatch(dest_sq, short_ranged_tag{}, short_ranged_tag{});
                 else
-                        halt_dispatch(dest_sq, std::true_type{}, std::false_type{});
+                        halt_dispatch(dest_sq, long_ranged_tag{}, long_ranged_tag{});
         }
 
-        // kings that halt immediately after the final capture
-        template<class Iterator, class B>
-        auto halt_dispatch(Iterator /* dest_sq */, std::false_type, B) const
+        template<class Iterator>
+        auto halt_dispatch(Iterator /* dest_sq */, short_ranged_tag, short_ranged_tag) const
         {
                 add_jump();
         }
 
-        // kings that slide through after the final capture
         template<class Iterator>
-        auto halt_dispatch(Iterator dest_sq, std::true_type, std::false_type) const
+        auto halt_dispatch(Iterator dest_sq, long_ranged_tag, long_ranged_tag) const
         {
                 // tracker.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset

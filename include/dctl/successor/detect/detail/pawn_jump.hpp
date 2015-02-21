@@ -17,15 +17,15 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<Color ToMove, bool IsReverse, class Position>
-class Detect<ToMove, Piece::pawn, select::jump, IsReverse, Position>
+template<Color ToMove, bool Reverse, class Position>
+class Detect<ToMove, Piece::pawn, select::jump, Reverse, Position>
 {
         using   board_type = board_type_t<Position>;
         using   rules_type = rules_type_t<Position>;
         using     set_type =   set_type_t<Position>;
         using tracker_type = detail::Tracker<ToMove, Position>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
         tracker_type& tracker;
 
 public:

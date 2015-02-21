@@ -54,7 +54,7 @@ public:
                 return *this;
         }
 
-        constexpr auto& operator/=(int n) // Throws: Nothing.
+        constexpr auto& operator/=(int n)
         {
                 assert(n != 0);
                 degrees = make_angle(degrees / n);
@@ -98,7 +98,7 @@ constexpr auto operator*(int n, Angle const& a) noexcept
 }
 
 inline
-constexpr auto operator/(Angle const& a, int n) // Throws: Nothing.
+constexpr auto operator/(Angle const& a, int n)
 {
         assert(n != 0);
         Angle nrv{a}; nrv /= n; return nrv;
