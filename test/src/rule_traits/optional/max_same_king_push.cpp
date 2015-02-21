@@ -1,4 +1,4 @@
-#include <dctl/rule_traits/optional/is_orthogonal_jump.hpp>     // is_orthogonal_jump
+#include <dctl/rule_traits/optional/max_same_king_push.hpp>     // max_same_king_push
 #include <dctl/rules.hpp>                                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                                 // vector
 #include <boost/test/test_case_template.hpp>                    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -7,26 +7,26 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(IsOrthogonalJumpV)
+BOOST_AUTO_TEST_SUITE(MaxSameKingPushV)
 
-using VariantsFalse = boost::mpl::vector
+using VariantsZero = boost::mpl::vector
 <
         checkers::Rules, czech::Rules, international::Rules, italian::Rules, pool::Rules, russian::Rules, spanish::Rules, thai::Rules
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, VariantsZero)
 {
-        static_assert(!is_orthogonal_jump_v<T>, "");
+        static_assert(max_same_king_push_v<T> == 0, "");
 }
 
-using VariantsTrue = boost::mpl::vector
+using VariantsThree = boost::mpl::vector
 <
         frisian::Rules
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsThree, T, VariantsThree)
 {
-        static_assert(is_orthogonal_jump_v<T>, "");
+        static_assert(max_same_king_push_v<T> == 3, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

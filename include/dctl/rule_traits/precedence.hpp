@@ -1,25 +1,5 @@
 #pragma once
-
-namespace dctl {
-namespace precedence {
-
-struct equal_to
-{
-        template<class Move>
-        constexpr auto operator()(Move const&, Move const&) noexcept
-        {
-                return true;
-        }
-};
-
-struct less
-{
-        template<class Move>
-        constexpr auto operator()(Move const&, Move const&) noexcept
-        {
-                return false;
-        }
-};
-
-}       // namespace precedence
-}       // namespace dctl
+#include <dctl/rule_traits/precedence/is_absolute_with_king.hpp>
+#include <dctl/rule_traits/precedence/is_king_order.hpp>
+#include <dctl/rule_traits/precedence/is_less.hpp>
+#include <dctl/rule_traits/precedence/relational.hpp>

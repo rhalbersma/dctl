@@ -2,7 +2,9 @@
 #include <xstd/pp/tti/static_constant.hpp>      // XSTD_PP_TTI_STATIC_CONSTANT
 
 namespace dctl {
+namespace precedence {
 
-XSTD_PP_TTI_STATIC_CONSTANT(is_directly_halt_after_final_king, false)
+XSTD_PP_TTI_STATIC_CONSTANT(is_king_order, false)
 
+}       // precedence
 }       // namespace dctl

@@ -220,9 +220,9 @@ constexpr auto operator< (Move<Rules, Board> const&, Move<Rules, Board> const&) 
 template<class Rules, class Board>
 class Move
 :
-        public detail::BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>
+        public detail::BaseMove<Rules, Board, precedence::is_king_order_v<Rules>>
 {
-        using base = detail::BaseMove<Rules, Board, is_king_order_precedence_v<Rules>>;
+        using base = detail::BaseMove<Rules, Board, precedence::is_king_order_v<Rules>>;
 public:
         using base::base;
 
