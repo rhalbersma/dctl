@@ -1,31 +1,33 @@
 #pragma once
-#include <cstdint>
 #include <dctl/search/bound.hpp>
 #include <dctl/search/score.hpp>
 
 namespace dctl {
 namespace search {
 
-struct Transposition
+class Transposition
 {
+         int value_ : 16;       // [-32K, +32K]
+         int type_  :  2;       // 4 types
+         int depth_ :  7;       // 128 ply
+         int move_  :  7;       // 128 moves
+
 public:
-        // constructors
+        Transposition(int v, int t, int d, int m)
+        :
+                value_(v),
+                type_(t),
+                depth_(d),
+                move_(m)
+        {}
+
         Transposition()
         :
                 value_(0),
-                rest_(0)
-        {
-        }
-
-        Transposition(int v, int t, int d, int m)
-        :
-                value_(static_cast<int16_t>(v)),
-                rest_(static_cast<uint16_t>(0))
-        {
-                rest_ = static_cast<uint16_t>(rest_ ^ ((t &  TYPE_MASK) <<  TYPE_SHIFT));
-                rest_ = static_cast<uint16_t>(rest_ ^ ((d & DEPTH_MASK) << DEPTH_SHIFT));
-                rest_ = static_cast<uint16_t>(rest_ ^ ((m &  MOVE_MASK) <<  MOVE_SHIFT));
-        }
+                type_(0),
+                depth_(0),
+                move_(0)
+        {}
 
         // value
         int value() const
@@ -42,19 +44,19 @@ public:
         // upper or lower bound, or exact
         int type() const
         {
-                return static_cast<int>((rest_ & (TYPE_MASK << TYPE_SHIFT)) >> TYPE_SHIFT);
+                return type_;
         }
 
         // remaining depth to search
         int depth() const
         {
-                return static_cast<int>((rest_ & (DEPTH_MASK << DEPTH_SHIFT)) >> DEPTH_SHIFT);
+                return depth_;
         }
 
         // index of the best move
         int move() const
         {
-                return static_cast<int>((rest_ & (MOVE_MASK << MOVE_SHIFT)) >> MOVE_SHIFT);
+                return move_;
         }
 
         // check for a cutoff against a non-null window
@@ -102,7 +104,7 @@ public:
 
         static int no_move()
         {
-                return MOVE_MASK;
+                return (1 << 7) - 1;
         }
 
 private:
@@ -131,22 +133,6 @@ private:
         {
                 return type() == Bound::exact;
         }
-
-        static const auto TYPE_BITS = 2;
-        static const auto DEPTH_BITS = 7;
-        static const auto MOVE_BITS = 7;
-
-        static const auto TYPE_SHIFT = 0;
-        static const auto DEPTH_SHIFT = TYPE_SHIFT + TYPE_BITS;
-        static const auto MOVE_SHIFT = DEPTH_SHIFT + DEPTH_BITS;
-
-        static const auto DEPTH_MASK = ((1 << DEPTH_BITS) - 1);
-        static const auto MOVE_MASK = ((1 << MOVE_BITS) - 1);
-        static const auto TYPE_MASK = ((1 << TYPE_BITS) - 1);
-
-        // representation
-         int16_t value_;        // value
-        uint16_t rest_;         // bound, depth and move
 };
 
 }       // namespace search

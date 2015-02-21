@@ -4,14 +4,14 @@
 #include <boost/accumulators/statistics/mean.hpp>
 #include <boost/accumulators/statistics/max.hpp>
 #include <boost/accumulators/statistics/count.hpp>
-#include <dctl/utility/int.hpp>                         // NodeCount
+#include <cstddef>                                      // size_t
 
 namespace dctl {
 
 class Statistics
 {
 public:
-        using NodeStats = boost::accumulators::accumulator_set<NodeCount, boost::accumulators::stats<boost::accumulators::tag::count> >;
+        using NodeStats = boost::accumulators::accumulator_set<std::size_t, boost::accumulators::stats<boost::accumulators::tag::count> >;
         using PlyStats = boost::accumulators::accumulator_set<double, boost::accumulators::stats<boost::accumulators::tag::mean, boost::accumulators::tag::max> >;
 
         // modifiers
