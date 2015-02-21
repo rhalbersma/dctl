@@ -11,7 +11,7 @@ template
         Color /* ToMove     */,
         Piece /* With       */,
         class /* Select     */,
-        bool  /* IsReverse  */,
+        bool  /* Reverse  */,
         class /* Position   */
 >
 class Count;

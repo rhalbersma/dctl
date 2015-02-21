@@ -10,15 +10,15 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse>
-class Count<ToMove, select::push, IsReverse>
+template<Color ToMove, bool RemoveDuplicates, bool Reverse>
+class Count<ToMove, select::push, RemoveDuplicates, Reverse>
 {
 public:
         template<class Position>
         auto operator()(Position const& p) const
         {
-                using KingPush = detail::Count<ToMove, Piece::king, select::push, IsReverse, Position>;
-                using PawnPush = detail::Count<ToMove, Piece::pawn, select::push, IsReverse, Position>;
+                using KingPush = detail::Count<ToMove, Piece::king, select::push, Reverse, Position>;
+                using PawnPush = detail::Count<ToMove, Piece::pawn, select::push, Reverse, Position>;
 
                 return KingPush{p}() + PawnPush{p}();
         }

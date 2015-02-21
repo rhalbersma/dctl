@@ -10,15 +10,15 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse>
-class Generate<ToMove, select::push, IsReverse>
+template<Color ToMove, bool RemoveDuplicates, bool Reverse>
+class Generate<ToMove, select::push, RemoveDuplicates, Reverse>
 {
 public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using KingPush = detail::Generate<ToMove, Piece::king, select::push, IsReverse, Position, Sequence>;
-                using PawnPush = detail::Generate<ToMove, Piece::pawn, select::push, IsReverse, Position, Sequence>;
+                using KingPush = detail::Generate<ToMove, Piece::king, select::push, Reverse, Position, Sequence>;
+                using PawnPush = detail::Generate<ToMove, Piece::pawn, select::push, Reverse, Position, Sequence>;
 
                 KingPush{p, moves}();
                 PawnPush{p, moves}();

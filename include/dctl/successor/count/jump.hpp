@@ -9,8 +9,8 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse>
-class Count<ToMove, select::jump, IsReverse>
+template<Color ToMove, bool RemoveDuplicateJumps, bool Reverse>
+class Count<ToMove, select::jump, RemoveDuplicateJumps, Reverse>
 {
 public:
         template<class Position>
@@ -20,7 +20,7 @@ public:
                 Arena<M> a;
                 auto moves = stack_vector<M>(Alloc<M>{a});
                 moves.reserve(DCTL_PP_STACK_RESERVE);
-                Generate<ToMove, select::jump, IsReverse>{}(p, moves);
+                Generate<ToMove, select::jump, RemoveDuplicateJumps, Reverse>{}(p, moves);
                 return moves.size();
         }
 };

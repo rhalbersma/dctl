@@ -10,15 +10,15 @@
 namespace dctl {
 namespace successor {
 
-template<Color ToMove, bool IsReverse>
-class Generate<ToMove, select::legal, IsReverse>
+template<Color ToMove, bool RemoveDuplicateJumps, bool Reverse>
+class Generate<ToMove, select::legal, RemoveDuplicateJumps, Reverse>
 {
 public:
         template<class Position, class Sequence>
         auto operator()(Position const& p, Sequence& moves) const
         {
-                using Jump = Generate<ToMove, select::jump, IsReverse>;
-                using Push = Generate<ToMove, select::push, IsReverse>;
+                using Jump = Generate<ToMove, select::jump, RemoveDuplicateJumps, Reverse>;
+                using Push = Generate<ToMove, select::push, false               , Reverse>;
 
                 Jump{}(p, moves);
                 if (moves.empty())

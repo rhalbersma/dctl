@@ -14,13 +14,13 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<Color ToMove, bool IsReverse, class Position>
-class Detect<ToMove, Piece::pawn, select::push, IsReverse, Position>
+template<Color ToMove, bool Reverse, class Position>
+class Detect<ToMove, Piece::pawn, select::push, Reverse, Position>
 {
         using board_type = board_type_t<Position>;
         using   set_type =   set_type_t<Position>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
         Position const& position;
 
 public:

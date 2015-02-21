@@ -16,14 +16,14 @@ namespace dctl {
 namespace successor {
 namespace detail {
 
-template<Color ToMove, bool IsReverse, class Position, class Sequence>
-class Generate<ToMove, Piece::king, select::push, IsReverse, Position, Sequence>
+template<Color ToMove, bool Reverse, class Position, class Sequence>
+class Generate<ToMove, Piece::king, select::push, Reverse, Position, Sequence>
 {
         using board_type = board_type_t<Position>;
         using rules_type = rules_type_t<Position>;
         using   set_type =   set_type_t<Position>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, IsReverse>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
         Position const& position;
         Sequence& moves;
 

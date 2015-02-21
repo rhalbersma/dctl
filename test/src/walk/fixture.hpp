@@ -14,11 +14,6 @@ void test(Position const& p, NodeCount const (& leafs)[N])
         Enhancements<impl_tag, Position> e(&d);
         e.resize_TT(64);
 
-        std::cout << "TESTING: ";
-        std::cout << "sizeof(Position) = " << sizeof(Position) << " ";
-        std::cout << "sizeof(Move) = " << sizeof(Move_t<Position>) << "\n";
-
-
         auto depth = 0;
         for (auto&& node_count : leafs) {
                 e.clear_TT();
