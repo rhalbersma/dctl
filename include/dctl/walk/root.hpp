@@ -45,7 +45,7 @@ struct Enhancements<default_tag, Position>
         explicit Enhancements(value_type* p): handle_(p) {}
 
         void reset_statistics() { handle_->statistics_.reset(); }
-        void update_statistics(int ply) { handle_->statistics_.update(ply); }
+        void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
 
         std::pair<bool, std::size_t> find(Position const& /* p */, int /* depth */) const
         {
@@ -154,8 +154,8 @@ struct Enhancements<hash_tag, Position>
         value_type* handle_;
 };
 
-template<class Position, class Enhancements>
-std::size_t walk(Position const& p, int depth, int ply, Enhancements e)
+template<class Position, class Generator, class Enhancements>
+std::size_t walk(Position const& p, int depth, int ply, Generator gen, Enhancements e)
 {
         // (0)
         e.collect_statistics(ply);
@@ -175,9 +175,9 @@ std::size_t walk(Position const& p, int depth, int ply, Enhancements e)
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
                 Arena<Move<R,B> > a;
-                auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
+                auto const moves = gen(p, Alloc<Move<R, B> >{a});
                 for (auto&& m : moves)
-                        nodes += walk(make_copy(p, m), depth - 1, ply + 1, e);
+                        nodes += walk(make_copy(p, m), depth - 1, ply + 1, gen, e);
         }
 
         // (3)
@@ -245,8 +245,8 @@ void summary(std::size_t leafs)
         std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
-template<class Position, class Enhancements>
-std::size_t perft(Position const& p, int depth, Enhancements e)
+template<class Position, class Generator, class Enhancements>
+std::size_t perft(Position const& p, int depth, Generator gen, Enhancements e)
 {
         std::size_t nodes = 0;
         announce(p, depth);
@@ -254,15 +254,15 @@ std::size_t perft(Position const& p, int depth, Enhancements e)
         stopwatch.start_stop();
         for (auto d = 1; d <= depth; ++d) {
                 e.reset_statistics();
-                nodes = walk(p, d, 0, e);
+                nodes = walk(p, d, 0, gen, e);
                 stopwatch.split_reset();
                 report(d, nodes, stopwatch, e);
         }
         return nodes;
 }
 
-template<class Position, class Enhancements>
-std::size_t divide(Position const& p, int depth, Enhancements e)
+template<class Position, class Generator, class Enhancements>
+std::size_t divide(Position const& p, int depth, Generator gen, Enhancements e)
 {
         std::size_t leaf_nodes = 0;
         std::size_t sub_count;
@@ -270,7 +270,7 @@ std::size_t divide(Position const& p, int depth, Enhancements e)
         using R = typename Position::rules_type;
         using B = typename Position::board_type;
         Arena<Move<R,B> > a;
-        auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
+        auto const moves = gen(p, Alloc<Move<R, B> >{a});
 
         announce(p, depth, moves.size());
         util::Stopwatch stopwatch;
@@ -279,7 +279,7 @@ std::size_t divide(Position const& p, int depth, Enhancements e)
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(moves[i], i);
-                sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, e);
+                sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, gen, e);
                 leaf_nodes += sub_count;
                 stopwatch.split_reset();
                 report(depth - 1, sub_count, stopwatch, e);
