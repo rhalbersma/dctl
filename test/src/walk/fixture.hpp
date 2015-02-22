@@ -6,8 +6,18 @@
 namespace dctl {
 namespace walk {
 
-template<class Position, int N>
-void test(Position const& p, std::size_t const (& leafs)[N])
+auto const unique_gen = [](auto const& p, auto const& alloc) {
+        using namespace successor;
+        return generate<select::legal, true>(p, alloc);
+};
+
+auto const duplicate_gen = [](auto const& p, auto const& alloc) {
+        using namespace successor;
+        return generate<select::legal, false>(p, alloc);
+};
+
+template<class Position, class Generator, int N>
+void test(Position const& p, Generator gen, std::size_t const (& leafs)[N])
 {
         static_assert(sizeof(Transposition) == 8, "");
         using impl_tag = hash_tag;
@@ -18,7 +28,7 @@ void test(Position const& p, std::size_t const (& leafs)[N])
         auto depth = 0;
         for (auto&& node_count : leafs) {
                 e.clear_TT();
-                BOOST_CHECK_EQUAL(node_count, walk(p, ++depth, 0, e));
+                BOOST_CHECK_EQUAL(node_count, walk(p, ++depth, 0, gen, e));
         }
 }
 
