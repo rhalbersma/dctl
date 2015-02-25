@@ -1,0 +1,9 @@
+#pragma once
+#include <dctl/rule_traits/optional/initial_gap.hpp>
+#include <dctl/rule_traits/optional/is_halt_behind_king.hpp>
+#include <dctl/rule_traits/optional/is_land_behind_piece.hpp>
+#include <dctl/rule_traits/optional/is_en_passant_jump_removal.hpp>
+#include <dctl/rule_traits/optional/is_orthogonal_jump.hpp>
+#include <dctl/rule_traits/optional/is_pawn_jump_king.hpp>
+#include <dctl/rule_traits/optional/max_same_king_push.hpp>
+#include <dctl/rule_traits/optional/promotion_category.hpp>
