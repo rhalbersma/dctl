@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rule_traits.hpp> // precedence::is_less_v, precedence_less_t, large_jump_v
+#include <dctl/rule_traits.hpp> // precedence::is_trivial, precedence::greater, large_jump_v
 #include <algorithm>            // max_element, stable_sort, unique, upper_bound
 #include <iterator>             // begin, end, distance
 #include <tuple>                // forward_as_tuple
@@ -15,11 +15,11 @@ public:
         template<class RandomAccessIterator>
         auto operator()(RandomAccessIterator first, RandomAccessIterator last) const
         {
-                if (!precedence::is_less_v<Rules> || std::distance(first, last) < 2)
+                if (!precedence::is_trivial_v<Rules> || std::distance(first, last) < 2)
                         return last;
 
-                std::stable_sort(first, last, precedence::greater_t<Rules>{});
-                return std::upper_bound(first, last, *first, precedence::greater_t<Rules>{});
+                std::stable_sort(first, last, precedence::greater<Rules>{});
+                return std::upper_bound(first, last, *first, precedence::greater<Rules>{});
         }
 };
 

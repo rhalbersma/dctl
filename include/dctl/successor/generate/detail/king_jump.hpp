@@ -52,7 +52,7 @@ public:
         template<class Iterator>
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
-                static_assert(std::is_base_of<passing_promotion_tag, promotion_category_t<rules_type>>::value, "");
+                static_assert(std::is_base_of<passing_promotion_tag, promotion_category<rules_type>>::value, "");
                 assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::king));
                 try_next(jumper);
         }
@@ -155,7 +155,7 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                return scan_turn_dispatch(jumper, king_range_category_land_behind_piece_t<rules_type>{});
+                return scan_turn_dispatch(jumper, king_range_category_land_behind_piece<rules_type>{});
         }
 
         template<class Iterator>
@@ -225,7 +225,7 @@ private:
         auto slide(Iterator& jumper, set_type const& path) const
         {
                 assert(is_onboard(jumper));
-                slide_dispatch(jumper, path, king_range_category_t<rules_type>{});
+                slide_dispatch(jumper, path, king_range_category<rules_type>{});
         }
 
         template<class Iterator>
@@ -253,7 +253,7 @@ private:
         template<class Iterator>
         auto add(Iterator dest_sq) const
         {
-                halt_dispatch(dest_sq, king_range_category_land_behind_piece_t<rules_type>{}, king_range_category_halt_behind_king_t<rules_type>{});
+                halt_dispatch(dest_sq, king_range_category_land_behind_piece<rules_type>{}, king_range_category_halt_behind_king<rules_type>{});
         }
 
         template<class Iterator>

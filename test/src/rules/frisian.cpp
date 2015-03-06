@@ -1,6 +1,6 @@
 #include <dctl/piece.hpp>               // king, pawn
 #include <dctl/rules/frisian.hpp>       // Rules
-#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_less, is_orthogonal_jump, equal_to, less
+#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <algorithm>                    // adjacent_find, is_sorted
 #include <cstddef>                      // size_t
@@ -18,10 +18,10 @@ BOOST_AUTO_TEST_CASE(Traits)
 {
         // required
         static_assert(is_backward_pawn_jump_v<T>, "");
-        static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
+        static_assert(std::is_same<king_range_category<T>, long_ranged_tag>::value, "");
 
         // precedence
-        static_assert(precedence::is_less_v<T>, "");
+        static_assert(!precedence::is_trivial_v<T>, "");
 
         // optional
         static_assert(is_orthogonal_jump_v<T>, "");
@@ -60,8 +60,8 @@ BOOST_AUTO_TEST_CASE(Precedence)
                 { 4, 0, Piece::king }
         };
 
-        BOOST_CHECK(std::is_sorted(begin(moves), end(moves), precedence::less_t<T>{}));
-        BOOST_CHECK(std::adjacent_find(begin(moves), end(moves), precedence::equal_to_t<T>{}) == end(moves));
+        BOOST_CHECK(std::is_sorted(begin(moves), end(moves), precedence::less<T>{}));
+        BOOST_CHECK(std::adjacent_find(begin(moves), end(moves), precedence::equal_to<T>{}) == end(moves));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

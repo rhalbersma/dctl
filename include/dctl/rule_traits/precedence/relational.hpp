@@ -3,6 +3,7 @@
 
 namespace dctl {
 namespace precedence {
+namespace trivial {
 
 struct equal_to
 {
@@ -22,46 +23,48 @@ struct less
         }
 };
 
-XSTD_PP_TTI_TYPE(equal_to, equal_to)
-XSTD_PP_TTI_TYPE(less    , less    )
+}       // namespace trivial
+
+XSTD_PP_TTI_TYPE(equal_to, trivial::equal_to)
+XSTD_PP_TTI_TYPE(less    , trivial::less    )
 
 template<class Rules>
-struct not_equal_to_t
+struct not_equal_to
 {
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return !equal_to_t<Rules>{}(lhs, rhs);
+                return !equal_to<Rules>{}(lhs, rhs);
         }
 };
 
 template<class Rules>
-struct greater_t
+struct greater
 {
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return less_t<Rules>{}(rhs, lhs);
+                return less<Rules>{}(rhs, lhs);
         }
 };
 
 template<class Rules>
-struct greater_equal_t
+struct greater_equal
 {
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return !less_t<Rules>{}(lhs, rhs);
+                return !less<Rules>{}(lhs, rhs);
         }
 };
 
 template<class Rules>
-struct less_equal_t
+struct less_equal
 {
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return !less_t<Rules>{}(rhs, lhs);
+                return !less<Rules>{}(rhs, lhs);
         }
 };
 
