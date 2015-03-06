@@ -47,7 +47,7 @@ public:
 private:
         auto generate(set_type const& active_kings) const
         {
-                generate_dispatch(active_kings, king_range_category_t<rules_type>{});
+                generate_dispatch(active_kings, king_range_category<rules_type>{});
         }
 
         auto generate_dispatch(set_type const& active_kings, short_ranged_tag) const

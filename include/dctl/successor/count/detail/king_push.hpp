@@ -60,7 +60,7 @@ private:
         template<int Direction>
         auto parallelize(set_type const& active_kings) const
         {
-                return Sink<board_type, Direction, king_range_category_t<rules_type>>{}(
+                return Sink<board_type, Direction, king_range_category<rules_type>>{}(
                         active_kings, position.not_occupied()
                 ).count();
         }
