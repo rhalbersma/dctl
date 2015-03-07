@@ -15,7 +15,7 @@ public:
         template<class RandomAccessIterator>
         auto operator()(RandomAccessIterator first, RandomAccessIterator last) const
         {
-                if (!precedence::is_trivial_v<Rules> || std::distance(first, last) < 2)
+                if (precedence::is_trivial_v<Rules> || std::distance(first, last) < 2)
                         return last;
 
                 std::stable_sort(first, last, precedence::greater<Rules>{});
