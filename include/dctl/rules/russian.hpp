@@ -14,6 +14,9 @@ struct Rules
 
         // optional
         using promotion_category = passing_promotion_tag;       // 1.5.15
+
+        // move
+        static constexpr auto jumpsep = ':';
 };
 
 }       // namespace russian

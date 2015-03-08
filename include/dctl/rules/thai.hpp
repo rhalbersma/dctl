@@ -14,6 +14,9 @@ struct Rules
         static constexpr auto initial_gap = 4;
         static constexpr auto is_land_behind_piece = true;
         static constexpr auto is_en_passant_jump_removal = true;
+
+        // move
+        static constexpr auto jumpsep = '-';
 };
 
 }       // namespace thai
