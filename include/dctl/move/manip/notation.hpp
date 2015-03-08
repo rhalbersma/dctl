@@ -1,6 +1,5 @@
 #pragma once
-#include <ios>          // xalloc
-#include <ostream>      // iword
+#include <ios>  // ios_base, iword, xalloc
 
 namespace dctl {
 namespace manip {
@@ -16,17 +15,17 @@ auto notation()
 
 class setnotation
 {
-        int flag_{};
+        int flag{};
 public:
-        setnotation() = default;
-        explicit setnotation(int flag) noexcept : flag_{flag} {}
+        explicit setnotation(int f) noexcept
+        :
+                flag{f}
+        {}
 
-        template<class CharT, class Traits>
-        friend auto&
-        operator<<(std::basic_ostream<CharT, Traits>& ostr, setnotation const& m)
+        friend auto& operator<<(std::ios_base& str, setnotation const& m)
         {
-                ostr.iword(manip::notation()) = m.flag_;
-                return ostr;
+                str.iword(manip::notation()) = m.flag;
+                return str;
         }
 };
 

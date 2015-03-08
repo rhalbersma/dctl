@@ -2,6 +2,7 @@
 #include <dctl/move/move.hpp>   // Move
 #include <dctl/move/manip.hpp>  // notation, pushsep, jumpsep
 #include <dctl/move/traits.hpp> // notation, pushsep, jumpsep
+#include <dctl/rule_traits.hpp> // jumpsep, pushsep
 #include <cassert>              // assert
 #include <iosfwd>               // ostream
 #include <sstream>              // stringstream
@@ -23,7 +24,7 @@ auto getpushsep(std::ostream& ostr)
 {
         auto index = static_cast<char>(ostr.iword(manip::pushsep()));
         if (!index)
-                index = traits::pushsep<Rules>::value;
+                index = pushsep_v<Rules>;
         return index;
 }
 
@@ -32,7 +33,7 @@ auto getjumpsep(std::ostream& ostr)
 {
         auto index = static_cast<char>(ostr.iword(manip::jumpsep()));
         if (!index)
-                index = traits::jumpsep<Rules>::value;
+                index = jumpsep_v<Rules>;
         return index;
 }
 

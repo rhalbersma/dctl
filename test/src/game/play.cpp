@@ -2,15 +2,13 @@
 #include <dctl/position.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/successor.hpp>
-#include <dctl/utility/stack_vector.hpp>
 #include <dctl/position/make_copy.hpp>
-#include <boost/range/algorithm/sort.hpp>
-#include <boost/range/algorithm/transform.hpp>
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <stack>
 
-// customize rules and board form these headers
+// customize rules and board from these headers
 #include <dctl/rules.hpp>
 #include <dctl/board/types.hpp>
 
@@ -22,15 +20,7 @@ int main()
         using Board = board::International;
         using Pos = Position<Rules, Board>;
 
-        //auto initial = Pos::initial();
-
-        //auto const initial = setup::read<international::Rules, board::International, pdn::protocol>()(
-        //        "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
-        //);
-
-        auto const initial = setup::read<international::Rules, board::International, pdn::protocol>()(
-                "W:B1,2,K3,K4:W46,47,K48,K49"
-        );
+        auto initial = Pos::initial();
 
         std::stack<Pos> game;
         game.push(initial);
@@ -42,7 +32,7 @@ int main()
                 std::cout << "[" << p.reversible_moves() << "]\n";
 
                 auto moves = successor::generate(p);
-                boost::sort(moves, [](auto const& lhs, auto const& rhs) {
+                std::sort(begin(moves), end(moves), [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);
                 });
 
@@ -51,14 +41,14 @@ int main()
                 } else {
                         auto index = 0;
                         for (auto&& m : moves)
-                                std::cout << std::setw(2) << index++ << "." << m << '\n';
+                                std::cout << std::setw(2) << index++ << ". " << m << '\n';
                         std::cout << "\nEnter move number, undo or stop [0/u/s]): ";
                 }
 
                 int choice = 0;
 
                 for (std::string input; std::getline(std::cin, input);) {
-                        boost::transform(input, begin(input), ::tolower);
+                        std::transform(begin(input), end(input), begin(input), ::tolower);
 
                         if (moves.empty()) {
                                 if (input.empty() || input == "u")

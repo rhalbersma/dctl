@@ -33,6 +33,9 @@ struct Rules
         };
 
         static constexpr auto is_absolute_with_king = true;
+
+        // move
+        static constexpr auto jumpsep = ':';
 };
 
 }       // namespace czech

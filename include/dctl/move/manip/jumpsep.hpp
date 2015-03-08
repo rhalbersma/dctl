@@ -1,6 +1,5 @@
 #pragma once
-#include <ios>          // xalloc
-#include <ostream>      // iword
+#include <ios>  // ios_base, iword, xalloc
 
 namespace dctl {
 namespace manip {
@@ -16,16 +15,17 @@ auto jumpsep()
 
 class setjumpsep
 {
-        char flag_;
+        char flag;
 public:
-        explicit setjumpsep(char flag) noexcept : flag_{flag} {}
+        explicit setjumpsep(char f) noexcept
+        :
+                flag{f}
+        {}
 
-        template<class CharT, class Traits>
-        friend auto&
-        operator<<(std::basic_ostream<CharT, Traits>& ostr, setjumpsep const& m)
+        friend auto& operator<<(std::ios_base& str, setjumpsep const& m)
         {
-                ostr.iword(manip::jumpsep()) = static_cast<int>(m.flag_);
-                return ostr;
+                str.iword(manip::jumpsep()) = m.flag;
+                return str;
         }
 };
 
