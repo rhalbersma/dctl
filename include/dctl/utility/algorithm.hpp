@@ -59,16 +59,16 @@ accumulate_until(InputIterator begin, InputIterator end, T init, BinaryOperation
 
 // O(N) complexity: weak range extension of std::iota
 template<class OutputIterator, class Size, class T>
-void iota_n(OutputIterator first, Size n, T value)
+auto iota_n(OutputIterator first, Size n, T value)
 {
-        std::generate_n(first, n, [&]() { return value++; });
+        return std::generate_n(first, n, [&]() { return value++; });
 }
 
 // sorting algorithms
 
 // O(N^2) complexity
 template<class ForwardIterator, class Compare = std::less<>>
-void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare{})
+auto insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare{})
 {
         for (auto it = first; it != last; ++it) {
                 auto const insertion = std::upper_bound(first, it, *it, cmp);
@@ -78,7 +78,7 @@ void insertion_sort(ForwardIterator first, ForwardIterator last, Compare cmp = C
 
 // O(N^2) complexity
 template<class ForwardIterator, class Compare = std::less<>>
-void selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare{})
+auto selection_sort(ForwardIterator first, ForwardIterator last, Compare cmp = Compare{})
 {
         for (auto it = first; it != last; ++it) {
                 auto const selection = std::min_element(it, last, cmp);
