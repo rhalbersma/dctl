@@ -17,6 +17,7 @@ struct Rules
 
         // move
         static constexpr auto jumpsep = ':';
+        static constexpr auto notation = Notation::algebraic;
 };
 
 }       // namespace russian
