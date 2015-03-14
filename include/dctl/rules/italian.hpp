@@ -14,7 +14,16 @@ struct Rules
         static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
         using king_range_category = short_ranged_tag;           // 4.7
 
+        // optional
+        static constexpr auto is_pawn_jump_king = false;        // 5.3(b)
+
+        // draw
+        static constexpr auto max_repetitions = 4;              // 9.3(b1)
+        static constexpr auto max_reversible_moves = 80;        // 10.4
+
         // precedence
+        static constexpr auto is_king_order = true;             // 6.9
+
         struct equal_to
         {
                 template<class Move>
@@ -38,15 +47,6 @@ struct Rules
                         ;
                 }
         };
-
-        static constexpr auto is_king_order = true;             // 6.9
-
-        // optional
-        static constexpr auto is_pawn_jump_king = false;        // 5.3(b)
-
-        // draw
-        static constexpr auto max_repetitions = 4;              // 9.3(b1)
-        static constexpr auto max_reversible_moves = 80;        // 10.4
 };
 
 }       // namespace italian

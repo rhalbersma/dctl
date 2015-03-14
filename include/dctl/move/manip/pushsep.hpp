@@ -2,31 +2,39 @@
 #include <ios>  // ios_base, iword, xalloc
 
 namespace dctl {
-namespace manip {
-
-inline
-auto pushsep()
-{
-        static auto const slot = std::ios_base::xalloc();
-        return slot;
-}
-
-}       // namespace manip
 
 class setpushsep
 {
-        char flag;
+        char word;
 public:
-        explicit setpushsep(char f) noexcept
+        explicit setpushsep(char c) noexcept
         :
-                flag{f}
+                word{c}
         {}
 
-        friend auto& operator<<(std::ios_base& str, setpushsep const& m)
+        static auto index()
         {
-                str.iword(manip::pushsep()) = m.flag;
-                return str;
+                static auto const i = std::ios_base::xalloc();
+                return i;
+        }
+
+        auto iword() const noexcept
+        {
+                return word;
         }
 };
+
+inline
+auto& operator<<(std::ios_base& str, setpushsep const& m)
+{
+        str.iword(m.index()) = m.iword();
+        return str;
+}
+
+inline
+auto pushsep(std::ios_base& str)
+{
+        return static_cast<char>(str.iword(setpushsep::index()));
+}
 
 }       // namespace dctl

@@ -14,6 +14,10 @@ struct Rules
         static constexpr auto is_backward_pawn_jump = true;
         using king_range_category = long_ranged_tag;
 
+        // optional
+        static constexpr auto is_orthogonal_jump = true;
+        static constexpr auto max_same_king_push = 3;
+
         // precedence
         struct equal_to
         {
@@ -49,10 +53,6 @@ struct Rules
                                 ;
                 }
         };
-
-        // optional
-        static constexpr auto is_orthogonal_jump = true;
-        static constexpr auto max_same_king_push = 3;
 };
 
 }       // namespace frisian

@@ -12,6 +12,10 @@ struct Rules
         static constexpr auto is_backward_pawn_jump = true;     // 4.1
         using king_range_category = long_ranged_tag;            // 3.9
 
+        // draw
+        static constexpr auto max_repetitions = 3;              // 6.1
+        static constexpr auto max_reversible_moves = 50;        // 6.2
+
         // precedence
         struct equal_to
         {
@@ -30,10 +34,6 @@ struct Rules
                         return lhs.num_captured() < rhs.num_captured();
                 }
         };
-
-        // draw
-        static constexpr auto max_repetitions = 3;              // 6.1
-        static constexpr auto max_reversible_moves = 50;        // 6.2
 };
 
 }       // namespace international

@@ -11,30 +11,26 @@ namespace dctl {
 namespace move {
 
 template<class Rules, class Board>
-auto getnotation(std::ostream& ostr)
+auto getnotation(std::ios_base& str)
 {
-        auto index = ostr.iword(manip::notation());
-        if (!index)
-                index = traits::notation<Rules, Board>::value;
-        return index;
+        auto const iword = gnotation(str);
+        return xstd::to_underlying_type(iword) ? iword : traits::xnotation<Rules, Board>::value;
 }
 
 template<class Rules>
-auto getpushsep(std::ostream& ostr)
+auto getpushsep(std::ios_base& str)
 {
-        auto index = static_cast<char>(ostr.iword(manip::pushsep()));
-        if (!index)
-                index = pushsep_v<Rules>;
-        return index;
+        if (auto const iword = pushsep(str))
+                return iword;
+        return pushsep_v<Rules>;
 }
 
 template<class Rules>
-auto getjumpsep(std::ostream& ostr)
+auto getjumpsep(std::ios_base& str)
 {
-        auto index = static_cast<char>(ostr.iword(manip::jumpsep()));
-        if (!index)
-                index = jumpsep_v<Rules>;
-        return index;
+        if (auto const iword = jumpsep(str))
+                return iword;
+        return jumpsep_v<Rules>;
 }
 
 template<class Move>
@@ -86,9 +82,8 @@ template<class CharT, class Traits, class Rules, class Board>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, Move<Rules, Board> const& m)
 {
         switch(move::getnotation<Rules, Board>(ostr)) {
-        case algebraic : return move::print_algebraic(ostr, m);
-        case numeric   : return move::print_numeric(ostr, m);
-        default        : assert(false); return ostr;
+        case Notation::algebraic : return move::print_algebraic(ostr, m);
+        case Notation::numeric   : return move::print_numeric(ostr, m);
         }
 }
 
