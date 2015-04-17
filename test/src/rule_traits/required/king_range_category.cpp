@@ -16,7 +16,7 @@ using VariantsShort = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsShortRangedTag, T, VariantsShort)
 {
-        static_assert(std::is_same<king_range_category<T>, short_ranged_tag>::value, "");
+        static_assert(std::is_same<king_range_category_t<T>, short_ranged_tag>::value, "");
 }
 
 using VariantsLong = boost::mpl::vector
@@ -26,7 +26,7 @@ using VariantsLong = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsLongRangedTag, T, VariantsLong)
 {
-        static_assert(std::is_same<king_range_category<T>, long_ranged_tag>::value, "");
+        static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

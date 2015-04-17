@@ -52,7 +52,7 @@ public:
         template<class Iterator>
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
-                static_assert(std::is_base_of<passing_promotion_tag, promotion_category<rules_type>>::value, "");
+                static_assert(std::is_base_of<passing_promotion_tag, promotion_category_t<rules_type>>::value, "");
                 assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::king));
                 try_next(jumper);
         }
@@ -225,7 +225,7 @@ private:
         auto slide(Iterator& jumper, set_type const& path) const
         {
                 assert(is_onboard(jumper));
-                slide_dispatch(jumper, path, king_range_category<rules_type>{});
+                slide_dispatch(jumper, path, king_range_category_t<rules_type>{});
         }
 
         template<class Iterator>

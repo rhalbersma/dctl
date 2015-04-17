@@ -9,7 +9,7 @@ namespace dctl {
 
 template<class Rules>
 constexpr auto is_unambiguous_pawn_jump_v =
-        !(is_backward_pawn_jump_v<Rules> || std::is_same<promotion_category<Rules>, passing_promotion_tag>::value ||
+        !(is_backward_pawn_jump_v<Rules> || std::is_same<promotion_category_t<Rules>, passing_promotion_tag>::value ||
         (is_orthogonal_jump_v<Rules> && is_reversible_king_jump_direction_v<Rules>))
 ;
 

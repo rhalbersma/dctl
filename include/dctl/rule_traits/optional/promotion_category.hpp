@@ -1,5 +1,5 @@
 #pragma once
-#include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_TYPE
+#include <xstd/pp/tti/type.hpp> // XSTD_PP_TTI_TYPE
 
 namespace dctl {
 

@@ -18,8 +18,8 @@ public:
                 if (precedence::is_trivial_v<Rules> || std::distance(first, last) < 2)
                         return last;
 
-                std::stable_sort(first, last, precedence::greater<Rules>{});
-                return std::upper_bound(first, last, *first, precedence::greater<Rules>{});
+                std::stable_sort(first, last, precedence::greater_t<Rules>{});
+                return std::upper_bound(first, last, *first, precedence::greater_t<Rules>{});
         }
 };
 

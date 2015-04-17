@@ -1,5 +1,5 @@
 #pragma once
-#include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_TYPE
+#include <xstd/pp/tti/type.hpp> // XSTD_PP_TTI_TYPE
 
 namespace dctl {
 namespace precedence {
@@ -29,42 +29,42 @@ XSTD_PP_TTI_TYPE(equal_to, trivial::equal_to)
 XSTD_PP_TTI_TYPE(less    , trivial::less    )
 
 template<class Rules>
-struct not_equal_to
+struct not_equal_to_t
 {
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return !equal_to<Rules>{}(lhs, rhs);
+                return !equal_to_t<Rules>{}(lhs, rhs);
         }
 };
 
 template<class Rules>
-struct greater
+struct greater_t
 {
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return less<Rules>{}(rhs, lhs);
+                return less_t<Rules>{}(rhs, lhs);
         }
 };
 
 template<class Rules>
-struct greater_equal
+struct greater_equal_t
 {
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return !less<Rules>{}(lhs, rhs);
+                return !less_t<Rules>{}(lhs, rhs);
         }
 };
 
 template<class Rules>
-struct less_equal
+struct less_equal_t
 {
         template<class Move>
         constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
         {
-                return !less<Rules>{}(rhs, lhs);
+                return !less_t<Rules>{}(rhs, lhs);
         }
 };
 

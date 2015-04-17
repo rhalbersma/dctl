@@ -73,7 +73,7 @@ private:
         template<int Direction>
         auto parallelize(set_type const& active_kings) const
         {
-                return Sandwich<board_type, Direction, king_range_category<rules_type>>{}(
+                return Sandwich<board_type, Direction, king_range_category_t<rules_type>>{}(
                         active_kings, tracker.template targets<Direction>(), tracker.path()
                 ).any();
         }
