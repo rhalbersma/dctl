@@ -7,7 +7,7 @@ namespace dctl {
 
 template<class Rules>
 constexpr auto is_reversible_king_jump_direction_v =
-        is_en_passant_jump_removal_v<Rules> && std::is_same<king_range_category<Rules>, long_ranged_tag>::value
+        is_en_passant_jump_removal_v<Rules> && std::is_same<king_range_category_t<Rules>, long_ranged_tag>::value
 ;
 
 template<class Rules>

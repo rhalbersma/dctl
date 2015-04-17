@@ -143,7 +143,7 @@ private:
         template<class Iterator>
         auto try_promotion(Iterator jumper) const
         {
-                try_promotion_dispatch(jumper, promotion_category<rules_type>{});
+                try_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -168,7 +168,7 @@ private:
         auto on_promotion(Iterator jumper) const
         {
                 raii::SetPromotion<tracker_type> guard{tracker};
-                on_promotion_dispatch(jumper, promotion_category<rules_type>{});
+                on_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -211,7 +211,7 @@ private:
         template<class Iterator>
         auto king_jumps_try_next(Iterator jumper) const
         {
-                KingJumps{tracker, moves}.try_next(jumper, promotion_category<rules_type>{});
+                KingJumps{tracker, moves}.try_next(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>

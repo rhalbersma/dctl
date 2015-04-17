@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(Traits)
 {
         // required
         static_assert(!is_backward_pawn_jump_v<T>, "");
-        static_assert(std::is_same<king_range_category<T>, long_ranged_tag>::value, "");
+        static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
 
         // precedence
         static_assert(!precedence::is_trivial_v<T>, "");
@@ -39,8 +39,8 @@ BOOST_AUTO_TEST_CASE(Precedence)
                 { Piece::king }
         };
 
-        BOOST_CHECK(std::is_sorted(begin(moves), end(moves), precedence::less<T>{}));
-        BOOST_CHECK(std::adjacent_find(begin(moves), end(moves), precedence::equal_to<T>{}) == end(moves));
+        BOOST_CHECK(std::is_sorted(begin(moves), end(moves), precedence::less_t<T>{}));
+        BOOST_CHECK(std::adjacent_find(begin(moves), end(moves), precedence::equal_to_t<T>{}) == end(moves));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

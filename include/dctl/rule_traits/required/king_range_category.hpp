@@ -1,5 +1,5 @@
 #pragma once
-#include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_TYPE
+#include <xstd/pp/tti/type.hpp> // XSTD_PP_TTI_TYPE
 #include <cstddef>              // size_t
 
 namespace dctl {
@@ -7,6 +7,6 @@ namespace dctl {
 struct short_ranged_tag {};
 struct  long_ranged_tag {};
 
-XSTD_PP_TTI_TYPE_NO_DEFAULT(king_range_category)
+XSTD_PP_TTI_TYPE(king_range_category, short_ranged_tag)
 
 }       // namespace dctl
