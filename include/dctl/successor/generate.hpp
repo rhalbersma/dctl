@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/color.hpp>                               // Color, black, white
-#include <dctl/successor/detail/invariant.hpp>          // invariant
 #include <dctl/successor/generate/specializations.hpp>  // Generate
 #include <dctl/successor/select/legal.hpp>              // legal
 #include <dctl/move/move.hpp>                           // Move
@@ -23,7 +22,6 @@ auto generate(Position const& p, Allocator const& alloc = Allocator())
         std::vector<Move, Allocator> moves(alloc);
         moves.reserve(DCTL_PP_STACK_RESERVE);
         Generate<ToMove, Select, RemoveDuplicateJumps, Reverse>{}(p, moves);
-        assert((detail::invariant<ToMove, Select, RemoveDuplicateJumps, Reverse>(p, moves.size())));
         return moves;
 }
 

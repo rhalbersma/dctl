@@ -155,7 +155,7 @@ struct Enhancements<hash_tag, Position>
 };
 
 template<class Position, class Generator, class Enhancements>
-std::size_t walk(Position const& p, int depth, int ply, Generator gen, Enhancements e)
+std::size_t walk(Position const& p, int depth, int ply, Generator succ, Enhancements e)
 {
         // (0)
         e.collect_statistics(ply);
@@ -174,10 +174,10 @@ std::size_t walk(Position const& p, int depth, int ply, Generator gen, Enhanceme
         } else {
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
-                Arena<Move<R,B> > a;
-                auto const moves = gen(p, Alloc<Move<R, B> >{a});
+                std::vector<Move<R,B> > moves;
+                succ.generate(p, moves);
                 for (auto&& m : moves)
-                        nodes += walk(make_copy(p, m), depth - 1, ply + 1, gen, e);
+                        nodes += walk(make_copy(p, m), depth - 1, ply + 1, succ, e);
         }
 
         // (3)
@@ -262,15 +262,14 @@ std::size_t perft(Position const& p, int depth, Generator gen, Enhancements e)
 }
 
 template<class Position, class Generator, class Enhancements>
-std::size_t divide(Position const& p, int depth, Generator gen, Enhancements e)
+std::size_t divide(Position const& p, int depth, Generator succ, Enhancements e)
 {
         std::size_t leaf_nodes = 0;
-        std::size_t sub_count;
 
         using R = typename Position::rules_type;
         using B = typename Position::board_type;
-        Arena<Move<R,B> > a;
-        auto const moves = gen(p, Alloc<Move<R, B> >{a});
+        std::vector<Move<R, B>> moves;
+        succ.generate(p, moves);
 
         announce(p, depth, moves.size());
         util::Stopwatch stopwatch;
@@ -279,7 +278,7 @@ std::size_t divide(Position const& p, int depth, Generator gen, Enhancements e)
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(moves[i], i);
-                sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, gen, e);
+                auto const sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, succ, e);
                 leaf_nodes += sub_count;
                 stopwatch.split_reset();
                 report(depth - 1, sub_count, stopwatch, e);
