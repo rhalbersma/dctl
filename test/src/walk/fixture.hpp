@@ -6,15 +6,8 @@
 namespace dctl {
 namespace walk {
 
-auto const unique_gen = [](auto const& p, auto const& alloc) {
-        using namespace successor;
-        return generate<select::legal, true>(p, alloc);
-};
-
-auto const duplicate_gen = [](auto const& p, auto const& alloc) {
-        using namespace successor;
-        return generate<select::legal, false>(p, alloc);
-};
+auto const    unique_gen = successor::Successor<successor::select::legal, true >{};
+auto const duplicate_gen = successor::Successor<successor::select::legal, false>{};
 
 template<class Position, class Generator, int N>
 void test(Position const& p, Generator gen, std::size_t const (& leafs)[N])
