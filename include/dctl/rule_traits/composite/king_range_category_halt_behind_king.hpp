@@ -6,10 +6,10 @@
 namespace dctl {
 
 template<class Rules>
-using king_range_category_halt_behind_king = std::conditional_t<
+using king_range_category_halt_behind_king_t = std::conditional_t<
         is_halt_behind_king_v<Rules>,
         short_ranged_tag,
-        king_range_category_land_behind_piece<Rules>
+        king_range_category_land_behind_piece_t<Rules>
 >;
 
 }       // namespace dctl
