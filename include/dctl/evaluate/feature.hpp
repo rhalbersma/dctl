@@ -74,7 +74,7 @@ public:
         template<template<class, class> class Position, class Rules, class Board>
         static int mobility(Position<Rules, Board> const& p)
         {
-                return Weight<Rules, Board>::mobility * static_cast<int>(successor::count<ToMove, successor::select::push>(p));
+                return Weight<Rules, Board>::mobility * static_cast<int>(successor::Successor<successor::select::push>{}.template count<ToMove>(p));
         }
 };
 

@@ -9,8 +9,8 @@ namespace walk {
 auto const    unique_gen = successor::Successor<successor::select::legal, true >{};
 auto const duplicate_gen = successor::Successor<successor::select::legal, false>{};
 
-template<class Position, class Generator, int N>
-void test(Position const& p, Generator gen, std::size_t const (& leafs)[N])
+template<class Position, class Successor, int N>
+void test(Position const& p, Successor successor, std::size_t const (& leafs)[N])
 {
         static_assert(sizeof(Transposition) == 8, "");
         using impl_tag = hash_tag;
@@ -21,7 +21,7 @@ void test(Position const& p, Generator gen, std::size_t const (& leafs)[N])
         auto depth = 0;
         for (auto&& node_count : leafs) {
                 e.clear_TT();
-                BOOST_CHECK_EQUAL(node_count, walk(p, ++depth, 0, gen, e));
+                BOOST_CHECK_EQUAL(node_count, walk(p, ++depth, 0, successor, e));
         }
 }
 

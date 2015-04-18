@@ -12,7 +12,7 @@ template<class Select = select::legal, bool RemoveDuplicateJumps = true, bool Re
 class Successor
 {
         template<Color ToMove, class Position>
-        static auto invariant(Position const& p, std::size_t n)
+        auto invariant(Position const& p, std::size_t n)
         {
                 return
                         (count <ToMove>(p) ==  n     ) &&
@@ -22,14 +22,14 @@ class Successor
 
 public:
         template<Color ToMove, class Position, class Sequence>
-        static auto generate(Position const& p, Sequence& moves)
+        auto generate(Position const& p, Sequence& moves)
         {
                 Generate<ToMove, Select, RemoveDuplicateJumps, Reverse>{}(p, moves);
                 assert((invariant<ToMove>(p, moves.size())));
         }
 
         template<class Position, class Sequence>
-        static auto generate(Position const& p, Sequence& moves)
+        auto generate(Position const& p, Sequence& moves)
         {
                 return
                         (p.to_move() == Color::black) ?
@@ -39,13 +39,13 @@ public:
         }
 
         template<Color ToMove, class Position>
-        static auto count(Position const& p)
+        auto count(Position const& p)
         {
                 return Count<ToMove, Select, RemoveDuplicateJumps, Reverse>{}(p);
         }
 
         template<class Position>
-        static auto count(Position const& p)
+        auto count(Position const& p)
         {
                 return
                         (p.to_move() == Color::black) ?
@@ -55,13 +55,13 @@ public:
         }
 
         template<Color ToMove, class Position>
-        static auto detect(Position const& p)
+        auto detect(Position const& p)
         {
                 return Detect<ToMove, Select, Reverse>{}(p);
         }
 
         template<class Position>
-        static auto detect(Position const& p)
+        auto detect(Position const& p)
         {
                 return
                         (p.to_move() == Color::black) ?

@@ -52,7 +52,8 @@ struct Enhancements<default_tag, Position>
                 return std::make_pair(false, std::size_t(0));
         }
 
-        std::pair<bool, std::size_t> terminal(Position const& /* p */, int depth) const
+        template<class Successor>
+        std::pair<bool, std::size_t> terminal(Position const& /* p */, Successor /* successor */, int depth) const
         {
                 return std::make_pair(depth == 0, std::size_t(1));
         }
@@ -88,9 +89,10 @@ struct Enhancements<bulk_tag, Position>
                 return std::make_pair(false, std::size_t(0));
         }
 
-        std::pair<bool, std::size_t> terminal(Position const& p, int depth) const
+        template<class Successor>
+        std::pair<bool, std::size_t> terminal(Position const& p, Successor successor, int depth) const
         {
-                return std::make_pair(depth == 1, successor::count(p));
+                return std::make_pair(depth == 1, successor.count(p));
         }
 
         void insert(Position const& /* p */, std::size_t /* nodes */, int /* depth */) const
@@ -138,10 +140,11 @@ struct Enhancements<hash_tag, Position>
                 ;
         }
 
-        std::pair<bool, std::size_t> terminal(Position const& p, int depth) const
+        template<class Successor>
+        std::pair<bool, std::size_t> terminal(Position const& p, Successor successor, int depth) const
         {
                 return (depth == 1) ?
-                        std::make_pair(true, std::size_t(successor::count(p))) :
+                        std::make_pair(true, std::size_t(successor.count(p))) :
                         std::make_pair(false, std::size_t(0))
                 ;
         }
@@ -154,8 +157,8 @@ struct Enhancements<hash_tag, Position>
         value_type* handle_;
 };
 
-template<class Position, class Generator, class Enhancements>
-std::size_t walk(Position const& p, int depth, int ply, Generator succ, Enhancements e)
+template<class Position, class Successor, class Enhancements>
+std::size_t walk(Position const& p, int depth, int ply, Successor successor, Enhancements e)
 {
         // (0)
         e.collect_statistics(ply);
@@ -168,16 +171,16 @@ std::size_t walk(Position const& p, int depth, int ply, Generator succ, Enhancem
         std::size_t nodes = 0;
 
         // (2)
-        auto const terminal = e.terminal(p, depth);
+        auto const terminal = e.terminal(p, successor, depth);
         if (terminal.first) {
                 nodes = terminal.second;
         } else {
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
                 std::vector<Move<R,B> > moves;
-                succ.generate(p, moves);
+                successor.generate(p, moves);
                 for (auto&& m : moves)
-                        nodes += walk(make_copy(p, m), depth - 1, ply + 1, succ, e);
+                        nodes += walk(make_copy(p, m), depth - 1, ply + 1, successor, e);
         }
 
         // (3)
@@ -245,31 +248,32 @@ void summary(std::size_t leafs)
         std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
-template<class Position, class Generator, class Enhancements>
-std::size_t perft(Position const& p, int depth, Generator gen, Enhancements e)
+template<class Position, class Successor, class Enhancements>
+std::size_t perft(Position const& p, int depth, Successor successor, Enhancements e)
 {
+
         std::size_t nodes = 0;
         announce(p, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
         for (auto d = 1; d <= depth; ++d) {
                 e.reset_statistics();
-                nodes = walk(p, d, 0, gen, e);
+                nodes = walk(p, d, 0, successor, e);
                 stopwatch.split_reset();
                 report(d, nodes, stopwatch, e);
         }
         return nodes;
 }
 
-template<class Position, class Generator, class Enhancements>
-std::size_t divide(Position const& p, int depth, Generator succ, Enhancements e)
+template<class Position, class Successor, class Enhancements>
+std::size_t divide(Position const& p, int depth, Successor successor, Enhancements e)
 {
         std::size_t leaf_nodes = 0;
 
         using R = typename Position::rules_type;
         using B = typename Position::board_type;
         std::vector<Move<R, B>> moves;
-        succ.generate(p, moves);
+        successor.generate(p, moves);
 
         announce(p, depth, moves.size());
         util::Stopwatch stopwatch;
@@ -278,7 +282,7 @@ std::size_t divide(Position const& p, int depth, Generator succ, Enhancements e)
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(moves[i], i);
-                auto const sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, succ, e);
+                auto const sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, successor, e);
                 leaf_nodes += sub_count;
                 stopwatch.split_reset();
                 report(depth - 1, sub_count, stopwatch, e);

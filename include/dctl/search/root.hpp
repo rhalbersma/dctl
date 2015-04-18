@@ -50,9 +50,10 @@ public:
         {
         }
 
-        int analyze(Position const& p, int depth)
+        template<class Successor>
+        int analyze(Position const& p, Successor successor, int depth)
         {
-                return iterative_deepening(p, depth);
+                return iterative_deepening(p, successor, depth);
         }
 
         int solve(Position const& p, int depth)
@@ -81,7 +82,8 @@ public:
         }
 
 private:
-        int iterative_deepening(Position const& p, int depth)
+        template<class Successor>
+        int iterative_deepening(Position const& p, Successor successor, int depth)
         {
                 auto score = -infinity();
                 int alpha, beta;
@@ -96,17 +98,17 @@ private:
                 for (auto i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
                         alpha = -infinity();
                         beta = infinity();
-                        score = pvs<PV>(p, alpha, beta, i, 0, pv);
-                        insert_pv(p, pv, score);
+                        score = pvs<PV>(p, successor, alpha, beta, i, 0, pv);
+                        insert_pv(p, successor, pv, score);
                         stopwatch.split_reset();
-                        report(i, score, stopwatch, p, pv);
+                        report(i, score, stopwatch, p, successor, pv);
                 }
 
                 return score;
         }
 
-        template<int NodeType>
-        int pvs(Position const& p, int alpha, int beta, int depth, int ply, Variation& refutation)
+        template<int NodeType, class Successor>
+        int pvs(Position const& p, Successor successor, int alpha, int beta, int depth, int ply, Variation& refutation)
         {
                 statistics_.collect(ply);
 
@@ -131,7 +133,7 @@ private:
                 assert(is_pv(NodeType) == (alpha <  beta - 1));
 
                 // terminal positions
-                auto const terminal_value = Objective::value(p);
+                auto const terminal_value = Objective::value(p, successor);
                 if (is_finite(terminal_value)) {
                         if (depth > 0) {
                                 auto const type = Bound::type(terminal_value, alpha, beta);
@@ -154,8 +156,8 @@ private:
                 // generate moves
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
-                Arena<Move<R,B> > a;
-                auto const moves = successor::generate(p, Alloc<Move<R,B> >{a});
+                std::vector<Move<R, B>> moves;
+                successor.generate(p, moves);
                 assert(!moves.empty());
 
                 Arena<int> oar;
@@ -167,7 +169,7 @@ private:
                 if (!(TT_entry && TT_entry->has_move())) {
                         auto const IID_depth = is_pv(NodeType) ? depth - 2 : depth / 2;
                         if (IID_depth > 0) {
-                                pvs<NodeType>(p, alpha, beta, IID_depth, ply, refutation);
+                                pvs<NodeType>(p, successor, alpha, beta, IID_depth, ply, refutation);
                                 TT_entry = TT.find(p);
                                 assert(TT_entry);
                         }
@@ -197,13 +199,13 @@ private:
                         // TODO: futility pruning
 
                         if (is_pv(NodeType) && (&i == &move_order[0]))
-                                value = -squeeze(pvs<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
+                                value = -squeeze(pvs<PV>(q, successor, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
                         else {
                                 // TODO: late move reductions
 
-                                value = -squeeze(pvs<ZW>(q, -stretch(alpha + 1), -stretch(alpha), depth - 1, ply + 1, continuation));
+                                value = -squeeze(pvs<ZW>(q, successor, -stretch(alpha + 1), -stretch(alpha), depth - 1, ply + 1, continuation));
                                 if (is_pv(NodeType) && alpha < value && value < beta)
-                                        value = -squeeze(pvs<PV>(q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
+                                        value = -squeeze(pvs<PV>(q, successor, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
                         }
 
                         if (value > best_value) {
@@ -234,8 +236,8 @@ private:
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
-        template<class Stopwatch>
-        void report(int depth, int value, Stopwatch const& stopwatch, Position const& p, Variation const& pv)
+        template<class Stopwatch, class Successor>
+        void report(int depth, int value, Stopwatch const& stopwatch, Position const& p, Successor successor, Variation const& pv)
         {
                 std::cout << "info";
 
@@ -267,17 +269,18 @@ private:
                 std::cout << std::setw( 4) << std::right << hashfull;
 
                 std::cout << '\n';
-                print_pv(p, pv);
+                print_pv(p, successor, pv);
         }
 
-        void insert_pv(Position const& p, Variation const& pv, int value, int ply = 0)
+        template<class Successor>
+        void insert_pv(Position const& p, Successor successor, Variation const& pv, int value, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         assert(
                                 (value == evaluate::score(p)) ||
                                 (value == draw_value() && is_draw(p)) ||
-                                (value == loss_min() && !successor::detect(p))
+                                (value == loss_min() && !successor.detect(p))
                                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
                         );
                         TT.insert(p, Transposition(value, Bound::exact, depth, Transposition::no_move()));
@@ -286,16 +289,17 @@ private:
 
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
-                Arena<Move<R,B> > a;
-                auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
+                std::vector<Move<R,B>> moves;
+                successor.generate(p, moves);
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
                 TT.insert(p, Transposition(value, Bound::exact, depth, static_cast<int>(index)));
 
-                insert_pv(make_copy(p, best_move), pv, -stretch(value), ply + 1);
+                insert_pv(make_copy(p, best_move), successor, pv, -stretch(value), ply + 1);
         }
 
-        void print_pv(Position const& p, Variation const& pv, int ply = 0)
+        template<class Successor>
+        void print_pv(Position const& p, Successor successor, Variation const& pv, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
@@ -306,8 +310,8 @@ private:
 
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
-                Arena<Move<R,B> > a;
-                auto const moves = successor::generate(p, Alloc<Move<R, B> >{a});
+                std::vector<Move<R,B>> moves;
+                successor.generate(p, moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
@@ -317,7 +321,7 @@ private:
                 auto q = make_copy(p, best_move);
                 //if (q.same_king_push(!q.to_move()))
                         //std::cout << "^" << q.same_king_push(!q.to_move());
-                print_pv(q, pv, ply + 1);
+                print_pv(q, successor, pv, ply + 1);
         }
 
         bool is_pv(int node) const
