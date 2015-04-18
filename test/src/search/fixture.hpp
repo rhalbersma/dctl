@@ -12,6 +12,8 @@
 namespace dctl {
 namespace search {
 
+auto const unique_gen = successor::Successor<successor::select::legal, true >{};
+
 template<class Position, class Objective>
 class Fixture
 {
@@ -38,7 +40,7 @@ public:
                 for (auto&& t : tests) {
                         root_.clear_hash();
                         auto const position = setup::read<Rules, Board, pdn::protocol>()(t.first);
-                        auto const value = root_.analyze(position, t.second);
+                        auto const value = root_.analyze(position, unique_gen, t.second);
                         BOOST_CHECK_EQUAL(win_value(t.second), value);
                 }
         }

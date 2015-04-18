@@ -31,7 +31,8 @@ int main()
                 std::cout << fen << p;
                 std::cout << "[" << p.reversible_moves() << "]\n";
 
-                auto moves = successor::generate(p);
+                std::vector<Move<Rules, Board>> moves;
+                successor::Successor<>{}.generate(p, moves);
                 std::sort(begin(moves), end(moves), [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);
                 });

@@ -26,10 +26,10 @@ struct is_terminal;
 template<>
 struct is_terminal<NoMovesLeft>
 {
-        template<class Position>
-        bool operator()(Position const& p) const
+        template<class Position, class Successor>
+        bool operator()(Position const& p, Successor successor) const
         {
-                return !successor::detect(p);
+                return !successor.detect(p);
         }
 };
 
@@ -163,13 +163,13 @@ template
 >
 struct GameObjective
 {
-        template<class Position>
-        static int value(Position const& p)
+        template<class Position, class Successor>
+        static int value(Position const& p, Successor successor)
         {
                 if (is_cycle(p))
                         return cycle<CycleScoring>::value(p);
 
-                if (is_terminal<TerminalDetection>()(p))
+                if (is_terminal<TerminalDetection>()(p, successor))
                         return terminal<TerminalScoring>::value();
 
                 return -infinity();

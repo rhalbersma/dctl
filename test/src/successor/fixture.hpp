@@ -20,7 +20,8 @@ struct Fixture
         void test(std::string const& FEN, Iterator first, Iterator last)
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>{}(FEN);
-                auto const moves = successor::generate(p);
+                std::vector<Move<Rules, Board>> moves;
+                successor::Successor<>{}.generate(p, moves);
 
                 auto const N = std::distance(first, last);
                 BOOST_CHECK_EQUAL(moves.size(), N);
