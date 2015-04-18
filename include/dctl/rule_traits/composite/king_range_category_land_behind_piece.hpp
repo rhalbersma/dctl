@@ -6,7 +6,7 @@
 namespace dctl {
 
 template<class Rules>
-using king_range_category_land_behind_piece = std::conditional_t<
+using king_range_category_land_behind_piece_t = std::conditional_t<
         is_land_behind_piece_v<Rules>,
         short_ranged_tag,
         king_range_category_t<Rules>

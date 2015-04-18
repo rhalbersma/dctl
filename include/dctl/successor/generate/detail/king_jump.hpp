@@ -155,7 +155,7 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                return scan_turn_dispatch(jumper, king_range_category_land_behind_piece<rules_type>{});
+                return scan_turn_dispatch(jumper, king_range_category_land_behind_piece_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -253,7 +253,7 @@ private:
         template<class Iterator>
         auto add(Iterator dest_sq) const
         {
-                halt_dispatch(dest_sq, king_range_category_land_behind_piece<rules_type>{}, king_range_category_halt_behind_king<rules_type>{});
+                halt_dispatch(dest_sq, king_range_category_land_behind_piece_t<rules_type>{}, king_range_category_halt_behind_king_t<rules_type>{});
         }
 
         template<class Iterator>
