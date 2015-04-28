@@ -23,7 +23,7 @@ struct Rules
         struct equal_to
         {
                 template<class Move>
-                constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
+                constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
                 {
                         return lhs.is_with(Piece::king) == rhs.is_with(Piece::king);
                 }
@@ -32,7 +32,7 @@ struct Rules
         struct less
         {
                 template<class Move>
-                constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
+                constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
                 {
                         return lhs.is_with(Piece::king) < rhs.is_with(Piece::king);
                 }

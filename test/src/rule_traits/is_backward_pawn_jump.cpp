@@ -1,9 +1,9 @@
-#include <dctl/rule_traits/required/is_backward_pawn_jump.hpp>  // is_backward_pawn_jump
-#include <dctl/rules.hpp>                                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
-#include <boost/mpl/vector.hpp>                                 // vector
-#include <boost/test/test_case_template.hpp>                    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <boost/test/unit_test.hpp>                             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <type_traits>                                          // is_same
+#include <dctl/rule_traits.hpp>                 // is_backward_pawn_jump
+#include <dctl/rules.hpp>                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
+#include <boost/mpl/vector.hpp>                 // vector
+#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
+#include <type_traits>                          // is_same
 
 namespace dctl {
 

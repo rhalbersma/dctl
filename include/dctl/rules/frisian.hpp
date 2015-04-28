@@ -22,7 +22,7 @@ struct Rules
         struct equal_to
         {
                 template<class Move>
-                constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
+                constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
                 {
                         return
                                 std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with(Piece::king)) ==
@@ -34,7 +34,7 @@ struct Rules
         struct less
         {
                 template<class Move>
-                constexpr auto operator()(Move const& lhs, Move const& rhs) noexcept
+                constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
                 {
                         auto const delta_pieces = static_cast<int>(lhs.num_captured())            - static_cast<int>(rhs.num_captured());
                         auto const delta_kings  = static_cast<int>(lhs.num_captured(Piece::king)) - static_cast<int>(rhs.num_captured(Piece::king));
