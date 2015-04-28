@@ -1,3 +1,4 @@
+#pragma once
 #include <dctl/rule_traits.hpp>
 #include <type_traits>          // integral_constant
 
