@@ -138,8 +138,8 @@ struct read<Rules, Board, dxp::protocol, Token>
         Position<Rules, Board> operator()(std::string const& s) const
         {
                 using Set = set_type<Board>;
-                Set by_color[2]{};
-                Set by_piece[2]{};
+                Set by_color[2]{ Set{}, Set{} };
+                Set by_piece[2]{ Set{}, Set{} };
                 auto p_side = Color::black;
 
                 std::stringstream sstr(s);
