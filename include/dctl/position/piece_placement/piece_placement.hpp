@@ -31,8 +31,8 @@ class PiecePlacement
                          disjoint(pieces(Color::black), pieces(Color::white)) &&
                          disjoint(pieces(Piece::pawn ), pieces(Piece::king )) &&
                          (pieces(Color::black) | pieces(Color::white)) == (pieces(Piece::pawn) | pieces(Piece::king)) &&
-                         disjoint(pieces(Color::black, Piece::pawn), promotion<Color::black>()) &&
-                         disjoint(pieces(Color::white, Piece::pawn), promotion<Color::white>()) &&
+                         disjoint(pieces(Color::black, Piece::pawn), board::Promotion<Board>::mask(Color::black)) &&
+                         disjoint(pieces(Color::white, Piece::pawn), board::Promotion<Board>::mask(Color::white)) &&
                          pieces().is_subset_of(squares)
                 ;
         }
