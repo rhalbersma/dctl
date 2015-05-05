@@ -1,6 +1,7 @@
+#include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/piece.hpp>               // king, pawn
-#include <dctl/rules/italian.hpp>       // Rules
-#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_king_order, is_pawn_jump_king, equal_to, less
+#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_pawn_jump_king, is_king_order, equal_to, less
+#include <dctl/rules.hpp>               // Italian
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <algorithm>                    // adjacent_find, is_sorted
 #include <cstddef>                      // size_t
@@ -8,28 +9,21 @@
 #include <vector>                       // vector
 
 namespace dctl {
-namespace italian {
+namespace rules {
 
-BOOST_AUTO_TEST_SUITE(ItalianRules)
+BOOST_AUTO_TEST_SUITE(RulesItalian)
 
-using T = Rules;
+using T = Italian;
 
-BOOST_AUTO_TEST_CASE(Traits)
+BOOST_AUTO_TEST_CASE(RuleTraits)
 {
-        // required
         static_assert(!is_backward_pawn_jump_v<T>, "");
         static_assert(std::is_same<king_range_category_t<T>, short_ranged_tag>::value, "");
-
-        // precedence
         static_assert(!precedence::is_trivial_v<T>, "");
+
+        static_assert(!is_pawn_jump_king_v<T>, "");
         static_assert(precedence::is_king_order_v<T>, "");
 
-        // optional
-        static_assert(!is_pawn_jump_king_v<T>, "");
-}
-
-BOOST_AUTO_TEST_CASE(Precedence)
-{
         struct Move
         {
                 std::size_t num_captured_;
@@ -37,10 +31,10 @@ BOOST_AUTO_TEST_CASE(Precedence)
                 Piece with_;
                 std::vector<std::size_t> king_order_;
 
-                constexpr auto num_captured() const noexcept { return num_captured_; }
+                constexpr auto num_captured()      const noexcept { return num_captured_;       }
                 constexpr auto num_captured(Piece) const noexcept { return num_captured_kings_; }
-                constexpr auto is_with(Piece p) const noexcept { return with_ == p; }
-                auto const& king_order() const noexcept { return king_order_; }
+                constexpr auto is_with(Piece p)    const noexcept { return with_ == p;          }
+                auto const& king_order()           const noexcept { return king_order_;         }
         };
 
         auto const moves = std::vector<Move>
@@ -63,11 +57,10 @@ BOOST_AUTO_TEST_CASE(Precedence)
                 { 3, 2, Piece::king, { 1, 2 } }
         };
 
-        BOOST_CHECK(std::is_sorted(begin(moves), end(moves), precedence::less_t<T>{}));
-        BOOST_CHECK(std::adjacent_find(begin(moves), end(moves), precedence::equal_to_t<T>{}) == end(moves));
+        BOOST_CHECK(precedence::is_consistent<T>(begin(moves), end(moves)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace italian
+}       // namespace rules
 }       // namespace dctl

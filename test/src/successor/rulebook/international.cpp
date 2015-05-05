@@ -8,7 +8,7 @@
 namespace dctl {
 namespace successor {
 
-using F = Fixture<international::Rules, board::International>;
+using F = Fixture<rules::International, board::International>;
 
 BOOST_AUTO_TEST_SUITE(SuccessorRulebookInternational)
 

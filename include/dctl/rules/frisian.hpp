@@ -4,21 +4,18 @@
 #include <tuple>                // forward_as_tuple
 
 namespace dctl {
-namespace frisian {
+namespace rules {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
 
-struct Rules
+struct Frisian
 {
-        // required
         static constexpr auto is_backward_pawn_jump = true;
         using king_range_category = long_ranged_tag;
 
-        // optional
         static constexpr auto is_orthogonal_jump = true;
         static constexpr auto max_same_king_push = 3;
 
-        // precedence
         struct equal_to
         {
                 template<class Move>
@@ -55,5 +52,5 @@ struct Rules
         };
 };
 
-}       // namespace frisian
+}       // namespace rules
 }       // namespace dctl

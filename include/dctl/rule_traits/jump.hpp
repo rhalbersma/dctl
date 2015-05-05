@@ -1,6 +1,6 @@
 #pragma once
+#include <dctl/rule_traits/king_range.hpp>
 #include <dctl/rule_traits/promotion.hpp>
-#include <dctl/rule_traits/range.hpp>
 #include <xstd/pp/tti.hpp>                      // XSTD_PP_TTI_CONSTANT
 #include <type_traits>                          // integral_constant, is_same
 

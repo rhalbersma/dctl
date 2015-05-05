@@ -9,7 +9,7 @@
 #include <dctl/successor/select/jump.hpp>               // jump
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump_t, is_orthogonal_jump_t
+#include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_pawn_jump_king
 #include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
 #include <dctl/wave/patterns.hpp>                       // Sandwich
 
@@ -36,7 +36,6 @@ public:
 
         auto operator()(set_type const& active_pawns) const
         {
-                // tag dispatching on whether pawns can capture kings
                 return active_pawns.any() ? king_targets_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{}) : false;
         }
 
@@ -56,7 +55,6 @@ private:
 
         auto branch(set_type const& active_pawns) const
         {
-                // tag dispatching on pawn jump directions
                 return branch_dispatch(active_pawns, is_backward_pawn_jump_t<rules_type>{}, is_orthogonal_jump_t<rules_type>{});
         }
 

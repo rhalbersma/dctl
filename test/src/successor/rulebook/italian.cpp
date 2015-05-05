@@ -13,7 +13,7 @@ namespace successor {
 
 BOOST_AUTO_TEST_SUITE(SuccessorRulebookItalian)
 
-using F = Fixture<italian::Rules, board::Roman>;
+using F = Fixture<rules::Italian, board::Roman>;
 
 BOOST_FIXTURE_TEST_CASE(PawnJumpDirections, F)          // Art. 5.6
 {

@@ -1,20 +1,18 @@
 #pragma once
-#include <dctl/rules/international.hpp>   // Rules
+#include <dctl/rules/international.hpp>   // International
 
 namespace dctl {
-namespace killer {
+namespace rules {
 
 // http://www.mindsports.nl/index.php/arena/draughts/382-killer-draughts-rules
 
-template<class Parent = international::Rules>
-struct Rules
+template<class Parent = International>
+struct Killer
 :
-        // required
         Parent
 {
-        // optional
         static constexpr auto is_halt_behind_king = true;
 };
 
-}       // namespace killer
+}       // namespace rules
 }       // namespace dctl

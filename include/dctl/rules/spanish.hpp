@@ -4,17 +4,15 @@
 #include <tuple>                // forward_as_tuple
 
 namespace dctl {
-namespace spanish {
+namespace rules {
 
 // http://fpdamas.home.sapo.pt/regrasclass.htm
 
-struct Rules
+struct Spanish
 {
-        // required
         static constexpr auto is_backward_pawn_jump = false;
         using king_range_category = long_ranged_tag;
 
-        // precedence
         struct equal_to
         {
                 template<class Move>
@@ -40,5 +38,5 @@ struct Rules
         };
 };
 
-}       // namespace spanish
+}       // namespace rules
 }       // namespace dctl
