@@ -16,9 +16,10 @@ using namespace dctl;
 
 int main()
 {
-        using Rules = international::Rules;
+        using Rules = rules::International;
         using Board = board::International;
         using Pos = Position<Rules, Board>;
+
 
         auto initial = Pos::initial();
 

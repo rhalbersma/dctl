@@ -1,5 +1,6 @@
-#include <dctl/rules/international.hpp> // Rules
+#include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, equal_to, less
+#include <dctl/rules.hpp>               // International
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <algorithm>                    // adjacent_find, is_sorted
 #include <cstddef>                      // size_t
@@ -7,24 +8,18 @@
 #include <vector>                       // vector
 
 namespace dctl {
-namespace international {
+namespace rules {
 
-BOOST_AUTO_TEST_SUITE(InternationalRules)
+BOOST_AUTO_TEST_SUITE(RulesInternational)
 
-using T = Rules;
+using T = International;
 
-BOOST_AUTO_TEST_CASE(Traits)
+BOOST_AUTO_TEST_CASE(RuleTraits)
 {
-        // required
         static_assert(is_backward_pawn_jump_v<T>, "");
         static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
-
-        // precedence
         static_assert(!precedence::is_trivial_v<T>, "");
-}
 
-BOOST_AUTO_TEST_CASE(Precedence)
-{
         struct Move
         {
                 std::size_t num_captured_;
@@ -38,11 +33,10 @@ BOOST_AUTO_TEST_CASE(Precedence)
                 { 3 }
         };
 
-        BOOST_CHECK(std::is_sorted(begin(moves), end(moves), precedence::less_t<T>{}));
-        BOOST_CHECK(std::adjacent_find(begin(moves), end(moves), precedence::equal_to_t<T>{}) == end(moves));
+        BOOST_CHECK(precedence::is_consistent<T>(begin(moves), end(moves)));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace international
+}       // namespace rules
 }       // namespace dctl

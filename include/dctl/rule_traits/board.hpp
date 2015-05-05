@@ -3,6 +3,6 @@
 
 namespace dctl {
 
-XSTD_PP_TTI_CONSTANT(initial_gap, 2)
+XSTD_PP_TTI_CONSTANT(initial_position_gap, 2)
 
 }       // namespace dctl

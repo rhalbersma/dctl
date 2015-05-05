@@ -40,7 +40,7 @@ using BSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)
 {
-        auto const p = Position<international::Rules, T>::initial();
+        auto const p = Position<rules::International, T>::initial();
         std::cout << "W = " << T::width() << ", H = " << T::height() << ", bits = " << T::bits() << "\n\n";
         std::cout << setup::diagram<pdn::protocol>()(p);
 }

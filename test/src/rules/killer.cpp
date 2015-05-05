@@ -1,31 +1,27 @@
-#include <dctl/rules.hpp>                       // checkers, czech, frisian, international, italian, killer, pool, russian, spanish, thai
 #include <dctl/rule_traits.hpp>                 // is_halt_behind_king
+#include <dctl/rules.hpp>                       // Checkers, Czech, Frisian, International, Italian, Killer, Pool, Russian, Spanish, Thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <type_traits>                          // is_base_of
 
 namespace dctl {
-namespace killer {
+namespace rules {
 
-BOOST_AUTO_TEST_SUITE(KillerRules)
+BOOST_AUTO_TEST_SUITE(RulesKiller)
 
 using Variants = boost::mpl::vector
 <
-        checkers::Rules, czech::Rules, frisian::Rules, international::Rules, italian::Rules, pool::Rules, russian::Rules, spanish::Rules, thai::Rules
+        Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Traits, T, Variants)
+BOOST_AUTO_TEST_CASE_TEMPLATE(RuleTraits, T, Variants)
 {
-        static_assert(is_halt_behind_king_v<killer::Rules<T>>, "");
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsBaseOf, T, Variants)
-{
-        static_assert(std::is_base_of<T, killer::Rules<T>>::value, "");
+        static_assert(std::is_base_of<T, Killer<T>>::value, "");
+        static_assert(is_halt_behind_king_v<Killer<T>>, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace killer
+}       // namespace rules
 }       // namespace dctl

@@ -3,21 +3,17 @@
 #include <dctl/rule_traits.hpp> // long_ranged_tag
 
 namespace dctl {
-namespace czech {
+namespace rules {
 
 // http://www.damweb.cz/pravidla/cdfull.html
 
-struct Rules
+struct Czech
 {
-        // required
         static constexpr auto is_backward_pawn_jump = false;
         using king_range_category = long_ranged_tag;
 
-        // move
         static constexpr auto jumpsep = ':';
         static constexpr auto notation = Notation::algebraic;
-
-        // precedence
         static constexpr auto is_absolute_with_king = true;
 
         struct equal_to
@@ -39,5 +35,5 @@ struct Rules
         };
 };
 
-}       // namespace czech
+}       // namespace rules
 }       // namespace dctl

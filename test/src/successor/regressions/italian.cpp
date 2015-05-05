@@ -7,7 +7,7 @@
 namespace dctl {
 namespace successor {
 
-using F = Fixture<italian::Rules, board::Roman>;
+using F = Fixture<rules::Italian, board::Roman>;
 
 BOOST_AUTO_TEST_SUITE(SuccessorRegressionsItalian)
 

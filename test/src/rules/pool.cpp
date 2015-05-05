@@ -1,26 +1,23 @@
-#include <dctl/rules/pool.hpp>          // Rules
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial
+#include <dctl/rules.hpp>               // Pool
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <type_traits>                  // is_same
 
 namespace dctl {
-namespace pool {
+namespace rules {
 
-BOOST_AUTO_TEST_SUITE(PoolRules)
+BOOST_AUTO_TEST_SUITE(RulesPool)
 
-using T = Rules;
+using T = Pool;
 
-BOOST_AUTO_TEST_CASE(Traits)
+BOOST_AUTO_TEST_CASE(RuleTraits)
 {
-        // required
         static_assert(is_backward_pawn_jump_v<T>, "");
         static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
-
-        // precedence
         static_assert(precedence::is_trivial_v<T>, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace pool
+}       // namespace rules
 }       // namespace dctl
