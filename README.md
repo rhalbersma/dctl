@@ -38,28 +38,34 @@ Requirements
 
 ### Platforms
 
-The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian) with at least `libstdc++6` from `g++` >= 4.9.0 (i.e. Mint >= 17, Ubuntu >= 14.04, Debian >= jessie). Note that `libstdc++6` comes pre-installed on almost every Linux distribution. The following commands get all the other requirements:
+The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian) with at least `libstdc++` from `g++` >= 5.1.0 (e.g. Mint >= 17, Ubuntu >= 14.04, Debian >= jessie). Note that `libstdc++` comes pre-installed on almost every Linux distribution. The following commands get all the other requirements:
 
       # Get a fresh system and install build tools and pre-compiled Boost Libraries
       sudo apt-get update
       sudo apt-get install tortoisehg python-iniparse cmake make libboost1.55-all-dev
 
+      # Add LLVM repositories and GPG key 
+      sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.5 main"
+      sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.6 main"
+      sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main"
+      wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
+      
+      # install Clang 3.5, 3.6 and SVN development version
+      sudo apt-get install clang-3.5 lldb-3.5 
+      sudo apt-get install clang-3.6 lldb-3.6 
+      sudo apt-get install clang-3.7 lldb-3.7     
+
       # Get a PPA for libc++ and libc++abi
       sudo add-apt-repository ppa:ubuntu-toolchain-r/test
       sudo apt-get install libc++-dev libc++abi-dev
       
-      # Add LLVM repository and GPG key and install Clang 3.6
-      echo "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
-      wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
-      apt-get install clang-3.6 lldb-3.6     
-
       # Patch clang -fuse-ld=gold flag
       cd /usr/bin/
       sudo ln -sf ld.gold ld
 
 ### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3797.pdf). This currently restricts usage of the DCTL to the 3.6 SVN development version of [Clang](http://clang.llvm.org/cxx_status.html). 
+The DCTL is a modern [C++](http://isocpp.org) library that targets the latest [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4296.pdf). This currently restricts usage of the DCTL to [Clang](http://clang.llvm.org/cxx_status.html) versions 3.4 or higher. Testing takes place using Clang versions 3.5.2 and 3.6.1, as well as the latest SVN version. Note that g++-5.1.0 currently has several bugs related to relaxed `constexpr`, all of which have been submitted to GCC Bugzilla. Microsoft Visual C++ 2015 is not C++14 feature-complete (it is missing relaxed `constexpr` and variable templates) and is not supported.  
 
 ### Boost headers
 
@@ -105,15 +111,15 @@ To make sure that your build environment is compatible with the DCTL requirement
       cd build
       cmake ..
       make -j10
-      ctest -j10 -E "walk|search|game"
+      ctest -j10 -E "walk|search|game|index"
 
-The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a fraction of second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
+The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
 
 To completely regenerate the test-suite's build solution, simply delete the contents of the entire `build/` directory and rerun the above commands. To skip the `cmake` configuration step, and only rebuild and rerun the test-suite, simply type 
 
       make clean
       make -j10
-      ctest -j10 -E "walk|search|game" 
+      ctest -j10 -E "walk|search|game|index" 
 
 If you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
