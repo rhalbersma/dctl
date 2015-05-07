@@ -56,6 +56,11 @@ struct read<Rules, Board, pdn::protocol, Token>
                 Set by_piece[2]{};
                 auto p_side = Color::black;
 
+                assert(by_color[0].none());
+                assert(by_color[1].none());
+                assert(by_piece[0].none());
+                assert(by_piece[1].none());
+
                 // do not attempt to parse empty strings
                 if (s.empty())
                         return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
@@ -138,9 +143,18 @@ struct read<Rules, Board, dxp::protocol, Token>
         Position<Rules, Board> operator()(std::string const& s) const
         {
                 using Set = set_type<Board>;
-                Set by_color[2]{ Set{}, Set{} };
-                Set by_piece[2]{ Set{}, Set{} };
+                Set by_color[2]{};
+                Set by_piece[2]{};
                 auto p_side = Color::black;
+
+                assert(by_color[0].none());
+                assert(by_color[1].none());
+                assert(by_piece[0].none());
+                assert(by_piece[1].none());
+
+                // do not attempt to parse empty strings
+                if (s.empty())
+                        return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
 
                 std::stringstream sstr(s);
                 char ch;
@@ -156,7 +170,8 @@ struct read<Rules, Board, dxp::protocol, Token>
                         case Token::empty : break;
                         default           : assert(false);
                         }
-                        by_piece[isupper(ch)].set(b);                  // king
+                        if (toupper(ch) != Token::empty)
+                                by_piece[isupper(ch)].set(b);   // king or pawn
                 }
                 return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
         }
