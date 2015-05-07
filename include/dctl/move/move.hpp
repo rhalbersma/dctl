@@ -212,10 +212,10 @@ template<class, class>
 class Move;
 
 template<class Rules, class Board>
-constexpr auto operator==(Move<Rules, Board> const&, Move<Rules, Board> const&) noexcept;
+auto operator==(Move<Rules, Board> const&, Move<Rules, Board> const&) noexcept;
 
 template<class Rules, class Board>
-constexpr auto operator< (Move<Rules, Board> const&, Move<Rules, Board> const&) noexcept;
+auto operator< (Move<Rules, Board> const&, Move<Rules, Board> const&) noexcept;
 
 template<class Rules, class Board>
 class Move
@@ -226,42 +226,42 @@ class Move
 public:
         using base::base;
 
-        friend constexpr auto operator== <>(Move const&, Move const&) noexcept;
-        friend constexpr auto operator<  <>(Move const&, Move const&) noexcept;
+        friend auto operator== <>(Move const&, Move const&) noexcept;
+        friend auto operator<  <>(Move const&, Move const&) noexcept;
 };
 
 template<class Rules, class Board>
-constexpr auto operator==(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+auto operator==(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
 {
         return lhs.is_equal_to(rhs);
 }
 
 template<class Rules, class Board>
-constexpr auto operator!=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+auto operator!=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
 {
         return !(lhs == rhs);
 }
 
 template<class Rules, class Board>
-constexpr auto operator< (Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+auto operator< (Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
 {
         return lhs.is_less(rhs);
 }
 
 template<class Rules, class Board>
-constexpr auto operator> (Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+auto operator> (Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
 {
         return rhs < lhs;
 }
 
 template<class Rules, class Board>
-constexpr auto operator>=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+auto operator>=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
 {
         return !(lhs < rhs);
 }
 
 template<class Rules, class Board>
-constexpr auto operator<=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
+auto operator<=(Move<Rules, Board> const& lhs, Move<Rules, Board> const& rhs) noexcept
 {
         return !(rhs < lhs);
 }

@@ -19,8 +19,9 @@ constexpr auto
 operator==(Coordinates<Origin> const& lhs, Coordinates<Origin> const& rhs) noexcept
 {
         return
-                std::forward_as_tuple(lhs.x, lhs.y) ==
-                std::forward_as_tuple(rhs.x, rhs.y)
+                lhs.x == rhs.x && lhs.y == rhs.y
+                //std::forward_as_tuple(lhs.x, lhs.y) ==
+                //std::forward_as_tuple(rhs.x, rhs.y)
         ;
 }
 

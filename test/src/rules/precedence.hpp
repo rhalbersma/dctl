@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/rule_traits.hpp> // precedence: equal_to, less, equivalent_to
+#include <dctl/rule_traits.hpp> // equal_to, less, equivalent_to
 #include <algorithm>            // adjacent_find, sort
 
 namespace dctl {
