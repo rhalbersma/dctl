@@ -63,7 +63,7 @@ private:
 
         auto generate_dispatch(set_type const& active_kings, long_ranged_tag) const
         {
-                for (auto&& from_sq : active_kings) {
+                for (auto from_sq : active_kings) {
                         generate_targets(along_ray<left_up   (orientation)>(from_sq));
                         generate_targets(along_ray<right_up  (orientation)>(from_sq));
                         generate_targets(along_ray<left_down (orientation)>(from_sq));
@@ -75,7 +75,7 @@ private:
         auto generate_movers(set_type const& active_kings) const
         {
                 auto const movers = active_kings & set_type(*std::prev(along_wave<Direction>(position.not_occupied())));
-                for (auto&& from_sq : movers)
+                for (auto from_sq : movers)
                         moves.emplace_back(from_sq, *++along_ray<Direction>(from_sq), ToMove);
         }
 
@@ -83,7 +83,7 @@ private:
         auto generate_targets(Iterator from) const
         {
                 auto const targets = ray::classical(from, position.not_occupied());
-                for (auto&& dest_sq : targets)
+                for (auto dest_sq : targets)
                         moves.emplace_back(*from, dest_sq, ToMove);
         }
 

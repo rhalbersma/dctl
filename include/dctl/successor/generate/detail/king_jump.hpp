@@ -60,7 +60,7 @@ public:
 private:
         auto serialize(set_type const& active_kings) const
         {
-                for (auto&& from_sq : active_kings) {
+                for (auto from_sq : active_kings) {
                         raii::Launch<tracker_type> guard{tracker, from_sq};
                         branch(from_sq);
                 }

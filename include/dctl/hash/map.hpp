@@ -88,7 +88,7 @@ public:
 
         void clear()
         {
-                for (auto&& b : map_)
+                for (auto& b : map_)
                         b.fill(value_type(key_type(0), mapped_type()));
                 size_ = 0;
         }
