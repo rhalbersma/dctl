@@ -18,7 +18,7 @@ auto front_inserted(Range const& src, Range const& pat)
         Range dst;
         auto first = begin(pat), last = end(pat);
         auto skipped = 0;
-        for (auto&& sq_i : src) {
+        for (auto const& sq_i : src) {
                 while (first != last && *first <= sq_i + skipped) {
                         ++first;
                         ++skipped;
@@ -34,7 +34,7 @@ auto back_inserted(Range const& src, Range const& pat)
         Range dst;
         auto first = rbegin(pat), last = rend(pat);
         auto skipped = 0;
-        for (auto&& sq : src) {
+        for (auto const& sq : src) {
                 auto const sq_i = mirror(sq);
                 while (first != last && *first >= sq_i - skipped) {
                         ++first;
@@ -52,7 +52,7 @@ auto front_erased(Range const& src, Range const& pat)
         Range dst;
         auto first = begin(pat), last = end(pat);
         auto skipped = 0;
-        for (auto&& sq_i : src) {
+        for (auto const& sq_i : src) {
                 while (first != last && *first < sq_i) {
                         ++first;
                         ++skipped;

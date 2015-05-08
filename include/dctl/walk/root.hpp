@@ -179,7 +179,7 @@ std::size_t walk(Position const& p, int depth, int ply, Successor successor, Enh
                 using B = typename Position::board_type;
                 std::vector<Move<R,B> > moves;
                 successor.generate(p, moves);
-                for (auto&& m : moves)
+                for (auto const& m : moves)
                         nodes += walk(make_copy(p, m), depth - 1, ply + 1, successor, e);
         }
 
@@ -278,7 +278,7 @@ std::size_t divide(Position const& p, int depth, Successor successor, Enhancemen
         announce(p, depth, moves.size());
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
-        for (auto&& m : moves) {
+        for (auto const& m : moves) {
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(moves[i], i);

@@ -191,7 +191,7 @@ private:
                 auto continuation = Variation(Alloc<int>{car});
                 continuation.reserve(DCTL_PP_STACK_RESERVE);
 
-                for (auto&& i : move_order) {
+                for (auto const& i : move_order) {
                         auto q = make_copy(p, moves[static_cast<std::size_t>(i)]);
 
                         // TODO: TT singular extension
