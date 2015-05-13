@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_SUITE(IsPawnJumpKing)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(IsOrthogonalJumpV)
+BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
         using VariantsFalse = boost::mpl::vector
         <
