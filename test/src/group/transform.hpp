@@ -4,35 +4,35 @@ namespace dctl {
 namespace group {
 
 template<class Function, class Object>
-constexpr Object apply(int n, Function op, Object obj)
+constexpr Object apply(Function fun, Object const& obj, int n) noexcept
 {
-        return n ? op(apply(n - 1, op, obj)) : obj;
+        return n ? fun(apply(fun, obj, n - 1)) : obj;
 }
 
 struct IsIdentity
 {
         template<class Function, class Object>
-        constexpr auto operator()(Function op, Object obj) const
+        constexpr auto operator()(Function fun, Object const& obj) const noexcept
         {
-                return apply(1, op, obj) == apply(0, op, obj);
+                return apply(fun, obj, 1) == apply(fun, obj, 0);
         }
 };
 
 struct IsInvolution
 {
         template<class Function, class Object>
-        constexpr auto operator()(Function op, Object obj) const
+        constexpr auto operator()(Function fun, Object const& obj) const noexcept
         {
-                return apply(2, op, obj) == apply(0, op, obj);
+                return apply(fun, obj, 2) == apply(fun, obj, 0);
         }
 };
 
 struct IsIdempotent
 {
         template<class Function, class Object>
-        constexpr auto operator()(Function op, Object obj) const
+        constexpr auto operator()(Function fun, Object const& obj) const noexcept
         {
-                return apply(2, op, obj) == apply(1, op, obj);
+                return apply(fun, obj, 2) == apply(fun, obj, 1);
         }
 };
 
