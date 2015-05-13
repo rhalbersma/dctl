@@ -108,11 +108,13 @@ struct hash_tag {};
 template<class Position>
 struct Data<hash_tag, Position>
 {
-        hash::Map<
+        hash::set_associative_cache<
                 Position,
                 Transposition,
+                4,
+                hash::EmptyOldMin<hash::Smallest>,
                 extract::UpperBits,
-                hash::EmptyOldUnderCutMin<hash::Smallest>
+                extract::Hash
         > TT_;
 
         Statistics statistics_;

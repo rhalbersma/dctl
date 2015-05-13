@@ -335,11 +335,13 @@ private:
         // 8-byte hash entries: 32-bit hash signature, 4-byte {value, type, depth, move} content
         // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
-        using TranspositionTable = hash::Map<
-                Position, 
-                Transposition, 
+        using TranspositionTable = hash::set_associative_cache<
+                Position,
+                Transposition,
+                4,
+                hash::EmptyOldMin<hash::Shallowest>,
                 extract::UpperBits,
-                hash::EmptyOldUnderCutMin<hash::Shallowest> 
+                extract::Hash
         >;
 
         TranspositionTable TT;

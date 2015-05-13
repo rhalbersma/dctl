@@ -1,13 +1,11 @@
 #pragma once
-#include <algorithm>                    // count_if, fill_n
-#include <array>                        // array
-#include <cstddef>                      // ptrdiff_t, size_t
-#include <functional>                   // equal_to, hash
-#include <memory>                       // allocator
-#include <type_traits>                  // is_integral, false_type, true_type
-#include <utility>                      // make_pair, pair
-#include <vector>                       // vector
-#include <dctl/hash/extract.hpp>
+#include <algorithm>    // find_if
+#include <array>        // array
+#include <cstddef>      // size_t
+#include <functional>   // equal_to, hash
+#include <memory>       // allocator, allocator_traits
+#include <utility>      // make_pair, pair
+#include <vector>       // vector
 
 namespace dctl {
 namespace hash {
@@ -16,181 +14,131 @@ template
 <
         class Key,
         class T,
-        class Signature,
+        std::size_t N,
         class Replace,
-        class Hash = extract::Hash,
-        class KeyEqual = std::equal_to<typename Signature::result_type>,
-        class Allocator = std::allocator< std::pair<typename Signature::result_type, T> >
+        class Tag,
+        class Hash = std::hash<Key>,
+        class Pred = std::equal_to<typename Tag::result_type>,
+        class Allocator = std::allocator<std::pair<typename Tag::result_type, T>>
 >
-struct Map
+class set_associative_cache
 {
+        static_assert(N && !(N & (N - 1)), "Set associativity should be a power of 2.");
 public:
-        using key_type = typename Signature::result_type;
-        using mapped_type = T;
-        using value_type = std::pair<key_type, mapped_type>;
-        using size_type = std::size_t;
-        using differrence_type = std::ptrdiff_t;
-        using hasher = Hash;
-        using key_equal = KeyEqual;
-        using allocator = Allocator;
-        using reference = value_type&;
-        using const_reference = value_type const&;
+        using key_type          = Key;
+        using tag_type          = typename Tag::result_type;
+        using value_type        = std::pair<tag_type, T>;
+        using mapped_type       = T;
+        using tagger            = Tag;
+        using hasher            = Hash;
+        using tag_equal         = Pred;
+        using allocator_type    = Allocator;
+        using pointer           = typename std::allocator_traits<Allocator>::pointer;
+        using const_pointer     = typename std::allocator_traits<Allocator>::const_pointer;
+        using reference         = value_type&;
+        using const_reference   = value_type const&;
 
-public:
-        using index_type = typename hasher::result_type;
-        using iterator = value_type*;
-        using const_iterator = value_type const*;
-        using mapped_pointer = mapped_type*;
-        using const_mapped_pointer = mapped_type const*;
+        using size_type         = typename std::vector<value_type>::size_type;
+        using differrence_type  = typename std::vector<value_type>::difference_type;
+        using mapped_pointer            = mapped_type*;
+        using const_mapped_pointer      = mapped_type const*;
 
 private:
-        static auto const N = 64 / sizeof(value_type);
-        using bucket_type = std::array<value_type, N>;
-        static_assert(sizeof(bucket_type) == 64, "non-aligned hash table");
-        using map_type = std::vector<bucket_type>;
+        using set_type = std::array<value_type, N>;
+        static_assert(sizeof(set_type) == 64, "non-aligned hash table");
+
+        std::vector<set_type> data_;
+        size_type mask_;
+        size_type size_;
 
 public:
-        // constructors
-
-        Map()
-        {
-                resize(1);
-        }
-
-        explicit Map(size_type mega_bytes)
+        explicit set_associative_cache(size_type mega_bytes)
         {
                 resize(mega_bytes);
         }
 
-        // capacity
-
-        bool empty() const
+        set_associative_cache()
         {
-                return size() != 0;
+                resize(1);
         }
 
-        size_type size() const
+        size_type size() const noexcept
         {
                 return size_;
         }
 
-        size_type max_size() const
+        size_type max_size() const noexcept
         {
-                return max_bucket_count() * bucket_size();
+                return max_set_count() * set_associativity();
         }
 
-        size_type capacity() const
+        void resize(size_type sz)
         {
-                return bucket_count() * bucket_size();
+                auto const n = (sz << 20) / sizeof(set_type);
+                data_.resize(n);
+                mask_ = set_count() - 1;
+                clear();
         }
 
-        // modifiers
+        size_type capacity() const noexcept
+        {
+                return set_count() * set_associativity();
+        }
+
+        bool empty() const noexcept
+        {
+                return size() != 0;
+        }
 
         void clear()
         {
-                for (auto& b : map_)
-                        b.fill(value_type(key_type(0), mapped_type()));
+                for (auto& b : data_)
+                        b.fill(value_type{tag_type{0}, mapped_type{}});
                 size_ = 0;
-        }
-
-        void resize(size_type mega_bytes)
-        {
-                auto const n = (mega_bytes << 20) / sizeof(bucket_type);
-                map_.resize(n);
-                mask_ = map_.size() - 1;
-                clear();
         }
 
         void insert(Key const& key, T const& t)
         {
-                auto const index = hasher()(key);
-                auto const first = begin(bucket(index));
-                auto const last = first + bucket_size();
+                auto const address = hasher{}(key);
+                auto const first = begin(data_[set_index(address)]);
+                auto const last = first + set_associativity();
 
-                auto const insertion = Replace()(first, last, std::make_pair(Signature()(/*key,*/ index), t));
+                auto const insertion = Replace{}(first, last, std::make_pair(tagger{}(key, address), t));
                 size_ += insertion;
-                //return insertion;
         }
 
-        // lookup
-
-        mapped_pointer find(Key const& key)
+        auto find(Key const& key) const
         {
-                auto const index = hasher()(key);
-                auto const first = begin(bucket(index));
-                auto const last = first + bucket_size();
+                auto const address = hasher{}(key);
+                auto const first = cbegin(data_[set_index(address)]);
+                auto const last = first + set_associativity();
 
-                auto it = std::find_if(first, last, [&](auto const& entry) {
-                        return key_equal{}(entry.first, Signature()(/*key,*/ index));
+                auto const it = std::find_if(first, last, [&](auto const& block) {
+                        return tag_equal{}(block.first, tagger{}(key, address));
                 });
                 return (it != last) ? &(it->second) : nullptr;
         }
 
 private:
-        // bucket interface
-        using local_iterator = typename bucket_type::iterator;
-        using const_local_iterator = typename bucket_type::const_iterator;
-
-        local_iterator begin(size_type n)
+        auto set_count() const noexcept
         {
-                return map_[n].begin();
+                return data_.size();
         }
 
-        const_local_iterator begin(size_type n) const
+        auto max_set_count() const noexcept
         {
-                return map_[n].begin();
+                return data_.max_size();
         }
 
-        const_local_iterator cbegin(size_type n) const
-        {
-                return map_[n].cbegin();
-        }
-
-        local_iterator end(size_type n)
-        {
-                return map_[n].end();
-        }
-
-        const_local_iterator end(size_type n) const
-        {
-                return map_[n].end();
-        }
-
-        const_local_iterator cend(size_type n) const
-        {
-                return map_[n].cend();
-        }
-
-        size_type bucket_count() const
-        {
-                return map_.size();
-        }
-
-        size_type max_bucket_count() const
-        {
-                return map_.max_size();
-        }
-
-        size_type bucket_size(size_type /* n */ = 0) const
+        auto set_associativity() const noexcept
         {
                 return N;
         }
 
-        size_type bucket(Key const& key) const
+        auto set_index(std::size_t address) const noexcept
         {
-                return bucket(Hash()(key));
+                return static_cast<size_type>(address) & mask_; // % set_count()
         }
-
-        size_type bucket(index_type index) const
-        {
-                return static_cast<size_type>(index) & mask_;
-        }
-
-        // representation
-
-        map_type map_;
-        size_type mask_;
-        size_type size_;
 };
 
 }       // namespace hash

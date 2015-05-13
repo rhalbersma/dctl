@@ -1,24 +1,23 @@
 #pragma once
-#include <algorithm>                    // min_element
-#include <iterator>                     // begin, end, iterator_traits
-#include <type_traits>                  // is_same
-#include <utility>                      // pair, make_pair
+#include <algorithm>    // min_element
+#include <iterator>     // iterator_traits
+#include <type_traits>  // is_same
 
 namespace dctl {
 namespace hash {
 
 template<class Predicate>
-struct EmptyOldUnderCutMin
+struct EmptyOldMin
 {
-        template<class ForwardIterator, class value_type>
-        bool operator()(ForwardIterator first, ForwardIterator last, value_type const& value) const
+        template<class ForwardIterator, class Value>
+        bool operator()(ForwardIterator first, ForwardIterator last, Value const& value) const
         {
-                static_assert(std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, value_type>::value, "");
-                using key_type = typename value_type::first_type;
+                static_assert(std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, Value>::value, "");
+                using tag_type = typename Value::first_type;
 
-                // 1) fill an empty slot or replace an existing entry with the same key
+                // 1) fill an empty slot or replace an existing entry with the same tag
                 for (auto it = first; it != last; ++it) {
-                        if (it->first == key_type(0)) {
+                        if (it->first == tag_type{0}) {
                                 *it = value;
                                 return true;
                         }
@@ -29,13 +28,7 @@ struct EmptyOldUnderCutMin
                         }
                 }
 
-                // 2) replace the first entry if its depth is under cut by one
-                if (value.second.depth() == first->second.depth() - 1) {
-                        *first = value;
-                        return false;
-                }
-
-                // 3) replace the minimal entry with respect to the Predicate
+                // 2) replace the minimal entry with respect to the Predicate
                 auto it = std::min_element(first, last, Predicate());
                 *it = value;
                 return false;
