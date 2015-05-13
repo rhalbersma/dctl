@@ -11,11 +11,12 @@ template
 <
         class Key,
         class T,
-        class Signature,
+        std::size_t N,
+        class Tag,
         class Parity = extract::ActiveColor,
-        class Container = Map< Key, T, Signature, EmptyOldUnderCutMin<Smallest> >
+        class Container = set_associative_cache<Key, T, N, EmptyOldMin<Smallest>, Tag>
 >
-struct DualMap
+struct dual_set_associative_cache
 {
 private:
         using map_type = Container;
@@ -28,12 +29,12 @@ private:
 public:
         // constructors
 
-        DualMap()
+        dual_set_associative_cache()
         {
                 resize(2);
         }
 
-        explicit DualMap(size_type mega_bytes)
+        explicit dual_set_associative_cache(size_type mega_bytes)
         {
                 resize(mega_bytes);
         }
@@ -76,19 +77,19 @@ public:
 
         void insert(Key const& key, T const& value)
         {
-                /*return*/ map_[Parity()(key)].insert(key, value);
+                /*return*/ map_[Parity{}(key)].insert(key, value);
         }
 
         // lookup
 
         mapped_pointer find(Key const& key)
         {
-                return map_[Parity()(key)].find(key);
+                return map_[Parity{}(key)].find(key);
         }
 
         const_mapped_pointer find(Key const& key) const
         {
-                return map_[Parity()(key)].find(key);
+                return map_[Parity{}(key)].find(key);
         }
 
 private:
