@@ -1,6 +1,9 @@
 #pragma once
+#include <dctl/utility/units.hpp>
+#include <xstd/limits.hpp>
 #include <algorithm>    // find_if
 #include <array>        // array
+#include <cassert>      // assert
 #include <cstddef>      // size_t
 #include <functional>   // equal_to, hash
 #include <memory>       // allocator, allocator_traits
@@ -23,7 +26,7 @@ template
 >
 class set_associative_cache
 {
-        static_assert(N && !(N & (N - 1)), "Set associativity should be a power of 2.");
+        static_assert(xstd::is_power_of_2(N), "");
 public:
         using key_type          = Key;
         using tag_type          = typename Tag::result_type;
@@ -48,60 +51,59 @@ private:
         static_assert(sizeof(set_type) == 64, "non-aligned hash table");
 
         std::vector<set_type> data_;
-        size_type mask_;
         size_type size_;
 
 public:
-        explicit set_associative_cache(size_type mega_bytes)
+        explicit set_associative_cache(size_type sz)
         {
-                resize(mega_bytes);
+                assert(xstd::is_power_of_2(sz));
+                resize(sz);
         }
 
         set_associative_cache()
         {
-                resize(1);
+                resize(64_KiB);
         }
 
-        size_type size() const noexcept
+        auto size() const noexcept
         {
                 return size_;
         }
 
-        size_type max_size() const noexcept
+        auto max_size() const noexcept
         {
-                return max_set_count() * set_associativity();
+                return max_set_count() * N;
         }
 
-        void resize(size_type sz)
+        auto resize(size_type sz)
         {
-                auto const n = (sz << 20) / sizeof(set_type);
-                data_.resize(n);
-                mask_ = set_count() - 1;
+                assert(xstd::is_power_of_2(sz));
+                data_.resize(sz);
                 clear();
         }
 
-        size_type capacity() const noexcept
+        auto capacity() const noexcept
         {
-                return set_count() * set_associativity();
+                return set_count() * N;
         }
 
-        bool empty() const noexcept
+        auto empty() const noexcept
         {
                 return size() != 0;
         }
 
-        void clear()
+        auto clear()
         {
                 for (auto& b : data_)
                         b.fill(value_type{tag_type{0}, mapped_type{}});
                 size_ = 0;
         }
 
-        void insert(Key const& key, T const& t)
+        auto insert(Key const& key, T const& t)
         {
                 auto const address = hasher{}(key);
-                auto const first = begin(data_[set_index(address)]);
-                auto const last = first + set_associativity();
+                auto const first = begin(data_[index(address)]);
+                auto const last = first + N;
 
                 auto const insertion = Replace{}(first, last, std::make_pair(tagger{}(key, address), t));
                 size_ += insertion;
@@ -110,8 +112,8 @@ public:
         auto find(Key const& key) const
         {
                 auto const address = hasher{}(key);
-                auto const first = cbegin(data_[set_index(address)]);
-                auto const last = first + set_associativity();
+                auto const first = cbegin(data_[index(address)]);
+                auto const last = first + N;
 
                 auto const it = std::find_if(first, last, [&](auto const& block) {
                         return tag_equal{}(block.first, tagger{}(key, address));
@@ -130,14 +132,9 @@ private:
                 return data_.max_size();
         }
 
-        auto set_associativity() const noexcept
+        auto index(std::size_t address) const noexcept
         {
-                return N;
-        }
-
-        auto set_index(std::size_t address) const noexcept
-        {
-                return static_cast<size_type>(address) & mask_; // % set_count()
+                return static_cast<size_type>(address) & (set_count() - 1); // % set_count()
         }
 };
 

@@ -38,7 +38,7 @@ struct EmptyOldMin
 struct Shallowest
 {
         template<class T>
-        bool operator()(T const& lhs, T const& rhs) const
+        constexpr auto operator()(T const& lhs, T const& rhs) const noexcept
         {
                 return lhs.second.depth() < rhs.second.depth();
         }
@@ -47,7 +47,7 @@ struct Shallowest
 struct Smallest
 {
         template<class T>
-        bool operator()(T const& lhs, T const& rhs) const
+        constexpr auto operator()(T const& lhs, T const& rhs) const noexcept
         {
                 return lhs.second.nodes() < rhs.second.nodes();
         }

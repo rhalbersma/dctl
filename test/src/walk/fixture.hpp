@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/utility/units.hpp>
 #include <dctl/walk/root.hpp>           // Root
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
 #include <cstddef>                      // size_t
@@ -16,7 +17,7 @@ void test(Position const& p, Successor successor, std::size_t const (& leafs)[N]
         using impl_tag = hash_tag;
         Data<impl_tag, Position> d;
         Enhancements<impl_tag, Position> e(&d);
-        e.resize_TT(64);
+        e.resize_TT(64_MiB);
 
         auto depth = 0;
         for (auto&& node_count : leafs) {
