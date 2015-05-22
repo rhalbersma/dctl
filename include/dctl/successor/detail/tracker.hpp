@@ -26,6 +26,7 @@ public:
         using rules_type = rules_type_t<Position>;
         using   set_type =   set_type_t<Position>;
 
+private:
         set_type const by_piece_[2];
         set_type initial_targets_;
         set_type remaining_targets_;
@@ -43,6 +44,7 @@ public:
                 return remaining_targets_.is_subset_of(initial_targets_);
         }
 
+public:
         explicit Tracker(Position const& p)
         :
                 by_piece_{p.pieces(!ToMove, Piece::pawn), p.pieces(!ToMove, Piece::king)},
