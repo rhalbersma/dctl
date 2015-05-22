@@ -1,13 +1,14 @@
 #pragma once
-#include <string>                       // string
-#include <utility>                      // pair
-#include <boost/test/unit_test.hpp>
 #include <dctl/search/root.hpp>
 #include <dctl/search/objective.hpp>
 #include <dctl/position/position.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/board/types.hpp>
 #include <dctl/rules.hpp>
+#include <dctl/utility/units.hpp>
+#include <boost/test/unit_test.hpp>
+#include <string>                       // string
+#include <utility>                      // pair
 
 namespace dctl {
 namespace search {
@@ -22,12 +23,12 @@ public:
 public:
         ~Fixture()
         {
-                root_.resize_hash(1);
+                root_.resize_hash(65_KiB);
         }
 
         Fixture()
         {
-                root_.resize_hash(4096);
+                root_.resize_hash(4_GiB);
         }
 
         using Test = std::pair<std::string, int>;
@@ -37,7 +38,7 @@ public:
         template<std::size_t N>
         void run(Test const (&tests)[N])
         {
-                for (auto&& t : tests) {
+                for (auto const& t : tests) {
                         root_.clear_hash();
                         auto const position = setup::read<Rules, Board, pdn::protocol>()(t.first);
                         auto const value = root_.analyze(position, unique_gen, t.second);

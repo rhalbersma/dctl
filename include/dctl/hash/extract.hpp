@@ -1,7 +1,7 @@
 #pragma once
-#include <cstddef>                      // size_t
-#include <limits>                       // digits
-#include <type_traits>                  // is_integral
+#include <cstddef>      // size_t
+#include <limits>       // digits
+#include <type_traits>  // is_integral
 
 namespace dctl {
 namespace extract {

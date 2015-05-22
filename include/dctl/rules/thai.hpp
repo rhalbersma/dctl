@@ -15,10 +15,5 @@ struct Thai
         static constexpr auto jumpsep = '-';
 };
 
-struct Dummy
-{
-        struct less;
-};
-
 }       // namespace rules
 }       // namespace dctl

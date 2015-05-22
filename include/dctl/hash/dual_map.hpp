@@ -26,17 +26,17 @@ private:
         using mapped_pointer = typename map_type::mapped_pointer;
         using const_mapped_pointer = typename map_type::const_mapped_pointer;
 
+private:
+        map_type map_[2];
 public:
-        // constructors
+        explicit dual_set_associative_cache(size_type sz)
+        {
+                resize(sz);
+        }
 
         dual_set_associative_cache()
         {
                 resize(2);
-        }
-
-        explicit dual_set_associative_cache(size_type mega_bytes)
-        {
-                resize(mega_bytes);
         }
 
         // capacity
@@ -63,39 +63,34 @@ public:
 
         // modifiers
 
-        void clear()
+        auto clear()
         {
                 map_[0].clear();
                 map_[1].clear();
         }
 
-        void resize(size_type mega_bytes)
+        auto resize(size_type sz)
         {
-                map_[0].resize(mega_bytes >> 1);
-                map_[1].resize(mega_bytes >> 1);
+                map_[0].resize(sz >> 1);
+                map_[1].resize(sz >> 1);
         }
 
-        void insert(Key const& key, T const& value)
+        auto insert(Key const& key, T const& value)
         {
                 /*return*/ map_[Parity{}(key)].insert(key, value);
         }
 
         // lookup
 
-        mapped_pointer find(Key const& key)
+        auto find(Key const& key)
         {
                 return map_[Parity{}(key)].find(key);
         }
 
-        const_mapped_pointer find(Key const& key) const
+        auto find(Key const& key) const
         {
                 return map_[Parity{}(key)].find(key);
         }
-
-private:
-        // representation
-
-        map_type map_[2];
 };
 
 }       // namespace hash
