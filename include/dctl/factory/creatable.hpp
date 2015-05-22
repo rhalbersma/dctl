@@ -1,7 +1,7 @@
 #pragma once
-#include <memory>                       // make_unique, unique_ptr
-#include <string>                       // string
-#include <type_traits>                  // is_base_of
+#include <memory>       // make_unique, unique_ptr
+#include <string>       // string
+#include <type_traits>  // is_base_of
 
 namespace dctl {
 namespace factory {
@@ -18,13 +18,13 @@ struct make_creatable
 :
         public Base
 {
-        static Arg identifier()
+        static auto identifier()
         {
                 // NOT: Arg{1, identifier_} because 1 is converted without narrowing to '\1'
                 return Arg(1, identifier_);
         }
 
-        static Ret create(Arg const& arg)
+        static auto create(Arg const& arg)
         {
                 return std::make_unique<Derived>(arg);
         }
