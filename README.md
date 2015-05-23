@@ -99,14 +99,13 @@ Clone the `dctl` and the accompanying `xstd` repository (containing C++ Standard
       cd ~/projects/ 
       hg clone https://bitbucket.org/rhalbersma/dctl/
       hg clone https://bitbucket.org/rhalbersma/xstd/
-
-Alternatively, you can download and unpack the latest zipped source archive into the same directory.
+      git clone https://github.com/ericniebler/range-v3.git
 
 ### Test-suite
 
 To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost), and type
 
-      cd ~/projects/dctl/test    
+      cd ~/projects/dctl/    
       mkdir build
       cd build
       cmake ..
