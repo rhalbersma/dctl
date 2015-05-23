@@ -1,6 +1,6 @@
 #include <group.hpp>                            // action::is_realized, make
 #include <dctl/angle.hpp>                       // _deg, inverse, rotate
-#include <boost/iterator/counting_iterator.hpp> // counting_iterator
+#include <range/v3/all.hpp>
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
 #include <algorithm>                            // all_of
 #include <iterator>                             // begin, end
@@ -43,13 +43,12 @@ BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllAngles)
                 C1, C2, C4, C8
         };
 
-        auto const alpha = boost::counting_iterator<int>{  0};
-        auto const omega = boost::counting_iterator<int>{360};
+        auto const angles = ranges::view::iota(0, 360);
 
         BOOST_CHECK(
-                std::all_of(begin(C_N), end(C_N), [=](auto const& g){
-                        return std::all_of(alpha, omega, [&](auto i){
-                                return group::action::is_realized(Angle{i}, g);
+                ranges::all_of(C_N, [=](auto const& g){
+                        return ranges::all_of(angles, [&](auto a){
+                                return group::action::is_realized(Angle{a}, g);
                         });
                 })
         );
