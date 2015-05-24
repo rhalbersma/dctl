@@ -26,8 +26,7 @@ public:
                 assert(invariant());
         }
 
-        // implicit
-        constexpr operator auto() const noexcept
+        /* implicit */ constexpr operator auto() const noexcept
         {
                 return degrees;
         }

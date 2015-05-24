@@ -31,14 +31,12 @@ public:
         friend class Cursor;
 
         template<int M>
-        // implicit
-        Cursor(Cursor<Board, M> const& other) noexcept
+        /* implicit */ Cursor(Cursor<Board, M> const& other) noexcept
         :
                 cursor_{other.cursor_}
         {}
 
-        // implicit
-        operator auto() const noexcept
+        /* implicit */ operator auto() const noexcept
         {
                 return static_cast<Square>(cursor_);
         }
