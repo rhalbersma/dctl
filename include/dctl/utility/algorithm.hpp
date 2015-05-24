@@ -1,27 +1,11 @@
 #pragma once
-#include <algorithm>                    // find, find_if, generate_n, min_element, rotate, upper_bound
-#include <iterator>                     // iterator_traits, iter_swap, next, prev
+#include <algorithm>    // find, find_if, min_element, rotate, upper_bound
+#include <iterator>     // iterator_traits, iter_swap, next, prev
 
 namespace dctl {
 namespace util {
 
 // non-mutating sequence algorithms
-
-// runtime equivalent of Boost.MPL contains()
-// O(N) complexity
-template<class InputIterator>
-bool detect(InputIterator first, InputIterator last, typename std::iterator_traits<InputIterator>::value_type const& value)
-{
-        return std::find(first, last, value) != last;
-}
-
-// equivalent to std::any_of
-// O(N) complexity
-template<class InputIterator, class UnaryPredicate>
-bool detect_if(InputIterator first, InputIterator last, UnaryPredicate pred)
-{
-        return std::find_if(first, last, pred) != last;
-}
 
 // O(N) complexity
 template
@@ -56,13 +40,6 @@ accumulate_until(InputIterator begin, InputIterator end, T init, BinaryOperation
 }
 
 // mutating sequence algorithms
-
-// O(N) complexity: weak range extension of std::iota
-template<class OutputIterator, class Size, class T>
-auto iota_n(OutputIterator first, Size n, T value)
-{
-        return std::generate_n(first, n, [&]() { return value++; });
-}
 
 // sorting algorithms
 
