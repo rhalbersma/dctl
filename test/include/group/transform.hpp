@@ -9,7 +9,7 @@ constexpr Object apply(Function fun, Object const& obj, int n) noexcept
         return n ? fun(apply(fun, obj, n - 1)) : obj;
 }
 
-struct IsIdentity
+struct is_identity
 {
         template<class Function, class Object>
         constexpr auto operator()(Function fun, Object const& obj) const noexcept
@@ -18,7 +18,7 @@ struct IsIdentity
         }
 };
 
-struct IsInvolution
+struct is_involution
 {
         template<class Function, class Object>
         constexpr auto operator()(Function fun, Object const& obj) const noexcept
@@ -27,7 +27,7 @@ struct IsInvolution
         }
 };
 
-struct IsIdempotent
+struct is_idempotent
 {
         template<class Function, class Object>
         constexpr auto operator()(Function fun, Object const& obj) const noexcept

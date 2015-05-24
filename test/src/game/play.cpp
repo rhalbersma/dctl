@@ -3,7 +3,7 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/successor.hpp>
 #include <dctl/position/make_copy.hpp>
-#include <algorithm>
+#include <range/v3/all.hpp>
 #include <iomanip>
 #include <iostream>
 #include <stack>
@@ -20,7 +20,6 @@ int main()
         using Board = board::International;
         using Pos = Position<Rules, Board>;
 
-
         auto initial = Pos::initial();
 
         std::stack<Pos> game;
@@ -34,7 +33,7 @@ int main()
 
                 std::vector<Move<Rules, Board>> moves;
                 successor::Successor<>{}.generate(p, moves);
-                std::sort(begin(moves), end(moves), [](auto const& lhs, auto const& rhs) {
+                ranges::sort(moves, [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);
                 });
 
@@ -50,7 +49,7 @@ int main()
                 int choice = 0;
 
                 for (std::string input; std::getline(std::cin, input);) {
-                        std::transform(begin(input), end(input), begin(input), ::tolower);
+                        ranges::transform(input, begin(input), ::tolower);
 
                         if (moves.empty()) {
                                 if (input.empty() || input == "u")

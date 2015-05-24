@@ -1,6 +1,6 @@
 #pragma once
 #include <group/primitives.hpp> // set, op, id, inv
-#include <algorithm>            // all_of, find, find_if
+#include <range/v3/all.hpp>     // all_of, find, find_if
 
 namespace dctl {
 namespace group {
@@ -9,13 +9,12 @@ namespace axioms {
 template<class Group>
 auto is_closure(Group const& g) noexcept
 {
-        auto const first = cbegin(group::set(g));
-        auto const last = cend(group::set(g));
+        auto const set = group::set(g);
         auto const op = group::op(g);
 
-        return std::all_of(first, last, [&](auto const& a) {
-                return std::all_of(first, last, [&](auto const& b){
-                        return last != std::find(first, last, op(a, b));
+        return ranges::all_of(set, [&](auto const& a) {
+                return ranges::all_of(set, [&](auto const& b){
+                        return cend(set) != ranges::find(set, op(a, b));
                 });
         });
 }
@@ -23,13 +22,12 @@ auto is_closure(Group const& g) noexcept
 template<class Group>
 auto is_associativity(Group const& g) noexcept
 {
-        auto const first = cbegin(group::set(g));
-        auto const last = cend(group::set(g));
+        auto const set = group::set(g);
         auto const op = group::op(g);
 
-        return std::all_of(first, last, [&](auto const& a) {
-                return std::all_of(first, last, [&](auto const& b){
-                        return std::all_of(first, last, [&](auto const& c) {
+        return ranges::all_of(set, [&](auto const& a) {
+                return ranges::all_of(set, [&](auto const& b){
+                        return ranges::all_of(set, [&](auto const& c) {
                                 return
                                         op(a, op(b, c)) ==
                                         op(op(a, b), c)
@@ -42,12 +40,11 @@ auto is_associativity(Group const& g) noexcept
 template<class Group>
 auto is_identity(Group const& g) noexcept
 {
-        auto const first = cbegin(group::set(g));
-        auto const last = cend(group::set(g));
+        auto const set = group::set(g);
         auto const op = group::op(g);
 
-        return last != std::find_if(first, last, [&](auto const& id) {
-                return std::all_of(first, last, [&](auto const& elem){
+        return cend(set) != ranges::find_if(set, [&](auto const& id) {
+                return ranges::all_of(set, [&](auto const& elem){
                         return
                                 op(elem, id) == elem &&
                                 op(id, elem) == elem
@@ -59,14 +56,13 @@ auto is_identity(Group const& g) noexcept
 template<class Group>
 auto is_inverse(Group const& g) noexcept
 {
-        auto const first = cbegin(group::set(g));
-        auto const last = cend(group::set(g));
+        auto const set = group::set(g);
         auto const op = group::op(g);
         auto const id = group::id(g);
         auto const inv = group::inv(g);
 
-        return std::all_of(first, last, [&](auto const& elem) {
-                return last != std::find_if(first, last, [&](auto const& elem_inv){
+        return ranges::all_of(set, [&](auto const& elem) {
+                return cend(set) != ranges::find_if(set, [&](auto const& elem_inv){
                         return
                                 inv(elem) == elem_inv &&
                                 op(elem, elem_inv) == id &&

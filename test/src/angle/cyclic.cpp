@@ -1,9 +1,8 @@
 #include <group.hpp>                            // axioms::is_realized, make
 #include <dctl/angle.hpp>                       // _deg, inverse, rotate
+#include <range/v3/all.hpp>                     // all_of
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
-#include <algorithm>                            // all_of
-#include <iterator>                             // begin, end
 #include <type_traits>                          // common_type
 
 namespace dctl {
@@ -45,7 +44,7 @@ BOOST_AUTO_TEST_CASE(GroupAxiomsAreRealizedOnCyclicGroups)
         };
 
         BOOST_CHECK(
-                std::all_of(begin(C_N), end(C_N), [](auto const& g){
+                ranges::all_of(C_N, [](auto const& g){
                         return axioms::is_realized(g);
                 })
         );

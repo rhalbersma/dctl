@@ -35,8 +35,8 @@ public:
         using Rules = typename Position::rules_type;
         using Board = typename Position::board_type;
 
-        template<std::size_t N>
-        void run(Test const (&tests)[N])
+        template<class Range>
+        void run(Range const& tests)
         {
                 for (auto const& t : tests) {
                         root_.clear_hash();

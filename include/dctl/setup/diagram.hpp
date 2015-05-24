@@ -29,7 +29,7 @@ public:
         {
                 std::stringstream sstr;
 
-                for (auto sq : Board::squares()) {
+                for (auto const& sq : Board::squares()) {
                         if (is_indent_row(sq))
                                 sstr << std::setw(2) << WHITE_SPACE;    // start of an indented row
 
