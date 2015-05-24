@@ -12,8 +12,7 @@ public:
                 ply{n}
         {}
 
-        // implicit
-        constexpr operator auto() const noexcept
+        /* implicit */ constexpr operator auto() const noexcept
         {
                 return ply;
         }
