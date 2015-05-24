@@ -12,7 +12,6 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/move/ostream.hpp>
 
-#include <algorithm>                    // accumulate
 #include <cstddef>
 #include <iomanip>
 #include <iostream>
