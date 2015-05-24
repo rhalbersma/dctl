@@ -10,8 +10,8 @@ namespace walk {
 auto const    unique_gen = successor::Successor<successor::select::legal, true >{};
 auto const duplicate_gen = successor::Successor<successor::select::legal, false>{};
 
-template<class Position, class Successor, int N>
-void test(Position const& p, Successor successor, std::size_t const (& leafs)[N])
+template<class Position, class Successor, class Range>
+void test(Position const& p, Successor successor, Range const& leafs)
 {
         static_assert(sizeof(Transposition) == 8, "");
         using impl_tag = hash_tag;

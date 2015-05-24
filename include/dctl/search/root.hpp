@@ -22,7 +22,8 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/move/ostream.hpp>
 
-#include <algorithm>                    // generate
+#include <xstd/cstddef.hpp>
+#include <range/v3/all.hpp>
 #include <cassert>                      // assert
 #include <cstddef>
 #include <iostream>
@@ -110,6 +111,7 @@ private:
         template<int NodeType, class Successor>
         int pvs(Position const& p, Successor successor, int alpha, int beta, int depth, int ply, Variation& refutation)
         {
+                using namespace xstd::support_literals;
                 statistics_.collect(ply);
 
                 if (is_interrupted())
@@ -162,8 +164,8 @@ private:
 
                 Arena<int> oar;
                 auto move_order = Order(Alloc<int>{oar});
-                move_order.reserve(moves.size());                               // reserve enough room for all indices
-                util::iota_n(std::back_inserter(move_order), moves.size(), 0);  // generate indices [0, moves.size() - 1]
+                move_order.reserve(moves.size());                                               // reserve enough room for all indices
+                move_order |= ranges::action::push_back(ranges::view::iota(0, static_cast<int>(moves.size()))); // generate indices [0, moves.size() - 1]
 
                 // internal iterative deepening (IID)
                 if (!(TT_entry && TT_entry->has_move())) {

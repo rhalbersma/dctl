@@ -7,8 +7,8 @@
 #include <dctl/board/detail/orientation.hpp>    // SizeMinimizingOrientation, Make
 #include <dctl/color.hpp>                       // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
-#include <boost/iterator/counting_iterator.hpp> // counting_iterator
-#include <boost/range/irange.hpp>               // irange
+#include <xstd/cstddef.hpp>                     // _z
+#include <range/v3/all.hpp>                     // view::iota
 #include <array>                                // array
 #include <cstddef>                              // size_t
 #include <iomanip>                              // setfill
@@ -75,19 +75,10 @@ public:
                 return inner_grid.shift_size(direction);
         }
 
-        static auto begin() noexcept
-        {
-                return boost::counting_iterator<std::size_t>{0};
-        }
-
-        static auto end() noexcept
-        {
-                return boost::counting_iterator<std::size_t>{size()};
-        }
-
         static auto squares() noexcept
         {
-                return boost::irange(*begin(), *end());
+                using namespace xstd::support_literals;
+                return ranges::view::iota(0_z, std::size_t(size()));
         }
 
         static auto numeric_from_bit(std::size_t n)

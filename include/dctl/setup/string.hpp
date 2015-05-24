@@ -161,7 +161,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 sstr >> ch;
                 p_side = read_color<Token>(ch);
 
-                 for (auto sq : Board::squares()) {
+                 for (auto const& sq : Board::squares()) {
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {

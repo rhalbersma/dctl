@@ -3,7 +3,6 @@
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_pawn_jump_king, is_king_order, equal_to, less
 #include <dctl/rules.hpp>               // Italian
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
-#include <algorithm>                    // adjacent_find, is_sorted
 #include <cstddef>                      // size_t
 #include <type_traits>                  // is_same
 #include <vector>                       // vector
@@ -57,7 +56,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 { 3, 2, Piece::king, { 1, 2 } }
         };
 
-        BOOST_CHECK(precedence::is_consistent<T>(begin(moves), end(moves)));
+        BOOST_CHECK(precedence::is_consistent<T>(moves));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,34 +1,34 @@
 #include <dctl/utility/algorithm.hpp>   // insertion_sort, selection_sort
+#include <range/v3/all.hpp>             // is_sorted
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_AUTO_TEST_SUITE_END
-#include <algorithm>                    // generate_n, is_sorted
-#include <cstdlib>                      // rand, srand
-#include <iterator>                     // back_inserter
 #include <vector>                       // vector
 
 BOOST_AUTO_TEST_SUITE(UtilityAlgorithm)
 
+using namespace ranges;
+
 BOOST_AUTO_TEST_CASE(IsSortedAfterInsertionSort)
 {
-        auto const N = 1 << 10;
+        auto const N = 1ULL << 10;
         std::vector<int> v;
         v.reserve(N);
-        std::srand(47110815);
-        std::generate_n(std::back_inserter(v), N, [](){ return std::rand(); });
+        v |= action::push_back(view::iota(0, N));
+        random_shuffle(v);
 
         dctl::util::insertion_sort(begin(v), end(v));
-        BOOST_CHECK(std::is_sorted(begin(v), end(v)));
+        BOOST_CHECK(is_sorted(v));
 }
 
 BOOST_AUTO_TEST_CASE(IsSortedAfterSelectionSort)
 {
-        auto const N = 1 << 10;
+        auto const N = 1ULL << 10;
         std::vector<int> v;
         v.reserve(N);
-        std::srand(47110815);
-        std::generate_n(std::back_inserter(v), N, [](){ return std::rand(); });
+        v |= action::push_back(view::iota(0, N));
+        random_shuffle(v);
 
         dctl::util::selection_sort(begin(v), end(v));
-        BOOST_CHECK(std::is_sorted(begin(v), end(v)));
+        BOOST_CHECK(is_sorted(v));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

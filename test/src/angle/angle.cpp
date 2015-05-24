@@ -1,10 +1,8 @@
-#include <group.hpp>                            // action::is_realized, make
-#include <dctl/angle.hpp>                       // _deg, inverse, rotate
-#include <range/v3/all.hpp>
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
-#include <algorithm>                            // all_of
-#include <iterator>                             // begin, end
-#include <type_traits>                          // common_type
+#include <group.hpp>                    // action::is_realized, make
+#include <dctl/angle.hpp>               // _deg, inverse, rotate
+#include <range/v3/all.hpp>             // all_of, view::iota
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
+#include <type_traits>                  // common_type
 
 namespace dctl {
 
