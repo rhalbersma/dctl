@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(TestBoard)
 BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
 {
         BOOST_CHECK(
-                ranges::all_of(T::squares(), [](auto const& sq) {
+                ranges::all_of(T::squares(), [](auto sq) {
                         return T::square_from_bit(T::bit_from_square(sq)) == sq;
                 })
         );

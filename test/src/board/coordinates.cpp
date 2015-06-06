@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquare
         BOOST_CHECK(
                 ranges::all_of(C_N, [=](auto const& g) {
                         return ranges::all_of(T::squares(), [&](auto i) {
-                                auto const coord = to_sco(static_cast<int>(i), T::outer_grid);
+                                auto const coord = to_sco(i, T::outer_grid);
                                 return group::action::is_realized(coord, g);
                         });
                 })
