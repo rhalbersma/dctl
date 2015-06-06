@@ -6,6 +6,7 @@
 #include <dctl/setup/i_token.hpp>
 #include <dctl/set_type.hpp>
 #include <dctl/type_traits.hpp>
+#include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
 #include <cctype>                       // isdigit
 #include <sstream>                      // stringstream
@@ -27,7 +28,7 @@ auto read_color(char c)
 template<class Token>
 char write_color(Color c)
 {
-        return Token::color[static_cast<bool>(c)];
+        return Token::color[xstd::to_underlying_type(c)];
 }
 
 template
@@ -91,8 +92,8 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
-                                        by_color[static_cast<std::size_t>(setup_color)].set(b);
-                                        by_piece[static_cast<std::size_t>(setup_piece)].set(b);
+                                        by_color[xstd::to_underlying_type(setup_color)].set(b);
+                                        by_piece[xstd::to_underlying_type(setup_piece)].set(b);
                                 }
                                 setup_piece = Piece::pawn;
                                 break;
@@ -118,7 +119,7 @@ struct write<pdn::protocol, Token>
                         auto c = i ? Color::white : Color::black;
                         if (p.pieces(c).any()) {
                                 sstr << Token::colon;                   // colon
-                                sstr << Token::color[static_cast<bool>(c)];                // color tag
+                                sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
                         }
                         auto const bs = p.pieces(c);
                         std::size_t n = 0;
@@ -165,8 +166,8 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : by_color[static_cast<bool>(Color::black)].set(b); break;
-                        case Token::white : by_color[static_cast<bool>(Color::white)].set(b); break;
+                        case Token::black : by_color[xstd::to_underlying_type(Color::black)].set(b); break;
+                        case Token::white : by_color[xstd::to_underlying_type(Color::white)].set(b); break;
                         case Token::empty : break;
                         default           : assert(false);
                         }
