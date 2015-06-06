@@ -20,8 +20,8 @@ namespace board {
 
 template
 <
-        int Width,
-        int Height,
+        std::size_t Width,
+        std::size_t Height,
         bool Inverted = false,
         bool OrthogonalCaptures = true
 >
@@ -32,7 +32,7 @@ private:
 
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
-        static constexpr auto edge_columns = OrthogonalCaptures ? 2 : 1;
+        static constexpr std::size_t edge_columns = OrthogonalCaptures ? 2 : 1;
 
         static constexpr Angle orientation = size_minimizing_orientation<edge_columns>(dimensions);
 
@@ -78,7 +78,7 @@ public:
         static auto squares() noexcept
         {
                 using namespace xstd::support_literals;
-                return ranges::view::iota(0_z, std::size_t(size()));
+                return ranges::view::iota(0_z, size());
         }
 
         static auto numeric_from_bit(std::size_t n)
@@ -91,21 +91,19 @@ public:
         static auto algebraic_from_bit(std::size_t n)
         {
                 std::stringstream sstr;
-                auto coord = to_llo(static_cast<int>(square_from_bit(n)), outer_grid);
+                auto coord = to_llo(square_from_bit(n), outer_grid);
                 sstr << Labels<Board>::col[coord.x] << Labels<Board>::row[coord.y];
                 return sstr.str();
         }
 private:
-        static constexpr auto
-        init_bit_from_square(int n) noexcept
+        static constexpr auto init_bit_from_square(std::size_t n) noexcept
         {
-                return static_cast<std::size_t>(transform(n, outer_grid, inner_grid, orientation));
+                return transform(n, outer_grid, inner_grid, orientation);
         }
 
-        static constexpr auto
-        init_square_from_bit(int n) noexcept
+        static constexpr auto init_square_from_bit(std::size_t n) noexcept
         {
-                return static_cast<std::size_t>(transform(n, inner_grid, outer_grid, inverse(orientation)));
+                return transform(n, inner_grid, outer_grid, inverse(orientation));
         }
 
         static constexpr std::array<std::size_t, NumSquares>
@@ -126,31 +124,31 @@ public:
         }
 };
 
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr bool
 Board<Width, Height, Inverted, OrthogonalCaptures>::is_orthogonal_captures;
 
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr int
+template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+constexpr std::size_t
 Board<Width, Height, Inverted, OrthogonalCaptures>::edge_columns;
 
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr Angle
 Board<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr typename Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid_t
 Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr Grid<0>
 Board<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr std::array<std::size_t, Board<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr std::array<std::size_t, Board<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 

@@ -12,13 +12,13 @@ project(DCTL CXX)
 # use C++14 features
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libc++")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=512")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=512 -ftemplate-backtrace-limit=0")
 
 # fail hard
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
 
 # highest general warning level
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
 
 # NOT A DEFECT: no C++98 compatibility
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat -Wno-c++98-compat-pedantic")

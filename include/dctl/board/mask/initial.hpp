@@ -22,7 +22,7 @@ private:
                 Color const to_move;
                 int const rows;
 
-                constexpr auto operator()(int sq) const noexcept
+                constexpr auto operator()(std::size_t sq) const noexcept
                 {
                         auto const separation = Board::height() - 2 * rows;
                         auto const y = to_llo(sq, Board::outer_grid).y;
