@@ -19,16 +19,16 @@ class Row
         struct lambda
         {
                 Color const to_move;
-                int const row;
+                std::size_t const row;
 
-                constexpr auto operator()(int sq) const noexcept
+                constexpr auto operator()(std::size_t sq) const noexcept
                 {
                         return to_llo(sq, Board::outer_grid).y == (to_move == Color::white ? row : Board::height() - 1 - row);
                 }
         };
 
         template<Color ToMove>
-        static constexpr auto init(int row) noexcept
+        static constexpr auto init(std::size_t row) noexcept
         {
                 return make_set_if<Board>(lambda{ToMove, row});
         }
@@ -44,10 +44,10 @@ class Row
         };
 
 public:
-        static constexpr auto mask(Color c, int row) noexcept
+        static constexpr auto mask(Color c, std::size_t row) noexcept
         {
                 assert(row < N);
-                return table[xstd::to_underlying_type(c)][static_cast<std::size_t>(row)];
+                return table[xstd::to_underlying_type(c)][row];
         }
 };
 

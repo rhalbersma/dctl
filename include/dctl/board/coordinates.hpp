@@ -8,7 +8,7 @@
 namespace dctl {
 namespace board {
 
-template<class T>
+template<class Origin>
 struct Coordinates
 {
         int x, y;
@@ -45,21 +45,18 @@ rotate(Coordinates<origin::ScreenCentered> const& coord, Angle const& theta)
         }
 }
 
-template<class T>
-constexpr auto swap_llo_ulo(T const& value, T const& bound) noexcept
+constexpr auto swap_llo_ulo(int value, int bound) noexcept
 {
         assert(value < bound);
         return (bound - 1) - value;
 }
 
-template<class T>
-constexpr auto sco_from_ulo(T const& value, T const& bound) noexcept
+constexpr auto sco_from_ulo(int value, int bound) noexcept
 {
         return 2 * value - (bound - 1);
 }
 
-template<class T>
-constexpr auto ulo_from_sco(T const& value, T const& bound) noexcept
+constexpr auto ulo_from_sco(int value, int bound) noexcept
 {
         return (value + (bound - 1)) / 2;
 }
@@ -129,7 +126,7 @@ to_square(Coordinates<origin::UpperLeft> const& coord, Grid const& grid)
         auto const squares = (left_edge + column_pairs) % grid.modulo();
         auto const NUM = grid.modulo() * row_pairs + squares;
 
-        return NUM;
+        return static_cast<std::size_t>(NUM);
 }
 
 template<class Grid>
@@ -148,8 +145,9 @@ to_square(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid)
 
 template<class Grid>
 constexpr auto
-to_ulo(int square, Grid const& grid)
+to_ulo(std::size_t sq, Grid const& grid)
 {
+        auto const square = static_cast<int>(sq);
         auto const row_pairs = square / grid.modulo();
         auto const R0 = square % grid.modulo();
         auto const R1 = R0 - grid.edge_lo();
@@ -163,21 +161,21 @@ to_ulo(int square, Grid const& grid)
 
 template<class Grid>
 constexpr auto
-to_llo(int square, Grid const& grid)
+to_llo(std::size_t sq, Grid const& grid)
 {
-        return to_llo(to_ulo(square, grid), grid);
+        return to_llo(to_ulo(sq, grid), grid);
 }
 
 template<class Grid>
 constexpr auto
-to_sco(int square, Grid const& grid)
+to_sco(std::size_t sq, Grid const& grid)
 {
-        return to_sco(to_ulo(square, grid), grid);
+        return to_sco(to_ulo(sq, grid), grid);
 }
 
 template<class InGrid, class OutGrid>
 constexpr auto
-transform(int sq, InGrid const& in_grid, OutGrid out_grid, Angle const& theta)
+transform(std::size_t sq, InGrid const& in_grid, OutGrid out_grid, Angle const& theta)
 {
         return to_square(rotate(to_sco(sq, in_grid), theta), out_grid);
 }

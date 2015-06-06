@@ -37,8 +37,9 @@ public:
         template<template<class, class> class Position, class Rules, class Board>
         static int tempo(Position<Rules, Board> const& p)
         {
+                using namespace xstd::support_literals;
                 int score = 0;
-                for (auto i = 1; i < Board::height(); ++i)
+                for (auto i = 1_z; i < static_cast<std::size_t>(Board::height()); ++i)
                         score += Weight<Rules, Board>::tempo[i] * static_cast<int>((p.pieces(ToMove) & board::Row<Board>::mask(ToMove, i)).count());
                 return score;
         }
@@ -46,8 +47,9 @@ public:
         template<template<class, class> class Position, class Rules, class Board>
         static int center(Position<Rules, Board> const& p)
         {
+                using namespace xstd::support_literals;
                 int score = 0;
-                for (auto i = 1; i < Board::width() / 2; ++i) {
+                for (auto i = 1_z; i < static_cast<std::size_t>(Board::width()) / 2; ++i) {
                         score += Weight<Rules, Board>::center[i] *
                         (
                                 static_cast<int>((p.pieces(ToMove) & board::Column<Board>::mask( ToMove, i)).count()) +
@@ -60,8 +62,9 @@ public:
         template<template<class, class> class Position, class Rules, class Board>
         static int balance(Position<Rules, Board> const& p)
         {
+                using namespace xstd::support_literals;
                 int score = 0;
-                for (auto i = 0; i < Board::width() / 2; ++i) {
+                for (auto i = 0_z; i < static_cast<std::size_t>(Board::width()) / 2; ++i) {
                         score += Weight<Rules, Board>::balance[i] *
                         (
                                 static_cast<int>((p.pieces(ToMove) & board::Column<Board>::mask( ToMove, i)).count()) -

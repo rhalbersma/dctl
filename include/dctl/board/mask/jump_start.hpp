@@ -17,11 +17,11 @@ class JumpStart
         // simulate a constexpr lambda (not allowed in C++14)
         struct lambda
         {
-                int const segment_;
+                int const segment;
 
-                constexpr auto operator()(int sq) const noexcept
+                constexpr auto operator()(std::size_t sq) const noexcept
                 {
-                        auto const alpha = rotate(segment_ * theta + beta, Board::orientation);
+                        auto const alpha = rotate(segment * theta + beta, Board::orientation);
                         auto const offset = is_diagonal(alpha) ? 2 : 4;
                         auto const min_x = is_left(alpha) ? offset : 0;
                         auto const max_x = Board::width() - (is_right(alpha) ? offset : 0);
@@ -51,9 +51,9 @@ class JumpStart
 public:
         static constexpr auto mask(Angle const& alpha) noexcept
         {
-                auto const segment = (alpha - beta) / theta;
+                auto const segment = static_cast<std::size_t>((alpha - beta) / theta);
                 assert(segment < N);
-                return table[static_cast<std::size_t>(segment)];
+                return table[segment];
         }
 };
 

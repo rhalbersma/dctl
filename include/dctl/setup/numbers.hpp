@@ -4,14 +4,14 @@
 
 namespace dctl {
 
-namespace board { template<int, int, bool, bool> class Board; }
+namespace board { template<std::size_t, std::size_t, bool, bool> class Board; }
 
 namespace setup {
 
 struct bits {};
 struct squares {};
 
-template<int W, int H, bool I, bool IsOrthogonalCaptures>
+template<std::size_t W, std::size_t H, bool I, bool IsOrthogonalCaptures>
 struct Token< board::Board<W, H, I, IsOrthogonalCaptures>>
 {
         using type = squares;

@@ -16,9 +16,9 @@ class JumpGroup
         // simulate a constexpr lambda (not allowed in C++14)
         struct lambda
         {
-                int from_sq;
+                std::size_t from_sq;
 
-                constexpr auto operator()(int dest_sq) const noexcept
+                constexpr auto operator()(std::size_t dest_sq) const noexcept
                 {
                         auto const from_coord = to_ulo(from_sq, Board::outer_grid);
                         auto const dest_coord = to_ulo(dest_sq, Board::outer_grid);
@@ -31,7 +31,7 @@ class JumpGroup
                 }
         };
 
-        static constexpr auto init(int n) noexcept
+        static constexpr auto init(std::size_t n) noexcept
         {
                 return make_set_if<Board>(lambda{n});
         }

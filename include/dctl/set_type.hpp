@@ -1,11 +1,11 @@
 #pragma once
 #include <xstd/bitset.hpp>      // bitset
 #include <cassert>              // assert
+#include <cstddef>              // size_t
 
 namespace dctl {
 
-template<class T>
-constexpr auto align_on(T offset, T align) noexcept
+constexpr auto align_on(std::size_t offset, std::size_t align) noexcept
 {
         assert(align && !(align & (align - 1)));
         return (offset + align - 1) & ~(align - 1);

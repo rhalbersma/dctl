@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/angle.hpp>               // Angle
 #include <dctl/board/dimensions.hpp>    // Dimensions
+#include <xstd/cstddef.hpp>
 #include <stdexcept>                    // invalid_argument
 
 namespace dctl {
@@ -43,7 +44,7 @@ public:
 
         // grid size
 
-        constexpr auto size() const noexcept { return (width() * height()) / 2 + (width() * height() * ul_parity()) % 2; }
+        constexpr auto size() const noexcept { return static_cast<std::size_t>((width() * height()) / 2 + (width() * height() * ul_parity()) % 2); }
 };
 
 template<int EdgeColumns>
@@ -72,6 +73,7 @@ public:
 
         constexpr auto shift_size(Angle const& alpha) const
         {
+                using namespace xstd::support_literals;
                 switch (alpha) {
                 case   0 : return right()     ;
                 case  45 : return right_up()  ;
@@ -98,7 +100,7 @@ public:
 
         // grid size
 
-        constexpr auto size() const noexcept { return modulo() * ((height() - 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) + 1; }
+        constexpr auto size() const noexcept { return static_cast<std::size_t>(modulo() * ((height() - 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) + 1); }
 };
 
 }       // namespace board
