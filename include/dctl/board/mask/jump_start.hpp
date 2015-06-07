@@ -15,7 +15,7 @@ template<class Board>
 class JumpStart
 {
         // simulate a constexpr lambda (not allowed in C++14)
-        struct lambda
+        struct is_jump_start
         {
                 int const segment;
 
@@ -37,19 +37,18 @@ class JumpStart
 
         static constexpr auto init(int segment) noexcept
         {
-                return make_set_if<Board>(lambda{segment});
+                return make_set_if<Board>(is_jump_start{segment});
         }
 
         static constexpr auto theta = Board::is_orthogonal_captures ? 45_deg : 90_deg;
         static constexpr auto beta  = Board::is_orthogonal_captures ?  0_deg : 45_deg;
         static constexpr auto N     = Board::is_orthogonal_captures ?      8 :      4;
-        using Set = set_type<Board>;
-        using table_type = std::array<Set, N>;
 
+        using table_type = std::array<set_type<Board>, N>;
         static constexpr table_type table = make_array<N>(init);
 
 public:
-        static constexpr auto mask(Angle const& alpha) noexcept
+        static constexpr auto mask(Angle alpha) noexcept
         {
                 auto const segment = static_cast<std::size_t>((alpha - beta) / theta);
                 assert(segment < N);

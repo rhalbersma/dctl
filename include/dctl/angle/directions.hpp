@@ -22,51 +22,51 @@ namespace dctl {
 */
 
 inline
-constexpr auto right(Angle const& orientation = 0_deg) noexcept
+constexpr auto right(Angle a = 0_deg) noexcept
 {
-        return rotate(0_deg, orientation);
+        return rotate(0_deg, a);
 }
 
 inline
-constexpr auto right_up(Angle const& orientation = 0_deg) noexcept
+constexpr auto right_up(Angle a = 0_deg) noexcept
 {
-        return rotate(45_deg, orientation);
+        return rotate(45_deg, a);
 }
 
 inline
-constexpr auto up(Angle const& orientation = 0_deg) noexcept
+constexpr auto up(Angle a = 0_deg) noexcept
 {
-        return rotate(90_deg, orientation);
+        return rotate(90_deg, a);
 }
 
 inline
-constexpr auto left_up(Angle const& orientation = 0_deg) noexcept
+constexpr auto left_up(Angle a = 0_deg) noexcept
 {
-        return rotate(135_deg, orientation);
+        return rotate(135_deg, a);
 }
 
 inline
-constexpr auto left(Angle const& orientation = 0_deg) noexcept
+constexpr auto left(Angle a = 0_deg) noexcept
 {
-        return rotate(180_deg, orientation);
+        return rotate(180_deg, a);
 }
 
 inline
-constexpr auto left_down(Angle const& orientation = 0_deg) noexcept
+constexpr auto left_down(Angle a = 0_deg) noexcept
 {
-        return rotate(225_deg, orientation);
+        return rotate(225_deg, a);
 }
 
 inline
-constexpr auto down(Angle const& orientation = 0_deg) noexcept
+constexpr auto down(Angle a = 0_deg) noexcept
 {
-        return rotate(270_deg, orientation);
+        return rotate(270_deg, a);
 }
 
 inline
-constexpr auto right_down(Angle const& orientation = 0_deg) noexcept
+constexpr auto right_down(Angle a = 0_deg) noexcept
 {
-        return rotate(315_deg, orientation);
+        return rotate(315_deg, a);
 }
 
 }       // namespace dctl

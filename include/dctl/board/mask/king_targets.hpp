@@ -17,19 +17,18 @@ class KingTargets
         template<int Direction>
         static constexpr auto init(std::size_t sq) noexcept
         {
-                return ray::fill(ray::make_iterator<Board, Direction>(sq), Squares<Board>::mask());
+                constexpr auto squares = Squares<Board>::mask();
+                return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : set_type<Board>{};
         }
 
-        static constexpr auto theta = 45_deg; //Board::is_orthogonal_captures ? 45_deg : 90_deg;
-        static constexpr auto beta  =  0_deg; //Board::is_orthogonal_captures ?  0_deg : 45_deg;
-        static constexpr auto N     = Board::bits();
-        using Set = set_type<Board>;
-        using table_type = std::array<Set, N>;
+        static constexpr auto theta = 45_deg;
+        static constexpr auto beta  =  0_deg;
 
+        using table_type = std::array<set_type<Board>, Board::bits()>;
         static table_type const table[];
 
 public:
-        static constexpr auto mask(Angle const& alpha, std::size_t sq) noexcept
+        static constexpr auto mask(Angle alpha, std::size_t sq) noexcept
         {
                 auto const segment = (alpha - beta) / theta;
                 return table[segment][sq];
@@ -48,14 +47,14 @@ template<class Board>
 typename KingTargets<Board>::table_type const
 KingTargets<Board>::table[] =
 {
-        make_array<N>(init<  0_deg>),
-        make_array<N>(init< 45_deg>),
-        make_array<N>(init< 90_deg>),
-        make_array<N>(init<135_deg>),
-        make_array<N>(init<180_deg>),
-        make_array<N>(init<225_deg>),
-        make_array<N>(init<270_deg>),
-        make_array<N>(init<315_deg>)
+        make_array<Board::bits()>(init<  0_deg>),
+        make_array<Board::bits()>(init< 45_deg>),
+        make_array<Board::bits()>(init< 90_deg>),
+        make_array<Board::bits()>(init<135_deg>),
+        make_array<Board::bits()>(init<180_deg>),
+        make_array<Board::bits()>(init<225_deg>),
+        make_array<Board::bits()>(init<270_deg>),
+        make_array<Board::bits()>(init<315_deg>)
 };
 
 }       // namespace board

@@ -14,12 +14,12 @@ struct grid_less
 {
         Dimensions dim;
 
-        constexpr auto rotated_grid_size(Angle const& theta) const
+        constexpr auto rotated_grid_size(Angle a) const
         {
-                return Grid<EdgeColumns>{rotate(dim, theta)}.size();
+                return Grid<EdgeColumns>{rotate(dim, a)}.size();
         }
 
-        constexpr auto operator()(Angle const& lhs, Angle const& rhs) const
+        constexpr auto operator()(Angle lhs, Angle rhs) const
         {
                 return rotated_grid_size(lhs) < rotated_grid_size(rhs);
         }
