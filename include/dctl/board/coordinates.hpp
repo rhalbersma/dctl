@@ -33,9 +33,9 @@ operator!=(Coordinates<Origin> const& lhs, Coordinates<Origin> const& rhs) noexc
 
 inline
 constexpr auto
-rotate(Coordinates<origin::ScreenCentered> const& coord, Angle const& theta)
+rotate(Coordinates<origin::ScreenCentered> const& coord, Angle a)
 {
-        switch (theta) {
+        switch (a) {
         case   0 : return coord;
         case  90 : return Coordinates<origin::ScreenCentered>{ -coord.y,  coord.x };
         case 180 : return Coordinates<origin::ScreenCentered>{ -coord.x, -coord.y };
@@ -44,18 +44,24 @@ rotate(Coordinates<origin::ScreenCentered> const& coord, Angle const& theta)
         }
 }
 
-constexpr auto swap_llo_ulo(int value, int bound) noexcept
+inline
+constexpr auto
+swap_llo_ulo(int value, int bound) noexcept
 {
         assert(value < bound);
         return (bound - 1) - value;
 }
 
-constexpr auto sco_from_ulo(int value, int bound) noexcept
+inline
+constexpr auto
+sco_from_ulo(int value, int bound) noexcept
 {
         return 2 * value - (bound - 1);
 }
 
-constexpr auto ulo_from_sco(int value, int bound) noexcept
+inline
+constexpr auto
+ulo_from_sco(int value, int bound) noexcept
 {
         return (value + (bound - 1)) / 2;
 }
@@ -118,14 +124,20 @@ template<class Grid>
 constexpr auto
 to_square(Coordinates<origin::UpperLeft> const& coord, Grid const& grid)
 {
-        auto const row_parity = coord.y % 2;
-        auto const row_pairs = coord.y / 2;
-        auto const left_edge = row_parity ? grid.edge_lo() : grid.edge_le();
-        auto const column_pairs = coord.x / 2;
-        auto const squares = (left_edge + column_pairs) % grid.modulo();
-        auto const NUM = grid.modulo() * row_pairs + squares;
+        auto const col_mod = coord.x % 2;
+        auto const row_mod = coord.y % 2;
+        assert(row_mod ^ col_mod == !grid.ul_parity());
 
-        return static_cast<std::size_t>(NUM);
+        auto const col_div = coord.x / 2;
+        assert(2 * col_div + col_mod == coord.x);
+
+        auto const row_div = coord.y / 2;
+        assert(2 * row_div + row_mod == coord.y);
+
+        auto const sq_base = row_mod ? grid.edge_lo() : grid.edge_le();
+        auto const sq_offset = sq_base + col_div;
+
+        return row_div * grid.modulo() + sq_offset;
 }
 
 template<class Grid>
@@ -146,37 +158,44 @@ template<class Grid>
 constexpr auto
 to_ulo(std::size_t sq, Grid const& grid)
 {
-        auto const square = static_cast<int>(sq);
-        auto const row_pairs = square / grid.modulo();
-        auto const R0 = square % grid.modulo();
-        auto const R1 = R0 - grid.edge_lo();
-        auto const row_parity = R1 >= 0;
-        auto const R = row_parity ? R1 : R0;
-        auto const X = 2 * R + (row_parity ^ !grid.ul_parity());
-        auto const Y = 2 * row_pairs + row_parity;
+        auto const row_div   = sq / grid.modulo();
+        auto const sq_offset = sq % grid.modulo();
+        assert(row_div * grid.modulo() + sq_offset == sq);
 
-        return Coordinates<origin::UpperLeft>{ X, Y };
+        auto const row_mod = sq_offset >= grid.edge_lo();
+        auto const col_mod = row_mod ^ !grid.ul_parity();
+        assert(row_mod ^ col_mod == !grid.ul_parity());
+
+        auto const sq_base = row_mod ? grid.edge_lo() : grid.edge_le();
+        auto const col_div = sq_offset - sq_base;
+
+        return Coordinates<origin::UpperLeft>
+        {
+                static_cast<int>(2 * col_div + col_mod),
+                static_cast<int>(2 * row_div + row_mod)
+        };
 }
 
 template<class Grid>
 constexpr auto
-to_llo(std::size_t sq, Grid const& grid)
+to_llo(std::size_t square, Grid const& grid)
 {
-        return to_llo(to_ulo(sq, grid), grid);
+        return to_llo(to_ulo(square, grid), grid);
 }
 
 template<class Grid>
 constexpr auto
-to_sco(std::size_t sq, Grid const& grid)
+to_sco(std::size_t square, Grid const& grid)
 {
-        return to_sco(to_ulo(sq, grid), grid);
+        return to_sco(to_ulo(square, grid), grid);
 }
 
 template<class InGrid, class OutGrid>
 constexpr auto
-transform(std::size_t sq, InGrid const& in_grid, OutGrid out_grid, Angle const& theta)
+transform(std::size_t square, InGrid const& in_grid, OutGrid const& out_grid, Angle t)
 {
-        return to_square(rotate(to_sco(sq, in_grid), theta), out_grid);
+        // square | to_sco(in_grid) | rotate(t) | to_square(out_grid)
+        return to_square(rotate(to_sco(square, in_grid), t), out_grid);
 }
 
 }       // namespace board

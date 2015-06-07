@@ -33,14 +33,14 @@ public:
 
         Angle() = default;
 
-        constexpr auto& operator+=(Angle const& other) noexcept
+        constexpr auto& operator+=(Angle other) noexcept
         {
                 degrees = make_angle(degrees + other.degrees);
                 assert(invariant());
                 return *this;
         }
 
-        constexpr auto& operator-=(Angle const& other) noexcept
+        constexpr auto& operator-=(Angle other) noexcept
         {
                 degrees = make_angle(degrees - other.degrees);
                 assert(invariant());
@@ -62,43 +62,43 @@ public:
                 return *this;
         }
 
-        friend constexpr auto operator+(Angle const& a) noexcept
+        friend constexpr auto operator+(Angle a) noexcept
         {
                 return Angle{+a.degrees};
         }
 
-        friend constexpr auto operator-(Angle const& a) noexcept
+        friend constexpr auto operator-(Angle a) noexcept
         {
                 return Angle{-a.degrees};
         }
 };
 
 inline
-constexpr auto operator+(Angle const& lhs, Angle const& rhs) noexcept
+constexpr auto operator+(Angle lhs, Angle rhs) noexcept
 {
         Angle nrv{lhs}; nrv += rhs; return nrv;
 }
 
 inline
-constexpr auto operator-(Angle const& lhs, Angle const& rhs) noexcept
+constexpr auto operator-(Angle lhs, Angle rhs) noexcept
 {
         Angle nrv{lhs}; nrv -= rhs; return nrv;
 }
 
 inline
-constexpr auto operator*(Angle const& a, int n) noexcept
+constexpr auto operator*(Angle a, int n) noexcept
 {
         Angle nrv{a}; nrv *= n; return nrv;
 }
 
 inline
-constexpr auto operator*(int n, Angle const& a) noexcept
+constexpr auto operator*(int n, Angle a) noexcept
 {
         Angle nrv{a}; nrv *= n; return nrv;
 }
 
 inline
-constexpr auto operator/(Angle const& a, int n) // Throws: Nothing.
+constexpr auto operator/(Angle a, int n) // Throws: Nothing.
 {
         assert(n != 0);
         Angle nrv{a}; nrv /= n; return nrv;

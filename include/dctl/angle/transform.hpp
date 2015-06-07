@@ -1,24 +1,25 @@
 #pragma once
-#include <dctl/angle/angle.hpp>         // Angle
+#include <dctl/angle/angle.hpp> // Angle
 
 namespace dctl {
 
 inline
-constexpr auto inverse(Angle const& alpha) noexcept
+constexpr auto inverse(Angle a) noexcept
 {
-        return -alpha;
+        return -a;
 }
 
 inline
-constexpr auto rotate(Angle const& alpha, Angle const& theta) noexcept
+constexpr auto rotate(Angle a, Angle t) noexcept
 {
-        return alpha + theta;
+        return a + t;
 }
 
 inline
-constexpr auto mirror(Angle const& alpha, Angle const& theta) noexcept
+constexpr auto mirror(Angle a, Angle t) noexcept
 {
-        return rotate(inverse(rotate(alpha, inverse(theta))), theta);
+        // a | rotate(inverse(t)) | inverse() | rotate(t)
+        return rotate(inverse(rotate(a, inverse(t))), t);
 }
 
 }       // namespace dctl

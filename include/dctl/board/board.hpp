@@ -4,7 +4,7 @@
 #include <dctl/board/dimensions.hpp>            // Dimensions
 #include <dctl/board/coordinates.hpp>           // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/board/grid.hpp>                  // Grid
-#include <dctl/board/detail/orientation.hpp>    // SizeMinimizingOrientation, Make
+#include <dctl/board/detail/orientation.hpp>    // size_minimizing_orientation
 #include <dctl/color.hpp>                       // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <xstd/cstddef.hpp>                     // _z
@@ -70,7 +70,7 @@ public:
                 return NumBits;
         }
 
-        static constexpr auto shift_size(Angle const& direction)
+        static constexpr auto shift_size(Angle direction)
         {
                 return inner_grid.shift_size(direction);
         }
@@ -124,7 +124,7 @@ public:
                 return table_bit_from_square[n];
         }
 
-        static constexpr auto square_from_bit(std::size_t n) noexcept
+        static constexpr auto square_from_bit(std::size_t n)
         {
                 return table_square_from_bit[n];
         }
