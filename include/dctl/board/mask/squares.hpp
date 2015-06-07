@@ -10,7 +10,7 @@ class Squares
 {
 private:
         // simulate a constexpr lambda (not allowed in C++14)
-        struct init
+        struct is_squares
         {
                 constexpr auto operator()(std::size_t sq) const noexcept
                 {
@@ -19,8 +19,7 @@ private:
         };
 
         using value_type = set_type<Board>;
-
-        static constexpr value_type value = make_set_if<Board>(init{});
+        static constexpr value_type value = make_set_if<Board>(is_squares{});
 
 public:
         static constexpr auto mask() noexcept

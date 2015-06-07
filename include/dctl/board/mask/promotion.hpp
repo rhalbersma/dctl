@@ -1,5 +1,6 @@
 #pragma once
-#include <dctl/board/mask/row.hpp>
+#include <dctl/board/mask/row.hpp>      // Row
+#include <dctl/color.hpp>               // Color
 
 namespace dctl {
 namespace board {

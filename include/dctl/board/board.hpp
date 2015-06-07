@@ -81,6 +81,12 @@ public:
                 return ranges::view::iota(0_z, size());
         }
 
+        static auto bitnrs() noexcept
+        {
+                using namespace xstd::support_literals;
+                return ranges::view::iota(0_z, bits());
+        }
+
         static auto numeric_from_bit(std::size_t n)
         {
                 std::stringstream sstr;

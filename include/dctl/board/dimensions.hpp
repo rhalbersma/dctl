@@ -27,9 +27,8 @@ constexpr auto
 operator==(Dimensions const& lhs, Dimensions const& rhs) noexcept
 {
         return
-               lhs.width == rhs.width && lhs.height == rhs.height && lhs.inverted == rhs.inverted
-               //std::forward_as_tuple(lhs.width, lhs.height, lhs.inverted) ==
-               //std::forward_as_tuple(rhs.width, rhs.height, rhs.inverted)
+               std::forward_as_tuple(lhs.width, lhs.height, lhs.inverted) ==
+               std::forward_as_tuple(rhs.width, rhs.height, rhs.inverted)
         ;
 }
 
