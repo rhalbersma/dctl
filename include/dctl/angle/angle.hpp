@@ -73,31 +73,26 @@ public:
         }
 };
 
-inline
 constexpr auto operator+(Angle lhs, Angle rhs) noexcept
 {
         Angle nrv{lhs}; nrv += rhs; return nrv;
 }
 
-inline
 constexpr auto operator-(Angle lhs, Angle rhs) noexcept
 {
         Angle nrv{lhs}; nrv -= rhs; return nrv;
 }
 
-inline
 constexpr auto operator*(Angle a, int n) noexcept
 {
         Angle nrv{a}; nrv *= n; return nrv;
 }
 
-inline
 constexpr auto operator*(int n, Angle a) noexcept
 {
         Angle nrv{a}; nrv *= n; return nrv;
 }
 
-inline
 constexpr auto operator/(Angle a, int n) // Throws: Nothing.
 {
         assert(n != 0);

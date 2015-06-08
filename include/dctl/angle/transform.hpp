@@ -3,19 +3,16 @@
 
 namespace dctl {
 
-inline
 constexpr auto inverse(Angle a) noexcept
 {
         return -a;
 }
 
-inline
 constexpr auto rotate(Angle a, Angle t) noexcept
 {
         return a + t;
 }
 
-inline
 constexpr auto mirror(Angle a, Angle t) noexcept
 {
         // a | rotate(inverse(t)) | inverse() | rotate(t)

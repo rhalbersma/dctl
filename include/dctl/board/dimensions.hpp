@@ -13,9 +13,7 @@ struct Dimensions
         bool inverted;
 };
 
-inline
-constexpr auto
-operator==(Dimensions const& lhs, Dimensions const& rhs) noexcept
+constexpr auto operator==(Dimensions const& lhs, Dimensions const& rhs) noexcept
 {
         return
                std::forward_as_tuple(lhs.width, lhs.height, lhs.inverted) ==
@@ -23,9 +21,7 @@ operator==(Dimensions const& lhs, Dimensions const& rhs) noexcept
         ;
 }
 
-inline
-constexpr auto
-operator!=(Dimensions const& lhs, Dimensions const& rhs) noexcept
+constexpr auto operator!=(Dimensions const& lhs, Dimensions const& rhs) noexcept
 {
         return !(lhs == rhs);
 }
@@ -40,7 +36,6 @@ constexpr auto ul_parity(Dimensions const& dim) noexcept
         return static_cast<bool>(dim.inverted ^ (dim.height % 2));
 }
 
-inline
 constexpr auto rotate(Dimensions const& dim, Angle a)
 {
         switch (a) {
