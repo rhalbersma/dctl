@@ -11,13 +11,11 @@ enum class Color
         white = 1
 };
 
-inline
 constexpr auto operator!(Color c) noexcept
 {
         return static_cast<Color>(!xstd::to_underlying_type(c));
 }
 
-inline
 constexpr auto flip(Color& c) noexcept
 {
         c = !c;

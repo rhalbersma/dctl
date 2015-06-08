@@ -5,7 +5,6 @@ namespace dctl {
 inline namespace literals {
 inline namespace angle_literals {
 
-inline
 constexpr auto operator"" _deg(unsigned long long n) noexcept
 {
         return Angle{static_cast<int>(n)};
