@@ -158,13 +158,16 @@ private:
                 // generate moves
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
-                std::vector<Move<R, B>> moves;
+
+                Arena<Move<R,B> > a;
+                auto moves = stack_vector<Move<R,B>>(Alloc<Move<R,B>>{a});
+                moves.reserve(DCTL_PP_STACK_RESERVE);
                 successor.generate(p, moves);
                 assert(!moves.empty());
 
                 Arena<int> oar;
                 auto move_order = Order(Alloc<int>{oar});
-                move_order.reserve(moves.size());                                               // reserve enough room for all indices
+                move_order.reserve(moves.size());                                                               // reserve enough room for all indices
                 move_order |= ranges::action::push_back(ranges::view::iota(0, static_cast<int>(moves.size()))); // generate indices [0, moves.size() - 1]
 
                 // internal iterative deepening (IID)

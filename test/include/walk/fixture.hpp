@@ -20,10 +20,8 @@ void test(Position const& p, Successor successor, Range const& leafs)
         e.resize_TT(64_MiB);
 
         auto depth = 0;
-        for (auto&& node_count : leafs) {
-                e.clear_TT();
+        for (auto&& node_count : leafs)
                 BOOST_CHECK_EQUAL(node_count, walk(p, ++depth, 0, successor, e));
-        }
 }
 
 }       // namespace walk

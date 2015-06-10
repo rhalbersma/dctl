@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/rule_traits.hpp> // precedence::is_trivial, precedence::greater, large_jump_v
 #include <algorithm>            // max_element, stable_sort, unique, upper_bound
+#include <cassert>
 #include <iterator>             // begin, end, distance
 
 namespace dctl {
