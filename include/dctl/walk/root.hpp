@@ -5,6 +5,7 @@
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/position/make_copy.hpp>
 #include <dctl/successor.hpp>
+#include <dctl/utility/stack_vector.hpp>
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/stopwatch.hpp>
 
@@ -178,7 +179,10 @@ std::size_t walk(Position const& p, int depth, int ply, Successor successor, Enh
         } else {
                 using R = typename Position::rules_type;
                 using B = typename Position::board_type;
-                std::vector<Move<R,B> > moves;
+
+                Arena<Move<R,B> > a;
+                auto moves = stack_vector<Move<R,B>>(Alloc<Move<R,B>>{a});
+                moves.reserve(DCTL_PP_STACK_RESERVE);
                 successor.generate(p, moves);
                 for (auto const& m : moves)
                         nodes += walk(make_copy(p, m), depth - 1, ply + 1, successor, e);
