@@ -27,7 +27,7 @@ class JumpStart
                         auto const max_x = Board::width() - (is_right(alpha) ? offset : 0);
                         auto const min_y = is_up(alpha) ? offset : 0;
                         auto const max_y = Board::height() - (is_down(alpha) ? offset : 0);
-                        auto const coord = to_ulo(sq, Board::outer_grid);
+                        auto const coord = to_ulo(sq, Board::inner_grid);
                         return
                                 (min_x <= coord.x && coord.x < max_x) &&
                                 (min_y <= coord.y && coord.y < max_y)

@@ -5,6 +5,7 @@
 #include <dctl/board/coordinates.hpp>           // Square, ulo_from_sq, sq_from_ulo, rotate
 #include <dctl/board/grid.hpp>                  // Grid
 #include <dctl/board/detail/orientation.hpp>    // size_minimizing_orientation
+#include <dctl/board/shift.hpp>                 // Shift
 #include <dctl/color.hpp>                       // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <xstd/cstddef.hpp>                     // _z
@@ -33,32 +34,26 @@ private:
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
         static constexpr std::size_t edge_columns = OrthogonalCaptures ? 2 : 1;
-
-        static constexpr Angle orientation = size_minimizing_orientation<edge_columns>(dimensions);
-
-private:
-        using inner_grid_t = Grid<edge_columns>;
-        static constexpr inner_grid_t inner_grid{rotate(dimensions, orientation)};
-
-public:
-        static constexpr auto outer_grid = Grid<0>{dimensions};
+        static constexpr auto inner_grid = InnerGrid{dimensions};
+        static constexpr Angle orientation = size_minimizing_orientation(OuterGrid{inner_grid, edge_columns});
 
 private:
-        static constexpr auto NumBits = inner_grid.size();
-        static constexpr auto NumSquares = outer_grid.size();
+        static constexpr auto outer_grid = OuterGrid{rotate(inner_grid, orientation), edge_columns};
+        static constexpr auto NumBits = outer_grid.size();
+        static constexpr auto NumSquares = inner_grid.size();
 
 public:
-        static constexpr auto width()     noexcept { return outer_grid.width();     }
-        static constexpr auto height()    noexcept { return outer_grid.height();    }
-        static constexpr auto inverted()  noexcept { return outer_grid.inverted();  }
-        static constexpr auto ll_parity() noexcept { return outer_grid.ll_parity(); }
-        static constexpr auto ul_parity() noexcept { return outer_grid.ul_parity(); }
+        static constexpr auto width()     noexcept { return inner_grid.width();     }
+        static constexpr auto height()    noexcept { return inner_grid.height();    }
+        static constexpr auto inverted()  noexcept { return inner_grid.inverted();  }
+        static constexpr auto ll_parity() noexcept { return inner_grid.ll_parity(); }
+        static constexpr auto ul_parity() noexcept { return inner_grid.ul_parity(); }
 
-        static constexpr auto modulo()  noexcept { return outer_grid.modulo();  }
-        static constexpr auto edge_re() noexcept { return outer_grid.edge_re(); }
-        static constexpr auto edge_ro() noexcept { return outer_grid.edge_ro(); }
-        static constexpr auto edge_le() noexcept { return outer_grid.edge_le(); }
-        static constexpr auto edge_lo() noexcept { return outer_grid.edge_lo(); }
+        static constexpr auto modulo()  noexcept { return inner_grid.modulo();  }
+        static constexpr auto edge_re() noexcept { return inner_grid.edge_re(); }
+        static constexpr auto edge_ro() noexcept { return inner_grid.edge_ro(); }
+        static constexpr auto edge_le() noexcept { return inner_grid.edge_le(); }
+        static constexpr auto edge_lo() noexcept { return inner_grid.edge_lo(); }
 
         static constexpr auto size() noexcept
         {
@@ -72,7 +67,7 @@ public:
 
         static constexpr auto shift_size(Angle direction)
         {
-                return inner_grid.shift_size(direction);
+                return Shift{outer_grid}(direction);
         }
 
         static auto squares() noexcept
@@ -104,12 +99,12 @@ public:
 private:
         static constexpr auto init_bit_from_square(std::size_t n) noexcept
         {
-                return transform(n, outer_grid, inner_grid, orientation);
+                return transform(n, inner_grid, outer_grid, orientation);
         }
 
         static constexpr auto init_square_from_bit(std::size_t n) noexcept
         {
-                return transform(n, inner_grid, outer_grid, inverse(orientation));
+                return transform(n, outer_grid, inner_grid, inverse(orientation));
         }
 
         static constexpr std::array<std::size_t, NumSquares>
@@ -143,11 +138,11 @@ constexpr Angle
 Board<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr typename Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid_t
+constexpr InnerGrid
 Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr Grid<0>
+constexpr OuterGrid
 Board<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>

@@ -36,7 +36,7 @@ constexpr auto rotate(Coordinates<origin::ScreenCentered> const& coord, Angle a)
         case  90 : return Coordinates<origin::ScreenCentered>{ -coord.y,  coord.x };
         case 180 : return Coordinates<origin::ScreenCentered>{ -coord.x, -coord.y };
         case 270 : return Coordinates<origin::ScreenCentered>{  coord.y, -coord.x };
-        default  : return throw std::invalid_argument("Rotation angles shall be a multiple of 90 degrees."), coord;
+        default  : return throw std::invalid_argument("Rotations of Angle objects shall be in multiples of 90 degrees."), coord;
         }
 }
 
@@ -168,11 +168,11 @@ constexpr auto to_sco(std::size_t sq, Grid const& grid)
         return to_sco(to_ulo(sq, grid), grid);
 }
 
-template<class InGrid, class OutGrid>
-constexpr auto transform(std::size_t sq, InGrid const& in_grid, OutGrid const& out_grid, Angle t)
+template<class FromGrid, class DestGrid>
+constexpr auto transform(std::size_t sq, FromGrid const& from, DestGrid const& dest, Angle t)
 {
-        // sq | to_sco(in_grid) | rotate(t) | to_square(out_grid)
-        return to_square(rotate(to_sco(sq, in_grid), t), out_grid);
+        // sq | to_sco(from) | rotate(t) | to_square(dest)
+        return to_square(rotate(to_sco(sq, from), t), dest);
 }
 
 }       // namespace board

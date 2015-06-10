@@ -25,7 +25,7 @@ private:
                 constexpr auto operator()(std::size_t sq) const noexcept
                 {
                         auto const separation = Board::height() - 2 * rows;
-                        auto const y = to_llo(sq, Board::outer_grid).y;
+                        auto const y = to_llo(sq, Board::inner_grid).y;
                         auto const min_y = to_move == Color::white ? 0 : Board::height() - (Board::height() - separation) / 2;
                         auto const max_y = to_move == Color::white ? (Board::height() - separation) / 2 : Board::height();
                         return min_y <= y && y < max_y;

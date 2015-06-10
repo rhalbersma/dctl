@@ -20,8 +20,8 @@ class JumpGroup
 
                 constexpr auto operator()(std::size_t dest_sq) const noexcept
                 {
-                        auto const from_coord = to_llo(from_sq, Board::outer_grid);
-                        auto const dest_coord = to_llo(dest_sq, Board::outer_grid);
+                        auto const from_coord = to_llo(from_sq, Board::inner_grid);
+                        auto const dest_coord = to_llo(dest_sq, Board::inner_grid);
                         auto const delta_x = dctl::detail::abs_remainder(from_coord.x - dest_coord.x, 4);
                         auto const delta_y = dctl::detail::abs_remainder(from_coord.y - dest_coord.y, 4);
                         return
