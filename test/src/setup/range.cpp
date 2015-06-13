@@ -11,7 +11,7 @@ using B = board::International;
 
 auto row_number(square sq)
 {
-        return board::to_ulo(sq, B::inner_grid).y;
+        return board::to_ulo(sq, B::inner_grid).y();
 }
 
 auto by_row()

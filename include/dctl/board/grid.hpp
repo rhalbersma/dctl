@@ -11,14 +11,13 @@ namespace board {
 class InnerGrid
 {
         Dimensions dim;
-        std::size_t edge_ = 0;
 public:
         explicit constexpr InnerGrid(Dimensions const& d) noexcept : dim{d} {}
 
         constexpr auto width() const noexcept { return dim.width(); }
         constexpr auto height() const noexcept { return dim.height(); }
         constexpr auto inverted() const noexcept { return dim.inverted(); }
-        constexpr auto edge() const noexcept { assert(edge_ == 0); return edge_; }
+        constexpr auto edge() const noexcept { return 0; }
 
         constexpr bool ll_parity() const noexcept { return board::ll_parity(dim); }
         constexpr bool ul_parity() const noexcept { return board::ul_parity(dim); }
@@ -32,7 +31,10 @@ public:
 
         constexpr auto size() const noexcept { return (width() * height()) / 2 + (width() * height() * ul_parity()) % 2; }
 
-        friend constexpr auto rotate(InnerGrid const& g, Angle a) { return InnerGrid{rotate(g.dim, a)}; }
+        friend constexpr auto rotate(InnerGrid const& g, Angle a)
+        {
+                return InnerGrid{rotate(g.dim, a)};
+        }
 };
 
 class OuterGrid
@@ -62,7 +64,10 @@ public:
 
         constexpr auto size() const noexcept { return modulo() * ((height() - 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) + 1; }
 
-        friend constexpr auto rotate(OuterGrid const& g, Angle a) { return OuterGrid{rotate(g.inner_, a), g.edge_}; }
+        friend constexpr auto rotate(OuterGrid const& g, Angle a)
+        {
+                return OuterGrid{rotate(g.inner_, a), g.edge_};
+        }
 };
 
 }       // namespace board

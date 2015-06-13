@@ -15,22 +15,22 @@ namespace board {
 template<class Board>
 class Column
 {
-        // simulate a constexpr lambda (not allowed in C++14)
-        struct is_column
-        {
-                Color const to_move;
-                std::size_t const column;
-
-                constexpr auto operator()(std::size_t sq) const noexcept
-                {
-                        assert(column < Board::width());
-                        return to_llo(sq, Board::inner_grid).x == (to_move == Color::white ? column : Board::width() - 1 - column);
-                }
-        };
-
         template<Color ToMove>
         static constexpr auto init(std::size_t column) noexcept
         {
+                // simulate a constexpr lambda (not allowed in C++14)
+                struct is_column
+                {
+                        Color const to_move;
+                        std::size_t const column_;
+
+                        constexpr auto operator()(std::size_t sq) const noexcept
+                        {
+                                assert(column_ < Board::width());
+                                return to_llo(sq, Board::inner_grid).x() == (to_move == Color::white ? column_ : Board::width() - 1 - column_);
+                        }
+                };
+
                 return make_set_if<Board>(is_column{ToMove, column});
         }
 

@@ -15,27 +15,26 @@ namespace board {
 template<class Board>
 class Initial
 {
-private:
-        // simulate a constexpr lambda (not allowed in C++14)
-        struct lambda
-        {
-                Color const to_move;
-                int const rows;
-
-                constexpr auto operator()(std::size_t sq) const noexcept
-                {
-                        auto const separation = Board::height() - 2 * rows;
-                        auto const y = to_llo(sq, Board::inner_grid).y;
-                        auto const min_y = to_move == Color::white ? 0 : Board::height() - (Board::height() - separation) / 2;
-                        auto const max_y = to_move == Color::white ? (Board::height() - separation) / 2 : Board::height();
-                        return min_y <= y && y < max_y;
-                }
-        };
-
         template<Color ToMove>
         static constexpr auto init(int rows) noexcept
         {
-                return make_set_if<Board>(lambda{ToMove, rows});
+                // simulate a constexpr lambda (not allowed in C++14)
+                struct is_initial
+                {
+                        Color const to_move;
+                        int const rows_;
+
+                        constexpr auto operator()(std::size_t sq) const noexcept
+                        {
+                                auto const separation = Board::height() - 2 * rows_;
+                                auto const y = to_llo(sq, Board::inner_grid).y();
+                                auto const min_y = to_move == Color::white ? 0 : Board::height() - (Board::height() - separation) / 2;
+                                auto const max_y = to_move == Color::white ? (Board::height() - separation) / 2 : Board::height();
+                                return min_y <= y && y < max_y;
+                        }
+                };
+
+                return make_set_if<Board>(is_initial{ToMove, rows});
         }
 
         static constexpr auto N = Board::height() / 2 + 1;
