@@ -15,22 +15,22 @@ namespace board {
 template<class Board>
 class Row
 {
-        // simulate a constexpr lambda (not allowed in C++14)
-        struct is_row
-        {
-                Color const to_move;
-                std::size_t const row;
-
-                constexpr auto operator()(std::size_t sq) const noexcept
-                {
-                        assert(row < Board::height());
-                        return to_llo(sq, Board::inner_grid).y == (to_move == Color::white ? row : Board::height() - 1 - row);
-                }
-        };
-
         template<Color ToMove>
         static constexpr auto init(std::size_t row) noexcept
         {
+                // simulate a constexpr lambda (not allowed in C++14)
+                struct is_row
+                {
+                        Color const to_move;
+                        std::size_t const row_;
+
+                        constexpr auto operator()(std::size_t sq) const noexcept
+                        {
+                                assert(row_ < Board::height());
+                                return to_llo(sq, Board::inner_grid).y() == (to_move == Color::white ? row_ : Board::height() - 1 - row_);
+                        }
+                };
+
                 return make_set_if<Board>(is_row{ToMove, row});
         }
 

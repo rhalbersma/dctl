@@ -14,29 +14,29 @@ namespace board {
 template<class Board>
 class JumpStart
 {
-        // simulate a constexpr lambda (not allowed in C++14)
-        struct is_jump_start
-        {
-                int const segment;
-
-                constexpr auto operator()(std::size_t sq) const noexcept
-                {
-                        auto const alpha = rotate(segment * theta + beta, Board::orientation);
-                        auto const offset = is_diagonal(alpha) ? 2 : 4;
-                        auto const min_x = is_left(alpha) ? offset : 0;
-                        auto const max_x = Board::width() - (is_right(alpha) ? offset : 0);
-                        auto const min_y = is_up(alpha) ? offset : 0;
-                        auto const max_y = Board::height() - (is_down(alpha) ? offset : 0);
-                        auto const coord = to_ulo(sq, Board::inner_grid);
-                        return
-                                (min_x <= coord.x && coord.x < max_x) &&
-                                (min_y <= coord.y && coord.y < max_y)
-                        ;
-                }
-        };
-
         static constexpr auto init(int segment) noexcept
         {
+                // simulate a constexpr lambda (not allowed in C++14)
+                struct is_jump_start
+                {
+                        int const segment;
+
+                        constexpr auto operator()(std::size_t sq) const noexcept
+                        {
+                                auto const alpha = rotate(segment * theta + beta, Board::orientation);
+                                auto const offset = is_diagonal(alpha) ? 2 : 4;
+                                auto const min_x = is_left(alpha) ? offset : 0;
+                                auto const max_x = Board::width() - (is_right(alpha) ? offset : 0);
+                                auto const min_y = is_up(alpha) ? offset : 0;
+                                auto const max_y = Board::height() - (is_down(alpha) ? offset : 0);
+                                auto const coord = to_ulo(sq, Board::inner_grid);
+                                return
+                                        (min_x <= coord.x() && coord.x() < max_x) &&
+                                        (min_y <= coord.y() && coord.y() < max_y)
+                                ;
+                        }
+                };
+
                 return make_set_if<Board>(is_jump_start{segment});
         }
 

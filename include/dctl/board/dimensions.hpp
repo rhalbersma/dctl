@@ -35,6 +35,16 @@ constexpr auto operator!=(Dimensions const& lhs, Dimensions const& rhs) noexcept
         return !(lhs == rhs);
 }
 
+constexpr auto width_parity(Dimensions const& dim) noexcept
+{
+        return static_cast<bool>(dim.width() % 2);
+}
+
+constexpr auto height_parity(Dimensions const& dim) noexcept
+{
+        return static_cast<bool>(dim.height() % 2);
+}
+
 constexpr auto ll_parity(Dimensions const& dim) noexcept
 {
         return !dim.inverted();
@@ -42,16 +52,16 @@ constexpr auto ll_parity(Dimensions const& dim) noexcept
 
 constexpr auto ul_parity(Dimensions const& dim) noexcept
 {
-        return static_cast<bool>(dim.inverted() ^ (dim.height() % 2));
+        return static_cast<bool>(height_parity(dim) ^ !ll_parity(dim));
 }
 
 constexpr auto rotate(Dimensions const& dim, Angle a)
 {
         switch (a) {
         case   0 : return dim;
-        case  90 : return Dimensions{ dim.height(), dim.width (), static_cast<bool>((dim.width() % 2) ^                      !dim.inverted()) };
-        case 180 : return Dimensions{ dim.width (), dim.height(), static_cast<bool>((dim.width() % 2) ^ (dim.height() % 2) ^  dim.inverted()) };
-        case 270 : return Dimensions{ dim.height(), dim.width (), static_cast<bool>(                    (dim.height() % 2) ^ !dim.inverted()) };
+        case  90 : return Dimensions{ dim.height(), dim.width() , static_cast<bool>(width_parity(dim)  ^ ll_parity(dim)) };
+        case 180 : return Dimensions{ dim.width() , dim.height(), static_cast<bool>(width_parity(dim)  ^ ul_parity(dim)) };
+        case 270 : return Dimensions{ dim.height(), dim.width() , static_cast<bool>(height_parity(dim) ^ ll_parity(dim)) };
         default  : return throw std::invalid_argument("Rotations of Dimensions objects shall be in multiples of 90 degrees."), dim;
         }
 }
