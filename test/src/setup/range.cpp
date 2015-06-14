@@ -65,6 +65,17 @@ auto format_bytes()
 
 int main()
 {
-    RANGES_FOR(auto r, B::squares() | by_row() | format_rows())
-            std::cout << r << '\n';
+        using namespace xstd::literals;
+        using Coord = board::Coordinates<board::origin::UpperLeft>;
+
+        RANGES_FOR(auto y, view::iota(0, B::height())) {
+                RANGES_FOR(auto x, view::iota(0, B::width())) {
+                        if (((x % 2) ^ (y % 2)) != B::ul_parity()) {
+                                std::cout << std::setw(2) << board::to_square(Coord{x, y}, B::inner_grid);
+                        } else {
+                                std::cout << "  ";
+                        }
+                }
+                std::cout << '\n';
+        }
 }
