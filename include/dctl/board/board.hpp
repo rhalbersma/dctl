@@ -33,12 +33,12 @@ private:
 
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
-        static constexpr std::size_t edge_columns = OrthogonalCaptures ? 2 : 1;
+        static constexpr std::size_t edge = OrthogonalCaptures ? 2 : 1;
         static constexpr auto inner_grid = InnerGrid{dimensions};
-        static constexpr Angle orientation = size_minimizing_orientation(OuterGrid{inner_grid, edge_columns});
+        static constexpr Angle orientation = size_minimizing_orientation(OuterGrid{inner_grid, edge});
 
 private:
-        static constexpr auto outer_grid = OuterGrid{rotate(inner_grid, orientation), edge_columns};
+        static constexpr auto outer_grid = OuterGrid{rotate(inner_grid, orientation), edge};
         static constexpr auto NumBits = outer_grid.size();
         static constexpr auto NumSquares = inner_grid.size();
 
@@ -124,14 +124,6 @@ public:
                 return table_square_from_bit[n];
         }
 };
-
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr bool
-Board<Width, Height, Inverted, OrthogonalCaptures>::is_orthogonal_captures;
-
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::size_t
-Board<Width, Height, Inverted, OrthogonalCaptures>::edge_columns;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr Angle

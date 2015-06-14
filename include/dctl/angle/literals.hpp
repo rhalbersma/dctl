@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle/angle.hpp>
+#include <dctl/angle/angle.hpp> // Angle
 
 namespace dctl {
 inline namespace literals {
