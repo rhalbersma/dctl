@@ -9,7 +9,7 @@ namespace dctl {
 namespace setup {
 
 template<class Token, class Position>
-std::string content(Position const& p, std::size_t n)
+auto content(Position const& p, std::size_t n)
 {
         assert(n < set_type_t<Position>::size());
 
@@ -25,7 +25,7 @@ std::string content(Position const& p, std::size_t n)
                 else
                         sstr << Token::lower[xstd::to_underlying_type(Color::white)];   // white pawn
         } else
-                sstr << Token::empty;                           // empty square
+                sstr << Token::empty;                                                   // empty square
         return sstr.str();
 }
 

@@ -49,9 +49,6 @@ public:
         static constexpr auto ll_parity() noexcept { return inner_grid.ll_parity(); }
         static constexpr auto ul_parity() noexcept { return inner_grid.ul_parity(); }
 
-        static constexpr auto modulo()  noexcept { return inner_grid.modulo();  }
-        static constexpr auto edge_re() noexcept { return inner_grid.edge_re(); }
-        static constexpr auto edge_ro() noexcept { return inner_grid.edge_ro(); }
         static constexpr auto edge_le() noexcept { return inner_grid.edge_le(); }
         static constexpr auto edge_lo() noexcept { return inner_grid.edge_lo(); }
 
@@ -114,7 +111,7 @@ private:
         table_square_from_bit = make_array<NumBits>(init_square_from_bit);
 
 public:
-        static constexpr auto bit_from_square(std::size_t n) noexcept
+        static constexpr auto bit_from_square(std::size_t n)
         {
                 return table_bit_from_square[n];
         }
@@ -122,6 +119,16 @@ public:
         static constexpr auto square_from_bit(std::size_t n)
         {
                 return table_square_from_bit[n];
+        }
+
+        static constexpr auto is_square(Coordinates<origin::UpperLeft> const& coord) noexcept
+        {
+                return ((coord.x() % 2) ^ (coord.y() % 2)) != ul_parity();
+        }
+
+        static constexpr auto to_square(Coordinates<origin::UpperLeft> const& coord) noexcept
+        {
+                return board::to_square(coord, inner_grid);
         }
 };
 
