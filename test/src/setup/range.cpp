@@ -63,19 +63,27 @@ auto format_bytes()
         });
 }
 
+template<class CharT, class Traits, std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::Board<Width, Height, Inverted, OrthogonalCaptures> const& b)
+{
+        using Coord = board::Coordinates<board::origin::UpperLeft>;
+
+        RANGES_FOR(auto y, view::iota(0, b.height())) {
+                RANGES_FOR(auto x, view::iota(0, b.width())) {
+                        auto const coord = Coord{x, y};
+                        if (b.is_square(coord)) {
+                                ostr << std::setw(2) << b.to_square(coord);
+                        } else {
+                                ostr << std::string(2, ' ');
+                        }
+                }
+                ostr << '\n';
+        }
+        return ostr;
+}
+
 int main()
 {
         using namespace xstd::literals;
-        using Coord = board::Coordinates<board::origin::UpperLeft>;
-
-        RANGES_FOR(auto y, view::iota(0, B::height())) {
-                RANGES_FOR(auto x, view::iota(0, B::width())) {
-                        if (((x % 2) ^ (y % 2)) != B::ul_parity()) {
-                                std::cout << std::setw(2) << board::to_square(Coord{x, y}, B::inner_grid);
-                        } else {
-                                std::cout << "  ";
-                        }
-                }
-                std::cout << '\n';
-        }
+        std::cout << B{};
 }

@@ -24,7 +24,8 @@ public:
         template<class PiecePlacement>
         constexpr MostRecentlyPushedKings(PiecePlacement const& p)
         :
-                by_color_piece_{
+                by_color_piece_
+                {
                         {p.num_pieces(Color::black, Piece::pawn), p.num_pieces(Color::black, Piece::king)},
                         {p.num_pieces(Color::white, Piece::pawn), p.num_pieces(Color::white, Piece::king)}
                 }
