@@ -4,13 +4,13 @@
 #include <dctl/search/score.hpp>
 #include <dctl/search/transposition.hpp>
 #include <dctl/search/variation.hpp>
-#include <dctl/evaluate/score.hpp>
+#include <dctl/eval/score.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/hash/extract.hpp>
 #include <dctl/hash/map.hpp>
 #include <dctl/hash/replace.hpp>
-#include <dctl/position/make_copy.hpp>
-#include <dctl/successor.hpp>
+#include <dctl/state/make_copy.hpp>
+#include <dctl/actions.hpp>
 
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/utility/ply.hpp>         // PlyCount
@@ -20,7 +20,7 @@
 
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
-#include <dctl/move/ostream.hpp>
+#include <dctl/action/ostream.hpp>
 
 #include <xstd/cstddef.hpp>
 #include <range/v3/all.hpp>
@@ -36,7 +36,7 @@ namespace search {
 
 template
 <
-        class Position,
+        class State,
         class Objective
 >
 class Root
@@ -52,12 +52,12 @@ public:
         }
 
         template<class Successor>
-        int analyze(Position const& p, Successor successor, int depth)
+        int analyze(State const& p, Successor successor, int depth)
         {
                 return iterative_deepening(p, successor, depth);
         }
 
-        int solve(Position const& p, int depth)
+        int solve(State const& p, int depth)
         {
                 return proof_verify(p, depth);
         }
@@ -84,7 +84,7 @@ public:
 
 private:
         template<class Successor>
-        int iterative_deepening(Position const& p, Successor successor, int depth)
+        int iterative_deepening(State const& p, Successor successor, int depth)
         {
                 auto score = -infinity();
                 int alpha, beta;
@@ -109,7 +109,7 @@ private:
         }
 
         template<int NodeType, class Successor>
-        int pvs(Position const& p, Successor successor, int alpha, int beta, int depth, int ply, Variation& refutation)
+        int pvs(State const& p, Successor successor, int alpha, int beta, int depth, int ply, Variation& refutation)
         {
                 using namespace xstd::support_literals;
                 statistics_.collect(ply);
@@ -156,11 +156,11 @@ private:
                         return TT_entry->value();
 
                 // generate moves
-                using R = typename Position::rules_type;
-                using B = typename Position::board_type;
+                using R = typename State::rules_type;
+                using B = typename State::board_type;
 
-                Arena<Move<R,B> > a;
-                auto moves = stack_vector<Move<R,B>>(Alloc<Move<R,B>>{a});
+                Arena<Action<R,B> > a;
+                auto moves = stack_vector<Action<R,B>>(Alloc<Action<R,B>>{a});
                 moves.reserve(DCTL_PP_STACK_RESERVE);
                 successor.generate(p, moves);
                 assert(!moves.empty());
@@ -234,7 +234,7 @@ private:
                 TT.insert(p, { best_value, type, depth, best_move } );
                 return best_value;
         }
-        void announce(Position const& p, int depth)
+        void announce(State const& p, int depth)
         {
                 std::cout << setup::diagram<pdn::protocol>()(p);
                 std::cout << setup::write<pdn::protocol>()(p) << '\n';
@@ -242,7 +242,7 @@ private:
         }
 
         template<class Stopwatch, class Successor>
-        void report(int depth, int value, Stopwatch const& stopwatch, Position const& p, Successor successor, Variation const& pv)
+        void report(int depth, int value, Stopwatch const& stopwatch, State const& p, Successor successor, Variation const& pv)
         {
                 std::cout << "info";
 
@@ -278,7 +278,7 @@ private:
         }
 
         template<class Successor>
-        void insert_pv(Position const& p, Successor successor, Variation const& pv, int value, int ply = 0)
+        void insert_pv(State const& p, Successor successor, Variation const& pv, int value, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
@@ -292,9 +292,9 @@ private:
                         return;
                 }
 
-                using R = typename Position::rules_type;
-                using B = typename Position::board_type;
-                std::vector<Move<R,B>> moves;
+                using R = typename State::rules_type;
+                using B = typename State::board_type;
+                std::vector<Action<R,B>> moves;
                 successor.generate(p, moves);
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
@@ -304,7 +304,7 @@ private:
         }
 
         template<class Successor>
-        void print_pv(Position const& p, Successor successor, Variation const& pv, int ply = 0)
+        void print_pv(State const& p, Successor successor, Variation const& pv, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
@@ -313,9 +313,9 @@ private:
                         return;
                 }
 
-                using R = typename Position::rules_type;
-                using B = typename Position::board_type;
-                std::vector<Move<R,B>> moves;
+                using R = typename State::rules_type;
+                using B = typename State::board_type;
+                std::vector<Action<R,B>> moves;
                 successor.generate(p, moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
@@ -341,7 +341,7 @@ private:
         // 8-way buckets on 64-byte cache lines, (1 Gb = 2^27 entries)
         // depth-preferred replacement, incremental Zobrist hashing, 64-bit indices
         using TranspositionTable = hash::set_associative_cache<
-                Position,
+                State,
                 Transposition,
                 4,
                 hash::EmptyOldMin<hash::Shallowest>,

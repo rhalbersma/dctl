@@ -19,13 +19,13 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
         static_assert(!precedence::is_trivial_v<T>, "");
 
-        struct Move
+        struct Action
         {
                 std::size_t num_captured_;
                 constexpr auto num_captured() const noexcept { return num_captured_; }
         };
 
-        auto const moves = std::vector<Move>
+        auto const moves = std::vector<Action>
         {
                 { 1 },
                 { 2 },

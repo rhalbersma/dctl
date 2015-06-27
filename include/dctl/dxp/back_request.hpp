@@ -36,7 +36,7 @@ public:
                 return move_number_;
         }
 
-        char side_to_move() const
+        char side_player() const
         {
                 return side_to_move_;
         }
@@ -58,7 +58,7 @@ private:
 
         std::string do_body() const override
         {
-                return body(move_number(), side_to_move());
+                return body(move_number(), side_player());
         }
 
         static std::string body(int m, char c)

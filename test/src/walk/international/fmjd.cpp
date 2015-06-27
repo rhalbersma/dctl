@@ -1,6 +1,6 @@
 #include <walk/fixture.hpp>
 #include <dctl/board/types.hpp>
-#include <dctl/position.hpp>
+#include <dctl/state.hpp>
 #include <dctl/rules.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/walk/root.hpp>

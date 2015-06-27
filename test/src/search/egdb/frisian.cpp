@@ -8,7 +8,7 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(SearchEGDBFrisian)
 
-using F = Fixture< Position<rules::Frisian, board::International>, DefaultObjective >;
+using F = Fixture< State<rules::Frisian, board::International>, DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(Walinga, F)
 {

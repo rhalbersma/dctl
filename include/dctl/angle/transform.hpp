@@ -3,17 +3,17 @@
 
 namespace dctl {
 
-constexpr auto inverse(Angle a) noexcept
+constexpr auto inverse(Angle const& a) noexcept
 {
         return -a;
 }
 
-constexpr auto rotate(Angle a, Angle t) noexcept
+constexpr auto rotate(Angle const& a, Angle const& t) noexcept
 {
         return a + t;
 }
 
-constexpr auto mirror(Angle a, Angle t) noexcept
+constexpr auto mirror(Angle const& a, Angle const& t) noexcept
 {
         // a | rotate(inverse(t)) | inverse() | rotate(t)
         return rotate(inverse(rotate(a, inverse(t))), t);

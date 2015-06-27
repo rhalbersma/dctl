@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/row.hpp>      // Row
-#include <dctl/color.hpp>               // Color
+#include <dctl/player.hpp>               // Player
 
 namespace dctl {
 namespace board {
@@ -8,7 +8,7 @@ namespace board {
 template<class Board>
 struct Promotion
 {
-        static constexpr auto mask(Color c) noexcept
+        static constexpr auto mask(Player c) noexcept
         {
                 return Row<Board>::mask(!c, 0);
         }

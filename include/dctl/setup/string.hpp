@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/position/position.hpp>
-#include <dctl/color.hpp>
+#include <dctl/state/state.hpp>
+#include <dctl/player.hpp>
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/protocols.hpp>
 #include <dctl/setup/i_token.hpp>
@@ -19,14 +19,14 @@ template<class Token>
 auto read_color(char c)
 {
         switch (c) {
-        case Token::black : return Color::black;
-        case Token::white : return Color::white;
-        default           : assert(false); return Color::black;
+        case Token::black : return Player::black;
+        case Token::white : return Player::white;
+        default           : assert(false); return Player::black;
         }
 }
 
 template<class Token>
-char write_color(Color c)
+char write_color(Player c)
 {
         return Token::color[xstd::to_underlying_type(c)];
 }
@@ -50,12 +50,12 @@ struct write;
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
-        Position<Rules, Board> operator()(std::string const& s) const
+        State<Rules, Board> operator()(std::string const& s) const
         {
                 using Set = set_type<Board>;
                 Set by_color[2]{};
                 Set by_piece[2]{};
-                auto p_side = Color::black;
+                auto p_side = Player::black;
 
                 assert(by_color[0].none());
                 assert(by_color[1].none());
@@ -106,17 +106,17 @@ struct read<Rules, Board, pdn::protocol, Token>
 template<class Token>
 struct write<pdn::protocol, Token>
 {
-        template<class Position>
-        std::string operator()(Position const& p) const
+        template<class State>
+        std::string operator()(State const& p) const
         {
-                using Board = board_type_t<Position>;
+                using Board = board_type_t<State>;
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                   // opening quotes
                 sstr << write_color<Token>(p.to_move());                // side to move
 
                 for (auto i = 0; i < 2; ++i) {
-                        auto c = i ? Color::white : Color::black;
+                        auto c = i ? Player::white : Player::black;
                         if (p.pieces(c).any()) {
                                 sstr << Token::colon;                   // colon
                                 sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
@@ -141,12 +141,12 @@ struct write<pdn::protocol, Token>
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
-        Position<Rules, Board> operator()(std::string const& s) const
+        State<Rules, Board> operator()(std::string const& s) const
         {
                 using Set = set_type<Board>;
                 Set by_color[2]{};
                 Set by_piece[2]{};
-                auto p_side = Color::black;
+                auto p_side = Player::black;
 
                 assert(by_color[0].none());
                 assert(by_color[1].none());
@@ -166,8 +166,8 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : by_color[xstd::to_underlying_type(Color::black)].set(b); break;
-                        case Token::white : by_color[xstd::to_underlying_type(Color::white)].set(b); break;
+                        case Token::black : by_color[xstd::to_underlying_type(Player::black)].set(b); break;
+                        case Token::white : by_color[xstd::to_underlying_type(Player::white)].set(b); break;
                         case Token::empty : break;
                         default           : assert(false);
                         }
@@ -182,7 +182,7 @@ template<class Token>
 struct write<dxp::protocol, Token>
 {
         template<class Rules, class Board>
-        std::string operator()(Position<Rules, Board> const& p) const
+        std::string operator()(State<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
                 sstr << write_color<Token>(p.to_move());    // side to move

@@ -7,7 +7,7 @@
 #include <dctl/setup/diagram.hpp>               // diagram, bits, squares
 #include <dctl/board/algebraic.hpp>
 #include <iterator>
-#include <dctl/position/position.hpp>
+#include <dctl/state/state.hpp>
 #include <dctl/setup/diagram.hpp>
 #include <dctl/rules.hpp>
 #include <dctl/setup/string.hpp>
@@ -40,7 +40,7 @@ using BSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)
 {
-        auto const p = Position<rules::International, T>::initial();
+        auto const p = State<rules::International, T>::initial();
         std::cout << "W = " << T::width() << ", H = " << T::height() << ", bits = " << T::bits() << "\n\n";
         std::cout << setup::diagram<pdn::protocol>()(p);
 }
