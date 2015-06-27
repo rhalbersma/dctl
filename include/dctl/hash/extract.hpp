@@ -17,7 +17,7 @@ struct Hash
         }
 };
 
-struct ActiveColor
+struct ActivePlayer
 {
         template<class Key>
         auto operator()(Key const& key) const

@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(!is_pawn_jump_king_v<T>, "");
         static_assert(precedence::is_king_order_v<T>, "");
 
-        struct Move
+        struct Action
         {
                 std::size_t num_captured_;
                 std::size_t num_captured_kings_;
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 auto const& king_order() const noexcept { return king_order_;         }
         };
 
-        auto const moves = std::vector<Move>
+        auto const moves = std::vector<Action>
         {
                 { 1, 0, Piece::pawn, {      } },
                 { 1, 0, Piece::king, {      } },

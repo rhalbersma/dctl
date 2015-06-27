@@ -22,13 +22,13 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(jumpsep_v<T> == ':', "");
         static_assert(precedence::is_absolute_with_king_v<T>, "");
 
-        struct Move
+        struct Action
         {
                 Piece with;
                 constexpr auto is_with(Piece p) const noexcept { return with == p; }
         };
 
-        auto const moves = std::vector<Move>
+        auto const moves = std::vector<Action>
         {
                 { Piece::pawn },
                 { Piece::king }

@@ -7,16 +7,16 @@
 namespace dctl {
 namespace walk {
 
-auto const    unique_gen = successor::Successor<successor::select::legal, true >{};
-auto const duplicate_gen = successor::Successor<successor::select::legal, false>{};
+auto const    unique_gen = actions::Successor<actions::select::legal, true >{};
+auto const duplicate_gen = actions::Successor<actions::select::legal, false>{};
 
-template<class Position, class Successor, class Range>
-void test(Position const& p, Successor successor, Range const& leafs)
+template<class State, class Successor, class Range>
+void test(State const& p, Successor successor, Range const& leafs)
 {
         static_assert(sizeof(Transposition) == 8, "");
         using impl_tag = hash_tag;
-        Data<impl_tag, Position> d;
-        Enhancements<impl_tag, Position> e(&d);
+        Data<impl_tag, State> d;
+        Enhancements<impl_tag, State> e(&d);
         e.resize_TT(64_MiB);
 
         auto depth = 0;

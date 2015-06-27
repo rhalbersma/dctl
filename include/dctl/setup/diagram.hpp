@@ -19,10 +19,10 @@ struct diagram
 {
 public:
         // position content in diagram layout
-        template<class Position>
-        auto operator()(Position const& p) const
+        template<class State>
+        auto operator()(State const& p) const
         {
-                using Board = board_type_t<Position>;
+                using Board = board_type_t<State>;
                 using Coord = board::Coordinates<board::origin::UpperLeft>;
                 using namespace ranges;
 

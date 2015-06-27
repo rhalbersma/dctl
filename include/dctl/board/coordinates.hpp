@@ -36,7 +36,7 @@ constexpr auto operator!=(Coordinates<Origin> const& lhs, Coordinates<Origin> co
         return !(lhs == rhs);
 }
 
-constexpr auto rotate(Coordinates<origin::ScreenCentered> const& coord, Angle a)
+constexpr auto rotate(Coordinates<origin::ScreenCentered> const& coord, Angle const& a)
 {
         switch (a) {
         case   0 : return coord;

@@ -11,7 +11,7 @@ namespace dxp {
 
 /*
 
-        The format and semantics of Move are defined at:
+        The format and semantics of Action are defined at:
         http://www.mesander.nl/damexchange/emove.htm
 
 */

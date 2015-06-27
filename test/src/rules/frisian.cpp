@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         static_assert(is_orthogonal_jump_v<T>, "");
 
-        struct Move
+        struct Action
         {
                 std::size_t num_captured_;
                 std::size_t num_captured_kings_;
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 constexpr auto is_with(Piece p)    const noexcept { return with_ == p;          }
         };
 
-        auto const moves = std::vector<Move>
+        auto const moves = std::vector<Action>
         {
                 { 1, 0, Piece::pawn },
                 { 1, 0, Piece::king },

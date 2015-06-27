@@ -8,8 +8,8 @@ namespace trivial {
 
 struct equal_to
 {
-        template<class Move>
-        constexpr auto operator()(Move const&, Move const&) const noexcept
+        template<class Action>
+        constexpr auto operator()(Action const&, Action const&) const noexcept
         {
                 return true;
         }
@@ -17,8 +17,8 @@ struct equal_to
 
 struct less
 {
-        template<class Move>
-        constexpr auto operator()(Move const&, Move const&) const noexcept
+        template<class Action>
+        constexpr auto operator()(Action const&, Action const&) const noexcept
         {
                 return false;
         }
@@ -32,8 +32,8 @@ XSTD_PP_TTI_TYPENAME(less    , trivial::less    )
 template<class Rules>
 struct not_equal_to_t
 {
-        template<class Move>
-        constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
+        template<class Action>
+        constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
         {
                 return !equal_to_t<Rules>{}(lhs, rhs);
         }
@@ -42,8 +42,8 @@ struct not_equal_to_t
 template<class Rules>
 struct greater_t
 {
-        template<class Move>
-        constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
+        template<class Action>
+        constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
         {
                 return less_t<Rules>{}(rhs, lhs);
         }
@@ -52,8 +52,8 @@ struct greater_t
 template<class Rules>
 struct greater_equal_t
 {
-        template<class Move>
-        constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
+        template<class Action>
+        constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
         {
                 return !less_t<Rules>{}(lhs, rhs);
         }
@@ -62,8 +62,8 @@ struct greater_equal_t
 template<class Rules>
 struct less_equal_t
 {
-        template<class Move>
-        constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
+        template<class Action>
+        constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
         {
                 return !less_t<Rules>{}(rhs, lhs);
         }
@@ -72,8 +72,8 @@ struct less_equal_t
 template<class Rules>
 struct equivalent_to_t
 {
-        template<class Move>
-        constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
+        template<class Action>
+        constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
         {
                 return !(less_t<Rules>{}(lhs, rhs) || less_t<Rules>{}(rhs, lhs));
         }
@@ -82,8 +82,8 @@ struct equivalent_to_t
 template<class Rules>
 struct not_equivalent_to_t
 {
-        template<class Move>
-        constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
+        template<class Action>
+        constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
         {
                 return !equivalent_to_t<Rules>{}(lhs, rhs);
         }

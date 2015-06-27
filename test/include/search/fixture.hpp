@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/search/root.hpp>
 #include <dctl/search/objective.hpp>
-#include <dctl/position/position.hpp>
+#include <dctl/state/state.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/board/types.hpp>
 #include <dctl/rules.hpp>
@@ -12,13 +12,13 @@
 namespace dctl {
 namespace search {
 
-auto const unique_gen = successor::Successor<successor::select::legal, true >{};
+auto const unique_gen = actions::Successor<actions::select::legal, true >{};
 
-template<class Position, class Objective>
+template<class State, class Objective>
 class Fixture
 {
 public:
-        Root<Position, Objective> root_;
+        Root<State, Objective> root_;
 public:
         ~Fixture()
         {
@@ -31,8 +31,8 @@ public:
         }
 
         using Test = std::pair<std::string, int>;
-        using Rules = typename Position::rules_type;
-        using Board = typename Position::board_type;
+        using Rules = typename State::rules_type;
+        using Board = typename State::board_type;
 
         template<class Range>
         void run(Range const& tests)
@@ -46,7 +46,7 @@ public:
         }
 };
 
-using DefaultObjective = GameObjective<NoMovesLeft>;
+using DefaultObjective = GameObjective<NoActionsLeft>;
 
 }       // namespace search
 }       // namespace dctl

@@ -21,42 +21,42 @@ namespace dctl {
 
 */
 
-constexpr auto right(Angle a) noexcept
+constexpr auto right(Angle const& a) noexcept
 {
         return rotate(0_deg, a);
 }
 
-constexpr auto right_up(Angle a) noexcept
+constexpr auto right_up(Angle const& a) noexcept
 {
         return rotate(45_deg, a);
 }
 
-constexpr auto up(Angle a) noexcept
+constexpr auto up(Angle const& a) noexcept
 {
         return rotate(90_deg, a);
 }
 
-constexpr auto left_up(Angle a) noexcept
+constexpr auto left_up(Angle const& a) noexcept
 {
         return rotate(135_deg, a);
 }
 
-constexpr auto left(Angle a) noexcept
+constexpr auto left(Angle const& a) noexcept
 {
         return rotate(180_deg, a);
 }
 
-constexpr auto left_down(Angle a) noexcept
+constexpr auto left_down(Angle const& a) noexcept
 {
         return rotate(225_deg, a);
 }
 
-constexpr auto down(Angle a) noexcept
+constexpr auto down(Angle const& a) noexcept
 {
         return rotate(270_deg, a);
 }
 
-constexpr auto right_down(Angle a) noexcept
+constexpr auto right_down(Angle const& a) noexcept
 {
         return rotate(315_deg, a);
 }

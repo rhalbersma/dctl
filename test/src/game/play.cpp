@@ -1,8 +1,8 @@
-#include <dctl/move.hpp>
-#include <dctl/position.hpp>
+#include <dctl/action.hpp>
+#include <dctl/state.hpp>
 #include <dctl/setup/string.hpp>
-#include <dctl/successor.hpp>
-#include <dctl/position/make_copy.hpp>
+#include <dctl/actions.hpp>
+#include <dctl/state/make_copy.hpp>
 #include <range/v3/all.hpp>
 #include <iomanip>
 #include <iostream>
@@ -18,7 +18,7 @@ int main()
 {
         using Rules = rules::International;
         using Board = board::International;
-        using Pos = Position<Rules, Board>;
+        using Pos = State<Rules, Board>;
 
         auto initial = Pos::initial();
 
@@ -31,8 +31,8 @@ int main()
                 std::cout << fen << p;
                 std::cout << "[" << p.reversible_moves() << "]\n";
 
-                std::vector<Move<Rules, Board>> moves;
-                successor::Successor<>{}.generate(p, moves);
+                std::vector<Action<Rules, Board>> moves;
+                actions::Successor<>{}.generate(p, moves);
                 ranges::sort(moves, [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);
                 });

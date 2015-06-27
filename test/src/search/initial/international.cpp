@@ -7,11 +7,11 @@ using namespace dctl;
 
 using Rules = rules::International;
 using Board = board::International;
-using F = search::Fixture< Position<Rules, Board>, search::DefaultObjective >;
+using F = search::Fixture< State<Rules, Board>, search::DefaultObjective >;
 
 int main()
 {
-        auto const p = Position<Rules, Board>::initial();
+        auto const p = State<Rules, Board>::initial();
         F f;
         f.root_.analyze(p, search::unique_gen, 71);
 }

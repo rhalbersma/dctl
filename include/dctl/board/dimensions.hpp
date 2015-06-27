@@ -55,7 +55,7 @@ constexpr auto ul_parity(Dimensions const& dim) noexcept
         return static_cast<bool>(height_parity(dim) ^ !ll_parity(dim));
 }
 
-constexpr auto rotate(Dimensions const& dim, Angle a)
+constexpr auto rotate(Dimensions const& dim, Angle const& a)
 {
         switch (a) {
         case   0 : return dim;

@@ -13,7 +13,7 @@ template
         class T,
         std::size_t N,
         class Tag,
-        class Parity = extract::ActiveColor,
+        class Parity = extract::ActivePlayer,
         class Container = set_associative_cache<Key, T, N, EmptyOldMin<Smallest>, Tag>
 >
 struct dual_set_associative_cache

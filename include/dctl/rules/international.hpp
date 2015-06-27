@@ -16,8 +16,8 @@ struct International
 
         struct equal_to
         {
-                template<class Move>
-                constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
                         return lhs.num_captured() == rhs.num_captured();
                 }
@@ -25,8 +25,8 @@ struct International
 
         struct less
         {
-                template<class Move>
-                constexpr auto operator()(Move const& lhs, Move const& rhs) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
                         return lhs.num_captured() < rhs.num_captured();
                 }

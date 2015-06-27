@@ -8,7 +8,7 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(SearchEGDBInternational)
 
-using F = Fixture< Position<rules::International, board::International>, DefaultObjective >;
+using F = Fixture< State<rules::International, board::International>, DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {

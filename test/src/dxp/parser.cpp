@@ -1,5 +1,5 @@
 #include <dctl/dxp/message.hpp>                         // Message
-#include <dctl/dxp/types.hpp>                           // GameRequest, GameAcknowledge, Move, GameEnd, Chat, BackRequest, BackAcknowledge
+#include <dctl/dxp/types.hpp>                           // GameRequest, GameAcknowledge, Action, GameEnd, Chat, BackRequest, BackAcknowledge
 #include <dctl/factory/factory.hpp>                     // Factory
 #include <dctl/type_traits.hpp>                         // type_t
 #include <boost/mpl/for_each.hpp>                       // for_each
