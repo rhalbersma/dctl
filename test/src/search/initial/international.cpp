@@ -2,6 +2,7 @@
 #include <dctl/board/types.hpp>
 #include <dctl/rules.hpp>
 #include <dctl/setup/string.hpp>
+#include <boost/test/unit_test.hpp>
 
 using namespace dctl;
 
@@ -9,9 +10,12 @@ using Rules = rules::International;
 using Board = board::International;
 using F = search::Fixture< State<Rules, Board>, search::DefaultObjective >;
 
-int main()
+BOOST_AUTO_TEST_SUITE(SearchInitial)
+
+BOOST_FIXTURE_TEST_CASE(I, F)
 {
         auto const p = State<Rules, Board>::initial();
-        F f;
-        f.root_.analyze(p, search::unique_gen, 71);
+        root_.analyze(p, search::unique_gen, 71);
 }
+
+BOOST_AUTO_TEST_SUITE_END()

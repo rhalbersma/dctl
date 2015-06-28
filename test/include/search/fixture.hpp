@@ -6,6 +6,7 @@
 #include <dctl/board/types.hpp>
 #include <dctl/rules.hpp>
 #include <dctl/utility/units.hpp>
+#include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
 #include <string>                       // string
 #include <utility>                      // pair
 
@@ -22,7 +23,7 @@ public:
 public:
         ~Fixture()
         {
-                root_.resize_hash(65_KiB);
+                root_.resize_hash(64_KiB);
         }
 
         Fixture()
