@@ -17,12 +17,6 @@ class PiecePlacement
         Set by_color[2];
         Set by_piece[2];
 
-        template<Player ToMove>
-        static constexpr auto promotion()
-        {
-                return board::Promotion<Board>::mask(ToMove);
-        }
-
         auto invariant() const
         {
                 auto constexpr squares = board::Squares<Board>::mask();

@@ -1,7 +1,8 @@
-#include <boost/test/unit_test.hpp>
 #include <search/fixture.hpp>
 #include <dctl/board/types.hpp>
 #include <dctl/rules.hpp>
+#include <boost/test/unit_test.hpp>
+#include <vector>
 
 namespace dctl {
 namespace search {
@@ -12,7 +13,7 @@ using F = Fixture< State<rules::Frisian, board::International>, DefaultObjective
 
 BOOST_FIXTURE_TEST_CASE(Walinga, F)
 {
-        Test const tests[] =
+        auto const tests = std::vector<Test>
         {
                 { "W:WK46,28:BK43", 41 },       // Walinga book
         };

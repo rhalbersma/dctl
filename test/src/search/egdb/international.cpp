@@ -1,7 +1,8 @@
-#include <boost/test/unit_test.hpp>
 #include <search/fixture.hpp>
 #include <dctl/board/types.hpp>
 #include <dctl/rules.hpp>
+#include <boost/test/unit_test.hpp>
+#include <vector>
 
 namespace dctl {
 namespace search {
@@ -12,7 +13,7 @@ using F = Fixture< State<rules::International, board::International>, DefaultObj
 
 BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {
-        Test const tests[] =
+        auto const tests = std::vector<Test>
         {
                 { "W:W23:B5,6", 29 },   // David & Goliath
         };
@@ -24,7 +25,7 @@ BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 
 BOOST_FIXTURE_TEST_CASE(Longestl11, F)
 {
-        Test const tests[] =
+        auto const tests = std::vector<Test>
         {
                 { "W:W33:B2"  , 17 },   // 1010
                 { "W:WK42:B22",  7 },   // 0110
@@ -36,7 +37,7 @@ BOOST_FIXTURE_TEST_CASE(Longestl11, F)
 
 BOOST_FIXTURE_TEST_CASE(Longest21, F)
 {
-        Test const tests[] =
+        auto const tests = std::vector<Test>
         {
                 { "W:W40,44:B3"   , 23 },       // 2010
                 { "W:WK2,11:B45"  , 11 },       // 1110
@@ -56,7 +57,7 @@ BOOST_FIXTURE_TEST_CASE(Longest21, F)
 
 BOOST_FIXTURE_TEST_CASE(Longest22, F)
 {
-        Test const tests[] =
+        auto const tests = std::vector<Test>
         {
                 { "W:W33,46:B4,5"     , 39 },   // 2020
                 { "W:W8,K50:B3,32"    , 27 },   // 1120
@@ -73,7 +74,7 @@ BOOST_FIXTURE_TEST_CASE(Longest22, F)
 
 BOOST_FIXTURE_TEST_CASE(Longest31, F)
 {
-        Test const tests[] =
+        auto const tests = std::vector<Test>
         {
                 { "W:W12,13,16:B30"    , 23 },  // 3010
                 { "W:WK4,16,18:B34"    , 21 },  // 2110
