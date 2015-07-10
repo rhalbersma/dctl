@@ -73,13 +73,13 @@ bool is_cycle(State const& p)
         using namespace xstd::support_literals;
 
         // a cycle needs at least 4 reversible moves
-        if (p.reversible_moves() < 4) return false;
+        if (p.reversible_actions() < 4) return false;
 
         // find the parent position at 4 ply above the current position
         auto q = grand_parent(*grand_parent(p));
 
         // compare the ancestor hash indices with the current hash index
-        for (auto i = 4_z; i <= p.reversible_moves(); i += 2) {
+        for (auto i = 4_z; i <= p.reversible_actions(); i += 2) {
                 if (q->hash() == p.hash())
                         return true;
                 q = grand_parent(*q);
@@ -135,7 +135,7 @@ bool is_no_progress(State const& p, std::true_type)
 {
         using Rules = typename State::rules_type;
 
-        return p.reversible_moves() >= max_reversible_moves_v<Rules>;
+        return p.reversible_actions() >= max_reversible_moves_v<Rules>;
 }
 
 }       // namespace detail

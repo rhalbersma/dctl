@@ -29,7 +29,7 @@ int main()
                 auto const p = game.top();
                 std::cout << diag << p;
                 std::cout << fen << p;
-                std::cout << "[" << p.reversible_moves() << "]\n";
+                std::cout << "[" << p.reversible_actions() << "]\n";
 
                 std::vector<Action<Rules, Board>> moves;
                 actions::Successor<>{}.generate(p, moves);
