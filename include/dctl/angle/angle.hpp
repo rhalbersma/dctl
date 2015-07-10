@@ -19,6 +19,8 @@ class Angle
         }
 
 public:
+        Angle() = default;
+
         explicit constexpr Angle(int n) noexcept
         :
                 degrees{make_angle(n)}
@@ -30,8 +32,6 @@ public:
         {
                 return degrees;
         }
-
-        Angle() = default;
 
         constexpr auto& operator+=(Angle const& other) noexcept
         {
