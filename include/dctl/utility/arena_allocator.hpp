@@ -13,15 +13,15 @@ template <std::size_t N>
 class arena
 {
 public:
-        arena() noexcept
-        :
-                ptr_(buf_)
-        {}
-
         ~arena()
         {
                 reset();
         }
+
+        arena() noexcept
+        :
+                ptr_(buf_)
+        {}
 
         arena(arena const&) = delete;
         arena& operator=(arena const&) = delete;
