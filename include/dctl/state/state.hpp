@@ -10,7 +10,7 @@
 #include <dctl/state/piece_placement/zobrist.hpp>
 #include <dctl/state/to_move/to_move.hpp>
 #include <dctl/state/to_move/zobrist.hpp>
-#include <dctl/state/reversible_moves.hpp>
+#include <dctl/state/reversible_actions.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
 #include <dctl/zobrist/accumulate.hpp>
@@ -29,12 +29,12 @@ class State
 public:
         using board_type = Board;
         using rules_type = Rules;
-        using   set_type = dctl::set_type<Board>;
+        using   set_type = get_set_type<Board>;
         using TreeIterator = State const*;
 
 private:
         PiecePlacement<Rules, Board> piece_placement_{};
-        ReversibleActions reversible_moves_{};
+        ReversibleActions reversible_actions_{};
         //MostRecentlyPushedKings<Rules, Board> mrp_kings_;
         TreeIterator parent_{};
         std::size_t hash_{};
@@ -146,9 +146,9 @@ public:
                 return mrp_kings_.is_limited(c);
         }
 */
-        auto reversible_moves() const
+        auto reversible_actions() const
         {
-                return reversible_moves_;
+                return reversible_actions_;
         }
 
         auto parent() const
@@ -199,9 +199,9 @@ private:
 
         // unrestricted consecutive moves with the same king
         template<class Action>
-        auto make_irreversible(Action const& m, std::false_type)
+        auto make_irreversible(Action const& a, std::false_type)
         {
-                reversible_moves_.make(m);
+                reversible_actions_.make(a);
                 make_distance_to_root();
         }
 /*

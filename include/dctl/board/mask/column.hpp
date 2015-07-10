@@ -34,7 +34,7 @@ class Column
                 return make_set_if<Board>(is_column{ToMove, column});
         }
 
-        using table_type = std::array<set_type<Board>, Board::width()>;
+        using table_type = std::array<get_set_type<Board>, Board::width()>;
         static constexpr table_type table[] =
         {
                 make_array<Board::width()>(init<Player::black>),

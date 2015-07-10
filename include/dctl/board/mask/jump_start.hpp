@@ -44,7 +44,7 @@ class JumpStart
         static constexpr auto beta  = Board::is_orthogonal_captures ?  0_deg : 45_deg;
         static constexpr auto N     = Board::is_orthogonal_captures ?      8 :      4;
 
-        using table_type = std::array<set_type<Board>, N>;
+        using table_type = std::array<get_set_type<Board>, N>;
         static constexpr table_type table = make_array<N>(init);
 
 public:

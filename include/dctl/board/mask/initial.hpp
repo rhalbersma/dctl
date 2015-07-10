@@ -38,7 +38,7 @@ class Initial
         }
 
         static constexpr auto N = Board::height() / 2 + 1;
-        using table_type = std::array<set_type<Board>, N>;
+        using table_type = std::array<get_set_type<Board>, N>;
 
         static constexpr table_type table[] =
         {

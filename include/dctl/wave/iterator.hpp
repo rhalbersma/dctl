@@ -15,7 +15,7 @@ using Iterator = boost::counting_iterator
         int                                     // DifferenceType
 >;
 
-template<class Board, int Direction, class Set = set_type<Board>>
+template<class Board, int Direction, class Set = get_set_type<Board>>
 Iterator<Board, Direction> make_iterator(Set const& s)
 {
         return { Cursor<Board, Direction>{s} };

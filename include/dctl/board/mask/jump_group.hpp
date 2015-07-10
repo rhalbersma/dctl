@@ -36,7 +36,7 @@ class JumpGroup
                 return make_set_if<Board>(is_jump_group{from_sq});
         }
 
-        using table_type = std::array<set_type<Board>, 4>;
+        using table_type = std::array<get_set_type<Board>, 4>;
         static constexpr table_type table =
         {{
                 init(Board::edge_le() + 0),

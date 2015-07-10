@@ -22,7 +22,7 @@ class BaseAction<Rules, Board, false>
 public:
         using board_type = Board;
         using rules_type = Rules;
-        using   set_type = set_type<Board>;
+        using   set_type = get_set_type<Board>;
 
 private:
         set_type captured_[2];
@@ -171,7 +171,7 @@ class BaseAction<Rules, Board, true>
 :
         public BaseAction<Rules, Board, false>
 {
-        set_type<Board> king_order_{};
+        get_set_type<Board> king_order_{};
 
         using base = BaseAction<Rules, Board, false>;
 public:
