@@ -52,9 +52,9 @@ struct read<Rules, Board, pdn::protocol, Token>
 {
         State<Rules, Board> operator()(std::string const& s) const
         {
-                using Set = set_type<Board>;
-                Set by_color[2]{};
-                Set by_piece[2]{};
+                using set_type = get_set_type<Board>;
+                set_type by_color[2]{};
+                set_type by_piece[2]{};
                 auto p_side = Player::black;
 
                 assert(by_color[0].none());
@@ -143,9 +143,9 @@ struct read<Rules, Board, dxp::protocol, Token>
 {
         State<Rules, Board> operator()(std::string const& s) const
         {
-                using Set = set_type<Board>;
-                Set by_color[2]{};
-                Set by_piece[2]{};
+                using set_type = get_set_type<Board>;
+                set_type by_color[2]{};
+                set_type by_piece[2]{};
                 auto p_side = Player::black;
 
                 assert(by_color[0].none());

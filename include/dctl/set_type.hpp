@@ -12,6 +12,6 @@ constexpr auto align_on(std::size_t offset, std::size_t align) noexcept
 }
 
 template<class Board>
-using set_type = xstd::bitset<align_on(Board::bits(), 64)>;
+using get_set_type = xstd::bitset<align_on(Board::bits(), 64)>;
 
 }       // dctl

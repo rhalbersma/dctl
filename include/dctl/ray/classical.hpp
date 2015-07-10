@@ -8,7 +8,7 @@
 namespace dctl {
 namespace ray {
 
-template<class Board, int Direction, class Set = set_type<Board>>
+template<class Board, int Direction, class Set = get_set_type<Board>>
 auto classical(ray::Iterator<Board, Direction> from, Set const& propagator)
 {
         constexpr auto theta = Angle{Direction};

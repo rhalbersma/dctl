@@ -18,15 +18,13 @@ class Cursor
         static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");
 
-        using Set = set_type<Board>;
+        using set_type = get_set_type<Board>;
 
-        Set cursor_{};
+        set_type cursor_{};
 public:
-        // constructors
-
         Cursor() = default;
 
-        explicit Cursor(Set const& c) noexcept
+        explicit Cursor(set_type const& c) noexcept
         :
                 cursor_{c}
         {}

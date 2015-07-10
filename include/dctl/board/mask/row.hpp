@@ -34,7 +34,7 @@ class Row
                 return make_set_if<Board>(is_row{ToMove, row});
         }
 
-        using table_type = std::array<set_type<Board>, Board::height()>;
+        using table_type = std::array<get_set_type<Board>, Board::height()>;
         static constexpr table_type table[] =
         {
                 make_array<Board::height()>(init<Player::black>),

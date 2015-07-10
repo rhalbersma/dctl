@@ -3,6 +3,7 @@
 #include <dctl/player.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/set_type.hpp>
+#include <dctl/type_traits.hpp>
 #include <dctl/zobrist/accumulate.hpp>
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
@@ -12,10 +13,10 @@ namespace dctl {
 template<class Rules, class Board>
 class PiecePlacement
 {
-        using Set = set_type<Board>;
+        using set_type = get_set_type<Board>;
 
-        Set by_color[2];
-        Set by_piece[2];
+        set_type by_color[2];
+        set_type by_piece[2];
 
         auto invariant() const
         {
@@ -32,7 +33,9 @@ class PiecePlacement
         }
 
 public:
-        PiecePlacement(Set const& black, Set const& white, Set const& pawns, Set const& kings)
+        PiecePlacement() = default;
+
+        PiecePlacement(set_type const& black, set_type const& white, set_type const& pawns, set_type const& kings)
         :
                 by_color{black, white},
                 by_piece{pawns, kings}
@@ -40,20 +43,18 @@ public:
                 assert(invariant());
         }
 
-        PiecePlacement() = default;
-
         template<class Action>
-        auto make(Action const& m)
+        auto make(Action const& a)
         {
-                pieces(m.to_move()).reset(m.from());
-                pieces(m.to_move()).set  (m.dest());
-                pieces(m.with()).reset(m.from());
-                pieces(m.into()).set  (m.dest());
+                pieces(a.to_move()).reset(a.from());
+                pieces(a.to_move()).set  (a.dest());
+                pieces(a.with()).reset(a.from());
+                pieces(a.into()).set  (a.dest());
 
-                if (m.is_jump()) {
-                        pieces(!m.to_move()) ^= m.captured();
-                        pieces(Piece::pawn ) ^= m.captured(Piece::pawn);
-                        pieces(Piece::king ) ^= m.captured(Piece::king);
+                if (a.is_jump()) {
+                        pieces(!a.to_move()) ^= a.captured();
+                        pieces(Piece::pawn ) ^= a.captured(Piece::pawn);
+                        pieces(Piece::king ) ^= a.captured(Piece::king);
                 }
 
                 assert(invariant());

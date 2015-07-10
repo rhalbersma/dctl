@@ -18,13 +18,13 @@ class KingTargets
         static constexpr auto init(std::size_t sq) noexcept
         {
                 constexpr auto squares = Squares<Board>::mask();
-                return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : set_type<Board>{};
+                return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : get_set_type<Board>{};
         }
 
         static constexpr auto theta = 45_deg;
         static constexpr auto beta  =  0_deg;
 
-        using table_type = std::array<set_type<Board>, Board::bits()>;
+        using table_type = std::array<get_set_type<Board>, Board::bits()>;
         static table_type const table[];
 
 public:

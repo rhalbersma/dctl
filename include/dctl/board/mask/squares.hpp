@@ -18,7 +18,7 @@ private:
                 }
         };
 
-        using value_type = set_type<Board>;
+        using value_type = get_set_type<Board>;
         static constexpr value_type value = make_set_if<Board>(is_squares{});
 
 public:

@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
         );
 
         BOOST_CHECK(
-                ranges::accumulate(columns, set_type<T>{}, [](auto result, auto i){
+                ranges::accumulate(columns, get_set_type<T>{}, [](auto result, auto i){
                         return result ^ Column<T>::mask(Player::white, i);
                 }) == Squares<T>::mask()
         );
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
         );
 
         BOOST_CHECK(
-                ranges::accumulate(rows, set_type<T>{}, [](auto result, auto i){
+                ranges::accumulate(rows, get_set_type<T>{}, [](auto result, auto i){
                         return result ^ Row<T>::mask(Player::white, i);
                 }) == Squares<T>::mask()
         );
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSeq
         );
 
         BOOST_CHECK(
-                ranges::accumulate(jump_groups, set_type<T>{}, [](auto result, auto i){
+                ranges::accumulate(jump_groups, get_set_type<T>{}, [](auto result, auto i){
                         return result ^ JumpGroup<T>::mask(i);
                 }) == Squares<T>::mask()
         );

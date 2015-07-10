@@ -22,7 +22,7 @@ constexpr auto direction_v<Iterator<Board, Direction>> = Angle{Direction};
 template<class Board, int Direction>
 constexpr auto is_onboard(Iterator<Board, Direction> it)
 {
-        return *it < set_type<Board>::size();
+        return *it < get_set_type<Board>::size();
 }
 
 }       // namespace ray
