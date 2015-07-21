@@ -16,7 +16,11 @@ struct Italian
         static constexpr auto is_pawn_jump_king = false;        // 5.3(b)
         static constexpr auto max_repetitions = 4;              // 9.3(b1)
         static constexpr auto max_reversible_moves = 80;        // 10.4
-        static constexpr auto is_king_order = true;             // 6.9
+
+        static constexpr auto is_quantity = true;               // 6.6
+        static constexpr auto is_modality = true;               // 6.7
+        static constexpr auto is_quality = true;                // 6.8
+        static constexpr auto is_ordering = true;               // 6.9
 
         struct equal_to
         {
@@ -24,8 +28,8 @@ struct Italian
                 /*constexpr*/ auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
                         return
-                                std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with(Piece::king), lhs.king_order()) ==
-                                std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with(Piece::king), rhs.king_order())
+                                std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king), lhs.num_captured(Piece::king), lhs.piece_order()) ==
+                                std::forward_as_tuple(rhs.num_captured(), rhs.is_with(Piece::king), rhs.num_captured(Piece::king), rhs.piece_order())
                         ;
                 }
         };
@@ -36,8 +40,8 @@ struct Italian
                 /*constexpr*/ auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
                         return
-                                std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with(Piece::king), lhs.king_order()) <
-                                std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with(Piece::king), rhs.king_order())
+                                std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king), lhs.num_captured(Piece::king), lhs.piece_order()) <
+                                std::forward_as_tuple(rhs.num_captured(), rhs.is_with(Piece::king), rhs.num_captured(Piece::king), rhs.piece_order())
                         ;
                 }
         };

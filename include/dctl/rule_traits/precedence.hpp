@@ -93,16 +93,12 @@ template<class Rules>
 constexpr auto is_complete_v = !(is_equal_to_v<Rules> ^ is_less_v<Rules>);
 
 template<class Rules>
-using is_complete = std::integral_constant<bool, is_complete_v<Rules>>;
-
-template<class Rules>
 constexpr auto is_trivial_v = !(is_equal_to_v<Rules> || is_less_v<Rules>);
 
-template<class Rules>
-using is_trivial = std::integral_constant<bool, is_trivial_v<Rules>>;
-
-XSTD_PP_TTI_CONSTANT(is_king_order, false)
-XSTD_PP_TTI_CONSTANT(is_absolute_with_king, false)
+XSTD_PP_TTI_CONSTANT(is_quantity, false)
+XSTD_PP_TTI_CONSTANT(is_quality, false)
+XSTD_PP_TTI_CONSTANT(is_modality, false)
+XSTD_PP_TTI_CONSTANT(is_ordering, false)
 
 }       // namespace precedence
 }       // namespace dctl

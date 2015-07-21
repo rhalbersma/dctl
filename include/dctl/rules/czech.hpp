@@ -14,7 +14,8 @@ struct Czech
 
         static constexpr auto jumpsep = ':';
         static constexpr auto notation = Notation::algebraic;
-        static constexpr auto is_absolute_with_king = true;
+
+        static constexpr auto is_modality = true;
 
         struct equal_to
         {

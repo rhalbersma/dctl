@@ -13,6 +13,9 @@ struct Spanish
         static constexpr auto is_backward_pawn_jump = false;
         using king_range_category = long_ranged_tag;
 
+        static constexpr auto is_quantity = true;
+        static constexpr auto is_quality = true;
+
         struct equal_to
         {
                 template<class Action>
