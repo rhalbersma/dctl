@@ -16,6 +16,10 @@ struct Frisian
         static constexpr auto is_orthogonal_jump = true;
         static constexpr auto max_same_king_push = 3;
 
+        static constexpr auto is_quantity = true;
+        static constexpr auto is_quality = true;
+        static constexpr auto is_modality = true;
+
         struct equal_to
         {
                 template<class Action>
@@ -33,9 +37,8 @@ struct Frisian
                 template<class Action>
                 /*constexpr*/ auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
-                        auto const delta_pieces = static_cast<int>(lhs.num_captured())            - static_cast<int>(rhs.num_captured());
-                        auto const delta_kings  = static_cast<int>(lhs.num_captured(Piece::king)) - static_cast<int>(rhs.num_captured(Piece::king));
-                        auto const delta_pawns  = delta_pieces - delta_kings;
+                        auto const delta_pawns = static_cast<int>(lhs.num_captured(Piece::pawn)) - static_cast<int>(rhs.num_captured(Piece::pawn));
+                        auto const delta_kings = static_cast<int>(lhs.num_captured(Piece::king)) - static_cast<int>(rhs.num_captured(Piece::king));
 
                         // Art. 11
                         if (delta_kings * delta_pawns < 0)

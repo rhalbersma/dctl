@@ -14,6 +14,8 @@ struct International
         static constexpr auto max_repetitions = 3;              // 6.1
         static constexpr auto max_reversible_moves = 50;        // 6.2
 
+        static constexpr auto is_quantity = true;
+
         struct equal_to
         {
                 template<class Action>

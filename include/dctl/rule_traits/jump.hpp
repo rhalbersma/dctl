@@ -6,14 +6,19 @@
 
 namespace dctl {
 
+struct stopped_capture_tag {};
+struct passing_capture_tag {};
+
+XSTD_PP_TTI_TYPENAME(capture_category, stopped_capture_tag)
+
 XSTD_PP_TTI_CONSTANT(is_backward_pawn_jump, false)
 XSTD_PP_TTI_CONSTANT(is_orthogonal_jump, false)
 XSTD_PP_TTI_CONSTANT(is_pawn_jump_king, true)
-XSTD_PP_TTI_CONSTANT(is_en_passant_jump_removal, false)
 
 template<class Rules>
 constexpr auto is_reversible_king_jump_direction_v =
-        is_en_passant_jump_removal_v<Rules> && std::is_same<king_range_category_t<Rules>, long_ranged_tag>::value
+        std::is_same<capture_category_t<Rules>, passing_capture_tag>::value &&
+        std::is_same<king_range_category_t<Rules>, long_ranged_tag>::value
 ;
 
 template<class Rules>
