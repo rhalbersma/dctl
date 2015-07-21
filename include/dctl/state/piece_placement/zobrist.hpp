@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>
+#include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/random/uniform.hpp>      // runif
 #include <xstd/type_traits.hpp>         // to_underlying_type
@@ -15,7 +15,7 @@ class PiecePlacement
         static std::array<std::size_t, N> const by_color[2];
         static std::array<std::size_t, N> const by_piece[2];
 public:
-        static auto const& pieces(Player c)
+        static auto const& pieces(Color c)
         {
                 return by_color[xstd::to_underlying_type(c)];
         }
