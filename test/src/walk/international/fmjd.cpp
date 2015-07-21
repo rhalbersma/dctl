@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(Woldouby)
         auto const leafs = std::vector<std::size_t>{ 6, 12, 30, 73, 215, 590, 1'944, 6'269, 22'369, 88'050, 377'436, 1'910'989, 9'872'645, 58'360'286, 346'184'885 };
         test(p, unique_gen, leafs);
 }
-
+/*
 // The "Perft" thread on the FMJD forum (results until depth=11)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308&start=60
 
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(AlmostPromotion)
         auto const leafs = std::vector<std::size_t>{ 9, 81, 795, 7'578, 86'351, 936'311, 11'448'262, 138'362'698, 1'799'526'674 };
         test(p, unique_gen, leafs);
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace walk

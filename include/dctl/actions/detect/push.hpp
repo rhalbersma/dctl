@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_restricted_king_push_t
 #include <dctl/actions/detect/primary_fwd.hpp>        // Detect (primary template)
@@ -11,7 +11,7 @@
 namespace dctl {
 namespace actions {
 
-template<Player ToMove, bool Reverse>
+template<Color ToMove, bool Reverse>
 class Detect<ToMove, select::push, Reverse>
 {
 public:

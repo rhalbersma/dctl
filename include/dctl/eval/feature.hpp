@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>               // Player
+#include <dctl/color.hpp>               // Player
 #include <dctl/piece.hpp>
 #include <dctl/board/mask.hpp>          // Column, Row
 #include <dctl/eval/weight.hpp>     // Weight
@@ -9,7 +9,7 @@
 namespace dctl {
 namespace evaluate {
 
-template<Player ToMove>
+template<Color ToMove>
 class Feature
 {
 public:

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>
+#include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/set_type.hpp>
@@ -26,8 +26,8 @@ public:
         :
                 by_color_piece_
                 {
-                        {p.num_pieces(Player::black, Piece::pawn), p.num_pieces(Player::black, Piece::king)},
-                        {p.num_pieces(Player::white, Piece::pawn), p.num_pieces(Player::white, Piece::king)}
+                        {p.num_pieces(Color::black, Piece::pawn), p.num_pieces(Color::black, Piece::king)},
+                        {p.num_pieces(Color::white, Piece::pawn), p.num_pieces(Color::white, Piece::king)}
                 }
         {}
 
@@ -39,27 +39,27 @@ public:
                 make_capture(m);
         }
 
-        constexpr auto const& index(Player c) const noexcept
+        constexpr auto const& index(Color c) const noexcept
         {
                 return index_[xstd::to_underlying_type(c)];
         }
 
-        constexpr auto const& count(Player c) const noexcept
+        constexpr auto const& count(Color c) const noexcept
         {
                 return count_[xstd::to_underlying_type(c)];
         }
 
-        constexpr auto is_tracked(Player c) const noexcept
+        constexpr auto is_tracked(Color c) const noexcept
         {
                 return 0 < num_pieces(c, Piece::pawn) && 0 < num_pieces(c, Piece::king);
         }
 
-        constexpr auto is_counted(Player c) const noexcept
+        constexpr auto is_counted(Color c) const noexcept
         {
                 return 0 < count(c);
         }
 
-        constexpr auto is_limited(Player c) const noexcept
+        constexpr auto is_limited(Color c) const noexcept
         {
                 return count(c) == M;
         }
@@ -68,10 +68,10 @@ public:
         friend auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyPushedKings const& mrp_kings)
         {
                 return
-                        h.index(Player::black)[mrp_kings.index(Player::black)] ^
-                        h.index(Player::white)[mrp_kings.index(Player::white)] ^
-                        h.count(Player::black)[mrp_kings.count(Player::black)] ^
-                        h.count(Player::white)[mrp_kings.count(Player::white)]
+                        h.index(Color::black)[mrp_kings.index(Color::black)] ^
+                        h.index(Color::white)[mrp_kings.index(Color::white)] ^
+                        h.count(Color::black)[mrp_kings.count(Color::black)] ^
+                        h.count(Color::white)[mrp_kings.count(Color::white)]
                 ;
         }
 
@@ -120,14 +120,14 @@ private:
                 num_pieces(!m.to_move(), Piece::king) -= m.num_captured(Piece::king);
         }
 
-        constexpr void reset(Player c)
+        constexpr void reset(Color c)
         {
                 assert(is_tracked(c));
                 index(c) = N;
                 count(c) = 0;
         }
 
-        constexpr void init(Player c, std::size_t dest_sq)
+        constexpr void init(Color c, std::size_t dest_sq)
         {
                 assert(is_tracked(c));
                 assert(is_onboard(dest_sq));
@@ -136,7 +136,7 @@ private:
                 assert(is_counted(c));
         }
 
-        constexpr void increment(Player c, std::size_t dest_sq)
+        constexpr void increment(Color c, std::size_t dest_sq)
         {
                 assert(is_counted(c));
                 assert(is_onboard(dest_sq));
@@ -144,22 +144,22 @@ private:
                 ++count(c);
         }
 
-        constexpr auto& index(Player c) noexcept
+        constexpr auto& index(Color c) noexcept
         {
                 return index_[xstd::to_underlying_type(c)];
         }
 
-        constexpr auto& count(Player c) noexcept
+        constexpr auto& count(Color c) noexcept
         {
                 return count_[xstd::to_underlying_type(c)];
         }
 
-        constexpr auto& num_pieces(Player c, Piece p) noexcept
+        constexpr auto& num_pieces(Color c, Piece p) noexcept
         {
                 return by_color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 
-        constexpr auto const& num_pieces(Player c, Piece p) const noexcept
+        constexpr auto const& num_pieces(Color c, Piece p) const noexcept
         {
                 return by_color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }

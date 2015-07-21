@@ -36,10 +36,4 @@ public:
         }
 };
 
-template<class Action>
-constexpr auto result(ReversibleActions const& lhs, Action const& a) noexcept
-{
-        ReversibleActions nrv{lhs}; nrv.make(a); return nrv;
-}
-
 }       // namespace dctl

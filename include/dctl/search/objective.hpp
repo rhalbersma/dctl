@@ -68,8 +68,8 @@ struct terminal<Misere>
 };
 
 template<class State>
-bool is_cycle(State const& p)
-{
+bool is_cycle(State const& /*p*/)
+{/*
         using namespace xstd::support_literals;
 
         // a cycle needs at least 4 reversible moves
@@ -83,7 +83,7 @@ bool is_cycle(State const& p)
                 if (q->hash() == p.hash())
                         return true;
                 q = grand_parent(*q);
-        }
+        }*/
         return false;
 }
 
@@ -106,7 +106,7 @@ struct cycle<FirstPlayerWin>
         template<class State>
         static int value(State const& p)
         {
-                return (p.distance_to_root() % 2) ? loss_min() : win_min();
+                return win_min();//(p.distance_to_root() % 2) ? loss_min() : win_min();
         }
 };
 
@@ -135,7 +135,7 @@ bool is_no_progress(State const& p, std::true_type)
 {
         using Rules = typename State::rules_type;
 
-        return p.reversible_actions() >= max_reversible_moves_v<Rules>;
+        return false;//p.reversible_actions() >= max_reversible_moves_v<Rules>;
 }
 
 }       // namespace detail

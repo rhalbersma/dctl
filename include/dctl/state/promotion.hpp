@@ -1,10 +1,10 @@
 #pragma once
 #include <dctl/board/mask.hpp>
-#include <dctl/player.hpp>
+#include <dctl/color.hpp>
 
 namespace dctl {
 
-template<class Board, Player ToMove>
+template<class Board, Color ToMove>
 bool is_promotion(std::size_t sq)
 {
         auto constexpr promotion = board::Promotion<Board>::mask(ToMove);

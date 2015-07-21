@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle.hpp>                               // _deg, rotate, inverse
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/state/promotion.hpp>                  // is_promotion
 #include <dctl/actions/detail/raii.hpp>               // Launch, Capture, Visit, ToggleKingTargets, SetPromotion
@@ -22,7 +22,7 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Player ToMove, bool Reverse, class State, class Sequence>
+template<Color ToMove, bool Reverse, class State, class Sequence>
 class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Sequence>
 {
         using    KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, State, Sequence>;

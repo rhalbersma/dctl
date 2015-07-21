@@ -2,7 +2,7 @@
 #include <dctl/state.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/actions.hpp>
-#include <dctl/state/make_copy.hpp>
+#include <dctl/result.hpp>
 #include <range/v3/all.hpp>
 #include <iomanip>
 #include <iostream>
@@ -29,7 +29,7 @@ int main()
                 auto const p = game.top();
                 std::cout << diag << p;
                 std::cout << fen << p;
-                std::cout << "[" << p.reversible_actions() << "]\n";
+                //std::cout << "[" << p.reversible_actions() << "]\n";
 
                 std::vector<Action<Rules, Board>> moves;
                 actions::Successor<>{}.generate(p, moves);
@@ -89,6 +89,6 @@ int main()
                 }
 
                 auto const m = moves[static_cast<std::size_t>(choice)];
-                game.push(make_copy(p, m));
+                game.push(result(p, m));
         }
 }

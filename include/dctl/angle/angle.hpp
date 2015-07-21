@@ -6,16 +6,16 @@ namespace dctl {
 
 class Angle
 {
-        int degrees = 0;
-
-        constexpr auto invariant() const noexcept
-        {
-                return 0 <= degrees && degrees < 360;
-        }
+        int degrees;
 
         constexpr auto make_angle(int n) const noexcept
         {
                 return detail::abs_remainder(n, 360);
+        }
+
+        constexpr auto set_angle(int n) noexcept
+        {
+                degrees = make_angle(n);
         }
 
 public:
@@ -24,9 +24,7 @@ public:
         explicit constexpr Angle(int n) noexcept
         :
                 degrees{make_angle(n)}
-        {
-                assert(invariant());
-        }
+        {}
 
         /* implicit */ constexpr operator auto() const noexcept
         {
@@ -35,30 +33,26 @@ public:
 
         constexpr auto& operator+=(Angle const& other) noexcept
         {
-                degrees = make_angle(degrees + other.degrees);
-                assert(invariant());
+                set_angle(degrees + other.degrees);
                 return *this;
         }
 
         constexpr auto& operator-=(Angle const& other) noexcept
         {
-                degrees = make_angle(degrees - other.degrees);
-                assert(invariant());
+                set_angle(degrees - other.degrees);
                 return *this;
         }
 
         constexpr auto& operator*=(int n) noexcept
         {
-                degrees = make_angle(degrees * n);
-                assert(invariant());
+                set_angle(degrees * n);
                 return *this;
         }
 
         constexpr auto& operator/=(int n) // Throws: Nothing.
         {
                 assert(n != 0);
-                degrees = make_angle(degrees / n);
-                assert(invariant());
+                set_angle(degrees / n);
                 return *this;
         }
 

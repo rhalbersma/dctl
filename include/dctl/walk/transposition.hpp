@@ -10,16 +10,16 @@ class Transposition
         int         depth_ :  5;        // 32 ply
 
 public:
-        constexpr Transposition(std::size_t n, int d) noexcept
-        :
-                nodes_{n},
-                depth_{d}
-        {}
-
         constexpr Transposition() noexcept
         :
                 nodes_{0},
                 depth_{0}
+        {}
+
+        constexpr Transposition(std::size_t n, int d) noexcept
+        :
+                nodes_{n},
+                depth_{d}
         {}
 
         constexpr auto nodes() const noexcept

@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_SUITE(TestBoard)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, BoardSequence)
 {
-        BOOST_CHECK_EQUAL(Squares<T>::mask().count(), T::size());
+        BOOST_CHECK_EQUAL(squares_v<T>.count(), T::size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)
@@ -24,22 +24,22 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
 
         BOOST_CHECK(
                 ranges::all_of(columns, [=](auto i){
-                        return Column<T>::mask(Player::black, i) == Column<T>::mask(Player::white, T::width() - 1 - i);
+                        return Column<T>::mask(Color::black, i) == Column<T>::mask(Color::white, T::width() - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 ranges::all_of(columns, [=](auto i){
                         return ranges::all_of(columns, [=](auto j){
-                                return i == j ? true : disjoint(Column<T>::mask(Player::white, i), Column<T>::mask(Player::white, j));
+                                return i == j ? true : disjoint(Column<T>::mask(Color::white, i), Column<T>::mask(Color::white, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 ranges::accumulate(columns, get_set_type<T>{}, [](auto result, auto i){
-                        return result ^ Column<T>::mask(Player::white, i);
-                }) == Squares<T>::mask()
+                        return result ^ Column<T>::mask(Color::white, i);
+                }) == squares_v<T>
         );
 }
 
@@ -50,22 +50,22 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 
         BOOST_CHECK(
                 ranges::all_of(rows, [=](auto i){
-                        return Row<T>::mask(Player::black, i) == Row<T>::mask(Player::white, T::height() - 1 - i);
+                        return Row<T>::mask(Color::black, i) == Row<T>::mask(Color::white, T::height() - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 ranges::all_of(rows, [=](auto i){
                         return ranges::all_of(rows, [=](auto j){
-                                return i == j ? true : disjoint(Row<T>::mask(Player::white, i), Row<T>::mask(Player::white, j));
+                                return i == j ? true : disjoint(Row<T>::mask(Color::white, i), Row<T>::mask(Color::white, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 ranges::accumulate(rows, get_set_type<T>{}, [](auto result, auto i){
-                        return result ^ Row<T>::mask(Player::white, i);
-                }) == Squares<T>::mask()
+                        return result ^ Row<T>::mask(Color::white, i);
+                }) == squares_v<T>
         );
 }
 
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSeq
         BOOST_CHECK(
                 ranges::accumulate(jump_groups, get_set_type<T>{}, [](auto result, auto i){
                         return result ^ JumpGroup<T>::mask(i);
-                }) == Squares<T>::mask()
+                }) == squares_v<T>
         );
 }
 

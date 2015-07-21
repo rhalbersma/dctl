@@ -1,11 +1,11 @@
 #pragma once
-#include <dctl/player.hpp>               // Player
+#include <dctl/color.hpp>               // Player
 #include <dctl/eval/feature.hpp>    // Feature
 
 namespace dctl {
 namespace evaluate {
 
-template<Player ToMove>
+template<Color ToMove>
 class Delta
 {
 private:

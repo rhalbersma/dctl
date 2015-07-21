@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle.hpp>                               // up, left_up, right_up, left, right, left_down, right_down, down
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king
 #include <dctl/actions/detail/tracker.hpp>            // Tracker
 #include <dctl/actions/detect/detail/primary_fwd.hpp> // Detect (primary template)
@@ -15,7 +15,7 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Player ToMove, bool Reverse, class State>
+template<Color ToMove, bool Reverse, class State>
 class Detect<ToMove, Piece::king, select::jump, Reverse, State>
 {
         using   board_type = board_type_t<State>;
