@@ -1,4 +1,4 @@
-#include <dctl/rule_traits.hpp>                 // is_backward_pawn_jump, is_pawn_jump_king, is_orthogonal_jump, is_en_passant_jump_removal
+#include <dctl/rule_traits.hpp>                 // is_backward_pawn_jump, is_pawn_jump_king, is_orthogonal_jump, capture_category, stopped_capture_tag, passing_capture_tag
 #include <dctl/rules.hpp>                       // Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -80,26 +80,26 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(IsEnPassantJumpRemoval)
+BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
-        using VariantsFalse = boost::mpl::vector
+        using VariantsStoppedJumpRemovalTag = boost::mpl::vector
         <
                 Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish
         >;
 
-        BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
+        BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedJumpRemovalTag, T, VariantsStoppedJumpRemovalTag)
         {
-                static_assert(!is_en_passant_jump_removal_v<T>, "");
+                static_assert(std::is_same<capture_category_t<T>, stopped_capture_tag>::value, "");
         }
 
-        using VariantsTrue = boost::mpl::vector
+        using VariantsPassingJumpRemovalTag = boost::mpl::vector
         <
                 Thai
         >;
 
-        BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
+        BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingJumpRemovalTag, T, VariantsPassingJumpRemovalTag)
         {
-                static_assert(is_en_passant_jump_removal_v<T>, "");
+                static_assert(std::is_same<capture_category_t<T>, passing_capture_tag>::value, "");
         }
 
 BOOST_AUTO_TEST_SUITE_END()
