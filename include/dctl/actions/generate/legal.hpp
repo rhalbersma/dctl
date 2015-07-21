@@ -5,12 +5,12 @@
 #include <dctl/actions/select/legal.hpp>              // legal
 #include <dctl/actions/select/jump.hpp>               // jump
 #include <dctl/actions/select/push.hpp>               // push
-#include <dctl/player.hpp>
+#include <dctl/color.hpp>
 
 namespace dctl {
 namespace actions {
 
-template<Player ToMove, bool RemoveDuplicateJumps, bool Reverse>
+template<Color ToMove, bool RemoveDuplicateJumps, bool Reverse>
 class Generate<ToMove, select::legal, RemoveDuplicateJumps, Reverse>
 {
 public:

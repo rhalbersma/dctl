@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/actions/detail/filter.hpp>             // Precedence, Unique
 #include <dctl/actions/detail/tracker.hpp>            // Tracker
@@ -12,7 +12,7 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Player ToMove, bool Reverse>
+template<Color ToMove, bool Reverse>
 class GenerateJump
 {
 public:
@@ -33,7 +33,7 @@ public:
 
 }       // namespace detail
 
-template<Player ToMove, bool Reverse>
+template<Color ToMove, bool Reverse>
 class Generate<ToMove, select::jump, false, Reverse>
 {
 public:
@@ -45,7 +45,7 @@ public:
         }
 };
 
-template<Player ToMove, bool Reverse>
+template<Color ToMove, bool Reverse>
 class Generate<ToMove, select::jump, true, Reverse>
 {
 public:

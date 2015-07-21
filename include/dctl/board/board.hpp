@@ -6,7 +6,7 @@
 #include <dctl/board/grid.hpp>                  // Grid
 #include <dctl/board/detail/orientation.hpp>    // size_minimizing_orientation
 #include <dctl/board/shift.hpp>                 // Shift
-#include <dctl/player.hpp>                       // black, white
+#include <dctl/color.hpp>                       // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <xstd/cstddef.hpp>                     // _z
 #include <range/v3/all.hpp>                     // view::iota

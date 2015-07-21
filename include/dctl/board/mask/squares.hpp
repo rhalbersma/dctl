@@ -18,19 +18,17 @@ private:
                 }
         };
 
+public:
         using value_type = get_set_type<Board>;
         static constexpr value_type value = make_set_if<Board>(is_squares{});
-
-public:
-        static constexpr auto mask() noexcept
-        {
-                return value;
-        }
 };
 
 template<class Board>
 constexpr typename Squares<Board>::value_type
 Squares<Board>::value;
+
+template<class Board>
+constexpr auto squares_v = Squares<Board>::value;
 
 }       // namespace board
 }       // namespace dctl

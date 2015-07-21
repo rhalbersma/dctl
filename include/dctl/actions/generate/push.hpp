@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_restricted_king_push_t
 #include <dctl/actions/generate/primary_fwd.hpp>      // Generate (primary template)
@@ -10,7 +10,7 @@
 namespace dctl {
 namespace actions {
 
-template<Player ToMove, bool RemoveDuplicates, bool Reverse>
+template<Color ToMove, bool RemoveDuplicates, bool Reverse>
 class Generate<ToMove, select::push, RemoveDuplicates, Reverse>
 {
 public:

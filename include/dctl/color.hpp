@@ -3,7 +3,7 @@
 
 namespace dctl {
 
-enum class Player
+enum class Color
 :
         unsigned char
 {
@@ -11,9 +11,9 @@ enum class Player
         white = 1
 };
 
-constexpr auto operator!(Player p) noexcept
+constexpr auto operator!(Color c) noexcept
 {
-        return static_cast<Player>(!xstd::to_underlying_type(p));
+        return static_cast<Color>(!xstd::to_underlying_type(c));
 }
 
 }       // namespace dctl

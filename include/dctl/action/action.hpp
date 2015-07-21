@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/player.hpp>
+#include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/rule_traits.hpp>         // is_king_order_precedence
+#include <dctl/rule_traits.hpp>         // is_ordering_precedence
 #include <dctl/set_type.hpp>            // set_type
 #include <dctl/type_traits.hpp>         // board_type_t, rules_type_t
 #include <dctl/utility/logic.hpp>
@@ -23,27 +23,31 @@ public:
         using board_type = Board;
         using rules_type = Rules;
         using   set_type = get_set_type<Board>;
+        using square_type = std::size_t;
 
 private:
-        set_type captured_[2];
-        std::size_t from_;
-        std::size_t dest_;
-        Player to_move_;
+        set_type captured_;
+        square_type from_;
+        square_type dest_;
+        Color to_move_;
         Piece with_;
         Piece into_;
 
         auto invariant() const noexcept
         {
                 return
-                        util::implies(from() == dest(), is_jump()) &&
-                        disjoint(captured(Piece::pawn), captured(Piece::king))
+                        util::implies(from() == dest(), is_jump()) /*&&
+                        disjoint(captured(Piece::pawn), captured(Piece::king))*/
                 ;
         }
 
 public:
+        BaseAction() = default;
+
         // pawn push
-        constexpr BaseAction(std::size_t src, std::size_t dst, Player c, Piece promotion) noexcept
+        constexpr BaseAction(std::size_t src, std::size_t dst, Color c, Piece promotion) noexcept
         :
+                captured_{},
                 from_{src},
                 dest_{dst},
                 to_move_{c},
@@ -54,8 +58,9 @@ public:
         }
 
         // king push
-        constexpr BaseAction(std::size_t src, std::size_t dst, Player c) noexcept
+        constexpr BaseAction(std::size_t src, std::size_t dst, Color c) noexcept
         :
+                captured_{},
                 from_{src},
                 dest_{dst},
                 to_move_{c},
@@ -69,7 +74,7 @@ public:
         template<class Tracker>
         explicit constexpr BaseAction(Tracker const& t)
         :
-                captured_{t.captured(Piece::pawn), t.captured(Piece::king)},
+                captured_{t.captured()},
                 from_{t.from()},
                 dest_{t.dest()},
                 to_move_{t.to_move()},
@@ -79,14 +84,9 @@ public:
                 assert(invariant());
         }
 
-        constexpr auto const& captured(Piece p) const noexcept
-        {
-                return captured_[xstd::to_underlying_type(p)];
-        }
-
         constexpr auto captured() const noexcept
         {
-                return captured(Piece::pawn) | captured(Piece::king);
+                return captured_;
         }
 
         constexpr auto from() const noexcept
@@ -102,6 +102,11 @@ public:
         constexpr auto to_move() const noexcept
         {
                 return to_move_;
+        }
+
+        constexpr auto is_to_move(Color c) const noexcept
+        {
+                return to_move() == c;
         }
 
         constexpr auto with() const noexcept
@@ -141,12 +146,12 @@ public:
 
         constexpr auto num_captured(Piece p) const noexcept
         {
-                return captured(p).count();
+                return 0;//num_captured_[xstd::to_underlying_type(p)];
         }
 
         constexpr auto num_captured() const noexcept
         {
-                return captured(Piece::pawn).count() + captured(Piece::king).count();
+                return captured().count(); //num_captured(Piece::pawn) + num_captured(Piece::king);
         }
 
         auto is_equal_to(BaseAction const& other) const noexcept
@@ -171,37 +176,39 @@ class BaseAction<Rules, Board, true>
 :
         public BaseAction<Rules, Board, false>
 {
-        get_set_type<Board> king_order_{};
+        get_set_type<Board> piece_order_{};
 
         using base = BaseAction<Rules, Board, false>;
 public:
         using base::base;
 
+        BaseAction() = default;
+
         template<class Tracker>
         explicit constexpr BaseAction(Tracker const& t) noexcept
         :
                 base{t},
-                king_order_{t.king_order()}
+                piece_order_{t.piece_order()}
         {}
 
-        constexpr auto king_order() const noexcept
+        constexpr auto piece_order() const noexcept
         {
-                return king_order_;
+                return piece_order_;
         }
 
         auto is_equal_to(BaseAction const& other) const noexcept
         {
                 return
-                        std::forward_as_tuple(this->from(), this->dest(), this->captured(), this->king_order()) ==
-                        std::forward_as_tuple(other.from(), other.dest(), other.captured(), other.king_order())
+                        std::forward_as_tuple(this->from(), this->dest(), this->captured(), this->piece_order()) ==
+                        std::forward_as_tuple(other.from(), other.dest(), other.captured(), other.piece_order())
                 ;
         }
 
         auto is_less(BaseAction const& other) const noexcept
         {
                 return
-                        std::forward_as_tuple(this->from(), this->dest(), this->captured(), this->king_order()) <
-                        std::forward_as_tuple(other.from(), other.dest(), other.captured(), other.king_order())
+                        std::forward_as_tuple(this->from(), this->dest(), this->captured(), this->piece_order()) <
+                        std::forward_as_tuple(other.from(), other.dest(), other.captured(), other.piece_order())
                 ;
         }
 };
@@ -220,9 +227,9 @@ auto operator< (Action<Rules, Board> const&, Action<Rules, Board> const&) noexce
 template<class Rules, class Board>
 class Action
 :
-        public detail::BaseAction<Rules, Board, precedence::is_king_order_v<Rules>>
+        public detail::BaseAction<Rules, Board, precedence::is_ordering_v<Rules>>
 {
-        using base = detail::BaseAction<Rules, Board, precedence::is_king_order_v<Rules>>;
+        using base = detail::BaseAction<Rules, Board, precedence::is_ordering_v<Rules>>;
 public:
         using base::base;
 

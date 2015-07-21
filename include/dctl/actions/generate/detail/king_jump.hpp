@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down, _deg, rotate, inverse
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king
 #include <dctl/actions/detail/raii.hpp>               // Launch, Capture, Visit, SetKingJump
 #include <dctl/actions/detail/tracker.hpp>            // Tracker
@@ -20,7 +20,7 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Player ToMove, bool Reverse, class State, class Sequence>
+template<Color ToMove, bool Reverse, class State, class Sequence>
 class Generate<ToMove, Piece::king, select::jump, Reverse, State, Sequence>
 {
         using   board_type = board_type_t<State>;
@@ -173,11 +173,11 @@ private:
                 auto found_next = turn(jumper);
                 auto slider = std::next(jumper);
                 while (is_onboard(slider) && tracker.path(*slider)) {
-                        tracker.last_visit(*slider);
+                        tracker.set_dest(*slider);
                         found_next |= turn(slider);
                         ++slider;
                 }
-                tracker.last_visit(*jumper);
+                tracker.set_dest(*jumper);
                 return found_next |= is_en_prise(slider);
         }
 
@@ -263,7 +263,7 @@ private:
                 if (tracker.is_king(*std::prev(dest_sq)))
                         halt_dispatch(dest_sq, short_ranged_tag{}, short_ranged_tag{});
                 else
-                        halt_dispatch(dest_sq, long_ranged_tag{}, long_ranged_tag{});
+                        halt_dispatch(dest_sq,  long_ranged_tag{},  long_ranged_tag{});
         }
 
         template<class Iterator>
@@ -281,7 +281,7 @@ private:
                 add_jump();
                 ++dest_sq;
                 while (is_onboard(dest_sq) && tracker.path(*dest_sq)) {
-                        tracker.last_visit(*dest_sq);
+                        tracker.set_dest(*dest_sq);
                         add_jump();
                         ++dest_sq;
                 }

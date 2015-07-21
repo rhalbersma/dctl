@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king
 #include <dctl/actions/count/detail/primary_fwd.hpp>  // Count (primary template)
 #include <dctl/actions/select/push.hpp>               // push
@@ -15,7 +15,7 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Player ToMove, bool Reverse, class State>
+template<Color ToMove, bool Reverse, class State>
 class Count<ToMove, Piece::king, select::push, Reverse, State>
 {
         using board_type = board_type_t<State>;

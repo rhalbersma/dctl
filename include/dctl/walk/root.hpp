@@ -3,7 +3,7 @@
 #include <dctl/hash/dual_map.hpp>
 #include <dctl/hash/extract.hpp>
 #include <dctl/utility/stack_vector.hpp>
-#include <dctl/state/make_copy.hpp>
+#include <dctl/result.hpp>
 #include <dctl/actions.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/utility/statistics.hpp>
@@ -13,12 +13,14 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/action/ostream.hpp>
 
+#include <numeric>
 #include <cstddef>
 #include <iomanip>
 #include <iostream>
 #include <iterator>                     // distance
 #include <memory>
 #include <utility>
+#include <dctl/utility/bounded_vector.hpp>
 
 namespace dctl {
 namespace walk {
@@ -185,7 +187,7 @@ std::size_t walk(State const& p, int depth, int ply, Successor successor, Enhanc
                 moves.reserve(DCTL_PP_STACK_RESERVE);
                 successor.generate(p, moves);
                 for (auto const& m : moves)
-                        nodes += walk(make_copy(p, m), depth - 1, ply + 1, successor, e);
+                        nodes += walk(result(p, m), depth - 1, ply + 1, successor, e);
         }
 
         // (3)
@@ -193,6 +195,57 @@ std::size_t walk(State const& p, int depth, int ply, Successor successor, Enhanc
 
         return nodes;
 }
+
+template<class State, class Successor>
+class XWalk
+{
+        Successor successor;
+
+        using R = typename State::rules_type;
+        using B = typename State::board_type;
+        std::vector<std::vector<Action<R,B>>> moves_storage;
+
+public:
+        explicit XWalk(Successor ss)
+        :
+                successor{ss}
+        {
+                auto const depth = 15;
+                moves_storage.reserve(depth);
+                moves_storage.insert(moves_storage.end(), depth - moves_storage.size(), {});
+                for (auto i = moves_storage.size(); i < depth; ++i) {
+                        moves_storage[i].reserve(32);
+                }
+        }
+
+        auto run(State const& state, int depth)
+        {
+
+                if (depth > moves_storage.size()) {
+                        moves_storage.reserve(depth);
+                        moves_storage.insert(moves_storage.end(), depth - moves_storage.size(), {});
+                        for (auto i = moves_storage.size(); i < depth; ++i) {
+                                moves_storage[i].reserve(32);
+                        }
+                }
+
+                return recursive_run(state, 0, depth);
+        }
+
+        auto recursive_run(State const& state, int ply, int depth)
+        {
+                if (depth == 1)
+                        return successor.count(state);
+
+                //auto& moves = moves_storage[ply];
+                //moves.clear();
+                util::bounded_vector<Action<R,B>, 32> moves;
+                successor.generate(state, moves);
+                return std::accumulate(begin(moves), end(moves), std::size_t{0}, [&](auto n, auto const& m){
+                        return n + recursive_run(result(state, m), ply + 1, depth - 1);
+                });
+        }
+};
 
 template<class State>
 void announce(State const& p, int depth)
@@ -247,6 +300,29 @@ void report(int depth, std::size_t leafs, Stopwatch const& stopwatch, Enhancemen
         std::cout << std::endl;
 }
 
+template<class Stopwatch>
+void xreport(int depth, std::size_t leafs, Stopwatch const& stopwatch)
+{
+        std::cout << "info";
+
+        std::cout << " depth ";
+        std::cout << std::setw( 2) << depth;
+
+        std::cout << " leafs ";
+        std::cout << std::setw(12) << std::right << leafs;
+
+        auto const lap = stopwatch.lap_time();
+        std::cout << " time ";
+        std::cout << std::setw( 6) << lap.count();
+
+/*
+        double const hashfull = 1000 * (static_cast<double>(e.handle_->TT_.size()) / static_cast<double>(e.handle_->TT_.capacity()));
+        std::cout << " hashfull ";
+        std::cout << std::setw( 4) << std::right << hashfull;
+*/
+        std::cout << std::endl;
+}
+
 inline
 void summary(std::size_t leafs)
 {
@@ -270,6 +346,21 @@ std::size_t perft(State const& p, int depth, Successor successor, Enhancements e
         return nodes;
 }
 
+template<class State, class Successor>
+auto xperft(State const& s, int depth, Successor successor)
+{
+        XWalk<State, Successor> walker{successor};
+        announce(s, depth);
+        util::Stopwatch stopwatch;
+        stopwatch.start_stop();
+        for (auto d = 1; d <= depth; ++d) {
+                stopwatch.split_reset();
+                auto const nodes = walker.recursive_run(s, 0, d);
+                stopwatch.split_reset();
+                xreport(d, nodes, stopwatch);
+        }
+}
+
 template<class State, class Successor, class Enhancements>
 std::size_t divide(State const& p, int depth, Successor successor, Enhancements e)
 {
@@ -287,7 +378,7 @@ std::size_t divide(State const& p, int depth, Successor successor, Enhancements 
                 e.reset_statistics();
                 auto const i = std::distance(&moves[0], &m);
                 print_move(moves[i], i);
-                auto const sub_count = walk(make_copy(p, moves[i]), depth - 1, 1, successor, e);
+                auto const sub_count = walk(result(p, moves[i]), depth - 1, 1, successor, e);
                 leaf_nodes += sub_count;
                 stopwatch.split_reset();
                 report(depth - 1, sub_count, stopwatch, e);

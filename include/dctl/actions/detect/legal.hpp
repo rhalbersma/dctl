@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/actions/detect/primary_fwd.hpp>        // Detect (primary template)
 #include <dctl/actions/detect/jump.hpp>               // Detect (jump specialization)
 #include <dctl/actions/detect/push.hpp>               // Detect (push specialization)
@@ -10,7 +10,7 @@
 namespace dctl {
 namespace actions {
 
-template<Player ToMove, bool Reverse>
+template<Color ToMove, bool Reverse>
 class Detect<ToMove, select::legal, Reverse>
 {
 public:

@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)
         auto const bin = Binomial{};
 
         using Board = board::International;
-        auto const ghosts = *((~board::Squares<Board>::mask()).data());
+        auto const ghosts = *((~board::squares_v<Board>).data());
 
         for (auto i : boost::irange(b, e)) {
                 //auto const pos = colex::combination_unrank1({N, K}, i, ghosts, bin);

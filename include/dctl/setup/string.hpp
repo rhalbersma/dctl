@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/state/state.hpp>
-#include <dctl/player.hpp>
+#include <dctl/color.hpp>
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/protocols.hpp>
 #include <dctl/setup/i_token.hpp>
@@ -19,14 +19,14 @@ template<class Token>
 auto read_color(char c)
 {
         switch (c) {
-        case Token::black : return Player::black;
-        case Token::white : return Player::white;
-        default           : assert(false); return Player::black;
+        case Token::black : return Color::black;
+        case Token::white : return Color::white;
+        default           : assert(false); return Color::black;
         }
 }
 
 template<class Token>
-char write_color(Player c)
+char write_color(Color c)
 {
         return Token::color[xstd::to_underlying_type(c)];
 }
@@ -55,7 +55,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                 using set_type = get_set_type<Board>;
                 set_type by_color[2]{};
                 set_type by_piece[2]{};
-                auto p_side = Player::black;
+                auto p_side = Color::black;
 
                 assert(by_color[0].none());
                 assert(by_color[1].none());
@@ -116,7 +116,7 @@ struct write<pdn::protocol, Token>
                 sstr << write_color<Token>(p.to_move());                // side to move
 
                 for (auto i = 0; i < 2; ++i) {
-                        auto c = i ? Player::white : Player::black;
+                        auto c = i ? Color::white : Color::black;
                         if (p.pieces(c).any()) {
                                 sstr << Token::colon;                   // colon
                                 sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
@@ -146,7 +146,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 using set_type = get_set_type<Board>;
                 set_type by_color[2]{};
                 set_type by_piece[2]{};
-                auto p_side = Player::black;
+                auto p_side = Color::black;
 
                 assert(by_color[0].none());
                 assert(by_color[1].none());
@@ -166,8 +166,8 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : by_color[xstd::to_underlying_type(Player::black)].set(b); break;
-                        case Token::white : by_color[xstd::to_underlying_type(Player::white)].set(b); break;
+                        case Token::black : by_color[xstd::to_underlying_type(Color::black)].set(b); break;
+                        case Token::white : by_color[xstd::to_underlying_type(Color::white)].set(b); break;
                         case Token::empty : break;
                         default           : assert(false);
                         }

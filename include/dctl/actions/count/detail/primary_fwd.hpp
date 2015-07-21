@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>       // Player
+#include <dctl/color.hpp>       // Player
 #include <dctl/piece.hpp>       // Piece
 
 namespace dctl {
@@ -8,7 +8,7 @@ namespace detail {
 
 template
 <
-        Player /* ToMove     */,
+        Color /* ToMove     */,
         Piece /* With       */,
         class /* Select     */,
         bool  /* Reverse  */,

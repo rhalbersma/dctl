@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/angle.hpp>                               // left_up, right_up
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/state/promotion.hpp>                  // is_promotion
 #include <dctl/actions/generate/detail/primary_fwd.hpp>      // Generate (primary template)
@@ -16,7 +16,7 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Player ToMove, bool Reverse, class State, class Sequence>
+template<Color ToMove, bool Reverse, class State, class Sequence>
 class Generate<ToMove, Piece::pawn, select::push, Reverse, State, Sequence>
 {
         using board_type = board_type_t<State>;

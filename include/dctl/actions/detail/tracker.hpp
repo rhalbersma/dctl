@@ -1,30 +1,32 @@
 #pragma once
 #include <dctl/angle.hpp>                       // Angle, is_orthogonal
 #include <dctl/board/mask.hpp>                  // JumpStart
-#include <dctl/player.hpp>
+#include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/ray.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/type_traits.hpp>                 // board_type_t, rules_type_t, set_type_t
-#include <dctl/utility/stack_vector.hpp>        // DCTL_PP_STACK_RESERVE
 #include <dctl/wave/iterator.hpp>
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
 #include <cstddef>
 #include <iterator>                             // begin, end, prev
-#include <type_traits>                          // false_type, true_type
+#include <vector>
+#include <dctl/utility/bounded_vector.hpp>
+#include <iostream>
 
 namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Player ToMove, class State>
+template<Color ToMove, class State>
 class Tracker
 {
 public:
-        using board_type = board_type_t<State>;
-        using rules_type = rules_type_t<State>;
-        using   set_type =   set_type_t<State>;
+        using  board_type = board_type_t<State>;
+        using  rules_type = rules_type_t<State>;
+        using    set_type =   set_type_t<State>;
+        using square_type =  std::size_t;
 
 private:
         set_type const by_piece_[2];
@@ -33,11 +35,11 @@ private:
         set_type not_occupied_;
         Piece with_{Piece::pawn};
         Piece into_{Piece::pawn};
-        set_type king_order_{};
-        Arena<std::size_t> sqa_;
-        stack_vector<std::size_t> visited_path_ = stack_vector<std::size_t>(Alloc<std::size_t>{sqa_});
-        Arena<std::size_t> pca_;
-        stack_vector<std::size_t> removed_pieces_ = stack_vector<std::size_t>(Alloc<std::size_t>{pca_});
+        set_type piece_order_;
+        //static std::vector<square_type> visited_squares_;
+        //static std::vector<square_type> jumped_squares_;
+        util::bounded_vector<square_type, 64> visited_squares_;
+        util::bounded_vector<square_type, 64> jumped_squares_;
 
         auto invariant() const
         {
@@ -45,53 +47,49 @@ private:
         }
 
 public:
-        explicit Tracker(State const& p)
+        explicit Tracker(State const& s)
         :
-                by_piece_{p.pieces(!ToMove, Piece::pawn), p.pieces(!ToMove, Piece::king)},
-                initial_targets_(p.pieces(!ToMove)),
+                by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
+                initial_targets_(s.pieces(!ToMove)),
                 remaining_targets_(initial_targets_),
-                not_occupied_(p.not_occupied())
+                not_occupied_(s.not_occupied()),
+                piece_order_{}
         {
-                visited_path_.reserve(DCTL_PP_STACK_RESERVE);
-                removed_pieces_.reserve(DCTL_PP_STACK_RESERVE);
                 assert(invariant());
         }
 
-        auto launch(std::size_t sq)
+        auto launch(square_type sq)
         {
-                visited_path_.push_back(sq);
+                assert(visited_squares_.empty());
+                visited_squares_.push_back(sq);
                 not_occupied_.set(sq);
         }
 
         auto finish()
         {
                 not_occupied_.reset(from());
-                visited_path_.pop_back();
+                visited_squares_.pop_back();
+                assert(visited_squares_.empty());
         }
 
-        auto capture(std::size_t sq)
+        auto capture(square_type sq)
         {
-                capture_dispatch(sq, is_en_passant_jump_removal_t<rules_type>{});
+                capture_dispatch(sq, capture_category_t<rules_type>{});
         }
 
         auto release()
         {
-                release_dispatch(last_piece(), is_en_passant_jump_removal_t<rules_type>{});
+                release_dispatch(last_jumped_square(), capture_category_t<rules_type>{});
         }
 
-        auto last_visit(std::size_t sq)
+        auto visit(square_type sq)
         {
-                visited_path_.back() = sq;
-        }
-
-        auto visit(std::size_t sq)
-        {
-                visited_path_.push_back(sq);
+                visited_squares_.push_back(sq);
         }
 
         auto leave()
         {
-                visited_path_.pop_back();
+                visited_squares_.pop_back();
         }
 
         auto toggle_king_targets() noexcept
@@ -127,7 +125,7 @@ public:
                 return not_occupied_;
         }
 
-        auto path(std::size_t sq) const
+        auto path(square_type sq) const
         {
                 return not_occupied_.test(sq);
         }
@@ -140,19 +138,19 @@ public:
         }
 
         template<int Direction>
-        auto path(int sq) const
+        auto path(square_type sq) const
         {
                 return path<Direction>().test(sq);
         }
 
-        auto is_king(std::size_t sq) const
+        auto is_king(square_type sq) const
         {
                 return by_piece(Piece::king).test(sq);
         }
 
-        auto king_order() const
+        auto piece_order() const
         {
-                return king_order_;
+                return piece_order_;
         }
 
         auto captured() const noexcept
@@ -167,14 +165,20 @@ public:
 
         auto from() const
         {
-                assert(!visited_path_.empty());
-                return visited_path_.front();
+                assert(!visited_squares_.empty());
+                return visited_squares_.front();
         }
 
         auto dest() const
         {
-                assert(2 <= visited_path_.size());
-                return visited_path_.back();
+                assert(2 <= visited_squares_.size());
+                return visited_squares_.back();
+        }
+
+        auto set_dest(square_type sq)
+        {
+                assert(2 <= visited_squares_.size());
+                visited_squares_.back() = sq;
         }
 
         auto to_move() const noexcept
@@ -203,46 +207,42 @@ public:
         }
 
 private:
-        // apres-fini jump removal
-        auto capture_dispatch(std::size_t sq, std::false_type)
+        auto capture_dispatch(square_type sq, stopped_capture_tag)
         {
                 capture_impl(sq);
         }
 
-        // en-passant jump removal
-        auto capture_dispatch(std::size_t sq, std::true_type)
+        auto capture_dispatch(square_type sq, passing_capture_tag)
         {
                 not_occupied_.set(sq);
                 capture_impl(sq);
         }
 
-        void capture_impl(std::size_t sq)
+        void capture_impl(square_type sq)
         {
                 if (is_king(sq))
-                        king_order_.set(set_type::size() - 1 - num_captured());
-                removed_pieces_.push_back(sq);
+                        piece_order_.set(from_back(num_captured()));
+                jumped_squares_.push_back(sq);
                 remaining_targets_.reset(sq);
         }
 
-        // apres-fini jump removal
-        void release_dispatch(std::size_t sq, std::false_type)
+        void release_dispatch(square_type sq, stopped_capture_tag)
         {
                 release_impl(sq);
         }
 
-        // en-passant jump removal
-        void release_dispatch(std::size_t sq, std::true_type)
+        void release_dispatch(square_type sq, passing_capture_tag)
         {
                 release_impl(sq);
                 not_occupied_.reset(sq);
         }
 
-        void release_impl(std::size_t sq)
+        void release_impl(square_type sq)
         {
                 remaining_targets_.set(sq);
-                removed_pieces_.pop_back();
+                jumped_squares_.pop_back();
                 if (is_king(sq))
-                        king_order_.reset(set_type::size() - 1 - num_captured());
+                        piece_order_.reset(from_back(num_captured()));
         }
 
         template<int Direction>
@@ -253,21 +253,32 @@ private:
 
         auto num_captured() const
         {
-                return removed_pieces_.size();
+                return jumped_squares_.size();
         }
 
-        auto last_piece() const
+        auto last_jumped_square() const
         {
-                assert(!removed_pieces_.empty());
-                return removed_pieces_.back();
+                assert(!jumped_squares_.empty());
+                return jumped_squares_.back();
         }
 
         auto const& by_piece(Piece p) const
         {
                 return by_piece_[xstd::to_underlying_type(p)];
         }
-};
 
+        auto from_back(std::size_t n) const
+        {
+                return set_type::size() - 1 - n;
+        }
+};
+/*
+template<Color ToMove, class State>
+std::vector<std::size_t> Tracker<ToMove, State>::visited_squares_;
+
+template<Color ToMove, class State>
+std::vector<std::size_t> Tracker<ToMove, State>::jumped_squares_;
+*/
 }       // namespace detail
 }       // namespace actions
 }       // namespace dctl

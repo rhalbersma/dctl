@@ -17,7 +17,7 @@ class KingTargets
         template<int Direction>
         static constexpr auto init(std::size_t sq) noexcept
         {
-                constexpr auto squares = Squares<Board>::mask();
+                constexpr auto squares = squares_v<Board>;
                 return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : get_set_type<Board>{};
         }
 

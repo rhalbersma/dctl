@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/player.hpp>                               // Player
+#include <dctl/color.hpp>                               // Player
 #include <dctl/actions/count/primary_fwd.hpp>         // Count (primary template)
 #include <dctl/actions/count/jump.hpp>                // Count (jump specialization)
 #include <dctl/actions/count/push.hpp>                // Count (push specialization)
@@ -10,7 +10,7 @@
 namespace dctl {
 namespace actions {
 
-template<Player ToMove, bool RemoveDuplicateJumps, bool Reverse>
+template<Color ToMove, bool RemoveDuplicateJumps, bool Reverse>
 class Count<ToMove, select::legal, RemoveDuplicateJumps, Reverse>
 {
 public:
