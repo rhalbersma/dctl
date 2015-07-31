@@ -4,6 +4,7 @@
 #include <dctl/actions/count/primary_fwd.hpp>   // Count (primary template)
 #include <dctl/actions/generate/jump.hpp>       // Generate (jump specialization)
 #include <dctl/actions/select/jump.hpp>         // jump
+#include <dctl/type_traits.hpp>                 // rules_type, board_type
 #include <vector>                               // vector
 #include <dctl/utility/bounded_vector.hpp>
 
@@ -17,9 +18,10 @@ public:
         template<class State>
         auto operator()(State const& p) const
         {
-                //static std::vector<Action_t<State>> moves;
+                using Action_t = Action<rules_type_t<State>, board_type_t<State>>;
+                //static std::vector<Action_t> moves;
                 //moves.clear();
-                util::bounded_vector<Action_t<State>, 64> moves;
+                util::bounded_vector<Action_t, 64> moves;
                 Generate<ToMove, select::jump, RemoveDuplicateJumps, Reverse>{}(p, moves);
                 return moves.size();
         }

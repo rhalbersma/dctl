@@ -35,14 +35,17 @@ using BSequence = boost::mpl::vector
         board::Ktar<10, 12>,
         board::Compact1012,
         board::Ktar<12, 10>,
-        board::Canadian
+        board::Canadian,
+        board::Board<10, 9>,
+        board::Board<11, 9>,
+        board::Board<21, 21>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)
 {
         auto const p = State<rules::International, T>::initial();
-        std::cout << "W = " << T::width() << ", H = " << T::height() << ", bits = " << T::bits() << "\n\n";
         std::cout << setup::diagram<pdn::protocol>()(p);
+        std::cout << "W = " << T::width() << ", H = " << T::height() << ", bits = " << T::bits() << "\n\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()

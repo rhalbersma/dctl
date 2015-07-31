@@ -1,17 +1,12 @@
 #pragma once
 #include <xstd/bitset.hpp>      // bitset
-#include <cassert>              // assert
+#include <xstd/cstdint.hpp>
+#include <xstd/limits.hpp>      // align_on
 #include <cstddef>              // size_t
 
 namespace dctl {
 
-constexpr auto align_on(std::size_t offset, std::size_t align) noexcept
-{
-        assert(align && !(align & (align - 1)));
-        return (offset + align - 1) & ~(align - 1);
-}
-
 template<class Board>
-using get_set_type = xstd::bitset<align_on(Board::bits(), 64)>;
+using get_set_type = xstd::bitset<xstd::align_on(Board::bits(), 64)>;
 
-}       // dctl
+}       // namespace dctl

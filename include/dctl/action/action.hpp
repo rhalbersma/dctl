@@ -2,7 +2,6 @@
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>         // is_quality, is_ordering
 #include <dctl/set_type.hpp>            // set_type
-#include <dctl/type_traits.hpp>
 #include <xstd/type_traits.hpp>         // optional_base
 #include <cassert>                      // assert
 #include <type_traits>                  // enable_if
@@ -108,8 +107,5 @@ constexpr auto operator<=(Action<Rules, Board> const& lhs, Action<Rules, Board> 
 {
         return !(rhs < lhs);
 }
-
-template<class T>
-using Action_t = Action<rules_type_t<T>, board_type_t<T>>;
 
 }       // namespace dctl
