@@ -1,13 +1,13 @@
 #pragma once
-#include <dctl/angle.hpp>                               // left_up, right_up
+#include <dctl/board/angle.hpp>                               // left_up, right_up
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/actions/count/detail/primary_fwd.hpp>  // Count (primary template)
 #include <dctl/actions/select/push.hpp>               // push
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/type_traits.hpp>                         // board_type_t, set_type_t
-#include <dctl/wave/patterns.hpp>                       // Sink
+#include <dctl/utility/type_traits.hpp>                         // board_type_t, set_type_t
+#include <dctl/board/wave/patterns.hpp>                       // Sink
 #include <xstd/cstddef.hpp>                             // _z
 #include <type_traits>                                  // false_type
 

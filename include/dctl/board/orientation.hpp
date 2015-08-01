@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle.hpp>       // _deg, inverse, rotate
+#include <dctl/board/angle.hpp>       // _deg, inverse, rotate
 #include <dctl/color.hpp>       // Player, white
 
 namespace dctl {

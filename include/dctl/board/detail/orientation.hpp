@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle.hpp>       // Angle, _deg
+#include <dctl/board/angle.hpp>       // Angle, _deg
 #include <dctl/board/grid.hpp>  // Grid, rotate
 #include <xstd/algorithm.hpp>   // min_element
 #include <xstd/iterator.hpp>    // cbegin, cend

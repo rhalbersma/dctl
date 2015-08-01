@@ -1,12 +1,12 @@
 #pragma once
-#include <dctl/angle.hpp>                       // Angle, is_orthogonal
+#include <dctl/board/angle.hpp>                       // Angle, is_orthogonal
 #include <dctl/board/mask.hpp>                  // JumpStart
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/ray.hpp>
+#include <dctl/board/ray.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/type_traits.hpp>                 // board_type_t, rules_type_t, set_type_t
-#include <dctl/wave/iterator.hpp>
+#include <dctl/utility/type_traits.hpp>                 // board_type_t, rules_type_t, set_type_t
+#include <dctl/board/wave/iterator.hpp>
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
 #include <cstddef>

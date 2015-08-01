@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/color.hpp>               // black, white
 #include <dctl/piece.hpp>
-#include <dctl/type_traits.hpp>
+#include <dctl/utility/type_traits.hpp>
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <sstream>                      // stringstream
 

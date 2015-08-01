@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/set_type.hpp>
+#include <dctl/board/set_type.hpp>
 #include <dctl/state/piece_placement/invariant.hpp>
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert

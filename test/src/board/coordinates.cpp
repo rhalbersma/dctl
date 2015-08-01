@@ -1,5 +1,5 @@
-#include <group.hpp>                            // action::is_realized, make_group
-#include <dctl/angle.hpp>                       // _deg, inverse, rotate
+#include <board/group.hpp>                            // action::is_realized, make_group
+#include <dctl/board/angle.hpp>                       // _deg, inverse, rotate
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
 #include <dctl/board/coordinates.hpp>           // operator==, rotate, to_sco

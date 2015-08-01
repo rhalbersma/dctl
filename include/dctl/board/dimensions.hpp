@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle.hpp>       // Angle
+#include <dctl/board/angle.hpp>       // Angle
 #include <cstddef>              // size_t
 #include <stdexcept>            // invalid_argument
 #include <tuple>                // forward_as_tuple

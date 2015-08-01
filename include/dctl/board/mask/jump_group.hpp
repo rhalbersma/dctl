@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/angle/detail/abs_remainder.hpp>  // abs_remainder
+#include <dctl/board/angle/detail/abs_remainder.hpp>  // abs_remainder
 #include <dctl/board/coordinates.hpp>           // to_llo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/set_type.hpp>                    // set_type
+#include <dctl/board/set_type.hpp>                    // set_type
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
