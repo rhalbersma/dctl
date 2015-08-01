@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/random/uniform.hpp>      // runif
+#include <dctl/utility/random/uniform.hpp>      // runif
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <array>                        // array
 #include <cstddef>                      // size_t

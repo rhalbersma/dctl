@@ -1,4 +1,4 @@
-#include <dctl/angle.hpp>                       // Angle, _deg, rotate
+#include <dctl/board/angle.hpp>                       // Angle, _deg, rotate
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
 #include <range/v3/all.hpp>                     // all_of

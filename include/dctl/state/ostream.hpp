@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/pdn/version.hpp>
+#include <dctl/ui/pdn/version.hpp>
 #include <dctl/state/state.hpp>
 #include <dctl/state/manip/position_format.hpp>
 #include <dctl/setup/diagram.hpp>

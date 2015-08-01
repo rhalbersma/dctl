@@ -4,8 +4,8 @@
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/protocols.hpp>
 #include <dctl/setup/i_token.hpp>
-#include <dctl/set_type.hpp>
-#include <dctl/type_traits.hpp>
+#include <dctl/board/set_type.hpp>
+#include <dctl/utility/type_traits.hpp>
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
 #include <cctype>                       // isdigit

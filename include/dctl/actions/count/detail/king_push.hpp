@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle.hpp>                               // left_up, right_up, left_down, right_down
+#include <dctl/board/angle.hpp>                               // left_up, right_up, left_down, right_down
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king
 #include <dctl/actions/count/detail/primary_fwd.hpp>  // Count (primary template)
@@ -7,8 +7,8 @@
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
-#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
-#include <dctl/wave/patterns.hpp>                       // Sink
+#include <dctl/utility/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
+#include <dctl/board/wave/patterns.hpp>                       // Sink
 #include <xstd/cstddef.hpp>                             // _z
 
 namespace dctl {

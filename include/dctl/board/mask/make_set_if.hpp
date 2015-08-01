@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/set_type.hpp>    // set_type
+#include <dctl/board/set_type.hpp>    // set_type
 
 namespace dctl {
 namespace board {

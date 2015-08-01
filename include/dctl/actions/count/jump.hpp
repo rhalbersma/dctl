@@ -4,7 +4,7 @@
 #include <dctl/actions/count/primary_fwd.hpp>   // Count (primary template)
 #include <dctl/actions/generate/jump.hpp>       // Generate (jump specialization)
 #include <dctl/actions/select/jump.hpp>         // jump
-#include <dctl/type_traits.hpp>                 // rules_type, board_type
+#include <dctl/utility/type_traits.hpp>                 // rules_type, board_type
 #include <vector>                               // vector
 #include <dctl/utility/bounded_vector.hpp>
 

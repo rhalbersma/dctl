@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/setup/content.hpp>
 #include <dctl/setup/i_token.hpp>
-#include <dctl/type_traits.hpp>
+#include <dctl/utility/type_traits.hpp>
 #include <range/v3/all.hpp>
 #include <iomanip>                      // setw
 #include <sstream>                      // stringstream

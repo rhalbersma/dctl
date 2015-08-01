@@ -1,52 +1,56 @@
 #pragma once
+#include <dctl/action/detail/push_jump_promote.hpp>
+#include <dctl/action/detail/precedence_quality.hpp>
+#include <dctl/action/detail/precedence_ordering.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/rule_traits.hpp>         // is_quality, is_ordering
-#include <dctl/set_type.hpp>            // set_type
-#include <xstd/type_traits.hpp>         // optional_base
-#include <cassert>                      // assert
-#include <type_traits>                  // enable_if
-#include <tuple>                        // forward_as_tuple
-#include <dctl/action/base_action.hpp>
-#include <dctl/action/quality.hpp>
-#include <dctl/action/ordering.hpp>
+#include <dctl/rule_traits.hpp>                 // is_quality, is_ordering
+#include <dctl/board/set_type.hpp>                    // set_type
+#include <xstd/type_traits.hpp>                 // optional_base
+#include <cassert>                              // assert
+#include <type_traits>                          // enable_if
+#include <tuple>                                // forward_as_tuple
 
 namespace dctl {
 
 template<class Rules, class Board>
 class Action
-:       public detail::BaseAction<Rules, Board>
-,       public xstd::optional_base<precedence::is_quality_v <Rules>, detail::Quality <Board>>
-,       public xstd::optional_base<precedence::is_ordering_v<Rules>, detail::Ordering<Board>>
+:       public detail::PushJumpPromote<Rules, Board>
+,       public xstd::optional_base<precedence::is_quality_v <Rules>, detail::PrecedenceQuality <Board>>
+,       public xstd::optional_base<precedence::is_ordering_v<Rules>, detail::PrecedenceOrdering<Board>>
 {
-        using Base             = detail::BaseAction<Rules, Board>;
-        using OptionalQuality  = xstd::optional_base<precedence::is_quality_v <Rules>, detail::Quality <Board>>;
-        using OptionalOrdering = xstd::optional_base<precedence::is_ordering_v<Rules>, detail::Ordering<Board>>;
+        using PushJumpPromote    = detail::PushJumpPromote<Rules, Board>;
+        using PrecedenceQuality  = xstd::optional_base<precedence::is_quality_v <Rules>, detail::PrecedenceQuality <Board>>;
+        using PrecedenceOrdering = xstd::optional_base<precedence::is_ordering_v<Rules>, detail::PrecedenceOrdering<Board>>;
 public:
+        using rules_type = Rules;
+        using board_type = Board;
+
         Action() = default;
 
-        using Base::Base;
+        using PushJumpPromote::PushJumpPromote;
 
         template<class Tracker>
         explicit constexpr Action(Tracker const& t) noexcept
         :
-                Base{t},
-                OptionalQuality{t},
-                OptionalOrdering{t}
+                PushJumpPromote{t},
+                PrecedenceQuality{t},
+                PrecedenceOrdering{t}
         {}
 
-        using Base::num_captured;
+        using PushJumpPromote::num_captured;
 
-        template<class SFINAE = Rules, class = std::enable_if_t<precedence::is_quality_v<SFINAE>>>
+        template<class RulesType = rules_type, class =
+                std::enable_if_t<precedence::is_quality_v<RulesType>>
+        >
         constexpr auto num_captured(Piece p) const noexcept
         {
-                assert(this->num_captured_kings() <= this->num_captured());
-                return p == Piece::king ? this->num_captured_kings() : this->num_captured() - this->num_captured_kings();
+                return PrecedenceQuality::num_captured(p);
         }
 };
 
 template<class Rules, class Board>
 constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
--> std::enable_if_t<!precedence::is_ordering_v<Rules>, bool>
+        -> std::enable_if_t<!precedence::is_ordering_v<Rules>, bool>
 {
         return
                 std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) ==
@@ -56,7 +60,7 @@ constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> 
 
 template<class Rules, class Board>
 constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
--> std::enable_if_t<precedence::is_ordering_v<Rules>, bool>
+        -> std::enable_if_t<precedence::is_ordering_v<Rules>, bool>
 {
         return
                 std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.piece_order()) ==
@@ -66,7 +70,7 @@ constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> 
 
 template<class Rules, class Board>
 constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
--> std::enable_if_t<!precedence::is_ordering_v<Rules>, bool>
+        -> std::enable_if_t<!precedence::is_ordering_v<Rules>, bool>
 {
         return
                 std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) <
@@ -76,7 +80,7 @@ constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> 
 
 template<class Rules, class Board>
 constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
--> std::enable_if_t<precedence::is_ordering_v<Rules>, bool>
+        -> std::enable_if_t<precedence::is_ordering_v<Rules>, bool>
 {
         return
                 std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.piece_order()) <

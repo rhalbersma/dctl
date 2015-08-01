@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/set_type.hpp>                    // set_type
+#include <dctl/board/set_type.hpp>                    // set_type
 
 namespace dctl {
 namespace board {

@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/setup/i_token.hpp>
-#include <dctl/dxp/version.hpp>
+#include <dctl/ui/dxp/version.hpp>
 
 namespace dctl {
 namespace setup {

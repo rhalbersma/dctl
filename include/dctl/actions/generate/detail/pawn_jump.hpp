@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle.hpp>                               // _deg, rotate, inverse
+#include <dctl/board/angle.hpp>                               // _deg, rotate, inverse
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/state/promotion.hpp>                  // is_promotion
@@ -10,10 +10,10 @@
 #include <dctl/actions/select/jump.hpp>               // jumps
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/ray.hpp>                                 // make_iterator, rotate, mirror, turn
+#include <dctl/board/ray.hpp>                                 // make_iterator, rotate, mirror, turn
 #include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
-#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
-#include <dctl/wave/iterator.hpp>                       // make_iterator
+#include <dctl/utility/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
+#include <dctl/board/wave/iterator.hpp>                       // make_iterator
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // false_type, true_type

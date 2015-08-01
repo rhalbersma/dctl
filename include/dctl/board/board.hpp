@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle.hpp>                       // Angle, inverse
+#include <dctl/board/angle.hpp>                       // Angle, inverse
 #include <dctl/board/algebraic.hpp>             // Labels
 #include <dctl/board/dimensions.hpp>            // Dimensions
 #include <dctl/board/coordinates.hpp>           // Square, ulo_from_sq, sq_from_ulo, rotate

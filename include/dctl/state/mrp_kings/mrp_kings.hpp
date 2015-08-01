@@ -2,7 +2,7 @@
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/set_type.hpp>
+#include <dctl/board/set_type.hpp>
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cstddef>
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle.hpp>               // Angle
+#include <dctl/board/angle.hpp>               // Angle
 #include <dctl/board/dimensions.hpp>    // Dimensions
 #include <xstd/cstddef.hpp>             // _z
 #include <cassert>                      // assert

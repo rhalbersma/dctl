@@ -2,7 +2,7 @@
 #include <dctl/board/coordinates.hpp>           // ulo_from_sq
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/color.hpp>                       // black, white
-#include <dctl/set_type.hpp>                    // set_type
+#include <dctl/board/set_type.hpp>                    // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <array>                                // array

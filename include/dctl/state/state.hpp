@@ -11,8 +11,8 @@
 #include <dctl/state/to_move/zobrist.hpp>
 #include <dctl/state/reversible_actions.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/set_type.hpp>
-#include <dctl/zobrist/accumulate.hpp>
+#include <dctl/board/set_type.hpp>
+#include <dctl/utility/zobrist/accumulate.hpp>
 #include <cassert>                      // assert
 #include <tuple>
 #include <type_traits>                  // false_type, true_type

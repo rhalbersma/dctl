@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/angle.hpp>                               // up, left_up, right_up, left, right, left_down, right_down, down
+#include <dctl/board/angle.hpp>                               // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king
 #include <dctl/actions/detail/tracker.hpp>            // Tracker
@@ -8,8 +8,8 @@
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_long_ranged_king_t
-#include <dctl/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
-#include <dctl/wave/patterns.hpp>                       // Sandwich
+#include <dctl/utility/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
+#include <dctl/board/wave/patterns.hpp>                       // Sandwich
 
 namespace dctl {
 namespace actions {

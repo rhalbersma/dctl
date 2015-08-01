@@ -2,7 +2,7 @@
 #include <dctl/board/mask.hpp>  // squares, Promotion
 #include <dctl/color.hpp>       // black, white
 #include <dctl/piece.hpp>       // pawn, king
-#include <dctl/type_traits.hpp> // board_type
+#include <dctl/utility/type_traits.hpp> // board_type
 
 namespace dctl {
 namespace detail {

@@ -1,9 +1,9 @@
 #pragma once
-#include <dctl/angle.hpp>                       // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
+#include <dctl/board/angle.hpp>                       // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/mask/squares.hpp>          // Squares
-#include <dctl/ray/fill.hpp>                    // fill
-#include <dctl/ray/iterator.hpp>                // Iterator
-#include <dctl/set_type.hpp>                    // set_type
+#include <dctl/board/ray/fill.hpp>                    // fill
+#include <dctl/board/ray/iterator.hpp>                // Iterator
+#include <dctl/board/set_type.hpp>                    // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <array>                                // array
 #include <cstddef>                              // size_t
