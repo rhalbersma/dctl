@@ -10,12 +10,10 @@ namespace rules {
 
 struct Italian
 {
-        static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
         using king_range_category = short_ranged_tag;           // 4.7
 
+        static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
         static constexpr auto is_pawn_jump_king = false;        // 5.3(b)
-        static constexpr auto max_repetitions = 4;              // 9.3(b1)
-        static constexpr auto max_reversible_moves = 80;        // 10.4
 
         static constexpr auto is_quantity = true;               // 6.6
         static constexpr auto is_modality = true;               // 6.7
@@ -25,7 +23,7 @@ struct Italian
         struct equal_to
         {
                 template<class Action>
-                /*constexpr*/ auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
                         return
                                 std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king), lhs.num_captured(Piece::king), lhs.piece_order()) ==
@@ -37,7 +35,7 @@ struct Italian
         struct less
         {
                 template<class Action>
-                /*constexpr*/ auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
                         return
                                 std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king), lhs.num_captured(Piece::king), lhs.piece_order()) <
@@ -45,6 +43,9 @@ struct Italian
                         ;
                 }
         };
+
+        static constexpr auto max_repetitions = 4;              // 9.3(b1)
+        static constexpr auto max_reversible_moves = 80;        // 10.4
 };
 
 }       // namespace rules

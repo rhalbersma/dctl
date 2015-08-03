@@ -23,7 +23,7 @@ struct Frisian
         struct equal_to
         {
                 template<class Action>
-                /*constexpr*/ auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
                         return
                                 std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with(Piece::king)) ==
@@ -35,7 +35,7 @@ struct Frisian
         struct less
         {
                 template<class Action>
-                /*constexpr*/ auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
                 {
                         auto const delta_pawns = static_cast<int>(lhs.num_captured(Piece::pawn)) - static_cast<int>(rhs.num_captured(Piece::pawn));
                         auto const delta_kings = static_cast<int>(lhs.num_captured(Piece::king)) - static_cast<int>(rhs.num_captured(Piece::king));

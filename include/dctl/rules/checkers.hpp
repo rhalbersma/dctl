@@ -7,7 +7,6 @@ namespace rules {
 
 struct Checkers
 {
-        // draw
         static constexpr auto max_repetitions = 3;              // 1.32.1
         static constexpr auto max_reversible_moves = 80;        // 1.32.2
 };
