@@ -8,13 +8,10 @@ namespace rules {
 
 struct International
 {
-        static constexpr auto is_backward_pawn_jump = true;     // 4.1
         using king_range_category = long_ranged_tag;            // 3.9
 
-        static constexpr auto max_repetitions = 3;              // 6.1
-        static constexpr auto max_reversible_moves = 50;        // 6.2
-
-        static constexpr auto is_quantity = true;
+        static constexpr auto is_backward_pawn_jump = true;     // 4.1
+        static constexpr auto is_quantity = true;               // 4.13
 
         struct equal_to
         {
@@ -33,6 +30,9 @@ struct International
                         return lhs.num_captured() < rhs.num_captured();
                 }
         };
+
+        static constexpr auto max_repetitions = 3;              // 6.1
+        static constexpr auto max_reversible_moves = 50;        // 6.2
 };
 
 using Brazilian  = International;

@@ -3,7 +3,7 @@
 #include <dctl/utility/hash/dual_map.hpp>
 #include <dctl/utility/hash/extract.hpp>
 #include <dctl/utility/stack_vector.hpp>
-#include <dctl/result.hpp>
+#include <dctl/ai/result.hpp>
 #include <dctl/actions.hpp>
 #include <dctl/utility/stack_vector.hpp>
 #include <dctl/utility/statistics.hpp>

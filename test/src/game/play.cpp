@@ -2,7 +2,7 @@
 #include <dctl/state.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/actions.hpp>
-#include <dctl/result.hpp>
+#include <dctl/ai/result.hpp>
 #include <range/v3/all.hpp>
 #include <iomanip>
 #include <iostream>
