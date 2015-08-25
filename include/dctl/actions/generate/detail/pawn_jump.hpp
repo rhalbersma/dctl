@@ -111,8 +111,8 @@ private:
         template<int Direction>
         auto serialize(set_type const& active_pawns) const
         {
-                auto jumpers = active_pawns & set_type(*std::prev(along_wave<Direction>(tracker.template targets<Direction>())));
-                jumpers.consume_each([&](auto const& from_sq){
+                auto const jumpers = active_pawns & set_type(*std::prev(along_wave<Direction>(tracker.template targets<Direction>())));
+                jumpers.for_each([&](auto const& from_sq){
                         find_first(along_ray<Direction>(from_sq));
                 });
         }

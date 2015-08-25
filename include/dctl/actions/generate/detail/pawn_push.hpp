@@ -56,8 +56,8 @@ private:
         template<int Direction>
         auto generate_movers(set_type const& active_pawns) const
         {
-                auto movers = active_pawns & set_type(*std::prev(along_wave<Direction>(position.not_occupied())));
-                movers.consume_each([&](auto const& from_sq){
+                auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(position.not_occupied())));
+                movers.for_each([&](auto const& from_sq){
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
                         moves.emplace_back(from_sq, dest_sq, ToMove, is_promotion(dest_sq) ? Piece::king : Piece::pawn);
                 });
