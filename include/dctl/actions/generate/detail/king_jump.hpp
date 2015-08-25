@@ -58,12 +58,12 @@ public:
         }
 
 private:
-        auto serialize(set_type const& active_kings) const
+        auto serialize(set_type active_kings) const
         {
-                for (auto from_sq : active_kings) {
+                active_kings.consume_each([&](auto const& from_sq){
                         raii::Launch<tracker_type> guard{tracker, from_sq};
                         branch(from_sq);
-                }
+                });
         }
 
         auto branch(std::size_t from_sq) const

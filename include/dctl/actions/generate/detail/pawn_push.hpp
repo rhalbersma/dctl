@@ -57,10 +57,10 @@ private:
         auto generate_movers(set_type const& active_pawns) const
         {
                 auto movers = active_pawns & set_type(*std::prev(along_wave<Direction>(position.not_occupied())));
-                for (auto from_sq : xstd::bit::InputRange<unsigned long long, 1>{*movers.block_begin()}) {
+                movers.consume_each([&](auto const& from_sq){
                         auto const dest_sq = *++along_ray<Direction>(from_sq);
                         moves.emplace_back(from_sq, dest_sq, ToMove, is_promotion(dest_sq) ? Piece::king : Piece::pawn);
-                }
+                });
         }
 
         template<int Direction>

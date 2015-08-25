@@ -112,8 +112,9 @@ private:
         auto serialize(set_type const& active_pawns) const
         {
                 auto jumpers = active_pawns & set_type(*std::prev(along_wave<Direction>(tracker.template targets<Direction>())));
-                for (auto from_sq : xstd::bit::InputRange<unsigned long long, 1>{*jumpers.block_begin()})
+                jumpers.consume_each([&](auto const& from_sq){
                         find_first(along_ray<Direction>(from_sq));
+                });
         }
 
         template<class Iterator>

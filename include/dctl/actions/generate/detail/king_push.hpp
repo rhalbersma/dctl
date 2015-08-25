@@ -61,30 +61,32 @@ private:
                 generate_movers<right_down(orientation)>(active_kings);
         }
 
-        auto generate_dispatch(set_type const& active_kings, long_ranged_tag) const
+        auto generate_dispatch(set_type active_kings, long_ranged_tag) const
         {
-                for (auto from_sq : active_kings) {
+                active_kings.consume_each([&](auto const& from_sq){
                         generate_targets(along_ray<left_up   (orientation)>(from_sq));
                         generate_targets(along_ray<right_up  (orientation)>(from_sq));
                         generate_targets(along_ray<left_down (orientation)>(from_sq));
                         generate_targets(along_ray<right_down(orientation)>(from_sq));
-                }
+                });
         }
 
         template<int Direction>
         auto generate_movers(set_type const& active_kings) const
         {
-                auto const movers = active_kings & set_type(*std::prev(along_wave<Direction>(position.not_occupied())));
-                for (auto from_sq : movers)
+                auto movers = active_kings & set_type(*std::prev(along_wave<Direction>(position.not_occupied())));
+                movers.consume_each([&](auto const& from_sq){
                         moves.emplace_back(from_sq, *++along_ray<Direction>(from_sq), ToMove);
+                });
         }
 
         template<class Iterator>
         auto generate_targets(Iterator from) const
         {
-                auto const targets = ray::classical(from, position.not_occupied());
-                for (auto dest_sq : targets)
+                auto targets = ray::classical(from, position.not_occupied());
+                targets.consume_each([&](auto const& dest_sq){
                         moves.emplace_back(*from, dest_sq, ToMove);
+                });
         }
 
         template<int Direction>
