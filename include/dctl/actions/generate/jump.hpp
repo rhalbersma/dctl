@@ -26,7 +26,7 @@ public:
                 KingJump{tracker, moves}(p.pieces(ToMove, Piece::king));
                 PawnJump{tracker, moves}(p.pieces(ToMove, Piece::pawn));
 
-                using rules_type = rules_type_t<State>;
+                using rules_type = rules_t<State>;
                 return filter::Precedence<rules_type>{}(begin(moves), end(moves));
         }
 };
@@ -52,7 +52,7 @@ public:
         template<class State, class Sequence>
         auto operator()(State const& p, Sequence& moves) const
         {
-                using rules_type = rules_type_t<State>;
+                using rules_type = rules_t<State>;
                 auto it1 = detail::GenerateJump<ToMove, Reverse>{}(p, moves);
                 auto const it2 = filter::Unique<rules_type>{}(begin(moves), it1);
                 moves.erase(it2, end(moves));

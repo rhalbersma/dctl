@@ -10,7 +10,7 @@ namespace detail {
 template<class PiecePlacement>
 constexpr auto invariant(PiecePlacement const& p) noexcept
 {
-        using board_type = board_type_t<PiecePlacement>;
+        using board_type = board_t<PiecePlacement>;
 
         return
                  (p.pieces(Color::black, Piece::pawn) ^ p.pieces(Color::black, Piece::king)) == p.pieces(Color::black) &&

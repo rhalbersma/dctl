@@ -12,7 +12,7 @@
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/board/ray.hpp>                                 // make_iterator, rotate, mirror, turn
 #include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
-#include <dctl/utility/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
+#include <dctl/utility/type_traits.hpp>                         // board_t, rules_t, set_t
 #include <dctl/board/wave/iterator.hpp>                       // make_iterator
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
@@ -26,9 +26,9 @@ template<Color ToMove, bool Reverse, class State, class Sequence>
 class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Sequence>
 {
         using    KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, State, Sequence>;
-        using   board_type = board_type_t<State>;
-        using   rules_type = rules_type_t<State>;
-        using     set_type =   set_type_t<State>;
+        using   board_type = board_t<State>;
+        using   rules_type = rules_t<State>;
+        using     set_type =   set_t<State>;
         using tracker_type = detail::Tracker<ToMove, State>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;

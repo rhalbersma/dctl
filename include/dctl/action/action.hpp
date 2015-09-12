@@ -39,10 +39,9 @@ public:
 
         using PushJumpPromote::num_captured;
 
-        template<class RulesType = rules_type, class =
-                std::enable_if_t<precedence::is_quality_v<RulesType>>
-        >
+        template<class RulesType = rules_type>
         constexpr auto num_captured(Piece p) const noexcept
+                -> std::enable_if_t<precedence::is_quality_v<RulesType>, std::size_t>
         {
                 return PrecedenceQuality::num_captured(p);
         }

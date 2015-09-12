@@ -1,17 +1,17 @@
 #pragma once
-#include <dctl/board/angle.hpp>                               // left_up, right_up, left_down, right_down, _deg, rotate, inverse
+#include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, _deg, rotate, inverse
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // king
-#include <dctl/actions/detail/raii.hpp>               // Launch, Capture, Visit, SetKingJump
-#include <dctl/actions/detail/tracker.hpp>            // Tracker
-#include <dctl/actions/generate/detail/primary_fwd.hpp>       // Generate (primary template)
-#include <dctl/actions/select/jump.hpp>               // jump
+#include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, SetKingJump
+#include <dctl/actions/detail/tracker.hpp>              // Tracker
+#include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/select/jump.hpp>                 // jump
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/board/ray.hpp>                                 // make_iterator, rotate, mirror
+#include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                         // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
-#include <dctl/utility/type_traits.hpp>                         // board_type_t, rules_type_t
+#include <dctl/utility/type_traits.hpp>                 // board_t, rules_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // is_base_of, false_type, true_type
@@ -23,9 +23,9 @@ namespace detail {
 template<Color ToMove, bool Reverse, class State, class Sequence>
 class Generate<ToMove, Piece::king, select::jump, Reverse, State, Sequence>
 {
-        using   board_type = board_type_t<State>;
-        using   rules_type = rules_type_t<State>;
-        using     set_type =   set_type_t<State>;
+        using   board_type = board_t<State>;
+        using   rules_type = rules_t<State>;
+        using     set_type =   set_t<State>;
         using tracker_type = detail::Tracker<ToMove, State>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;

@@ -22,7 +22,7 @@ public:
         template<class State>
         auto operator()(State const& p) const
         {
-                using Board = board_type_t<State>;
+                using Board = board_t<State>;
                 using Coord = board::Coordinates<board::origin::UpperLeft>;
                 using namespace ranges;
 

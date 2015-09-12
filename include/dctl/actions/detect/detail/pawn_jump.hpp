@@ -10,7 +10,7 @@
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_pawn_jump_king
-#include <dctl/utility/type_traits.hpp>                         // board_type_t, rules_type_t, set_type_t
+#include <dctl/utility/type_traits.hpp>                         // board_t, rules_t, set_t
 #include <dctl/board/wave/patterns.hpp>                       // Sandwich
 
 namespace dctl {
@@ -20,9 +20,9 @@ namespace detail {
 template<Color ToMove, bool Reverse, class State>
 class Detect<ToMove, Piece::pawn, select::jump, Reverse, State>
 {
-        using   board_type = board_type_t<State>;
-        using   rules_type = rules_type_t<State>;
-        using     set_type =   set_type_t<State>;
+        using   board_type = board_t<State>;
+        using   rules_type = rules_t<State>;
+        using     set_type =   set_t<State>;
         using tracker_type = detail::Tracker<ToMove, State>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
