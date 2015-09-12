@@ -109,7 +109,7 @@ struct write<pdn::protocol, Token>
         template<class State>
         std::string operator()(State const& p) const
         {
-                using Board = board_type_t<State>;
+                using Board = board_t<State>;
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                   // opening quotes

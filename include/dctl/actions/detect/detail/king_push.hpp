@@ -6,7 +6,7 @@
 #include <dctl/actions/select/push.hpp>               // push
 
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/utility/type_traits.hpp>                         // board_type_t, set_type_t
+#include <dctl/utility/type_traits.hpp>                         // board_t, set_t
 #include <dctl/board/wave/patterns.hpp>                       // Sink
 #include <type_traits>                                  // false_type
 
@@ -17,8 +17,8 @@ namespace detail {
 template<Color ToMove, bool Reverse, class State>
 class Detect<ToMove, Piece::king, select::push, Reverse, State>
 {
-        using board_type = board_type_t<State>;
-        using   set_type =   set_type_t<State>;
+        using board_type = board_t<State>;
+        using   set_type =   set_t<State>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
         State const& position;

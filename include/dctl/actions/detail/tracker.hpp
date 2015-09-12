@@ -5,7 +5,7 @@
 #include <dctl/piece.hpp>
 #include <dctl/board/ray.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/utility/type_traits.hpp>                 // board_type_t, rules_type_t, set_type_t
+#include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <dctl/board/wave/iterator.hpp>
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
@@ -23,9 +23,9 @@ template<Color ToMove, class State>
 class Tracker
 {
 public:
-        using  board_type = board_type_t<State>;
-        using  rules_type = rules_type_t<State>;
-        using    set_type =   set_type_t<State>;
+        using  board_type = board_t<State>;
+        using  rules_type = rules_t<State>;
+        using    set_type =   set_t<State>;
         using square_type =  std::size_t;
 
 private:
