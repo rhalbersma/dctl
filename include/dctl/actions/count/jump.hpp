@@ -5,7 +5,8 @@
 #include <dctl/actions/generate/jump.hpp>       // Generate (jump specialization)
 #include <dctl/actions/select/jump.hpp>         // jump
 #include <dctl/utility/type_traits.hpp>         // rules_t, board_t
-#include <dctl/utility/bounded_vector.hpp>      // bounded_vector
+#include <dctl/utility/bounded_vector.hpp>
+#include <vector>                               // vector
 
 namespace dctl {
 namespace actions {
@@ -18,6 +19,8 @@ public:
         auto operator()(State const& s) const
         {
                 util::bounded_vector<Action<rules_t<State>, board_t<State>>, 64> moves;
+                //static std::vector<Action<rules_t<State>, board_t<State>>> moves;
+                //moves.clear();
                 Generate<ToMove, select::jump, RemoveDuplicateJumps, Reverse>{}(s, moves);
                 return moves.size();
         }

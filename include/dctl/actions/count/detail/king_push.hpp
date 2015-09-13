@@ -23,17 +23,17 @@ class Count<ToMove, Piece::king, select::push, Reverse, State>
         using   set_type =   set_t<State>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
-        State const& position;
+        State const& state;
 
 public:
-        explicit Count(State const& p)
+        explicit Count(State const& s)
         :
-                position{p}
+                state{s}
         {}
 
         auto operator()() const
         {
-                return count(position.pieces(ToMove, Piece::king));
+                return count(state.pieces(ToMove, Piece::king));
         }
 
         auto operator()(set_type const& active_kings) const
@@ -61,7 +61,7 @@ private:
         auto parallelize(set_type const& active_kings) const
         {
                 return Sink<board_type, Direction, king_range_category_t<rules_type>>{}(
-                        active_kings, position.not_occupied()
+                        active_kings, state.not_occupied()
                 ).count();
         }
 };

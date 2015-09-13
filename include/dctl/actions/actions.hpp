@@ -1,9 +1,9 @@
 #pragma once
 #include <dctl/color.hpp>                               // Player, black, white
-#include <dctl/actions/generate/specializations.hpp>  // Generate
-#include <dctl/actions/count/specializations.hpp>     // Count
-#include <dctl/actions/detect/specializations.hpp>    // Detect
-#include <dctl/actions/select/legal.hpp>              // legal
+#include <dctl/actions/generate/specializations.hpp>    // Generate
+#include <dctl/actions/count/specializations.hpp>       // Count
+#include <dctl/actions/detect/specializations.hpp>      // Detect
+#include <dctl/actions/select/legal.hpp>                // legal
 
 namespace dctl {
 namespace actions {

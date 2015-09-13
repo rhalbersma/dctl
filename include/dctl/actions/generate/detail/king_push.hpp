@@ -24,19 +24,19 @@ class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
         using   set_type =   set_t<State>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
-        State const& position;
+        State const& state;
         Sequence& moves;
 
 public:
-        Generate(State const& p, Sequence& m)
+        Generate(State const& s, Sequence& m)
         :
-                position{p},
+                state{s},
                 moves{m}
         {}
 
         auto operator()() const
         {
-                generate(position.pieces(ToMove, Piece::king));
+                generate(state.pieces(ToMove, Piece::king));
         }
 
         auto operator()(set_type const& active_kings) const
@@ -74,7 +74,7 @@ private:
         template<int Direction>
         auto generate_movers(set_type const& active_kings) const
         {
-                auto const movers = active_kings & set_type(*std::prev(along_wave<Direction>(position.not_occupied())));
+                auto const movers = active_kings & set_type(*std::prev(along_wave<Direction>(state.not_occupied())));
                 movers.for_each([&](auto const& from_sq){
                         moves.emplace_back(from_sq, *++along_ray<Direction>(from_sq), ToMove);
                 });
@@ -83,7 +83,7 @@ private:
         template<class Iterator>
         auto generate_targets(Iterator from) const
         {
-                auto const targets = ray::classical(from, position.not_occupied());
+                auto const targets = ray::classical(from, state.not_occupied());
                 targets.for_each([&](auto const& dest_sq){
                         moves.emplace_back(*from, dest_sq, ToMove);
                 });
