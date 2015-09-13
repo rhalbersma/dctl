@@ -21,17 +21,17 @@ class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
         using   set_type =   set_t<State>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
-        State const& position;
+        State const& state;
 
 public:
-        explicit Detect(State const& p)
+        explicit Detect(State const& s)
         :
-                position{p}
+                state{s}
         {}
 
         auto operator()() const
         {
-                return detect(position.pieces(ToMove, Piece::pawn));
+                return detect(state.pieces(ToMove, Piece::pawn));
         }
 
         auto operator()(set_type const& active_pawns) const
@@ -55,7 +55,7 @@ private:
         auto parallelize(set_type const& active_pawns) const
         {
                 return Sink<board_type, Direction, short_ranged_tag>{}(
-                        active_pawns, position.not_occupied()
+                        active_pawns, state.not_occupied()
                 ).any();
         }
 };

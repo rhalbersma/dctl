@@ -220,7 +220,7 @@ public:
 
         auto run(State const& state, int depth)
         {
-
+/*
                 if (depth > moves_storage.size()) {
                         moves_storage.reserve(depth);
                         moves_storage.insert(moves_storage.end(), depth - moves_storage.size(), {});
@@ -228,7 +228,7 @@ public:
                                 moves_storage[i].reserve(32);
                         }
                 }
-
+*/
                 return recursive_run(state, 0, depth);
         }
 
