@@ -40,11 +40,9 @@ public:
 private:
         auto branch(set_type const& active_kings) const
         {
-                // tag dispatching on king jump directions
                 return branch_dispatch(active_kings, is_orthogonal_jump_t<rules_type>{});
         }
 
-        // kings that jump in the 4 diagonal directions
         auto branch_dispatch(set_type const& active_kings, std::false_type) const
         {
                 return
@@ -55,7 +53,6 @@ private:
                 ;
         }
 
-        // kings that jump in the 8 diagonal and orthogonal directions
         auto branch_dispatch(set_type const& active_kings, std::true_type) const
         {
                 return

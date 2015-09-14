@@ -143,9 +143,9 @@ public:
                 return path<Direction>().test(sq);
         }
 
-        auto is_king(square_type sq) const
+        auto is_last_jumped(Piece p) const
         {
-                return by_piece(Piece::king).test(sq);
+                return by_piece(p).test(last_jumped_square());
         }
 
         auto piece_order() const
@@ -254,6 +254,11 @@ private:
         auto num_captured() const
         {
                 return jumped_squares_.size();
+        }
+
+        auto is_king(square_type sq) const
+        {
+                return by_piece(Piece::king).test(sq);
         }
 
         auto last_jumped_square() const

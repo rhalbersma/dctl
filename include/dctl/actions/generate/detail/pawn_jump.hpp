@@ -337,9 +337,10 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(std::next(jumper)) && tracker.targets(jumper)))
+                if (!(is_onboard(jumper) && tracker.targets(jumper)))
                         return false;
 
+                assert(is_onboard(std::next(jumper)));
                 capture(jumper);
                 return true;
         }

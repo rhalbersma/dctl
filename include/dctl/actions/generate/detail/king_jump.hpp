@@ -68,11 +68,9 @@ private:
 
         auto branch(std::size_t from_sq) const
         {
-                // tag dispatching on king jump directions
                 branch_dispatch(from_sq, is_orthogonal_jump_t<rules_type>{});
         }
 
-        // kings that jump in the 4 diagonal directions
         auto branch_dispatch(std::size_t from_sq, std::false_type) const
         {
                 find_first(along_ray<left_up   (orientation)>(from_sq));
@@ -81,7 +79,6 @@ private:
                 find_first(along_ray<right_down(orientation)>(from_sq));
         }
 
-        // kings that jump in the 8 diagonal and orthogonal directions
         auto branch_dispatch(std::size_t from_sq, std::true_type) const
         {
                 find_first(along_ray<up        (orientation)>(from_sq));
@@ -98,8 +95,10 @@ private:
         auto find_first(Iterator jumper) const
         {
                 slide(jumper, tracker.template path<ray::direction_v<Iterator>>());
-                if (is_onboard(std::next(jumper)) && tracker.targets(jumper))
+                if (is_onboard(jumper) && tracker.targets(jumper)) {
+                        assert(is_onboard(std::next(jumper)));
                         capture(jumper);
+                }
         }
 
         template<class Iterator>
@@ -184,11 +183,9 @@ private:
         template<class Iterator>
         auto turn(Iterator jumper) const
         {
-                // tag dispatching on king turn directions
                 return turn_dispatch(jumper, is_orthogonal_jump_t<rules_type>{});
         }
 
-        // kings that jump in the 4 diagonal directions
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, std::false_type) const
         {
@@ -199,7 +196,6 @@ private:
                 ;
         }
 
-        // kings that jump in the 8 diagonal and orthogonal directions
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, std::true_type) const
         {
@@ -246,6 +242,7 @@ private:
                 if (!(is_onboard(jumper) && tracker.targets(jumper)))
                         return false;
 
+                assert(is_onboard(std::next(jumper)));
                 capture(jumper);
                 return true;
         }
@@ -259,8 +256,7 @@ private:
         template<class Iterator>
         auto halt_dispatch(Iterator dest_sq, long_ranged_tag, short_ranged_tag) const
         {
-                assert(is_onboard(std::prev(dest_sq)));
-                if (tracker.is_king(*std::prev(dest_sq)))
+                if (tracker.is_last_jumped(Piece::king))
                         halt_dispatch(dest_sq, short_ranged_tag{}, short_ranged_tag{});
                 else
                         halt_dispatch(dest_sq,  long_ranged_tag{},  long_ranged_tag{});
@@ -278,12 +274,9 @@ private:
                 // tracker.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(is_onboard(dest_sq) && tracker.path(*dest_sq));
-                add_jump();
-                ++dest_sq;
-                while (is_onboard(dest_sq) && tracker.path(*dest_sq)) {
+                for (add_jump(), ++dest_sq; is_onboard(dest_sq) && tracker.path(*dest_sq); ++dest_sq) {
                         tracker.set_dest(*dest_sq);
                         add_jump();
-                        ++dest_sq;
                 }
         }
 
