@@ -122,14 +122,12 @@ struct cycle<SecondPlayerWin>
 
 namespace detail {
 
-// no restrictions on consecutive reversible moves
 template<class State>
 bool is_no_progress(State const& /* p */, std::false_type)
 {
         return false;
 }
 
-// a maximum of consecutive reversible moves
 template<class State>
 bool is_no_progress(State const& p, std::true_type)
 {
@@ -145,7 +143,6 @@ bool is_no_progress(State const& p)
 {
         using Rules = typename State::rules_type;
 
-        // tag dispatching on restrictions on consecutive reversible moves
         return detail::is_no_progress(p, is_restricted_reversible_moves_t<Rules>{});
 }
 
