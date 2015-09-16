@@ -18,9 +18,13 @@ public:
                 if (precedence::is_trivial_v<Rules> || std::distance(first, last) < 2)
                         return last;
 
-                auto const max_precedence = *std::max_element(first, last, precedence::less_t<Rules>{});
-                return std::stable_partition(first, last, [&](auto const& move){
-                        return precedence::equal_to_t<Rules>{}(move, max_precedence);
+                auto it = std::max_element(first, last, precedence::less_t<Rules>{});
+                auto const dst = std::find_if_not(first, last, [&](auto const& move){
+                        return precedence::equal_to_t<Rules>{}(move, *it);
+                });
+                auto const src = std::next(it, std::distance(first, dst));
+                return std::copy_if(src, last, dst, [&](auto const& move){
+                        return precedence::equal_to_t<Rules>{}(move, *it);
                 });
         }
 };
