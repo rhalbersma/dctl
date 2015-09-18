@@ -1,8 +1,7 @@
 #pragma once
-#include <dctl/rule_traits.hpp> // precedence::is_trivial, precedence::greater, large_jump_v
-#include <algorithm>            // max_element, stable_sort, unique, upper_bound
-#include <cassert>
-#include <iterator>             // begin, end, distance
+#include <dctl/rule_traits.hpp> // precedence::is_trivial, precedence::less, precedence::equal_to, large_jump_v
+#include <algorithm>            // max_element, find_if_not, copy_if, stable_sort, unique
+#include <iterator>             // begin, end, distance, make_move_iterator
 
 namespace dctl {
 namespace actions {
@@ -23,7 +22,7 @@ public:
                         return precedence::equal_to_t<Rules>{}(move, *it);
                 });
                 auto const src = std::next(it, std::distance(first, dst));
-                return std::copy_if(src, last, dst, [&](auto const& move){
+                return std::copy_if(std::make_move_iterator(src), std::make_move_iterator(last), dst, [&](auto const& move){
                         return precedence::equal_to_t<Rules>{}(move, *it);
                 });
         }
