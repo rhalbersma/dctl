@@ -1,14 +1,15 @@
 #pragma once
-#include <dctl/color.hpp>                               // Player, black, white
 #include <dctl/actions/generate/specializations.hpp>    // Generate
 #include <dctl/actions/count/specializations.hpp>       // Count
 #include <dctl/actions/detect/specializations.hpp>      // Detect
 #include <dctl/actions/select/legal.hpp>                // legal
+#include <dctl/color.hpp>                               // Color, black, white
+#include <type_traits>                                  // bool_constant
 
 namespace dctl {
 namespace actions {
 
-template<class Select = select::legal, bool RemoveDuplicateJumps = true, bool Reverse = false>
+template<class Select = select::legal, bool Unique = true, bool Reverse = false>
 class Successor
 {
         template<Color ToMove, class State>
@@ -24,7 +25,7 @@ public:
         template<Color ToMove, class State, class Sequence>
         auto generate(State const& s, Sequence& moves)
         {
-                Generate<ToMove, Select, RemoveDuplicateJumps, Reverse>{}(s, moves);
+                Generate<ToMove, Select, std::bool_constant<Unique>, std::bool_constant<Reverse>>{}(s, moves);
                 assert((invariant<ToMove>(s, moves.size())));
         }
 
@@ -41,7 +42,7 @@ public:
         template<Color ToMove, class State>
         auto count(State const& s)
         {
-                return Count<ToMove, Select, RemoveDuplicateJumps, Reverse>{}(s);
+                return Count<ToMove, Select, std::bool_constant<Unique>, std::bool_constant<Reverse>>{}(s);
         }
 
         template<class State>
@@ -57,7 +58,7 @@ public:
         template<Color ToMove, class State>
         auto detect(State const& s)
         {
-                return Detect<ToMove, Select, Reverse>{}(s);
+                return Detect<ToMove, Select, std::bool_constant<Reverse>>{}(s);
         }
 
         template<class State>

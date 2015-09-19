@@ -4,7 +4,7 @@
 namespace dctl {
 namespace actions {
 
-template<Color /* ToMove */, class /* Select */, bool /* Reverse */>
+template<Color, class, class...>
 class Detect;
 
 }       // namespace actions

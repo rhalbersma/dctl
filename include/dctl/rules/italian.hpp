@@ -22,8 +22,8 @@ struct Italian
 
         struct equal_to
         {
-                template<class Action>
-                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                template<class Action1, class Action2>
+                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
                 {
                         return
                                 std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king), lhs.num_captured(Piece::king), lhs.piece_order()) ==
@@ -34,8 +34,8 @@ struct Italian
 
         struct less
         {
-                template<class Action>
-                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                template<class Action1, class Action2>
+                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
                 {
                         return
                                 std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king), lhs.num_captured(Piece::king), lhs.piece_order()) <

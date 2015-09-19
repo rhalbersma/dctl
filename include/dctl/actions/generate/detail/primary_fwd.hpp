@@ -1,20 +1,12 @@
 #pragma once
-#include <dctl/color.hpp>       // Player
+#include <dctl/color.hpp>       // Color
 #include <dctl/piece.hpp>       // Piece
 
 namespace dctl {
 namespace actions {
 namespace detail {
 
-template
-<
-        Color /* ToMove     */,
-        Piece /* With       */,
-        class /* Select     */,
-        bool  /* Reverse  */,
-        class /* State   */,
-        class /* Sequence   */
->
+template<Color, Piece, class, class...>
 class Generate;
 
 }       // namespace detail

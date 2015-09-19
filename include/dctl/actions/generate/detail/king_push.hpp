@@ -1,12 +1,11 @@
 #pragma once
-#include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
-#include <dctl/color.hpp>                               // Player
-#include <dctl/piece.hpp>                               // king
 #include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/push.hpp>                 // push
-
+#include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/board/ray.hpp>                           // make_iterator
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t, value_t
 #include <cstddef>                                      // size_t
@@ -16,14 +15,14 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, bool Reverse, class State, class Sequence>
+template<Color ToMove, class Reverse, class State, class Sequence>
 class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
 {
         using board_type = board_t<State>;
         using rules_type = rules_t<State>;
         using   set_type =   set_t<State>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         State const& state;
         Sequence& moves;
 

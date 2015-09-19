@@ -14,13 +14,13 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, bool Reverse, class State>
+template<Color ToMove, class Reverse, class State>
 class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
 {
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         State const& state;
 
 public:

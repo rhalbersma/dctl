@@ -12,6 +12,8 @@ class bounded_vector
         T data_[N];
         std::size_t size_ = 0;
 public:
+        using value_type = T;
+
         auto begin() const
         {
                 return &data_[0];
@@ -92,6 +94,11 @@ public:
         auto empty() const
         {
                 return !size();
+        }
+
+        auto clear()
+        {
+                size_ = 0;
         }
 
         template<class Iterator>

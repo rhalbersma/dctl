@@ -19,8 +19,8 @@ struct Czech
 
         struct equal_to
         {
-                template<class Action>
-                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                template<class Action1, class Action2>
+                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
                 {
                         return lhs.is_with(Piece::king) == rhs.is_with(Piece::king);
                 }
@@ -28,8 +28,8 @@ struct Czech
 
         struct less
         {
-                template<class Action>
-                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                template<class Action1, class Action2>
+                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
                 {
                         return lhs.is_with(Piece::king) < rhs.is_with(Piece::king);
                 }

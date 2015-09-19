@@ -18,8 +18,8 @@ struct Spanish
 
         struct equal_to
         {
-                template<class Action>
-                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                template<class Action1, class Action2>
+                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
                 {
                         return
                                 std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king)) ==
@@ -30,8 +30,8 @@ struct Spanish
 
         struct less
         {
-                template<class Action>
-                constexpr auto operator()(Action const& lhs, Action const& rhs) const noexcept
+                template<class Action1, class Action2>
+                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
                 {
                         return
                                 std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king)) <
