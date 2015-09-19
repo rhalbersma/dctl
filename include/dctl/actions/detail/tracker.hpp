@@ -8,6 +8,7 @@
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <dctl/board/wave/iterator.hpp>
 #include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <algorithm>
 #include <cassert>                              // assert
 #include <cstddef>
 #include <iterator>                             // begin, end, prev
@@ -19,13 +20,14 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, class State>
+template<Color ToMove, class Unique, class State>
 class Tracker
 {
 public:
-        using  board_type = board_t<State>;
-        using  rules_type = rules_t<State>;
-        using    set_type =   set_t<State>;
+        using  state_type = State;
+        using  board_type = board_t<state_type>;
+        using  rules_type = rules_t<state_type>;
+        using    set_type =   set_t<state_type>;
         using square_type =  std::size_t;
 
 private:
@@ -36,6 +38,7 @@ private:
         Piece with_{Piece::pawn};
         Piece into_{Piece::pawn};
         set_type piece_order_;
+        bool is_large_;
         //static std::vector<square_type> visited_squares_;
         //static std::vector<square_type> jumped_squares_;
         util::bounded_vector<square_type, 64> visited_squares_;
@@ -47,7 +50,7 @@ private:
         }
 
 public:
-        explicit Tracker(State const& s)
+        explicit Tracker(state_type const& s)
         :
                 by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
                 initial_targets_(s.pieces(!ToMove)),
@@ -148,11 +151,6 @@ public:
                 return by_piece(p).test(last_jumped_square());
         }
 
-        auto piece_order() const
-        {
-                return piece_order_;
-        }
-
         auto captured() const noexcept
         {
                 return initial_targets_ ^ remaining_targets_;
@@ -186,7 +184,12 @@ public:
                 return ToMove;
         }
 
-        auto with() const
+        auto is_to_move(Color c) const noexcept
+        {
+                return to_move() == c;
+        }
+
+        auto with() const noexcept
         {
                 return with_;
         }
@@ -196,7 +199,7 @@ public:
                 return with() == p;
         }
 
-        auto into() const
+        auto into() const noexcept
         {
                 return into_;
         }
@@ -204,6 +207,27 @@ public:
         auto is_into(Piece p) const noexcept
         {
                 return into() == p;
+        }
+
+        auto num_captured() const noexcept
+        {
+                return jumped_squares_.size();
+        }
+
+        auto num_captured(Piece p) const noexcept
+        {
+                return captured(p).size();
+        }
+
+        auto piece_order() const
+        {
+                return piece_order_;
+        }
+
+        template<class SequenceContainer>
+        auto append_to(SequenceContainer& moves) const
+        {
+                precedence_dispatch(moves, precedence::is_trivial_t<rules_type>{});
         }
 
 private:
@@ -251,11 +275,6 @@ private:
                 return wave::make_iterator<board_type, Direction>(s);
         }
 
-        auto num_captured() const
-        {
-                return jumped_squares_.size();
-        }
-
         auto is_king(square_type sq) const
         {
                 return by_piece(Piece::king).test(sq);
@@ -267,7 +286,7 @@ private:
                 return jumped_squares_.back();
         }
 
-        auto const& by_piece(Piece p) const
+        auto by_piece(Piece p) const
         {
                 return by_piece_[xstd::to_underlying_type(p)];
         }
@@ -275,6 +294,51 @@ private:
         auto from_back(std::size_t n) const
         {
                 return set_type::size() - 1 - n;
+        }
+
+        auto is_large() const noexcept
+        {
+                return large_jump_v<rules_type> <= num_captured();
+        }
+
+        template<class SequenceContainer>
+        auto precedence_dispatch(SequenceContainer& moves, std::false_type) const
+        {
+                if (moves.empty())
+                        return moves.emplace_back(*this);
+
+                if (precedence::less_t<rules_type>{}(moves.front(), *this)) {
+                        moves.clear();
+                        return moves.emplace_back(*this);
+                }
+
+                if (precedence::not_equal_to_t<rules_type>{}(moves.front(), *this))
+                        return;
+
+                moves.emplace_back(*this);
+                assert(2 <= moves.size());
+                uniqueness_dispatch(moves, Unique{});
+        }
+
+        template<class SequenceContainer>
+        auto precedence_dispatch(SequenceContainer& moves, std::true_type) const
+        {
+                moves.emplace_back(*this);
+                if (2 <= moves.size())
+                        uniqueness_dispatch(moves, Unique{});
+        }
+
+        template<class SequenceContainer>
+        auto uniqueness_dispatch(SequenceContainer&, std::false_type) const
+        {
+                // no-op
+        }
+
+        template<class SequenceContainer>
+        auto uniqueness_dispatch(SequenceContainer& moves, std::true_type) const
+        {
+                if (is_large() && std::find(begin(moves), end(moves), moves.back()) != std::prev(end(moves)))
+                        moves.pop_back();
         }
 };
 /*

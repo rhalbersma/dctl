@@ -1,16 +1,16 @@
 #pragma once
-#include <dctl/color.hpp>                               // Player
-#include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/actions/count/primary_fwd.hpp>           // Count (primary template)
 #include <dctl/actions/count/detail/king_push.hpp>      // Count (king push specialization)
 #include <dctl/actions/count/detail/pawn_push.hpp>      // Count (pawn push specialization)
-#include <dctl/actions/select/push.hpp>                 // moves
+#include <dctl/actions/select/push.hpp>                 // push
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // king, pawn
 
 namespace dctl {
 namespace actions {
 
-template<Color ToMove, bool RemoveDuplicates, bool Reverse>
-class Count<ToMove, select::push, RemoveDuplicates, Reverse>
+template<Color ToMove, class Unique, class Reverse>
+class Count<ToMove, select::push, Unique, Reverse>
 {
 public:
         template<class State>

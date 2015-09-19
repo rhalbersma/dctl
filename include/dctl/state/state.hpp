@@ -102,7 +102,7 @@ public:
 
         auto is_to_move(Color c) const noexcept
         {
-                return player_to_move_ == c;
+                return to_move() == c;
         }
 
         auto hash() const

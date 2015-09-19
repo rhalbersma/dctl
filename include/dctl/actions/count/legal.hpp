@@ -1,28 +1,28 @@
 #pragma once
-#include <dctl/color.hpp>                               // Player
-#include <dctl/actions/count/primary_fwd.hpp>         // Count (primary template)
-#include <dctl/actions/count/jump.hpp>                // Count (jump specialization)
-#include <dctl/actions/count/push.hpp>                // Count (push specialization)
-#include <dctl/actions/select/legal.hpp>              // legal
-#include <dctl/actions/select/jump.hpp>               // jump
-#include <dctl/actions/select/push.hpp>               // push
+#include <dctl/actions/count/primary_fwd.hpp>   // Count (primary template)
+#include <dctl/actions/count/jump.hpp>          // Count (jump specialization)
+#include <dctl/actions/count/push.hpp>          // Count (push specialization)
+#include <dctl/actions/select/legal.hpp>        // legal
+#include <dctl/actions/select/jump.hpp>         // jump
+#include <dctl/actions/select/push.hpp>         // push
+#include <dctl/color.hpp>                       // Color
 
 namespace dctl {
 namespace actions {
 
-template<Color ToMove, bool RemoveDuplicateJumps, bool Reverse>
-class Count<ToMove, select::legal, RemoveDuplicateJumps, Reverse>
+template<Color ToMove, class Unique, class Reverse>
+class Count<ToMove, select::legal, Unique, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& p) const
+        auto operator()(State const& s) const
         {
-                using Jump = Count<ToMove, select::jump, RemoveDuplicateJumps, Reverse>;
-                using Push = Count<ToMove, select::push, false               , Reverse>;
+                using Jump = Count<ToMove, select::jump, Unique, Reverse>;
+                using Push = Count<ToMove, select::push, Unique, Reverse>;
 
-                auto num_moves = Jump{}(p);
+                auto num_moves = Jump{}(s);
                 if (!num_moves)
-                        num_moves += Push{}(p);
+                        num_moves += Push{}(s);
                 return num_moves;
         }
 };

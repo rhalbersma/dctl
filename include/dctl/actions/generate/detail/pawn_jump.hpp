@@ -1,19 +1,18 @@
 #pragma once
-#include <dctl/board/angle.hpp>                               // _deg, rotate, inverse
-#include <dctl/color.hpp>                               // Player
-#include <dctl/piece.hpp>                               // king, pawn
-#include <dctl/state/promotion.hpp>                  // is_promotion
-#include <dctl/actions/detail/raii.hpp>               // Launch, Capture, Visit, ToggleKingTargets, SetPromotion
-#include <dctl/actions/detail/tracker.hpp>            // Tracker
-#include <dctl/actions/generate/detail/primary_fwd.hpp>      // Generate (primary template)
-#include <dctl/actions/generate/detail/king_jump.hpp>        // promote_en_passant
-#include <dctl/actions/select/jump.hpp>               // jumps
-
+#include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, ToggleKingTargets, SetPromotion
+#include <dctl/actions/detail/tracker.hpp>              // Tracker
+#include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/generate/detail/king_jump.hpp>   // promote_en_passant
+#include <dctl/actions/select/jump.hpp>                 // jumps
+#include <dctl/board/angle.hpp>                         // _deg, rotate, inverse
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/board/ray.hpp>                                 // make_iterator, rotate, mirror, turn
+#include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
+#include <dctl/board/wave/iterator.hpp>                 // make_iterator
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
-#include <dctl/utility/type_traits.hpp>                         // board_t, rules_t, set_t
-#include <dctl/board/wave/iterator.hpp>                       // make_iterator
+#include <dctl/state/promotion.hpp>                     // is_promotion
+#include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // false_type, true_type
@@ -22,25 +21,24 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, bool Reverse, class State, class Sequence>
-class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Sequence>
+template<Color ToMove, class Reverse, class Tracker, class Sequence>
+class Generate<ToMove, Piece::pawn, select::jump, Reverse, Tracker, Sequence>
 {
-        using    KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, State, Sequence>;
-        using   board_type = board_t<State>;
-        using   rules_type = rules_t<State>;
-        using     set_type =   set_t<State>;
-        using tracker_type = detail::Tracker<ToMove, State>;
+        using  KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, Tracker, Sequence>;
+        using board_type = board_t<Tracker>;
+        using rules_type = rules_t<Tracker>;
+        using   set_type =   set_t<Tracker>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
-        tracker_type& tracker;
+        Tracker& tracker;
         Sequence& moves;
 
 public:
-        explicit Generate(tracker_type& t, Sequence& m)
+        explicit Generate(Tracker& t, Sequence& m)
         :
                 tracker{t},
                 moves{m}
@@ -60,7 +58,7 @@ private:
 
         auto pawn_jump_king_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                raii::ToggleKingTargets<tracker_type> guard{tracker};
+                raii::ToggleKingTargets<Tracker> guard{tracker};
                 branch(active_pawns);
         }
 
@@ -121,7 +119,7 @@ private:
         auto find_first(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Launch<tracker_type> guard{tracker, *jumper};
+                raii::Launch<Tracker> guard{tracker, *jumper};
                 capture(std::next(jumper));
         }
 
@@ -129,7 +127,7 @@ private:
         auto capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Capture<tracker_type> guard{tracker, *jumper};
+                raii::Capture<Tracker> guard{tracker, *jumper};
                 land(std::next(jumper));
         }
 
@@ -137,7 +135,7 @@ private:
         auto land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Visit<tracker_type> guard{tracker, *jumper};
+                raii::Visit<Tracker> guard{tracker, *jumper};
                 try_promotion(jumper);
         }
 
@@ -168,7 +166,7 @@ private:
         template<class Iterator>
         auto on_promotion(Iterator jumper) const
         {
-                raii::SetPromotion<tracker_type> guard{tracker};
+                raii::SetPromotion<Tracker> guard{tracker};
                 on_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
         }
 
@@ -205,7 +203,7 @@ private:
         template<class Iterator>
         auto king_jumps_dispatch(Iterator jumper, std::false_type) const
         {
-                raii::ToggleKingTargets<tracker_type> guard{tracker};
+                raii::ToggleKingTargets<Tracker> guard{tracker};
                 king_jumps_try_next(jumper);
         }
 
@@ -347,7 +345,7 @@ private:
 
         auto add_jump() const
         {
-                moves.emplace_back(tracker);
+                tracker.append_to(moves);
         }
 
         template<int Direction>

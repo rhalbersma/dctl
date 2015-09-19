@@ -1,14 +1,13 @@
 #pragma once
-#include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, _deg, rotate, inverse
-#include <dctl/color.hpp>                               // Player
-#include <dctl/piece.hpp>                               // king
 #include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, SetKingJump
 #include <dctl/actions/detail/tracker.hpp>              // Tracker
 #include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
-
+#include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, _deg, rotate, inverse
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                         // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t
@@ -20,24 +19,23 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, bool Reverse, class State, class Sequence>
-class Generate<ToMove, Piece::king, select::jump, Reverse, State, Sequence>
+template<Color ToMove, class Reverse, class Tracker, class Sequence>
+class Generate<ToMove, Piece::king, select::jump, Reverse, Tracker, Sequence>
 {
-        using   board_type = board_t<State>;
-        using   rules_type = rules_t<State>;
-        using     set_type =   set_t<State>;
-        using tracker_type = detail::Tracker<ToMove, State>;
+        using board_type = board_t<Tracker>;
+        using rules_type = rules_t<Tracker>;
+        using   set_type =   set_t<Tracker>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
-        tracker_type& tracker;
+        Tracker& tracker;
         Sequence& moves;
 
 public:
-        Generate(tracker_type& t, Sequence& m)
+        Generate(Tracker& t, Sequence& m)
         :
                 tracker{t},
                 moves{m}
@@ -45,7 +43,7 @@ public:
 
         auto operator()(set_type const& active_kings) const
         {
-                raii::SetKingJump<tracker_type> guard{tracker};
+                raii::SetKingJump<Tracker> guard{tracker};
                 serialize(active_kings);
         }
 
@@ -61,7 +59,7 @@ private:
         auto serialize(set_type const& active_kings) const
         {
                 active_kings.for_each([&](auto const& from_sq){
-                        raii::Launch<tracker_type> guard{tracker, from_sq};
+                        raii::Launch<Tracker> guard{tracker, from_sq};
                         branch(from_sq);
                 });
         }
@@ -105,7 +103,7 @@ private:
         auto capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Capture<tracker_type> guard{tracker, *jumper};
+                raii::Capture<Tracker> guard{tracker, *jumper};
                 land(std::next(jumper));
         }
 
@@ -113,7 +111,7 @@ private:
         auto land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Visit<tracker_type> guard{tracker, *jumper};
+                raii::Visit<Tracker> guard{tracker, *jumper};
                 try_next(jumper);
         }
 
@@ -282,7 +280,7 @@ private:
 
         auto add_jump() const
         {
-                moves.emplace_back(tracker);
+                tracker.append_to(moves);
         }
 
         template<int Direction>

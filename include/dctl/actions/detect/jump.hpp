@@ -1,29 +1,31 @@
 #pragma once
-#include <dctl/color.hpp>                               // Player
+#include <dctl/actions/detail/tracker.hpp>              // Tracker
+#include <dctl/actions/detect/primary_fwd.hpp>          // Detect (primary template)
+#include <dctl/actions/detect/detail/king_jump.hpp>     // Detect (king jump specialization)
+#include <dctl/actions/detect/detail/pawn_jump.hpp>     // Detect (pawn jump specialization)
+#include <dctl/actions/select/jump.hpp>                 // jump
+#include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king, pawn
-#include <dctl/actions/detail/tracker.hpp>            // Tracker
-#include <dctl/actions/detect/primary_fwd.hpp>        // Detect (primary template)
-#include <dctl/actions/detect/detail/king_jump.hpp>   // Detect (king jump specialization)
-#include <dctl/actions/detect/detail/pawn_jump.hpp>   // Detect (pawn jump specialization)
-#include <dctl/actions/select/jump.hpp>               // jump
+#include <type_traits>                                  // true_type
 
 namespace dctl {
 namespace actions {
 
-template<Color ToMove, bool Reverse>
+template<Color ToMove, class Reverse>
 class Detect<ToMove, select::jump, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& p) const
+        auto operator()(State const& s) const
         {
-                using PawnJump = detail::Detect<ToMove, Piece::pawn, select::jump, Reverse, State>;
-                using KingJump = detail::Detect<ToMove, Piece::king, select::jump, Reverse, State>;
+                using Tracker = detail::Tracker<ToMove, std::true_type, State>;
+                using PawnJump = detail::Detect<ToMove, Piece::pawn, select::jump, Reverse, Tracker>;
+                using KingJump = detail::Detect<ToMove, Piece::king, select::jump, Reverse, Tracker>;
 
-                detail::Tracker<ToMove, State> tracker{p};
+                Tracker tracker{s};
                 return
-                        PawnJump{tracker}(p.pieces(ToMove, Piece::pawn)) ||
-                        KingJump{tracker}(p.pieces(ToMove, Piece::king))
+                        PawnJump{tracker}(s.pieces(ToMove, Piece::pawn)) ||
+                        KingJump{tracker}(s.pieces(ToMove, Piece::king))
                 ;
         }
 };

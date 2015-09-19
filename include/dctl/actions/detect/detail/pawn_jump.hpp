@@ -1,35 +1,32 @@
 #pragma once
-#include <dctl/board/angle.hpp>                               // up, left_up, right_up, left, right, left_down, right_down, down
-#include <dctl/color.hpp>                               // Player
-#include <dctl/piece.hpp>                               // pawn
-#include <dctl/actions/detail/filter.hpp>             // Precedence, Unique
-#include <dctl/actions/detail/raii.hpp>               // ToggleKingTargets
-#include <dctl/actions/detail/tracker.hpp>            // Tracker
-#include <dctl/actions/detect/detail/primary_fwd.hpp> // Detect (primary template)
-#include <dctl/actions/select/jump.hpp>               // jump
-
+#include <dctl/actions/detail/raii.hpp>                 // ToggleKingTargets
+#include <dctl/actions/detail/tracker.hpp>              // Tracker
+#include <dctl/actions/detect/detail/primary_fwd.hpp>   // Detect (primary template)
+#include <dctl/actions/select/jump.hpp>                 // jump
+#include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/board/wave/patterns.hpp>                 // Sandwich
+#include <dctl/color.hpp>                               // Color
+#include <dctl/piece.hpp>                               // pawn
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_pawn_jump_king
-#include <dctl/utility/type_traits.hpp>                         // board_t, rules_t, set_t
-#include <dctl/board/wave/patterns.hpp>                       // Sandwich
+#include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, bool Reverse, class State>
-class Detect<ToMove, Piece::pawn, select::jump, Reverse, State>
+template<Color ToMove, class Reverse, class Tracker>
+class Detect<ToMove, Piece::pawn, select::jump, Reverse, Tracker>
 {
-        using   board_type = board_t<State>;
-        using   rules_type = rules_t<State>;
-        using     set_type =   set_t<State>;
-        using tracker_type = detail::Tracker<ToMove, State>;
+        using   board_type = board_t<Tracker>;
+        using   rules_type = rules_t<Tracker>;
+        using     set_type =   set_t<Tracker>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse>;
-        tracker_type& tracker;
+        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
+        Tracker& tracker;
 
 public:
-        explicit Detect(tracker_type& t)
+        explicit Detect(Tracker& t)
         :
                 tracker{t}
         {}
@@ -49,7 +46,7 @@ private:
         // pawns that cannot capture kings
         auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                raii::ToggleKingTargets<tracker_type> guard{tracker};
+                raii::ToggleKingTargets<Tracker> guard{tracker};
                 return branch(active_pawns);
         }
 
