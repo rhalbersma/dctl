@@ -1,20 +1,18 @@
 #pragma once
-#include <dctl/board/angle.hpp>                       // Angle, is_orthogonal
+#include <dctl/board/angle.hpp>                 // Angle, is_orthogonal
 #include <dctl/board/mask.hpp>                  // JumpStart
+#include <dctl/board/ray.hpp>
+#include <dctl/board/wave/iterator.hpp>
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/board/ray.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
-#include <dctl/board/wave/iterator.hpp>
+#include <dctl/utility/bounded_vector.hpp>
+#include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
-#include <algorithm>
+#include <algorithm>                            // find_if
 #include <cassert>                              // assert
 #include <cstddef>
 #include <iterator>                             // begin, end, prev
-#include <vector>
-#include <dctl/utility/bounded_vector.hpp>
-#include <iostream>
 
 namespace dctl {
 namespace actions {
@@ -317,25 +315,37 @@ private:
 
                 moves.emplace_back(*this);
                 assert(2 <= moves.size());
-                uniqueness_dispatch(moves, Unique{});
+                uniqueness_dispatch(moves, std::false_type{}, Unique{});
         }
 
         template<class SequenceContainer>
         auto precedence_dispatch(SequenceContainer& moves, std::true_type) const
         {
                 moves.emplace_back(*this);
-                if (2 <= moves.size())
-                        uniqueness_dispatch(moves, Unique{});
+                uniqueness_dispatch(moves, std::true_type{}, Unique{});
         }
 
-        template<class SequenceContainer>
-        auto uniqueness_dispatch(SequenceContainer&, std::false_type) const
+        template<class SequenceContainer, bool B>
+        auto uniqueness_dispatch(SequenceContainer&, std::bool_constant<B>, std::false_type) const
         {
                 // no-op
         }
 
         template<class SequenceContainer>
-        auto uniqueness_dispatch(SequenceContainer& moves, std::true_type) const
+        auto uniqueness_dispatch(SequenceContainer& moves, std::false_type, std::true_type) const
+        {
+                unique(moves);
+        }
+
+        template<class SequenceContainer>
+        auto uniqueness_dispatch(SequenceContainer& moves, std::true_type, std::true_type) const
+        {
+                if (2 <= moves.size())
+                        unique(moves);
+        }
+
+        template<class SequenceContainer>
+        auto unique(SequenceContainer& moves) const
         {
                 if (is_large() && std::find(begin(moves), end(moves), moves.back()) != std::prev(end(moves)))
                         moves.pop_back();
