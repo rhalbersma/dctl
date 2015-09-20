@@ -3,9 +3,6 @@
 namespace dctl {
 
 template<class T>
-using state_t = typename T::state_type;
-
-template<class T>
 using board_t = typename T::board_type;
 
 template<class T>

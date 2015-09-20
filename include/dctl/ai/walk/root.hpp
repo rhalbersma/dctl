@@ -203,19 +203,19 @@ class XWalk
 
         using R = typename State::rules_type;
         using B = typename State::board_type;
-        std::vector<std::vector<Action<R,B>>> moves_storage;
+        //std::vector<std::vector<Action<R,B>>> moves_storage;
 
 public:
         explicit XWalk(Successor ss)
         :
                 successor{ss}
-        {
+        {/*
                 auto const depth = 15;
                 moves_storage.reserve(depth);
                 moves_storage.insert(moves_storage.end(), depth - moves_storage.size(), {});
                 for (auto i = moves_storage.size(); i < depth; ++i) {
                         moves_storage[i].reserve(32);
-                }
+                }*/
         }
 
         auto run(State const& state, int depth)
@@ -229,20 +229,20 @@ public:
                         }
                 }
 */
-                return recursive_run(state, 0, depth);
+                return recursive_run(state, depth);
         }
 
-        auto recursive_run(State const& state, int ply, int depth)
+        auto recursive_run(State const& state, int depth)
         {
                 if (depth == 1)
                         return successor.count(state);
 
                 //auto& moves = moves_storage[ply];
                 //moves.clear();
-                util::bounded_vector<Action<R,B>, 32> moves;
+                util::bounded_vector<Action<R,B>> moves;
                 successor.generate(state, moves);
                 return std::accumulate(begin(moves), end(moves), std::size_t{0}, [&](auto n, auto const& m){
-                        return n + recursive_run(result(state, m), ply + 1, depth - 1);
+                        return n + recursive_run(result(state, m), depth - 1);
                 });
         }
 };
@@ -355,7 +355,7 @@ auto xperft(State const& s, int depth, Successor successor)
         stopwatch.start_stop();
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
-                auto const nodes = walker.recursive_run(s, 0, d);
+                auto const nodes = walker.recursive_run(s, d);
                 stopwatch.split_reset();
                 xreport(d, nodes, stopwatch);
         }

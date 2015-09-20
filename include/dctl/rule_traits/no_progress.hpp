@@ -1,6 +1,6 @@
 #pragma once
 #include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_CONSTANT
-#include <type_traits>          // integral_constant
+#include <type_traits>          // bool_constant (C++1z)
 
 namespace dctl {
 
@@ -10,7 +10,7 @@ template<class Rules>
 constexpr auto is_restricted_king_push_v = max_same_king_push_v<Rules> != 0;
 
 template<class Rules>
-using is_restricted_king_push_t = std::integral_constant<bool,
+using is_restricted_king_push_t = std::bool_constant<
         is_restricted_king_push_v<Rules>
 >;
 
@@ -20,7 +20,7 @@ template<class Rules>
 constexpr auto is_restricted_reversible_moves_v = max_reversible_moves_v<Rules> != 0;
 
 template<class Rules>
-using is_restricted_reversible_moves_t = std::integral_constant<bool,
+using is_restricted_reversible_moves_t = std::bool_constant<
         is_restricted_reversible_moves_v<Rules>
 >;
 

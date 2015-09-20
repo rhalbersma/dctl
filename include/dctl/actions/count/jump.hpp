@@ -17,9 +17,7 @@ public:
         template<class State>
         auto operator()(State const& s) const
         {
-                util::bounded_vector<Action<rules_t<State>, board_t<State>>, 64> moves;
-                //static std::vector<Action<rules_t<State>, board_t<State>>> moves;
-                //moves.clear();
+                util::bounded_vector<Action<rules_t<State>, board_t<State>>> moves;
                 Generate<ToMove, select::jump, Unique, Reverse>{}(s, moves);
                 return moves.size();
         }

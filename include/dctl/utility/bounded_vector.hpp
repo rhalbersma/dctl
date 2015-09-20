@@ -1,53 +1,57 @@
 #pragma once
 #include <cassert>      // assert
 #include <cstddef>      // size_t
-#include <iterator>     // distance
+#include <utility>      // move
 
 namespace dctl {
 namespace util {
 
-template<class T, std::size_t N>
+template<class T, std::size_t N = 64>
 class bounded_vector
 {
         T data_[N];
         std::size_t size_ = 0;
 public:
-        using value_type = T;
-
-        auto begin() const
+        auto begin() noexcept
         {
-                return &data_[0];
+                return data_;
         }
 
-        auto begin()
+        auto begin() const noexcept
         {
-                return &data_[0];
+                return data_;
         }
 
-        auto end() const
+        auto end() noexcept
         {
                 return begin() + size();
         }
 
-        auto end()
+        auto end() const noexcept
         {
                 return begin() + size();
         }
 
-        auto const& operator[](std::size_t n) const
+        auto empty() const
         {
-                return data_[n];
+                return !size();
+        }
+
+        auto size() const
+        {
+                return size_;
         }
 
         auto& operator[](std::size_t n)
         {
+                assert(n < size());
                 return data_[n];
         }
 
-        auto const& front() const
+        auto const& operator[](std::size_t n) const
         {
-                assert(!empty());
-                return data_[0];
+                assert(n < size());
+                return data_[n];
         }
 
         auto& front()
@@ -56,10 +60,10 @@ public:
                 return data_[0];
         }
 
-        auto const& back() const
+        auto const& front() const
         {
                 assert(!empty());
-                return data_[size_ - 1];
+                return data_[0];
         }
 
         auto& back()
@@ -68,16 +72,29 @@ public:
                 return data_[size_ - 1];
         }
 
+        auto const& back() const
+        {
+                assert(!empty());
+                return data_[size_ - 1];
+        }
+
+        template<class... Args>
+        auto emplace_back(Args&&... args)
+        {
+                assert(size() < N);
+                data_[size_++] = T(std::forward<Args>(args)...);
+        }
+
         auto push_back(T const& val)
         {
                 assert(size() < N);
                 data_[size_++] = val;
         }
 
-        template<class... Args>
-        auto emplace_back(Args&&... args)
+        auto push_back(T&& val)
         {
-                data_[size_++] = T(std::forward<Args>(args)...);
+                assert(size() < N);
+                data_[size_++] = std::move(val);
         }
 
         auto pop_back()
@@ -86,25 +103,9 @@ public:
                 --size_;
         }
 
-        auto size() const
-        {
-                return size_;
-        }
-
-        auto empty() const
-        {
-                return !size();
-        }
-
-        auto clear()
+        auto clear() noexcept
         {
                 size_ = 0;
-        }
-
-        template<class Iterator>
-        auto erase(Iterator first, Iterator)
-        {
-                size_ = std::distance(begin(), first);
         }
 };
 
