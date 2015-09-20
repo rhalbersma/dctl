@@ -13,6 +13,7 @@
 #include <cassert>                              // assert
 #include <cstddef>
 #include <iterator>                             // begin, end, prev
+#include <type_traits>                          // bool_constant (C++1z)
 
 namespace dctl {
 namespace actions {
@@ -22,10 +23,9 @@ template<Color ToMove, class Unique, class State>
 class Tracker
 {
 public:
-        using  state_type = State;
-        using  board_type = board_t<state_type>;
-        using  rules_type = rules_t<state_type>;
-        using    set_type =   set_t<state_type>;
+        using  board_type = board_t<State>;
+        using  rules_type = rules_t<State>;
+        using    set_type =   set_t<State>;
         using square_type =  std::size_t;
 
 private:
@@ -37,10 +37,8 @@ private:
         Piece into_{Piece::pawn};
         set_type piece_order_;
         bool is_large_;
-        //static std::vector<square_type> visited_squares_;
-        //static std::vector<square_type> jumped_squares_;
-        util::bounded_vector<square_type, 64> visited_squares_;
-        util::bounded_vector<square_type, 64> jumped_squares_;
+        util::bounded_vector<square_type> visited_squares_;
+        util::bounded_vector<square_type> jumped_squares_;
 
         auto invariant() const
         {
@@ -48,7 +46,7 @@ private:
         }
 
 public:
-        explicit Tracker(state_type const& s)
+        explicit Tracker(State const& s)
         :
                 by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
                 initial_targets_(s.pieces(!ToMove)),
@@ -240,7 +238,7 @@ private:
                 capture_impl(sq);
         }
 
-        void capture_impl(square_type sq)
+        auto capture_impl(square_type sq)
         {
                 if (is_king(sq))
                         piece_order_.set(from_back(num_captured()));
@@ -248,18 +246,18 @@ private:
                 remaining_targets_.reset(sq);
         }
 
-        void release_dispatch(square_type sq, stopped_capture_tag)
+        auto release_dispatch(square_type sq, stopped_capture_tag)
         {
                 release_impl(sq);
         }
 
-        void release_dispatch(square_type sq, passing_capture_tag)
+        auto release_dispatch(square_type sq, passing_capture_tag)
         {
                 release_impl(sq);
                 not_occupied_.reset(sq);
         }
 
-        void release_impl(square_type sq)
+        auto release_impl(square_type sq)
         {
                 remaining_targets_.set(sq);
                 jumped_squares_.pop_back();
@@ -268,7 +266,7 @@ private:
         }
 
         template<int Direction>
-        static wave::Iterator<board_type, Direction> along_wave(set_type const& s)
+        static auto along_wave(set_type const& s)
         {
                 return wave::make_iterator<board_type, Direction>(s);
         }
@@ -351,13 +349,7 @@ private:
                         moves.pop_back();
         }
 };
-/*
-template<Color ToMove, class State>
-std::vector<std::size_t> Tracker<ToMove, State>::visited_squares_;
 
-template<Color ToMove, class State>
-std::vector<std::size_t> Tracker<ToMove, State>::jumped_squares_;
-*/
 }       // namespace detail
 }       // namespace actions
 }       // namespace dctl

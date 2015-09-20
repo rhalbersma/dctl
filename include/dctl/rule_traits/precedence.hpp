@@ -1,6 +1,6 @@
 #pragma once
 #include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_CONSTANT, XSTD_PP_TTI_TYPENAME
-#include <type_traits>          // integral_constant
+#include <type_traits>          // bool_constant (C++1z)
 
 namespace dctl {
 namespace precedence {

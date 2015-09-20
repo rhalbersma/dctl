@@ -2,7 +2,7 @@
 #include <dctl/rule_traits/king_range.hpp>
 #include <dctl/rule_traits/promotion.hpp>
 #include <xstd/pp/tti.hpp>                      // XSTD_PP_TTI_CONSTANT
-#include <type_traits>                          // integral_constant, is_same
+#include <type_traits>                          // bool_constant (C++1z), is_same
 
 namespace dctl {
 
@@ -22,7 +22,7 @@ constexpr auto is_reversible_king_jump_direction_v =
 ;
 
 template<class Rules>
-using is_reversible_king_jump_direction_t = std::integral_constant<bool,
+using is_reversible_king_jump_direction_t = std::bool_constant<
         is_reversible_king_jump_direction_v<Rules>>
 ;
 
@@ -43,8 +43,8 @@ constexpr auto is_unambiguous_pawn_jump_v =
 ;
 
 template<class Rules>
-using is_unambiguous_pawn_jump_t = std::integral_constant<bool,
-        is_unambiguous_pawn_jump_v<Rules>>
-;
+using is_unambiguous_pawn_jump_t = std::bool_constant<
+        is_unambiguous_pawn_jump_v<Rules>
+>;
 
 }       // namespace dctl
