@@ -27,10 +27,7 @@ private:
 
         constexpr auto invariant() const noexcept
         {
-                return
-                        util::implies(from() == dest(), is_jump()) /*&&
-                        disjoint(captured(Piece::pawn), captured(Piece::king))*/
-                ;
+                return util::implies(from() == dest(), is_jump());
         }
 
 public:
