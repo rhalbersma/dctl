@@ -3,6 +3,7 @@
 #include <dctl/piece.hpp>
 #include <dctl/board/set_type.hpp>            // set_type
 #include <dctl/utility/logic.hpp>
+#include <xstd/cstdint.hpp>
 #include <cassert>                      // assert
 #include <cstddef>                      // size_t
 
@@ -13,8 +14,8 @@ template<class Rules, class Board>
 class PushJumpPromote
 {
 public:
-        using   set_type = get_set_type<Board>;
-        using square_type = std::size_t;
+        using    set_type = get_set_type<Board>;
+        using square_type = xstd::uint_fast_t<set_type::size()>;
 
 private:
         set_type captured_;
@@ -39,8 +40,8 @@ public:
         constexpr PushJumpPromote(std::size_t src, std::size_t dst, Color c, Piece promotion) noexcept
         :
                 captured_{},
-                from_{src},
-                dest_{dst},
+                from_{static_cast<square_type>(src)},
+                dest_{static_cast<square_type>(dst)},
                 to_move_{c},
                 with_{Piece::pawn},
                 into_{promotion}
@@ -52,8 +53,8 @@ public:
         constexpr PushJumpPromote(std::size_t src, std::size_t dst, Color c) noexcept
         :
                 captured_{},
-                from_{src},
-                dest_{dst},
+                from_{static_cast<square_type>(src)},
+                dest_{static_cast<square_type>(dst)},
                 to_move_{c},
                 with_{Piece::king},
                 into_{Piece::king}
@@ -66,8 +67,8 @@ public:
         explicit constexpr PushJumpPromote(Tracker const& t)
         :
                 captured_{t.captured()},
-                from_{t.from()},
-                dest_{t.dest()},
+                from_{static_cast<square_type>(t.from())},
+                dest_{static_cast<square_type>(t.dest())},
                 to_move_{t.to_move()},
                 with_{t.with()},
                 into_{t.into()}
@@ -82,12 +83,12 @@ public:
 
         constexpr auto from() const noexcept
         {
-                return from_;
+                return static_cast<std::size_t>(from_);
         }
 
         constexpr auto dest() const noexcept
         {
-                return dest_;
+                return static_cast<std::size_t>(dest_);
         }
 
         constexpr auto to_move() const noexcept

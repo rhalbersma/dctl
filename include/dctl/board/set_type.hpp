@@ -1,6 +1,5 @@
 #pragma once
 #include <xstd/bitset.hpp>      // bitset
-#include <xstd/cstdint.hpp>
 #include <xstd/limits.hpp>      // align_on
 #include <cstddef>              // size_t
 

@@ -8,7 +8,7 @@ namespace detail {
 
 template<class Function, std::size_t... Indices>
 constexpr auto make_array_helper(Function f, std::index_sequence<Indices...>)
--> std::array<decltype(f(std::size_t{})), sizeof...(Indices)>
+        -> std::array<decltype(f(std::size_t{})), sizeof...(Indices)>
 {
         return {{ f(Indices)... }};
 }
