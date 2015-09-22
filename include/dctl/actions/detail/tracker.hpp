@@ -11,9 +11,9 @@
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <algorithm>                            // find_if
 #include <cassert>                              // assert
-#include <cstddef>
+#include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
-#include <type_traits>                          // bool_constant (C++1z)
+#include <type_traits>                          // bool_constant (C++1z), false_type, true_type
 
 namespace dctl {
 namespace actions {
@@ -300,20 +300,19 @@ private:
         template<class SequenceContainer>
         auto precedence_dispatch(SequenceContainer& moves, std::false_type) const
         {
-                if (moves.empty())
+                if (moves.empty()) {
                         return moves.emplace_back(*this);
+                }
 
                 if (precedence::less_t<rules_type>{}(moves.front(), *this)) {
                         moves.clear();
                         return moves.emplace_back(*this);
                 }
 
-                if (precedence::not_equal_to_t<rules_type>{}(moves.front(), *this))
-                        return;
-
-                moves.emplace_back(*this);
-                assert(2 <= moves.size());
-                uniqueness_dispatch(moves, std::false_type{}, Unique{});
+                if (precedence::equal_to_t<rules_type>{}(moves.front(), *this)) {
+                        moves.emplace_back(*this);
+                        uniqueness_dispatch(moves, std::false_type{}, Unique{});
+                }
         }
 
         template<class SequenceContainer>
@@ -345,6 +344,8 @@ private:
         template<class SequenceContainer>
         auto unique(SequenceContainer& moves) const
         {
+                static_assert(Unique::value, "");
+                assert(2 <= moves.size());
                 if (is_large() && std::find(begin(moves), end(moves), moves.back()) != std::prev(end(moves)))
                         moves.pop_back();
         }
