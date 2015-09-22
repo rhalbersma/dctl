@@ -350,6 +350,7 @@ template<class State, class Successor>
 auto xperft(State const& s, int depth, Successor successor)
 {
         XWalk<State, Successor> walker{successor};
+        std::cout << "move size = " << sizeof(Action<rules_t<State>, board_t<State>>) << '\n';
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
