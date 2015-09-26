@@ -135,7 +135,6 @@ private:
         auto land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Visit<Tracker> guard{tracker, *jumper};
                 try_promotion(jumper);
         }
 
@@ -152,7 +151,7 @@ private:
                         return;
                 if (is_promotion(*jumper))
                         return on_promotion(jumper);
-                add_jump();
+                add_jump(*jumper);
         }
 
         template<class Iterator>
@@ -171,9 +170,9 @@ private:
         }
 
         template<class Iterator>
-        auto on_promotion_dispatch(Iterator /* jumper */, stopped_promotion_tag) const
+        auto on_promotion_dispatch(Iterator jumper, stopped_promotion_tag) const
         {
-                add_jump();
+                add_jump(*jumper);
         }
 
         template<class Iterator>
@@ -217,12 +216,13 @@ private:
         auto try_next(Iterator jumper) const
         {
                 if (!find_next(jumper))
-                        add_jump();
+                        add_jump(*jumper);
         }
 
         template<class Iterator>
         auto find_next(Iterator jumper) const
         {
+                //raii::Visit<Tracker> guard{tracker, *jumper};
                 return scan(jumper) | turn(jumper);
         }
 
@@ -343,8 +343,9 @@ private:
                 return true;
         }
 
-        auto add_jump() const
+        auto add_jump(std::size_t dest_sq) const
         {
+                tracker.finish(dest_sq);
                 tracker.append_to(moves);
         }
 

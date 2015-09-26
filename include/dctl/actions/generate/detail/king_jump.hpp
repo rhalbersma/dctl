@@ -111,7 +111,6 @@ private:
         auto land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Visit<Tracker> guard{tracker, *jumper};
                 try_next(jumper);
         }
 
@@ -125,6 +124,7 @@ private:
         template<class Iterator>
         auto find_next(Iterator jumper) const
         {
+                //raii::Visit<Tracker> guard{tracker, *jumper};
                 return reverse_dispatch(jumper, is_reversible_king_jump_direction_t<rules_type>{});
         }
 
@@ -168,11 +168,11 @@ private:
                 auto found_next = turn(jumper);
                 auto slider = std::next(jumper);
                 while (is_onboard(slider) && tracker.path(*slider)) {
-                        tracker.set_dest(*slider);
+                        //tracker.set_dest(*slider);
                         found_next |= turn(slider);
                         ++slider;
                 }
-                tracker.set_dest(*jumper);
+                //tracker.set_dest(*jumper);
                 return found_next |= is_en_prise(slider);
         }
 
@@ -259,9 +259,9 @@ private:
         }
 
         template<class Iterator>
-        auto halt_dispatch(Iterator /* dest_sq */, short_ranged_tag, short_ranged_tag) const
+        auto halt_dispatch(Iterator dest_sq, short_ranged_tag, short_ranged_tag) const
         {
-                add_jump();
+                add_jump(*dest_sq);
         }
 
         template<class Iterator>
@@ -270,14 +270,12 @@ private:
                 // tracker.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(is_onboard(dest_sq) && tracker.path(*dest_sq));
-                for (add_jump(), ++dest_sq; is_onboard(dest_sq) && tracker.path(*dest_sq); ++dest_sq) {
-                        tracker.set_dest(*dest_sq);
-                        add_jump();
-                }
+                do add_jump(*dest_sq++); while (is_onboard(dest_sq) && tracker.path(*dest_sq));
         }
 
-        auto add_jump() const
+        auto add_jump(std::size_t dest_sq) const
         {
+                tracker.finish(dest_sq);
                 tracker.append_to(moves);
         }
 

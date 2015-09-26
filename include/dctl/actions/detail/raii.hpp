@@ -14,7 +14,7 @@ class Launch
 public:
         ~Launch()
         {
-                tracker.finish();
+                tracker.clear();
         }
 
         Launch(Launch const&) = delete;
