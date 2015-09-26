@@ -33,10 +33,12 @@ private:
         set_type initial_targets_;
         set_type remaining_targets_;
         set_type not_occupied_;
+        square_type from_;
+        square_type dest_;
         Piece with_{Piece::pawn};
         Piece into_{Piece::pawn};
-        set_type piece_order_;
-        util::bounded_vector<square_type> visited_squares_;
+        //set_type piece_order_;
+        //util::bounded_vector<square_type> visited_squares_;
         //util::bounded_vector<square_type> jumped_squares_;
 
         auto invariant() const
@@ -50,24 +52,26 @@ public:
                 by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
                 initial_targets_(s.pieces(!ToMove)),
                 remaining_targets_(initial_targets_),
-                not_occupied_(s.not_occupied()),
-                piece_order_{}
+                not_occupied_(s.not_occupied())//,
+                //piece_order_{}
         {
                 assert(invariant());
         }
 
         auto launch(square_type sq)
         {
-                assert(visited_squares_.empty());
-                visited_squares_.push_back(sq);
+                from_ = sq;
                 not_occupied_.set(sq);
         }
 
-        auto finish()
+        auto finish(square_type sq)
+        {
+                dest_ = sq;
+        }
+
+        auto clear()
         {
                 not_occupied_.reset(from());
-                visited_squares_.pop_back();
-                assert(visited_squares_.empty());
         }
 
         auto capture(square_type sq)
@@ -82,18 +86,19 @@ public:
 
         auto visit(square_type sq)
         {
-                visited_squares_.push_back(sq);
+                //visited_squares_.push_back(sq);
         }
 
         auto leave()
         {
-                visited_squares_.pop_back();
+                //visited_squares_.pop_back();
         }
 
         auto toggle_king_targets() noexcept
         {
                 static_assert(!is_pawn_jump_king_v<rules_type>, "");
-                initial_targets_ = remaining_targets_ ^= by_piece(Piece::king);
+                initial_targets_ ^= by_piece(Piece::king);
+                remaining_targets_ ^= by_piece(Piece::king);
         }
 
         auto set_with(Piece p) noexcept
@@ -158,20 +163,12 @@ public:
 
         auto from() const
         {
-                assert(!visited_squares_.empty());
-                return visited_squares_.front();
+                return from_;
         }
 
         auto dest() const
         {
-                assert(2 <= visited_squares_.size());
-                return visited_squares_.back();
-        }
-
-        auto set_dest(square_type sq)
-        {
-                assert(2 <= visited_squares_.size());
-                visited_squares_.back() = sq;
+                return dest_;
         }
 
         auto to_move() const noexcept
@@ -216,7 +213,7 @@ public:
 
         auto piece_order() const
         {
-                return piece_order_;
+                return set_type{};//piece_order_;
         }
 
         template<class SequenceContainer>
@@ -239,8 +236,8 @@ private:
 
         auto capture_impl(square_type sq)
         {
-                if (is_king(sq))
-                        piece_order_.set(reverse_index(num_captured()));
+                //if (is_king(sq))
+                //        piece_order_.set(reverse_index(num_captured()));
                 //jumped_squares_.push_back(sq);
                 remaining_targets_.reset(sq);
         }
@@ -260,8 +257,8 @@ private:
         {
                 remaining_targets_.set(sq);
                 //jumped_squares_.pop_back();
-                if (is_king(sq))
-                        piece_order_.reset(reverse_index(num_captured()));
+                //if (is_king(sq))
+                //        piece_order_.reset(reverse_index(num_captured()));
         }
 
         template<int Direction>
