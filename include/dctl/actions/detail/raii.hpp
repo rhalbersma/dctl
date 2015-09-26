@@ -32,10 +32,12 @@ template<class Tracker>
 class Capture
 {
         Tracker& tracker;
+        using square_type = square_t<Tracker>;
+        square_type square;
 public:
         ~Capture()
         {
-                tracker.release();
+                tracker.release(square);
         }
 
         Capture(Capture const&) = delete;
@@ -43,9 +45,9 @@ public:
 
         Capture(Tracker& t, std::size_t sq)
         :
-                tracker{t}
+                tracker{t}, square{static_cast<square_type>(sq)}
         {
-                tracker.capture(sq);
+                tracker.capture(square);
         }
 };
 
