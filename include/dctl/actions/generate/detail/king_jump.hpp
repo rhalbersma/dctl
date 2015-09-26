@@ -128,14 +128,12 @@ private:
                 return reverse_dispatch(jumper, is_reversible_king_jump_direction_t<rules_type>{});
         }
 
-        // kings that cannot reverse their capture direction
         template<class Iterator>
         auto reverse_dispatch(Iterator jumper, std::false_type) const
         {
                 return scan_turn(jumper);
         }
 
-        // kings that can reverse their capture direction
         template<class Iterator>
         auto reverse_dispatch(Iterator jumper, std::true_type) const
         {
@@ -254,7 +252,7 @@ private:
         template<class Iterator>
         auto halt_dispatch(Iterator dest_sq, long_ranged_tag, short_ranged_tag) const
         {
-                if (tracker.is_last_jumped(Piece::king))
+                if (tracker.is_last_jumped(Piece::king, *std::prev(dest_sq)))
                         halt_dispatch(dest_sq, short_ranged_tag{}, short_ranged_tag{});
                 else
                         halt_dispatch(dest_sq,  long_ranged_tag{},  long_ranged_tag{});

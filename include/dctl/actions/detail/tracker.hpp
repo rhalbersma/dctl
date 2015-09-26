@@ -26,7 +26,7 @@ public:
         using  board_type = board_t<State>;
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
-        using square_type =  std::size_t;
+        using square_type = std::size_t;
 
 private:
         set_type const by_piece_[2];
@@ -36,9 +36,8 @@ private:
         Piece with_{Piece::pawn};
         Piece into_{Piece::pawn};
         set_type piece_order_;
-        bool is_large_;
         util::bounded_vector<square_type> visited_squares_;
-        util::bounded_vector<square_type> jumped_squares_;
+        //util::bounded_vector<square_type> jumped_squares_;
 
         auto invariant() const
         {
@@ -76,9 +75,9 @@ public:
                 capture_dispatch(sq, capture_category_t<rules_type>{});
         }
 
-        auto release()
+        auto release(square_type sq)
         {
-                release_dispatch(last_jumped_square(), capture_category_t<rules_type>{});
+                release_dispatch(sq, capture_category_t<rules_type>{});
         }
 
         auto visit(square_type sq)
@@ -142,9 +141,9 @@ public:
                 return path<Direction>().test(sq);
         }
 
-        auto is_last_jumped(Piece p) const
+        auto is_last_jumped(Piece p, square_type sq) const
         {
-                return by_piece(p).test(last_jumped_square());
+                return by_piece(p).test(sq);
         }
 
         auto captured() const noexcept
@@ -207,12 +206,12 @@ public:
 
         auto num_captured() const noexcept
         {
-                return jumped_squares_.size();
+                return captured().count();
         }
 
         auto num_captured(Piece p) const noexcept
         {
-                return captured(p).size();
+                return captured(p).count();
         }
 
         auto piece_order() const
@@ -241,8 +240,8 @@ private:
         auto capture_impl(square_type sq)
         {
                 if (is_king(sq))
-                        piece_order_.set(from_back(num_captured()));
-                jumped_squares_.push_back(sq);
+                        piece_order_.set(reverse_index(num_captured()));
+                //jumped_squares_.push_back(sq);
                 remaining_targets_.reset(sq);
         }
 
@@ -260,9 +259,9 @@ private:
         auto release_impl(square_type sq)
         {
                 remaining_targets_.set(sq);
-                jumped_squares_.pop_back();
+                //jumped_squares_.pop_back();
                 if (is_king(sq))
-                        piece_order_.reset(from_back(num_captured()));
+                        piece_order_.reset(reverse_index(num_captured()));
         }
 
         template<int Direction>
@@ -276,43 +275,37 @@ private:
                 return by_piece(Piece::king).test(sq);
         }
 
-        auto last_jumped_square() const
-        {
-                assert(!jumped_squares_.empty());
-                return jumped_squares_.back();
-        }
-
         auto by_piece(Piece p) const
         {
                 return by_piece_[xstd::to_underlying_type(p)];
         }
 
-        auto from_back(std::size_t n) const
+        auto reverse_index(std::size_t n) const noexcept
         {
                 return set_type::size() - 1 - n;
         }
 
-        auto is_large() const noexcept
+        auto is_large(std::size_t n) const noexcept
         {
-                return large_jump_v<rules_type> <= num_captured();
+                return large_jump_v<rules_type> <= n;
         }
 
         template<class SequenceContainer>
         auto precedence_dispatch(SequenceContainer& moves, std::false_type) const
         {
-                if (moves.empty()) {
+                if (moves.empty())
                         return moves.emplace_back(*this);
-                }
 
-                if (precedence::less_t<rules_type>{}(moves.front(), *this)) {
-                        moves.clear();
-                        return moves.emplace_back(*this);
-                }
+                if (precedence::less_t<rules_type>{}(*this, moves.front()))
+                        return;
 
-                if (precedence::equal_to_t<rules_type>{}(moves.front(), *this)) {
+                if (precedence::equal_to_t<rules_type>{}(*this, moves.front())) {
                         moves.emplace_back(*this);
-                        uniqueness_dispatch(moves, std::false_type{}, Unique{});
+                        return uniqueness_dispatch(moves, std::false_type{}, Unique{});
                 }
+
+                moves.clear();
+                moves.emplace_back(*this);
         }
 
         template<class SequenceContainer>
@@ -346,7 +339,7 @@ private:
         {
                 static_assert(Unique::value, "");
                 assert(2 <= moves.size());
-                if (is_large() && std::find(begin(moves), end(moves), moves.back()) != std::prev(end(moves)))
+                if (is_large(moves.front().num_captured()) && std::find(begin(moves), end(moves), moves.back()) != std::prev(end(moves)))
                         moves.pop_back();
         }
 };
