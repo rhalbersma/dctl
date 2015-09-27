@@ -15,10 +15,10 @@ class Count<ToMove, select::jump, Unique, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& s) const
+        auto operator()(State const& state) const
         {
                 util::bounded_vector<Action<rules_t<State>, board_t<State>>> moves;
-                Generate<ToMove, select::jump, Unique, Reverse>{}(s, moves);
+                Generate<ToMove, select::jump, Unique, Reverse>{}(state, moves);
                 return moves.size();
         }
 };

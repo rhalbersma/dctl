@@ -25,23 +25,23 @@ class Count<ToMove, Piece::king, select::push, Reverse, State>
         State const& state;
 
 public:
-        explicit Count(State const& s)
+        explicit Count(State const& s) noexcept
         :
                 state{s}
         {}
 
-        auto operator()() const
+        auto operator()() const noexcept
         {
                 return count(state.pieces(ToMove, Piece::king));
         }
 
-        auto operator()(set_type const& active_kings) const
+        auto operator()(set_type const& active_kings) const noexcept
         {
                 return count(active_kings);
         }
 
 private:
-        auto count(set_type const& active_kings) const
+        auto count(set_type const& active_kings) const noexcept
         {
                 using namespace xstd::support_literals;
 
@@ -57,7 +57,7 @@ private:
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_kings) const
+        auto parallelize(set_type const& active_kings) const noexcept
         {
                 return Sink<board_type, Direction, king_range_category_t<rules_type>>{}(
                         active_kings, state.not_occupied()

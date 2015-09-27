@@ -37,7 +37,7 @@ private:
         square_type dest_;
         Piece with_{Piece::pawn};
         Piece into_{Piece::pawn};
-        //set_type piece_order_;
+        set_type piece_order_;
         //util::bounded_vector<square_type> visited_squares_;
         //util::bounded_vector<square_type> jumped_squares_;
 
@@ -52,8 +52,8 @@ public:
                 by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
                 initial_targets_(s.pieces(!ToMove)),
                 remaining_targets_(initial_targets_),
-                not_occupied_(s.not_occupied())//,
-                //piece_order_{}
+                not_occupied_(s.not_occupied()),
+                piece_order_{}
         {
                 assert(invariant());
         }
@@ -171,16 +171,6 @@ public:
                 return dest_;
         }
 
-        auto to_move() const noexcept
-        {
-                return ToMove;
-        }
-
-        auto is_to_move(Color c) const noexcept
-        {
-                return to_move() == c;
-        }
-
         auto with() const noexcept
         {
                 return with_;
@@ -201,6 +191,16 @@ public:
                 return into() == p;
         }
 
+        auto to_move() const noexcept
+        {
+                return ToMove;
+        }
+
+        auto is_to_move(Color c) const noexcept
+        {
+                return to_move() == c;
+        }
+
         auto num_captured() const noexcept
         {
                 return captured().count();
@@ -213,7 +213,7 @@ public:
 
         auto piece_order() const
         {
-                return set_type{};//piece_order_;
+                return piece_order_;
         }
 
         template<class SequenceContainer>
@@ -236,8 +236,8 @@ private:
 
         auto capture_impl(square_type sq)
         {
-                //if (is_king(sq))
-                //        piece_order_.set(reverse_index(num_captured()));
+                if (is_king(sq))
+                        piece_order_.set(reverse_index(num_captured()));
                 //jumped_squares_.push_back(sq);
                 remaining_targets_.reset(sq);
         }
@@ -257,8 +257,8 @@ private:
         {
                 remaining_targets_.set(sq);
                 //jumped_squares_.pop_back();
-                //if (is_king(sq))
-                //        piece_order_.reset(reverse_index(num_captured()));
+                if (is_king(sq))
+                        piece_order_.reset(reverse_index(num_captured()));
         }
 
         template<int Direction>

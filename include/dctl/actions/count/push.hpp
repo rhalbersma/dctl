@@ -14,12 +14,12 @@ class Count<ToMove, select::push, Unique, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& p) const
+        auto operator()(State const& state) const noexcept
         {
                 using KingPush = detail::Count<ToMove, Piece::king, select::push, Reverse, State>;
                 using PawnPush = detail::Count<ToMove, Piece::pawn, select::push, Reverse, State>;
 
-                return KingPush{p}() + PawnPush{p}();
+                return KingPush{state}() + PawnPush{state}();
         }
 };
 

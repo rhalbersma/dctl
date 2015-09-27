@@ -14,15 +14,15 @@ template<Color ToMove, class Unique, class Reverse>
 class Generate<ToMove, select::legal, Unique, Reverse>
 {
 public:
-        template<class State, class Sequence>
-        auto operator()(State const& s, Sequence& moves) const
+        template<class State, class SequenceContainer>
+        auto operator()(State const& state, SequenceContainer& moves) const
         {
                 using Jump = Generate<ToMove, select::jump, Unique, Reverse>;
                 using Push = Generate<ToMove, select::push, Unique, Reverse>;
 
-                Jump{}(s, moves);
+                Jump{}(state, moves);
                 if (moves.empty())
-                        Push{}(s, moves);
+                        Push{}(state, moves);
         }
 };
 
