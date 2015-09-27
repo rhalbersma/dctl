@@ -24,23 +24,23 @@ class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
         State const& state;
 
 public:
-        explicit Detect(State const& s)
+        explicit Detect(State const& s) noexcept
         :
                 state{s}
         {}
 
-        auto operator()() const
+        auto operator()() const noexcept
         {
                 return detect(state.pieces(ToMove, Piece::pawn));
         }
 
-        auto operator()(set_type const& active_pawns) const
+        auto operator()(set_type const& active_pawns) const noexcept
         {
                 return detect(active_pawns);
         }
 
 private:
-        auto detect(set_type const& active_pawns) const
+        auto detect(set_type const& active_pawns) const noexcept
         {
                 if (active_pawns.none())
                         return false;
@@ -52,7 +52,7 @@ private:
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_pawns) const
+        auto parallelize(set_type const& active_pawns) const noexcept
         {
                 return Sink<board_type, Direction, short_ranged_tag>{}(
                         active_pawns, state.not_occupied()

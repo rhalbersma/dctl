@@ -16,16 +16,16 @@ class Detect<ToMove, select::jump, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& s) const
+        auto operator()(State const& state) const
         {
                 using Tracker = detail::Tracker<ToMove, std::true_type, State>;
                 using PawnJump = detail::Detect<ToMove, Piece::pawn, select::jump, Reverse, Tracker>;
                 using KingJump = detail::Detect<ToMove, Piece::king, select::jump, Reverse, Tracker>;
 
-                Tracker tracker{s};
+                Tracker tracker{state};
                 return
-                        PawnJump{tracker}(s.pieces(ToMove, Piece::pawn)) ||
-                        KingJump{tracker}(s.pieces(ToMove, Piece::king))
+                        PawnJump{tracker}(state.pieces(ToMove, Piece::pawn)) ||
+                        KingJump{tracker}(state.pieces(ToMove, Piece::king))
                 ;
         }
 };

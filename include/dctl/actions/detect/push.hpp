@@ -15,12 +15,12 @@ class Detect<ToMove, select::push, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& s) const
+        auto operator()(State const& state) const noexcept
         {
                 using PawnPush = detail::Detect<ToMove, Piece::pawn, select::push, Reverse, State>;
                 using KingPush = detail::Detect<ToMove, Piece::king, select::push, Reverse, State>;
 
-                return PawnPush{s}() || KingPush{s}();
+                return PawnPush{state}() || KingPush{state}();
         }
 };
 

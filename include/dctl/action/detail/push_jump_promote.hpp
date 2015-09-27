@@ -21,9 +21,9 @@ private:
         set_type captured_;
         square_type from_;
         square_type dest_;
-        Color to_move_;
         Piece with_;
         Piece into_;
+        Color to_move_;
 
         constexpr auto invariant() const noexcept
         {
@@ -34,27 +34,27 @@ public:
         PushJumpPromote() = default;
 
         // pawn push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Color c, Piece promotion) noexcept
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Piece promotion, Color c) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
-                to_move_{c},
                 with_{Piece::pawn},
-                into_{promotion}
+                into_{promotion},
+                to_move_{c}
         {
                 assert(invariant());
         }
 
         // king push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Color c) noexcept
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Color color) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
-                to_move_{c},
                 with_{Piece::king},
-                into_{Piece::king}
+                into_{Piece::king},
+                to_move_{color}
         {
                 assert(invariant());
         }
@@ -66,9 +66,9 @@ public:
                 captured_{t.captured()},
                 from_{static_cast<square_type>(t.from())},
                 dest_{static_cast<square_type>(t.dest())},
-                to_move_{t.to_move()},
                 with_{t.with()},
-                into_{t.into()}
+                into_{t.into()},
+                to_move_{t.to_move()}
         {
                 assert(invariant());
         }
@@ -86,16 +86,6 @@ public:
         constexpr auto dest() const noexcept
         {
                 return static_cast<std::size_t>(dest_);
-        }
-
-        constexpr auto to_move() const noexcept
-        {
-                return to_move_;
-        }
-
-        constexpr auto is_to_move(Color c) const noexcept
-        {
-                return to_move() == c;
         }
 
         constexpr auto with() const noexcept
@@ -116,6 +106,16 @@ public:
         constexpr auto is_into(Piece p) const noexcept
         {
                 return into() == p;
+        }
+
+        constexpr auto to_move() const noexcept
+        {
+                return to_move_;
+        }
+
+        constexpr auto is_to_move(Color c) const noexcept
+        {
+                return to_move() == c;
         }
 
         constexpr auto is_jump() const noexcept

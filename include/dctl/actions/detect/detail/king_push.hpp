@@ -24,23 +24,23 @@ class Detect<ToMove, Piece::king, select::push, Reverse, State>
         State const& state;
 
 public:
-        explicit Detect(State const& s)
+        explicit Detect(State const& s) noexcept
         :
                 state{s}
         {}
 
-        auto operator()() const
+        auto operator()() const noexcept
         {
                 return detect(state.pieces(ToMove, Piece::king));
         }
 
-        auto operator()(set_type const& active_kings) const
+        auto operator()(set_type const& active_kings) const noexcept
         {
                 return detect(active_kings);
         }
 
 private:
-        auto detect(set_type const& active_kings) const
+        auto detect(set_type const& active_kings) const noexcept
         {
                 if (active_kings.none())
                         return false;
@@ -54,7 +54,7 @@ private:
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_kings) const
+        auto parallelize(set_type const& active_kings) const noexcept
         {
                 return Sink<board_type, Direction, short_ranged_tag>{}(
                         active_kings, state.not_occupied()

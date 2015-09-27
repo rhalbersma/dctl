@@ -24,23 +24,23 @@ class Count<ToMove, Piece::pawn, select::push, Reverse, State>
         State const& state;
 
 public:
-        explicit Count(State const& s)
+        explicit Count(State const& s) noexcept
         :
                 state{s}
         {}
 
-        auto operator()() const
+        auto operator()() const noexcept
         {
                 return count(state.pieces(ToMove, Piece::pawn));
         }
 
-        auto operator()(set_type const& active_pawns) const
+        auto operator()(set_type const& active_pawns) const noexcept
         {
                 return count(active_pawns);
         }
 
 private:
-        auto count(set_type const& active_pawns) const
+        auto count(set_type const& active_pawns) const noexcept
         {
                 using namespace xstd::support_literals;
 
@@ -54,7 +54,7 @@ private:
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_pawns) const
+        auto parallelize(set_type const& active_pawns) const noexcept
         {
                 return Sink<board_type, Direction, short_ranged_tag>{}(
                         active_pawns, state.not_occupied()

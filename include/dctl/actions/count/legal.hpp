@@ -15,14 +15,14 @@ class Count<ToMove, select::legal, Unique, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& s) const
+        auto operator()(State const& state) const
         {
                 using Jump = Count<ToMove, select::jump, Unique, Reverse>;
                 using Push = Count<ToMove, select::push, Unique, Reverse>;
 
-                auto num_moves = Jump{}(s);
+                auto num_moves = Jump{}(state);
                 if (!num_moves)
-                        num_moves += Push{}(s);
+                        num_moves += Push{}(state);
                 return num_moves;
         }
 };

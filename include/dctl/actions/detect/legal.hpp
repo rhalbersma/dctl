@@ -15,12 +15,12 @@ class Detect<ToMove, select::legal, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& s) const
+        auto operator()(State const& state) const
         {
                 using Push = Detect<ToMove, select::push, Reverse>;
                 using Jump = Detect<ToMove, select::jump, Reverse>;
 
-                return Push{}(s) || Jump{}(s);
+                return Push{}(state) || Jump{}(state);
         }
 };
 
