@@ -39,17 +39,15 @@ public:
 
         using PushJumpPromote::num_captured;
 
-        template<class RulesType = rules_type>
+        template<class RulesType = rules_type, std::enable_if_t<precedence::is_quality_v<RulesType>>* = nullptr>
         constexpr auto num_captured(Piece p) const noexcept
-                -> std::enable_if_t<precedence::is_quality_v<RulesType>, std::size_t>
         {
                 return PrecedenceQuality::num_captured(p);
         }
 };
 
-template<class Rules, class Board>
+template<class Rules, class Board, std::enable_if_t<!precedence::is_ordering_v<Rules>>* = nullptr>
 constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-        -> std::enable_if_t<!precedence::is_ordering_v<Rules>, bool>
 {
         return
                 std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) ==
@@ -57,9 +55,8 @@ constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> 
         ;
 }
 
-template<class Rules, class Board>
+template<class Rules, class Board, std::enable_if_t<precedence::is_ordering_v<Rules>>* = nullptr>
 constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-        -> std::enable_if_t<precedence::is_ordering_v<Rules>, bool>
 {
         return
                 std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.piece_order()) ==
@@ -67,9 +64,8 @@ constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> 
         ;
 }
 
-template<class Rules, class Board>
+template<class Rules, class Board, std::enable_if_t<!precedence::is_ordering_v<Rules>>* = nullptr>
 constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-        -> std::enable_if_t<!precedence::is_ordering_v<Rules>, bool>
 {
         return
                 std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) <
@@ -77,9 +73,8 @@ constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> 
         ;
 }
 
-template<class Rules, class Board>
+template<class Rules, class Board, std::enable_if_t<precedence::is_ordering_v<Rules>>* = nullptr>
 constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-        -> std::enable_if_t<precedence::is_ordering_v<Rules>, bool>
 {
         return
                 std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.piece_order()) <
