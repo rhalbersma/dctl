@@ -12,10 +12,10 @@ class PrecedenceQuality
 public:
         PrecedenceQuality() = default;
 
-        template<class Tracker>
-        explicit constexpr PrecedenceQuality(Tracker const& t) noexcept
+        template<class Builder>
+        explicit constexpr PrecedenceQuality(Builder const& b) noexcept
         :
-                num_captured_{t.captured(Piece::pawn).count(), t.captured(Piece::king).count()}
+                num_captured_{b.captured(Piece::pawn).count(), b.captured(Piece::king).count()}
         {}
 
         constexpr auto num_captured(Piece p) const noexcept

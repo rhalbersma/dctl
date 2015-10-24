@@ -7,8 +7,8 @@
 #include <dctl/board/set_type.hpp>                    // set_type
 #include <xstd/type_traits.hpp>                 // optional_base
 #include <cassert>                              // assert
-#include <type_traits>                          // enable_if
 #include <tuple>                                // forward_as_tuple
+#include <type_traits>                          // enable_if
 
 namespace dctl {
 
@@ -29,12 +29,12 @@ public:
 
         using PushJumpPromote::PushJumpPromote;
 
-        template<class Tracker>
-        explicit constexpr Action(Tracker const& t) noexcept
+        template<class Builder>
+        explicit constexpr Action(Builder const& b) noexcept
         :
-                PushJumpPromote{t},
-                PrecedenceQuality{t},
-                PrecedenceOrdering{t}
+                PushJumpPromote{b},
+                PrecedenceQuality{b},
+                PrecedenceOrdering{b}
         {}
 
         using PushJumpPromote::num_captured;

@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/actions/detail/raii.hpp>                 // ToggleKingTargets
-#include <dctl/actions/detail/tracker.hpp>              // Tracker
+#include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/detect/detail/primary_fwd.hpp>   // Detect (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
@@ -15,20 +15,20 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, class Reverse, class Tracker>
-class Detect<ToMove, Piece::pawn, select::jump, Reverse, Tracker>
+template<Color ToMove, class Reverse, class Builder>
+class Detect<ToMove, Piece::pawn, select::jump, Reverse, Builder>
 {
-        using   board_type = board_t<Tracker>;
-        using   rules_type = rules_t<Tracker>;
-        using     set_type =   set_t<Tracker>;
+        using   board_type = board_t<Builder>;
+        using   rules_type = rules_t<Builder>;
+        using     set_type =   set_t<Builder>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        Tracker& tracker;
+        Builder& builder;
 
 public:
-        explicit Detect(Tracker& t)
+        explicit Detect(Builder& b)
         :
-                tracker{t}
+                builder{b}
         {}
 
         auto operator()(set_type const& active_pawns) const
@@ -46,7 +46,7 @@ private:
         // pawns that cannot capture kings
         auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                raii::ToggleKingTargets<Tracker> guard{tracker};
+                raii::ToggleKingTargets<Builder> guard{builder};
                 return branch(active_pawns);
         }
 
@@ -106,7 +106,7 @@ private:
         auto parallelize(set_type const& active_pawns) const
         {
                 return Sandwich<board_type, Direction, short_ranged_tag>{}(
-                        active_pawns, tracker.template targets<Direction>(), tracker.path()
+                        active_pawns, builder.template targets<Direction>(), builder.path()
                 ).any();
         }
 };

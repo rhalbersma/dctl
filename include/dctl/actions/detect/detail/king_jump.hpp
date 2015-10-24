@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/detail/tracker.hpp>              // Tracker
+#include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/detect/detail/primary_fwd.hpp>   // Detect (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
@@ -14,20 +14,20 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, class Reverse, class Tracker>
-class Detect<ToMove, Piece::king, select::jump, Reverse, Tracker>
+template<Color ToMove, class Reverse, class Builder>
+class Detect<ToMove, Piece::king, select::jump, Reverse, Builder>
 {
-        using   board_type = board_t<Tracker>;
-        using   rules_type = rules_t<Tracker>;
-        using     set_type =   set_t<Tracker>;
+        using   board_type = board_t<Builder>;
+        using   rules_type = rules_t<Builder>;
+        using     set_type =   set_t<Builder>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        Tracker const& tracker;
+        Builder const& builder;
 
 public:
-        explicit Detect(Tracker const& t)
+        explicit Detect(Builder const& b)
         :
-                tracker{t}
+                builder{b}
         {}
 
         auto operator()(set_type const& active_kings) const
@@ -69,7 +69,7 @@ private:
         auto parallelize(set_type const& active_kings) const
         {
                 return Sandwich<board_type, Direction, king_range_category_t<rules_type>>{}(
-                        active_kings, tracker.template targets<Direction>(), tracker.path()
+                        active_kings, builder.template targets<Direction>(), builder.path()
                 ).any();
         }
 };

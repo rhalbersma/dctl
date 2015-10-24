@@ -7,137 +7,137 @@ namespace dctl {
 namespace actions {
 namespace raii {
 
-template<class Tracker>
+template<class Builder>
 class Launch
 {
-        Tracker& tracker;
+        Builder& builder;
 public:
         ~Launch()
         {
-                tracker.clear();
+                builder.clear();
         }
 
         Launch(Launch const&) = delete;
         Launch& operator=(Launch const&) = delete;
 
-        Launch(Tracker& t, std::size_t sq)
+        Launch(Builder& b, std::size_t sq)
         :
-                tracker{t}
+                builder{b}
         {
-                tracker.launch(sq);
+                builder.launch(sq);
         }
 };
 
-template<class Tracker>
+template<class Builder>
 class Capture
 {
-        Tracker& tracker;
-        using square_type = square_t<Tracker>;
+        Builder& builder;
+        using square_type = square_t<Builder>;
         square_type square;
 public:
         ~Capture()
         {
-                tracker.release(square);
+                builder.release(square);
         }
 
         Capture(Capture const&) = delete;
         Capture& operator=(Capture const&) = delete;
 
-        Capture(Tracker& t, std::size_t sq)
+        Capture(Builder& b, std::size_t sq)
         :
-                tracker{t}, square{static_cast<square_type>(sq)}
+                builder{b}, square{static_cast<square_type>(sq)}
         {
-                tracker.capture(square);
+                builder.capture(square);
         }
 };
 
-template<class Tracker>
+template<class Builder>
 class Visit
 {
-        Tracker& tracker;
+        Builder& builder;
 public:
         ~Visit()
         {
-                tracker.leave();
+                builder.leave();
         }
 
         Visit(Visit const&) = delete;
         Visit& operator=(Visit const&) = delete;
 
-        Visit(Tracker& t, std::size_t sq)
+        Visit(Builder& b, std::size_t sq)
         :
-                tracker{t}
+                builder{b}
         {
-                tracker.visit(sq);
+                builder.visit(sq);
         }
 };
 
-template<class Tracker>
+template<class Builder>
 class ToggleKingTargets
 {
-        Tracker& tracker;
+        Builder& builder;
 public:
         ~ToggleKingTargets()
         {
-                tracker.toggle_king_targets();
+                builder.toggle_king_targets();
         }
 
         ToggleKingTargets(ToggleKingTargets const&) = delete;
         ToggleKingTargets& operator=(ToggleKingTargets const&) = delete;
 
-        ToggleKingTargets(Tracker& t)
+        ToggleKingTargets(Builder& b)
         :
-                tracker{t}
+                builder{b}
         {
-                tracker.toggle_king_targets();
+                builder.toggle_king_targets();
         }
 };
 
-template<class Tracker>
+template<class Builder>
 class SetKingJump
 {
-        Tracker& tracker;
+        Builder& builder;
 public:
         ~SetKingJump()
         {
-                assert(tracker.is_with(Piece::king) && tracker.is_into(Piece::king));
-                tracker.set_with(Piece::pawn);
-                tracker.set_into(Piece::pawn);
+                assert(builder.is_with(Piece::king) && builder.is_into(Piece::king));
+                builder.set_with(Piece::pawn);
+                builder.set_into(Piece::pawn);
         }
 
         SetKingJump(SetKingJump const&) = delete;
         SetKingJump& operator=(SetKingJump const&) = delete;
 
-        SetKingJump(Tracker& t)
+        SetKingJump(Builder& b)
         :
-                tracker{t}
+                builder{b}
         {
-                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::pawn));
-                tracker.set_with(Piece::king);
-                tracker.set_into(Piece::king);
+                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::pawn));
+                builder.set_with(Piece::king);
+                builder.set_into(Piece::king);
         }
 };
 
-template<class Tracker>
+template<class Builder>
 class SetPromotion
 {
-        Tracker& tracker;
+        Builder& builder;
 public:
         ~SetPromotion()
         {
-                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::king));
-                tracker.set_into(Piece::pawn);
+                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
+                builder.set_into(Piece::pawn);
         }
 
         SetPromotion(SetPromotion const&) = delete;
         SetPromotion& operator=(SetPromotion const&) = delete;
 
-        SetPromotion(Tracker& t)
+        SetPromotion(Builder& b)
         :
-                tracker{t}
+                builder{b}
         {
-                assert(tracker.is_with(Piece::pawn) && tracker.is_into(Piece::pawn));
-                tracker.set_into(Piece::king);
+                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::pawn));
+                builder.set_into(Piece::king);
         }
 };
 
