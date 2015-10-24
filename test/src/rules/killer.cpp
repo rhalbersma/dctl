@@ -3,7 +3,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <type_traits>                          // is_base_of
+#include <experimental/type_traits>             // is_base_of
 
 namespace dctl {
 namespace rules {
@@ -17,7 +17,7 @@ using Variants = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RuleTraits, T, Variants)
 {
-        static_assert(std::is_base_of<T, Killer<T>>::value, "");
+        static_assert(std::experimental::is_base_of_v<T, Killer<T>>, "");
         static_assert(is_halt_behind_king_v<Killer<T>>, "");
 }
 

@@ -3,7 +3,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <type_traits>                          // is_same
+#include <experimental/type_traits>             // is_same
 
 namespace dctl {
 namespace rules {
@@ -17,7 +17,7 @@ using VariantsStoppedPromotionTag = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedPromotionTag, T, VariantsStoppedPromotionTag)
 {
-        static_assert(std::is_same<promotion_category_t<T>, stopped_promotion_tag>::value, "");
+        static_assert(std::experimental::is_same_v<promotion_category_t<T>, stopped_promotion_tag>, "");
 }
 
 using VariantsPassingPromotionTag = boost::mpl::vector
@@ -27,7 +27,7 @@ using VariantsPassingPromotionTag = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingPromotionTag, T, VariantsPassingPromotionTag)
 {
-        static_assert(std::is_same<promotion_category_t<T>, passing_promotion_tag>::value, "");
+        static_assert(std::experimental::is_same_v<promotion_category_t<T>, passing_promotion_tag>, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

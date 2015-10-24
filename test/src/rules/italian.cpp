@@ -4,7 +4,7 @@
 #include <dctl/rules.hpp>               // Italian
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                      // size_t
-#include <type_traits>                  // is_same
+#include <experimental/type_traits>     // is_same
 #include <vector>                       // vector
 
 namespace dctl {
@@ -17,7 +17,7 @@ using T = Italian;
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
         static_assert(!is_backward_pawn_jump_v<T>, "");
-        static_assert(std::is_same<king_range_category_t<T>, short_ranged_tag>::value, "");
+        static_assert(std::experimental::is_same_v<king_range_category_t<T>, short_ranged_tag>, "");
 
         static_assert(!is_pawn_jump_king_v<T>, "");
 

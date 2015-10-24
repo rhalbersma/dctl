@@ -4,7 +4,7 @@
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                      // size_t
-#include <type_traits>                  // is_same
+#include <experimental/type_traits>     // is_same
 #include <vector>                       // vector
 
 namespace dctl {
@@ -17,7 +17,7 @@ using T = Frisian;
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
         static_assert(is_backward_pawn_jump_v<T>, "");
-        static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
+        static_assert(std::experimental::is_same_v<king_range_category_t<T>, long_ranged_tag>, "");
 
         static_assert(is_orthogonal_jump_v<T>, "");
 
