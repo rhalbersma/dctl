@@ -19,7 +19,7 @@ class Factory
         std::map<Arg, Creator> registry;
 public:
         using base_type = Base;
-        static_assert(factory::has_header_body_terminator<Base>::value, "");
+        static_assert(factory::has_header_body_terminator<Base>::value);
 
         auto insert(Arg const& id, Creator fun)
         {
