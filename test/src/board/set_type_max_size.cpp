@@ -49,8 +49,8 @@ using SmallBoardSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
 {
-        static_assert(get_set_type<remove_orthogonal_capture_t<T>>::size() <= 64, "");
-        static_assert(get_set_type<   add_orthogonal_capture_t<T>>::size() <= 64, "");
+        static_assert(get_set_type<remove_orthogonal_capture_t<T>>::size() <= 64);
+        static_assert(get_set_type<   add_orthogonal_capture_t<T>>::size() <= 64);
 }
 
 using IntermediateBoardSequence = boost::mpl::vector
@@ -61,17 +61,17 @@ using IntermediateBoardSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE(RemoveAddOrthogonalCapture)
 {
-        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<Ktar <10, 12>>, Compact1012>, "");
-        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<Compact1012>, Ktar <10, 12>>, "");
+        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<Ktar <10, 12>>, Compact1012>);
+        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<Compact1012>, Ktar <10, 12>>);
 
-        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<Board<12, 10>>, Compact1210>, "");
-        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<Compact1210>, Board<12, 10>>, "");
+        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<Board<12, 10>>, Compact1210>);
+        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<Compact1210>, Board<12, 10>>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)
 {
-        static_assert(get_set_type<remove_orthogonal_capture_t<T>>::size() <=  64, "");
-        static_assert(get_set_type<   add_orthogonal_capture_t<T>>::size() <= 128, "");
+        static_assert(get_set_type<remove_orthogonal_capture_t<T>>::size() <=  64);
+        static_assert(get_set_type<   add_orthogonal_capture_t<T>>::size() <= 128);
 }
 
 using LargeBoardSequence = boost::mpl::vector
@@ -83,8 +83,8 @@ using LargeBoardSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs128, T, LargeBoardSequence)
 {
-        static_assert(get_set_type<remove_orthogonal_capture_t<T>>::size() <= 128, "");
-        static_assert(get_set_type<   add_orthogonal_capture_t<T>>::size() <= 128, "");
+        static_assert(get_set_type<remove_orthogonal_capture_t<T>>::size() <= 128);
+        static_assert(get_set_type<   add_orthogonal_capture_t<T>>::size() <= 128);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

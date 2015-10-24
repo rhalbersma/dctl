@@ -17,7 +17,7 @@ using VariantsStoppedPromotionTag = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedPromotionTag, T, VariantsStoppedPromotionTag)
 {
-        static_assert(std::experimental::is_same_v<promotion_category_t<T>, stopped_promotion_tag>, "");
+        static_assert(std::experimental::is_same_v<promotion_category_t<T>, stopped_promotion_tag>);
 }
 
 using VariantsPassingPromotionTag = boost::mpl::vector
@@ -27,7 +27,7 @@ using VariantsPassingPromotionTag = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingPromotionTag, T, VariantsPassingPromotionTag)
 {
-        static_assert(std::experimental::is_same_v<promotion_category_t<T>, passing_promotion_tag>, "");
+        static_assert(std::experimental::is_same_v<promotion_category_t<T>, passing_promotion_tag>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -26,7 +26,7 @@ template
 >
 class set_associative_cache
 {
-        static_assert(xstd::is_power_of_2(N), "");
+        static_assert(xstd::is_power_of_2(N));
 public:
         using key_type          = Key;
         using tag_type          = typename Tag::result_type;

@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsShortRangedTag, T, VariantsShortRangedTag)
         {
-                static_assert(std::experimental::is_same_v<king_range_category_t<T>, short_ranged_tag>, "");
+                static_assert(std::experimental::is_same_v<king_range_category_t<T>, short_ranged_tag>);
         }
 
         using VariantsLongRangedTag = boost::mpl::vector
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsLongRangedTag, T, VariantsLongRangedTag)
         {
-                static_assert(std::experimental::is_same<king_range_category_t<T>, long_ranged_tag>, "");
+                static_assert(std::experimental::is_same<king_range_category_t<T>, long_ranged_tag>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_SUITE(IsLandBehindPiece)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!is_land_behind_piece_v<T>, "");
+                static_assert(!is_land_behind_piece_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_SUITE(IsLandBehindPiece)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
-                static_assert(is_land_behind_piece_v<T>, "");
+                static_assert(is_land_behind_piece_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -65,12 +65,12 @@ BOOST_AUTO_TEST_SUITE(IsHaltBehindKing)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalseT, T, Variants)
         {
-                static_assert(!is_halt_behind_king_v<T>, "");
+                static_assert(!is_halt_behind_king_v<T>);
         }
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrueKillerT, T, Variants)
         {
-                static_assert(is_halt_behind_king_v<Killer<T>>, "");
+                static_assert(is_halt_behind_king_v<Killer<T>>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

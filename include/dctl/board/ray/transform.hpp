@@ -23,7 +23,7 @@ template<int Theta, class Board, int Direction>
 auto turn(Iterator<Board, Direction> it)
 -> Iterator<Board, Theta>
 {
-        static_assert(Theta != Direction, "");
+        static_assert(Theta != Direction);
         return { it.base() };
 }
 

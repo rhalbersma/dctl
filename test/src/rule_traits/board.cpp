@@ -16,7 +16,7 @@ using VariantsTwo = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsTwo, T, VariantsTwo)
 {
-        static_assert(initial_position_gap_v<T> == 2, "");
+        static_assert(initial_position_gap_v<T> == 2);
 }
 
 using VariantsFour = boost::mpl::vector
@@ -26,7 +26,7 @@ using VariantsFour = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsFour, T, VariantsFour)
 {
-        static_assert(initial_position_gap_v<T> == 4, "");
+        static_assert(initial_position_gap_v<T> == 4);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
