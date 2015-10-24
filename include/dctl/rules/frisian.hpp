@@ -41,14 +41,14 @@ struct Frisian
                         auto const delta_kings = static_cast<int>(lhs.num_captured(Piece::king)) - static_cast<int>(rhs.num_captured(Piece::king));
 
                         // Art. 11
-                        if (delta_kings * delta_pawns < 0)
-                                // delta_kings and delta_pawns are both non-zero and have opposite sign
+                        if (delta_pawns * delta_kings < 0)
+                                // delta_pawns and delta_kings are both non-zero and have opposite sign
                                 // [2 n - 1] pawns < [n] kings < [2 n] pawns
                                 return delta_pawns + 2 * delta_kings - (delta_kings > 0) <  0;
                         else
                                 // delta_kings or delta_pawns is zero or they have equal sign
                                 return
-                                        std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king)) <
+                                        std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king)) ==
                                         std::forward_as_tuple(rhs.num_captured(), rhs.is_with(Piece::king))
                                 ;
                 }
