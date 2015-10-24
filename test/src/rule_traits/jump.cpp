@@ -3,7 +3,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <type_traits>                          // is_same
+#include <experimental/type_traits>             // is_same
 
 namespace dctl {
 namespace rules {
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedJumpRemovalTag, T, VariantsStoppedJumpRemovalTag)
         {
-                static_assert(std::is_same<capture_category_t<T>, stopped_capture_tag>::value, "");
+                static_assert(std::experimental::is_same_v<capture_category_t<T>, stopped_capture_tag>, "");
         }
 
         using VariantsPassingJumpRemovalTag = boost::mpl::vector
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingJumpRemovalTag, T, VariantsPassingJumpRemovalTag)
         {
-                static_assert(std::is_same<capture_category_t<T>, passing_capture_tag>::value, "");
+                static_assert(std::experimental::is_same_v<capture_category_t<T>, passing_capture_tag>, "");
         }
 
 BOOST_AUTO_TEST_SUITE_END()

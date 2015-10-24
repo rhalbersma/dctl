@@ -3,7 +3,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <type_traits>                          // is_same
+#include <experimental/type_traits>             // is_same
 
 namespace dctl {
 namespace rules {
@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsShortRangedTag, T, VariantsShortRangedTag)
         {
-                static_assert(std::is_same<king_range_category_t<T>, short_ranged_tag>::value, "");
+                static_assert(std::experimental::is_same_v<king_range_category_t<T>, short_ranged_tag>, "");
         }
 
         using VariantsLongRangedTag = boost::mpl::vector
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsLongRangedTag, T, VariantsLongRangedTag)
         {
-                static_assert(std::is_same<king_range_category_t<T>, long_ranged_tag>::value, "");
+                static_assert(std::experimental::is_same<king_range_category_t<T>, long_ranged_tag>, "");
         }
 
 BOOST_AUTO_TEST_SUITE_END()

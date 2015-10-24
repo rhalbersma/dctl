@@ -2,7 +2,7 @@
 #include <dctl/rule_traits/king_range.hpp>
 #include <dctl/rule_traits/promotion.hpp>
 #include <xstd/pp/tti.hpp>                      // XSTD_PP_TTI_CONSTANT
-#include <type_traits>                          // bool_constant (C++1z), is_same
+#include <experimental/type_traits>             // bool_constant (C++1z), is_same
 
 namespace dctl {
 
@@ -17,8 +17,8 @@ XSTD_PP_TTI_CONSTANT(is_pawn_jump_king, true)
 
 template<class Rules>
 constexpr auto is_reversible_king_jump_direction_v =
-        std::is_same<capture_category_t<Rules>, passing_capture_tag>::value &&
-        std::is_same<king_range_category_t<Rules>, long_ranged_tag>::value
+        std::experimental::is_same_v<capture_category_t<Rules>, passing_capture_tag> &&
+        std::experimental::is_same_v<king_range_category_t<Rules>, long_ranged_tag>
 ;
 
 template<class Rules>
@@ -38,7 +38,7 @@ using large_jump_t = std::integral_constant<int, large_jump_v<Rules>>;
 
 template<class Rules>
 constexpr auto is_unambiguous_pawn_jump_v =
-        !(is_backward_pawn_jump_v<Rules> || std::is_same<promotion_category_t<Rules>, passing_promotion_tag>::value ||
+        !(is_backward_pawn_jump_v<Rules> || std::experimental::is_same_v<promotion_category_t<Rules>, passing_promotion_tag> ||
         (is_orthogonal_jump_v<Rules> && is_reversible_king_jump_direction_v<Rules>))
 ;
 
