@@ -60,15 +60,15 @@ public:
         }
 
         // jump
-        template<class Tracker>
-        explicit constexpr PushJumpPromote(Tracker const& t)
+        template<class Builder>
+        explicit constexpr PushJumpPromote(Builder const& b)
         :
-                captured_{t.captured()},
-                from_{static_cast<square_type>(t.from())},
-                dest_{static_cast<square_type>(t.dest())},
-                with_{t.with()},
-                into_{t.into()},
-                to_move_{t.to_move()}
+                captured_{b.captured()},
+                from_{static_cast<square_type>(b.from())},
+                dest_{static_cast<square_type>(b.dest())},
+                with_{b.with()},
+                into_{b.into()},
+                to_move_{b.to_move()}
         {
                 assert(invariant());
         }

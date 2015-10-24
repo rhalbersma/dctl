@@ -11,10 +11,10 @@ class PrecedenceOrdering
 public:
         PrecedenceOrdering() = default;
 
-        template<class Tracker>
-        explicit constexpr PrecedenceOrdering(Tracker const& t) noexcept
+        template<class Builder>
+        explicit constexpr PrecedenceOrdering(Builder const& b) noexcept
         :
-                piece_order_{t.piece_order()}
+                piece_order_{b.piece_order()}
         {}
 
         constexpr auto piece_order() const noexcept

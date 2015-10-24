@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, ToggleKingTargets, SetPromotion
-#include <dctl/actions/detail/tracker.hpp>              // Tracker
+#include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/generate/detail/king_jump.hpp>   // promote_en_passant
 #include <dctl/actions/select/jump.hpp>                 // jumps
@@ -21,26 +21,26 @@ namespace dctl {
 namespace actions {
 namespace detail {
 
-template<Color ToMove, class Reverse, class Tracker, class Sequence>
-class Generate<ToMove, Piece::pawn, select::jump, Reverse, Tracker, Sequence>
+template<Color ToMove, class Reverse, class Builder, class Sequence>
+class Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>
 {
-        using  KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, Tracker, Sequence>;
-        using board_type = board_t<Tracker>;
-        using rules_type = rules_t<Tracker>;
-        using   set_type =   set_t<Tracker>;
+        using  KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>;
+        using board_type = board_t<Builder>;
+        using rules_type = rules_t<Builder>;
+        using   set_type =   set_t<Builder>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
-        Tracker& tracker;
+        Builder& builder;
         Sequence& moves;
 
 public:
-        explicit Generate(Tracker& t, Sequence& m)
+        explicit Generate(Builder& b, Sequence& m)
         :
-                tracker{t},
+                builder{b},
                 moves{m}
         {}
 
@@ -58,7 +58,7 @@ private:
 
         auto pawn_jump_king_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                raii::ToggleKingTargets<Tracker> guard{tracker};
+                raii::ToggleKingTargets<Builder> guard{builder};
                 branch(active_pawns);
         }
 
@@ -109,7 +109,7 @@ private:
         template<int Direction>
         auto serialize(set_type const& active_pawns) const
         {
-                auto const jumpers = active_pawns & set_type(*std::prev(along_wave<Direction>(tracker.template targets<Direction>())));
+                auto const jumpers = active_pawns & set_type(*std::prev(along_wave<Direction>(builder.template targets<Direction>())));
                 jumpers.for_each([&](auto const& from_sq){
                         find_first(along_ray<Direction>(from_sq));
                 });
@@ -119,7 +119,7 @@ private:
         auto find_first(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Launch<Tracker> guard{tracker, *jumper};
+                raii::Launch<Builder> guard{builder, *jumper};
                 capture(std::next(jumper));
         }
 
@@ -127,7 +127,7 @@ private:
         auto capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Capture<Tracker> guard{tracker, *jumper};
+                raii::Capture<Builder> guard{builder, *jumper};
                 land(std::next(jumper));
         }
 
@@ -165,7 +165,7 @@ private:
         template<class Iterator>
         auto on_promotion(Iterator jumper) const
         {
-                raii::SetPromotion<Tracker> guard{tracker};
+                raii::SetPromotion<Builder> guard{builder};
                 on_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
         }
 
@@ -202,14 +202,14 @@ private:
         template<class Iterator>
         auto king_jumps_dispatch(Iterator jumper, std::false_type) const
         {
-                raii::ToggleKingTargets<Tracker> guard{tracker};
+                raii::ToggleKingTargets<Builder> guard{builder};
                 king_jumps_try_next(jumper);
         }
 
         template<class Iterator>
         auto king_jumps_try_next(Iterator jumper) const
         {
-                KingJumps{tracker, moves}.try_next(jumper, promotion_category_t<rules_type>{});
+                KingJumps{builder, moves}.try_next(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -222,7 +222,7 @@ private:
         template<class Iterator>
         auto find_next(Iterator jumper) const
         {
-                //raii::Visit<Tracker> guard{tracker, *jumper};
+                //raii::Visit<Builder> guard{builder, *jumper};
                 return scan(jumper) | turn(jumper);
         }
 
@@ -236,7 +236,7 @@ private:
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, std::false_type, std::false_type) const
         {
-                static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>), "");
+                static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
                 return scan(ray::mirror<up(orientation)>(jumper));
         }
 
@@ -244,7 +244,7 @@ private:
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, std::true_type, std::false_type) const
         {
-                static_assert(is_diagonal(direction_v<Iterator>), "");
+                static_assert(is_diagonal(direction_v<Iterator>));
                 return
                         scan(ray::rotate<+90_deg>(jumper)) |
                         scan(ray::rotate<-90_deg>(jumper))
@@ -255,7 +255,7 @@ private:
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, std::false_type, std::true_type) const
         {
-                static_assert(!is_down(direction_v<Iterator>), "");
+                static_assert(!is_down(direction_v<Iterator>));
                 return turn_dispatch(jumper, angle_t<direction_v<Iterator>>{});
         }
 
@@ -335,7 +335,7 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && tracker.targets(jumper)))
+                if (!(is_onboard(jumper) && builder.targets(jumper)))
                         return false;
 
                 assert(is_onboard(std::next(jumper)));
@@ -345,8 +345,8 @@ private:
 
         auto add_jump(std::size_t dest_sq) const
         {
-                tracker.finish(dest_sq);
-                tracker.append_to(moves);
+                builder.finish(dest_sq);
+                builder.append_to(moves);
         }
 
         template<int Direction>

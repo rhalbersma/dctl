@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/detail/tracker.hpp>            // Tracker
+#include <dctl/actions/detail/builder.hpp>            // Builder
 #include <dctl/actions/generate/primary_fwd.hpp>      // Generate (primary template)
 #include <dctl/actions/generate/detail/king_jump.hpp> // Generate (king jump specialization)
 #include <dctl/actions/generate/detail/pawn_jump.hpp> // Generate (pawn jump specialization)
@@ -17,13 +17,13 @@ public:
         template<class State, class Sequence>
         auto operator()(State const& s, Sequence& moves) const
         {
-                using Tracker = detail::Tracker<ToMove, Unique, State>;
-                using KingJump = detail::Generate<ToMove, Piece::king, select::jump, Reverse, Tracker, Sequence>;
-                using PawnJump = detail::Generate<ToMove, Piece::pawn, select::jump, Reverse, Tracker, Sequence>;
+                using Builder = detail::Builder<ToMove, Unique, State>;
+                using KingJump = detail::Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>;
+                using PawnJump = detail::Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>;
 
-                Tracker tracker{s};
-                KingJump{tracker, moves}(s.pieces(ToMove, Piece::king));
-                PawnJump{tracker, moves}(s.pieces(ToMove, Piece::pawn));
+                Builder builder{s};
+                KingJump{builder, moves}(s.pieces(ToMove, Piece::king));
+                PawnJump{builder, moves}(s.pieces(ToMove, Piece::pawn));
         }
 };
 

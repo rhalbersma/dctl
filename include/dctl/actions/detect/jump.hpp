@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/detail/tracker.hpp>              // Tracker
+#include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/detect/primary_fwd.hpp>          // Detect (primary template)
 #include <dctl/actions/detect/detail/king_jump.hpp>     // Detect (king jump specialization)
 #include <dctl/actions/detect/detail/pawn_jump.hpp>     // Detect (pawn jump specialization)
@@ -18,14 +18,14 @@ public:
         template<class State>
         auto operator()(State const& state) const
         {
-                using Tracker = detail::Tracker<ToMove, std::true_type, State>;
-                using PawnJump = detail::Detect<ToMove, Piece::pawn, select::jump, Reverse, Tracker>;
-                using KingJump = detail::Detect<ToMove, Piece::king, select::jump, Reverse, Tracker>;
+                using Builder = detail::Builder<ToMove, std::true_type, State>;
+                using PawnJump = detail::Detect<ToMove, Piece::pawn, select::jump, Reverse, Builder>;
+                using KingJump = detail::Detect<ToMove, Piece::king, select::jump, Reverse, Builder>;
 
-                Tracker tracker{state};
+                Builder builder{state};
                 return
-                        PawnJump{tracker}(state.pieces(ToMove, Piece::pawn)) ||
-                        KingJump{tracker}(state.pieces(ToMove, Piece::king))
+                        PawnJump{builder}(state.pieces(ToMove, Piece::pawn)) ||
+                        KingJump{builder}(state.pieces(ToMove, Piece::king))
                 ;
         }
 };

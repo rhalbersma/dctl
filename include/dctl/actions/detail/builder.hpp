@@ -20,7 +20,7 @@ namespace actions {
 namespace detail {
 
 template<Color ToMove, class Unique, class State>
-class Tracker
+class Builder
 {
 public:
         using  board_type = board_t<State>;
@@ -47,7 +47,7 @@ private:
         }
 
 public:
-        explicit Tracker(State const& s)
+        explicit Builder(State const& s)
         :
                 by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
                 initial_targets_(s.pieces(!ToMove)),
@@ -96,7 +96,7 @@ public:
 
         auto toggle_king_targets() noexcept
         {
-                static_assert(!is_pawn_jump_king_v<rules_type>, "");
+                static_assert(!is_pawn_jump_king_v<rules_type>);
                 initial_targets_ ^= by_piece(Piece::king);
                 remaining_targets_ ^= by_piece(Piece::king);
         }
@@ -334,7 +334,7 @@ private:
         template<class SequenceContainer>
         auto unique(SequenceContainer& moves) const
         {
-                static_assert(Unique::value, "");
+                static_assert(Unique::value);
                 assert(2 <= moves.size());
                 if (is_large(moves.front().num_captured()) && std::find(begin(moves), end(moves), moves.back()) != std::prev(end(moves)))
                         moves.pop_back();
