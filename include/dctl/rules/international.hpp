@@ -13,21 +13,12 @@ struct International
         static constexpr auto is_backward_pawn_jump = true;     // 4.1
         static constexpr auto is_quantity = true;               // 4.13
 
-        struct equal_to
+        struct precedence
         {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
                 {
-                        return lhs.num_captured() == rhs.num_captured();
-                }
-        };
-
-        struct less
-        {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
-                {
-                        return lhs.num_captured() < rhs.num_captured();
+                        return a.num_captured();
                 }
         };
 

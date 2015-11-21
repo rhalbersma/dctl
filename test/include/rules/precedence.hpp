@@ -9,9 +9,9 @@ template<class Rules, class Range>
 auto is_consistent(Range const& rng)
 {
         return
-                (ranges::adjacent_find(rng, equal_to_t     <Rules>{}) == cend(rng)) &&
-                (ranges::adjacent_find(rng, equivalent_to_t<Rules>{}) == cend(rng)) &&
-                 ranges::is_sorted    (rng, less_t         <Rules>{})
+                (ranges::adjacent_find(rng, equal_to     <Rules>{}) == cend(rng)) &&
+                (ranges::adjacent_find(rng, equivalent_to<Rules>{}) == cend(rng)) &&
+                 ranges::is_sorted    (rng, less         <Rules>{})
         ;
 }
 

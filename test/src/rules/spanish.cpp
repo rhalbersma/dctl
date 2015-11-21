@@ -19,7 +19,6 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(!is_backward_pawn_jump_v<T>);
         static_assert(std::experimental::is_same_v<king_range_category_t<T>, long_ranged_tag>);
 
-        static_assert( precedence::is_complete_v<T>);
         static_assert(!precedence::is_trivial_v<T>);
         static_assert( precedence::is_quantity_v<T>);
         static_assert( precedence::is_quality_v<T>);

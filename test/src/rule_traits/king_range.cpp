@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsLongRangedTag, T, VariantsLongRangedTag)
         {
-                static_assert(std::experimental::is_same<king_range_category_t<T>, long_ranged_tag>);
+                static_assert(std::experimental::is_same_v<king_range_category_t<T>, long_ranged_tag>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -18,7 +18,6 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(jumpsep_v<T> == ':');
         static_assert(std::experimental::is_same_v<promotion_category_t<T>, passing_promotion_tag>);
 
-        static_assert(precedence::is_complete_v<T>);
         static_assert(precedence::is_trivial_v<T>);
 }
 

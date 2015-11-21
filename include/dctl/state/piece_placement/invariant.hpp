@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/board/mask.hpp>  // squares, Promotion
-#include <dctl/color.hpp>       // black, white
-#include <dctl/piece.hpp>       // pawn, king
-#include <dctl/utility/type_traits.hpp> // board_type
+#include <dctl/board/mask.hpp>          // squares, Promotion
+#include <dctl/color.hpp>               // black, white
+#include <dctl/piece.hpp>               // pawn, king
+#include <dctl/utility/type_traits.hpp> // board_t
 
 namespace dctl {
 namespace detail {

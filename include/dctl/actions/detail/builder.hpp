@@ -293,10 +293,10 @@ private:
                 if (moves.empty())
                         return moves.emplace_back(*this);
 
-                if (precedence::less_t<rules_type>{}(*this, moves.front()))
+                if (precedence::less<rules_type>{}(*this, moves.front()))
                         return;
 
-                if (precedence::equal_to_t<rules_type>{}(*this, moves.front())) {
+                if (precedence::equal_to<rules_type>{}(*this, moves.front())) {
                         moves.emplace_back(*this);
                         return uniqueness_dispatch(moves, std::false_type{}, Unique{});
                 }
