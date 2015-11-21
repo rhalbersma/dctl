@@ -17,21 +17,12 @@ struct Czech
 
         static constexpr auto is_modality = true;
 
-        struct equal_to
+        struct precedence
         {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
                 {
-                        return lhs.is_with(Piece::king) == rhs.is_with(Piece::king);
-                }
-        };
-
-        struct less
-        {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
-                {
-                        return lhs.is_with(Piece::king) < rhs.is_with(Piece::king);
+                        return a.is_with(Piece::king);
                 }
         };
 };

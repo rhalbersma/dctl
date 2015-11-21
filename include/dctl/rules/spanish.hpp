@@ -16,27 +16,14 @@ struct Spanish
         static constexpr auto is_quantity = true;
         static constexpr auto is_quality = true;
 
-        struct equal_to
+        struct precedence
         {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
                 {
-                        return
-                                std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king)) ==
-                                std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king))
-                        ;
-                }
-        };
-
-        struct less
-        {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
-                {
-                        return
-                                std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king)) <
-                                std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king))
-                        ;
+                        return std::make_tuple(
+                                a.num_captured(), a.num_captured(Piece::king)
+                        );
                 }
         };
 };

@@ -20,37 +20,18 @@ struct Frisian
         static constexpr auto is_quality = true;
         static constexpr auto is_modality = true;
 
-        struct equal_to
+        struct precedence
         {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
                 {
-                        return
-                                std::forward_as_tuple(lhs.num_captured(), lhs.num_captured(Piece::king), lhs.is_with(Piece::king)) ==
-                                std::forward_as_tuple(rhs.num_captured(), rhs.num_captured(Piece::king), rhs.is_with(Piece::king))
-                        ;
-                }
-        };
-
-        struct less
-        {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
-                {
-                        auto const delta_pawns = static_cast<int>(lhs.num_captured(Piece::pawn)) - static_cast<int>(rhs.num_captured(Piece::pawn));
-                        auto const delta_kings = static_cast<int>(lhs.num_captured(Piece::king)) - static_cast<int>(rhs.num_captured(Piece::king));
-
-                        // Art. 11
-                        if (delta_pawns * delta_kings < 0)
-                                // delta_pawns and delta_kings are both non-zero and have opposite sign
-                                // [2 n - 1] pawns < [n] kings < [2 n] pawns
-                                return delta_pawns + 2 * delta_kings - (delta_kings > 0) <  0;
-                        else
-                                // delta_kings or delta_pawns is zero or they have equal sign
-                                return
-                                        std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king)) ==
-                                        std::forward_as_tuple(rhs.num_captured(), rhs.is_with(Piece::king))
-                                ;
+                        auto const k = a.num_captured(Piece::king);
+                        auto const n = a.num_captured();
+                        constexpr auto N = 65;
+                        auto const v = N * (n + k) - k;
+                        return std::make_tuple(
+                                v, a.is_with(Piece::king)
+                        );
                 }
         };
 };

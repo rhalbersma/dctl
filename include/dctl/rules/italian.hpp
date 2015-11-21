@@ -20,27 +20,14 @@ struct Italian
         static constexpr auto is_quality = true;                // 6.8
         static constexpr auto is_ordering = true;               // 6.9
 
-        struct equal_to
+        struct precedence
         {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
                 {
-                        return
-                                std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king), lhs.num_captured(Piece::king), lhs.piece_order()) ==
-                                std::forward_as_tuple(rhs.num_captured(), rhs.is_with(Piece::king), rhs.num_captured(Piece::king), rhs.piece_order())
-                        ;
-                }
-        };
-
-        struct less
-        {
-                template<class Action1, class Action2>
-                constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
-                {
-                        return
-                                std::forward_as_tuple(lhs.num_captured(), lhs.is_with(Piece::king), lhs.num_captured(Piece::king), lhs.piece_order()) <
-                                std::forward_as_tuple(rhs.num_captured(), rhs.is_with(Piece::king), rhs.num_captured(Piece::king), rhs.piece_order())
-                        ;
+                        return std::make_tuple(
+                                a.num_captured(), a.is_with(Piece::king), a.num_captured(Piece::king), a.piece_order()
+                        );
                 }
         };
 
