@@ -2,7 +2,7 @@
 #include <cstddef>      // size_t
 
 namespace dctl {
-namespace walk {
+namespace traversal {
 
 class Transposition
 {
@@ -33,5 +33,5 @@ public:
         }
 };
 
-}       // namespace walk
+}       // namespace traversal
 }       // namespace dctl

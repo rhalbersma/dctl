@@ -1,11 +1,11 @@
 #pragma once
 #include <dctl/utility/units.hpp>
-#include <dctl/ai/walk/root.hpp>           // Root
+#include <dctl/ai/traversal/root.hpp>           // Root
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
 #include <cstddef>                      // size_t
 
 namespace dctl {
-namespace walk {
+namespace traversal {
 
 auto const    unique_gen = actions::Successor<actions::select::legal, true >{};
 auto const duplicate_gen = actions::Successor<actions::select::legal, false>{};
@@ -21,5 +21,5 @@ void test(State const& s, Successor successor, Range const& leafs)
         }
 }
 
-}       // namespace walk
+}       // namespace traversal
 }       // namespace dctl

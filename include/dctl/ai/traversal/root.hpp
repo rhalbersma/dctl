@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/ai/walk/transposition.hpp>
+#include <dctl/ai/traversal/transposition.hpp>
 #include <dctl/utility/hash/dual_map.hpp>
 #include <dctl/utility/hash/extract.hpp>
 #include <dctl/utility/stack_vector.hpp>
@@ -12,7 +12,7 @@
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/action/ostream.hpp>
-
+#include <boost/container/static_vector.hpp>
 #include <numeric>
 #include <cstddef>
 #include <iomanip>
@@ -20,10 +20,9 @@
 #include <iterator>                     // distance
 #include <memory>
 #include <utility>
-#include <dctl/utility/bounded_vector.hpp>
 
 namespace dctl {
-namespace walk {
+namespace traversal {
 
 template<class Tag, class State>
 struct Data;
@@ -239,9 +238,9 @@ public:
 
                 //auto& moves = moves_storage[ply];
                 //moves.clear();
-                util::bounded_vector<Action<R,B>> moves;
+                boost::container::static_vector<Action<R,B>, 64> moves;
                 successor.generate(state, moves);
-                return std::accumulate(begin(moves), end(moves), std::size_t{0}, [&](auto n, auto const& m){
+                return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& m){
                         return n + recursive_run(result(state, m), depth - 1);
                 });
         }
@@ -388,5 +387,5 @@ std::size_t divide(State const& p, int depth, Successor successor, Enhancements 
         return leaf_nodes;
 }
 
-}       // namespace walk
+}       // namespace traversal
 }       // namespace dctl

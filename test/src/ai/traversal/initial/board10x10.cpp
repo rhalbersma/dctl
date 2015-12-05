@@ -1,14 +1,14 @@
-#include <ai/walk/fixture.hpp>
+#include <ai/traversal/fixture.hpp>
 #include <dctl/board.hpp>
 #include <dctl/state.hpp>
 #include <dctl/rules.hpp>
-#include <dctl/ai/walk/root.hpp>
+#include <dctl/ai/traversal/root.hpp>
 #include <boost/test/unit_test.hpp>
 #include <cstddef>                      // size_t
 #include <vector>
 
 namespace dctl {
-namespace walk {
+namespace traversal {
 
 BOOST_AUTO_TEST_SUITE(WalkInitialBoard10x10)
 
@@ -33,5 +33,5 @@ BOOST_AUTO_TEST_CASE(Frisian)
 */
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace walk
+}       // namespace traversal
 }       // namespace dctl
