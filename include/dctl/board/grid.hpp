@@ -1,9 +1,7 @@
 #pragma once
-#include <dctl/board/angle.hpp>               // Angle
+#include <dctl/board/angle.hpp>         // Angle
 #include <dctl/board/dimensions.hpp>    // Dimensions
-#include <xstd/cstddef.hpp>             // _z
 #include <cassert>                      // assert
-#include <cstddef>                      // size_t
 
 namespace dctl {
 namespace board {
@@ -40,9 +38,9 @@ public:
 class OuterGrid
 {
         InnerGrid inner_;
-        std::size_t edge_;
+        int edge_;
 public:
-        constexpr OuterGrid(InnerGrid const& i, std::size_t e) noexcept : inner_{i}, edge_{e} {}
+        constexpr OuterGrid(InnerGrid const& i, int e) noexcept : inner_{i}, edge_{e} {}
 
         constexpr auto width() const noexcept { return inner_.width(); }
         constexpr auto height() const noexcept { return inner_.height(); }

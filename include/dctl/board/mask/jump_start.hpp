@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/board/angle.hpp>                       // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
+#include <dctl/board/angle.hpp>                 // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/coordinates.hpp>           // ulo_from_sq
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/board/set_type.hpp>                    // set_type
+#include <dctl/board/set_type.hpp>              // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <array>                                // array
 #include <cassert>                              // assert
@@ -21,7 +21,7 @@ class JumpStart
                 {
                         int const segment;
 
-                        constexpr auto operator()(std::size_t sq) const noexcept
+                        constexpr auto operator()(int sq) const noexcept
                         {
                                 auto const alpha = rotate(segment * theta + beta, Board::orientation);
                                 auto const offset = is_diagonal(alpha) ? 2 : 4;

@@ -2,7 +2,7 @@
 #include <dctl/board/coordinates.hpp>           // to_llo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/color.hpp>                       // black, white
-#include <dctl/board/set_type.hpp>                    // set_type
+#include <dctl/board/set_type.hpp>              // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <array>                                // array
@@ -16,15 +16,15 @@ template<class Board>
 class Column
 {
         template<Color ToMove>
-        static constexpr auto init(std::size_t column) noexcept
+        static constexpr auto init(int column) noexcept
         {
                 // simulate a constexpr lambda (not allowed in C++14)
                 struct is_column
                 {
                         Color const to_move;
-                        std::size_t const column_;
+                        int const column_;
 
-                        constexpr auto operator()(std::size_t sq) const noexcept
+                        constexpr auto operator()(int sq) const noexcept
                         {
                                 assert(column_ < Board::width());
                                 return to_llo(sq, Board::inner_grid).x() == (to_move == Color::white ? column_ : Board::width() - 1 - column_);

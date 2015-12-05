@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>               // Angle
+#include <dctl/board/angle.hpp>         // Angle
 #include <dctl/board/origin.hpp>        // ScreenCentered, UpperLeft, LowerLeft
 #include <cassert>                      // assert
 #include <stdexcept>                    // invalid_argument
@@ -68,7 +68,7 @@ constexpr auto to_ulo(Coordinates<origin::ScreenCentered> const& coord, Grid con
 {
         return Coordinates<origin::UpperLeft>
         {
-                ulo_from_sco(coord.x(), grid.width() ),
+                ulo_from_sco(coord.x(), grid.width ()),
                 ulo_from_sco(coord.y(), grid.height())
         };
 }
@@ -78,7 +78,7 @@ constexpr auto to_sco(Coordinates<origin::UpperLeft> const& coord, Grid const& g
 {
         return Coordinates<origin::ScreenCentered>
         {
-                sco_from_ulo(coord.x(), grid.width() ),
+                sco_from_ulo(coord.x(), grid.width ()),
                 sco_from_ulo(coord.y(), grid.height())
         };
 }
@@ -118,15 +118,15 @@ constexpr auto to_sco(Coordinates<origin::LowerLeft> const& coord, Grid const& g
 template<class Grid>
 constexpr auto to_square(Coordinates<origin::UpperLeft> const& coord, Grid const& grid)
 {
-        auto const col_mod = coord.x() % 2;
+        //auto const col_mod = coord.x() % 2;
         auto const row_mod = coord.y() % 2;
-        assert(row_mod ^ col_mod == !grid.ul_parity());
+        //assert(row_mod ^ col_mod == !grid.ul_parity());
 
         auto const col_div = coord.x() / 2;
-        assert(2 * col_div + col_mod == coord.x());
+        //assert(2 * col_div + col_mod == coord.x());
 
         auto const row_div = coord.y() / 2;
-        assert(2 * row_div + row_mod == coord.y());
+        //assert(2 * row_div + row_mod == coord.y());
 
         auto const sq_base = row_mod ? grid.edge_lo() : grid.edge_le();
         auto const sq_offset = sq_base + col_div;
@@ -147,7 +147,7 @@ constexpr auto to_square(Coordinates<origin::ScreenCentered> const& coord, Grid 
 }
 
 template<class Grid>
-constexpr auto to_ulo(std::size_t sq, Grid const& grid)
+constexpr auto to_ulo(int sq, Grid const& grid)
 {
         auto const row_div   = sq / grid.modulo();
         auto const sq_offset = sq % grid.modulo();
@@ -162,25 +162,25 @@ constexpr auto to_ulo(std::size_t sq, Grid const& grid)
 
         return Coordinates<origin::UpperLeft>
         {
-                static_cast<int>(2 * col_div + col_mod),
-                static_cast<int>(2 * row_div + row_mod)
+                2 * col_div + col_mod,
+                2 * row_div + row_mod
         };
 }
 
 template<class Grid>
-constexpr auto to_llo(std::size_t sq, Grid const& grid)
+constexpr auto to_llo(int sq, Grid const& grid)
 {
         return to_llo(to_ulo(sq, grid), grid);
 }
 
 template<class Grid>
-constexpr auto to_sco(std::size_t sq, Grid const& grid)
+constexpr auto to_sco(int sq, Grid const& grid)
 {
         return to_sco(to_ulo(sq, grid), grid);
 }
 
 template<class FromGrid, class DestGrid>
-constexpr auto transform(std::size_t sq, FromGrid const& from, DestGrid const& dest, Angle a)
+constexpr auto transform(int sq, FromGrid const& from, DestGrid const& dest, Angle a)
 {
         // sq | to_sco(from) | rotate(a) | to_square(dest)
         return to_square(rotate(to_sco(sq, from), a), dest);
