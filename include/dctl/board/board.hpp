@@ -69,14 +69,12 @@ public:
 
         static auto squares() noexcept
         {
-                using namespace xstd::support_literals;
-                return ranges::view::iota(0_z, size());
+                return ranges::view::iota(0, size());
         }
 
         static auto bitnrs() noexcept
         {
-                using namespace xstd::support_literals;
-                return ranges::view::iota(0_z, bits());
+                return ranges::view::iota(0, bits());
         }
 
         static auto numeric_from_bit(std::size_t n)
@@ -94,26 +92,26 @@ public:
                 return sstr.str();
         }
 private:
-        static constexpr auto init_bit_from_square(std::size_t n) noexcept
+        static constexpr auto init_bit_from_square(int sq) noexcept
         {
-                return transform(n, inner_grid, outer_grid, orientation);
+                return static_cast<std::size_t>(transform(sq, inner_grid, outer_grid, orientation));
         }
 
         static constexpr auto init_square_from_bit(std::size_t n) noexcept
         {
-                return transform(n, outer_grid, inner_grid, inverse(orientation));
+                return transform(static_cast<int>(n), outer_grid, inner_grid, inverse(orientation));
         }
 
         static constexpr std::array<std::size_t, NumSquares>
         table_bit_from_square = make_array<NumSquares>(init_bit_from_square);
 
-        static constexpr std::array<std::size_t, NumBits>
+        static constexpr std::array<int, NumBits>
         table_square_from_bit = make_array<NumBits>(init_square_from_bit);
 
 public:
-        static constexpr auto bit_from_square(std::size_t n)
+        static constexpr auto bit_from_square(int sq)
         {
-                return table_bit_from_square[n];
+                return table_bit_from_square[static_cast<std::size_t>(sq)];
         }
 
         static constexpr auto square_from_bit(std::size_t n)
@@ -149,7 +147,7 @@ constexpr std::array<std::size_t, Board<Width, Height, Inverted, OrthogonalCaptu
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<std::size_t, Board<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
+constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 
 }       // namespace board

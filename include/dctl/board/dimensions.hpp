@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/board/angle.hpp>       // Angle
-#include <cstddef>              // size_t
+#include <dctl/board/angle.hpp> // Angle
+#include <cassert>              // assert
 #include <stdexcept>            // invalid_argument
 #include <tuple>                // forward_as_tuple
 
@@ -9,13 +9,16 @@ namespace board {
 
 class Dimensions
 {
-        std::size_t width_, height_;
+        int width_, height_;
         bool inverted_;
 public:
-        constexpr Dimensions(std::size_t w, std::size_t h, bool i) noexcept
+        constexpr Dimensions(int w, int h, bool i) noexcept
         :
                 width_{w}, height_{h}, inverted_{i}
-        {}
+        {
+                assert(0 <= width_ );
+                assert(0 <= height_);
+        }
 
         constexpr auto width() const noexcept { return width_; }
         constexpr auto height() const noexcept { return height_; }

@@ -6,14 +6,16 @@
 
 using namespace dctl;
 using namespace ranges;
-using square = std::size_t;
+using square = int;
 using B = board::International;
 
+inline
 auto row_number(square sq)
 {
         return board::to_ulo(sq, B::inner_grid).y();
 }
 
+inline
 auto by_row()
 {
         return view::group_by([](auto a, auto b) {
@@ -21,11 +23,13 @@ auto by_row()
         });
 }
 
+inline
 auto format_square(square sq)
 {
         return boost::str(boost::format("%|3|") % B::bit_from_square(sq));
 }
 
+inline
 auto format_rows()
 {
         return view::transform([](auto row){
@@ -36,11 +40,13 @@ auto format_rows()
         });
 }
 
+inline
 auto byte_number(square sq)
 {
         return sq / 8;
 }
 
+inline
 auto by_byte()
 {
         return view::group_by([](auto a, auto b) {
@@ -48,11 +54,13 @@ auto by_byte()
         });
 }
 
+inline
 auto format_bit(square b)
 {
         return boost::str(boost::format("%|3|") % b);
 }
 
+inline
 auto format_bytes()
 {
         return view::transform([](auto byte){

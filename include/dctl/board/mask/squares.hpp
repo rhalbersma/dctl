@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/board/set_type.hpp>                    // set_type
+#include <dctl/board/set_type.hpp>              // set_type
 
 namespace dctl {
 namespace board {
@@ -12,7 +12,7 @@ private:
         // simulate a constexpr lambda (not allowed in C++14)
         struct is_squares
         {
-                constexpr auto operator()(std::size_t sq) const noexcept
+                constexpr auto operator()(int sq) const noexcept
                 {
                         return sq < Board::size();
                 }

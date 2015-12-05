@@ -6,9 +6,9 @@
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/utility/bounded_vector.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <boost/container/static_vector.hpp>
 #include <algorithm>                            // find_if
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -84,7 +84,7 @@ public:
                 release_dispatch(sq, capture_category_t<rules_type>{});
         }
 
-        auto visit(square_type sq)
+        auto visit(square_type /* sq */)
         {
                 //visited_squares_.push_back(sq);
         }
@@ -336,7 +336,7 @@ private:
         {
                 static_assert(Unique::value);
                 assert(2 <= moves.size());
-                if (is_large(moves.front().num_captured()) && std::find(begin(moves), end(moves), moves.back()) != std::prev(end(moves)))
+                if (is_large(moves.front().num_captured()) && std::find(moves.begin(), moves.end(), moves.back()) != std::prev(moves.end()))
                         moves.pop_back();
         }
 };

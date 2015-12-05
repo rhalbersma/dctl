@@ -11,7 +11,7 @@ constexpr auto make_set_if(UnaryPredicate pred) noexcept
         using namespace xstd::support_literals;
 
         Set result{};
-        for (auto sq = 0_z; sq != Board::size(); ++sq)
+        for (auto sq = 0; sq != Board::size(); ++sq)
                 if (pred(sq))
                         result.set(Board::bit_from_square(sq));
         return result;

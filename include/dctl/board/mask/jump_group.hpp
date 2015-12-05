@@ -2,7 +2,7 @@
 #include <dctl/board/angle/detail/abs_remainder.hpp>  // abs_remainder
 #include <dctl/board/coordinates.hpp>           // to_llo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/board/set_type.hpp>                    // set_type
+#include <dctl/board/set_type.hpp>              // set_type
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -13,14 +13,14 @@ namespace board {
 template<class Board>
 class JumpGroup
 {
-        static constexpr auto init(std::size_t from_sq) noexcept
+        static constexpr auto init(int from_sq) noexcept
         {
                 // simulate a constexpr lambda (not allowed in C++14)
                 struct is_jump_group
                 {
-                        std::size_t from_sq_;
+                        int from_sq_;
 
-                        constexpr auto operator()(std::size_t dest_sq) const noexcept
+                        constexpr auto operator()(int dest_sq) const noexcept
                         {
                                 auto const from_coord = to_llo(from_sq_, Board::inner_grid);
                                 auto const dest_coord = to_llo(dest_sq , Board::inner_grid);

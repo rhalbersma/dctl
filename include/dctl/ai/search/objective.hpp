@@ -104,7 +104,7 @@ template<>
 struct cycle<FirstPlayerWin>
 {
         template<class State>
-        static int value(State const& p)
+        static int value(State const& /*p*/)
         {
                 return win_min();//(p.distance_to_root() % 2) ? loss_min() : win_min();
         }
@@ -129,9 +129,9 @@ bool is_no_progress(State const& /* p */, std::false_type)
 }
 
 template<class State>
-bool is_no_progress(State const& p, std::true_type)
+bool is_no_progress(State const& /*p*/, std::true_type)
 {
-        using Rules = typename State::rules_type;
+        //using Rules = typename State::rules_type;
 
         return false;//p.reversible_actions() >= max_reversible_moves_v<Rules>;
 }
