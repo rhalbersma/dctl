@@ -15,10 +15,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -stdlib=libc++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=512 -fconstexpr-steps=2097152 -ftemplate-backtrace-limit=0")
 
 # fail hard
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
 
 # highest general warning level
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
 
 # NOT A DEFECT: no C++98 compatibility
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat -Wno-c++98-compat-pedantic")
