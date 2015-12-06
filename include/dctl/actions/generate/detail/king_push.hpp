@@ -4,6 +4,7 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/board/ray.hpp>                           // make_iterator
+#include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
