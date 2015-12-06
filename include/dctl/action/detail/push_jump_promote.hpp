@@ -98,6 +98,11 @@ public:
                 return with() == p;
         }
 
+        constexpr auto is_with_king() const noexcept
+        {
+                return is_with(Piece::king);
+        }
+
         constexpr auto into() const noexcept
         {
                 return into_;

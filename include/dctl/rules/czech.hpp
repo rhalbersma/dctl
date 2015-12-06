@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/piece.hpp>       // king
 #include <dctl/rule_traits.hpp> // algebraic
 
 namespace dctl {
@@ -10,7 +9,7 @@ namespace rules {
 struct Czech
 {
         static constexpr auto is_long_ranged_king = true;       // 3.9
-        static constexpr auto is_backward_pawn_jump = false;    // 4.1
+        // static constexpr auto is_backward_pawn_jump = false;    // 4.1
 
         static constexpr auto jumpsep = ':';
         static constexpr auto notation = Notation::algebraic;   // 2.6
@@ -22,7 +21,7 @@ struct Czech
                 template<class Action>
                 constexpr auto operator()(Action const& a) const noexcept
                 {
-                        return a.is_with(Piece::king);
+                        return a.is_with_king();
                 }
         };
 };

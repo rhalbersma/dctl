@@ -1,6 +1,5 @@
 #pragma once
-#include <dctl/piece.hpp>       // king
-#include <tuple>                // make_tuple
+#include <tuple>        // make_tuple
 
 namespace dctl {
 namespace rules {
@@ -24,12 +23,12 @@ struct Frisian
                 template<class Action>
                 constexpr auto operator()(Action const& a) const noexcept
                 {
-                        auto const k = a.num_captured(Piece::king);
+                        auto const k = a.num_captured_kings();
                         auto const n = a.num_captured();
                         constexpr auto N = 65;
                         auto const v = N * (n + k) - k;
                         return std::make_tuple(
-                                v, a.is_with(Piece::king)
+                                v, a.is_with_king()
                         );
                 }
         };

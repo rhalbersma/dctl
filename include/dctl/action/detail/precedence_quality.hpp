@@ -22,6 +22,11 @@ public:
         {
                 return num_captured_[xstd::to_underlying_type(p)];
         }
+
+        constexpr auto num_captured_kings() const noexcept
+        {
+                return num_captured(Piece::king);
+        }
 };
 
 }       // namespace detail
