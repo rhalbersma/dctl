@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>       // Angle
+#include <dctl/board/angle.hpp> // Angle
 #include <dctl/board/grid.hpp>  // EdgedGrid
 #include <xstd/cstddef.hpp>     // _z
 #include <stdexcept>            // invalid_argument
