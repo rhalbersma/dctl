@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsShortRangedTag, T, VariantsShortRangedTag)
         {
-                static_assert(std::experimental::is_same_v<king_range_category_t<T>, short_ranged_tag>);
+                static_assert(!is_long_ranged_king_v<T>);
         }
 
         using VariantsLongRangedTag = boost::mpl::vector
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsLongRangedTag, T, VariantsLongRangedTag)
         {
-                static_assert(std::experimental::is_same_v<king_range_category_t<T>, long_ranged_tag>);
+                static_assert(is_long_ranged_king_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

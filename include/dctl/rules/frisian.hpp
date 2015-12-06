@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/piece.hpp>       // king
-#include <dctl/rule_traits.hpp> // long_ranged_tag
-#include <tuple>                // forward_as_tuple
+#include <tuple>                // make_tuple
 
 namespace dctl {
 namespace rules {
@@ -11,7 +10,7 @@ namespace rules {
 struct Frisian
 {
         static constexpr auto is_backward_pawn_jump = true;
-        using king_range_category = long_ranged_tag;
+        static constexpr auto is_long_ranged_king = true;
 
         static constexpr auto is_orthogonal_jump = true;
         static constexpr auto max_same_king_push = 3;

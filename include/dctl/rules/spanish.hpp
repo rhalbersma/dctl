@@ -1,17 +1,16 @@
 #pragma once
 #include <dctl/piece.hpp>       // king
-#include <dctl/rule_traits.hpp> // long_ranged_tag
-#include <tuple>                // forward_as_tuple
+#include <tuple>                // make_tuple
 
 namespace dctl {
 namespace rules {
 
-// http://fpdamas.home.sapo.pt/regrasclass.htm
+// http://www.fpdamas.pt/downloads/Regras%20Damas%20Cl%C3%A1ssicas%20-%20atualizado.pdf
 
 struct Spanish
 {
+        static constexpr auto is_long_ranged_king = true;
         static constexpr auto is_backward_pawn_jump = false;
-        using king_range_category = long_ranged_tag;
 
         static constexpr auto is_quantity = true;
         static constexpr auto is_quality = true;
