@@ -181,6 +181,11 @@ public:
                 return with() == p;
         }
 
+        auto is_with_king() const noexcept
+        {
+                return is_with(Piece::king);
+        }
+
         auto into() const noexcept
         {
                 return into_;
@@ -209,6 +214,11 @@ public:
         auto num_captured(Piece p) const noexcept
         {
                 return captured(p).count();
+        }
+
+        auto num_captured_kings() const noexcept
+        {
+                return num_captured(Piece::king);
         }
 
         auto piece_order() const

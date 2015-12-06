@@ -1,6 +1,5 @@
 #pragma once
-#include <dctl/piece.hpp>       // king
-#include <tuple>                // make_tuple
+#include <tuple>        // make_tuple
 
 namespace dctl {
 namespace rules {
@@ -10,7 +9,7 @@ namespace rules {
 struct Spanish
 {
         static constexpr auto is_long_ranged_king = true;
-        static constexpr auto is_backward_pawn_jump = false;
+        //static constexpr auto is_backward_pawn_jump = false;
 
         static constexpr auto is_quantity = true;
         static constexpr auto is_quality = true;
@@ -21,7 +20,7 @@ struct Spanish
                 constexpr auto operator()(Action const& a) const noexcept
                 {
                         return std::make_tuple(
-                                a.num_captured(), a.num_captured(Piece::king)
+                                a.num_captured(), a.num_captured_kings()
                         );
                 }
         };

@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         struct Action
         {
                 Piece with;
-                constexpr auto is_with(Piece p) const noexcept { return with == p; }
+                constexpr auto is_with_king() const noexcept { return with == Piece::king; }
         };
 
         auto const moves = std::vector<Action>
