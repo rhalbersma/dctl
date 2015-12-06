@@ -1,6 +1,5 @@
 #pragma once
 #include <dctl/piece.hpp>       // king
-#include <dctl/rule_traits.hpp> // short_ranged_tag
 #include <tuple>                // forward_as_tuple
 
 namespace dctl {
@@ -10,7 +9,7 @@ namespace rules {
 
 struct Italian
 {
-        using king_range_category = short_ranged_tag;           // 4.7
+        static constexpr auto is_long_ranged_king = false;      // 4.7
 
         static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
         static constexpr auto is_pawn_jump_king = false;        // 5.3(b)

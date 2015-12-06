@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/piece.hpp>       // king
-#include <dctl/rule_traits.hpp> // long_ranged_tag
+#include <dctl/rule_traits.hpp> // algebraic
 
 namespace dctl {
 namespace rules {
@@ -9,13 +9,13 @@ namespace rules {
 
 struct Czech
 {
-        static constexpr auto is_backward_pawn_jump = false;
-        using king_range_category = long_ranged_tag;
+        static constexpr auto is_long_ranged_king = true;       // 3.9
+        static constexpr auto is_backward_pawn_jump = false;    // 4.1
 
         static constexpr auto jumpsep = ':';
-        static constexpr auto notation = Notation::algebraic;
+        static constexpr auto notation = Notation::algebraic;   // 2.6
 
-        static constexpr auto is_modality = true;
+        static constexpr auto is_modality = true;               // 4.14
 
         struct precedence
         {

@@ -1,13 +1,16 @@
 #pragma once
 #include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_CONSTANT
-#include <type_traits>          // conditional
+#include <type_traits>          // conditional, false_type, true_type
 
 namespace dctl {
 
-struct short_ranged_tag {};
-struct  long_ranged_tag {};
+XSTD_PP_TTI_CONSTANT(is_long_ranged_king, false)
 
-XSTD_PP_TTI_TYPENAME(king_range_category, short_ranged_tag)
+template<class Rules>
+using king_range_category_t = is_long_ranged_king_t<Rules>;
+
+using short_ranged_tag = std::false_type;
+using long_ranged_tag = std::true_type;
 
 XSTD_PP_TTI_CONSTANT(is_land_behind_piece, false)
 

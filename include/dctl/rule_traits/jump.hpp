@@ -2,14 +2,17 @@
 #include <dctl/rule_traits/king_range.hpp>
 #include <dctl/rule_traits/promotion.hpp>
 #include <xstd/pp/tti.hpp>                      // XSTD_PP_TTI_CONSTANT
-#include <experimental/type_traits>             // bool_constant (C++1z), is_same
+#include <experimental/type_traits>             // bool_constant (C++1z), is_same, false_type, true_type
 
 namespace dctl {
 
-struct stopped_capture_tag {};
-struct passing_capture_tag {};
+XSTD_PP_TTI_CONSTANT(is_passing_capture, false)
 
-XSTD_PP_TTI_TYPENAME(capture_category, stopped_capture_tag)
+template<class Rules>
+using capture_category_t = is_passing_capture_t<Rules>;
+
+using stopped_capture_tag = std::false_type;
+using passing_capture_tag = std::true_type;
 
 XSTD_PP_TTI_CONSTANT(is_backward_pawn_jump, false)
 XSTD_PP_TTI_CONSTANT(is_orthogonal_jump, false)
@@ -17,8 +20,8 @@ XSTD_PP_TTI_CONSTANT(is_pawn_jump_king, true)
 
 template<class Rules>
 constexpr auto is_reversible_king_jump_direction_v =
-        std::experimental::is_same_v<capture_category_t<Rules>, passing_capture_tag> &&
-        std::experimental::is_same_v<king_range_category_t<Rules>, long_ranged_tag>
+        is_passing_capture_v<Rules> &&
+        is_long_ranged_king_v<Rules>
 ;
 
 template<class Rules>

@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/rule_traits.hpp> // long_ranged_tag
 
 namespace dctl {
 namespace rules {
@@ -8,9 +7,9 @@ namespace rules {
 
 struct International
 {
-        using king_range_category = long_ranged_tag;            // 3.9
-
+        static constexpr auto is_long_ranged_king = true;       // 3.9
         static constexpr auto is_backward_pawn_jump = true;     // 4.1
+
         static constexpr auto is_quantity = true;               // 4.13
 
         struct precedence
