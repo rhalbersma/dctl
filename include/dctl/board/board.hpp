@@ -21,19 +21,22 @@ namespace board {
 
 template
 <
-        std::size_t Width,
-        std::size_t Height,
+        int Width,
+        int Height,
         bool Inverted = false,
         bool OrthogonalCaptures = true
 >
 class Board
 {
+        static_assert(0 <= Width);
+        static_assert(0 <= Height);
+
 private:
         static constexpr auto dimensions = Dimensions{Width, Height, Inverted};
 
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
-        static constexpr std::size_t edge = OrthogonalCaptures ? 2 : 1;
+        static constexpr auto edge = OrthogonalCaptures ? 2 : 1;
         static constexpr auto inner_grid = InnerGrid{dimensions};
         static constexpr Angle orientation = size_minimizing_orientation(OuterGrid{inner_grid, edge});
 
@@ -130,23 +133,23 @@ public:
         }
 };
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr Angle
 Board<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr InnerGrid
 Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr OuterGrid
 Board<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr std::array<std::size_t, Board<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
 Board<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 

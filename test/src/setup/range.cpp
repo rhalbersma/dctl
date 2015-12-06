@@ -71,7 +71,7 @@ auto format_bytes()
         });
 }
 
-template<class CharT, class Traits, std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<class CharT, class Traits, int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::Board<Width, Height, Inverted, OrthogonalCaptures> const& b)
 {
         using Coord = board::Coordinates<board::origin::UpperLeft>;
