@@ -4,7 +4,7 @@
 #include <dctl/actions/detect/specializations.hpp>      // Detect
 #include <dctl/actions/select/legal.hpp>                // legal
 #include <dctl/color.hpp>                               // Color, black, white
-#include <type_traits>                                  // bool_constant (C++1z)
+#include <type_traits>                                  // bool_constant
 
 namespace dctl {
 namespace actions {

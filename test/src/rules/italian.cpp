@@ -20,11 +20,11 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         static_assert(!is_pawn_jump_king_v<T>);
 
-        static_assert(!precedence::is_trivial_v<T>);
-        static_assert( precedence::is_quantity_v<T>);
-        static_assert( precedence::is_modality_v<T>);
-        static_assert( precedence::is_quality_v<T>);
-        static_assert( precedence::is_ordering_v<T>);
+        static_assert(!is_trivial_precedence_v<T>);
+        static_assert( is_quantity_precedence_v<T>);
+        static_assert( is_modality_precedence_v<T>);
+        static_assert( is_quality_precedence_v<T>);
+        static_assert( is_ordering_precedence_v<T>);
 
         struct Action
         {

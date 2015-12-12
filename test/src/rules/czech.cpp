@@ -19,8 +19,8 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         static_assert(jumpsep_v<T> == ':');
 
-        static_assert(!precedence::is_trivial_v<T>);
-        static_assert( precedence::is_modality_v<T>);
+        static_assert(!is_trivial_precedence_v<T>);
+        static_assert( is_modality_precedence_v<T>);
 
         struct Action
         {

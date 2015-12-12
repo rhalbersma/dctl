@@ -90,7 +90,7 @@ public:
         static auto algebraic_from_bit(std::size_t n)
         {
                 std::stringstream sstr;
-                auto coord = to_llo(square_from_bit(n), outer_grid);
+                auto coord = to_llo(square_from_bit(n), inner_grid);
                 sstr << Labels<Board>::col[coord.x()] << Labels<Board>::row[coord.y()];
                 return sstr.str();
         }

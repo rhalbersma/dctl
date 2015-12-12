@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(!is_backward_pawn_jump_v<T>);
         static_assert(!is_long_ranged_king_v<T>);
 
-        static_assert(precedence::is_trivial_v<T>);
+        static_assert(is_trivial_precedence_v<T>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

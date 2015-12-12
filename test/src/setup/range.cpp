@@ -7,7 +7,7 @@
 using namespace dctl;
 using namespace ranges;
 using square = int;
-using B = board::International;
+using B = board::Checkers;
 
 inline
 auto row_number(square sq)

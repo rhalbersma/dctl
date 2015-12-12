@@ -13,7 +13,7 @@
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
-#include <type_traits>                          // bool_constant (C++1z), false_type, true_type
+#include <type_traits>                          // bool_constant, false_type, true_type
 
 namespace dctl {
 namespace actions {
@@ -229,7 +229,7 @@ public:
         template<class SequenceContainer>
         auto append_to(SequenceContainer& moves) const
         {
-                precedence_dispatch(moves, precedence::is_trivial_t<rules_type>{});
+                precedence_dispatch(moves, is_trivial_precedence_t<rules_type>{});
         }
 
 private:

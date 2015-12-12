@@ -2,7 +2,7 @@
 #include <dctl/board/angle.hpp>         // Angle, is_positive
 #include <dctl/board/ray/iterator.hpp>  // Iterator
 #include <dctl/board/set_type.hpp>      // set_type
-#include <type_traits>                  // bool_constant (C++1z)
+#include <type_traits>                  // bool_constant
 
 namespace dctl {
 namespace ray {
