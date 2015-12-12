@@ -1,4 +1,4 @@
-#include <dctl/rule_traits.hpp>                 // promotion_category, stopped_promotion_tag, passing_promotion_tag
+#include <dctl/rule_traits.hpp>                 // is_passing_promotion
 #include <dctl/rules.hpp>                       // Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -17,6 +17,7 @@ using VariantsStoppedPromotionTag = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedPromotionTag, T, VariantsStoppedPromotionTag)
 {
+        static_assert(!is_passing_promotion_v<T>);
         static_assert(std::experimental::is_same_v<promotion_category_t<T>, stopped_promotion_tag>);
 }
 
@@ -27,6 +28,7 @@ using VariantsPassingPromotionTag = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingPromotionTag, T, VariantsPassingPromotionTag)
 {
+        static_assert(is_passing_promotion_v<T>);
         static_assert(std::experimental::is_same_v<promotion_category_t<T>, passing_promotion_tag>);
 }
 

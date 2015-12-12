@@ -14,7 +14,6 @@
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // is_base_of, false_type, true_type
-#include <experimental/type_traits>
 
 namespace dctl {
 namespace actions {
@@ -51,7 +50,7 @@ public:
         template<class Iterator>
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
-                static_assert(std::experimental::is_base_of_v<passing_promotion_tag, promotion_category_t<rules_type>>);
+                static_assert(is_passing_promotion_v<rules_type>);
                 assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
                 try_next(jumper);
         }
@@ -67,10 +66,10 @@ private:
 
         auto branch(std::size_t from_sq) const
         {
-                branch_dispatch(from_sq, is_orthogonal_jump_t<rules_type>{});
+                branch_dispatch(from_sq, jump_category_t<rules_type>{});
         }
 
-        auto branch_dispatch(std::size_t from_sq, std::false_type) const
+        auto branch_dispatch(std::size_t from_sq, diagonal_jump_tag) const
         {
                 find_first(along_ray<left_up   (orientation)>(from_sq));
                 find_first(along_ray<right_up  (orientation)>(from_sq));
@@ -78,7 +77,7 @@ private:
                 find_first(along_ray<right_down(orientation)>(from_sq));
         }
 
-        auto branch_dispatch(std::size_t from_sq, std::true_type) const
+        auto branch_dispatch(std::size_t from_sq, orthogonal_jump_tag) const
         {
                 find_first(along_ray<up        (orientation)>(from_sq));
                 find_first(along_ray<left_up   (orientation)>(from_sq));
@@ -169,22 +168,20 @@ private:
                 auto found_next = turn(jumper);
                 auto slider = std::next(jumper);
                 while (is_onboard(slider) && builder.path(*slider)) {
-                        //builder.set_dest(*slider);
                         found_next |= turn(slider);
                         ++slider;
                 }
-                //builder.set_dest(*jumper);
                 return found_next |= is_en_prise(slider);
         }
 
         template<class Iterator>
         auto turn(Iterator jumper) const
         {
-                return turn_dispatch(jumper, is_orthogonal_jump_t<rules_type>{});
+                return turn_dispatch(jumper, jump_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, std::false_type) const
+        auto turn_dispatch(Iterator jumper, diagonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>));
                 return
@@ -194,7 +191,7 @@ private:
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, std::true_type) const
+        auto turn_dispatch(Iterator jumper, orthogonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
                 return

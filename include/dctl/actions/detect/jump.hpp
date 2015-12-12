@@ -16,7 +16,7 @@ class Detect<ToMove, select::jump, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& state) const
+        auto operator()(State const& state) const noexcept
         {
                 using Builder = detail::Builder<ToMove, std::true_type, State>;
                 using PawnJump = detail::Detect<ToMove, Piece::pawn, select::jump, Reverse, Builder>;

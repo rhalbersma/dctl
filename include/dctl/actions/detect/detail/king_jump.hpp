@@ -25,23 +25,23 @@ class Detect<ToMove, Piece::king, select::jump, Reverse, Builder>
         Builder const& builder;
 
 public:
-        explicit Detect(Builder const& b)
+        explicit Detect(Builder const& b) noexcept
         :
                 builder{b}
         {}
 
-        auto operator()(set_type const& active_kings) const
+        auto operator()(set_type const& active_kings) const noexcept
         {
                 return active_kings.none() ? false : branch(active_kings);
         }
 
 private:
-        auto branch(set_type const& active_kings) const
+        auto branch(set_type const& active_kings) const noexcept
         {
-                return branch_dispatch(active_kings, is_orthogonal_jump_t<rules_type>{});
+                return branch_dispatch(active_kings, jump_category_t<rules_type>{});
         }
 
-        auto branch_dispatch(set_type const& active_kings, std::false_type) const
+        auto branch_dispatch(set_type const& active_kings, diagonal_jump_tag) const noexcept
         {
                 return
                         parallelize<left_up   (orientation)>(active_kings) ||
@@ -51,7 +51,7 @@ private:
                 ;
         }
 
-        auto branch_dispatch(set_type const& active_kings, std::true_type) const
+        auto branch_dispatch(set_type const& active_kings, orthogonal_jump_tag) const noexcept
         {
                 return
                         parallelize<up        (orientation)>(active_kings) ||
@@ -66,7 +66,7 @@ private:
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_kings) const
+        auto parallelize(set_type const& active_kings) const noexcept
         {
                 return Sandwich<board_type, Direction, king_range_category_t<rules_type>>{}(
                         active_kings, builder.template targets<Direction>(), builder.path()

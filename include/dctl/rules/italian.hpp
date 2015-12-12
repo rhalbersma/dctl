@@ -8,9 +8,9 @@ namespace rules {
 
 struct Italian
 {
-        //static constexpr auto is_long_ranged_king = false;      // 4.7
+        static constexpr auto is_long_ranged_king = false;      // 4.7
 
-        //static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
+        static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
         static constexpr auto is_pawn_jump_king = false;        // 5.3(b)
 
         static constexpr auto is_quantity = true;               // 6.6

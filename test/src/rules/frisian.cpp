@@ -4,7 +4,6 @@
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                      // size_t
-#include <experimental/type_traits>     // is_same
 #include <vector>                       // vector
 
 namespace dctl {
