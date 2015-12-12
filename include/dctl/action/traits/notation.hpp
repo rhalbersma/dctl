@@ -1,8 +1,14 @@
 #pragma once
-#include <dctl/rule_traits.hpp>
-#include <type_traits>          // integral_constant
+#include <type_traits>  // conditional, integral_constant
 
 namespace dctl {
+
+enum class Notation
+{
+        /* zero is reserved */
+        algebraic = 1,
+        numeric   = 2
+};
 
 namespace move {
 namespace traits {

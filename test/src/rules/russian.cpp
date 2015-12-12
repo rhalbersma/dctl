@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(jumpsep_v<T> == ':');
         static_assert(is_passing_promotion_v<T>);
 
-        static_assert(precedence::is_trivial_v<T>);
+        static_assert(is_trivial_precedence_v<T>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

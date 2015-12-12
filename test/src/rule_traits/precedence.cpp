@@ -7,7 +7,7 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(PrecedenceIsTrivial)
+BOOST_AUTO_TEST_SUITE(IsTrivialPrecedence)
 
         using VariantsTrue = boost::mpl::vector
         <
@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsTrivial)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
-                static_assert(precedence::is_trivial_v<T>);
+                static_assert(is_trivial_precedence_v<T>);
         }
 
         using VariantsFalse = boost::mpl::vector
@@ -26,12 +26,12 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsTrivial)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!precedence::is_trivial_v<T>);
+                static_assert(!is_trivial_precedence_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(PrecedenceIsQuantity)
+BOOST_AUTO_TEST_SUITE(IsQuantityPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsQuantity)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!precedence::is_quantity_v<T>);
+                static_assert(!is_quantity_precedence_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -50,12 +50,12 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsQuantity)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
-                static_assert(precedence::is_quantity_v<T>);
+                static_assert(is_quantity_precedence_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(PrecedenceIsQuality)
+BOOST_AUTO_TEST_SUITE(IsQualityPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsQuality)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!precedence::is_quality_v<T>);
+                static_assert(!is_quality_precedence_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -74,12 +74,12 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsQuality)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
-                static_assert(precedence::is_quality_v<T>);
+                static_assert(is_quality_precedence_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(PrecedenceIsModality)
+BOOST_AUTO_TEST_SUITE(IsModalityPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsModality)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!precedence::is_modality_v<T>);
+                static_assert(!is_modality_precedence_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -98,12 +98,12 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsModality)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
-                static_assert(precedence::is_modality_v<T>);
+                static_assert(is_modality_precedence_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(PrecedenceIsOrdering)
+BOOST_AUTO_TEST_SUITE(IsOrderingPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsOrdering)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!precedence::is_ordering_v<T>);
+                static_assert(!is_ordering_precedence_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceIsOrdering)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
-                static_assert(precedence::is_ordering_v<T>);
+                static_assert(is_ordering_precedence_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -137,11 +137,11 @@ BOOST_AUTO_TEST_SUITE(PrecedenceTrivialIsConsistentWithTraits)
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
                 static_assert((
-                         precedence::is_quantity_v<T> ||
-                         precedence::is_quality_v<T>  ||
-                         precedence::is_modality_v<T> ||
-                         precedence::is_ordering_v<T> ) ==
-                        !precedence::is_trivial_v<T>, ""
+                         is_quantity_precedence_v<T> ||
+                         is_quality_precedence_v<T>  ||
+                         is_modality_precedence_v<T> ||
+                         is_ordering_precedence_v<T> ) ==
+                        !is_trivial_precedence_v<T>, ""
                 );
         }
 

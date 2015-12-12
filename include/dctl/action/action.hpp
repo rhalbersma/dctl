@@ -3,8 +3,8 @@
 #include <dctl/action/detail/precedence_quality.hpp>
 #include <dctl/action/detail/precedence_ordering.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/rule_traits.hpp>                 // is_quality, is_ordering
-#include <dctl/board/set_type.hpp>                    // set_type
+#include <dctl/rule_traits.hpp>                 // is_quality_precedence, is_ordering_precedence
+#include <dctl/board/set_type.hpp>              // set_type
 #include <xstd/type_traits.hpp>                 // optional_base
 #include <cassert>                              // assert
 #include <tuple>                                // forward_as_tuple
@@ -15,12 +15,12 @@ namespace dctl {
 template<class Rules, class Board>
 class Action
 :       public detail::PushJumpPromote<Rules, Board>
-,       public xstd::optional_base<precedence::is_quality_v <Rules>, detail::PrecedenceQuality <Board>>
-,       public xstd::optional_base<precedence::is_ordering_v<Rules>, detail::PrecedenceOrdering<Board>>
+,       public xstd::optional_base<is_quality_precedence_v <Rules>, detail::PrecedenceQuality <Board>>
+,       public xstd::optional_base<is_ordering_precedence_v<Rules>, detail::PrecedenceOrdering<Board>>
 {
         using PushJumpPromote    = detail::PushJumpPromote<Rules, Board>;
-        using PrecedenceQuality  = xstd::optional_base<precedence::is_quality_v <Rules>, detail::PrecedenceQuality <Board>>;
-        using PrecedenceOrdering = xstd::optional_base<precedence::is_ordering_v<Rules>, detail::PrecedenceOrdering<Board>>;
+        using PrecedenceQuality  = xstd::optional_base<is_quality_precedence_v <Rules>, detail::PrecedenceQuality <Board>>;
+        using PrecedenceOrdering = xstd::optional_base<is_ordering_precedence_v<Rules>, detail::PrecedenceOrdering<Board>>;
 public:
         using rules_type = Rules;
         using board_type = Board;
@@ -39,21 +39,21 @@ public:
 
         using PushJumpPromote::num_captured;
 
-        template<class RulesType = rules_type, std::enable_if_t<precedence::is_quality_v<RulesType>>* = nullptr>
+        template<class RulesType = rules_type, std::enable_if_t<is_quality_precedence_v<RulesType>>* = nullptr>
         constexpr auto num_captured(Piece p) const noexcept
         {
                 return PrecedenceQuality::num_captured(p);
         }
 };
 
-template<class Rules, class Board, std::enable_if_t<!precedence::is_ordering_v<Rules>>* = nullptr>
+template<class Rules, class Board, std::enable_if_t<!is_ordering_precedence_v<Rules>>* = nullptr>
 constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
 {
-        auto const cmp = [](auto const& m) { return std::make_tuple(m.from(), m.dest(), m.captured()); };
+        auto const cmp = [](auto const& a) { return std::make_tuple(a.from(), a.dest(), a.captured()); };
         return cmp(lhs) == cmp(rhs);
 }
 
-template<class Rules, class Board, std::enable_if_t<precedence::is_ordering_v<Rules>>* = nullptr>
+template<class Rules, class Board, std::enable_if_t<is_ordering_precedence_v<Rules>>* = nullptr>
 constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
 {
         return
@@ -62,7 +62,7 @@ constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> 
         ;
 }
 
-template<class Rules, class Board, std::enable_if_t<!precedence::is_ordering_v<Rules>>* = nullptr>
+template<class Rules, class Board, std::enable_if_t<!is_ordering_precedence_v<Rules>>* = nullptr>
 constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
 {
         return
@@ -71,7 +71,7 @@ constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> 
         ;
 }
 
-template<class Rules, class Board, std::enable_if_t<precedence::is_ordering_v<Rules>>* = nullptr>
+template<class Rules, class Board, std::enable_if_t<is_ordering_precedence_v<Rules>>* = nullptr>
 constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
 {
         return

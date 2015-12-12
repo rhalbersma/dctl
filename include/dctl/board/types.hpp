@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/board.hpp>         // Board
+#include <dctl/board/board.hpp> // Board
 
 namespace dctl {
 namespace board {
@@ -14,7 +14,7 @@ using International = Board<10, 10>;
 using Frisian       = Board<10, 10, false, true>;
 
 // rectangular boards with front lines of square boards of the same width
-template<std::size_t Width, std::size_t Height>
+template<int Width, int Height>
 using Ktar          = Board<Width, Height, true>;
 
 // without orthogonal capture, Board<12, 10> and Ktar<10, 12> fit into 64-bits

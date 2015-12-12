@@ -1,11 +1,11 @@
 #pragma once
-#include <dctl/action/action.hpp>   // Action
-#include <dctl/action/manip.hpp>  // notation, pushsep, jumpsep
-#include <dctl/action/traits.hpp> // notation, pushsep, jumpsep
-#include <dctl/rule_traits.hpp> // jumpsep, pushsep
-#include <cassert>              // assert
-#include <iosfwd>               // ostream
-#include <sstream>              // stringstream
+#include <dctl/action/action.hpp>       // Action
+#include <dctl/action/manip.hpp>        // notation, pushsep, jumpsep
+#include <dctl/action/traits.hpp>       // notation, pushsep, jumpsep
+#include <dctl/rule_traits.hpp>         // jumpsep, pushsep
+#include <cassert>                      // assert
+#include <iosfwd>                       // ostream
+#include <sstream>                      // stringstream
 
 namespace dctl {
 namespace move {

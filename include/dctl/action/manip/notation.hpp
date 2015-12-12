@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/rule_traits.hpp> // Notation
-#include <xstd/type_traits.hpp> // to_underlying_type
-#include <ios>                  // ios_base, iword, xalloc
+#include <dctl/action/traits/notation.hpp>      // Notation
+#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <ios>                                  // ios_base, iword, xalloc
 
 namespace dctl {
 
