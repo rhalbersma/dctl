@@ -49,10 +49,8 @@ public:
 template<class Rules, class Board, std::enable_if_t<!precedence::is_ordering_v<Rules>>* = nullptr>
 constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
 {
-        return
-                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) ==
-                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured())
-        ;
+        auto const cmp = [](auto const& m) { return std::make_tuple(m.from(), m.dest(), m.captured()); };
+        return cmp(lhs) == cmp(rhs);
 }
 
 template<class Rules, class Board, std::enable_if_t<precedence::is_ordering_v<Rules>>* = nullptr>

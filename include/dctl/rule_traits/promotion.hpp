@@ -1,12 +1,19 @@
 #pragma once
-#include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_TYPENAME
+#include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_CONSTANT
+#include <type_traits>          // conditional, false_type, true_type
 
 namespace dctl {
 
-struct stopped_promotion_tag {};
-struct delayed_promotion_tag {};
-struct passing_promotion_tag : delayed_promotion_tag {};
+XSTD_PP_TTI_CONSTANT(is_passing_promotion, false)
 
-XSTD_PP_TTI_TYPENAME(promotion_category, stopped_promotion_tag)
+struct stopped_promotion_tag : std::false_type {};
+struct passing_promotion_tag : std::true_type {};
+
+template<class Rules>
+using promotion_category_t = std::conditional_t<
+        is_passing_promotion_v<Rules>,
+        passing_promotion_tag,
+        stopped_promotion_tag
+>;
 
 }       // namespace dctl

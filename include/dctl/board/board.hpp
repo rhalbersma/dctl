@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                       // Angle, inverse
+#include <dctl/board/angle.hpp>                 // Angle, inverse
 #include <dctl/board/algebraic.hpp>             // Labels
 #include <dctl/board/dimensions.hpp>            // Dimensions
 #include <dctl/board/coordinates.hpp>           // Square, ulo_from_sq, sq_from_ulo, rotate
@@ -38,7 +38,7 @@ public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
         static constexpr auto edge = OrthogonalCaptures ? 2 : 1;
         static constexpr auto inner_grid = InnerGrid{dimensions};
-        static constexpr Angle orientation = size_minimizing_orientation(OuterGrid{inner_grid, edge});
+        static constexpr auto orientation = size_minimizing_orientation(OuterGrid{inner_grid, edge});
 
 private:
         static constexpr auto outer_grid = OuterGrid{rotate(inner_grid, orientation), edge};

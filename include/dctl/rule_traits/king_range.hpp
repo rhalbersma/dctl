@@ -6,11 +6,15 @@ namespace dctl {
 
 XSTD_PP_TTI_CONSTANT(is_long_ranged_king, false)
 
-template<class Rules>
-using king_range_category_t = is_long_ranged_king_t<Rules>;
+struct short_ranged_tag : std::false_type {};
+struct  long_ranged_tag : std::true_type {};
 
-using short_ranged_tag = std::false_type;
-using long_ranged_tag = std::true_type;
+template<class Rules>
+using king_range_category_t = std::conditional_t<
+        is_long_ranged_king_v<Rules>,
+         long_ranged_tag,
+        short_ranged_tag
+>;
 
 XSTD_PP_TTI_CONSTANT(is_land_behind_piece, false)
 

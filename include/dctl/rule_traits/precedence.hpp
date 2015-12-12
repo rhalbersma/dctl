@@ -1,10 +1,16 @@
 #pragma once
 #include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_CONSTANT, XSTD_PP_TTI_TYPENAME
-#include <tuple>
+#include <tuple>                // make_tuple
 #include <type_traits>          // bool_constant (C++1z)
 
 namespace dctl {
 namespace precedence {
+
+XSTD_PP_TTI_CONSTANT(is_quantity, false)
+XSTD_PP_TTI_CONSTANT(is_quality, false)
+XSTD_PP_TTI_CONSTANT(is_modality, false)
+XSTD_PP_TTI_CONSTANT(is_ordering, false)
+
 namespace trivial {
 
 struct precedence
@@ -105,11 +111,6 @@ struct not_equivalent_to
                 return !equivalent_to<Rules>{}(lhs, rhs);
         }
 };
-
-XSTD_PP_TTI_CONSTANT(is_quantity, false)
-XSTD_PP_TTI_CONSTANT(is_quality, false)
-XSTD_PP_TTI_CONSTANT(is_modality, false)
-XSTD_PP_TTI_CONSTANT(is_ordering, false)
 
 }       // namespace precedence
 }       // namespace dctl

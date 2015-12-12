@@ -15,7 +15,7 @@ class Detect<ToMove, select::legal, Reverse>
 {
 public:
         template<class State>
-        auto operator()(State const& state) const
+        auto operator()(State const& state) const noexcept
         {
                 using Push = Detect<ToMove, select::push, Reverse>;
                 using Jump = Detect<ToMove, select::jump, Reverse>;

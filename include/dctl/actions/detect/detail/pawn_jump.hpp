@@ -26,25 +26,25 @@ class Detect<ToMove, Piece::pawn, select::jump, Reverse, Builder>
         Builder& builder;
 
 public:
-        explicit Detect(Builder& b)
+        explicit Detect(Builder& b) noexcept
         :
                 builder{b}
         {}
 
-        auto operator()(set_type const& active_pawns) const
+        auto operator()(set_type const& active_pawns) const noexcept
         {
                 return active_pawns.any() ? king_targets_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{}) : false;
         }
 
 private:
         // pawns that can capture kings
-        auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const
+        auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const noexcept
         {
                 return branch(active_pawns);
         }
 
         // pawns that cannot capture kings
-        auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const
+        auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const noexcept
         {
                 raii::ToggleKingTargets<Builder> guard{builder};
                 return branch(active_pawns);
@@ -52,11 +52,10 @@ private:
 
         auto branch(set_type const& active_pawns) const
         {
-                return branch_dispatch(active_pawns, is_backward_pawn_jump_t<rules_type>{}, is_orthogonal_jump_t<rules_type>{});
+                return branch_dispatch(active_pawns, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
         }
 
-        // pawns that jump in the 2 forward diagonal directions
-        auto branch_dispatch(set_type const& active_pawns, std::false_type, std::false_type) const
+        auto branch_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
                 return
                         parallelize<left_up   (orientation)>(active_pawns) ||
@@ -64,8 +63,7 @@ private:
                 ;
         }
 
-        // pawns that jump in the 4 forward and backward diagonal directions
-        auto branch_dispatch(set_type const& active_pawns, std::true_type, std::false_type) const
+        auto branch_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
                 return
                         parallelize<left_up   (orientation)>(active_pawns) ||
@@ -75,8 +73,7 @@ private:
                 ;
         }
 
-        // pawns that jump in the 5 forward and sideways diagonal and orthogonal directions
-        auto branch_dispatch(set_type const& active_pawns, std::false_type, std::true_type) const
+        auto branch_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
                 return
                         parallelize<up        (orientation)>(active_pawns) ||
@@ -87,8 +84,7 @@ private:
                 ;
         }
 
-        // pawns that jump in the 8 diagonal and orthogonal directions
-        auto branch_dispatch(set_type const& active_pawns, std::true_type, std::true_type) const
+        auto branch_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
                 return
                         parallelize<up        (orientation)>(active_pawns) ||
@@ -103,7 +99,7 @@ private:
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_pawns) const
+        auto parallelize(set_type const& active_pawns) const noexcept
         {
                 return Sandwich<board_type, Direction, short_ranged_tag>{}(
                         active_pawns, builder.template targets<Direction>(), builder.path()
