@@ -16,8 +16,8 @@ using namespace dctl;
 
 int main()
 {
-        using Rules = rules::Checkers;
-        using Board = board::Checkers;
+        using Rules = rules::International;
+        using Board = board::Mini;
         using Pos = State<Rules, Board>;
 
         auto initial = Pos::initial();
