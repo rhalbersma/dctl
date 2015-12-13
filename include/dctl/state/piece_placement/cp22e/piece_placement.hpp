@@ -32,14 +32,14 @@ public:
         }
 
         template<class Action>
-        auto& make(Action const& a)
+        auto& make(Color c, Action const& a)
         {
-                pieces(a.to_move(), a.with()).reset(a.from());
-                pieces(a.to_move(), a.into()).set  (a.dest());
+                pieces(c, a.with()).reset(a.from());
+                pieces(c, a.into()).set  (a.dest());
 
                 if (a.is_jump()) {
-                        pieces(!a.to_move(), Piece::pawn) &= ~a.captured();
-                        pieces(!a.to_move(), Piece::king) &= ~a.captured();
+                        pieces(!c, Piece::pawn) &= ~a.captured();
+                        pieces(!c, Piece::king) &= ~a.captured();
                         not_occupied_ ^= a.captured();
                 }
 

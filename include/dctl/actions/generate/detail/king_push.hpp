@@ -76,7 +76,7 @@ private:
         {
                 auto const movers = active_kings & set_type(*std::prev(along_wave<Direction>(state.not_occupied())));
                 movers.for_each([&](auto const& from_sq){
-                        moves.emplace_back(from_sq, *std::next(along_ray<Direction>(from_sq)), ToMove);
+                        moves.emplace_back(from_sq, *std::next(along_ray<Direction>(from_sq)));
                 });
         }
 
@@ -85,7 +85,7 @@ private:
         {
                 auto const targets = ray::classical(from, state.not_occupied());
                 targets.for_each([&](auto const& dest_sq){
-                        moves.emplace_back(*from, dest_sq, ToMove);
+                        moves.emplace_back(*from, dest_sq);
                 });
         }
 

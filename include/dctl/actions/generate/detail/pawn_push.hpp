@@ -58,7 +58,7 @@ private:
                 auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(state.not_occupied())));
                 movers.for_each([&](auto const& from_sq){
                         auto const dest_sq = *std::next(along_ray<Direction>(from_sq));
-                        moves.emplace_back(from_sq, dest_sq, is_promotion(dest_sq) ? Piece::king : Piece::pawn, ToMove);
+                        moves.emplace_back(from_sq, dest_sq, is_promotion(dest_sq) ? Piece::king : Piece::pawn);
                 });
         }
 

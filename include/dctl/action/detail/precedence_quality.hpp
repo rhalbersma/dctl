@@ -1,5 +1,6 @@
 #pragma once
 #include <dctl/piece.hpp>       // pawn, king
+#include <xstd/type_traits.hpp> // to_underlying_type
 #include <cstddef>              // size_t
 
 namespace dctl {
