@@ -3,7 +3,6 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <experimental/type_traits>             // is_same
 
 namespace dctl {
 namespace rules {
@@ -32,30 +31,6 @@ BOOST_AUTO_TEST_SUITE(IsBackwardPawnJump)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(IsPawnJumpKing)
-
-        using VariantsTrue = boost::mpl::vector
-        <
-                Checkers, Czech, Frisian, International, Pool, Russian, Spanish, Thai
-        >;
-
-        BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsTrue)
-        {
-                static_assert(is_pawn_jump_king_v<T>);
-        }
-
-        using VariantsFalse = boost::mpl::vector
-        <
-                Italian
-        >;
-
-        BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsFalse)
-        {
-                static_assert(!is_pawn_jump_king_v<T>);
-        }
-
-BOOST_AUTO_TEST_SUITE_END()
-
 BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
         using VariantsFalse = boost::mpl::vector
@@ -80,6 +55,30 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
 BOOST_AUTO_TEST_SUITE_END()
 
+BOOST_AUTO_TEST_SUITE(IsPawnJumpKing)
+
+        using VariantsTrue = boost::mpl::vector
+        <
+                Checkers, Czech, Frisian, International, Pool, Russian, Spanish, Thai
+        >;
+
+        BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsTrue)
+        {
+                static_assert(is_pawn_jump_king_v<T>);
+        }
+
+        using VariantsFalse = boost::mpl::vector
+        <
+                Italian
+        >;
+
+        BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsFalse)
+        {
+                static_assert(!is_pawn_jump_king_v<T>);
+        }
+
+BOOST_AUTO_TEST_SUITE_END()
+
 BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
         using VariantsStoppedJumpRemovalTag = boost::mpl::vector
@@ -89,7 +88,7 @@ BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedJumpRemovalTag, T, VariantsStoppedJumpRemovalTag)
         {
-                static_assert(std::experimental::is_same_v<capture_category_t<T>, stopped_capture_tag>);
+                static_assert(!is_passing_capture_v<T>);
         }
 
         using VariantsPassingJumpRemovalTag = boost::mpl::vector
@@ -99,7 +98,7 @@ BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingJumpRemovalTag, T, VariantsPassingJumpRemovalTag)
         {
-                static_assert(std::experimental::is_same_v<capture_category_t<T>, passing_capture_tag>);
+                static_assert(is_passing_capture_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

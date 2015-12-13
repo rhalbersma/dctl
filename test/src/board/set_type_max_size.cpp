@@ -4,7 +4,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <experimental/type_traits>             // is_same
+#include <type_traits>                          // is_same
 
 namespace dctl {
 namespace board {
@@ -61,11 +61,11 @@ using IntermediateBoardSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE(RemoveAddOrthogonalCapture)
 {
-        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<Ktar <10, 12>>, Compact1012>);
-        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<Compact1012>, Ktar <10, 12>>);
+        static_assert(std::is_same_v<remove_orthogonal_capture_t<Ktar <10, 12>>, Compact1012>);
+        static_assert(std::is_same_v<   add_orthogonal_capture_t<Compact1012>, Ktar <10, 12>>);
 
-        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<Board<12, 10>>, Compact1210>);
-        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<Compact1210>, Board<12, 10>>);
+        static_assert(std::is_same_v<remove_orthogonal_capture_t<Board<12, 10>>, Compact1210>);
+        static_assert(std::is_same_v<   add_orthogonal_capture_t<Compact1210>, Board<12, 10>>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)
