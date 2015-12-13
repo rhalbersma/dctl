@@ -1,7 +1,6 @@
 #pragma once
-#include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/board/set_type.hpp>            // set_type
+#include <dctl/board/set_type.hpp>      // set_type
 #include <dctl/utility/logic.hpp>
 #include <xstd/cstdint.hpp>
 #include <cassert>                      // assert
@@ -23,7 +22,6 @@ private:
         square_type dest_;
         Piece with_;
         Piece into_;
-        Color to_move_;
 
         constexpr auto invariant() const noexcept
         {
@@ -34,27 +32,25 @@ public:
         PushJumpPromote() = default;
 
         // pawn push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Piece promotion, Color c) noexcept
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Piece promotion) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
                 with_{Piece::pawn},
-                into_{promotion},
-                to_move_{c}
+                into_{promotion}
         {
                 assert(invariant());
         }
 
         // king push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Color color) noexcept
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
                 with_{Piece::king},
-                into_{Piece::king},
-                to_move_{color}
+                into_{Piece::king}
         {
                 assert(invariant());
         }
@@ -67,8 +63,7 @@ public:
                 from_{static_cast<square_type>(b.from())},
                 dest_{static_cast<square_type>(b.dest())},
                 with_{b.with()},
-                into_{b.into()},
-                to_move_{b.to_move()}
+                into_{b.into()}
         {
                 assert(invariant());
         }
@@ -111,16 +106,6 @@ public:
         constexpr auto is_into(Piece p) const noexcept
         {
                 return into() == p;
-        }
-
-        constexpr auto to_move() const noexcept
-        {
-                return to_move_;
-        }
-
-        constexpr auto is_to_move(Color c) const noexcept
-        {
-                return to_move() == c;
         }
 
         constexpr auto is_jump() const noexcept

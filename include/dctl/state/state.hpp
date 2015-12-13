@@ -29,7 +29,7 @@ public:
         using   set_type = get_set_type<Board>;
 
 private:
-        detail::wma::PiecePlacement<Board> piece_placement_{};
+        detail::bwk::PiecePlacement<Board> piece_placement_{};
         PlayerToMove player_to_move_{};
 
 public:
@@ -50,7 +50,7 @@ public:
         template<class Action>
         auto& make(Action const& a)
         {
-                piece_placement_.make(a);
+                piece_placement_.make(player_to_move_, a);
                 player_to_move_.make(a);
                 return *this;
         }
@@ -58,8 +58,8 @@ public:
         template<class Action>
         auto& undo(Action const& a)
         {
-                player_to_move_.undo(a);
                 piece_placement_.undo(a);
+                player_to_move_.undo(a);
                 return *this;
         }
 

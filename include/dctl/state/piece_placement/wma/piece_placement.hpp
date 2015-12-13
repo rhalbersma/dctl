@@ -35,12 +35,12 @@ public:
         }
 
         template<class Action>
-        auto& make(Action const& a)
+        auto& make(Color c, Action const& a)
         {
                 pieces_.reset(a.from());
                 pieces_.set  (a.dest());
 
-                if (a.is_to_move(Color::white)) {
+                if (c == Color::white) {
                         white_.reset(a.from());
                         white_.set  (a.dest());
                 }
