@@ -2,7 +2,7 @@
 #include <dctl/board/angle.hpp> // Angle
 #include <cassert>              // assert
 #include <stdexcept>            // invalid_argument
-#include <tuple>                // forward_as_tuple
+#include <tuple>                // tie
 
 namespace dctl {
 namespace board {
@@ -23,14 +23,13 @@ public:
         constexpr auto width() const noexcept { return width_; }
         constexpr auto height() const noexcept { return height_; }
         constexpr auto inverted() const noexcept { return inverted_; }
+
+        constexpr auto tied() const noexcept { return std::tie(width_, height_, inverted_); }
 };
 
 constexpr auto operator==(Dimensions const& lhs, Dimensions const& rhs) noexcept
 {
-        return
-               std::forward_as_tuple(lhs.width(), lhs.height(), lhs.inverted()) ==
-               std::forward_as_tuple(rhs.width(), rhs.height(), rhs.inverted())
-        ;
+        return lhs.tied() == rhs.tied();
 }
 
 constexpr auto operator!=(Dimensions const& lhs, Dimensions const& rhs) noexcept
