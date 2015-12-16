@@ -23,6 +23,6 @@ foreach(t ${test_sources})
 
   add_executable(${test_id} src/${t})
   target_link_libraries(${test_id} ${Boost_LIBRARIES})
-  set_target_properties(${test_id} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${test_path})
+  set_target_properties(${test_id} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${test_path}")
   add_test(test.${test_id} ${test_path}/${test_id})    
 endforeach()
