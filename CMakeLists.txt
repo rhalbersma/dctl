@@ -9,7 +9,7 @@ project(DCTL CXX)
 # Compiler settings
 ###############################################################
 
-# use C++14 features
+# use C++17 features
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -stdlib=libc++")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=512 -fconstexpr-steps=2097152 -ftemplate-backtrace-limit=0")
