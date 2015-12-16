@@ -243,11 +243,11 @@ private:
         auto turn_dispatch(Iterator jumper, forward_pawn_jump_tag, orthogonal_jump_tag) const
         {
                 static_assert(!is_down(direction_v<Iterator>));
-                return turn_dispatch(jumper, angle_t<direction_v<Iterator>>{});
+                return turn_dispatch(jumper, angle_constant<direction_v<Iterator>>{});
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_t<up(orientation)>) const
+        auto turn_dispatch(Iterator jumper, angle_constant<up(orientation)>) const
         {
                 return
                         scan(ray::turn<left_up (orientation)>(jumper)) |
@@ -258,7 +258,7 @@ private:
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_t<left_up(orientation)>) const
+        auto turn_dispatch(Iterator jumper, angle_constant<left_up(orientation)>) const
         {
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
@@ -269,7 +269,7 @@ private:
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_t<right_up(orientation)>) const
+        auto turn_dispatch(Iterator jumper, angle_constant<right_up(orientation)>) const
         {
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
@@ -280,7 +280,7 @@ private:
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_t<left(orientation)>) const
+        auto turn_dispatch(Iterator jumper, angle_constant<left(orientation)>) const
         {
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
@@ -290,7 +290,7 @@ private:
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_t<right(orientation)>) const
+        auto turn_dispatch(Iterator jumper, angle_constant<right(orientation)>) const
         {
                 return
                         scan(ray::turn<up      (orientation)>(jumper)) |
