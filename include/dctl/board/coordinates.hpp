@@ -3,7 +3,7 @@
 #include <dctl/board/origin.hpp>        // ScreenCentered, UpperLeft, LowerLeft
 #include <cassert>                      // assert
 #include <stdexcept>                    // invalid_argument
-#include <tuple>                        // forward_as_tuple
+#include <tuple>                        // tie
 
 namespace dctl {
 namespace board {
@@ -19,15 +19,14 @@ public:
 
         constexpr auto x() const noexcept { return x_; }
         constexpr auto y() const noexcept { return y_; }
+
+        constexpr auto tied() const noexcept { return std::tie(x_, y_); }
 };
 
 template<class Origin>
 constexpr auto operator==(Coordinates<Origin> const& lhs, Coordinates<Origin> const& rhs) noexcept
 {
-        return
-                std::forward_as_tuple(lhs.x(), lhs.y()) ==
-                std::forward_as_tuple(rhs.x(), rhs.y())
-        ;
+        return lhs.tied() == rhs.tied();
 }
 
 template<class Origin>
