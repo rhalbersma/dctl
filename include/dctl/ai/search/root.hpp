@@ -5,7 +5,7 @@
 #include <dctl/ai/search/transposition.hpp>
 #include <dctl/ai/search/variation.hpp>
 #include <dctl/eval/score.hpp>
-#include <dctl/utility/stack_vector.hpp>
+#include <dctl/utility/static_vector.hpp>
 #include <dctl/utility/hash/extract.hpp>
 #include <dctl/utility/hash/map.hpp>
 #include <dctl/utility/hash/replace.hpp>
@@ -14,7 +14,6 @@
 
 #include <dctl/utility/algorithm.hpp>
 #include <dctl/utility/ply.hpp>         // PlyCount
-#include <dctl/utility/stack_vector.hpp>
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/stopwatch.hpp>
 
@@ -89,9 +88,7 @@ private:
                 auto score = -infinity();
                 int alpha, beta;
 
-                Arena<int> iar;
-                Alloc<int> ial(iar);
-                Variation pv(ial);
+                Variation pv;
                 announce(p, depth);
                 statistics_.reset();
                 util::Stopwatch stopwatch;
@@ -159,15 +156,11 @@ private:
                 using R = typename State::rules_type;
                 using B = typename State::board_type;
 
-                Arena<Action<R,B> > a;
-                auto moves = stack_vector<Action<R,B>>(Alloc<Action<R,B>>{a});
-                moves.reserve(DCTL_PP_STACK_RESERVE);
+                static_vector<Action<R,B>> moves;
                 successor.generate(p, moves);
                 assert(!moves.empty());
 
-                Arena<int> oar;
-                auto move_order = Order(Alloc<int>{oar});
-                move_order.reserve(moves.size());                                                               // reserve enough room for all indices
+                Order move_order;
                 move_order |= ranges::action::push_back(ranges::view::iota(0, static_cast<int>(moves.size()))); // generate indices [0, moves.size() - 1]
 
                 // internal iterative deepening (IID)
@@ -192,9 +185,7 @@ private:
                 auto best_move = Transposition::no_move();
                 int value;
 
-                Arena<int> car;
-                auto continuation = Variation(Alloc<int>{car});
-                continuation.reserve(DCTL_PP_STACK_RESERVE);
+                Variation continuation;
 
                 for (auto const& i : move_order) {
                         auto q = result(p, moves[static_cast<std::size_t>(i)]);
