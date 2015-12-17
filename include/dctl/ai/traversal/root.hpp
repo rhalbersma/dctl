@@ -2,10 +2,9 @@
 #include <dctl/ai/traversal/transposition.hpp>
 #include <dctl/utility/hash/dual_map.hpp>
 #include <dctl/utility/hash/extract.hpp>
-#include <dctl/utility/stack_vector.hpp>
+#include <dctl/utility/static_vector.hpp>
 #include <dctl/ai/result.hpp>
 #include <dctl/actions.hpp>
-#include <dctl/utility/stack_vector.hpp>
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/stopwatch.hpp>
 
@@ -181,9 +180,7 @@ std::size_t walk(State const& p, int depth, int ply, Successor successor, Enhanc
                 using R = typename State::rules_type;
                 using B = typename State::board_type;
 
-                Arena<Action<R,B> > a;
-                auto moves = stack_vector<Action<R,B>>(Alloc<Action<R,B>>{a});
-                moves.reserve(DCTL_PP_STACK_RESERVE);
+                static_vector<Action<R,B>> moves;
                 successor.generate(p, moves);
                 for (auto const& m : moves)
                         nodes += walk(result(p, m), depth - 1, ply + 1, successor, e);
@@ -238,7 +235,7 @@ public:
 
                 //auto& moves = moves_storage[ply];
                 //moves.clear();
-                boost::container::static_vector<Action<R,B>, 64> moves;
+                static_vector<Action<R,B>> moves;
                 successor.generate(state, moves);
                 return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& m){
                         return n + recursive_run(result(state, m), depth - 1);
