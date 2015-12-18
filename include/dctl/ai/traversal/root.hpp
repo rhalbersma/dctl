@@ -233,8 +233,6 @@ public:
                 if (depth == 1)
                         return successor.count(state);
 
-                //auto& moves = moves_storage[ply];
-                //moves.clear();
                 static_vector<Action<R,B>> moves;
                 successor.generate(state, moves);
                 return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& m){
