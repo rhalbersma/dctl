@@ -18,7 +18,7 @@ struct Checkers
 
         // Capturing Move Of A Man
         static constexpr auto is_backward_pawn_jump = false;    // 1.18
-        static constexpr auto is_pawn_jump_king = true;         // 1.18
+        static constexpr auto is_pawns_jump_only_pawns = false; // 1.18
 
         // Capturing In General
         static constexpr auto is_passing_promotion = false;     // 1.19
@@ -90,7 +90,7 @@ struct International
 
         // 4. The capture
         static constexpr auto is_backward_pawn_jump = true;     // 4.1
-        static constexpr auto is_pawn_jump_king = true;         // 4.2 (implied by 3.1)
+        static constexpr auto is_pawns_jump_only_pawns = false; // 4.2 (implied by 3.1)
         static constexpr auto is_passing_capture = false;       // 4.11
         static constexpr auto is_quantity_precedence = true;    // 4.13
         static constexpr auto is_quality_precedence = false;    // 4.13
@@ -128,7 +128,7 @@ struct Italian
         static constexpr auto is_long_ranged_king = false;      // 4.7
 
         static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
-        static constexpr auto is_pawn_jump_king = false;        // 5.3(b)
+        static constexpr auto is_pawns_jump_only_pawns = true; // 5.3(b)
 
         static constexpr auto is_quantity_precedence = true;    // 6.6
         static constexpr auto is_modality_precedence = true;    // 6.7
@@ -157,7 +157,7 @@ struct Pool
 
         static constexpr auto is_backward_pawn_jump = true;     // 14
         static constexpr auto is_long_ranged_king = true;       // 15
-        static constexpr auto is_pawn_jump_king = true;         // 16
+        static constexpr auto is_pawns_jump_only_pawns = false; // 16
         static constexpr auto is_passing_promotion = false;     // 16 (and 22 and 23)
         static constexpr auto is_passing_capture = false;       // 19 (and 17 and 18)
         static constexpr auto is_quantity_precedence = false;   // 20
