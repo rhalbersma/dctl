@@ -96,7 +96,7 @@ public:
 
         auto toggle_king_targets() noexcept
         {
-                static_assert(!is_pawn_jump_king_v<rules_type>);
+                static_assert(is_pawns_jump_only_pawns_v<rules_type>);
                 initial_targets_ ^= by_piece(Piece::king);
                 remaining_targets_ ^= by_piece(Piece::king);
         }

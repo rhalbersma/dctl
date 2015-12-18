@@ -8,7 +8,7 @@
 #include <dctl/board/wave/patterns.hpp>                 // Sandwich
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
-#include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_pawn_jump_king
+#include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_pawns_jump_only_pawns
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {
@@ -33,18 +33,18 @@ public:
 
         auto operator()(set_type const& active_pawns) const noexcept
         {
-                return active_pawns.any() ? king_targets_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{}) : false;
+                return active_pawns.any() ? king_targets_dispatch(active_pawns, is_pawns_jump_only_pawns_t<rules_type>{}) : false;
         }
 
 private:
         // pawns that can capture kings
-        auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const noexcept
+        auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const noexcept
         {
                 return branch(active_pawns);
         }
 
         // pawns that cannot capture kings
-        auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const noexcept
+        auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const noexcept
         {
                 raii::ToggleKingTargets<Builder> guard{builder};
                 return branch(active_pawns);

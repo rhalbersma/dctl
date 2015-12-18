@@ -10,7 +10,7 @@
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king, pawn
-#include <dctl/rule_traits.hpp>                         // is_pawn_jump_king_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
+#include <dctl/rule_traits.hpp>                         // is_pawns_jump_only_pawns_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/state/promotion.hpp>                     // is_promotion
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <cassert>                                      // assert
@@ -47,16 +47,16 @@ public:
         auto operator()(set_type const& active_pawns) const
         {
                 if (active_pawns.any())
-                        pawn_jump_king_dispatch(active_pawns, is_pawn_jump_king_t<rules_type>{});
+                        pawn_jump_king_dispatch(active_pawns, is_pawns_jump_only_pawns_t<rules_type>{});
         }
 
 private:
-        auto pawn_jump_king_dispatch(set_type const& active_pawns, std::true_type) const
+        auto pawn_jump_king_dispatch(set_type const& active_pawns, std::false_type) const
         {
                 branch(active_pawns);
         }
 
-        auto pawn_jump_king_dispatch(set_type const& active_pawns, std::false_type) const
+        auto pawn_jump_king_dispatch(set_type const& active_pawns, std::true_type) const
         {
                 raii::ToggleKingTargets<Builder> guard{builder};
                 branch(active_pawns);
@@ -180,17 +180,17 @@ private:
         template<class Iterator>
         auto king_jumps(Iterator jumper) const
         {
-                king_jumps_dispatch(jumper, is_pawn_jump_king_t<rules_type>{});
+                king_jumps_dispatch(jumper, is_pawns_jump_only_pawns_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto king_jumps_dispatch(Iterator jumper, std::true_type) const
+        auto king_jumps_dispatch(Iterator jumper, std::false_type) const
         {
                 king_jumps_try_next(jumper);
         }
 
         template<class Iterator>
-        auto king_jumps_dispatch(Iterator jumper, std::false_type) const
+        auto king_jumps_dispatch(Iterator jumper, std::true_type) const
         {
                 raii::ToggleKingTargets<Builder> guard{builder};
                 king_jumps_try_next(jumper);
