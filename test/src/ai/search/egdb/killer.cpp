@@ -1,6 +1,6 @@
 #include <ai/search/fixture.hpp>
 #include <dctl/board.hpp>
-#include <dctl/rules.hpp>
+#include <dctl/rules/killer.hpp>
 #include <boost/test/unit_test.hpp>
 #include <vector>
 

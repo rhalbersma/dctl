@@ -1,7 +1,7 @@
 #include <ai/traversal/fixture.hpp>
 #include <dctl/board.hpp>
 #include <dctl/state.hpp>
-#include <dctl/rules.hpp>
+#include <dctl/rules/international.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/ai/traversal/root.hpp>
 #include <boost/test/unit_test.hpp>

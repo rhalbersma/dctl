@@ -1,6 +1,6 @@
-#include <actions/fixture.hpp>        // run
+#include <actions/fixture.hpp>          // run
 #include <dctl/board/types.hpp>         // International
-#include <dctl/rules.hpp>               // International
+#include <dctl/rules/international.hpp> // International
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string
 #include <vector>                       // vector

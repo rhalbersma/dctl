@@ -1,6 +1,6 @@
-#include <actions/fixture.hpp>        // run
+#include <actions/fixture.hpp>          // run
 #include <dctl/board/types.hpp>         // Roman
-#include <dctl/rules.hpp>               // Italian
+#include <dctl/rules/italian.hpp>       // Italian
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string
 #include <vector>                       // vector
