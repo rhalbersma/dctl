@@ -1,6 +1,6 @@
+#include <dctl/rules/international.hpp> // International
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, equal_to, less
-#include <dctl/rules.hpp>               // International
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                      // size_t
 #include <vector>                       // vector
