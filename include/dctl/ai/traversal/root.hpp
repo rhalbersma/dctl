@@ -192,54 +192,31 @@ std::size_t walk(State const& p, int depth, int ply, Successor successor, Enhanc
         return nodes;
 }
 
-template<class State, class Successor>
-class XWalk
+template<class Successor, class State>
+auto perft_nobulk_counting(Successor successor, State const& state, int depth)
 {
-        Successor successor;
+        if (depth == 0)
+                return std::size_t{1};
 
-        using R = typename State::rules_type;
-        using B = typename State::board_type;
-        //std::vector<std::vector<Action<R,B>>> moves_storage;
+        static_vector<Action<rules_t<State>, board_t<State>>> moves;
+        successor.generate(state, moves);
+        return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
+                return n + perft_nobulk_counting(successor, result(state, a), depth - 1);
+        });
+}
 
-public:
-        explicit XWalk(Successor ss)
-        :
-                successor{ss}
-        {/*
-                auto const depth = 15;
-                moves_storage.reserve(depth);
-                moves_storage.insert(moves_storage.end(), depth - moves_storage.size(), {});
-                for (auto i = moves_storage.size(); i < depth; ++i) {
-                        moves_storage[i].reserve(32);
-                }*/
-        }
+template<class Successor, class State>
+auto perft_bulk_counting(Successor const& successor, State const& state, int depth)
+{
+        if (depth == 1)
+                return successor.count(state);
 
-        auto run(State const& state, int depth)
-        {
-/*
-                if (depth > moves_storage.size()) {
-                        moves_storage.reserve(depth);
-                        moves_storage.insert(moves_storage.end(), depth - moves_storage.size(), {});
-                        for (auto i = moves_storage.size(); i < depth; ++i) {
-                                moves_storage[i].reserve(32);
-                        }
-                }
-*/
-                return recursive_run(state, depth);
-        }
-
-        auto recursive_run(State const& state, int depth)
-        {
-                if (depth == 1)
-                        return successor.count(state);
-
-                static_vector<Action<R,B>> moves;
-                successor.generate(state, moves);
-                return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& m){
-                        return n + recursive_run(result(state, m), depth - 1);
-                });
-        }
-};
+        static_vector<Action<rules_t<State>, board_t<State>>> moves;
+        successor.generate(state, moves);
+        return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
+                return n + perft_bulk_counting(successor, result(state, a), depth - 1);
+        });
+}
 
 template<class State>
 void announce(State const& p, int depth)
@@ -343,14 +320,13 @@ std::size_t perft(State const& p, int depth, Successor successor, Enhancements e
 template<class State, class Successor>
 auto xperft(State const& s, int depth, Successor successor)
 {
-        XWalk<State, Successor> walker{successor};
         std::cout << "move size = " << sizeof(Action<rules_t<State>, board_t<State>>) << '\n';
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
-                auto const nodes = walker.recursive_run(s, d);
+                auto const nodes = perft_bulk_counting(successor, s, d);
                 stopwatch.split_reset();
                 xreport(d, nodes, stopwatch);
         }
