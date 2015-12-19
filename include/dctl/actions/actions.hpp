@@ -23,14 +23,14 @@ class Successor
 
 public:
         template<Color ToMove, class State, class Sequence>
-        auto generate(State const& s, Sequence& moves)
+        auto generate(State const& s, Sequence& moves) const
         {
                 Generate<ToMove, Select, std::bool_constant<Unique>, std::bool_constant<Reverse>>{}(s, moves);
                 assert((invariant<ToMove>(s, moves.size())));
         }
 
         template<class State, class Sequence>
-        auto generate(State const& s, Sequence& moves)
+        auto generate(State const& s, Sequence& moves) const
         {
                 return
                         (s.is_to_move(Color::black)) ?
@@ -40,13 +40,13 @@ public:
         }
 
         template<Color ToMove, class State>
-        auto count(State const& s)
+        auto count(State const& s) const
         {
                 return Count<ToMove, Select, std::bool_constant<Unique>, std::bool_constant<Reverse>>{}(s);
         }
 
         template<class State>
-        auto count(State const& s)
+        auto count(State const& s) const
         {
                 return
                         (s.is_to_move(Color::black)) ?
@@ -56,13 +56,13 @@ public:
         }
 
         template<Color ToMove, class State>
-        auto detect(State const& s)
+        auto detect(State const& s) const
         {
                 return Detect<ToMove, Select, std::bool_constant<Reverse>>{}(s);
         }
 
         template<class State>
-        auto detect(State const& s)
+        auto detect(State const& s) const
         {
                 return
                         (s.is_to_move(Color::black)) ?

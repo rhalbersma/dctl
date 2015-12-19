@@ -13,11 +13,9 @@ auto const duplicate_gen = actions::Successor<actions::select::legal, false>{};
 template<class State, class Successor, class Range>
 void test(State const& s, Successor successor, Range const& leafs)
 {
-        auto walker = XWalk<State, Successor>{successor};
-
         auto depth = 0;
         for (auto&& node_count : leafs) {
-                BOOST_CHECK_EQUAL(node_count, walker.run(s, ++depth));
+                BOOST_CHECK_EQUAL(node_count, perft_bulk_counting(successor, s, ++depth));
         }
 }
 

@@ -17,7 +17,6 @@
 #include <tuple>
 #include <type_traits>                  // false_type, true_type
 
-
 namespace dctl {
 
 template<class Rules, class Board>
@@ -29,7 +28,7 @@ public:
         using   set_type = get_set_type<Board>;
 
 private:
-        detail::bwk::PiecePlacement<Board> piece_placement_{};
+        detail::wma::PiecePlacement<Board> piece_placement_{};
         PlayerToMove player_to_move_{};
 
 public:
