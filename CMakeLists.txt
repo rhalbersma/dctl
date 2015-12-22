@@ -35,7 +35,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-global-constructors")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
 
 # optimizations
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -flto -march=native -mtune=native")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto -march=native -mtune=native")
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lc++abi -flto -fuse-ld=gold")
 
@@ -43,65 +43,33 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lc++abi -flto -fuse-ld=go
 # DEPENDENCIES
 ###############################################################
 
-# Boost libraries
-#----------------
-find_package(Boost COMPONENTS unit_test_framework REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-add_definitions(-D BOOST_TEST_MAIN)
-add_definitions(-D BOOST_ALL_DYN_LINK)
+set(project_include_dirs ${PROJECT_SOURCE_DIR}/include)
+include_directories(${project_include_dirs})
 
+#-----------------------------------------------
+# modified and extended Standard Library headers
+#-----------------------------------------------
+set(XSTD_include_dirs ${PROJECT_SOURCE_DIR}/../xstd/include)
+include_directories(${XSTD_include_dirs})
+
+#--------------------------------
 # Eric Niebler's range-v3 library
 #--------------------------------
 set(RANGE_V3_include_dirs ${PROJECT_SOURCE_DIR}/../range-v3/include)
 include_directories(SYSTEM ${RANGE_V3_include_dirs})
 add_definitions(-DRANGES_SUPPRESS_IOTA_WARNING)
 
-# modified and extended Standard Library headers
-#-----------------------------------------------
-set(XSTD_include_dirs ${PROJECT_SOURCE_DIR}/../xstd/include)
-include_directories(${XSTD_include_dirs})
+#----------------
+# Boost libraries
+#----------------
+find_package(Boost)
+include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
+add_definitions(-D BOOST_ALL_DYN_LINK)
 
 ###############################################################
-# MyAwesomeLibrary headers
+# COMPONENTS
 ###############################################################
 
-set(MyAwesomeLibrary_include_dirs ${PROJECT_SOURCE_DIR}/include)
-include_directories(${MyAwesomeLibrary_include_dirs})
-file(GLOB_RECURSE MyAwesomeLibrary_headers ${MyAwesomeLibrary_include_dirs}/*.hpp)
-
-###############################################################
-# Check whether MyAwesomeLibrary headers are standalone
-###############################################################
-
-# to enable this part: cmake -D CheckStandalone=true
-
-if(CheckStandalone)
-  # compile with project wide compiler settings
-  set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
-
-  # compile against the parent project headers
-  set(CMAKE_REQUIRED_INCLUDES ${MyAwesomeLibrary_include_dirs} ${XSTD_include_dirs})
-
-  # enable standalone testing of the header files
-  include(CheckIncludeFileCXX)
-
-  foreach(h ${MyAwesomeLibrary_headers})
-    # header name without extension
-    get_filename_component(header_name ${h} NAME_WE)
-
-    # check if header is standalone
-    check_include_file_cxx(${h} ${header_name}_is_standalone)
-
-    # fail early, fail hard
-    if(NOT ${header_name}_is_standalone)
-      message(FATAL_ERROR "Found a non-standalone header (see CMakeFiles/CMakeError.log for details).")
-    endif()
-  endforeach()
-endif()
-
-###############################################################
-# TESTING
-###############################################################
-
+add_subdirectory(example)
 include(CTest)          # calls enable_testing()
 add_subdirectory(test)  # see CMakeLists.txt in test/ subdirectory
