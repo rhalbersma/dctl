@@ -381,7 +381,8 @@ auto nperft(State const& s, int depth, Successor successor)
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
-        auto const n = Node<State, detail::bwk::Action<rules_t<State>, board_t<State>>>{s};
+        using Node = Node<State, detail::bwk::Action<rules_t<State>, board_t<State>>>;
+        auto const n = root<Node>(s);
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
                 auto const nodes = perft_node_bulk_counting(successor, n, d);
