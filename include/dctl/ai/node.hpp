@@ -16,9 +16,14 @@ class Node
         Node const* parent = nullptr;
         Action const* action = nullptr;
 
-        constexpr auto invariant() const noexcept
+        constexpr auto is_root() const noexcept
         {
-                assert(!(parent || action) || result(parent->state, action) == state);
+                return !parent && !action;
+        }
+
+        constexpr auto is_child() const noexcept
+        {
+                return parent && action && result(parent->state, *action) == state;
         }
 
 public:
@@ -26,7 +31,7 @@ public:
         :
                 state{s}
         {
-                assert(invariant());
+                assert(is_root());
         }
 
         constexpr Node(Node const& n, Action const& a) noexcept
@@ -35,7 +40,7 @@ public:
                 parent{&n},
                 action{&a}
         {
-                assert(invariant());
+                assert(is_child());
         }
 };
 
