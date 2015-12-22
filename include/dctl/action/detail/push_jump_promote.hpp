@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/board/set_type.hpp>      // set_type
 #include <dctl/utility/logic.hpp>
@@ -32,7 +33,7 @@ public:
         PushJumpPromote() = default;
 
         // pawn push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Piece promotion) noexcept
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Piece promotion, Color /* to_move */) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
@@ -44,7 +45,7 @@ public:
         }
 
         // king push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst) noexcept
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Color /* to_move */) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},

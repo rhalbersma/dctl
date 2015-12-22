@@ -4,6 +4,8 @@
 #include <dctl/actions/detect/specializations.hpp>      // Detect
 #include <dctl/actions/select/legal.hpp>                // legal
 #include <dctl/color.hpp>                               // Color, black, white
+#include <cassert>                                      // assert
+#include <cstddef>                                      // size_t
 #include <type_traits>                                  // bool_constant
 
 namespace dctl {
@@ -13,7 +15,7 @@ template<class Select = select::legal, bool Unique = true, bool Reverse = false>
 class Successor
 {
         template<Color ToMove, class State>
-        auto invariant(State const& s, std::size_t n)
+        auto invariant(State const& s, std::size_t n) const
         {
                 return
                         (count <ToMove>(s) ==  n     ) &&

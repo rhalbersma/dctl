@@ -5,6 +5,7 @@
 #include <dctl/state/piece_placement/invariant.hpp>
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
+#include <dctl/state/piece_placement/bwk/action.hpp>
 
 namespace dctl {
 namespace detail {
@@ -50,6 +51,24 @@ public:
                 }
 
                 assert(invariant(*this));
+                return *this;
+        }
+
+        template<class Rules>
+        auto& make(Action<Rules, Board> const& delta)
+        {
+                pieces(Color::black) ^= delta.pieces(Color::black);
+                pieces(Color::white) ^= delta.pieces(Color::white);
+                kings ^= delta.kings();
+                return *this;
+        }
+
+        template<class Rules>
+        auto& undo(Action<Rules, Board> const& delta)
+        {
+                pieces(Color::black) ^= delta.pieces(Color::black);
+                pieces(Color::white) ^= delta.pieces(Color::white);
+                kings ^= delta.kings();
                 return *this;
         }
 

@@ -9,7 +9,7 @@
 #include <dctl/utility/hash/extract.hpp>
 #include <dctl/utility/hash/map.hpp>
 #include <dctl/utility/hash/replace.hpp>
-#include <dctl/ai/result.hpp>
+#include <dctl/ai/node.hpp>
 #include <dctl/actions.hpp>
 
 #include <dctl/utility/algorithm.hpp>

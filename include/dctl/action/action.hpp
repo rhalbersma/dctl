@@ -47,37 +47,27 @@ public:
 };
 
 template<class Rules, class Board, std::enable_if_t<!is_ordering_precedence_v<Rules>>* = nullptr>
+auto as_tuple(Action<Rules, Board> const& a) noexcept
+{
+        return std::make_tuple(a.from(), a.dest(), a.captured());
+}
+
+template<class Rules, class Board, std::enable_if_t< is_ordering_precedence_v<Rules>>* = nullptr>
+auto as_tuple(Action<Rules, Board> const& a) noexcept
+{
+        return std::make_tuple(a.from(), a.dest(), a.captured(), a.piece_order());
+}
+
+template<class Rules, class Board>
 constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
 {
-        auto const cmp = [](auto const& a) { return std::make_tuple(a.from(), a.dest(), a.captured()); };
-        return cmp(lhs) == cmp(rhs);
+        return as_tuple(lhs) == as_tuple(rhs);
 }
 
-template<class Rules, class Board, std::enable_if_t<is_ordering_precedence_v<Rules>>* = nullptr>
-constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-{
-        return
-                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.piece_order()) ==
-                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured(), rhs.piece_order())
-        ;
-}
-
-template<class Rules, class Board, std::enable_if_t<!is_ordering_precedence_v<Rules>>* = nullptr>
+template<class Rules, class Board>
 constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
 {
-        return
-                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured()) <
-                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured())
-        ;
-}
-
-template<class Rules, class Board, std::enable_if_t<is_ordering_precedence_v<Rules>>* = nullptr>
-constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-{
-        return
-                std::forward_as_tuple(lhs.from(), lhs.dest(), lhs.captured(), lhs.piece_order()) <
-                std::forward_as_tuple(rhs.from(), rhs.dest(), rhs.captured(), rhs.piece_order())
-        ;
+        return as_tuple(lhs) < as_tuple(rhs);
 }
 
 template<class Rules, class Board>

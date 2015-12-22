@@ -3,7 +3,7 @@
 #include <dctl/utility/hash/dual_map.hpp>
 #include <dctl/utility/hash/extract.hpp>
 #include <dctl/utility/static_vector.hpp>
-#include <dctl/ai/result.hpp>
+#include <dctl/ai/node.hpp>
 #include <dctl/actions.hpp>
 #include <dctl/utility/statistics.hpp>
 #include <dctl/utility/stopwatch.hpp>
@@ -206,15 +206,44 @@ auto perft_nobulk_counting(Successor successor, State const& state, int depth)
 }
 
 template<class Successor, class State>
+auto iperft_bulk_counting(Successor const& successor, State& state, int depth)
+{
+        if (depth == 1)
+                return successor.count(state);
+
+        static_vector<detail::bwk::Action<rules_t<State>, board_t<State>>> moves;
+        successor.generate(state, moves);
+        return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
+                state.make(a);
+                auto const res = n + iperft_bulk_counting(successor, state, depth - 1);
+                state.undo(a);
+                return res;
+        });
+}
+
+template<class Successor, class State>
 auto perft_bulk_counting(Successor const& successor, State const& state, int depth)
 {
         if (depth == 1)
                 return successor.count(state);
 
-        static_vector<Action<rules_t<State>, board_t<State>>> moves;
+        static_vector<detail::bwk::Action<rules_t<State>, board_t<State>>> moves;
         successor.generate(state, moves);
         return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
                 return n + perft_bulk_counting(successor, result(state, a), depth - 1);
+        });
+}
+
+template<class Successor, class Node>
+auto perft_node_bulk_counting(Successor const& successor, Node const& node, int depth)
+{
+        if (depth == 1)
+                return successor.count(node.state);
+
+        static_vector<detail::bwk::Action<rules_t<decltype(node.state)>, board_t<decltype(node.state)>>> moves;
+        successor.generate(node.state, moves);
+        return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
+                return n + perft_node_bulk_counting(successor, child(node, a), depth - 1);
         });
 }
 
@@ -318,15 +347,44 @@ std::size_t perft(State const& p, int depth, Successor successor, Enhancements e
 }
 
 template<class State, class Successor>
-auto xperft(State const& s, int depth, Successor successor)
+auto iperft(State const& s_in, int depth, Successor successor)
 {
-        std::cout << "move size = " << sizeof(Action<rules_t<State>, board_t<State>>) << '\n';
+        auto s{s_in};
+        announce(s, depth);
+        util::Stopwatch stopwatch;
+        stopwatch.start_stop();
+        for (auto d = 1; d <= depth; ++d) {
+                stopwatch.split_reset();
+                auto const nodes = iperft_bulk_counting(successor, s, d);
+                stopwatch.split_reset();
+                xreport(d, nodes, stopwatch);
+        }
+}
+
+template<class State, class Successor>
+auto sperft(State const& s, int depth, Successor successor)
+{
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
                 auto const nodes = perft_bulk_counting(successor, s, d);
+                stopwatch.split_reset();
+                xreport(d, nodes, stopwatch);
+        }
+}
+
+template<class State, class Successor>
+auto nperft(State const& s, int depth, Successor successor)
+{
+        announce(s, depth);
+        util::Stopwatch stopwatch;
+        stopwatch.start_stop();
+        auto const n = Node<State, detail::bwk::Action<rules_t<State>, board_t<State>>>{s};
+        for (auto d = 1; d <= depth; ++d) {
+                stopwatch.split_reset();
+                auto const nodes = perft_node_bulk_counting(successor, n, d);
                 stopwatch.split_reset();
                 xreport(d, nodes, stopwatch);
         }
