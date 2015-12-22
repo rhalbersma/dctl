@@ -15,7 +15,7 @@ void test(State const& s, Successor successor, Range const& leafs)
 {
         auto depth = 0;
         for (auto&& node_count : leafs) {
-                BOOST_CHECK_EQUAL(node_count, perft_bulk_counting(successor, s, ++depth));
+                BOOST_CHECK_EQUAL(node_count, perft_nobulk_counting(successor, s, ++depth));
         }
 }
 

@@ -161,6 +161,11 @@ public:
                 return captured() & by_piece(p);
         }
 
+        auto captured_kings() const noexcept
+        {
+                return captured(Piece::king);
+        }
+
         auto from() const
         {
                 return from_;
@@ -194,6 +199,11 @@ public:
         auto is_into(Piece p) const noexcept
         {
                 return into() == p;
+        }
+
+        constexpr auto is_promotion() const noexcept
+        {
+                return is_with(Piece::pawn) && !is_into(Piece::pawn);
         }
 
         auto to_move() const noexcept
