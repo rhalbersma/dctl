@@ -21,15 +21,6 @@ class Node
                 assert(!(parent || action) || result(parent->state, action) == state);
         }
 
-        constexpr Node(Node const& n, Action const& a) noexcept
-        :
-                state{result(n.state, a)},
-                parent{&n},
-                action{&a}
-        {
-                assert(invariant());
-        }
-
 public:
         constexpr Node(State const& s) noexcept
         :
@@ -38,10 +29,26 @@ public:
                 assert(invariant());
         }
 
-        friend constexpr auto child(Node const& n, Action const& a) noexcept
+        constexpr Node(Node const& n, Action const& a) noexcept
+        :
+                state{result(n.state, a)},
+                parent{&n},
+                action{&a}
         {
-                return Node{n, a};
+                assert(invariant());
         }
 };
+
+template<class Node, class State>
+constexpr auto root(State const& s) noexcept
+{
+        return Node{s};
+}
+
+template<class Node, class Action>
+constexpr auto child(Node const& n, Action const& a) noexcept
+{
+        return Node{n, a};
+}
 
 }       // namespace dctl
