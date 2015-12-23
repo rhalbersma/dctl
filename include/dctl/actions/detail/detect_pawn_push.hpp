@@ -41,10 +41,7 @@ public:
 private:
         auto detect(set_type const& active_pawns) const noexcept
         {
-                if (active_pawns.none())
-                        return false;
-
-                return parallelize_lfold<left_up, right_up>(active_pawns);
+                return active_pawns.any() ? parallelize_lfold<left_up, right_up>(active_pawns) : false;
         }
 
         template<template<int> class... Directions>

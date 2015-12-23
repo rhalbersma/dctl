@@ -41,10 +41,7 @@ public:
 private:
         auto detect(set_type const& active_kings) const noexcept
         {
-                if (active_kings.none())
-                        return false;
-
-                return parallelize_lfold<left_up, right_up, left_down, right_down>(active_kings);
+                return active_kings.none() ? false : parallelize_lfold<left_up, right_up, left_down, right_down>(active_kings);
         }
 
         template<template<int> class... Directions>

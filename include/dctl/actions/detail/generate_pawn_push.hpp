@@ -45,10 +45,8 @@ public:
 private:
         auto generate(set_type const& active_pawns) const
         {
-                if (active_pawns.none())
-                        return;
-
-                generate_movers_lfold<left_up, right_up>(active_pawns);
+                if (active_pawns.any())
+                        generate_movers_lfold<left_up, right_up>(active_pawns);
         }
 
         template<template<int> class... Directions>
