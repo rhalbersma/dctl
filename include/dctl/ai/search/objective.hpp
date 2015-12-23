@@ -26,8 +26,8 @@ struct is_terminal;
 template<>
 struct is_terminal<NoActionsLeft>
 {
-        template<class State, class Successor>
-        bool operator()(State const& p, Successor successor) const
+        template<class State, class Actions>
+        bool operator()(State const& p, Actions successor) const
         {
                 return !successor.detect(p);
         }
@@ -160,8 +160,8 @@ template
 >
 struct GameObjective
 {
-        template<class State, class Successor>
-        static int value(State const& p, Successor successor)
+        template<class State, class Actions>
+        static int value(State const& p, Actions successor)
         {
                 if (is_cycle(p))
                         return cycle<CycleScoring>::value(p);

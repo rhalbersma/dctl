@@ -1,11 +1,11 @@
 #pragma once
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace select {
 
 struct legal {};
 
 }       // namespace select
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

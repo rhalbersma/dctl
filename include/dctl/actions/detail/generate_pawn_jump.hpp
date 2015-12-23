@@ -1,8 +1,8 @@
 #pragma once
 #include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, ToggleKingTargets, SetPromotion
 #include <dctl/actions/detail/builder.hpp>              // Builder
-#include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
-#include <dctl/actions/generate/detail/king_jump.hpp>   // promote_en_passant
+#include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/detail/generate_king_jump.hpp>   // promote_en_passant
 #include <dctl/actions/select/jump.hpp>                 // jumps
 #include <dctl/board/angle.hpp>                         // _deg, rotate, inverse
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -18,7 +18,7 @@
 #include <type_traits>                                  // false_type, true_type
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color ToMove, class Reverse, class Builder, class Sequence>
@@ -35,13 +35,13 @@ class Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
         Builder& builder;
-        Sequence& moves;
+        Sequence& actions;
 
 public:
-        explicit Generate(Builder& b, Sequence& m)
+        explicit Generate(Builder& b, Sequence& a)
         :
                 builder{b},
-                moves{m}
+                actions{a}
         {}
 
         auto operator()(set_type const& active_pawns) const
@@ -69,37 +69,28 @@ private:
 
         auto branch_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, diagonal_jump_tag) const
         {
-                serialize<left_up   (orientation)>(active_pawns);
-                serialize<right_up  (orientation)>(active_pawns);
+                serialize_lfold<left_up, right_up>(active_pawns);
         }
 
         auto branch_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, diagonal_jump_tag) const
         {
-                serialize<left_up   (orientation)>(active_pawns);
-                serialize<right_up  (orientation)>(active_pawns);
-                serialize<left_down (orientation)>(active_pawns);
-                serialize<right_down(orientation)>(active_pawns);
+                serialize_lfold<left_up, right_up, left_down, right_down>(active_pawns);
         }
 
         auto branch_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                serialize<up        (orientation)>(active_pawns);
-                serialize<left_up   (orientation)>(active_pawns);
-                serialize<right_up  (orientation)>(active_pawns);
-                serialize<left      (orientation)>(active_pawns);
-                serialize<right     (orientation)>(active_pawns);
+                serialize_lfold<up, left_up, right_up, left, right>(active_pawns);
         }
 
         auto branch_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                serialize<up        (orientation)>(active_pawns);
-                serialize<left_up   (orientation)>(active_pawns);
-                serialize<right_up  (orientation)>(active_pawns);
-                serialize<left      (orientation)>(active_pawns);
-                serialize<right     (orientation)>(active_pawns);
-                serialize<left_down (orientation)>(active_pawns);
-                serialize<right_down(orientation)>(active_pawns);
-                serialize<down      (orientation)>(active_pawns);
+                serialize_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_pawns);
+        }
+
+        template<template<int> class... Directions>
+        auto serialize_lfold(set_type const& active_pawns) const
+        {
+                return (serialize<Directions<orientation>{}>(active_pawns) , ...);
         }
 
         template<int Direction>
@@ -199,7 +190,7 @@ private:
         template<class Iterator>
         auto king_jumps_try_next(Iterator jumper) const
         {
-                KingJumps{builder, moves}.try_next(jumper, promotion_category_t<rules_type>{});
+                KingJumps{builder, actions}.try_next(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -226,17 +217,14 @@ private:
         auto turn_dispatch(Iterator jumper, forward_pawn_jump_tag, diagonal_jump_tag) const
         {
                 static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                return scan(ray::mirror<up(orientation)>(jumper));
+                return scan(ray::mirror<up<orientation>{}>(jumper));
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, backward_pawn_jump_tag, diagonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>));
-                return
-                        scan(ray::rotate<+90_deg>(jumper)) |
-                        scan(ray::rotate<-90_deg>(jumper))
-                ;
+                return scan_ray_rotate_lfold<+90_deg, -90_deg>(jumper);
         }
 
         template<class Iterator>
@@ -247,69 +235,51 @@ private:
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_constant<up(orientation)>) const
+        auto turn_dispatch(Iterator jumper, up<orientation>) const
         {
-                return
-                        scan(ray::turn<left_up (orientation)>(jumper)) |
-                        scan(ray::turn<right_up(orientation)>(jumper)) |
-                        scan(ray::turn<left    (orientation)>(jumper)) |
-                        scan(ray::turn<right   (orientation)>(jumper))
-                ;
+                return scan_ray_turn_lfold<left_up, right_up, left, right>(jumper);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_constant<left_up(orientation)>) const
+        auto turn_dispatch(Iterator jumper, left_up<orientation>) const
         {
-                return
-                        scan(ray::turn<up      (orientation)>(jumper)) |
-                        scan(ray::turn<right_up(orientation)>(jumper)) |
-                        scan(ray::turn<left    (orientation)>(jumper)) |
-                        scan(ray::turn<right   (orientation)>(jumper))
-                ;
+                return scan_ray_turn_lfold<up, right_up, left, right>(jumper);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_constant<right_up(orientation)>) const
+        auto turn_dispatch(Iterator jumper, right_up<orientation>) const
         {
-                return
-                        scan(ray::turn<up      (orientation)>(jumper)) |
-                        scan(ray::turn<left_up (orientation)>(jumper)) |
-                        scan(ray::turn<left    (orientation)>(jumper)) |
-                        scan(ray::turn<right   (orientation)>(jumper))
-                ;
+                return scan_ray_turn_lfold<up, left_up, left, right>(jumper);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_constant<left(orientation)>) const
+        auto turn_dispatch(Iterator jumper, left<orientation>) const
         {
-                return
-                        scan(ray::turn<up      (orientation)>(jumper)) |
-                        scan(ray::turn<left_up (orientation)>(jumper)) |
-                        scan(ray::turn<right_up(orientation)>(jumper))
-                ;
+                return scan_ray_turn_lfold<up, left_up, right_up>(jumper);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, angle_constant<right(orientation)>) const
+        auto turn_dispatch(Iterator jumper, right<orientation>) const
         {
-                return
-                        scan(ray::turn<up      (orientation)>(jumper)) |
-                        scan(ray::turn<left_up (orientation)>(jumper)) |
-                        scan(ray::turn<right_up(orientation)>(jumper))
-                ;
+                return scan_ray_turn_lfold<up, left_up, right_up>(jumper);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, backward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                return
-                        scan(ray::rotate< +45_deg>(jumper)) |
-                        scan(ray::rotate< -45_deg>(jumper)) |
-                        scan(ray::rotate< +90_deg>(jumper)) |
-                        scan(ray::rotate< -90_deg>(jumper)) |
-                        scan(ray::rotate<+135_deg>(jumper)) |
-                        scan(ray::rotate<-135_deg>(jumper))
-                ;
+                return scan_ray_rotate_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper);
+        }
+
+        template<template<int> class... Directions, class Iterator>
+        auto scan_ray_turn_lfold(Iterator jumper) const
+        {
+                return (scan(ray::turn<Directions<orientation>{}>(jumper)) | ...);
+        }
+
+        template<int... Directions, class Iterator>
+        auto scan_ray_rotate_lfold(Iterator jumper) const
+        {
+                return (scan(ray::rotate<Directions>(jumper)) | ...);
         }
 
         template<class Iterator>
@@ -332,7 +302,7 @@ private:
         auto add_jump(std::size_t dest_sq) const
         {
                 builder.finish(dest_sq);
-                builder.append_to(moves);
+                builder.append_to(actions);
         }
 
         template<int Direction>
@@ -354,5 +324,5 @@ private:
 };
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

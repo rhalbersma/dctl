@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/push.hpp>                 // select
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -12,7 +12,7 @@
 #include <iterator>                                     // prev
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color ToMove, class Reverse, class State, class Sequence>
@@ -23,13 +23,13 @@ class Generate<ToMove, Piece::pawn, select::push, Reverse, State, Sequence>
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         State const& state;
-        Sequence& moves;
+        Sequence& actions;
 
 public:
-        Generate(State const& s, Sequence& m)
+        Generate(State const& s, Sequence& a)
         :
                 state{s},
-                moves{m}
+                actions{a}
         {}
 
         auto operator()() const
@@ -48,8 +48,13 @@ private:
                 if (active_pawns.none())
                         return;
 
-                generate_movers<left_up (orientation)>(active_pawns);
-                generate_movers<right_up(orientation)>(active_pawns);
+                generate_movers_lfold<left_up, right_up>(active_pawns);
+        }
+
+        template<template<int> class... Directions>
+        auto generate_movers_lfold(set_type const& active_pawns) const
+        {
+                return (generate_movers<Directions<orientation>{}>(active_pawns) , ...);
         }
 
         template<int Direction>
@@ -58,7 +63,7 @@ private:
                 auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(state.not_occupied())));
                 movers.for_each([&](auto const& from_sq){
                         auto const dest_sq = *std::next(along_ray<Direction>(from_sq));
-                        moves.emplace_back(from_sq, dest_sq, is_promotion(dest_sq) ? Piece::king : Piece::pawn, ToMove);
+                        actions.emplace_back(from_sq, dest_sq, is_promotion(dest_sq) ? Piece::king : Piece::pawn, ToMove);
                 });
         }
 
@@ -81,5 +86,5 @@ private:
 };
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

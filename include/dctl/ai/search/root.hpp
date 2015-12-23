@@ -50,8 +50,8 @@ public:
         {
         }
 
-        template<class Successor>
-        int analyze(State const& p, Successor successor, int depth)
+        template<class Actions>
+        int analyze(State const& p, Actions successor, int depth)
         {
                 return iterative_deepening(p, successor, depth);
         }
@@ -82,8 +82,8 @@ public:
         }
 
 private:
-        template<class Successor>
-        int iterative_deepening(State const& p, Successor successor, int depth)
+        template<class Actions>
+        int iterative_deepening(State const& p, Actions successor, int depth)
         {
                 auto score = -infinity();
                 int alpha, beta;
@@ -105,8 +105,8 @@ private:
                 return score;
         }
 
-        template<int NodeType, class Successor>
-        int pvs(State const& p, Successor successor, int alpha, int beta, int depth, int ply, Variation& refutation)
+        template<int NodeType, class Actions>
+        int pvs(State const& p, Actions successor, int alpha, int beta, int depth, int ply, Variation& refutation)
         {
                 using namespace xstd::support_literals;
                 statistics_.collect(ply);
@@ -232,8 +232,8 @@ private:
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
-        template<class Stopwatch, class Successor>
-        void report(int depth, int value, Stopwatch const& stopwatch, State const& p, Successor successor, Variation const& pv)
+        template<class Stopwatch, class Actions>
+        void report(int depth, int value, Stopwatch const& stopwatch, State const& p, Actions successor, Variation const& pv)
         {
                 std::cout << "info";
 
@@ -268,8 +268,8 @@ private:
                 print_pv(p, successor, pv);
         }
 
-        template<class Successor>
-        void insert_pv(State const& p, Successor successor, Variation const& pv, int value, int ply = 0)
+        template<class Actions>
+        void insert_pv(State const& p, Actions successor, Variation const& pv, int value, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
@@ -294,8 +294,8 @@ private:
                 insert_pv(result(p, best_move), successor, pv, -stretch(value), ply + 1);
         }
 
-        template<class Successor>
-        void print_pv(State const& p, Successor successor, Variation const& pv, int ply = 0)
+        template<class Actions>
+        void print_pv(State const& p, Actions successor, Variation const& pv, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {

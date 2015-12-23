@@ -4,7 +4,7 @@
 #include <cstddef>              // size_t
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace raii {
 
 template<class Builder>
@@ -142,5 +142,5 @@ public:
 };
 
 }       // namespace raii
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

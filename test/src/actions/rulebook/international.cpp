@@ -6,11 +6,11 @@
 #include <vector>                       // vector
 
 namespace dctl {
-namespace actions {
+namespace core {
 
 using F = Fixture<rules::International, board::International>;
 
-BOOST_AUTO_TEST_SUITE(SuccessorRulebookInternational)
+BOOST_AUTO_TEST_SUITE(ActionsRulebookInternational)
 
         // States from the International rules (French tutorial):
         // http://www.ffjd.fr/Web/index.php?page=reglesdujeu
@@ -179,5 +179,5 @@ BOOST_AUTO_TEST_SUITE(SuccessorRulebookInternational)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl
