@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/count/detail/primary_fwd.hpp>    // Count (primary template)
+#include <dctl/actions/detail/count_primary_fwd.hpp>    // Count (primary template)
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -11,7 +11,7 @@
 #include <xstd/cstddef.hpp>                             // _z
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color ToMove, class Reverse, class State>
@@ -48,12 +48,13 @@ private:
                 if (active_kings.none())
                         return 0_z;
 
-                return
-                        parallelize<left_up   (orientation)>(active_kings) +
-                        parallelize<right_up  (orientation)>(active_kings) +
-                        parallelize<left_down (orientation)>(active_kings) +
-                        parallelize<right_down(orientation)>(active_kings)
-                ;
+                return parallelize_lfold<left_up, right_up, left_down, right_down>(active_kings);
+        }
+
+        template<template<int> class... Directions>
+        auto parallelize_lfold(set_type const& active_kings) const
+        {
+                return (parallelize<Directions<orientation>{}>(active_kings) + ...);
         }
 
         template<int Direction>
@@ -66,5 +67,5 @@ private:
 };
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

@@ -7,11 +7,11 @@
 namespace dctl {
 namespace traversal {
 
-auto const    unique_gen = actions::Successor<actions::select::legal, true >{};
-auto const duplicate_gen = actions::Successor<actions::select::legal, false>{};
+auto const    unique_gen = core::Actions<core::select::legal, true >{};
+auto const duplicate_gen = core::Actions<core::select::legal, false>{};
 
-template<class State, class Successor, class Range>
-void test(State const& s, Successor successor, Range const& leafs)
+template<class State, class Actions, class Range>
+void test(State const& s, Actions successor, Range const& leafs)
 {
         auto depth = 0;
         for (auto&& node_count : leafs) {

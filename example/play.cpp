@@ -18,31 +18,31 @@ int main()
 {
         using Rules = rules::International;
         using Board = board::Mini;
-        using Pos = State<Rules, Board>;
+        using State = State<Rules, Board>;
 
-        auto initial = Pos::initial();
+        auto initial = State::initial();
 
-        std::stack<Pos> game;
+        std::stack<State> game;
         game.push(initial);
 
         while (true) {
-                auto const p = game.top();
-                std::cout << diag << p;
-                std::cout << fen << p;
+                auto const state = game.top();
+                std::cout << diag << state;
+                std::cout << fen << state;
                 //std::cout << "[" << p.reversible_actions() << "]\n";
 
-                std::vector<Action<Rules, Board>> moves;
-                actions::Successor<>{}.generate(p, moves);
-                ranges::sort(moves, [](auto const& lhs, auto const& rhs) {
+                std::vector<Action<Rules, Board>> actions;
+                core::Actions<>{}.generate(state, actions);
+                ranges::sort(actions, [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);
                 });
 
-                if (moves.empty()) {
+                if (actions.empty()) {
                         std::cout << "\nNo valid moves (Undo or stop [U/s]): ";
                 } else {
                         auto index = 0;
-                        for (auto&& m : moves)
-                                std::cout << std::setw(2) << index++ << ". " << m << '\n';
+                        for (auto&& a : actions)
+                                std::cout << std::setw(2) << index++ << ". " << a << '\n';
                         std::cout << "\nEnter move number, undo or stop [0/u/s]): ";
                 }
 
@@ -51,7 +51,7 @@ int main()
                 for (std::string input; std::getline(std::cin, input);) {
                         ranges::transform(input, begin(input), ::tolower);
 
-                        if (moves.empty()) {
+                        if (actions.empty()) {
                                 if (input.empty() || input == "u")
                                         choice = -2;
                                 else if (input == "s")
@@ -88,7 +88,7 @@ int main()
                         continue;
                 }
 
-                auto const m = moves[static_cast<std::size_t>(choice)];
-                game.push(result(p, m));
+                auto const a = actions[static_cast<std::size_t>(choice)];
+                game.push(result(state, a));
         }
 }

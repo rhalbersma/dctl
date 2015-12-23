@@ -137,45 +137,35 @@ constexpr auto mirror(Angle const& a, Angle const& b) noexcept
 
 */
 
-constexpr auto right(Angle const& a) noexcept
-{
-        return rotate(0_deg, a);
-}
+template<int N>
+using angle_constant = std::integral_constant<int, Angle{N}>;
 
-constexpr auto right_up(Angle const& a) noexcept
-{
-        return rotate(45_deg, a);
-}
+template<int N>
+static constexpr auto angle_v = angle_constant<N>::value;
 
-constexpr auto up(Angle const& a) noexcept
-{
-        return rotate(90_deg, a);
-}
+template<int N>
+using right = angle_constant<rotate(0_deg, Angle{N})>;
 
-constexpr auto left_up(Angle const& a) noexcept
-{
-        return rotate(135_deg, a);
-}
+template<int N>
+using right_up = angle_constant<rotate(45_deg, Angle{N})>;
 
-constexpr auto left(Angle const& a) noexcept
-{
-        return rotate(180_deg, a);
-}
+template<int N>
+using up = angle_constant<rotate(90_deg, Angle{N})>;
 
-constexpr auto left_down(Angle const& a) noexcept
-{
-        return rotate(225_deg, a);
-}
+template<int N>
+using left_up = angle_constant<rotate(135_deg, Angle{N})>;
 
-constexpr auto down(Angle const& a) noexcept
-{
-        return rotate(270_deg, a);
-}
+template<int N>
+using left = angle_constant<rotate(180_deg, Angle{N})>;
 
-constexpr auto right_down(Angle const& a) noexcept
-{
-        return rotate(315_deg, a);
-}
+template<int N>
+using left_down = angle_constant<rotate(225_deg, Angle{N})>;
+
+template<int N>
+using down = angle_constant<rotate(270_deg, Angle{N})>;
+
+template<int N>
+using right_down = angle_constant<rotate(315_deg, Angle{N})>;
 
 /*
 
@@ -232,11 +222,5 @@ constexpr auto is_negative(Angle const& a) noexcept
 {
         return a == 0_deg || 180_deg < a;
 }
-
-template<int N>
-using angle_constant = std::integral_constant<int, Angle{N}>;
-
-template<int N>
-static constexpr auto angle_v = angle_constant<N>::value;
 
 }       // namespace dctl

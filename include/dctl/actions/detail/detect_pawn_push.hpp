@@ -1,17 +1,16 @@
 #pragma once
-#include <dctl/board/angle.hpp>                               // left_up, right_up
+#include <dctl/actions/detail/detect_primary_fwd.hpp>   // Detect (primary template)
+#include <dctl/actions/select/push.hpp>                 // push
+#include <dctl/board/angle.hpp>                         // left_up, right_up
+#include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/board/wave/patterns.hpp>                 // Sink
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // pawn
-#include <dctl/actions/detect/detail/primary_fwd.hpp> // Detect (primary template)
-#include <dctl/actions/select/push.hpp>               // push
-
-#include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/utility/type_traits.hpp>                         // board_t, set_t
-#include <dctl/board/wave/patterns.hpp>                       // Sink
+#include <dctl/utility/type_traits.hpp>                 // board_t, set_t
 #include <type_traits>                                  // false_type
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color ToMove, class Reverse, class State>
@@ -45,10 +44,13 @@ private:
                 if (active_pawns.none())
                         return false;
 
-                return
-                        parallelize<left_up (orientation)>(active_pawns) ||
-                        parallelize<right_up(orientation)>(active_pawns)
-                ;
+                return parallelize_lfold<left_up, right_up>(active_pawns);
+        }
+
+        template<template<int> class... Directions>
+        auto parallelize_lfold(set_type const& active_pawns) const
+        {
+                return (parallelize<Directions<orientation>{}>(active_pawns) || ...);
         }
 
         template<int Direction>
@@ -61,5 +63,5 @@ private:
 };
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

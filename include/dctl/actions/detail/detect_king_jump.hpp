@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/actions/detail/builder.hpp>              // Builder
-#include <dctl/actions/detect/detail/primary_fwd.hpp>   // Detect (primary template)
+#include <dctl/actions/detail/detect_primary_fwd.hpp>   // Detect (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -11,7 +11,7 @@
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color ToMove, class Reverse, class Builder>
@@ -43,26 +43,18 @@ private:
 
         auto branch_dispatch(set_type const& active_kings, diagonal_jump_tag) const noexcept
         {
-                return
-                        parallelize<left_up   (orientation)>(active_kings) ||
-                        parallelize<right_up  (orientation)>(active_kings) ||
-                        parallelize<left_down (orientation)>(active_kings) ||
-                        parallelize<right_down(orientation)>(active_kings)
-                ;
+                return parallelize_lfold<left_up, right_up, left_down, right_down>(active_kings);
         }
 
         auto branch_dispatch(set_type const& active_kings, orthogonal_jump_tag) const noexcept
         {
-                return
-                        parallelize<up        (orientation)>(active_kings) ||
-                        parallelize<left_up   (orientation)>(active_kings) ||
-                        parallelize<right_up  (orientation)>(active_kings) ||
-                        parallelize<left      (orientation)>(active_kings) ||
-                        parallelize<right     (orientation)>(active_kings) ||
-                        parallelize<left_down (orientation)>(active_kings) ||
-                        parallelize<right_down(orientation)>(active_kings) ||
-                        parallelize<down      (orientation)>(active_kings)
-                ;
+                return parallelize_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_kings);
+        }
+
+        template<template<int> class... Directions>
+        auto parallelize_lfold(set_type const& active_kings) const
+        {
+                return (parallelize<Directions<orientation>{}>(active_kings) || ...);
         }
 
         template<int Direction>
@@ -75,5 +67,5 @@ private:
 };
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

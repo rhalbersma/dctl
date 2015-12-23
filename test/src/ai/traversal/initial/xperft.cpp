@@ -8,6 +8,6 @@ using namespace dctl;
 int main()
 {
         auto const s = State<rules::International, board::International>::initial();
-        auto const    unique_gen = actions::Successor<actions::select::legal, true >{};
+        auto const    unique_gen = core::Actions<core::select::legal, true >{};
         traversal::sperft(s, 11, unique_gen);
 }

@@ -16,7 +16,7 @@
 #include <type_traits>                          // bool_constant, false_type, true_type
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color ToMove, class Unique, class State>
@@ -237,9 +237,9 @@ public:
         }
 
         template<class SequenceContainer>
-        auto append_to(SequenceContainer& moves) const
+        auto append_to(SequenceContainer& actions) const
         {
-                precedence_dispatch(moves, is_trivial_precedence_t<rules_type>{});
+                precedence_dispatch(actions, is_trivial_precedence_t<rules_type>{});
         }
 
 private:
@@ -308,28 +308,28 @@ private:
         }
 
         template<class SequenceContainer>
-        auto precedence_dispatch(SequenceContainer& moves, std::false_type) const
+        auto precedence_dispatch(SequenceContainer& actions, std::false_type) const
         {
-                if (moves.empty())
-                        return moves.emplace_back(*this);
+                if (actions.empty())
+                        return actions.emplace_back(*this);
 
-                if (precedence::less<rules_type>{}(*this, moves.front()))
+                if (precedence::less<rules_type>{}(*this, actions.front()))
                         return;
 
-                if (precedence::equal_to<rules_type>{}(*this, moves.front())) {
-                        moves.emplace_back(*this);
-                        return uniqueness_dispatch(moves, std::false_type{}, Unique{});
+                if (precedence::equal_to<rules_type>{}(*this, actions.front())) {
+                        actions.emplace_back(*this);
+                        return uniqueness_dispatch(actions, std::false_type{}, Unique{});
                 }
 
-                moves.clear();
-                moves.emplace_back(*this);
+                actions.clear();
+                actions.emplace_back(*this);
         }
 
         template<class SequenceContainer>
-        auto precedence_dispatch(SequenceContainer& moves, std::true_type) const
+        auto precedence_dispatch(SequenceContainer& actions, std::true_type) const
         {
-                moves.emplace_back(*this);
-                uniqueness_dispatch(moves, std::true_type{}, Unique{});
+                actions.emplace_back(*this);
+                uniqueness_dispatch(actions, std::true_type{}, Unique{});
         }
 
         template<class SequenceContainer, bool B>
@@ -339,28 +339,28 @@ private:
         }
 
         template<class SequenceContainer>
-        auto uniqueness_dispatch(SequenceContainer& moves, std::false_type, std::true_type) const
+        auto uniqueness_dispatch(SequenceContainer& actions, std::false_type, std::true_type) const
         {
-                unique(moves);
+                unique(actions);
         }
 
         template<class SequenceContainer>
-        auto uniqueness_dispatch(SequenceContainer& moves, std::true_type, std::true_type) const
+        auto uniqueness_dispatch(SequenceContainer& actions, std::true_type, std::true_type) const
         {
-                if (2 <= moves.size())
-                        unique(moves);
+                if (2 <= actions.size())
+                        unique(actions);
         }
 
         template<class SequenceContainer>
-        auto unique(SequenceContainer& moves) const
+        auto unique(SequenceContainer& actions) const
         {
                 static_assert(Unique::value);
-                assert(2 <= moves.size());
-                if (is_large(moves.front().num_captured()) && std::find(moves.begin(), moves.end(), moves.back()) != std::prev(moves.end()))
-                        moves.pop_back();
+                assert(2 <= actions.size());
+                if (is_large(actions.front().num_captured()) && std::find(actions.begin(), actions.end(), actions.back()) != std::prev(actions.end()))
+                        actions.pop_back();
         }
 };
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

@@ -10,7 +10,7 @@
 namespace dctl {
 namespace search {
 
-auto const unique_gen = actions::Successor<actions::select::legal, true >{};
+auto const unique_gen = core::Actions<core::select::legal, true >{};
 
 template<class State, class Objective>
 class Fixture

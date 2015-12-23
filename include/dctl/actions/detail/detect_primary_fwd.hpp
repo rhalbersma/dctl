@@ -3,12 +3,12 @@
 #include <dctl/piece.hpp>       // Piece
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color, Piece, class, class...>
-class Generate;
+class Detect;
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

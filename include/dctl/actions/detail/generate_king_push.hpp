@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -13,7 +13,7 @@
 #include <iterator>                                     // prev
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color ToMove, class Reverse, class State, class Sequence>
@@ -25,13 +25,13 @@ class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         State const& state;
-        Sequence& moves;
+        Sequence& actions;
 
 public:
-        Generate(State const& s, Sequence& m)
+        Generate(State const& s, Sequence& a)
         :
                 state{s},
-                moves{m}
+                actions{a}
         {}
 
         auto operator()() const
@@ -55,20 +55,26 @@ private:
                 if (active_kings.none())
                         return;
 
-                generate_movers<left_up   (orientation)>(active_kings);
-                generate_movers<right_up  (orientation)>(active_kings);
-                generate_movers<left_down (orientation)>(active_kings);
-                generate_movers<right_down(orientation)>(active_kings);
+                generate_movers_lfold<left_up, right_up, left_down, right_down>(active_kings);
         }
 
         auto generate_dispatch(set_type const& active_kings, long_ranged_tag) const
         {
                 active_kings.for_each([&](auto const& from_sq){
-                        generate_targets(along_ray<left_up   (orientation)>(from_sq));
-                        generate_targets(along_ray<right_up  (orientation)>(from_sq));
-                        generate_targets(along_ray<left_down (orientation)>(from_sq));
-                        generate_targets(along_ray<right_down(orientation)>(from_sq));
+                        generate_targets_lfold<left_up, right_up, left_down, right_down>(from_sq);
                 });
+        }
+
+        template<template<int> class... Directions>
+        auto generate_movers_lfold(set_type const& active_kings) const
+        {
+                return (generate_movers<Directions<orientation>{}>(active_kings) , ...);
+        }
+
+        template<template<int> class... Directions>
+        auto generate_targets_lfold(std::size_t from) const
+        {
+                return (generate_targets(along_ray<Directions<orientation>{}>(from)) , ...);
         }
 
         template<int Direction>
@@ -76,7 +82,7 @@ private:
         {
                 auto const movers = active_kings & set_type(*std::prev(along_wave<Direction>(state.not_occupied())));
                 movers.for_each([&](auto const& from_sq){
-                        moves.emplace_back(from_sq, *std::next(along_ray<Direction>(from_sq)), ToMove);
+                        actions.emplace_back(from_sq, *std::next(along_ray<Direction>(from_sq)), ToMove);
                 });
         }
 
@@ -85,7 +91,7 @@ private:
         {
                 auto const targets = ray::classical(from, state.not_occupied());
                 targets.for_each([&](auto const& dest_sq){
-                        moves.emplace_back(*from, dest_sq, ToMove);
+                        actions.emplace_back(*from, dest_sq, ToMove);
                 });
         }
 
@@ -103,5 +109,5 @@ private:
 };
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

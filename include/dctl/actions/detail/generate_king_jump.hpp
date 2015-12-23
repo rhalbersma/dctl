@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, SetKingJump
 #include <dctl/actions/detail/builder.hpp>              // Builder
-#include <dctl/actions/generate/detail/primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, _deg, rotate, inverse
 #include <dctl/board/orientation.hpp>                   // orientation_v
@@ -16,7 +16,7 @@
 #include <type_traits>                                  // is_base_of, false_type, true_type
 
 namespace dctl {
-namespace actions {
+namespace core {
 namespace detail {
 
 template<Color ToMove, class Reverse, class Builder, class Sequence>
@@ -32,13 +32,13 @@ class Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
         Builder& builder;
-        Sequence& moves;
+        Sequence& actions;
 
 public:
-        Generate(Builder& b, Sequence& m)
+        Generate(Builder& b, Sequence& a)
         :
                 builder{b},
-                moves{m}
+                actions{a}
         {}
 
         auto operator()(set_type const& active_kings) const
@@ -71,22 +71,18 @@ private:
 
         auto branch_dispatch(std::size_t from_sq, diagonal_jump_tag) const
         {
-                find_first(along_ray<left_up   (orientation)>(from_sq));
-                find_first(along_ray<right_up  (orientation)>(from_sq));
-                find_first(along_ray<left_down (orientation)>(from_sq));
-                find_first(along_ray<right_down(orientation)>(from_sq));
+                find_first_lfold<left_up, right_up, left_down, right_down>(from_sq);
         }
 
         auto branch_dispatch(std::size_t from_sq, orthogonal_jump_tag) const
         {
-                find_first(along_ray<up        (orientation)>(from_sq));
-                find_first(along_ray<left_up   (orientation)>(from_sq));
-                find_first(along_ray<right_up  (orientation)>(from_sq));
-                find_first(along_ray<left      (orientation)>(from_sq));
-                find_first(along_ray<right     (orientation)>(from_sq));
-                find_first(along_ray<left_down (orientation)>(from_sq));
-                find_first(along_ray<right_down(orientation)>(from_sq));
-                find_first(along_ray<down      (orientation)>(from_sq));
+                find_first_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(from_sq);
+        }
+
+        template<template<int> class... Directions>
+        auto find_first_lfold(std::size_t from_sq) const
+        {
+                return (find_first(along_ray<Directions<orientation>{}>(from_sq)) , ...);
         }
 
         template<class Iterator>
@@ -184,24 +180,20 @@ private:
         auto turn_dispatch(Iterator jumper, diagonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>));
-                return
-                        scan(ray::rotate<+90_deg>(jumper)) |
-                        scan(ray::rotate<-90_deg>(jumper))
-                ;
+                return scan_ray_rotate_lfold<+90_deg, -90_deg>(jumper);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, orthogonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
-                return
-                        scan(ray::rotate< +45_deg>(jumper)) |
-                        scan(ray::rotate< -45_deg>(jumper)) |
-                        scan(ray::rotate< +90_deg>(jumper)) |
-                        scan(ray::rotate< -90_deg>(jumper)) |
-                        scan(ray::rotate<+135_deg>(jumper)) |
-                        scan(ray::rotate<-135_deg>(jumper))
-                ;
+                return scan_ray_rotate_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper);
+        }
+
+        template<int... Directions, class Iterator>
+        auto scan_ray_rotate_lfold(Iterator jumper) const
+        {
+                return (scan(ray::rotate<Directions>(jumper)) | ...);
         }
 
         template<class Iterator>
@@ -274,7 +266,7 @@ private:
         auto add_jump(std::size_t dest_sq) const
         {
                 builder.finish(dest_sq);
-                builder.append_to(moves);
+                builder.append_to(actions);
         }
 
         template<int Direction>
@@ -285,5 +277,5 @@ private:
 };
 
 }       // namespace detail
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

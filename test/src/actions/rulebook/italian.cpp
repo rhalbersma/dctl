@@ -6,12 +6,12 @@
 #include <vector>                       // vector
 
 namespace dctl {
-namespace actions {
+namespace core {
 
 // States from the official Italian rules:
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 
-BOOST_AUTO_TEST_SUITE(SuccessorRulebookItalian)
+BOOST_AUTO_TEST_SUITE(ActionsRulebookItalian)
 
 using F = Fixture<rules::Italian, board::Roman>;
 
@@ -80,5 +80,5 @@ BOOST_FIXTURE_TEST_CASE(Equivalent, F)                  // Art. 6.10
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

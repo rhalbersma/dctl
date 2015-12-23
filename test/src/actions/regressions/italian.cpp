@@ -5,11 +5,11 @@
 #include <string>                       // string
 
 namespace dctl {
-namespace actions {
+namespace core {
 
 using F = Fixture<rules::Italian, board::Roman>;
 
-BOOST_AUTO_TEST_SUITE(SuccessorRegressionsItalian)
+BOOST_AUTO_TEST_SUITE(ActionsRegressionsItalian)
 
         BOOST_AUTO_TEST_SUITE(JumpPrecedenceOrderOfKings)
 
@@ -44,5 +44,5 @@ BOOST_AUTO_TEST_SUITE(SuccessorRegressionsItalian)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace actions
+}       // namespace core
 }       // namespace dctl

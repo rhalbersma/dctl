@@ -52,8 +52,8 @@ struct Enhancements<default_tag, State>
                 return std::make_pair(false, std::size_t(0));
         }
 
-        template<class Successor>
-        std::pair<bool, std::size_t> terminal(State const& /* p */, Successor /* successor */, int depth) const
+        template<class Actions>
+        std::pair<bool, std::size_t> terminal(State const& /* p */, Actions /* successor */, int depth) const
         {
                 return std::make_pair(depth == 0, std::size_t(1));
         }
@@ -89,8 +89,8 @@ struct Enhancements<bulk_tag, State>
                 return std::make_pair(false, std::size_t(0));
         }
 
-        template<class Successor>
-        std::pair<bool, std::size_t> terminal(State const& p, Successor successor, int depth) const
+        template<class Actions>
+        std::pair<bool, std::size_t> terminal(State const& p, Actions successor, int depth) const
         {
                 return std::make_pair(depth == 1, successor.count(p));
         }
@@ -142,8 +142,8 @@ struct Enhancements<hash_tag, State>
                 ;
         }
 
-        template<class Successor>
-        std::pair<bool, std::size_t> terminal(State const& p, Successor successor, int depth) const
+        template<class Actions>
+        std::pair<bool, std::size_t> terminal(State const& p, Actions successor, int depth) const
         {
                 return (depth == 1) ?
                         std::make_pair(true, std::size_t(successor.count(p))) :
@@ -159,8 +159,8 @@ struct Enhancements<hash_tag, State>
         value_type* handle_;
 };
 
-template<class State, class Successor, class Enhancements>
-std::size_t walk(State const& p, int depth, int ply, Successor successor, Enhancements e)
+template<class State, class Actions, class Enhancements>
+std::size_t walk(State const& p, int depth, int ply, Actions successor, Enhancements e)
 {
         // (0)
         e.collect_statistics(ply);
@@ -192,8 +192,8 @@ std::size_t walk(State const& p, int depth, int ply, Successor successor, Enhanc
         return nodes;
 }
 
-template<class Successor, class State>
-auto perft_nobulk_counting(Successor successor, State const& state, int depth)
+template<class Actions, class State>
+auto perft_nobulk_counting(Actions successor, State const& state, int depth)
 {
         if (depth == 0)
                 return std::size_t{1};
@@ -205,8 +205,8 @@ auto perft_nobulk_counting(Successor successor, State const& state, int depth)
         });
 }
 
-template<class Successor, class State>
-auto iperft_bulk_counting(Successor const& successor, State& state, int depth)
+template<class Actions, class State>
+auto iperft_bulk_counting(Actions const& successor, State& state, int depth)
 {
         if (depth == 1)
                 return successor.count(state);
@@ -221,8 +221,8 @@ auto iperft_bulk_counting(Successor const& successor, State& state, int depth)
         });
 }
 
-template<class Successor, class State>
-auto perft_bulk_counting(Successor const& successor, State const& state, int depth)
+template<class Actions, class State>
+auto perft_bulk_counting(Actions const& successor, State const& state, int depth)
 {
         if (depth == 1)
                 return successor.count(state);
@@ -234,8 +234,8 @@ auto perft_bulk_counting(Successor const& successor, State const& state, int dep
         });
 }
 
-template<class Successor, class Node>
-auto perft_node_bulk_counting(Successor const& successor, Node const& node, int depth)
+template<class Actions, class Node>
+auto perft_node_bulk_counting(Actions const& successor, Node const& node, int depth)
 {
         if (depth == 1)
                 return successor.count(node.state);
@@ -329,8 +329,8 @@ void summary(std::size_t leafs)
         std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
-template<class State, class Successor, class Enhancements>
-std::size_t perft(State const& p, int depth, Successor successor, Enhancements e)
+template<class State, class Actions, class Enhancements>
+std::size_t perft(State const& p, int depth, Actions successor, Enhancements e)
 {
 
         std::size_t nodes = 0;
@@ -346,8 +346,8 @@ std::size_t perft(State const& p, int depth, Successor successor, Enhancements e
         return nodes;
 }
 
-template<class State, class Successor>
-auto iperft(State const& s_in, int depth, Successor successor)
+template<class State, class Actions>
+auto iperft(State const& s_in, int depth, Actions successor)
 {
         auto s{s_in};
         announce(s, depth);
@@ -361,8 +361,8 @@ auto iperft(State const& s_in, int depth, Successor successor)
         }
 }
 
-template<class State, class Successor>
-auto sperft(State const& s, int depth, Successor successor)
+template<class State, class Actions>
+auto sperft(State const& s, int depth, Actions successor)
 {
         announce(s, depth);
         util::Stopwatch stopwatch;
@@ -375,8 +375,8 @@ auto sperft(State const& s, int depth, Successor successor)
         }
 }
 
-template<class State, class Successor>
-auto nperft(State const& s, int depth, Successor successor)
+template<class State, class Actions>
+auto nperft(State const& s, int depth, Actions successor)
 {
         announce(s, depth);
         util::Stopwatch stopwatch;
@@ -391,8 +391,8 @@ auto nperft(State const& s, int depth, Successor successor)
         }
 }
 
-template<class State, class Successor, class Enhancements>
-std::size_t divide(State const& p, int depth, Successor successor, Enhancements e)
+template<class State, class Actions, class Enhancements>
+std::size_t divide(State const& p, int depth, Actions successor, Enhancements e)
 {
         std::size_t leaf_nodes = 0;
 
