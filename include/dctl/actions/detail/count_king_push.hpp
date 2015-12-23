@@ -44,11 +44,7 @@ private:
         auto count(set_type const& active_kings) const noexcept
         {
                 using namespace xstd::support_literals;
-
-                if (active_kings.none())
-                        return 0_z;
-
-                return parallelize_lfold<left_up, right_up, left_down, right_down>(active_kings);
+                return active_kings.none() ?  0_z : parallelize_lfold<left_up, right_up, left_down, right_down>(active_kings);
         }
 
         template<template<int> class... Directions>

@@ -43,11 +43,7 @@ private:
         auto count(set_type const& active_pawns) const noexcept
         {
                 using namespace xstd::support_literals;
-
-                if (active_pawns.none())
-                        return 0_z;
-
-                return parallelize_lfold<left_up, right_up>(active_pawns);
+                return active_pawns.none() ? 0_z : parallelize_lfold<left_up, right_up>(active_pawns);
         }
 
         template<template<int> class... Directions>
