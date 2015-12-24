@@ -93,7 +93,9 @@ private:
         template<class Iterator>
         auto ray_targets(Iterator from) const
         {
-                ray::classical(from, state.not_occupied()).for_each([&](auto const& dest_sq){
+                ray::classical(
+                        from, state.not_occupied()
+                ).for_each([&](auto const& dest_sq){
                         actions.emplace_back(*from, dest_sq, ToMove);
                 });
         }
