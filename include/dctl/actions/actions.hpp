@@ -19,8 +19,8 @@ class Actions
         auto invariant(State const& state, std::size_t n) const
         {
                 return
-                        (count <ToMove>(state) ==  n     ) &&
-                        (detect<ToMove>(state) == (n > 0))
+                        count <ToMove>(state) ==  n      &&
+                        detect<ToMove>(state) == (n > 0)
                 ;
         }
 
@@ -36,7 +36,7 @@ public:
         auto generate(State const& state, Sequence& actions) const
         {
                 return
-                        (state.is_to_move(Color::black)) ?
+                        state.is_to_move(Color::black) ?
                         generate<Color::black>(state, actions) :
                         generate<Color::white>(state, actions)
                 ;
@@ -52,7 +52,7 @@ public:
         auto count(State const& state) const
         {
                 return
-                        (state.is_to_move(Color::black)) ?
+                        state.is_to_move(Color::black) ?
                         count<Color::black>(state) :
                         count<Color::white>(state)
                 ;
@@ -68,7 +68,7 @@ public:
         auto detect(State const& state) const
         {
                 return
-                        (state.is_to_move(Color::black)) ?
+                        state.is_to_move(Color::black) ?
                         detect<Color::black>(state) :
                         detect<Color::white>(state)
                 ;
