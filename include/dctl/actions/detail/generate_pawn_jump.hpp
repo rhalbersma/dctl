@@ -101,7 +101,7 @@ private:
         {
                 jump_targets<Direction>{}(
                         active_pawns, builder.remaining_targets(), builder.path()
-                ).for_each([&](auto const& dest_sq){
+                ).for_each([this](auto const& dest_sq){
                         first_target(along_ray<Direction>(dest_sq));
                 });
         }
