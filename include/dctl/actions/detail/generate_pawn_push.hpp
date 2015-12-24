@@ -21,6 +21,9 @@ class Generate<ToMove, Piece::pawn, select::push, Reverse, State, Sequence>
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
 
+        template<int Direction>
+        using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
+
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         State const& state;
         Sequence& actions;
@@ -34,41 +37,35 @@ public:
 
         auto operator()() const
         {
-                generate(state.pieces(ToMove, Piece::pawn));
+                sources(state.pieces(ToMove, Piece::pawn));
         }
 
         auto operator()(set_type const& active_pawns) const
         {
-                generate(active_pawns);
+                sources(active_pawns);
         }
 
 private:
-        auto generate(set_type const& active_pawns) const
+        auto sources(set_type const& active_pawns) const
         {
                 if (active_pawns.any())
-                        generate_movers_lfold<left_up, right_up>(active_pawns);
+                        directions_lfold<left_up, right_up>(active_pawns);
         }
 
         template<template<int> class... Directions>
-        auto generate_movers_lfold(set_type const& active_pawns) const
+        auto directions_lfold(set_type const& active_pawns) const
         {
-                return (generate_movers<Directions<orientation>{}>(active_pawns) , ...);
+                return (targets<Directions<orientation>{}>(active_pawns) , ...);
         }
 
         template<int Direction>
-        auto generate_movers(set_type const& active_pawns) const
+        auto targets(set_type const& active_pawns) const
         {
-                auto const movers = active_pawns & set_type(*std::prev(along_wave<Direction>(state.not_occupied())));
-                movers.for_each([&](auto const& from_sq){
-                        auto const dest_sq = *std::next(along_ray<Direction>(from_sq));
-                        actions.emplace_back(from_sq, dest_sq, is_promotion(dest_sq) ? Piece::king : Piece::pawn, ToMove);
+                push_targets<Direction>{}(
+                        active_pawns, state.not_occupied()
+                ).for_each([&](auto const& dest_sq){
+                        actions.emplace_back(*std::prev(along_ray<Direction>(dest_sq)), dest_sq, is_promotion(dest_sq), ToMove);
                 });
-        }
-
-        template<int Direction>
-        static auto along_wave(set_type const& s)
-        {
-                return wave::make_iterator<board_type, Direction>(s);
         }
 
         template<int Direction>

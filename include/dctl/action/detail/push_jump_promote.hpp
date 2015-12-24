@@ -33,13 +33,13 @@ public:
         PushJumpPromote() = default;
 
         // pawn push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Piece promotion, Color /* to_move */) noexcept
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst, bool promotion, Color /* to_move */) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
                 with_{Piece::pawn},
-                into_{promotion}
+                into_{promotion ? Piece::king : Piece::pawn}
         {
                 assert(invariant());
         }

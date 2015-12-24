@@ -21,5 +21,5 @@ Iterator<Board, Direction> make_iterator(Set const& s)
         return { Cursor<Board, Direction>{s} };
 }
 
-}       // namespace ray
+}       // namespace wave
 }       // namespace dctl

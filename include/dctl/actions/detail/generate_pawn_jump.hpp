@@ -29,6 +29,9 @@ class Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>
         using rules_type = rules_t<Builder>;
         using   set_type =   set_t<Builder>;
 
+        template<int Direction>
+        using jump_targets = JumpTargets<board_type, Direction, short_ranged_tag>;
+
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
 
         template<class Iterator>
@@ -53,61 +56,62 @@ public:
 private:
         auto pawn_jump_king_dispatch(set_type const& active_pawns, std::false_type) const
         {
-                branch(active_pawns);
+                sources(active_pawns);
         }
 
         auto pawn_jump_king_dispatch(set_type const& active_pawns, std::true_type) const
         {
                 raii::ToggleKingTargets<Builder> guard{builder};
-                branch(active_pawns);
+                sources(active_pawns);
         }
 
-        auto branch(set_type const& active_pawns) const
+        auto sources(set_type const& active_pawns) const
         {
-                branch_dispatch(active_pawns, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
+                sources_dispatch(active_pawns, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
         }
 
-        auto branch_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, diagonal_jump_tag) const
+        auto sources_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, diagonal_jump_tag) const
         {
-                serialize_lfold<left_up, right_up>(active_pawns);
+                directions_lfold<left_up, right_up>(active_pawns);
         }
 
-        auto branch_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, diagonal_jump_tag) const
+        auto sources_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, diagonal_jump_tag) const
         {
-                serialize_lfold<left_up, right_up, left_down, right_down>(active_pawns);
+                directions_lfold<left_up, right_up, left_down, right_down>(active_pawns);
         }
 
-        auto branch_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, orthogonal_jump_tag) const
+        auto sources_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                serialize_lfold<up, left_up, right_up, left, right>(active_pawns);
+                directions_lfold<up, left_up, right_up, left, right>(active_pawns);
         }
 
-        auto branch_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, orthogonal_jump_tag) const
+        auto sources_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                serialize_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_pawns);
+                directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_pawns);
         }
 
         template<template<int> class... Directions>
-        auto serialize_lfold(set_type const& active_pawns) const
+        auto directions_lfold(set_type const& active_pawns) const
         {
-                return (serialize<Directions<orientation>{}>(active_pawns) , ...);
+                return (targets<Directions<orientation>{}>(active_pawns) , ...);
         }
 
         template<int Direction>
-        auto serialize(set_type const& active_pawns) const
+        auto targets(set_type const& active_pawns) const
         {
-                auto const jumpers = active_pawns & set_type(*std::prev(along_wave<Direction>(builder.template targets<Direction>())));
-                jumpers.for_each([&](auto const& from_sq){
-                        find_first(along_ray<Direction>(from_sq));
+                jump_targets<Direction>{}(
+                        active_pawns, builder.remaining_targets(), builder.path()
+                ).for_each([&](auto const& dest_sq){
+                        first_target(along_ray<Direction>(dest_sq));
                 });
         }
 
         template<class Iterator>
-        auto find_first(Iterator jumper) const
+        auto first_target(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::Launch<Builder> guard{builder, *jumper};
-                capture(std::next(jumper));
+                raii::Launch<Builder> guard{builder, *std::prev(jumper)};
+                capture(jumper);
         }
 
         template<class Iterator>
@@ -134,7 +138,7 @@ private:
         template<class Iterator>
         auto try_promotion_dispatch(Iterator jumper, stopped_promotion_tag) const
         {
-                if (find_next(jumper))
+                if (next_target(jumper))
                         return;
                 if (is_promotion(*jumper))
                         return on_promotion(jumper);
@@ -196,12 +200,12 @@ private:
         template<class Iterator>
         auto try_next(Iterator jumper) const
         {
-                if (!find_next(jumper))
+                if (!next_target(jumper))
                         add_jump(*jumper);
         }
 
         template<class Iterator>
-        auto find_next(Iterator jumper) const
+        auto next_target(Iterator jumper) const
         {
                 //raii::Visit<Builder> guard{builder, *jumper};
                 return scan(jumper) | turn(jumper);
@@ -303,12 +307,6 @@ private:
         {
                 builder.finish(dest_sq);
                 builder.append_to(actions);
-        }
-
-        template<int Direction>
-        static auto along_wave(set_type const& s)
-        {
-                return wave::make_iterator<board_type, Direction>(s);
         }
 
         template<int Direction>

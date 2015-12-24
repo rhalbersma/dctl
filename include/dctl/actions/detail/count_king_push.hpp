@@ -3,7 +3,7 @@
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/board/wave.hpp>                          // Sink
+#include <dctl/board/wave.hpp>                          // PushTargets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
@@ -21,6 +21,9 @@ class Count<ToMove, Piece::king, select::push, Reverse, State>
         using rules_type = rules_t<State>;
         using   set_type =   set_t<State>;
 
+        template<int Direction>
+        using push_targets = PushTargets<board_type, Direction, king_range_category_t<rules_type>>;
+
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         State const& state;
 
@@ -32,31 +35,31 @@ public:
 
         auto operator()() const noexcept
         {
-                return count(state.pieces(ToMove, Piece::king));
+                return sources(state.pieces(ToMove, Piece::king));
         }
 
         auto operator()(set_type const& active_kings) const noexcept
         {
-                return count(active_kings);
+                return sources(active_kings);
         }
 
 private:
-        auto count(set_type const& active_kings) const noexcept
+        auto sources(set_type const& active_kings) const noexcept
         {
                 using namespace xstd::support_literals;
-                return active_kings.none() ?  0_z : parallelize_lfold<left_up, right_up, left_down, right_down>(active_kings);
+                return active_kings.none() ?  0_z : directions_lfold<left_up, right_up, left_down, right_down>(active_kings);
         }
 
         template<template<int> class... Directions>
-        auto parallelize_lfold(set_type const& active_kings) const
+        auto directions_lfold(set_type const& active_kings) const
         {
-                return (parallelize<Directions<orientation>{}>(active_kings) + ...);
+                return (targets<Directions<orientation>{}>(active_kings) + ...);
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_kings) const noexcept
+        auto targets(set_type const& active_kings) const noexcept
         {
-                return Sink<board_type, Direction, king_range_category_t<rules_type>>{}(
+                return push_targets<Direction>{}(
                         active_kings, state.not_occupied()
                 ).count();
         }

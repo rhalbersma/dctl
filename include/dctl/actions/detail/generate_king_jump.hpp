@@ -44,7 +44,7 @@ public:
         auto operator()(set_type const& active_kings) const
         {
                 raii::SetKingJump<Builder> guard{builder};
-                serialize(active_kings);
+                sources(active_kings);
         }
 
         template<class Iterator>
@@ -56,37 +56,32 @@ public:
         }
 
 private:
-        auto serialize(set_type const& active_kings) const
+        auto sources(set_type const& active_kings) const
         {
                 active_kings.for_each([&](auto const& from_sq){
                         raii::Launch<Builder> guard{builder, from_sq};
-                        branch(from_sq);
+                        source_dispatch(from_sq, jump_category_t<rules_type>{});
                 });
         }
 
-        auto branch(std::size_t from_sq) const
+        auto source_dispatch(std::size_t from_sq, diagonal_jump_tag) const
         {
-                branch_dispatch(from_sq, jump_category_t<rules_type>{});
+                directions_lfold<left_up, right_up, left_down, right_down>(from_sq);
         }
 
-        auto branch_dispatch(std::size_t from_sq, diagonal_jump_tag) const
+        auto source_dispatch(std::size_t from_sq, orthogonal_jump_tag) const
         {
-                find_first_lfold<left_up, right_up, left_down, right_down>(from_sq);
-        }
-
-        auto branch_dispatch(std::size_t from_sq, orthogonal_jump_tag) const
-        {
-                find_first_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(from_sq);
+                directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(from_sq);
         }
 
         template<template<int> class... Directions>
-        auto find_first_lfold(std::size_t from_sq) const
+        auto directions_lfold(std::size_t from_sq) const
         {
-                return (find_first(along_ray<Directions<orientation>{}>(from_sq)) , ...);
+                return (first_target(along_ray<Directions<orientation>{}>(from_sq)) , ...);
         }
 
         template<class Iterator>
-        auto find_first(Iterator jumper) const
+        auto first_target(Iterator jumper) const
         {
                 slide(jumper, builder.template path<ray::direction_v<Iterator>>());
                 if (is_onboard(jumper) && builder.targets(jumper)) {
@@ -113,12 +108,12 @@ private:
         template<class Iterator>
         auto try_next(Iterator jumper) const
         {
-                if (!find_next(jumper))
+                if (!next_target(jumper))
                         add(jumper);
         }
 
         template<class Iterator>
-        auto find_next(Iterator jumper) const
+        auto next_target(Iterator jumper) const
         {
                 //raii::Visit<Builder> guard{builder, *jumper};
                 return reverse_dispatch(jumper, is_reversible_king_jump_direction_t<rules_type>{});

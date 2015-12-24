@@ -111,6 +111,11 @@ public:
                 into_ = p;
         }
 
+        auto remaining_targets() const
+        {
+                return remaining_targets_;
+        }
+
         template<class Iterator>
         auto targets(Iterator it) const
         {
