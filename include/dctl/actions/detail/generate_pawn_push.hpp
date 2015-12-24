@@ -25,45 +25,44 @@ class Generate<ToMove, Piece::pawn, select::push, Reverse, State, Sequence>
         using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        State const& state;
+        set_type const active_pawns;
+        set_type const not_occupied;
         Sequence& actions;
 
 public:
-        Generate(State const& s, Sequence& a)
+        Generate(State const& state, Sequence& a)
         :
-                state{s},
+                active_pawns{state.pieces(ToMove, Piece::pawn)},
+                not_occupied{state.not_occupied()},
+                actions{a}
+        {}
+
+        Generate(set_type const& p, set_type const& e, Sequence& a)
+        :
+                active_pawns(p),
+                not_occupied(e),
                 actions{a}
         {}
 
         auto operator()() const
         {
-                sources(state.pieces(ToMove, Piece::pawn));
-        }
-
-        auto operator()(set_type const& active_pawns) const
-        {
-                sources(active_pawns);
+                if (active_pawns.any())
+                        directions_lfold<left_up, right_up>();
         }
 
 private:
-        auto sources(set_type const& active_pawns) const
-        {
-                if (active_pawns.any())
-                        directions_lfold<left_up, right_up>(active_pawns);
-        }
-
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const& active_pawns) const
+        auto directions_lfold() const
         {
-                return (targets<Directions<orientation>{}>(active_pawns) , ...);
+                return (targets<Directions<orientation>{}>() , ...);
         }
 
         template<int Direction>
-        auto targets(set_type const& active_pawns) const
+        auto targets() const
         {
                 push_targets<Direction>{}(
-                        active_pawns, state.not_occupied()
-                ).for_each([&](auto const& dest_sq){
+                        active_pawns, not_occupied
+                ).for_each([this](auto const& dest_sq){
                         actions.emplace_back(*std::prev(along_ray<Direction>(dest_sq)), dest_sq, is_promotion(dest_sq), ToMove);
                 });
         }

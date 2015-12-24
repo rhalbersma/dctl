@@ -27,41 +27,38 @@ class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
         using wave_push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        State const& state;
+        set_type const active_kings;
+        set_type const not_occupied;
         Sequence& actions;
 
 public:
-        Generate(State const& s, Sequence& a)
+        Generate(set_type const& k, set_type const& e, Sequence& a)
         :
-                state{s},
+                active_kings{k},
+                not_occupied{e},
+                actions{a}
+        {}
+
+        Generate(State const& state, Sequence& a)
+        :
+                active_kings{state.pieces(ToMove, Piece::king)},
+                not_occupied{state.not_occupied()},
                 actions{a}
         {}
 
         auto operator()() const
         {
-                sources(state.pieces(ToMove, Piece::king));
-        }
-
-        auto operator()(set_type const& active_kings) const
-        {
-                sources(active_kings);
+                sources_dispatch(king_range_category_t<rules_type>{});
         }
 
 private:
-        auto sources(set_type const& active_kings) const
+        auto sources_dispatch(short_ranged_tag) const
         {
-                sources_dispatch(active_kings, king_range_category_t<rules_type>{});
+                if (active_kings.any())
+                        wave_directions_lfold<left_up, right_up, left_down, right_down>();
         }
 
-        auto sources_dispatch(set_type const& active_kings, short_ranged_tag) const
-        {
-                if (active_kings.none())
-                        return;
-
-                wave_directions_lfold<left_up, right_up, left_down, right_down>(active_kings);
-        }
-
-        auto sources_dispatch(set_type const& active_kings, long_ranged_tag) const
+        auto sources_dispatch(long_ranged_tag) const
         {
                 active_kings.for_each([&](auto const& from_sq){
                         ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq);
@@ -69,9 +66,9 @@ private:
         }
 
         template<template<int> class... Directions>
-        auto wave_directions_lfold(set_type const& active_kings) const
+        auto wave_directions_lfold() const
         {
-                return (wave_targets<Directions<orientation>{}>(active_kings) , ...);
+                return (wave_targets<Directions<orientation>{}>() , ...);
         }
 
         template<template<int> class... Directions>
@@ -81,11 +78,11 @@ private:
         }
 
         template<int Direction>
-        auto wave_targets(set_type const& active_kings) const
+        auto wave_targets() const
         {
                 wave_push_targets<Direction>{}(
-                        active_kings, state.not_occupied()
-                ).for_each([&](auto const& dest_sq){
+                        active_kings, not_occupied
+                ).for_each([this](auto const& dest_sq){
                         actions.emplace_back(*std::prev(along_ray<Direction>(dest_sq)), dest_sq, ToMove);
                 });
         }
@@ -94,8 +91,8 @@ private:
         auto ray_targets(Iterator from) const
         {
                 ray::classical(
-                        from, state.not_occupied()
-                ).for_each([&](auto const& dest_sq){
+                        from, not_occupied
+                ).for_each([this, from](auto const& dest_sq){
                         actions.emplace_back(*from, dest_sq, ToMove);
                 });
         }

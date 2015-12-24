@@ -53,7 +53,7 @@ private:
                 return sources(active_pawns);
         }
 
-        auto sources(set_type const& active_pawns) const
+        auto sources(set_type const& active_pawns) const noexcept
         {
                 return sources_dispatch(active_pawns, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
         }
@@ -79,7 +79,7 @@ private:
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const& active_pawns) const
+        auto directions_lfold(set_type const& active_pawns) const noexcept
         {
                 return (targets<Directions<orientation>{}>(active_pawns) || ...);
         }

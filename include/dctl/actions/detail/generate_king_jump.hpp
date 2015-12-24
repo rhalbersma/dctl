@@ -58,7 +58,7 @@ public:
 private:
         auto sources(set_type const& active_kings) const
         {
-                active_kings.for_each([&](auto const& from_sq){
+                active_kings.for_each([this](auto const& from_sq){
                         raii::Launch<Builder> guard{builder, from_sq};
                         source_dispatch(from_sq, jump_category_t<rules_type>{});
                 });

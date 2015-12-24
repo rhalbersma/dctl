@@ -23,42 +23,33 @@ class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
         using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        State const& state;
+        set_type const active_pawns;
+        set_type const not_occupied;
 
 public:
-        explicit Detect(State const& s) noexcept
+        Detect(set_type const& p, set_type const& e) noexcept
         :
-                state{s}
+                active_pawns{p},
+                not_occupied{e}
+        {}
+
+        explicit Detect(State const& state) noexcept
+        :
+                active_pawns{state.pieces(ToMove, Piece::pawn)},
+                not_occupied{state.not_occupied()}
         {}
 
         auto operator()() const noexcept
         {
-                return sources(state.pieces(ToMove, Piece::pawn));
-        }
-
-        auto operator()(set_type const& active_pawns) const noexcept
-        {
-                return sources(active_pawns);
+                using namespace xstd::support_literals;
+                return active_pawns.any() ? directions_lfold<left_up, right_up>() : false;
         }
 
 private:
-        auto sources(set_type const& active_pawns) const noexcept
-        {
-                return active_pawns.any() ? directions_lfold<left_up, right_up>(active_pawns) : false;
-        }
-
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const& active_pawns) const
+        auto directions_lfold() const noexcept
         {
-                return (targets<Directions<orientation>{}>(active_pawns) || ...);
-        }
-
-        template<int Direction>
-        auto targets(set_type const& active_pawns) const noexcept
-        {
-                return push_targets<Direction>{}(
-                        active_pawns, state.not_occupied()
-                ).any();
+                return (push_targets<Directions<orientation>{}>{}(active_pawns, not_occupied).any() || ...);
         }
 };
 

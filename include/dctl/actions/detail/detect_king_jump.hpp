@@ -35,7 +35,7 @@ public:
 
         auto operator()(set_type const& active_kings) const noexcept
         {
-                return active_kings.none() ? false : sources(active_kings);
+                return active_kings.any() ? sources(active_kings) : false;
         }
 
 private:
@@ -55,7 +55,7 @@ private:
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const& active_kings) const
+        auto directions_lfold(set_type const& active_kings) const noexcept
         {
                 return (targets<Directions<orientation>{}>(active_kings) || ...);
         }

@@ -6,7 +6,7 @@
 #include <dctl/board/wave.hpp>                          // PushTargets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
-#include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
+#include <dctl/rule_traits.hpp>                         // king_range_category
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <xstd/cstddef.hpp>                             // _z
 
@@ -25,43 +25,33 @@ class Count<ToMove, Piece::king, select::push, Reverse, State>
         using push_targets = PushTargets<board_type, Direction, king_range_category_t<rules_type>>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        State const& state;
+        set_type const active_kings;
+        set_type const not_occupied;
 
 public:
-        explicit Count(State const& s) noexcept
+        Count(set_type const& k, set_type const& e) noexcept
         :
-                state{s}
+                active_kings{k},
+                not_occupied{e}
+        {}
+
+        explicit Count(State const& state) noexcept
+        :
+                active_kings{state.pieces(ToMove, Piece::king)},
+                not_occupied{state.not_occupied()}
         {}
 
         auto operator()() const noexcept
         {
-                return sources(state.pieces(ToMove, Piece::king));
-        }
-
-        auto operator()(set_type const& active_kings) const noexcept
-        {
-                return sources(active_kings);
+                using namespace xstd::support_literals;
+                return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>() : 0_z;
         }
 
 private:
-        auto sources(set_type const& active_kings) const noexcept
-        {
-                using namespace xstd::support_literals;
-                return active_kings.none() ?  0_z : directions_lfold<left_up, right_up, left_down, right_down>(active_kings);
-        }
-
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const& active_kings) const
+        auto directions_lfold() const noexcept
         {
-                return (targets<Directions<orientation>{}>(active_kings) + ...);
-        }
-
-        template<int Direction>
-        auto targets(set_type const& active_kings) const noexcept
-        {
-                return push_targets<Direction>{}(
-                        active_kings, state.not_occupied()
-                ).count();
+                return (push_targets<Directions<orientation>{}>{}(active_kings, not_occupied).count() + ...);
         }
 };
 
