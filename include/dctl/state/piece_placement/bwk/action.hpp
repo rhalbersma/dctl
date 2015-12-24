@@ -27,9 +27,9 @@ private:
 public:
         Action() = default;
 
-        Action(std::size_t src, std::size_t dst, Piece promotion, Color to_move)
+        Action(std::size_t src, std::size_t dst, bool promotion, Color to_move)
         :
-                Action{create(set_type{src, dst}, set_type{}, promotion == Piece::king ? set_type{dst} : set_type{}, to_move)}
+                Action{create(set_type{src, dst}, set_type{}, promotion ? set_type{dst} : set_type{}, to_move)}
         {}
 
         Action(std::size_t src, std::size_t dst, Color to_move)

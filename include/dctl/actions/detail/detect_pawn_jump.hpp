@@ -5,7 +5,7 @@
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/board/wave/patterns.hpp>                 // Sandwich
+#include <dctl/board/wave/patterns.hpp>                 // Targets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_pawns_jump_only_pawns
@@ -21,6 +21,9 @@ class Detect<ToMove, Piece::pawn, select::jump, Reverse, Builder>
         using   board_type = board_t<Builder>;
         using   rules_type = rules_t<Builder>;
         using     set_type =   set_t<Builder>;
+
+        template<int Direction>
+        using jump_targets = JumpTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         Builder& builder;
@@ -40,51 +43,51 @@ private:
         // pawns that can capture kings
         auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const noexcept
         {
-                return branch(active_pawns);
+                return sources(active_pawns);
         }
 
         // pawns that cannot capture kings
         auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const noexcept
         {
                 raii::ToggleKingTargets<Builder> guard{builder};
-                return branch(active_pawns);
+                return sources(active_pawns);
         }
 
-        auto branch(set_type const& active_pawns) const
+        auto sources(set_type const& active_pawns) const
         {
-                return branch_dispatch(active_pawns, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
+                return sources_dispatch(active_pawns, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
         }
 
-        auto branch_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, diagonal_jump_tag) const noexcept
+        auto sources_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
-                return parallelize_lfold<left_up, right_up>(active_pawns);
+                return directions_lfold<left_up, right_up>(active_pawns);
         }
 
-        auto branch_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, diagonal_jump_tag) const noexcept
+        auto sources_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
-                return parallelize_lfold<left_up, right_up, left_down, right_down>(active_pawns);
+                return directions_lfold<left_up, right_up, left_down, right_down>(active_pawns);
         }
 
-        auto branch_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
+        auto sources_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
-                return parallelize_lfold<up, left_up, right_up, left, right>(active_pawns);
+                return directions_lfold<up, left_up, right_up, left, right>(active_pawns);
         }
 
-        auto branch_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
+        auto sources_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
-                return parallelize_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_pawns);
+                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_pawns);
         }
 
         template<template<int> class... Directions>
-        auto parallelize_lfold(set_type const& active_pawns) const
+        auto directions_lfold(set_type const& active_pawns) const
         {
-                return (parallelize<Directions<orientation>{}>(active_pawns) || ...);
+                return (targets<Directions<orientation>{}>(active_pawns) || ...);
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_pawns) const noexcept
+        auto targets(set_type const& active_pawns) const noexcept
         {
-                return Sandwich<board_type, Direction, short_ranged_tag>{}(
+                return jump_targets<Direction>{}(
                         active_pawns, builder.template targets<Direction>(), builder.path()
                 ).any();
         }

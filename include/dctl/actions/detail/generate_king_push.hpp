@@ -23,6 +23,9 @@ class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
         using rules_type = rules_t<State>;
         using   set_type =   set_t<State>;
 
+        template<int Direction>
+        using wave_push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
+
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         State const& state;
         Sequence& actions;
@@ -36,69 +39,63 @@ public:
 
         auto operator()() const
         {
-                generate(state.pieces(ToMove, Piece::king));
+                sources(state.pieces(ToMove, Piece::king));
         }
 
         auto operator()(set_type const& active_kings) const
         {
-                generate(active_kings);
+                sources(active_kings);
         }
 
 private:
-        auto generate(set_type const& active_kings) const
+        auto sources(set_type const& active_kings) const
         {
-                generate_dispatch(active_kings, king_range_category_t<rules_type>{});
+                sources_dispatch(active_kings, king_range_category_t<rules_type>{});
         }
 
-        auto generate_dispatch(set_type const& active_kings, short_ranged_tag) const
+        auto sources_dispatch(set_type const& active_kings, short_ranged_tag) const
         {
                 if (active_kings.none())
                         return;
 
-                generate_movers_lfold<left_up, right_up, left_down, right_down>(active_kings);
+                wave_directions_lfold<left_up, right_up, left_down, right_down>(active_kings);
         }
 
-        auto generate_dispatch(set_type const& active_kings, long_ranged_tag) const
+        auto sources_dispatch(set_type const& active_kings, long_ranged_tag) const
         {
                 active_kings.for_each([&](auto const& from_sq){
-                        generate_targets_lfold<left_up, right_up, left_down, right_down>(from_sq);
+                        ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq);
                 });
         }
 
         template<template<int> class... Directions>
-        auto generate_movers_lfold(set_type const& active_kings) const
+        auto wave_directions_lfold(set_type const& active_kings) const
         {
-                return (generate_movers<Directions<orientation>{}>(active_kings) , ...);
+                return (wave_targets<Directions<orientation>{}>(active_kings) , ...);
         }
 
         template<template<int> class... Directions>
-        auto generate_targets_lfold(std::size_t from) const
+        auto ray_directions_lfold(std::size_t from) const
         {
-                return (generate_targets(along_ray<Directions<orientation>{}>(from)) , ...);
+                return (ray_targets(along_ray<Directions<orientation>{}>(from)) , ...);
         }
 
         template<int Direction>
-        auto generate_movers(set_type const& active_kings) const
+        auto wave_targets(set_type const& active_kings) const
         {
-                auto const movers = active_kings & set_type(*std::prev(along_wave<Direction>(state.not_occupied())));
-                movers.for_each([&](auto const& from_sq){
-                        actions.emplace_back(from_sq, *std::next(along_ray<Direction>(from_sq)), ToMove);
+                wave_push_targets<Direction>{}(
+                        active_kings, state.not_occupied()
+                ).for_each([&](auto const& dest_sq){
+                        actions.emplace_back(*std::prev(along_ray<Direction>(dest_sq)), dest_sq, ToMove);
                 });
         }
 
         template<class Iterator>
-        auto generate_targets(Iterator from) const
+        auto ray_targets(Iterator from) const
         {
-                auto const targets = ray::classical(from, state.not_occupied());
-                targets.for_each([&](auto const& dest_sq){
+                ray::classical(from, state.not_occupied()).for_each([&](auto const& dest_sq){
                         actions.emplace_back(*from, dest_sq, ToMove);
                 });
-        }
-
-        template<int Direction>
-        static auto along_wave(set_type const& s)
-        {
-                return wave::make_iterator<board_type, Direction>(s);
         }
 
         template<int Direction>

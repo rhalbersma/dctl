@@ -4,7 +4,7 @@
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/board/wave/patterns.hpp>                 // Sandwich
+#include <dctl/board/wave/patterns.hpp>                 // Targets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_long_ranged_king_t
@@ -21,6 +21,9 @@ class Detect<ToMove, Piece::king, select::jump, Reverse, Builder>
         using   rules_type = rules_t<Builder>;
         using     set_type =   set_t<Builder>;
 
+        template<int Direction>
+        using jump_targets = JumpTargets<board_type, Direction, king_range_category_t<rules_type>>;
+
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         Builder const& builder;
 
@@ -32,35 +35,35 @@ public:
 
         auto operator()(set_type const& active_kings) const noexcept
         {
-                return active_kings.none() ? false : branch(active_kings);
+                return active_kings.none() ? false : sources(active_kings);
         }
 
 private:
-        auto branch(set_type const& active_kings) const noexcept
+        auto sources(set_type const& active_kings) const noexcept
         {
-                return branch_dispatch(active_kings, jump_category_t<rules_type>{});
+                return sources_dispatch(active_kings, jump_category_t<rules_type>{});
         }
 
-        auto branch_dispatch(set_type const& active_kings, diagonal_jump_tag) const noexcept
+        auto sources_dispatch(set_type const& active_kings, diagonal_jump_tag) const noexcept
         {
-                return parallelize_lfold<left_up, right_up, left_down, right_down>(active_kings);
+                return directions_lfold<left_up, right_up, left_down, right_down>(active_kings);
         }
 
-        auto branch_dispatch(set_type const& active_kings, orthogonal_jump_tag) const noexcept
+        auto sources_dispatch(set_type const& active_kings, orthogonal_jump_tag) const noexcept
         {
-                return parallelize_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_kings);
+                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_kings);
         }
 
         template<template<int> class... Directions>
-        auto parallelize_lfold(set_type const& active_kings) const
+        auto directions_lfold(set_type const& active_kings) const
         {
-                return (parallelize<Directions<orientation>{}>(active_kings) || ...);
+                return (targets<Directions<orientation>{}>(active_kings) || ...);
         }
 
         template<int Direction>
-        auto parallelize(set_type const& active_kings) const noexcept
+        auto targets(set_type const& active_kings) const noexcept
         {
-                return Sandwich<board_type, Direction, king_range_category_t<rules_type>>{}(
+                return jump_targets<Direction>{}(
                         active_kings, builder.template targets<Direction>(), builder.path()
                 ).any();
         }
