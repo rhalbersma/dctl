@@ -13,7 +13,7 @@ template<class Select = select::legal, bool KeepDuplicates = false, bool Reverse
 class Actions
 {
         template<Color ToMove>
-        using Impl = detail::Actions<ToMove, Select, std::bool_constant<KeepDuplicates>, std::bool_constant<Reverse>>;
+        using Impl = detail::Actions<ToMove, Select, std::bool_constant<!KeepDuplicates>, std::bool_constant<Reverse>>;
 
         template<Color ToMove, class State>
         auto invariant(State const& state, std::size_t n) const

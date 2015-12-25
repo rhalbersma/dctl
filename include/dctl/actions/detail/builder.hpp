@@ -19,7 +19,7 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Unique, class State>
+template<Color ToMove, class DropDuplicates, class State>
 class Builder
 {
 public:
@@ -318,12 +318,12 @@ private:
                 if (actions.empty())
                         return actions.emplace_back(*this);
 
-                if (precedence::less<rules_type>{}(*this, actions.front()))
+                if (precedence::less<rules_type>{}(*this, actions.back()))
                         return;
 
-                if (precedence::equal_to<rules_type>{}(*this, actions.front())) {
+                if (precedence::equal_to<rules_type>{}(*this, actions.back())) {
                         actions.emplace_back(*this);
-                        return uniqueness_dispatch(actions, std::false_type{}, Unique{});
+                        return drop_duplicates_dispatch(actions, std::false_type{}, DropDuplicates{});
                 }
 
                 actions.clear();
@@ -334,34 +334,34 @@ private:
         auto precedence_dispatch(SequenceContainer& actions, std::true_type) const
         {
                 actions.emplace_back(*this);
-                uniqueness_dispatch(actions, std::true_type{}, Unique{});
+                drop_duplicates_dispatch(actions, std::true_type{}, DropDuplicates{});
         }
 
         template<class SequenceContainer, bool B>
-        auto uniqueness_dispatch(SequenceContainer&, std::bool_constant<B>, std::false_type) const
+        auto drop_duplicates_dispatch(SequenceContainer&, std::bool_constant<B>, std::false_type) const
         {
                 // no-op
         }
 
         template<class SequenceContainer>
-        auto uniqueness_dispatch(SequenceContainer& actions, std::false_type, std::true_type) const
+        auto drop_duplicates_dispatch(SequenceContainer& actions, std::false_type, std::true_type) const
         {
-                unique(actions);
+                drop_duplicates(actions);
         }
 
         template<class SequenceContainer>
-        auto uniqueness_dispatch(SequenceContainer& actions, std::true_type, std::true_type) const
+        auto drop_duplicates_dispatch(SequenceContainer& actions, std::true_type, std::true_type) const
         {
                 if (2 <= actions.size())
-                        unique(actions);
+                        drop_duplicates(actions);
         }
 
         template<class SequenceContainer>
-        auto unique(SequenceContainer& actions) const
+        auto drop_duplicates(SequenceContainer& actions) const
         {
-                static_assert(Unique::value);
+                static_assert(DropDuplicates{});
                 assert(2 <= actions.size());
-                if (is_large(actions.front().num_captured()) && std::find(actions.begin(), actions.end(), actions.back()) != std::prev(actions.end()))
+                if (is_large(actions.back().num_captured()) && std::find(actions.begin(), actions.end(), actions.back()) != std::prev(actions.end()))
                         actions.pop_back();
         }
 };

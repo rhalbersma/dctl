@@ -228,6 +228,7 @@ auto perft_bulk_counting(Actions const& successor, State const& state, int depth
                 return successor.count(state);
 
         static_vector<detail::bwk::Action<rules_t<State>, board_t<State>>> moves;
+        //static_vector<Action<rules_t<State>, board_t<State>>> moves;
         successor.generate(state, moves);
         return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
                 return n + perft_bulk_counting(successor, result(state, a), depth - 1);
@@ -345,7 +346,7 @@ std::size_t perft(State const& p, int depth, Actions successor, Enhancements e)
         }
         return nodes;
 }
-
+/*
 template<class State, class Actions>
 auto iperft(State const& s_in, int depth, Actions successor)
 {
@@ -360,7 +361,7 @@ auto iperft(State const& s_in, int depth, Actions successor)
                 xreport(d, nodes, stopwatch);
         }
 }
-
+*/
 template<class State, class Actions>
 auto sperft(State const& s, int depth, Actions successor)
 {
@@ -374,7 +375,7 @@ auto sperft(State const& s, int depth, Actions successor)
                 xreport(d, nodes, stopwatch);
         }
 }
-
+/*
 template<class State, class Actions>
 auto nperft(State const& s, int depth, Actions successor)
 {
@@ -390,7 +391,7 @@ auto nperft(State const& s, int depth, Actions successor)
                 xreport(d, nodes, stopwatch);
         }
 }
-
+*/
 template<class State, class Actions, class Enhancements>
 std::size_t divide(State const& p, int depth, Actions successor, Enhancements e)
 {
