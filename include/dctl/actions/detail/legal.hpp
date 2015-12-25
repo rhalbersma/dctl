@@ -11,11 +11,11 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Unique, class Reverse>
-class Actions<ToMove, select::legal, Unique, Reverse>
+template<Color ToMove, class DropDuplicates, class Reverse>
+class Actions<ToMove, select::legal, DropDuplicates, Reverse>
 {
-        using Jump = Actions<ToMove, select::jump, Unique, Reverse>;
-        using Push = Actions<ToMove, select::push, Unique, Reverse>;
+        using Jump = Actions<ToMove, select::jump, DropDuplicates, Reverse>;
+        using Push = Actions<ToMove, select::push, DropDuplicates, Reverse>;
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const

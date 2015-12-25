@@ -34,13 +34,20 @@ public:
 
         Action(std::size_t src, std::size_t dst, Color to_move)
         :
-                Action{create(set_type{src, dst}, set_type{}, set_type{}, to_move)}
+                Action{create(set_type{src, dst}, set_type{}, set_type{src, dst}, to_move)}
         {}
 
         template<class Builder>
         Action(Builder const& b)
         :
-                Action{create(b.from() == b.dest() ? set_type{} : set_type{b.from(), b.dest()}, b.captured(), b.is_promotion() ? set_type{b.dest()} ^ b.captured_kings() : b.captured_kings(), b.to_move())}
+                Action{create(
+                        b.from() == b.dest() ? set_type{} : set_type{b.from(), b.dest()},
+                        b.captured(),
+                        b.captured_kings() ^
+                        (b.is_promotion() ? set_type{b.dest()} : set_type{}) ^
+                        ((b.is_with_king() && (b.from() != b.dest())) ? set_type{b.from(), b.dest()} : set_type{}),
+                        b.to_move()
+                )}
         {}
 
         auto pieces(Color c) const noexcept

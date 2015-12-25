@@ -18,14 +18,14 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Unique, class Reverse>
-class Actions<ToMove, select::jump, Unique, Reverse>
+template<Color ToMove, class DropDuplicates, class Reverse>
+class Actions<ToMove, select::jump, DropDuplicates, Reverse>
 {
 public:
         template<class State, class Sequence>
         auto generate(State const& state, Sequence& actions) const
         {
-                using Builder = Builder<ToMove, Unique, State>;
+                using Builder = Builder<ToMove, DropDuplicates, State>;
                 using KingJump = Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>;
                 using PawnJump = Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>;
 
