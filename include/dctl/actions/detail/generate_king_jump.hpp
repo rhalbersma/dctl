@@ -33,9 +33,8 @@ class Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>
 
         Builder& builder;
         Sequence& actions;
-
 public:
-        Generate(Builder& b, Sequence& a)
+        Generate(Builder& b, Sequence& a) noexcept
         :
                 builder{b},
                 actions{a}
@@ -54,7 +53,6 @@ public:
                 assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
                 try_next(jumper);
         }
-
 private:
         auto sources(set_type const& active_kings) const
         {
@@ -175,18 +173,18 @@ private:
         auto turn_dispatch(Iterator jumper, diagonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>));
-                return scan_ray_rotate_lfold<+90_deg, -90_deg>(jumper);
+                return rotate_directions_lfold<+90_deg, -90_deg>(jumper);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, orthogonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
-                return scan_ray_rotate_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper);
+                return rotate_directions_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper);
         }
 
         template<int... Directions, class Iterator>
-        auto scan_ray_rotate_lfold(Iterator jumper) const
+        auto rotate_directions_lfold(Iterator jumper) const
         {
                 return (scan(ray::rotate<Directions>(jumper)) | ...);
         }

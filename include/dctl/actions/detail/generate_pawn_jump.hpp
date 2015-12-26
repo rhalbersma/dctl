@@ -39,9 +39,8 @@ class Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>
 
         Builder& builder;
         Sequence& actions;
-
 public:
-        explicit Generate(Builder& b, Sequence& a)
+        explicit Generate(Builder& b, Sequence& a) noexcept
         :
                 builder{b},
                 actions{a}
@@ -52,7 +51,6 @@ public:
                 if (active_pawns.any())
                         pawn_jump_king_dispatch(active_pawns, is_pawns_jump_only_pawns_t<rules_type>{});
         }
-
 private:
         auto pawn_jump_king_dispatch(set_type const& active_pawns, std::false_type) const
         {
@@ -228,7 +226,7 @@ private:
         auto turn_dispatch(Iterator jumper, backward_pawn_jump_tag, diagonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>));
-                return scan_ray_rotate_lfold<+90_deg, -90_deg>(jumper);
+                return rotate_directions_lfold<+90_deg, -90_deg>(jumper);
         }
 
         template<class Iterator>
@@ -241,47 +239,47 @@ private:
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, up<orientation>) const
         {
-                return scan_ray_turn_lfold<left_up, right_up, left, right>(jumper);
+                return turn_directions_lfold<left_up, right_up, left, right>(jumper);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, left_up<orientation>) const
         {
-                return scan_ray_turn_lfold<up, right_up, left, right>(jumper);
+                return turn_directions_lfold<up, right_up, left, right>(jumper);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, right_up<orientation>) const
         {
-                return scan_ray_turn_lfold<up, left_up, left, right>(jumper);
+                return turn_directions_lfold<up, left_up, left, right>(jumper);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, left<orientation>) const
         {
-                return scan_ray_turn_lfold<up, left_up, right_up>(jumper);
+                return turn_directions_lfold<up, left_up, right_up>(jumper);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, right<orientation>) const
         {
-                return scan_ray_turn_lfold<up, left_up, right_up>(jumper);
+                return turn_directions_lfold<up, left_up, right_up>(jumper);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, backward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                return scan_ray_rotate_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper);
+                return rotate_directions_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper);
         }
 
         template<template<int> class... Directions, class Iterator>
-        auto scan_ray_turn_lfold(Iterator jumper) const
+        auto turn_directions_lfold(Iterator jumper) const
         {
                 return (scan(ray::turn<Directions<orientation>{}>(jumper)) | ...);
         }
 
         template<int... Directions, class Iterator>
-        auto scan_ray_rotate_lfold(Iterator jumper) const
+        auto rotate_directions_lfold(Iterator jumper) const
         {
                 return (scan(ray::rotate<Directions>(jumper)) | ...);
         }

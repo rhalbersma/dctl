@@ -45,15 +45,10 @@ public:
         template<class State>
         auto detect(State const& state) const noexcept
         {
-                using Builder = Builder<ToMove, std::true_type, State>;
-                using PawnJump = Detect<ToMove, Piece::pawn, select::jump, Reverse, Builder>;
-                using KingJump = Detect<ToMove, Piece::king, select::jump, Reverse, Builder>;
+                using PawnJump = Detect<ToMove, Piece::pawn, select::jump, Reverse, State>;
+                using KingJump = Detect<ToMove, Piece::king, select::jump, Reverse, State>;
 
-                Builder builder{state};
-                return
-                        PawnJump{builder}(state.pieces(ToMove, Piece::pawn)) ||
-                        KingJump{builder}(state.pieces(ToMove, Piece::king))
-                ;
+                return PawnJump{state}() || KingJump{state}();
         }
 };
 

@@ -25,7 +25,6 @@ class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         set_type const active_pawns;
         set_type const not_occupied;
-
 public:
         Detect(set_type const& p, set_type const& e) noexcept
         :
@@ -41,10 +40,8 @@ public:
 
         auto operator()() const noexcept
         {
-                using namespace xstd::support_literals;
                 return active_pawns.any() ? directions_lfold<left_up, right_up>() : false;
         }
-
 private:
         template<template<int> class... Directions>
         auto directions_lfold() const noexcept
