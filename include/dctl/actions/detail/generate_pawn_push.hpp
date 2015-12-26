@@ -9,6 +9,7 @@
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/state/promotion.hpp>                     // is_promotion
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t, value_t
+#include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
 namespace dctl {
@@ -29,13 +30,6 @@ class Generate<ToMove, Piece::pawn, select::push, Reverse, State, Sequence>
         set_type const not_occupied;
         Sequence& actions;
 public:
-        Generate(set_type const& p, set_type const& e, Sequence& a) noexcept
-        :
-                active_pawns{p},
-                not_occupied{e},
-                actions{a}
-        {}
-
         Generate(State const& state, Sequence& a) noexcept
         :
                 active_pawns{state.pieces(ToMove, Piece::pawn)},

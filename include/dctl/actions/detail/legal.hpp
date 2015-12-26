@@ -28,10 +28,8 @@ public:
         template<class State>
         auto count(State const& state) const
         {
-                auto num_actions = Jump{}.count(state);
-                if (!num_actions)
-                        num_actions += Push{}.count(state);
-                return num_actions;
+                auto const num_actions = Jump{}.count(state);
+                return num_actions ? num_actions : Push{}.count(state);
         }
 
         template<class State>
