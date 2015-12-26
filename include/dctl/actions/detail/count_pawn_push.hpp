@@ -26,12 +26,6 @@ class Count<ToMove, Piece::pawn, select::push, Reverse, State>
         set_type const active_pawns;
         set_type const not_occupied;
 public:
-        Count(set_type const& p, set_type const& e) noexcept
-        :
-                active_pawns{p},
-                not_occupied{e}
-        {}
-
         explicit Count(State const& state) noexcept
         :
                 active_pawns{state.pieces(ToMove, Piece::pawn)},

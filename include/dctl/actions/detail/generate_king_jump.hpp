@@ -19,8 +19,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class Builder, class Sequence>
-class Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>
+template<Color ToMove, class Reverse, class State, class Builder, class Sequence>
+class Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder, Sequence>
 {
         using board_type = board_t<Builder>;
         using rules_type = rules_t<Builder>;
@@ -31,19 +31,21 @@ class Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
+        State const& state;
         Builder& builder;
         Sequence& actions;
 public:
-        Generate(Builder& b, Sequence& a) noexcept
+        Generate(State const& s, Builder& b, Sequence& a) noexcept
         :
+                state{s},
                 builder{b},
                 actions{a}
         {}
 
-        auto operator()(set_type const& active_kings) const
+        auto operator()() const
         {
                 raii::SetKingJump<Builder> guard{builder};
-                sources(active_kings);
+                sources();
         }
 
         template<class Iterator>
@@ -54,9 +56,9 @@ public:
                 try_next(jumper);
         }
 private:
-        auto sources(set_type const& active_kings) const
+        auto sources() const
         {
-                active_kings.for_each([this](auto const& from_sq){
+                state.pieces(ToMove, Piece::king).for_each([this](auto const& from_sq){
                         raii::Launch<Builder> guard{builder, from_sq};
                         source_dispatch(from_sq, jump_category_t<rules_type>{});
                 });

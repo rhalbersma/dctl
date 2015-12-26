@@ -21,10 +21,10 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class Builder, class Sequence>
-class Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>
+template<Color ToMove, class Reverse, class State, class Builder, class Sequence>
+class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder, Sequence>
 {
-        using  KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>;
+        using  KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder, Sequence>;
         using board_type = board_t<Builder>;
         using rules_type = rules_t<Builder>;
         using   set_type =   set_t<Builder>;
@@ -37,68 +37,70 @@ class Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>
         template<class Iterator>
         static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
 
+        State const& state;
         Builder& builder;
         Sequence& actions;
 public:
-        explicit Generate(Builder& b, Sequence& a) noexcept
+        Generate(State const& s, Builder& b, Sequence& a) noexcept
         :
+                state{s},
                 builder{b},
                 actions{a}
         {}
 
-        auto operator()(set_type const& active_pawns) const
+        auto operator()() const
         {
-                if (active_pawns.any())
-                        pawn_jump_king_dispatch(active_pawns, is_pawns_jump_only_pawns_t<rules_type>{});
+                if (state.pieces(ToMove, Piece::pawn).any())
+                        pawn_jump_king_dispatch(is_pawns_jump_only_pawns_t<rules_type>{});
         }
 private:
-        auto pawn_jump_king_dispatch(set_type const& active_pawns, std::false_type) const
+        auto pawn_jump_king_dispatch(std::false_type) const
         {
-                sources(active_pawns);
+                sources();
         }
 
-        auto pawn_jump_king_dispatch(set_type const& active_pawns, std::true_type) const
+        auto pawn_jump_king_dispatch(std::true_type) const
         {
                 raii::ToggleKingTargets<Builder> guard{builder};
-                sources(active_pawns);
+                sources();
         }
 
-        auto sources(set_type const& active_pawns) const
+        auto sources() const
         {
-                sources_dispatch(active_pawns, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
+                sources_dispatch(pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
         }
 
-        auto sources_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, diagonal_jump_tag) const
+        auto sources_dispatch(forward_pawn_jump_tag, diagonal_jump_tag) const
         {
-                directions_lfold<left_up, right_up>(active_pawns);
+                directions_lfold<left_up, right_up>();
         }
 
-        auto sources_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, diagonal_jump_tag) const
+        auto sources_dispatch(backward_pawn_jump_tag, diagonal_jump_tag) const
         {
-                directions_lfold<left_up, right_up, left_down, right_down>(active_pawns);
+                directions_lfold<left_up, right_up, left_down, right_down>();
         }
 
-        auto sources_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, orthogonal_jump_tag) const
+        auto sources_dispatch(forward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                directions_lfold<up, left_up, right_up, left, right>(active_pawns);
+                directions_lfold<up, left_up, right_up, left, right>();
         }
 
-        auto sources_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, orthogonal_jump_tag) const
+        auto sources_dispatch(backward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_pawns);
+                directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>();
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const& active_pawns) const
+        auto directions_lfold() const
         {
-                return (targets<Directions<orientation>{}>(active_pawns) , ...);
+                return (targets<Directions<orientation>{}>() , ...);
         }
 
         template<int Direction>
-        auto targets(set_type const& active_pawns) const
+        auto targets() const
         {
                 jump_targets<Direction>{}(
-                        active_pawns, builder.remaining_targets(), builder.path()
+                        state.pieces(ToMove, Piece::pawn), builder.remaining_targets(), builder.path()
                 ).for_each([this](auto const& dest_sq){
                         first_target(along_ray<Direction>(dest_sq));
                 });
@@ -192,7 +194,7 @@ private:
         template<class Iterator>
         auto king_jumps_try_next(Iterator jumper) const
         {
-                KingJumps{builder, actions}.try_next(jumper, promotion_category_t<rules_type>{});
+                KingJumps{state, builder, actions}.try_next(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>

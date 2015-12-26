@@ -26,12 +26,12 @@ public:
         auto generate(State const& state, Sequence& actions) const
         {
                 using Builder = Builder<ToMove, DropDuplicates, State>;
-                using KingJump = Generate<ToMove, Piece::king, select::jump, Reverse, Builder, Sequence>;
-                using PawnJump = Generate<ToMove, Piece::pawn, select::jump, Reverse, Builder, Sequence>;
+                using KingJump = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder, Sequence>;
+                using PawnJump = Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder, Sequence>;
 
                 Builder builder{state};
-                KingJump{builder, actions}(state.pieces(ToMove, Piece::king));
-                PawnJump{builder, actions}(state.pieces(ToMove, Piece::pawn));
+                KingJump{state, builder, actions}();
+                PawnJump{state, builder, actions}();
         }
 
         template<class State>

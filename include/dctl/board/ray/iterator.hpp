@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/ray/cursor.hpp>                  // Cursor
+#include <dctl/board/ray/cursor.hpp>            // Cursor
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <iterator>                             // random_access_iterator_tag
 

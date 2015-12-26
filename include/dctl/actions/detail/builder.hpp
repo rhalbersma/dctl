@@ -330,6 +330,9 @@ private:
                 actions.emplace_back(*this);
         }
 
+/* need: begin/end, clear/empty/size, emplace_back/pop_back/back */
+/* modeled by std::vector, std::deque and std::list              */
+
         template<class SequenceContainer>
         auto precedence_dispatch(SequenceContainer& actions, std::true_type) const
         {

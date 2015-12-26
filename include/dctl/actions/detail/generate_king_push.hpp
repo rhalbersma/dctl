@@ -31,13 +31,6 @@ class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
         set_type const not_occupied;
         Sequence& actions;
 public:
-        Generate(set_type const& k, set_type const& e, Sequence& a) noexcept
-        :
-                active_kings{k},
-                not_occupied{e},
-                actions{a}
-        {}
-
         Generate(State const& state, Sequence& a) noexcept
         :
                 active_kings{state.pieces(ToMove, Piece::king)},
