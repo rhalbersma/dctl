@@ -30,16 +30,15 @@ class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
         set_type const active_kings;
         set_type const not_occupied;
         Sequence& actions;
-
 public:
-        Generate(set_type const& k, set_type const& e, Sequence& a)
+        Generate(set_type const& k, set_type const& e, Sequence& a) noexcept
         :
                 active_kings{k},
                 not_occupied{e},
                 actions{a}
         {}
 
-        Generate(State const& state, Sequence& a)
+        Generate(State const& state, Sequence& a) noexcept
         :
                 active_kings{state.pieces(ToMove, Piece::king)},
                 not_occupied{state.not_occupied()},
@@ -48,17 +47,16 @@ public:
 
         auto operator()() const
         {
-                sources_dispatch(king_range_category_t<rules_type>{});
+                king_range_dispatch(king_range_category_t<rules_type>{});
         }
-
 private:
-        auto sources_dispatch(short_ranged_tag) const
+        auto king_range_dispatch(short_ranged_tag) const
         {
                 if (active_kings.any())
                         wave_directions_lfold<left_up, right_up, left_down, right_down>();
         }
 
-        auto sources_dispatch(long_ranged_tag) const
+        auto king_range_dispatch(long_ranged_tag) const
         {
                 active_kings.for_each([&](auto const& from_sq){
                         ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq);
@@ -80,9 +78,7 @@ private:
         template<int Direction>
         auto wave_targets() const
         {
-                wave_push_targets<Direction>{}(
-                        active_kings, not_occupied
-                ).for_each([this](auto const& dest_sq){
+                wave_push_targets<Direction>{}(active_kings, not_occupied).for_each([this](auto const& dest_sq){
                         actions.emplace_back(*std::prev(along_ray<Direction>(dest_sq)), dest_sq, ToMove);
                 });
         }
@@ -90,9 +86,7 @@ private:
         template<class Iterator>
         auto ray_targets(Iterator from) const
         {
-                ray::classical(
-                        from, not_occupied
-                ).for_each([this, from](auto const& dest_sq){
+                ray::classical(from, not_occupied).for_each([this, from](auto const& dest_sq){
                         actions.emplace_back(*from, dest_sq, ToMove);
                 });
         }

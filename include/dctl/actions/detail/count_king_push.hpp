@@ -8,7 +8,6 @@
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // king_range_category
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
-#include <xstd/cstddef.hpp>                             // _z
 
 namespace dctl {
 namespace core {
@@ -27,7 +26,6 @@ class Count<ToMove, Piece::king, select::push, Reverse, State>
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
         set_type const active_kings;
         set_type const not_occupied;
-
 public:
         Count(set_type const& k, set_type const& e) noexcept
         :
@@ -43,10 +41,8 @@ public:
 
         auto operator()() const noexcept
         {
-                using namespace xstd::support_literals;
-                return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>() : 0_z;
+                return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>() : 0;
         }
-
 private:
         template<template<int> class... Directions>
         auto directions_lfold() const noexcept

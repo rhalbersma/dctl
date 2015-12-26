@@ -15,81 +15,64 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class Builder>
-class Detect<ToMove, Piece::pawn, select::jump, Reverse, Builder>
+template<Color ToMove, class Reverse, class State>
+class Detect<ToMove, Piece::pawn, select::jump, Reverse, State>
 {
-        using   board_type = board_t<Builder>;
-        using   rules_type = rules_t<Builder>;
-        using     set_type =   set_t<Builder>;
+        using   board_type = board_t<State>;
+        using   rules_type = rules_t<State>;
+        using     set_type =   set_t<State>;
 
         template<int Direction>
         using jump_targets = JumpTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        Builder& builder;
-
+        set_type const active_pawns;
+        set_type const pawn_targets;
+        set_type const not_occupied;
 public:
-        explicit Detect(Builder& b) noexcept
+        Detect(set_type const& p, set_type const& t, set_type const& e) noexcept
         :
-                builder{b}
+                active_pawns{p},
+                pawn_targets{t},
+                not_occupied{e}
         {}
 
-        auto operator()(set_type const& active_pawns) const noexcept
-        {
-                return active_pawns.any() ? king_targets_dispatch(active_pawns, is_pawns_jump_only_pawns_t<rules_type>{}) : false;
-        }
+        explicit Detect(State const& state) noexcept
+        :
+                active_pawns{state.pieces(ToMove, Piece::pawn)},
+                pawn_targets{state.pawn_targets(!ToMove)},
+                not_occupied{state.not_occupied()}
+        {}
 
+        auto operator()() const noexcept
+        {
+                return active_pawns.any() ? directions_dispatch(pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{}) : false;
+        }
 private:
-        // pawns that can capture kings
-        auto king_targets_dispatch(set_type const& active_pawns, std::false_type) const noexcept
+        auto directions_dispatch(forward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
-                return sources(active_pawns);
+                return directions_lfold<left_up, right_up>();
         }
 
-        // pawns that cannot capture kings
-        auto king_targets_dispatch(set_type const& active_pawns, std::true_type) const noexcept
+        auto directions_dispatch(backward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
-                raii::ToggleKingTargets<Builder> guard{builder};
-                return sources(active_pawns);
+                return directions_lfold<left_up, right_up, left_down, right_down>();
         }
 
-        auto sources(set_type const& active_pawns) const noexcept
+        auto directions_dispatch(forward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
-                return sources_dispatch(active_pawns, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
+                return directions_lfold<up, left_up, right_up, left, right>();
         }
 
-        auto sources_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, diagonal_jump_tag) const noexcept
+        auto directions_dispatch(backward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
-                return directions_lfold<left_up, right_up>(active_pawns);
-        }
-
-        auto sources_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, diagonal_jump_tag) const noexcept
-        {
-                return directions_lfold<left_up, right_up, left_down, right_down>(active_pawns);
-        }
-
-        auto sources_dispatch(set_type const& active_pawns, forward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
-        {
-                return directions_lfold<up, left_up, right_up, left, right>(active_pawns);
-        }
-
-        auto sources_dispatch(set_type const& active_pawns, backward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
-        {
-                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(active_pawns);
+                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>();
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const& active_pawns) const noexcept
+        auto directions_lfold() const noexcept
         {
-                return (targets<Directions<orientation>{}>(active_pawns) || ...);
-        }
-
-        template<int Direction>
-        auto targets(set_type const& active_pawns) const noexcept
-        {
-                return jump_targets<Direction>{}(
-                        active_pawns, builder.template targets<Direction>(), builder.path()
-                ).any();
+                return (jump_targets<Directions<orientation>{}>{}(active_pawns, pawn_targets, not_occupied).any() || ...);
         }
 };
 

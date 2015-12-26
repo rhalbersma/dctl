@@ -70,29 +70,39 @@ public:
 
         // observers
 
-        decltype(auto) pieces(Color c) const
+        auto pieces(Color c) const
         {
                 return piece_placement_.pieces(c);
         }
 
-        decltype(auto) pieces(Piece p) const
+        auto pieces(Piece p) const
         {
                 return piece_placement_.pieces(p);
         }
 
-        decltype(auto) pieces(Color c, Piece p) const
+        auto pieces(Color c, Piece p) const
         {
                 return piece_placement_.pieces(c, p);
         }
 
-        decltype(auto) pieces() const
+        auto pieces() const
         {
                 return piece_placement_.pieces();
         }
 
-        decltype(auto) not_occupied() const
+        auto not_occupied() const
         {
                 return piece_placement_.not_occupied();
+        }
+
+        auto king_targets(Color c) const
+        {
+                return pieces(c);
+        }
+
+        auto pawn_targets(Color c) const
+        {
+                return pawn_targets_dispatch(c, is_pawns_jump_only_pawns_t<rules_type>{});
         }
 
         auto num_pieces(Color c, Piece p) const noexcept
@@ -113,6 +123,16 @@ public:
         auto hash() const
         {
                 return std::size_t{0};
+        }
+private:
+        auto pawn_targets_dispatch(Color c, std::false_type) const
+        {
+                return pieces(c);
+        }
+
+        auto pawn_targets_dispatch(Color c, std::true_type) const
+        {
+                return pieces(c, Piece::pawn);
         }
 };
 
