@@ -61,7 +61,7 @@ using jump_category_t = std::conditional_t<
           diagonal_jump_tag
 >;
 
-XSTD_PP_TTI_CONSTANT(is_pawns_jump_only_pawns, false)
+XSTD_PP_TTI_CONSTANT(is_superior_rank_jump, false)
 
 XSTD_PP_TTI_CONSTANT(is_passing_promotion, false)
 

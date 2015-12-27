@@ -10,7 +10,7 @@ struct Italian
         static constexpr auto is_long_ranged_king = false;      // 4.7
 
         static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
-        static constexpr auto is_pawns_jump_only_pawns = true;  // 5.3(b)
+        static constexpr auto is_superior_rank_jump = true;     // 5.3(b)
 
         static constexpr auto is_quantity_precedence = true;    // 6.6
         static constexpr auto is_modality_precedence = true;    // 6.7

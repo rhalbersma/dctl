@@ -1,7 +1,7 @@
 #include <dctl/rules/italian.hpp>       // Italian
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/piece.hpp>               // king, pawn
-#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_pawns_jump_only_pawns, is_ordering, equal_to, less
+#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_superior_rank_jump, is_ordering, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                      // size_t
 #include <vector>                       // vector
@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(!is_backward_pawn_jump_v<T>);
         static_assert(!is_long_ranged_king_v<T>);
 
-        static_assert(is_pawns_jump_only_pawns_v<T>);
+        static_assert(is_superior_rank_jump_v<T>);
 
         static_assert(!is_trivial_precedence_v<T>);
         static_assert( is_quantity_precedence_v<T>);
