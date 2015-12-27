@@ -19,8 +19,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State, class Builder, class Sequence>
-class Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder, Sequence>
+template<Color ToMove, class Reverse, class State, class Builder>
+class Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>
 {
         using board_type = board_t<Builder>;
         using rules_type = rules_t<Builder>;
@@ -33,13 +33,11 @@ class Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder, Seque
 
         State const& state;
         Builder& builder;
-        Sequence& actions;
 public:
-        Generate(State const& s, Builder& b, Sequence& a) noexcept
+        Generate(State const& s, Builder& b) noexcept
         :
                 state{s},
-                builder{b},
-                actions{a}
+                builder{b}
         {}
 
         auto operator()() const
@@ -261,7 +259,7 @@ private:
         auto add_jump(std::size_t dest_sq) const
         {
                 builder.finish(dest_sq);
-                builder.append_to(actions);
+                builder.append_to();
         }
 
         template<int Direction>

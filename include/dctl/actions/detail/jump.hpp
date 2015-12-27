@@ -13,10 +13,28 @@
 #include <dctl/utility/static_vector.hpp>               // static_vector
 #include <dctl/utility/type_traits.hpp>                 // rules_t, board_t
 #include <cassert>                                      // assert
+#include <dctl/actions/detail/counter.hpp>
+#include <dctl/rule_traits.hpp>
+#include <type_traits>
 
 namespace dctl {
 namespace core {
 namespace detail {
+
+class MoveCounter
+{
+        std::size_t n{};
+public:
+        auto& operator++()
+        {
+                ++n; return *this;
+        }
+
+        auto size() const
+        {
+                return n;
+        }
+};
 
 template<Color ToMove, class DropDuplicates, class Reverse>
 class Actions<ToMove, select::jump, DropDuplicates, Reverse>
@@ -25,19 +43,30 @@ public:
         template<class State, class Sequence>
         auto generate(State const& state, Sequence& actions) const
         {
-                using Builder = Builder<ToMove, DropDuplicates, State>;
-                using KingJump = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder, Sequence>;
-                using PawnJump = Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder, Sequence>;
+                using Builder = /*std::conditional_t<
+                        std::is_same_v<Sequence, MoveCounter> && !DropDuplicates{},
+                        Counter<ToMove, DropDuplicates, State>,*/
+                        Builder<DropDuplicates, State, Sequence>;
+                //>;
 
-                Builder builder{state};
-                KingJump{state, builder, actions}();
-                PawnJump{state, builder, actions}();
+                using KingJump = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>;
+                using PawnJump = Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder>;
+
+                Builder builder{state, actions};
+                KingJump{state, builder}();
+                PawnJump{state, builder}();
         }
 
         template<class State>
         auto count(State const& state) const
         {
-                static_vector<Action<rules_t<State>, board_t<State>>> actions;
+                using counter_container = /* std::conditional_t<
+                        is_trivial_precedence_v<rules_t<State>> && !DropDuplicates{},
+                        MoveCounter,*/
+                        static_vector<Action<rules_t<State>, board_t<State>>>;
+                //>;
+
+                counter_container actions;
                 generate(state, actions);
                 return actions.size();
         }
