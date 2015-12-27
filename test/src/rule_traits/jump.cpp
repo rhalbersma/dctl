@@ -1,4 +1,4 @@
-#include <dctl/rule_traits.hpp>                 // is_backward_pawn_jump, is_pawns_jump_only_pawns, is_orthogonal_jump, capture_category, stopped_capture_tag, passing_capture_tag
+#include <dctl/rule_traits.hpp>                 // is_backward_pawn_jump, is_superior_rank_jump, is_orthogonal_jump, capture_category, stopped_capture_tag, passing_capture_tag
 #include <dctl/rules.hpp>                       // Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_SUITE(IsPawnJumpKing)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsTrue)
         {
-                static_assert(!is_pawns_jump_only_pawns_v<T>);
+                static_assert(!is_superior_rank_jump_v<T>);
         }
 
         using VariantsFalse = boost::mpl::vector
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_SUITE(IsPawnJumpKing)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsFalse)
         {
-                static_assert(is_pawns_jump_only_pawns_v<T>);
+                static_assert(is_superior_rank_jump_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

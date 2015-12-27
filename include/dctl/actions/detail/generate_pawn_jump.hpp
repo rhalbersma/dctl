@@ -10,7 +10,7 @@
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king, pawn
-#include <dctl/rule_traits.hpp>                         // is_pawns_jump_only_pawns_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
+#include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/state/promotion.hpp>                     // is_promotion
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <cassert>                                      // assert
@@ -21,10 +21,10 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State, class Builder, class Sequence>
-class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder, Sequence>
+template<Color ToMove, class Reverse, class State, class Builder>
+class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder>
 {
-        using  KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder, Sequence>;
+        using  KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>;
         using board_type = board_t<Builder>;
         using rules_type = rules_t<Builder>;
         using   set_type =   set_t<Builder>;
@@ -39,19 +39,17 @@ class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder, Seque
 
         State const& state;
         Builder& builder;
-        Sequence& actions;
 public:
-        Generate(State const& s, Builder& b, Sequence& a) noexcept
+        Generate(State const& s, Builder& b) noexcept
         :
                 state{s},
-                builder{b},
-                actions{a}
+                builder{b}
         {}
 
         auto operator()() const
         {
                 if (state.pieces(ToMove, Piece::pawn).any())
-                        pawn_jump_king_dispatch(is_pawns_jump_only_pawns_t<rules_type>{});
+                        pawn_jump_king_dispatch(is_superior_rank_jump_t<rules_type>{});
         }
 private:
         auto pawn_jump_king_dispatch(std::false_type) const
@@ -175,7 +173,7 @@ private:
         template<class Iterator>
         auto king_jumps(Iterator jumper) const
         {
-                king_jumps_dispatch(jumper, is_pawns_jump_only_pawns_t<rules_type>{});
+                king_jumps_dispatch(jumper, is_superior_rank_jump_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -194,7 +192,7 @@ private:
         template<class Iterator>
         auto king_jumps_try_next(Iterator jumper) const
         {
-                KingJumps{state, builder, actions}.try_next(jumper, promotion_category_t<rules_type>{});
+                KingJumps{state, builder}.try_next(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -306,7 +304,7 @@ private:
         auto add_jump(std::size_t dest_sq) const
         {
                 builder.finish(dest_sq);
-                builder.append_to(actions);
+                builder.append_to();
         }
 
         template<int Direction>
@@ -320,6 +318,7 @@ private:
                 return dctl::is_promotion<board_type, ToMove>(sq);
         }
 };
+
 
 }       // namespace detail
 }       // namespace core

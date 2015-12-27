@@ -102,7 +102,7 @@ public:
 
         auto pawn_targets(Color c) const
         {
-                return pawn_targets_dispatch(c, is_pawns_jump_only_pawns_t<rules_type>{});
+                return pawn_targets_dispatch(c, is_superior_rank_jump_t<rules_type>{});
         }
 
         auto num_pieces(Color c, Piece p) const noexcept
