@@ -19,7 +19,7 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class DropDuplicates, class State>
+template<class DropDuplicates, class State, class Sequence>
 class Builder
 {
 public:
@@ -29,6 +29,7 @@ public:
         using square_type = std::size_t;
 
 private:
+        Color const ToMove;
         set_type const by_piece_[2];
         set_type initial_targets_;
         set_type remaining_targets_;
@@ -38,6 +39,7 @@ private:
         Piece with_{Piece::pawn};
         Piece into_{Piece::pawn};
         set_type piece_order_;
+        Sequence& actions;
         //util::bounded_vector<square_type> visited_squares_;
         //util::bounded_vector<square_type> jumped_squares_;
 
@@ -47,13 +49,15 @@ private:
         }
 
 public:
-        explicit Builder(State const& s)
+        explicit Builder(State const& s, Sequence& a)
         :
+                ToMove{s.to_move()},
                 by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
                 initial_targets_(s.pieces(!ToMove)),
                 remaining_targets_(initial_targets_),
                 not_occupied_(s.not_occupied()),
-                piece_order_{}
+                piece_order_{},
+                actions{a}
         {
                 assert(invariant());
         }
@@ -96,7 +100,7 @@ public:
 
         auto toggle_king_targets() noexcept
         {
-                static_assert(is_pawns_jump_only_pawns_v<rules_type>);
+                static_assert(is_superior_rank_jump_v<rules_type>);
                 initial_targets_ ^= by_piece(Piece::king);
                 remaining_targets_ ^= by_piece(Piece::king);
         }
@@ -241,10 +245,9 @@ public:
                 return piece_order_;
         }
 
-        template<class SequenceContainer>
-        auto append_to(SequenceContainer& actions) const
+        auto append_to() const
         {
-                precedence_dispatch(actions, is_trivial_precedence_t<rules_type>{});
+                precedence_dispatch(is_trivial_precedence_t<rules_type>{});
         }
 
 private:
@@ -312,8 +315,7 @@ private:
                 return large_jump_v<rules_type> <= n;
         }
 
-        template<class SequenceContainer>
-        auto precedence_dispatch(SequenceContainer& actions, std::false_type) const
+        auto precedence_dispatch(std::false_type) const
         {
                 if (actions.empty())
                         return actions.emplace_back(*this);
@@ -323,7 +325,7 @@ private:
 
                 if (precedence::equal_to<rules_type>{}(*this, actions.back())) {
                         actions.emplace_back(*this);
-                        return drop_duplicates_dispatch(actions, std::false_type{}, DropDuplicates{});
+                        return drop_duplicates_dispatch(std::false_type{}, DropDuplicates{});
                 }
 
                 actions.clear();
@@ -333,34 +335,30 @@ private:
 /* need: begin/end, clear/empty/size, emplace_back/pop_back/back */
 /* modeled by std::vector, std::deque and std::list              */
 
-        template<class SequenceContainer>
-        auto precedence_dispatch(SequenceContainer& actions, std::true_type) const
+        auto precedence_dispatch(std::true_type) const
         {
                 actions.emplace_back(*this);
-                drop_duplicates_dispatch(actions, std::true_type{}, DropDuplicates{});
+                drop_duplicates_dispatch(std::true_type{}, DropDuplicates{});
         }
 
-        template<class SequenceContainer, bool B>
-        auto drop_duplicates_dispatch(SequenceContainer&, std::bool_constant<B>, std::false_type) const
+        template<bool B>
+        auto drop_duplicates_dispatch(std::bool_constant<B>, std::false_type) const
         {
                 // no-op
         }
 
-        template<class SequenceContainer>
-        auto drop_duplicates_dispatch(SequenceContainer& actions, std::false_type, std::true_type) const
+        auto drop_duplicates_dispatch(std::false_type, std::true_type) const
         {
-                drop_duplicates(actions);
+                drop_duplicates();
         }
 
-        template<class SequenceContainer>
-        auto drop_duplicates_dispatch(SequenceContainer& actions, std::true_type, std::true_type) const
+        auto drop_duplicates_dispatch(std::true_type, std::true_type) const
         {
                 if (2 <= actions.size())
                         drop_duplicates(actions);
         }
 
-        template<class SequenceContainer>
-        auto drop_duplicates(SequenceContainer& actions) const
+        auto drop_duplicates() const
         {
                 static_assert(DropDuplicates{});
                 assert(2 <= actions.size());
