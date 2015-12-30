@@ -27,82 +27,39 @@ public:
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
         using square_type = std::size_t;
+        using action_type = typename Sequence::value_type;
 
 private:
-        Color const ToMove;
-        set_type const by_piece_[2];
+        State const& state;
+        Sequence& actions;
         set_type initial_targets_;
-        set_type remaining_targets_;
         set_type not_occupied_;
-        square_type from_;
-        square_type dest_;
         Piece with_{Piece::pawn};
         Piece into_{Piece::pawn};
-        set_type piece_order_;
-        Sequence& actions;
-        //util::bounded_vector<square_type> visited_squares_;
-        //util::bounded_vector<square_type> jumped_squares_;
-
-        auto invariant() const
-        {
-                return remaining_targets_.is_subset_of(initial_targets_);
-        }
 
 public:
         explicit Builder(State const& s, Sequence& a)
         :
-                ToMove{s.to_move()},
-                by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
-                initial_targets_(s.pieces(!ToMove)),
-                remaining_targets_(initial_targets_),
-                not_occupied_(s.not_occupied()),
-                piece_order_{},
-                actions{a}
-        {
-                assert(invariant());
-        }
+                state{s},
+                actions{a},
+                initial_targets_(state.pieces(!state.to_move())),
+                not_occupied_(state.not_occupied())
+        {}
 
-        auto launch(square_type sq)
+        auto make_launch(square_type sq)
         {
-                from_ = sq;
                 not_occupied_.set(sq);
         }
 
-        auto finish(square_type sq)
+        auto undo_launch(square_type sq)
         {
-                dest_ = sq;
-        }
-
-        auto clear()
-        {
-                not_occupied_.reset(from());
-        }
-
-        auto capture(square_type sq)
-        {
-                capture_dispatch(sq, capture_category_t<rules_type>{});
-        }
-
-        auto release(square_type sq)
-        {
-                release_dispatch(sq, capture_category_t<rules_type>{});
-        }
-
-        auto visit(square_type /* sq */)
-        {
-                //visited_squares_.push_back(sq);
-        }
-
-        auto leave()
-        {
-                //visited_squares_.pop_back();
+                not_occupied_.reset(sq);
         }
 
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_v<rules_type>);
-                initial_targets_ ^= by_piece(Piece::king);
-                remaining_targets_ ^= by_piece(Piece::king);
+                initial_targets_ ^= state.pieces(!state.to_move(), Piece::king);
         }
 
         auto set_with(Piece p) noexcept
@@ -115,21 +72,21 @@ public:
                 into_ = p;
         }
 
-        auto remaining_targets() const
+        auto targets() const
         {
-                return remaining_targets_;
+                return initial_targets_;
         }
 
         template<class Iterator>
-        auto targets(Iterator it) const
+        auto targets(Iterator it, action_type current) const
         {
-                return targets<ray::direction_v<Iterator>>().test(*it);
+                return targets<ray::direction_v<Iterator>>(current).test(*it);
         }
 
         template<int Direction>
-        auto targets() const
+        auto targets(action_type current) const
         {
-                return remaining_targets_ & set_type(*std::prev(along_wave<Direction>(path())));
+                return initial_targets_ & ~current.captured() & set_type(*std::prev(along_wave<Direction>(path())));
         }
 
         auto path() const
@@ -155,34 +112,9 @@ public:
                 return path<Direction>().test(sq);
         }
 
-        auto is_last_jumped(Piece p, square_type sq) const
+        auto is_last_jumped_king(square_type sq) const
         {
-                return by_piece(p).test(sq);
-        }
-
-        auto captured() const noexcept
-        {
-                return initial_targets_ ^ remaining_targets_;
-        }
-
-        auto captured(Piece p) const noexcept
-        {
-                return captured() & by_piece(p);
-        }
-
-        auto captured_kings() const noexcept
-        {
-                return captured(Piece::king);
-        }
-
-        auto from() const
-        {
-                return from_;
-        }
-
-        auto dest() const
-        {
-                return dest_;
+                return state.pieces(Piece::king).test(sq);
         }
 
         auto with() const noexcept
@@ -217,7 +149,7 @@ public:
 
         auto to_move() const noexcept
         {
-                return ToMove;
+                return state.to_move();
         }
 
         auto is_to_move(Color c) const noexcept
@@ -227,22 +159,7 @@ public:
 
         auto num_captured() const noexcept
         {
-                return captured().count();
-        }
-
-        auto num_captured(Piece p) const noexcept
-        {
-                return captured(p).count();
-        }
-
-        auto num_captured_kings() const noexcept
-        {
-                return num_captured(Piece::king);
-        }
-
-        auto piece_order() const
-        {
-                return piece_order_;
+                return 0;
         }
 
         auto append_to() const
@@ -250,45 +167,12 @@ public:
                 precedence_dispatch(is_trivial_precedence_t<rules_type>{});
         }
 
+        auto append_to(action_type current) const
+        {
+                precedence_dispatch(current, is_trivial_precedence_t<rules_type>{});
+        }
+
 private:
-        auto capture_dispatch(square_type sq, stopped_capture_tag)
-        {
-                capture_impl(sq);
-        }
-
-        auto capture_dispatch(square_type sq, passing_capture_tag)
-        {
-                not_occupied_.set(sq);
-                capture_impl(sq);
-        }
-
-        auto capture_impl(square_type sq)
-        {
-                if (is_king(sq))
-                        piece_order_.set(reverse_index(num_captured()));
-                //jumped_squares_.push_back(sq);
-                remaining_targets_.reset(sq);
-        }
-
-        auto release_dispatch(square_type sq, stopped_capture_tag)
-        {
-                release_impl(sq);
-        }
-
-        auto release_dispatch(square_type sq, passing_capture_tag)
-        {
-                release_impl(sq);
-                not_occupied_.reset(sq);
-        }
-
-        auto release_impl(square_type sq)
-        {
-                remaining_targets_.set(sq);
-                //jumped_squares_.pop_back();
-                if (is_king(sq))
-                        piece_order_.reset(reverse_index(num_captured()));
-        }
-
         template<int Direction>
         static auto along_wave(set_type const& s)
         {
@@ -297,12 +181,7 @@ private:
 
         auto is_king(square_type sq) const
         {
-                return by_piece(Piece::king).test(sq);
-        }
-
-        auto by_piece(Piece p) const
-        {
-                return by_piece_[xstd::to_underlying_type(p)];
+                return state.pieces(Piece::king).test(sq);
         }
 
         auto reverse_index(std::size_t n) const noexcept
@@ -315,55 +194,52 @@ private:
                 return large_jump_v<rules_type> <= n;
         }
 
-        auto precedence_dispatch(std::false_type) const
-        {
-                if (actions.empty())
-                        return actions.emplace_back(*this);
-
-                if (precedence::less<rules_type>{}(*this, actions.back()))
-                        return;
-
-                if (precedence::equal_to<rules_type>{}(*this, actions.back())) {
-                        actions.emplace_back(*this);
-                        return drop_duplicates_dispatch(std::false_type{}, DropDuplicates{});
-                }
-
-                actions.clear();
-                actions.emplace_back(*this);
-        }
-
-/* need: begin/end, clear/empty/size, emplace_back/pop_back/back */
+/* need: begin/end, clear/empty, push_back/pop_back/back */
 /* modeled by std::vector, std::deque and std::list              */
 
-        auto precedence_dispatch(std::true_type) const
+        auto precedence_dispatch(action_type const& current, std::false_type) const
         {
-                actions.emplace_back(*this);
-                drop_duplicates_dispatch(std::true_type{}, DropDuplicates{});
+                if (actions.empty())
+                        return actions.push_back(current);
+
+                if (precedence::equal_to<rules_type>{}(current, actions.back()))
+                        return drop_duplicates_dispatch(current, std::false_type{}, DropDuplicates{});
+
+                if (precedence::less<rules_type>{}(current, actions.back()))
+                        return;
+
+                actions.clear();
+                actions.push_back(current);
+        }
+
+        auto precedence_dispatch(action_type const& current, std::true_type) const
+        {
+                drop_duplicates_dispatch(current, std::true_type{}, DropDuplicates{});
         }
 
         template<bool B>
-        auto drop_duplicates_dispatch(std::bool_constant<B>, std::false_type) const
+        auto drop_duplicates_dispatch(action_type const& current, std::bool_constant<B>, std::false_type) const
         {
-                // no-op
+                actions.push_back(current);
         }
 
-        auto drop_duplicates_dispatch(std::false_type, std::true_type) const
+        auto drop_duplicates_dispatch(action_type const& current, std::false_type, std::true_type) const
         {
-                drop_duplicates();
+                drop_duplicates(current);
         }
 
-        auto drop_duplicates_dispatch(std::true_type, std::true_type) const
+        auto drop_duplicates_dispatch(action_type const& current, std::true_type, std::true_type) const
         {
-                if (2 <= actions.size())
-                        drop_duplicates(actions);
+                if (!actions.empty())
+                        drop_duplicates(current);
         }
 
-        auto drop_duplicates() const
+        auto drop_duplicates(action_type const& current) const
         {
                 static_assert(DropDuplicates{});
-                assert(2 <= actions.size());
-                if (is_large(actions.back().num_captured()) && std::find(actions.begin(), actions.end(), actions.back()) != std::prev(actions.end()))
-                        actions.pop_back();
+                assert(!actions.empty());
+                if (!is_large(current.num_captured()) || std::find(actions.begin(), actions.end(), current) == actions.end())
+                        actions.push_back(current);
         }
 };
 
