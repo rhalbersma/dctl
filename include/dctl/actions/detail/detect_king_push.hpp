@@ -3,6 +3,7 @@
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/board/wave/patterns.hpp>                 // PushTargets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
