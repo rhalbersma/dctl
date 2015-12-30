@@ -1,11 +1,9 @@
 #pragma once
-#include <dctl/actions/detail/raii.hpp>                 // ToggleKingTargets
-#include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/detail/detect_primary_fwd.hpp>   // Detect (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/orientation.hpp>                   // orientation_v
-#include <dctl/board/wave/patterns.hpp>                 // Targets
+#include <dctl/board/wave/patterns.hpp>                 // JumpTargets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_superior_rank_jump
