@@ -11,10 +11,11 @@ template<class Builder>
 class Launch
 {
         Builder& builder;
+        std::size_t square;
 public:
         ~Launch()
         {
-                builder.clear();
+                builder.undo_launch(square);
         }
 
         Launch(Launch const&) = delete;
@@ -22,32 +23,10 @@ public:
 
         Launch(Builder& b, std::size_t sq)
         :
-                builder{b}
+                builder{b},
+                square{sq}
         {
-                builder.launch(sq);
-        }
-};
-
-template<class Builder>
-class Capture
-{
-        Builder& builder;
-        using square_type = square_t<Builder>;
-        square_type square;
-public:
-        ~Capture()
-        {
-                builder.release(square);
-        }
-
-        Capture(Capture const&) = delete;
-        Capture& operator=(Capture const&) = delete;
-
-        Capture(Builder& b, std::size_t sq)
-        :
-                builder{b}, square{static_cast<square_type>(sq)}
-        {
-                builder.capture(square);
+                builder.make_launch(square);
         }
 };
 

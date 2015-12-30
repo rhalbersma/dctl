@@ -37,6 +37,50 @@ public:
                 Action{create(set_type{src, dst}, set_type{}, set_type{src, dst}, to_move)}
         {}
 
+        Action(Color c)
+        :
+               by_color{},
+               kings_{},
+               to_move_{c}
+        {}
+
+        auto pawn_jump_depart(std::size_t src)
+        {
+                pieces(to_move_).flip(src);
+        }
+
+        auto pawn_jump_arrive(std::size_t dst)
+        {
+                pieces(to_move_).flip(dst);
+        }
+
+        auto king_jump_depart(std::size_t src)
+        {
+                pieces(to_move_).flip(src);
+                kings_.flip(src);
+        }
+
+        auto king_jump_arrive(std::size_t dst)
+        {
+                pieces(to_move_).flip(dst);
+                kings_.flip(dst);
+        }
+
+        auto capture(std::size_t sq)
+        {
+                pieces(!to_move_).flip(sq);
+        }
+
+        auto promote(std::size_t dst)
+        {
+                kings_.flip(dst);
+        }
+
+        auto king_captures(set_type const& k)
+        {
+                kings_ ^= captured() & k;
+        }
+
         template<class Builder>
         Action(Builder const& b)
         :
@@ -60,9 +104,14 @@ public:
                 return kings_;
         }
 
+        auto captured() const noexcept
+        {
+                return pieces(!to_move_);
+        }
+
         auto num_captured() const noexcept
         {
-                return pieces(!to_move_).count();
+                return captured().count();
         }
 
 private:

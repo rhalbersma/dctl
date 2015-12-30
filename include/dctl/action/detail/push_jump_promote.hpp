@@ -56,6 +56,23 @@ public:
                 assert(invariant());
         }
 
+        PushJumpPromote(Color)
+        :
+                captured_{},
+                from_{},
+                dest_{},
+                with_{Piece::pawn},
+                into_{Piece::king}
+        {}
+
+        auto pawn_jump_depart(std::size_t src) { from_ = static_cast<square_type>(src); }
+        auto pawn_jump_arrive(std::size_t dst) { dest_ = static_cast<square_type>(dst); }
+        auto king_jump_depart(std::size_t src) { from_ = static_cast<square_type>(src); }
+        auto king_jump_arrive(std::size_t dst) { dest_ = static_cast<square_type>(dst); }
+        auto capture(std::size_t sq) { captured_.set(sq); }
+        auto promote(std::size_t) { into_ = Piece::king; }
+        auto king_captures(set_type const&) {}
+
         // jump
         template<class Builder>
         explicit constexpr PushJumpPromote(Builder const& b)

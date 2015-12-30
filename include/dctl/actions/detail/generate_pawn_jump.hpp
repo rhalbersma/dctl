@@ -28,6 +28,7 @@ class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder>
         using board_type = board_t<Builder>;
         using rules_type = rules_t<Builder>;
         using   set_type =   set_t<Builder>;
+        using action_type = typename Builder::action_type;
 
         template<int Direction>
         using jump_targets = JumpTargets<board_type, Direction, short_ranged_tag>;
@@ -98,213 +99,211 @@ private:
         auto targets() const
         {
                 jump_targets<Direction>{}(
-                        state.pieces(ToMove, Piece::pawn), builder.remaining_targets(), builder.path()
+                        state.pieces(ToMove, Piece::pawn), builder.targets(), builder.path()
                 ).for_each([this](auto const& dest_sq){
-                        first_target(along_ray<Direction>(dest_sq));
+                        first_target(along_ray<Direction>(dest_sq), action_type{ToMove});
                 });
         }
 
         template<class Iterator>
-        auto first_target(Iterator jumper) const
+        auto first_target(Iterator jumper, action_type current) const
         {
                 assert(is_onboard(jumper));
                 raii::Launch<Builder> guard{builder, *std::prev(jumper)};
-                capture(jumper);
+                current.pawn_jump_depart(*std::prev(jumper));
+                capture(jumper, current);
         }
 
         template<class Iterator>
-        auto capture(Iterator jumper) const
+        auto capture(Iterator jumper, action_type current) const
         {
                 assert(is_onboard(jumper));
-                raii::Capture<Builder> guard{builder, *jumper};
-                land(std::next(jumper));
+                current.capture(*jumper);
+                land(std::next(jumper), current);
         }
 
         template<class Iterator>
-        auto land(Iterator jumper) const
+        auto land(Iterator jumper, action_type current) const
         {
                 assert(is_onboard(jumper));
-                try_promotion(jumper);
+                try_promotion(jumper, current);
         }
 
         template<class Iterator>
-        auto try_promotion(Iterator jumper) const
+        auto try_promotion(Iterator jumper, action_type current) const
         {
-                try_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
+                try_promotion_dispatch(jumper, current, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto try_promotion_dispatch(Iterator jumper, stopped_promotion_tag) const
+        auto try_promotion_dispatch(Iterator jumper, action_type current, stopped_promotion_tag) const
         {
-                if (next_target(jumper))
+                if (next_target(jumper, current))
                         return;
                 if (is_promotion(*jumper))
-                        return on_promotion(jumper);
-                add_jump(*jumper);
+                        return on_promotion(jumper, current);
+                add_jump(*jumper, current);
         }
 
         template<class Iterator>
-        auto try_promotion_dispatch(Iterator jumper, passing_promotion_tag) const
+        auto try_promotion_dispatch(Iterator jumper, action_type current, passing_promotion_tag) const
         {
                 if (is_promotion(*jumper))
-                        return on_promotion(jumper);
-                try_next(jumper);
+                        return on_promotion(jumper, current);
+                try_next(jumper, current);
         }
 
         template<class Iterator>
-        auto on_promotion(Iterator jumper) const
+        auto on_promotion(Iterator jumper, action_type current) const
         {
                 raii::SetPromotion<Builder> guard{builder};
-                on_promotion_dispatch(jumper, promotion_category_t<rules_type>{});
+                on_promotion_dispatch(jumper, current, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto on_promotion_dispatch(Iterator jumper, stopped_promotion_tag) const
+        auto on_promotion_dispatch(Iterator jumper, action_type current, stopped_promotion_tag) const
         {
-                add_jump(*jumper);
+                add_jump(*jumper, current);
         }
 
         template<class Iterator>
-        auto on_promotion_dispatch(Iterator jumper, passing_promotion_tag) const
+        auto on_promotion_dispatch(Iterator jumper, action_type current, passing_promotion_tag) const
         {
-                king_jumps(jumper);
+                king_jumps_dispatch(jumper, current, is_superior_rank_jump_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto king_jumps(Iterator jumper) const
+        auto king_jumps_dispatch(Iterator jumper, action_type current, std::false_type) const
         {
-                king_jumps_dispatch(jumper, is_superior_rank_jump_t<rules_type>{});
+                king_jumps_try_next(jumper, current);
         }
 
         template<class Iterator>
-        auto king_jumps_dispatch(Iterator jumper, std::false_type) const
-        {
-                king_jumps_try_next(jumper);
-        }
-
-        template<class Iterator>
-        auto king_jumps_dispatch(Iterator jumper, std::true_type) const
+        auto king_jumps_dispatch(Iterator jumper, action_type current, std::true_type) const
         {
                 raii::ToggleKingTargets<Builder> guard{builder};
-                king_jumps_try_next(jumper);
+                king_jumps_try_next(jumper, current);
         }
 
         template<class Iterator>
-        auto king_jumps_try_next(Iterator jumper) const
+        auto king_jumps_try_next(Iterator jumper, action_type current) const
         {
-                KingJumps{state, builder}.try_next(jumper, promotion_category_t<rules_type>{});
+                KingJumps{state, builder}.try_next(jumper, current, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto try_next(Iterator jumper) const
+        auto try_next(Iterator jumper, action_type current) const
         {
-                if (!next_target(jumper))
-                        add_jump(*jumper);
+                if (!next_target(jumper, current))
+                        add_jump(*jumper, current);
         }
 
         template<class Iterator>
-        auto next_target(Iterator jumper) const
+        auto next_target(Iterator jumper, action_type current) const
         {
                 //raii::Visit<Builder> guard{builder, *jumper};
-                return scan(jumper) | turn(jumper);
+                return scan(jumper, current) | turn(jumper, current);
         }
 
         template<class Iterator>
-        auto turn(Iterator jumper) const
+        auto turn(Iterator jumper, action_type current) const
         {
-                return turn_dispatch(jumper, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
+                return turn_dispatch(jumper, current, pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, forward_pawn_jump_tag, diagonal_jump_tag) const
+        auto turn_dispatch(Iterator jumper, action_type current, forward_pawn_jump_tag, diagonal_jump_tag) const
         {
                 static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                return scan(ray::mirror<up<orientation>{}>(jumper));
+                return scan(ray::mirror<up<orientation>{}>(jumper), current);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, backward_pawn_jump_tag, diagonal_jump_tag) const
+        auto turn_dispatch(Iterator jumper, action_type current, backward_pawn_jump_tag, diagonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>));
-                return rotate_directions_lfold<+90_deg, -90_deg>(jumper);
+                return rotate_directions_lfold<+90_deg, -90_deg>(jumper, current);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, forward_pawn_jump_tag, orthogonal_jump_tag) const
+        auto turn_dispatch(Iterator jumper, action_type current, forward_pawn_jump_tag, orthogonal_jump_tag) const
         {
                 static_assert(!is_down(direction_v<Iterator>));
-                return turn_dispatch(jumper, angle_constant<direction_v<Iterator>>{});
+                return turn_dispatch(jumper, current, angle_constant<direction_v<Iterator>>{});
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, up<orientation>) const
+        auto turn_dispatch(Iterator jumper, action_type current, up<orientation>) const
         {
-                return turn_directions_lfold<left_up, right_up, left, right>(jumper);
+                return turn_directions_lfold<left_up, right_up, left, right>(jumper, current);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, left_up<orientation>) const
+        auto turn_dispatch(Iterator jumper, action_type current, left_up<orientation>) const
         {
-                return turn_directions_lfold<up, right_up, left, right>(jumper);
+                return turn_directions_lfold<up, right_up, left, right>(jumper, current);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, right_up<orientation>) const
+        auto turn_dispatch(Iterator jumper, action_type current, right_up<orientation>) const
         {
-                return turn_directions_lfold<up, left_up, left, right>(jumper);
+                return turn_directions_lfold<up, left_up, left, right>(jumper, current);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, left<orientation>) const
+        auto turn_dispatch(Iterator jumper, action_type current, left<orientation>) const
         {
-                return turn_directions_lfold<up, left_up, right_up>(jumper);
+                return turn_directions_lfold<up, left_up, right_up>(jumper, current);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, right<orientation>) const
+        auto turn_dispatch(Iterator jumper, action_type current, right<orientation>) const
         {
-                return turn_directions_lfold<up, left_up, right_up>(jumper);
+                return turn_directions_lfold<up, left_up, right_up>(jumper, current);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, backward_pawn_jump_tag, orthogonal_jump_tag) const
+        auto turn_dispatch(Iterator jumper, action_type current, backward_pawn_jump_tag, orthogonal_jump_tag) const
         {
-                return rotate_directions_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper);
+                return rotate_directions_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper, current);
         }
 
         template<template<int> class... Directions, class Iterator>
-        auto turn_directions_lfold(Iterator jumper) const
+        auto turn_directions_lfold(Iterator jumper, action_type current) const
         {
-                return (scan(ray::turn<Directions<orientation>{}>(jumper)) | ...);
+                return (scan(ray::turn<Directions<orientation>{}>(jumper), current) | ...);
         }
 
         template<int... Directions, class Iterator>
-        auto rotate_directions_lfold(Iterator jumper) const
+        auto rotate_directions_lfold(Iterator jumper, action_type current) const
         {
-                return (scan(ray::rotate<Directions>(jumper)) | ...);
+                return (scan(ray::rotate<Directions>(jumper), current) | ...);
         }
 
         template<class Iterator>
-        auto scan(Iterator jumper) const
+        auto scan(Iterator jumper, action_type current) const
         {
-                return is_en_prise(std::next(jumper));
+                return is_en_prise(std::next(jumper), current);
         }
 
         template<class Iterator>
-        auto is_en_prise(Iterator jumper) const
+        auto is_en_prise(Iterator jumper, action_type current) const
         {
-                if (!(is_onboard(jumper) && builder.targets(jumper)))
+                if (!(is_onboard(jumper) && builder.targets(jumper, current)))
                         return false;
 
                 assert(is_onboard(std::next(jumper)));
-                capture(jumper);
+                capture(jumper, current);
                 return true;
         }
 
-        auto add_jump(std::size_t dest_sq) const
+        auto add_jump(std::size_t dest_sq, action_type current) const
         {
-                builder.finish(dest_sq);
-                builder.append_to();
+                current.pawn_jump_arrive(dest_sq);
+                if (builder.is_promotion())
+                        current.promote(dest_sq);
+                current.king_captures(state.pieces(!ToMove, Piece::king));
+                builder.append_to(current);
         }
 
         template<int Direction>
