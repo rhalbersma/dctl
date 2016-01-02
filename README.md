@@ -38,34 +38,38 @@ Requirements
 
 ### Platforms
 
-The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian) with at least `libstdc++` from `g++` >= 5.1.0 (e.g. Mint >= 17, Ubuntu >= 14.04, Debian >= jessie). Note that `libstdc++` comes pre-installed on almost every Linux distribution. The following commands get all the other requirements:
+The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian). The following commands get all the requirements:
 
-      # Get a fresh system and install build tools and pre-compiled Boost Libraries
-      sudo apt-get update
-      sudo apt-get install tortoisehg python-iniparse cmake make libboost1.55-all-dev
+	# Add Ubuntu toolchain test PPA
+	# https://launchpad.net/~ubuntu-toolchain-r/+archive/ubuntu/test 
+	sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 
-      # Add LLVM repositories and GPG key 
-      sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.5 main"
-      sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.6 main"
-      sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main"
-      wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
-      
-      # install Clang 3.5, 3.6 and SVN development version
-      sudo apt-get install clang-3.5 lldb-3.5 
-      sudo apt-get install clang-3.6 lldb-3.6 
-      sudo apt-get install clang-3.7 lldb-3.7     
+	# Add LLVM repositories and GPG key 
+	# http://llvm.org/apt/ 
+	sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main"
+	sudo add-apt-repository "deb-src http://llvm.org/apt/trusty/ llvm-toolchain-trusty main"
+	sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.6 main"
+	sudo add-apt-repository "deb-src http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.6 main"
+	sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main"
+	sudo add-apt-repository "deb-src http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main" 
+	wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
+	sudo apt-get update
 
-      # Get a PPA for libc++ and libc++abi
-      sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-      sudo apt-get install libc++-dev libc++abi-dev
-      
-      # Patch clang -fuse-ld=gold flag
-      cd /usr/bin/
-      sudo ln -sf ld.gold ld
+	# Install dependencies
+	sudo apt-get install git git-flow mercurial subversion cmake make
+	sudo apt-get install g++-5 libc++abi-dev libboost1.55-all-dev
+	sudo apt-get install clang-3.6 lldb-3.6 
+	sudo apt-get install clang-3.7 lldb-3.7
+	sudo apt-get install clang-3.8 lldb-3.8
+	sudo sh ./install_libcxx.sh
+
+	# Configure compiler to Clang 3.8
+	sudo update-alternatives --remove-all c++
+	sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 10
 
 ### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that targets the latest [C++14 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4296.pdf). This currently restricts usage of the DCTL to [Clang](http://clang.llvm.org/cxx_status.html) versions 3.4 or higher. Testing takes place using Clang versions 3.5.2 and 3.6.1, as well as the latest SVN version. Note that g++-5.1.0 currently has several bugs related to relaxed `constexpr`, all of which have been submitted to GCC Bugzilla. Microsoft Visual C++ 2015 is not C++14 feature-complete (it is missing relaxed `constexpr` and variable templates) and is not supported.  
+The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4567.pdf). This currently restricts usage of the DCTL to [Clang](http://clang.llvm.org/cxx_status.html) version 3.8 SVN including the latest libc++ Standard Library. Note that g++-5.3.0 and libstdc++ currently have several bugs related to relaxed `constexpr`, all of which have been submitted and fixed, but the fixes will appear in g++ 6 (Spring of 2016). Microsoft Visual C++ 2015 is not C++14 feature-complete (it is missing relaxed `constexpr` and variable templates) and is not supported.  
 
 ### Boost headers
 
@@ -118,7 +122,7 @@ To completely regenerate the test-suite's build solution, simply delete the cont
 
       make clean
       make -j10
-      ctest -j10 -E "walk|search|game|index" 
+      ctest -j10 -E "walk|search|index" 
 
 If you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
@@ -140,7 +144,7 @@ Special thanks to Aart Bik, Ed Gilbert, Walter Thoen and Wieger Wesselink for en
 License
 -------
 
-Copyright Rein Halbersma 2010 - 2015.   
+Copyright Rein Halbersma 2010 - 2016.   
 Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).   
 (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 	
