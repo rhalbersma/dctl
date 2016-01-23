@@ -17,7 +17,7 @@ struct Checkers
 
         // Capturing Move Of A Man
         static constexpr auto is_backward_pawn_jump = false;    // 1.18
-        static constexpr auto is_superior_rank_jump = false; // 1.18
+        static constexpr auto is_superior_rank_jump = false;    // 1.18
 
         // Capturing In General
         static constexpr auto is_passing_promotion = false;     // 1.19
