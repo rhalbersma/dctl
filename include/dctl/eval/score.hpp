@@ -25,7 +25,7 @@ static void print_break_down(State const& p)
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout<< '\n';
-        std::cout << "Action    " << std::setw(6) << Feature<Color::black>::material(p) << std::setw(6) << Feature<Color::white>::material(p) << std::setw(6) << Delta<Color::black>::material(p) << '\n';
+        std::cout << "Action  " << std::setw(6) << Feature<Color::black>::material(p) << std::setw(6) << Feature<Color::white>::material(p) << std::setw(6) << Delta<Color::black>::material(p) << '\n';
         std::cout << "Tempo   " << std::setw(6) << Feature<Color::black>::tempo(p)    << std::setw(6) << Feature<Color::white>::tempo(p)    << std::setw(6) << Delta<Color::black>::tempo(p)    << '\n';
         std::cout << "Center  " << std::setw(6) << Feature<Color::black>::center(p)   << std::setw(6) << Feature<Color::white>::center(p)   << std::setw(6) << Delta<Color::black>::center(p)   << '\n';
         std::cout << "Balance " << std::setw(6) << Feature<Color::black>::balance(p)  << std::setw(6) << Feature<Color::white>::balance(p)  << std::setw(6) << Delta<Color::black>::balance(p)  << '\n';
