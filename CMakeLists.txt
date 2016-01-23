@@ -30,6 +30,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-padded")
 # http://hadesmem.googlecode.com/svn-history/r1861/trunk/tests/injector.cpp
 # http://stackoverflow.com/a/15708829/819272 for a rationale for this warning by Howard Hinnant
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-global-constructors")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-disabled-macro-expansion")
 
 # TODO: DXP message classes with virtual functions should not be header-only
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
@@ -37,7 +38,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
 # optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto -march=native -mtune=native")
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lc++abi -flto -fuse-ld=gold")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi -flto -fuse-ld=gold")
 
 ###############################################################
 # DEPENDENCIES
@@ -62,9 +63,10 @@ add_definitions(-DRANGES_SUPPRESS_IOTA_WARNING)
 #----------------
 # Boost libraries
 #----------------
-find_package(Boost)
+find_package(Boost 1.60.0 REQUIRED COMPONENTS chrono system timer unit_test_framework)
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 add_definitions(-D BOOST_ALL_DYN_LINK)
+add_definitions(-D BOOST_TEST_MAIN)
 
 ###############################################################
 # COMPONENTS

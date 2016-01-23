@@ -1,6 +1,3 @@
-set( Boost_USE_STATIC_LIBS ON ) 
-find_package(Boost REQUIRED program_options)
-
 ###############################################################
 # executables
 ###############################################################

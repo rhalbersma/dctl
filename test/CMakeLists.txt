@@ -1,13 +1,4 @@
 ###############################################################
-# Boost.Test
-###############################################################
-
-find_package(Boost REQUIRED unit_test_framework)
-include_directories(${Boost_INCLUDE_DIRS})
-add_definitions(-D BOOST_TEST_MAIN)
-add_definitions(-D BOOST_TEST_DYN_LINK)
-
-###############################################################
 # include and source directories
 ###############################################################
 
@@ -31,3 +22,4 @@ foreach(t ${targets})
   target_link_libraries(${target_id} ${Boost_LIBRARIES})
   add_test(${target_id} ${target_id})    
 endforeach()
+
