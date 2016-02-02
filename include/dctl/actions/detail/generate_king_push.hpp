@@ -59,13 +59,13 @@ private:
         template<template<int> class... Directions>
         auto wave_directions_lfold() const
         {
-                return (wave_targets<Directions<orientation>{}>() , ...);
+                return (..., wave_targets<Directions<orientation>{}>());
         }
 
         template<template<int> class... Directions>
         auto ray_directions_lfold(std::size_t from) const
         {
-                return (ray_targets(along_ray<Directions<orientation>{}>(from)) , ...);
+                return (..., ray_targets(along_ray<Directions<orientation>{}>(from)));
         }
 
         template<int Direction>
