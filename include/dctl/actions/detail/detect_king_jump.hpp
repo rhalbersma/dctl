@@ -54,7 +54,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold() const noexcept
         {
-                return (jump_targets<Directions<orientation>{}>{}(active_kings, king_targets, not_occupied).any() || ...);
+                return (... || jump_targets<Directions<orientation>{}>{}(active_kings, king_targets, not_occupied).any());
         }
 };
 

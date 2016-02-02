@@ -46,7 +46,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold() const
         {
-                return (targets<Directions<orientation>{}>() , ...);
+                return (..., targets<Directions<orientation>{}>());
         }
 
         template<int Direction>

@@ -78,7 +78,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(std::size_t from_sq, action_type current) const
         {
-                return (first_target(along_ray<Directions<orientation>{}>(from_sq), current) , ...);
+                return (..., first_target(along_ray<Directions<orientation>{}>(from_sq), current));
         }
 
         template<class Iterator>
@@ -189,7 +189,7 @@ private:
         template<int... Directions, class Iterator>
         auto rotate_directions_lfold(Iterator jumper, action_type current) const
         {
-                return (scan(ray::rotate<Directions>(jumper), current) | ...);
+                return (... | scan(ray::rotate<Directions>(jumper), current));
         }
 
         template<class Iterator>

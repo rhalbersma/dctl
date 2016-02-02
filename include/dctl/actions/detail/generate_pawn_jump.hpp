@@ -92,7 +92,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold() const
         {
-                return (targets<Directions<orientation>{}>() , ...);
+                return (..., targets<Directions<orientation>{}>());
         }
 
         template<int Direction>
@@ -271,13 +271,13 @@ private:
         template<template<int> class... Directions, class Iterator>
         auto turn_directions_lfold(Iterator jumper, action_type current) const
         {
-                return (scan(ray::turn<Directions<orientation>{}>(jumper), current) | ...);
+                return (... | scan(ray::turn<Directions<orientation>{}>(jumper), current));
         }
 
         template<int... Directions, class Iterator>
         auto rotate_directions_lfold(Iterator jumper, action_type current) const
         {
-                return (scan(ray::rotate<Directions>(jumper), current) | ...);
+                return (... | scan(ray::rotate<Directions>(jumper), current));
         }
 
         template<class Iterator>
