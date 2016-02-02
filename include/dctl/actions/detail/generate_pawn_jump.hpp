@@ -7,7 +7,7 @@
 #include <dctl/board/angle.hpp>                         // _deg, rotate, inverse
 #include <dctl/board/orientation.hpp>                   // orientation_v
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/board/wave.hpp>                          // make_iterator
+#include <dctl/board/wave.hpp>                          // make_iterator, JumpTargets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t

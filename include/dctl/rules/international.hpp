@@ -22,10 +22,10 @@ struct International
 
         struct precedence_tuple
         {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
+                template<class Action, class... State>
+                constexpr auto operator()(Action const& a, State const&... s) const noexcept
                 {
-                        return a.num_captured();
+                        return a.num_captured(s...);
                 }
         };
 

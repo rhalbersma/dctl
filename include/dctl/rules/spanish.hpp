@@ -15,11 +15,12 @@ struct Spanish
 
         struct precedence_tuple
         {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
+                template<class Action, class... State>
+                constexpr auto operator()(Action const& a, State const&... s) const noexcept
                 {
                         return std::make_tuple(
-                                a.num_captured(), a.num_captured_kings()
+                                a.num_captured(s...),
+                                a.num_captured_kings(s...)
                         );
                 }
         };

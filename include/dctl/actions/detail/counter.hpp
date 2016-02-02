@@ -19,7 +19,7 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class DropDuplicates, class State>
+template<Color ToMove, class DuplicatesPolicy, class State>
 class Counter
 {
 public:

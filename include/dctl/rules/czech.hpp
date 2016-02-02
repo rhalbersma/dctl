@@ -15,10 +15,10 @@ struct Czech
 
         struct precedence_tuple
         {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
+                template<class Action, class... State>
+                constexpr auto operator()(Action const& a, State const&... s) const noexcept
                 {
-                        return a.is_with_king();
+                        return a.is_with_king(s...);
                 }
         };
 };

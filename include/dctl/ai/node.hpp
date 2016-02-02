@@ -10,7 +10,7 @@ constexpr auto result(State const& s, Action const& a) noexcept
 }
 
 template<class State, class Action>
-class Node
+struct Node
 {
         State state;
         Node const* parent = nullptr;
