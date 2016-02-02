@@ -134,91 +134,107 @@ struct empty_tuple
 
 XSTD_PP_TTI_TYPENAME(precedence_tuple, empty_tuple)
 
-template<class Rules>
-constexpr auto is_trivial_precedence_v = !is_precedence_tuple_v<Rules>;
+using    trivial_precedence_tag = std::false_type;
+using nontrivial_precedence_tag = std::true_type;
 
 template<class Rules>
-using is_trivial_precedence_t = std::bool_constant<is_trivial_precedence_v<Rules>>;
+using precedence_category_t = std::conditional_t<
+        is_precedence_tuple_v<Rules>,
+        nontrivial_precedence_tag,
+           trivial_precedence_tag
+>;
+
+template<class Rules>
+using is_trivial_precedence_t = std::is_same<
+        precedence_category_t<Rules>,
+        trivial_precedence_tag
+>;
+
+template<class Rules>
+constexpr auto is_trivial_precedence_v = is_trivial_precedence_t<Rules>::value;
+
+using keep_duplicates_tag = std::false_type;
+using drop_duplicates_tag = std::true_type;
 
 namespace precedence {
 
 template<class Rules>
 struct equal_to
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+        template<class Action1, class Action2, class... State>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
         {
-                return precedence_tuple_t<Rules>{}(lhs) == precedence_tuple_t<Rules>{}(rhs);
+                return precedence_tuple_t<Rules>{}(a1, s...) == precedence_tuple_t<Rules>{}(a2, s...);
         }
 };
 
 template<class Rules>
 struct less
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+        template<class Action1, class Action2, class... State>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
         {
-                return precedence_tuple_t<Rules>{}(lhs) < precedence_tuple_t<Rules>{}(rhs);
+                return precedence_tuple_t<Rules>{}(a1, s...) < precedence_tuple_t<Rules>{}(a2, s...);
         }
 };
 
 template<class Rules>
 struct not_equal_to
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+        template<class Action1, class Action2, class... State>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
         {
-                return !equal_to<Rules>{}(lhs, rhs);
+                return !equal_to<Rules>{}(a1, a2, s...);
         }
 };
 
 template<class Rules>
 struct greater
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+        template<class Action1, class Action2, class... State>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
         {
-                return less<Rules>{}(rhs, lhs);
+                return less<Rules>{}(a2, a1, s...);
         }
 };
 
 template<class Rules>
 struct greater_equal
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+        template<class Action1, class Action2, class... State>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
         {
-                return !less<Rules>{}(lhs, rhs);
+                return !less<Rules>{}(a1, a2, s...);
         }
 };
 
 template<class Rules>
 struct less_equal
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+        template<class Action1, class Action2, class... State>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
         {
-                return !less<Rules>{}(rhs, lhs);
+                return !less<Rules>{}(a2, a1, s...);
         }
 };
 
 template<class Rules>
 struct equivalent_to
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+        template<class Action1, class Action2, class... State>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
         {
-                return !(less<Rules>{}(lhs, rhs) || less<Rules>{}(rhs, lhs));
+                return !(less<Rules>{}(a1, a2, s...) || less<Rules>{}(a2, a1, s...));
         }
 };
 
 template<class Rules>
 struct not_equivalent_to
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& lhs, Action2 const& rhs) const noexcept
+        template<class Action1, class Action2, class... State>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
         {
-                return !equivalent_to<Rules>{}(lhs, rhs);
+                return !equivalent_to<Rules>{}(a1, a2, s...);
         }
 };
 

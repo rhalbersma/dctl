@@ -36,17 +36,17 @@ public:
         }
 };
 
-template<Color ToMove, class DropDuplicates, class Reverse>
-class Actions<ToMove, select::jump, DropDuplicates, Reverse>
+template<Color ToMove, class DuplicatesPolicy, class Reverse>
+class Actions<ToMove, select::jump, DuplicatesPolicy, Reverse>
 {
 public:
         template<class State, class Sequence>
         auto generate(State const& state, Sequence& actions) const
         {
                 using Builder = /*std::conditional_t<
-                        std::is_same_v<Sequence, MoveCounter> && !DropDuplicates{},
-                        Counter<ToMove, DropDuplicates, State>,*/
-                        Builder<DropDuplicates, State, Sequence>;
+                        std::is_same_v<Sequence, MoveCounter> && !DuplicatesPolicy{},
+                        Counter<ToMove, DuplicatesPolicy, State>,*/
+                        Builder<DuplicatesPolicy, State, Sequence>;
                 //>;
 
                 using KingJump = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>;
@@ -61,7 +61,7 @@ public:
         auto count(State const& state) const
         {
                 using counter_container = /* std::conditional_t<
-                        is_trivial_precedence_v<rules_t<State>> && !DropDuplicates{},
+                        is_trivial_precedence_v<rules_t<State>> && !DuplicatesPolicy{},
                         MoveCounter,*/
                         static_vector<Action<rules_t<State>, board_t<State>>>;
                 //>;

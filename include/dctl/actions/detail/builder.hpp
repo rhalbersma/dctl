@@ -19,7 +19,7 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<class DropDuplicates, class State, class Sequence>
+template<class DuplicatesPolicy, class State, class Sequence>
 class Builder
 {
 public:
@@ -164,12 +164,12 @@ public:
 
         auto append_to() const
         {
-                precedence_dispatch(is_trivial_precedence_t<rules_type>{});
+                precedence_dispatch(precedence_category_t<rules_type>{});
         }
 
         auto append_to(action_type current) const
         {
-                precedence_dispatch(current, is_trivial_precedence_t<rules_type>{});
+                precedence_dispatch(current, precedence_category_t<rules_type>{});
         }
 
 private:
@@ -197,49 +197,60 @@ private:
 /* need: begin/end, clear/empty, push_back/pop_back/back */
 /* modeled by std::vector, std::deque and std::list              */
 
-        auto precedence_dispatch(action_type const& current, std::false_type) const
+        auto precedence_dispatch(action_type const& current, trivial_precedence_tag) const
+        {
+                duplicates_dispatch(current, trivial_precedence_tag{}, DuplicatesPolicy{});
+        }
+
+        auto precedence_dispatch(action_type const& current, nontrivial_precedence_tag) const
         {
                 if (actions.empty())
                         return actions.push_back(current);
 
-                if (precedence::equal_to<rules_type>{}(current, actions.back()))
-                        return drop_duplicates_dispatch(current, std::false_type{}, DropDuplicates{});
+                if (equal_to(current, actions.back()))
+                        return duplicates_dispatch(current, nontrivial_precedence_tag{}, DuplicatesPolicy{});
 
-                if (precedence::less<rules_type>{}(current, actions.back()))
+                if (less(current, actions.back()))
                         return;
 
                 actions.clear();
                 actions.push_back(current);
         }
 
-        auto precedence_dispatch(action_type const& current, std::true_type) const
-        {
-                drop_duplicates_dispatch(current, std::true_type{}, DropDuplicates{});
-        }
-
-        template<bool B>
-        auto drop_duplicates_dispatch(action_type const& current, std::bool_constant<B>, std::false_type) const
+        template<class PrecedenceCategory>
+        auto duplicates_dispatch(action_type const& current, PrecedenceCategory, keep_duplicates_tag) const
         {
                 actions.push_back(current);
         }
 
-        auto drop_duplicates_dispatch(action_type const& current, std::false_type, std::true_type) const
+        auto duplicates_dispatch(action_type const& current, trivial_precedence_tag, drop_duplicates_tag) const
+        {
+                if (actions.empty())
+                        return actions.push_back(current);
+                drop_duplicates(current);
+        }
+
+        auto duplicates_dispatch(action_type const& current, nontrivial_precedence_tag, drop_duplicates_tag) const
         {
                 drop_duplicates(current);
         }
 
-        auto drop_duplicates_dispatch(action_type const& current, std::true_type, std::true_type) const
-        {
-                if (!actions.empty())
-                        drop_duplicates(current);
-        }
-
         auto drop_duplicates(action_type const& current) const
         {
-                static_assert(DropDuplicates{});
+                static_assert(DuplicatesPolicy{});
                 assert(!actions.empty());
                 if (!is_large(current.num_captured()) || std::find(actions.begin(), actions.end(), current) == actions.end())
                         actions.push_back(current);
+        }
+
+        auto equal_to(action_type const& a1, action_type const& a2) const
+        {
+                return precedence::equal_to<rules_type>{}(a1, a2);
+        }
+
+        auto less(action_type const& a1, action_type const& a2) const
+        {
+                return precedence::less<rules_type>{}(a1, a2);
         }
 };
 

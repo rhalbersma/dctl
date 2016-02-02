@@ -375,7 +375,7 @@ auto sperft(State const& s, int depth, Actions successor)
                 xreport(d, nodes, stopwatch);
         }
 }
-/*
+
 template<class State, class Actions>
 auto nperft(State const& s, int depth, Actions successor)
 {
@@ -391,7 +391,7 @@ auto nperft(State const& s, int depth, Actions successor)
                 xreport(d, nodes, stopwatch);
         }
 }
-*/
+
 template<class State, class Actions, class Enhancements>
 std::size_t divide(State const& p, int depth, Actions successor, Enhancements e)
 {

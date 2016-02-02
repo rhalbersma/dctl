@@ -16,8 +16,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class DropDuplicates, class Reverse>
-class Actions<ToMove, select::push, DropDuplicates, Reverse>
+template<Color ToMove, class DuplicatesPolicy, class Reverse>
+class Actions<ToMove, select::push, DuplicatesPolicy, Reverse>
 {
 public:
         template<class State, class Sequence>
