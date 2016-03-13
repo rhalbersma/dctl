@@ -4,9 +4,9 @@ namespace dctl {
 namespace board {
 namespace origin {
 
-struct ScreenCentered;
-struct UpperLeft;
-struct LowerLeft;
+struct screen_centered;
+struct upper_left;
+struct lower_left;
 
 }       // namespace origin
 }       // namespace board

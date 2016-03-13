@@ -74,7 +74,7 @@ auto format_bytes()
 template<class CharT, class Traits, int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::Board<Width, Height, Inverted, OrthogonalCaptures> const& b)
 {
-        using Coord = board::Coordinates<board::origin::UpperLeft>;
+        using Coord = board::Coordinates<board::origin::upper_left>;
 
         RANGES_FOR(auto y, view::iota(0, b.height())) {
                 RANGES_FOR(auto x, view::iota(0, b.width())) {
