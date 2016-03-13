@@ -13,18 +13,20 @@ class PrecedenceQuality
 public:
         PrecedenceQuality() = default;
 
-        template<class Builder>
-        explicit constexpr PrecedenceQuality(Builder const& b) noexcept
+        template<class State>
+        explicit constexpr PrecedenceQuality(State const&) noexcept
         :
-                num_captured_{b.captured(Piece::pawn).count(), b.captured(Piece::king).count()}
+                num_captured_{0, 0}
         {}
 
-        constexpr auto num_captured(Piece p) const noexcept
+        template<class... State>
+        constexpr auto num_captured(Piece p, State const&...) const noexcept
         {
                 return num_captured_[xstd::to_underlying_type(p)];
         }
 
-        constexpr auto num_captured_kings() const noexcept
+        template<class... State>
+        constexpr auto num_captured_kings(State const&...) const noexcept
         {
                 return num_captured(Piece::king);
         }

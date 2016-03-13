@@ -2,7 +2,7 @@
 #include <dctl/actions/detail/detect_primary_fwd.hpp>   // Detect (primary template)
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up
-#include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/wave/patterns.hpp>                 // PushTargets
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // pawn
@@ -22,7 +22,7 @@ class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
         template<int Direction>
         using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
         set_type const active_pawns;
         set_type const not_occupied;
 public:
@@ -40,7 +40,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold() const noexcept
         {
-                return (... || push_targets<Directions<orientation>{}>{}(active_pawns, not_occupied).any());
+                return (... || push_targets<Directions<bearing.degrees()>{}>{}(active_pawns, not_occupied).any());
         }
 };
 

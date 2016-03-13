@@ -4,7 +4,7 @@
 #include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, _deg, rotate, inverse
-#include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
@@ -27,10 +27,10 @@ class Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>
         using   set_type =   set_t<Builder>;
         using action_type = typename Builder::action_type;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(orientation));
+        static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(bearing));
 
         State const& state;
         Builder& builder;
@@ -59,8 +59,8 @@ private:
         {
                 state.pieces(ToMove, Piece::king).for_each([this](auto const& from_sq){
                         raii::Launch<Builder> guard{builder, from_sq};
-                        action_type current{ToMove};
-                        current.king_jump_depart(from_sq);
+                        action_type current{state};
+                        current.king_jump_depart(from_sq, state);
                         source_dispatch(from_sq, current, jump_category_t<rules_type>{});
                 });
         }
@@ -78,13 +78,13 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(std::size_t from_sq, action_type current) const
         {
-                return (..., first_target(along_ray<Directions<orientation>{}>(from_sq), current));
+                return (..., first_target(along_ray<Directions<bearing.degrees()>{}>(from_sq), current));
         }
 
         template<class Iterator>
         auto first_target(Iterator jumper, action_type current) const
         {
-                slide(jumper, builder.template path<ray::direction_v<Iterator>>());
+                slide(jumper, builder.template path<ray::direction_v<Iterator>.degrees()>());
                 if (is_onboard(jumper) && builder.targets(jumper, current)) {
                         assert(is_onboard(std::next(jumper)));
                         capture(jumper, current);
@@ -95,7 +95,7 @@ private:
         auto capture(Iterator jumper, action_type current) const
         {
                 assert(is_onboard(jumper));
-                current.capture(*jumper);
+                current.capture(*jumper, state);
                 land(std::next(jumper), current);
         }
 
@@ -136,7 +136,7 @@ private:
         auto reverse(Iterator jumper, action_type current) const
         {
                 static_assert(is_reversible_king_jump_direction_v<rules_type>);
-                return scan(ray::rotate<180_deg>(jumper), current);
+                return scan(ray::rotate<180>(jumper), current);
         }
 
         template<class Iterator>
@@ -176,14 +176,14 @@ private:
         auto turn_dispatch(Iterator jumper, action_type current, diagonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>));
-                return rotate_directions_lfold<+90_deg, -90_deg>(jumper, current);
+                return rotate_directions_lfold<+90, -90>(jumper, current);
         }
 
         template<class Iterator>
         auto turn_dispatch(Iterator jumper, action_type current, orthogonal_jump_tag) const
         {
                 static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
-                return rotate_directions_lfold<+45_deg, -45_deg, +90_deg, -90_deg, +135_deg, -135_deg>(jumper, current);
+                return rotate_directions_lfold<+45, -45, +90, -90, +135, -135>(jumper, current);
         }
 
         template<int... Directions, class Iterator>
@@ -195,7 +195,7 @@ private:
         template<class Iterator>
         auto scan(Iterator jumper, action_type current) const
         {
-                slide(jumper, builder.template path<ray::direction_v<Iterator>>());
+                slide(jumper, builder.template path<ray::direction_v<Iterator>.degrees()>());
                 return is_en_prise(jumper, current);
         }
 
@@ -265,9 +265,9 @@ private:
                 //        current.pawn_jump_arrive(dest_sq);
                 //        current.promote(dest_sq);
                 //} else {
-                        current.king_jump_arrive(dest_sq);
+                        current.king_jump_arrive(dest_sq, state);
                 //}
-                current.king_captures(state.pieces(!ToMove, Piece::king));
+                current.king_captures(state.pieces(!ToMove, Piece::king), state);
                 builder.append_to(current);
         }
 

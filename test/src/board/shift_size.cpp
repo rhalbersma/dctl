@@ -1,4 +1,4 @@
-#include <dctl/board/angle.hpp>                       // Angle, _deg, rotate
+#include <dctl/board/angle.hpp>                 // angle, _deg, rotate
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
 #include <range/v3/all.hpp>                     // all_of
@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(GridShiftSize)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RotateAngle180SymmetryForAllDirections, T, BoardSequence)
 {
-        auto const directions = std::vector<Angle>
+        auto const directions = std::vector<angle>
         {
                    0_deg,  45_deg,  90_deg, 135_deg,
                  180_deg, 225_deg, 270_deg, 315_deg

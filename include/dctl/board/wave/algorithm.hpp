@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>               // Angle, is_positive
+#include <dctl/board/angle.hpp>         // angle, is_positive
 #include <dctl/utility/shift.hpp>       // shift
 
 namespace dctl {
@@ -33,7 +33,7 @@ auto fill(Set const& generator, Set const& propagator)
 template<class Board, int Direction>
 struct Fill
 {
-        static constexpr auto theta = Angle{Direction};
+        static constexpr auto theta = angle{Direction};
 
         template<class Set>
         auto operator()(Set const& generator, Set const& propagator) const

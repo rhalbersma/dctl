@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp> // Angle
+#include <dctl/board/angle.hpp> // angle
 #include <cassert>              // assert
 #include <stdexcept>            // invalid_argument
 #include <tuple>                // tie
@@ -9,10 +9,11 @@ namespace board {
 
 class Dimensions
 {
-        int width_, height_;
-        bool inverted_;
+        int const width_;
+        int const height_;
+        bool const inverted_;
 public:
-        constexpr Dimensions(int w, int h, bool i) noexcept
+        constexpr Dimensions(int const w, int const h, bool const i) noexcept
         :
                 width_{w}, height_{h}, inverted_{i}
         {
@@ -57,9 +58,9 @@ constexpr auto ul_parity(Dimensions const& dim) noexcept
         return static_cast<bool>(height_parity(dim) ^ !ll_parity(dim));
 }
 
-constexpr auto rotate(Dimensions const& dim, Angle const& a)
+constexpr auto rotate(Dimensions const& dim, angle const a)
 {
-        switch (a) {
+        switch (a.degrees()) {
         case   0 : return dim;
         case  90 : return Dimensions{ dim.height(), dim.width() , static_cast<bool>(width_parity(dim)  ^ ll_parity(dim)) };
         case 180 : return Dimensions{ dim.width() , dim.height(), static_cast<bool>(width_parity(dim)  ^ ul_parity(dim)) };

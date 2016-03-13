@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // Angle, inverse
+#include <dctl/board/angle.hpp>                 // angle, inverse
 #include <dctl/board/algebraic.hpp>             // Labels
 #include <dctl/board/dimensions.hpp>            // Dimensions
 #include <dctl/board/coordinates.hpp>           // Square, ulo_from_sq, sq_from_ulo, rotate
@@ -65,7 +65,7 @@ public:
                 return NumBits;
         }
 
-        static constexpr auto shift_size(Angle direction)
+        static constexpr auto shift_size(angle const direction)
         {
                 return Shift{outer_grid}(direction);
         }
@@ -122,19 +122,19 @@ public:
                 return table_square_from_bit[n];
         }
 
-        static constexpr auto is_square(Coordinates<origin::UpperLeft> const& coord) noexcept
+        static constexpr auto is_square(Coordinates<origin::upper_left> const& coord) noexcept
         {
                 return ((coord.x() % 2) ^ (coord.y() % 2)) != ul_parity();
         }
 
-        static constexpr auto to_square(Coordinates<origin::UpperLeft> const& coord) noexcept
+        static constexpr auto to_square(Coordinates<origin::upper_left> const& coord) noexcept
         {
                 return board::to_square(coord, inner_grid);
         }
 };
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr Angle
+constexpr angle
 Board<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>

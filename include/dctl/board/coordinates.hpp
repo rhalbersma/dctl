@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/board/angle.hpp>         // Angle
-#include <dctl/board/origin.hpp>        // ScreenCentered, UpperLeft, LowerLeft
+#include <dctl/board/angle.hpp>         // angle
+#include <dctl/board/origin.hpp>        // screen_centered, upper_left, lower_left
 #include <cassert>                      // assert
 #include <stdexcept>                    // invalid_argument
 #include <tuple>                        // tie
@@ -11,11 +11,12 @@ namespace board {
 template<class Origin>
 class Coordinates
 {
-        int x_, y_;
+        int const x_;
+        int const y_;
 public:
         using origin_type = Origin;
 
-        constexpr Coordinates(int a, int b) noexcept : x_{a}, y_{b} {}
+        constexpr Coordinates(int const a, int const b) noexcept : x_{a}, y_{b} {}
 
         constexpr auto x() const noexcept { return x_; }
         constexpr auto y() const noexcept { return y_; }
@@ -35,13 +36,13 @@ constexpr auto operator!=(Coordinates<Origin> const& lhs, Coordinates<Origin> co
         return !(lhs == rhs);
 }
 
-constexpr auto rotate(Coordinates<origin::ScreenCentered> const& coord, Angle const& a)
+constexpr auto rotate(Coordinates<origin::screen_centered> const& coord, angle const a)
 {
-        switch (a) {
+        switch (a.degrees()) {
         case   0 : return coord;
-        case  90 : return Coordinates<origin::ScreenCentered>{ -coord.y(),  coord.x() };
-        case 180 : return Coordinates<origin::ScreenCentered>{ -coord.x(), -coord.y() };
-        case 270 : return Coordinates<origin::ScreenCentered>{  coord.y(), -coord.x() };
+        case  90 : return Coordinates<origin::screen_centered>{ -coord.y(),  coord.x() };
+        case 180 : return Coordinates<origin::screen_centered>{ -coord.x(), -coord.y() };
+        case 270 : return Coordinates<origin::screen_centered>{  coord.y(), -coord.x() };
         default  : return throw std::invalid_argument("Rotations of Coordinates objects shall be in multiples of 90 degrees."), coord;
         }
 }
@@ -63,9 +64,9 @@ constexpr auto ulo_from_sco(int value, int bound) noexcept
 }
 
 template<class Grid>
-constexpr auto to_ulo(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid) noexcept
+constexpr auto to_ulo(Coordinates<origin::screen_centered> const& coord, Grid const& grid) noexcept
 {
-        return Coordinates<origin::UpperLeft>
+        return Coordinates<origin::upper_left>
         {
                 ulo_from_sco(coord.x(), grid.width ()),
                 ulo_from_sco(coord.y(), grid.height())
@@ -73,9 +74,9 @@ constexpr auto to_ulo(Coordinates<origin::ScreenCentered> const& coord, Grid con
 }
 
 template<class Grid>
-constexpr auto to_sco(Coordinates<origin::UpperLeft> const& coord, Grid const& grid) noexcept
+constexpr auto to_sco(Coordinates<origin::upper_left> const& coord, Grid const& grid) noexcept
 {
-        return Coordinates<origin::ScreenCentered>
+        return Coordinates<origin::screen_centered>
         {
                 sco_from_ulo(coord.x(), grid.width ()),
                 sco_from_ulo(coord.y(), grid.height())
@@ -83,9 +84,9 @@ constexpr auto to_sco(Coordinates<origin::UpperLeft> const& coord, Grid const& g
 }
 
 template<class Grid>
-constexpr auto to_llo(Coordinates<origin::UpperLeft> const& coord, Grid const& grid) noexcept
+constexpr auto to_llo(Coordinates<origin::upper_left> const& coord, Grid const& grid) noexcept
 {
-        return Coordinates<origin::LowerLeft>
+        return Coordinates<origin::lower_left>
         {
                 coord.x(),
                 swap_llo_ulo(coord.y(), grid.height())
@@ -93,9 +94,9 @@ constexpr auto to_llo(Coordinates<origin::UpperLeft> const& coord, Grid const& g
 }
 
 template<class Grid>
-constexpr auto to_ulo(Coordinates<origin::LowerLeft> const& coord, Grid const& grid) noexcept
+constexpr auto to_ulo(Coordinates<origin::lower_left> const& coord, Grid const& grid) noexcept
 {
-        return Coordinates<origin::UpperLeft>
+        return Coordinates<origin::upper_left>
         {
                 coord.x(),
                 swap_llo_ulo(coord.y(), grid.height())
@@ -103,19 +104,19 @@ constexpr auto to_ulo(Coordinates<origin::LowerLeft> const& coord, Grid const& g
 }
 
 template<class Grid>
-constexpr auto to_llo(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid) noexcept
+constexpr auto to_llo(Coordinates<origin::screen_centered> const& coord, Grid const& grid) noexcept
 {
         return to_llo(to_ulo(coord, grid), grid);
 }
 
 template<class Grid>
-constexpr auto to_sco(Coordinates<origin::LowerLeft> const& coord, Grid const& grid) noexcept
+constexpr auto to_sco(Coordinates<origin::lower_left> const& coord, Grid const& grid) noexcept
 {
         return to_sco(to_ulo(coord, grid), grid);
 }
 
 template<class Grid>
-constexpr auto to_square(Coordinates<origin::UpperLeft> const& coord, Grid const& grid)
+constexpr auto to_square(Coordinates<origin::upper_left> const& coord, Grid const& grid)
 {
         //auto const col_mod = coord.x() % 2;
         auto const row_mod = coord.y() % 2;
@@ -134,13 +135,13 @@ constexpr auto to_square(Coordinates<origin::UpperLeft> const& coord, Grid const
 }
 
 template<class Grid>
-constexpr auto to_square(Coordinates<origin::LowerLeft> const& coord, Grid const& grid)
+constexpr auto to_square(Coordinates<origin::lower_left> const& coord, Grid const& grid)
 {
         return to_square(to_ulo(coord, grid), grid);
 }
 
 template<class Grid>
-constexpr auto to_square(Coordinates<origin::ScreenCentered> const& coord, Grid const& grid)
+constexpr auto to_square(Coordinates<origin::screen_centered> const& coord, Grid const& grid)
 {
         return to_square(to_ulo(coord, grid), grid);
 }
@@ -159,7 +160,7 @@ constexpr auto to_ulo(int sq, Grid const& grid)
         auto const sq_base = row_mod ? grid.edge_lo() : grid.edge_le();
         auto const col_div = sq_offset - sq_base;
 
-        return Coordinates<origin::UpperLeft>
+        return Coordinates<origin::upper_left>
         {
                 2 * col_div + col_mod,
                 2 * row_div + row_mod
@@ -179,9 +180,9 @@ constexpr auto to_sco(int sq, Grid const& grid)
 }
 
 template<class FromGrid, class DestGrid>
-constexpr auto transform(int sq, FromGrid const& from, DestGrid const& dest, Angle a)
+constexpr auto transform(int sq, FromGrid const& from, DestGrid const& dest, angle const a)
 {
-        // sq | to_sco(from) | rotate(a) | to_square(dest)
+        // sq.to_sco(from).rotate(a).to_square(dest)
         return to_square(rotate(to_sco(sq, from), a), dest);
 }
 

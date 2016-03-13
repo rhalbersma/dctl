@@ -5,222 +5,205 @@
 
 namespace dctl {
 
-class Angle
-{
-        int degrees;
+// angle has the algebraic structure of a bimodule over the ring of integers,
+// i.e. an abelian group w.r.t. addition, closed under integer multiplication:
+// for angles A and B and integers n and m, n * A + m * B is also an angle.
 
-        constexpr auto as_angle(int n) const noexcept
+class angle
+{
+        int const degrees_ = 0;
+
+        static constexpr auto as_angle(int const n) noexcept
         {
                 return xstd::euclidean_div(n, 360).rem;
         }
 
-        constexpr auto set_angle(int n) noexcept
+        static constexpr auto assert_traits() noexcept
         {
-                degrees = as_angle(n);
+                using T = angle;
+                static_assert( std::is_nothrow_default_constructible_v<T>);
+                static_assert( std::is_trivially_copy_constructible_v<T>);
+                static_assert( std::is_trivially_move_constructible_v<T>);
+                static_assert(!std::is_copy_assignable_v<T>);
+                static_assert(!std::is_move_assignable_v<T>);
+                static_assert( std::is_trivially_copyable_v<T>);
+                static_assert( std::is_standard_layout_v<T>);
+                static_assert( std::is_literal_type_v<T>);
         }
 
+        constexpr auto invariant() const noexcept
+        {
+                return 0 <= degrees_ && degrees_ < 360;
+        }
 public:
-        Angle() = default;
+        angle() = default;
 
-        explicit constexpr Angle(int n) noexcept
+        explicit constexpr angle(int const n) noexcept
         :
-                degrees{as_angle(n)}
-        {}
-
-        /* implicit */ constexpr operator auto() const noexcept
+                degrees_{as_angle(n)}
         {
-                return degrees;
+                assert(invariant());
         }
 
-        constexpr auto& operator+=(Angle const& other) noexcept
+        constexpr auto degrees() const noexcept
         {
-                set_angle(degrees + other.degrees);
-                return *this;
-        }
-
-        constexpr auto& operator-=(Angle const& other) noexcept
-        {
-                set_angle(degrees - other.degrees);
-                return *this;
-        }
-
-        constexpr auto& operator*=(int n) noexcept
-        {
-                set_angle(degrees * n);
-                return *this;
-        }
-
-        constexpr auto& operator/=(int n) // Throws: Nothing.
-        {
-                assert(n != 0);
-                set_angle(degrees / n);
-                return *this;
-        }
-
-        friend constexpr auto operator+(Angle const& a) noexcept
-        {
-                return Angle{+a.degrees};
-        }
-
-        friend constexpr auto operator-(Angle const& a) noexcept
-        {
-                return Angle{-a.degrees};
+                return degrees_;
         }
 };
 
 inline namespace literals {
 inline namespace angle_literals {
 
-constexpr auto operator"" _deg(unsigned long long n) noexcept
+inline
+constexpr auto operator"" _deg(unsigned long long const n) noexcept
 {
-        return Angle{static_cast<int>(n)};
+        return angle{static_cast<int>(n)};
 }
 
 }       // namespace angle_literals
 }       // namespace literals
 
-constexpr auto operator+(Angle const& lhs, Angle const& rhs) noexcept
+inline
+constexpr auto operator==(angle const a, angle const b) noexcept
 {
-        Angle nrv{lhs}; nrv += rhs; return nrv;
+        return a.degrees() == b.degrees();
 }
 
-constexpr auto operator-(Angle const& lhs, Angle const& rhs) noexcept
+inline
+constexpr auto operator!=(angle const a, angle const b) noexcept
 {
-        Angle nrv{lhs}; nrv -= rhs; return nrv;
+        return !(a == b);
 }
 
-constexpr auto operator*(Angle const& a, int n) noexcept
+inline
+constexpr auto operator+(angle const a) noexcept
 {
-        Angle nrv{a}; nrv *= n; return nrv;
+        return angle{+a.degrees()};
 }
 
-constexpr auto operator*(int n, Angle const& a) noexcept
+inline
+constexpr auto operator-(angle const a) noexcept
 {
-        Angle nrv{a}; nrv *= n; return nrv;
+        return angle{-a.degrees()};
 }
 
-constexpr auto operator/(Angle const& a, int n) // Throws: Nothing.
+inline
+constexpr auto operator+(angle const a, angle const b) noexcept
 {
-        assert(n != 0);
-        Angle nrv{a}; nrv /= n; return nrv;
+        return angle{a.degrees() + b.degrees()};
 }
 
-constexpr auto inverse(Angle const& a) noexcept
+inline
+constexpr auto operator-(angle const a, angle const b) noexcept
+{
+        return angle{a.degrees() - b.degrees()};
+}
+
+inline
+constexpr auto operator*(angle const a, int const n) noexcept
+{
+        return angle{a.degrees() * n};
+}
+
+inline
+constexpr auto operator*(int const n, angle const a) noexcept
+{
+        return angle{n * a.degrees()};
+}
+
+inline
+constexpr auto inverse(angle const a) noexcept
 {
         return -a;
 }
 
-constexpr auto rotate(Angle const& a, Angle const& b) noexcept
+inline
+constexpr auto rotate(angle const a, angle const b) noexcept
 {
         return a + b;
 }
 
-constexpr auto mirror(Angle const& a, Angle const& b) noexcept
+inline
+constexpr auto mirror(angle const a, angle const b) noexcept
 {
-        // a | rotate(inverse(b)) | inverse() | rotate(b)
+        // a.rotate(inverse(b)).inverse().rotate(b)
         return rotate(inverse(rotate(a, inverse(b))), b);
 }
 
 /*
 
-                   up
+                up == 90
                    |
-          left_up  |  right_up
+   135 == left_up  |  right_up == 45
                  \ | /
                   \|/
-         left ----- ----- right
+  180 == left ----- ----- right == 0
                   /|\
                  / | \
-        left_down  |  right_down
+ 225 == left_down  |  right_down == 315
                    |
-                  down
+              270 == down
 
 */
 
 template<int N>
-using angle_constant = std::integral_constant<int, Angle{N}>;
+using angle_constant = std::integral_constant<int, angle{N}.degrees()>;
 
-template<int N>
-static constexpr auto angle_v = angle_constant<N>::value;
+template<int N> using right      = angle_constant<N +   0>;
+template<int N> using right_up   = angle_constant<N +  45>;
+template<int N> using up         = angle_constant<N +  90>;
+template<int N> using left_up    = angle_constant<N + 135>;
+template<int N> using left       = angle_constant<N + 180>;
+template<int N> using left_down  = angle_constant<N + 225>;
+template<int N> using down       = angle_constant<N + 270>;
+template<int N> using right_down = angle_constant<N + 315>;
 
-template<int N>
-using right = angle_constant<rotate(0_deg, Angle{N})>;
-
-template<int N>
-using right_up = angle_constant<rotate(45_deg, Angle{N})>;
-
-template<int N>
-using up = angle_constant<rotate(90_deg, Angle{N})>;
-
-template<int N>
-using left_up = angle_constant<rotate(135_deg, Angle{N})>;
-
-template<int N>
-using left = angle_constant<rotate(180_deg, Angle{N})>;
-
-template<int N>
-using left_down = angle_constant<rotate(225_deg, Angle{N})>;
-
-template<int N>
-using down = angle_constant<rotate(270_deg, Angle{N})>;
-
-template<int N>
-using right_down = angle_constant<rotate(315_deg, Angle{N})>;
-
-/*
-
-                 90
-                 |
-            135  |  45
-               \ | /
-                \|/
-        180 ----- ----- 0
-                /|\
-               / | \
-            225  |  315
-                 |
-                270
-
-*/
-
-constexpr auto is_orthogonal(Angle const& a) noexcept
+inline
+constexpr auto is_orthogonal(angle const a) noexcept
 {
-        return a % 90_deg == 0_deg;
+        return a.degrees() % 90 == 0;
 }
 
-constexpr auto is_diagonal(Angle const& a) noexcept
+inline
+constexpr auto is_diagonal(angle const a) noexcept
 {
-        return a % 90_deg == 45_deg;
+        return a.degrees() % 90 == 45;
 }
 
-constexpr auto is_up(Angle const& a) noexcept
+inline
+constexpr auto is_up(angle const a) noexcept
 {
-        return 0_deg < a && a < 180_deg;
+        return 0 < a.degrees() && a.degrees() < 180;
 }
 
-constexpr auto is_down(Angle const& a) noexcept
+inline
+constexpr auto is_down(angle const a) noexcept
 {
-        return 180_deg < a;
+        return 180 < a.degrees();
 }
 
-constexpr auto is_left(Angle const& a) noexcept
+inline
+constexpr auto is_left(angle const a) noexcept
 {
-        return 90_deg < a && a < 270_deg;
+        return 90 < a.degrees() && a.degrees() < 270;
 }
 
-constexpr auto is_right(Angle const& a) noexcept
+inline
+constexpr auto is_right(angle const a) noexcept
 {
-        return 270_deg < a || a < 90_deg;
+        return 270 < a.degrees() || a.degrees() < 90;
 }
 
-constexpr auto is_positive(Angle const& a) noexcept
+inline
+constexpr auto is_positive(angle const a) noexcept
 {
-        return 0_deg < a && a <= 180_deg;
+        return 0 < a.degrees() && a.degrees() <= 180;
 }
 
-constexpr auto is_negative(Angle const& a) noexcept
+inline
+constexpr auto is_negative(angle const a) noexcept
 {
-        return a == 0_deg || 180_deg < a;
+        return a.degrees() == 0 || 180 < a.degrees();
 }
 
 }       // namespace dctl

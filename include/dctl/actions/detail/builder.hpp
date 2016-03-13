@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // Angle, is_orthogonal
+#include <dctl/board/angle.hpp>                 // angle, is_orthogonal
 #include <dctl/board/mask.hpp>                  // JumpStart
 #include <dctl/board/ray.hpp>
 #include <dctl/board/wave/iterator.hpp>
@@ -13,7 +13,7 @@
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
-#include <type_traits>                          // bool_constant, false_type, true_type
+#include <dctl/state/piece_placement/bwk/action.hpp>
 
 namespace dctl {
 namespace core {
@@ -80,13 +80,13 @@ public:
         template<class Iterator>
         auto targets(Iterator it, action_type current) const
         {
-                return targets<ray::direction_v<Iterator>>(current).test(*it);
+                return targets<ray::direction_v<Iterator>.degrees()>(current).test(*it);
         }
 
         template<int Direction>
         auto targets(action_type current) const
         {
-                return initial_targets_ & ~current.captured() & set_type(*std::prev(along_wave<Direction>(path())));
+                return initial_targets_ & ~current.captured(state) & set_type(*std::prev(along_wave<Direction>(path())));
         }
 
         auto path() const
@@ -102,7 +102,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                auto constexpr jump_start = board::JumpStart<board_type>::mask(Angle{Direction});
+                auto constexpr jump_start = board::JumpStart<board_type>::mask(angle{Direction});
                 return path() & jump_start;
         }
 
@@ -162,11 +162,6 @@ public:
                 return 0;
         }
 
-        auto append_to() const
-        {
-                precedence_dispatch(precedence_category_t<rules_type>{});
-        }
-
         auto append_to(action_type current) const
         {
                 precedence_dispatch(current, precedence_category_t<rules_type>{});
@@ -188,14 +183,6 @@ private:
         {
                 return set_type::size() - 1 - n;
         }
-
-        auto is_large(std::size_t n) const noexcept
-        {
-                return large_jump_v<rules_type> <= n;
-        }
-
-/* need: begin/end, clear/empty, push_back/pop_back/back */
-/* modeled by std::vector, std::deque and std::list              */
 
         auto precedence_dispatch(action_type const& current, trivial_precedence_tag) const
         {
@@ -227,30 +214,35 @@ private:
         {
                 if (actions.empty())
                         return actions.push_back(current);
-                drop_duplicates(current);
+                add_if_not_duplicate(current);
         }
 
         auto duplicates_dispatch(action_type const& current, nontrivial_precedence_tag, drop_duplicates_tag) const
         {
-                drop_duplicates(current);
+                add_if_not_duplicate(current);
         }
 
-        auto drop_duplicates(action_type const& current) const
+        auto add_if_not_duplicate(action_type const& current) const
         {
                 static_assert(DuplicatesPolicy{});
                 assert(!actions.empty());
-                if (!is_large(current.num_captured()) || std::find(actions.begin(), actions.end(), current) == actions.end())
+                if (!is_large(current) || std::find(actions.begin(), actions.end(), current) == actions.end())
                         actions.push_back(current);
         }
 
         auto equal_to(action_type const& a1, action_type const& a2) const
         {
-                return precedence::equal_to<rules_type>{}(a1, a2);
+                return precedence::equal_to<rules_type>{}(a1, a2, state);
         }
 
         auto less(action_type const& a1, action_type const& a2) const
         {
-                return precedence::less<rules_type>{}(a1, a2);
+                return precedence::less<rules_type>{}(a1, a2, state);
+        }
+
+        auto is_large(action_type const& current) const noexcept
+        {
+                return large_jump_v<rules_type> <= current.num_captured(state);
         }
 };
 

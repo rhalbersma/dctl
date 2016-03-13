@@ -2,7 +2,7 @@
 #include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
-#include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
@@ -26,15 +26,13 @@ class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
         template<int Direction>
         using wave_push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        set_type const active_kings;
-        set_type const not_occupied;
+        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+        State const& state;
         Sequence& actions;
 public:
-        Generate(State const& state, Sequence& a) noexcept
+        Generate(State const& s, Sequence& a) noexcept
         :
-                active_kings{state.pieces(ToMove, Piece::king)},
-                not_occupied{state.not_occupied()},
+                state{s},
                 actions{a}
         {}
 
@@ -45,13 +43,13 @@ public:
 private:
         auto king_range_dispatch(short_ranged_tag) const
         {
-                if (active_kings.any())
+                if (state.pieces(ToMove, Piece::king).any())
                         wave_directions_lfold<left_up, right_up, left_down, right_down>();
         }
 
         auto king_range_dispatch(long_ranged_tag) const
         {
-                active_kings.for_each([&](auto const& from_sq){
+                state.pieces(ToMove, Piece::king).for_each([&](auto const& from_sq){
                         ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq);
                 });
         }
@@ -59,28 +57,42 @@ private:
         template<template<int> class... Directions>
         auto wave_directions_lfold() const
         {
-                return (..., wave_targets<Directions<orientation>{}>());
+                return (..., wave_targets<Directions<bearing.degrees()>{}>());
         }
 
         template<template<int> class... Directions>
         auto ray_directions_lfold(std::size_t from) const
         {
-                return (..., ray_targets(along_ray<Directions<orientation>{}>(from)));
+                return (..., ray_targets(along_ray<Directions<bearing.degrees()>{}>(from)));
         }
 
         template<int Direction>
         auto wave_targets() const
         {
-                wave_push_targets<Direction>{}(active_kings, not_occupied).for_each([this](auto const& dest_sq){
-                        actions.emplace_back(*std::prev(along_ray<Direction>(dest_sq)), dest_sq, ToMove);
+                wave_push_targets<Direction>{}(
+                        state.pieces(ToMove, Piece::king),
+                        state.not_occupied()
+                ).for_each([this](auto const& dest_sq){
+                        actions.emplace_back(
+                                *std::prev(along_ray<Direction>(dest_sq)),
+                                dest_sq,
+                                state
+                        );
                 });
         }
 
         template<class Iterator>
         auto ray_targets(Iterator from) const
         {
-                ray::classical(from, not_occupied).for_each([this, from](auto const& dest_sq){
-                        actions.emplace_back(*from, dest_sq, ToMove);
+                ray::classical(
+                        from,
+                        state.not_occupied()
+                ).for_each([this, from](auto const& dest_sq){
+                        actions.emplace_back(
+                                *from,
+                                dest_sq,
+                                state
+                        );
                 });
         }
 

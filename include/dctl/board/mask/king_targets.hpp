@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>         // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
+#include <dctl/board/angle.hpp>         // angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/mask/squares.hpp>  // Squares
 #include <dctl/board/ray/fill.hpp>      // fill
 #include <dctl/board/ray/iterator.hpp>  // Iterator
@@ -28,33 +28,33 @@ class KingTargets
         static table_type const table[];
 
 public:
-        static constexpr auto mask(Angle alpha, std::size_t sq) noexcept
+        static constexpr auto mask(angle const alpha, std::size_t const sq) noexcept
         {
-                auto const segment = (alpha - beta) / theta;
+                auto const segment = (alpha.degrees() - beta.degrees()) / theta.degrees();
                 return table[segment][sq];
         }
 };
 
 template<class Board>
-constexpr Angle
+constexpr angle
 KingTargets<Board>::theta;
 
 template<class Board>
-constexpr Angle
+constexpr angle
 KingTargets<Board>::beta;
 
 template<class Board>
 typename KingTargets<Board>::table_type const
 KingTargets<Board>::table[] =
 {
-        make_array<Board::bits()>(init<  0_deg>),
-        make_array<Board::bits()>(init< 45_deg>),
-        make_array<Board::bits()>(init< 90_deg>),
-        make_array<Board::bits()>(init<135_deg>),
-        make_array<Board::bits()>(init<180_deg>),
-        make_array<Board::bits()>(init<225_deg>),
-        make_array<Board::bits()>(init<270_deg>),
-        make_array<Board::bits()>(init<315_deg>)
+        make_array<Board::bits()>(init<  0>),
+        make_array<Board::bits()>(init< 45>),
+        make_array<Board::bits()>(init< 90>),
+        make_array<Board::bits()>(init<135>),
+        make_array<Board::bits()>(init<180>),
+        make_array<Board::bits()>(init<225>),
+        make_array<Board::bits()>(init<270>),
+        make_array<Board::bits()>(init<315>)
 };
 
 }       // namespace board

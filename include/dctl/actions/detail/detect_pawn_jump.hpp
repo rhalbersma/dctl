@@ -2,7 +2,7 @@
 #include <dctl/actions/detail/detect_primary_fwd.hpp>   // Detect (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
-#include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/wave/patterns.hpp>                 // JumpTargets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
@@ -23,7 +23,7 @@ class Detect<ToMove, Piece::pawn, select::jump, Reverse, State>
         template<int Direction>
         using jump_targets = JumpTargets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
         set_type const active_pawns;
         set_type const pawn_targets;
         set_type const not_occupied;
@@ -63,7 +63,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold() const noexcept
         {
-                return (... || jump_targets<Directions<orientation>{}>{}(active_pawns, pawn_targets, not_occupied).any());
+                return (... || jump_targets<Directions<bearing.degrees()>{}>{}(active_pawns, pawn_targets, not_occupied).any());
         }
 };
 

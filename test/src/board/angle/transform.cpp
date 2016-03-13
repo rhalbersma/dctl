@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_CASE(AngleConstructorIsIdempotentOnIntegers)
 
         BOOST_CHECK(
                 ranges::all_of(angles, [](auto i){
-                        return group::is_idempotent{}([](auto j) { return Angle{j}; }, i);
+                        return group::is_idempotent{}([](auto j) { return angle{j}; }, angle{i});
                 })
         );
 }
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(AngleConstructorIsIdentityOnAllAngles)
 {
         BOOST_CHECK(
                 ranges::all_of(angles, [](auto i){
-                        return group::is_identity{}([](auto j) { return Angle{j}; }, i);
+                        return group::is_identity{}([](auto j) { return angle{j}; }, angle{i});
                 })
         );
 }
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(Rotate0DegIsIdentityOnAllAngles)
 {
         BOOST_CHECK(
                 ranges::all_of(angles, [](auto i){
-                        return group::is_involution{}([](auto j) { return rotate(Angle{j}, 0_deg); }, i);
+                        return group::is_involution{}([](auto j) { return rotate(angle{j}, 0_deg); }, angle{i});
                 })
         );
 }
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(InverseIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
                 ranges::all_of(angles, [](auto i){
-                        return group::is_involution{}([](auto j) { return inverse(Angle{j}); }, i);
+                        return group::is_involution{}([](auto j) { return inverse(angle{j}); }, angle{i});
                 })
         );
 }
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(Rotate180DegIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
                 ranges::all_of(angles, [](auto i){
-                        return group::is_involution{}([](auto j) { return rotate(Angle{j}, 180_deg); }, i);
+                        return group::is_involution{}([](auto j) { return rotate(angle{j}, 180_deg); }, angle{i});
                 })
         );
 }
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(MirrorIsInvolutionOnAllAnglePairs)
         BOOST_CHECK(
                 ranges::all_of(angles, [](auto i){
                         return ranges::all_of(angles, [=](auto j) {
-                                return group::is_involution{}([=](auto k) { return mirror(Angle{k}, Angle{i}); }, j);
+                                return group::is_involution{}([=](auto k) { return mirror(angle{k}, angle{i}); }, angle{j});
                         });
                 })
         );

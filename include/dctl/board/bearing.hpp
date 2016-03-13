@@ -5,6 +5,6 @@
 namespace dctl {
 
 template<class Board, Color ToMove, bool Reverse = false>
-constexpr auto orientation_v = rotate(inverse(Board::orientation), ((ToMove == Color::white) ^ Reverse) ? 0_deg : 180_deg);
+constexpr auto bearing_v = rotate(inverse(Board::orientation), ((ToMove == Color::white) ^ Reverse) ? 0_deg : 180_deg);
 
 }       // namespace dctl

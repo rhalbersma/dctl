@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/board/set_type.hpp>      // set_type
 #include <dctl/utility/logic.hpp>
@@ -33,7 +32,8 @@ public:
         PushJumpPromote() = default;
 
         // pawn push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, bool promotion, Color /* to_move */) noexcept
+        template<class... State>
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst, bool promotion, State const&...) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
@@ -45,7 +45,8 @@ public:
         }
 
         // king push
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, Color /* to_move */) noexcept
+        template<class... State>
+        constexpr PushJumpPromote(std::size_t src, std::size_t dst, State const&...) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
@@ -56,7 +57,8 @@ public:
                 assert(invariant());
         }
 
-        PushJumpPromote(Color)
+        template<class State>
+        PushJumpPromote(State const&)
         :
                 captured_{},
                 from_{},
@@ -65,28 +67,16 @@ public:
                 into_{Piece::king}
         {}
 
-        auto pawn_jump_depart(std::size_t src) { from_ = static_cast<square_type>(src); }
-        auto pawn_jump_arrive(std::size_t dst) { dest_ = static_cast<square_type>(dst); }
-        auto king_jump_depart(std::size_t src) { from_ = static_cast<square_type>(src); }
-        auto king_jump_arrive(std::size_t dst) { dest_ = static_cast<square_type>(dst); }
-        auto capture(std::size_t sq) { captured_.set(sq); }
+        template<class... State> auto pawn_jump_depart(std::size_t src, State const&...) { from_ = static_cast<square_type>(src); }
+        template<class... State> auto pawn_jump_arrive(std::size_t dst, State const&...) { dest_ = static_cast<square_type>(dst); }
+        template<class... State> auto king_jump_depart(std::size_t src, State const&...) { from_ = static_cast<square_type>(src); }
+        template<class... State> auto king_jump_arrive(std::size_t dst, State const&...) { dest_ = static_cast<square_type>(dst); }
+        template<class... State> auto capture(std::size_t sq, State const&...) { captured_.set(sq); }
         auto promote(std::size_t) { into_ = Piece::king; }
-        auto king_captures(set_type const&) {}
+        template<class... State> auto king_captures(set_type const&, State const&...) {}
 
-        // jump
-        template<class Builder>
-        explicit constexpr PushJumpPromote(Builder const& b)
-        :
-                captured_{b.captured()},
-                from_{static_cast<square_type>(b.from())},
-                dest_{static_cast<square_type>(b.dest())},
-                with_{b.with()},
-                into_{b.into()}
-        {
-                assert(invariant());
-        }
-
-        constexpr auto captured() const noexcept
+        template<class... State>
+        constexpr auto captured(State const&...) const noexcept
         {
                 return captured_;
         }
@@ -111,7 +101,8 @@ public:
                 return with() == p;
         }
 
-        constexpr auto is_with_king() const noexcept
+        template<class... State>
+        constexpr auto is_with_king(State const&...) const noexcept
         {
                 return is_with(Piece::king);
         }
@@ -141,7 +132,8 @@ public:
                 return is_with(Piece::king) && !is_jump();
         }
 
-        constexpr auto num_captured() const noexcept
+        template<class... State>
+        constexpr auto num_captured(State const&...) const noexcept
         {
                 return captured().count();
         }

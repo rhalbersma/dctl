@@ -1,27 +1,27 @@
 #pragma once
-#include <dctl/board/angle.hpp>               // Angle, rotate, mirror
-#include <dctl/board/ray/iterator.hpp>        // Iterator
+#include <dctl/board/angle.hpp>         // angle, rotate, mirror
+#include <dctl/board/ray/iterator.hpp>  // Iterator
 
 namespace dctl {
 namespace ray {
 
 template<int Theta, class Board, int Direction>
 auto rotate(Iterator<Board, Direction> it)
--> Iterator<Board, rotate(Angle{Direction}, Angle{Theta})>
+        -> Iterator<Board, rotate(angle{Direction}, angle{Theta}).degrees()>
 {
         return { it.base() };
 }
 
 template<int Theta, class Board, int Direction>
 auto mirror(Iterator<Board, Direction> it)
--> Iterator<Board, mirror(Angle{Direction}, Angle{Theta})>
+        -> Iterator<Board, mirror(angle{Direction}, angle{Theta}).degrees()>
 {
         return { it.base() };
 }
 
 template<int Theta, class Board, int Direction>
 auto turn(Iterator<Board, Direction> it)
--> Iterator<Board, Theta>
+        -> Iterator<Board, Theta>
 {
         static_assert(Theta != Direction);
         return { it.base() };
