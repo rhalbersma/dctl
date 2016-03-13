@@ -23,7 +23,7 @@ public:
         auto operator()(State const& p) const
         {
                 using Board = board_t<State>;
-                using Coord = board::Coordinates<board::origin::UpperLeft>;
+                using Coord = board::Coordinates<board::origin::upper_left>;
                 using namespace ranges;
 
                 std::stringstream ostr;
