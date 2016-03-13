@@ -22,53 +22,59 @@ public:
 private:
         set_type by_color[2];
         set_type kings_;
-        Color to_move_;
 
 public:
         Action() = default;
 
-        Action(std::size_t src, std::size_t dst, bool promotion, Color to_move)
+        template<class State>
+        Action(std::size_t src, std::size_t dst, bool promotion, State const& state)
         :
-                Action{create(set_type{src, dst}, set_type{}, promotion ? set_type{dst} : set_type{}, to_move)}
+                Action{create(set_type{src, dst}, set_type{}, promotion ? set_type{dst} : set_type{}, state)}
         {}
 
-        Action(std::size_t src, std::size_t dst, Color to_move)
+        template<class State>
+        Action(std::size_t src, std::size_t dst, State const& state)
         :
-                Action{create(set_type{src, dst}, set_type{}, set_type{src, dst}, to_move)}
+                Action{create(set_type{src, dst}, set_type{}, set_type{src, dst}, state)}
         {}
 
-        Action(Color c)
+        template<class State>
+        Action(State const&)
         :
                by_color{},
-               kings_{},
-               to_move_{c}
+               kings_{}
         {}
 
-        auto pawn_jump_depart(std::size_t src)
+        template<class State>
+        auto pawn_jump_depart(std::size_t src, State const& state)
         {
-                pieces(to_move_).flip(src);
+                pieces(state.to_move()).flip(src);
         }
 
-        auto pawn_jump_arrive(std::size_t dst)
+        template<class State>
+        auto pawn_jump_arrive(std::size_t dst, State const& state)
         {
-                pieces(to_move_).flip(dst);
+                pieces(state.to_move()).flip(dst);
         }
 
-        auto king_jump_depart(std::size_t src)
+        template<class State>
+        auto king_jump_depart(std::size_t src, State const& state)
         {
-                pieces(to_move_).flip(src);
+                pieces(state.to_move()).flip(src);
                 kings_.flip(src);
         }
 
-        auto king_jump_arrive(std::size_t dst)
+        template<class State>
+        auto king_jump_arrive(std::size_t dst, State const& state)
         {
-                pieces(to_move_).flip(dst);
+                pieces(state.to_move()).flip(dst);
                 kings_.flip(dst);
         }
 
-        auto capture(std::size_t sq)
+        template<class State>
+        auto capture(std::size_t sq, State const& state)
         {
-                pieces(!to_move_).flip(sq);
+                pieces(!state.to_move()).flip(sq);
         }
 
         auto promote(std::size_t dst)
@@ -76,23 +82,11 @@ public:
                 kings_.flip(dst);
         }
 
-        auto king_captures(set_type const& k)
+        template<class State>
+        auto king_captures(set_type const& k, State const& state)
         {
-                kings_ ^= captured() & k;
+                kings_ ^= captured(state) & k;
         }
-
-        template<class Builder>
-        Action(Builder const& b)
-        :
-                Action{create(
-                        b.from() == b.dest() ? set_type{} : set_type{b.from(), b.dest()},
-                        b.captured(),
-                        b.captured_kings() ^
-                        (b.is_promotion() ? set_type{b.dest()} : set_type{}) ^
-                        ((b.is_with_king() && (b.from() != b.dest())) ? set_type{b.from(), b.dest()} : set_type{}),
-                        b.to_move()
-                )}
-        {}
 
         auto pieces(Color c) const noexcept
         {
@@ -104,29 +98,32 @@ public:
                 return kings_;
         }
 
-        auto captured() const noexcept
+        template<class State>
+        auto captured(State const& state) const noexcept
         {
-                return pieces(!to_move_);
+                return pieces(!state.to_move());
         }
 
-        auto num_captured() const noexcept
+        template<class State>
+        auto num_captured(State const& state) const noexcept
         {
-                return captured().count();
+                return captured(state).count();
         }
 
 private:
-        auto init(set_type pushed_pieces, set_type jumped_pieces, set_type promoted_piece_and_jumped_kings, Color to_move) noexcept
+        template<class State>
+        auto init(set_type pushed_pieces, set_type jumped_pieces, set_type promoted_piece_and_jumped_kings, State const& state) noexcept
         {
-                pieces( to_move) = pushed_pieces;
-                pieces(!to_move) = jumped_pieces;
+                pieces( state.to_move()) = pushed_pieces;
+                pieces(!state.to_move()) = jumped_pieces;
                 kings_ = promoted_piece_and_jumped_kings;
-                to_move_ = to_move;
         }
 
-        static auto create(set_type pushed_pieces, set_type jumped_pieces, set_type promoted_piece_and_jumped_kings, Color to_move)
+        template<class State>
+        static auto create(set_type pushed_pieces, set_type jumped_pieces, set_type promoted_piece_and_jumped_kings, State const& state)
         {
                 Action nrv;
-                nrv.init(pushed_pieces, jumped_pieces, promoted_piece_and_jumped_kings, to_move);
+                nrv.init(pushed_pieces, jumped_pieces, promoted_piece_and_jumped_kings, state);
                 return nrv;
         }
 
@@ -139,7 +136,11 @@ private:
 template<class Rules, class Board>
 auto as_tuple(Action<Rules, Board> const& a) noexcept
 {
-        return std::make_tuple(a.pieces(Color::black), a.pieces(Color::white), a.kings());
+        return std::make_tuple(
+                a.pieces(Color::black),
+                a.pieces(Color::white),
+                a.kings()
+        );
 }
 
 template<class Rules, class Board>
@@ -149,33 +150,9 @@ constexpr auto operator==(Action<Rules, Board> const& lhs, Action<Rules, Board> 
 }
 
 template<class Rules, class Board>
-constexpr auto operator< (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-{
-        return as_tuple(lhs) < as_tuple(rhs);
-}
-
-template<class Rules, class Board>
 constexpr auto operator!=(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
 {
         return !(lhs == rhs);
-}
-
-template<class Rules, class Board>
-constexpr auto operator> (Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-{
-        return rhs < lhs;
-}
-
-template<class Rules, class Board>
-constexpr auto operator>=(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-{
-        return !(lhs < rhs);
-}
-
-template<class Rules, class Board>
-constexpr auto operator<=(Action<Rules, Board> const& lhs, Action<Rules, Board> const& rhs) noexcept
-{
-        return !(rhs < lhs);
 }
 
 }       // namespace bwk

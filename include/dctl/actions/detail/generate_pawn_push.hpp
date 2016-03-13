@@ -2,7 +2,7 @@
 #include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/push.hpp>                 // select
 #include <dctl/board/angle.hpp>                         // left_up, right_up
-#include <dctl/board/orientation.hpp>                   // orientation_v
+#include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
@@ -25,35 +25,41 @@ class Generate<ToMove, Piece::pawn, select::push, Reverse, State, Sequence>
         template<int Direction>
         using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = orientation_v<board_type, ToMove, Reverse::value>;
-        set_type const active_pawns;
-        set_type const not_occupied;
+        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+        State const& state;
         Sequence& actions;
 public:
-        Generate(State const& state, Sequence& a) noexcept
+        Generate(State const& s, Sequence& a) noexcept
         :
-                active_pawns{state.pieces(ToMove, Piece::pawn)},
-                not_occupied{state.not_occupied()},
+                state{s},
                 actions{a}
         {}
 
         auto operator()() const
         {
-                if (active_pawns.any())
+                if (state.pieces(ToMove, Piece::pawn).any())
                         directions_lfold<left_up, right_up>();
         }
 private:
         template<template<int> class... Directions>
         auto directions_lfold() const
         {
-                return (..., targets<Directions<orientation>{}>());
+                return (..., targets<Directions<bearing.degrees()>{}>());
         }
 
         template<int Direction>
         auto targets() const
         {
-                push_targets<Direction>{}(active_pawns, not_occupied).for_each([this](auto const& dest_sq){
-                        actions.emplace_back(*std::prev(along_ray<Direction>(dest_sq)), dest_sq, is_promotion(dest_sq), ToMove);
+                push_targets<Direction>{}(
+                        state.pieces(ToMove, Piece::pawn),
+                        state.not_occupied()
+                ).for_each([this](auto const& dest_sq){
+                        actions.emplace_back(
+                                *std::prev(along_ray<Direction>(dest_sq)),
+                                dest_sq,
+                                is_promotion(dest_sq),
+                                state
+                        );
                 });
         }
 

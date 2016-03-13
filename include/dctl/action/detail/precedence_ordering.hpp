@@ -11,13 +11,14 @@ class PrecedenceOrdering
 public:
         PrecedenceOrdering() = default;
 
-        template<class Builder>
-        explicit constexpr PrecedenceOrdering(Builder const& b) noexcept
+        template<class State>
+        explicit constexpr PrecedenceOrdering(State const&) noexcept
         :
-                piece_order_{b.piece_order()}
+                piece_order_{0}
         {}
 
-        constexpr auto piece_order() const noexcept
+        template<class... State>
+        constexpr auto piece_order(State const&...) const noexcept
         {
                 return piece_order_;
         }

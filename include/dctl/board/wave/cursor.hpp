@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/board/angle.hpp>               // Angle
-#include <dctl/board/set_type.hpp>            // set_type
+#include <dctl/board/angle.hpp>         // angle
+#include <dctl/board/set_type.hpp>      // set_type
 #include <dctl/utility/shift.hpp>       // shift_assign
 #include <boost/operators.hpp>          // totally_ordered, unit_steppable
 
@@ -13,7 +13,7 @@ class Cursor
 ,       boost::unit_steppable < Cursor<Board, Direction>        // ++, --
 > >
 {
-        static constexpr auto theta = Angle{Direction};
+        static constexpr auto theta = angle{Direction};
         static constexpr auto S = Board::shift_size(theta);
         static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");

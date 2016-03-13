@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // Angle, is_orthogonal
+#include <dctl/board/angle.hpp>                 // angle, is_orthogonal
 #include <dctl/board/mask.hpp>                  // JumpStart
 #include <dctl/board/ray.hpp>
 #include <dctl/board/wave/iterator.hpp>
@@ -113,7 +113,7 @@ public:
         template<class Iterator>
         auto targets(Iterator it) const
         {
-                return targets<ray::direction_v<Iterator>>().test(*it);
+                return targets<ray::direction_v<Iterator>.degrees()>().test(*it);
         }
 
         template<int Direction>
@@ -135,7 +135,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                auto constexpr jump_start = board::JumpStart<board_type>::mask(Angle{Direction});
+                auto constexpr jump_start = board::JumpStart<board_type>::mask(angle{Direction});
                 return path() & jump_start;
         }
 

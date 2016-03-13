@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp> // Angle
+#include <dctl/board/angle.hpp> // angle
 #include <dctl/board/grid.hpp>  // EdgedGrid
 #include <xstd/cstddef.hpp>     // _z
 #include <stdexcept>            // invalid_argument
@@ -21,10 +21,10 @@ private:
 public:
         OuterGrid grid;
 
-        constexpr auto operator()(Angle a) const
+        constexpr auto operator()(angle const a) const
         {
                 using namespace xstd::support_literals;
-                switch (a) {
+                switch (a.degrees()) {
                 case   0 : return right()     ;
                 case  45 : return right_up()  ;
                 case  90 : return up()        ;

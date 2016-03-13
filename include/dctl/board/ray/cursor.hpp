@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>       // Angle
+#include <dctl/board/angle.hpp> // angle
 #include <boost/operators.hpp>  // totally_ordered, unit_steppable, additive
 #include <cstddef>              // size_t
 
@@ -13,7 +13,7 @@ class Cursor
 ,       boost::additive       < Cursor<Board, Direction>, int   // +, -
 > > >
 {
-        static constexpr auto theta = Angle{Direction};
+        static constexpr auto theta = angle{Direction};
         static constexpr auto S = Board::shift_size(theta);
         static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");
