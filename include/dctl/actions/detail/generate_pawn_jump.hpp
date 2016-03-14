@@ -49,7 +49,7 @@ public:
 
         auto operator()() const
         {
-                if (state.pieces(ToMove, Piece::pawn).any())
+                if (pieces<ToMove, Piece::pawn>(state).any())
                         pawn_jump_king_dispatch(is_superior_rank_jump_t<rules_type>{});
         }
 private:
@@ -99,7 +99,7 @@ private:
         auto targets() const
         {
                 jump_targets<Direction>{}(
-                        state.pieces(ToMove, Piece::pawn),
+                        pieces<ToMove, Piece::pawn>(state),
                         builder.targets(),
                         builder.path()
                 ).for_each([this](auto const& dest_sq){
@@ -304,7 +304,7 @@ private:
                 current.pawn_jump_arrive(dest_sq, state);
                 if (builder.is_promotion())
                         current.promote(dest_sq);
-                current.king_captures(state.pieces(!ToMove, Piece::king), state);
+                current.king_captures(pieces<!ToMove, Piece::king>(state), state);
                 builder.append_to(current);
         }
 

@@ -37,7 +37,7 @@ public:
 
         auto operator()() const
         {
-                if (state.pieces(ToMove, Piece::pawn).any())
+                if (pieces<ToMove, Piece::pawn>(state).any())
                         directions_lfold<left_up, right_up>();
         }
 private:
@@ -51,7 +51,7 @@ private:
         auto targets() const
         {
                 push_targets<Direction>{}(
-                        state.pieces(ToMove, Piece::pawn),
+                        pieces<ToMove, Piece::pawn>(state),
                         state.not_occupied()
                 ).for_each([this](auto const& dest_sq){
                         actions.emplace_back(

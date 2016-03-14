@@ -114,7 +114,7 @@ public:
 
         auto is_last_jumped_king(square_type sq) const
         {
-                return state.pieces(Piece::king).test(sq);
+                return pieces<Piece::king>(state).test(sq);
         }
 
         auto with() const noexcept
@@ -176,7 +176,7 @@ private:
 
         auto is_king(square_type sq) const
         {
-                return state.pieces(Piece::king).test(sq);
+                return pieces<Piece::king>(state).test(sq);
         }
 
         auto reverse_index(std::size_t n) const noexcept
