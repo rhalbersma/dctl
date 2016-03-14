@@ -24,24 +24,22 @@ class Count<ToMove, Piece::king, select::push, Reverse, State>
         using push_targets = PushTargets<board_type, Direction, king_range_category_t<rules_type>>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
-        set_type const active_kings;
-        set_type const not_occupied;
+        State const& state;
 public:
-        explicit Count(State const& state) noexcept
+        explicit Count(State const& s) noexcept
         :
-                active_kings{state.pieces(ToMove, Piece::king)},
-                not_occupied{state.not_occupied()}
+                state{s}
         {}
 
         auto operator()() const noexcept
         {
-                return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>() : 0;
+                return pieces<ToMove, Piece::king>(state).any() ? directions_lfold<left_up, right_up, left_down, right_down>() : 0;
         }
 private:
         template<template<int> class... Directions>
         auto directions_lfold() const noexcept
         {
-                return (... + push_targets<Directions<bearing.degrees()>{}>{}(active_kings, not_occupied).count());
+                return (... + push_targets<Directions<bearing.degrees()>{}>{}(pieces<ToMove, Piece::king>(state), state.not_occupied()).count());
         }
 };
 

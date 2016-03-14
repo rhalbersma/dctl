@@ -45,8 +45,8 @@ private:
 public:
         explicit Counter(State const& s)
         :
-                by_piece_{s.pieces(!ToMove, Piece::pawn), s.pieces(!ToMove, Piece::king)},
-                initial_targets_(s.pieces(!ToMove)),
+                by_piece_{pieces<!ToMove, Piece::pawn>(s), pieces<!ToMove, Piece::king>(s)},
+                initial_targets_(pieces<!ToMove>(s)),
                 remaining_targets_(initial_targets_),
                 not_occupied_(s.not_occupied())
         {

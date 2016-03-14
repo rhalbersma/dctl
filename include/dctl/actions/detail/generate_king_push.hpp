@@ -43,13 +43,13 @@ public:
 private:
         auto king_range_dispatch(short_ranged_tag) const
         {
-                if (state.pieces(ToMove, Piece::king).any())
+                if (pieces<ToMove, Piece::king>(state).any())
                         wave_directions_lfold<left_up, right_up, left_down, right_down>();
         }
 
         auto king_range_dispatch(long_ranged_tag) const
         {
-                state.pieces(ToMove, Piece::king).for_each([&](auto const& from_sq){
+                pieces<ToMove, Piece::king>(state).for_each([&](auto const& from_sq){
                         ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq);
                 });
         }
@@ -70,7 +70,7 @@ private:
         auto wave_targets() const
         {
                 wave_push_targets<Direction>{}(
-                        state.pieces(ToMove, Piece::king),
+                        pieces<ToMove, Piece::king>(state),
                         state.not_occupied()
                 ).for_each([this](auto const& dest_sq){
                         actions.emplace_back(

@@ -5,10 +5,6 @@
 
 namespace dctl {
 
-// angle has the algebraic structure of a bimodule over the ring of integers,
-// i.e. an abelian group w.r.t. addition, closed under integer multiplication:
-// for angles A and B and integers n and m, n * A + m * B is also an angle.
-
 class angle
 {
         int const degrees_ = 0;

@@ -57,7 +57,7 @@ public:
 private:
         auto sources() const
         {
-                state.pieces(ToMove, Piece::king).for_each([this](auto const& from_sq){
+                pieces<ToMove, Piece::king>(state).for_each([this](auto const& from_sq){
                         raii::Launch<Builder> guard{builder, from_sq};
                         action_type current{state};
                         current.king_jump_depart(from_sq, state);
@@ -267,7 +267,7 @@ private:
                 //} else {
                         current.king_jump_arrive(dest_sq, state);
                 //}
-                current.king_captures(state.pieces(!ToMove, Piece::king), state);
+                current.king_captures(pieces<!ToMove, Piece::king>(state), state);
                 builder.append_to(current);
         }
 

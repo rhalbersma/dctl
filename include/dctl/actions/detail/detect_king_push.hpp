@@ -29,7 +29,7 @@ class Detect<ToMove, Piece::king, select::push, Reverse, State>
 public:
         explicit Detect(State const& state) noexcept
         :
-                active_kings{state.pieces(ToMove, Piece::king)},
+                active_kings{pieces<ToMove, Piece::king>(state)},
                 not_occupied{state.not_occupied()}
         {}
 

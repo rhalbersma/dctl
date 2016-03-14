@@ -30,7 +30,7 @@ class Detect<ToMove, Piece::pawn, select::jump, Reverse, State>
 public:
         explicit Detect(State const& state) noexcept
         :
-                active_pawns{state.pieces(ToMove, Piece::pawn)},
+                active_pawns{pieces<ToMove, Piece::pawn>(state)},
                 pawn_targets{state.pawn_targets(!ToMove)},
                 not_occupied{state.not_occupied()}
         {}
