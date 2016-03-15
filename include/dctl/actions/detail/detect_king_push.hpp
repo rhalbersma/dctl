@@ -24,22 +24,15 @@ class Detect<ToMove, Piece::king, select::push, Reverse, State>
         using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
-        set_type const active_kings;
-        set_type const not_occupied;
 public:
-        explicit Detect(State const& state) noexcept
-        :
-                active_kings{pieces<ToMove, Piece::king>(state)},
-                not_occupied{state.not_occupied()}
-        {}
-
-        auto operator()() const noexcept
+        auto operator()(State const& state) const noexcept
         {
-                return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>() : false;
+                auto const active_kings = pieces<ToMove, Piece::king>(state);
+                return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied()) : false;
         }
 private:
         template<template<int> class... Directions>
-        auto directions_lfold() const noexcept
+        auto directions_lfold(set_type const active_kings, set_type const not_occupied) const noexcept
         {
                 return (... || push_targets<Directions<bearing.degrees()>{}>{}(active_kings, not_occupied).any());
         }

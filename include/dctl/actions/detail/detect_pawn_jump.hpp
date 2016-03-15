@@ -24,44 +24,54 @@ class Detect<ToMove, Piece::pawn, select::jump, Reverse, State>
         using jump_targets = JumpTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
-        set_type const active_pawns;
-        set_type const pawn_targets;
-        set_type const not_occupied;
 public:
-        explicit Detect(State const& state) noexcept
-        :
-                active_pawns{pieces<ToMove, Piece::pawn>(state)},
-                pawn_targets{state.pawn_targets(!ToMove)},
-                not_occupied{state.not_occupied()}
-        {}
-
-        auto operator()() const noexcept
+        auto operator()(State const& state) const noexcept
         {
-                return active_pawns.any() ? directions_dispatch(pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{}) : false;
+                auto const active_pawns = pieces<ToMove, Piece::pawn>(state);
+                return active_pawns.any() ? directions_dispatch(
+                        active_pawns, state.pawn_targets(!ToMove), state.not_occupied(),
+                        pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{}
+                ) : false;
         }
 private:
-        auto directions_dispatch(forward_pawn_jump_tag, diagonal_jump_tag) const noexcept
+        auto directions_dispatch(
+                set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied,
+                forward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
-                return directions_lfold<left_up, right_up>();
+                return directions_lfold<left_up, right_up>(
+                        active_pawns, pawn_targets, not_occupied
+                );
         }
 
-        auto directions_dispatch(backward_pawn_jump_tag, diagonal_jump_tag) const noexcept
+        auto directions_dispatch(
+                set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied,
+                backward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
-                return directions_lfold<left_up, right_up, left_down, right_down>();
+                return directions_lfold<left_up, right_up, left_down, right_down>(
+                        active_pawns, pawn_targets, not_occupied
+                );
         }
 
-        auto directions_dispatch(forward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
+        auto directions_dispatch(
+                set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied,
+                forward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
-                return directions_lfold<up, left_up, right_up, left, right>();
+                return directions_lfold<up, left_up, right_up, left, right>(
+                        active_pawns, pawn_targets, not_occupied
+                );
         }
 
-        auto directions_dispatch(backward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
+        auto directions_dispatch(
+                set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied,
+                backward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
-                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>();
+                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(
+                        active_pawns, pawn_targets, not_occupied
+                );
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold() const noexcept
+        auto directions_lfold(set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied) const noexcept
         {
                 return (... || jump_targets<Directions<bearing.degrees()>{}>{}(active_pawns, pawn_targets, not_occupied).any());
         }

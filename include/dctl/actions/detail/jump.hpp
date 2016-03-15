@@ -77,7 +77,7 @@ public:
                 using PawnJump = Detect<ToMove, Piece::pawn, select::jump, Reverse, State>;
                 using KingJump = Detect<ToMove, Piece::king, select::jump, Reverse, State>;
 
-                return PawnJump{state}() || KingJump{state}();
+                return PawnJump{}(state) || KingJump{}(state);
         }
 };
 

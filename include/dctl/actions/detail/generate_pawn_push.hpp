@@ -37,23 +37,24 @@ public:
 
         auto operator()() const
         {
-                if (pieces<ToMove, Piece::pawn>(state).any())
-                        directions_lfold<left_up, right_up>();
+                auto const active_pawns = pieces<ToMove, Piece::pawn>(state);
+                if (active_pawns.any())
+                        directions_lfold<left_up, right_up>(active_pawns, state.not_occupied());
         }
 private:
         template<template<int> class... Directions>
-        auto directions_lfold() const
+        auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const
         {
-                return (..., targets<Directions<bearing.degrees()>{}>());
+                return (..., targets<Directions<bearing.degrees()>{}>(active_pawns, not_occupied));
         }
 
         template<int Direction>
-        auto targets() const
+        auto targets(set_type const active_pawns, set_type const not_occupied) const
         {
                 push_targets<Direction>{}(
-                        pieces<ToMove, Piece::pawn>(state),
-                        state.not_occupied()
-                ).for_each([this](auto const& dest_sq){
+                        active_pawns,
+                        not_occupied
+                ).for_each([this](auto const dest_sq){
                         actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq,
@@ -64,12 +65,12 @@ private:
         }
 
         template<int Direction>
-        static auto along_ray(std::size_t sq) noexcept
+        static auto along_ray(std::size_t const sq) noexcept
         {
                 return ray::make_iterator<board_type, Direction>(sq);
         }
 
-        static auto is_promotion(std::size_t sq) noexcept
+        static auto is_promotion(std::size_t const sq) noexcept
         {
                 return dctl::is_promotion<board_type, ToMove>(sq);
         }
