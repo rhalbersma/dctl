@@ -36,7 +36,7 @@ public:
                 using KingPush = Count<ToMove, Piece::king, select::push, Reverse, State>;
                 using PawnPush = Count<ToMove, Piece::pawn, select::push, Reverse, State>;
 
-                return KingPush{state}() + PawnPush{state}();
+                return KingPush{}(state) + PawnPush{}(state);
         }
 
         template<class State>
@@ -45,7 +45,7 @@ public:
                 using PawnPush = Detect<ToMove, Piece::pawn, select::push, Reverse, State>;
                 using KingPush = Detect<ToMove, Piece::king, select::push, Reverse, State>;
 
-                return PawnPush{state}() || KingPush{state}();
+                return PawnPush{}(state) || KingPush{}(state);
         }
 };
 

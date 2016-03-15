@@ -25,34 +25,36 @@ class Detect<ToMove, Piece::king, select::jump, Reverse, State>
         using jump_targets = JumpTargets<board_type, Direction, king_range_category_t<rules_type>>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
-        set_type const active_kings;
-        set_type const king_targets;
-        set_type const not_occupied;
 public:
-        explicit Detect(State const& state) noexcept
-        :
-                active_kings{pieces<ToMove, Piece::king>(state)},
-                king_targets{state.king_targets(!ToMove)},
-                not_occupied{state.not_occupied()}
-        {}
-
-        auto operator()() const noexcept
+        auto operator()(State const& state) const noexcept
         {
-                return active_kings.any() ? directions_dispatch(jump_category_t<rules_type>{}) : false;
+                auto const active_kings = pieces<ToMove, Piece::king>(state);
+                return active_kings.any() ? directions_dispatch(
+                        active_kings, state.king_targets(!ToMove), state.not_occupied(),
+                        jump_category_t<rules_type>{}
+                ) : false;
         }
 private:
-        auto directions_dispatch(diagonal_jump_tag) const noexcept
+        auto directions_dispatch(
+                set_type const active_kings, set_type const king_targets, set_type const not_occupied,
+                diagonal_jump_tag) const noexcept
         {
-                return directions_lfold<left_up, right_up, left_down, right_down>();
+                return directions_lfold<left_up, right_up, left_down, right_down>(
+                        active_kings, king_targets, not_occupied
+                );
         }
 
-        auto directions_dispatch(orthogonal_jump_tag) const noexcept
+        auto directions_dispatch(
+                set_type const active_kings, set_type const king_targets, set_type const not_occupied,
+                orthogonal_jump_tag) const noexcept
         {
-                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>();
+                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(
+                        active_kings, king_targets, not_occupied
+                );
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold() const noexcept
+        auto directions_lfold(set_type const active_kings, set_type const king_targets, set_type const not_occupied) const noexcept
         {
                 return (... || jump_targets<Directions<bearing.degrees()>{}>{}(active_kings, king_targets, not_occupied).any());
         }

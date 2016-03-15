@@ -43,35 +43,36 @@ public:
 private:
         auto king_range_dispatch(short_ranged_tag) const
         {
-                if (pieces<ToMove, Piece::king>(state).any())
-                        wave_directions_lfold<left_up, right_up, left_down, right_down>();
+                auto const active_kings = pieces<ToMove, Piece::king>(state);
+                if (active_kings.any())
+                        wave_directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied());
         }
 
         auto king_range_dispatch(long_ranged_tag) const
         {
                 pieces<ToMove, Piece::king>(state).for_each([&](auto const& from_sq){
-                        ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq);
+                        ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq, state.not_occupied());
                 });
         }
 
         template<template<int> class... Directions>
-        auto wave_directions_lfold() const
+        auto wave_directions_lfold(set_type const active_kings, set_type const not_occupied) const
         {
-                return (..., wave_targets<Directions<bearing.degrees()>{}>());
+                return (..., wave_targets<Directions<bearing.degrees()>{}>(active_kings, not_occupied));
         }
 
         template<template<int> class... Directions>
-        auto ray_directions_lfold(std::size_t from) const
+        auto ray_directions_lfold(std::size_t const from, set_type const not_occupied) const
         {
-                return (..., ray_targets(along_ray<Directions<bearing.degrees()>{}>(from)));
+                return (..., ray_targets(along_ray<Directions<bearing.degrees()>{}>(from), not_occupied));
         }
 
         template<int Direction>
-        auto wave_targets() const
+        auto wave_targets(set_type const active_kings, set_type const not_occupied) const
         {
                 wave_push_targets<Direction>{}(
-                        pieces<ToMove, Piece::king>(state),
-                        state.not_occupied()
+                        active_kings,
+                        not_occupied
                 ).for_each([this](auto const& dest_sq){
                         actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
@@ -82,11 +83,11 @@ private:
         }
 
         template<class Iterator>
-        auto ray_targets(Iterator from) const
+        auto ray_targets(Iterator const from, set_type const not_occupied) const
         {
                 ray::classical(
                         from,
-                        state.not_occupied()
+                        not_occupied
                 ).for_each([this, from](auto const& dest_sq){
                         actions.emplace_back(
                                 *from,
@@ -97,7 +98,7 @@ private:
         }
 
         template<int Direction>
-        static auto along_ray(std::size_t sq)
+        static auto along_ray(std::size_t const sq)
         {
                 return ray::make_iterator<board_type, Direction>(sq);
         }
