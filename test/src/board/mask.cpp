@@ -1,5 +1,5 @@
 #include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
-#include <dctl/board/set_type.hpp>                    // set_type
+#include <dctl/board/set_type.hpp>              // set_type
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
 #include <xstd/cstddef.hpp>                     // _z

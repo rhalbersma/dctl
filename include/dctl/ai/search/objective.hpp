@@ -143,7 +143,7 @@ bool is_no_progress(State const& p)
 {
         using Rules = typename State::rules_type;
 
-        return detail::is_no_progress(p, is_restricted_reversible_moves_t<Rules>{});
+        return detail::is_no_progress(p, is_restricted_reversible_moves<Rules>{});
 }
 
 template<class State>

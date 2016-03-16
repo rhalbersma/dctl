@@ -2,6 +2,7 @@
 #include <xstd/pp/tti.hpp>      // XSTD_PP_TTI_CONSTANT, XSTD_PP_TTI_TYPENAME
 #include <tuple>                // make_tuple
 #include <type_traits>          // bool_constant, conditional, false_type, true_type
+#include <utility>              // forward
 
 namespace dctl {
 
@@ -93,7 +94,7 @@ constexpr auto is_reversible_king_jump_direction_v =
 ;
 
 template<class Rules>
-using is_reversible_king_jump_direction_t = std::bool_constant<
+using is_reversible_king_jump_direction = std::bool_constant<
         is_reversible_king_jump_direction_v<Rules>>
 ;
 
@@ -105,7 +106,7 @@ constexpr auto large_jump_v =
 ;
 
 template<class Rules>
-using large_jump_t = std::integral_constant<int, large_jump_v<Rules>>;
+using large_jump = std::integral_constant<int, large_jump_v<Rules>>;
 
 template<class Rules>
 constexpr auto is_unambiguous_pawn_jump_v =
@@ -114,7 +115,7 @@ constexpr auto is_unambiguous_pawn_jump_v =
 ;
 
 template<class Rules>
-using is_unambiguous_pawn_jump_t = std::bool_constant<
+using is_unambiguous_pawn_jump = std::bool_constant<
         is_unambiguous_pawn_jump_v<Rules>
 >;
 
@@ -145,13 +146,13 @@ using precedence_category_t = std::conditional_t<
 >;
 
 template<class Rules>
-using is_trivial_precedence_t = std::is_same<
+using is_trivial_precedence = std::is_same<
         precedence_category_t<Rules>,
         trivial_precedence_tag
 >;
 
 template<class Rules>
-constexpr auto is_trivial_precedence_v = is_trivial_precedence_t<Rules>::value;
+constexpr auto is_trivial_precedence_v = is_trivial_precedence<Rules>::value;
 
 using keep_duplicates_tag = std::false_type;
 using drop_duplicates_tag = std::true_type;
@@ -162,9 +163,12 @@ template<class Rules>
 struct equal_to
 {
         template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
+        constexpr auto operator()(Action1&& a1, Action2&& a2, State const&... s) const noexcept
         {
-                return precedence_tuple_t<Rules>{}(a1, s...) == precedence_tuple_t<Rules>{}(a2, s...);
+                return
+                        precedence_tuple_t<Rules>{}(std::forward<Action1>(a1), s...) ==
+                        precedence_tuple_t<Rules>{}(std::forward<Action2>(a2), s...)
+                ;
         }
 };
 
@@ -172,9 +176,12 @@ template<class Rules>
 struct less
 {
         template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
+        constexpr auto operator()(Action1&& a1, Action2&& a2, State const&... s) const noexcept
         {
-                return precedence_tuple_t<Rules>{}(a1, s...) < precedence_tuple_t<Rules>{}(a2, s...);
+                return
+                        precedence_tuple_t<Rules>{}(std::forward<Action1>(a1), s...) <
+                        precedence_tuple_t<Rules>{}(std::forward<Action2>(a2), s...)
+                ;
         }
 };
 
@@ -182,9 +189,9 @@ template<class Rules>
 struct not_equal_to
 {
         template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
+        constexpr auto operator()(Action1&& a1, Action2&& a2, State&&... s) const noexcept
         {
-                return !equal_to<Rules>{}(a1, a2, s...);
+                return !equal_to<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2), std::forward<State>(s)...);
         }
 };
 
@@ -192,9 +199,9 @@ template<class Rules>
 struct greater
 {
         template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
+        constexpr auto operator()(Action1&& a1, Action2&& a2, State&&... s) const noexcept
         {
-                return less<Rules>{}(a2, a1, s...);
+                return less<Rules>{}(std::forward<Action1>(a2), std::forward<Action1>(a1), std::forward<State>(s)...);
         }
 };
 
@@ -202,9 +209,9 @@ template<class Rules>
 struct greater_equal
 {
         template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
+        constexpr auto operator()(Action1&& a1, Action2&& a2, State&&... s) const noexcept
         {
-                return !less<Rules>{}(a1, a2, s...);
+                return !less<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2), std::forward<State>(s)...);
         }
 };
 
@@ -212,9 +219,9 @@ template<class Rules>
 struct less_equal
 {
         template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
+        constexpr auto operator()(Action1&& a1, Action2&& a2, State const&... s) const noexcept
         {
-                return !less<Rules>{}(a2, a1, s...);
+                return !less<Rules>{}(std::forward<Action1>(a2), std::forward<Action1>(a1), s...);
         }
 };
 
@@ -232,9 +239,9 @@ template<class Rules>
 struct not_equivalent_to
 {
         template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
+        constexpr auto operator()(Action1&& a1, Action2&& a2, State&&... s) const noexcept
         {
-                return !equivalent_to<Rules>{}(a1, a2, s...);
+                return !equivalent_to<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2), std::forward<State>(s)...);
         }
 };
 
@@ -246,7 +253,7 @@ template<class Rules>
 constexpr auto is_restricted_king_push_v = max_same_king_push_v<Rules> != 0;
 
 template<class Rules>
-using is_restricted_king_push_t = std::bool_constant<
+using is_restricted_king_push = std::bool_constant<
         is_restricted_king_push_v<Rules>
 >;
 
@@ -256,7 +263,7 @@ template<class Rules>
 constexpr auto is_restricted_reversible_moves_v = max_reversible_moves_v<Rules> != 0;
 
 template<class Rules>
-using is_restricted_reversible_moves_t = std::bool_constant<
+using is_restricted_reversible_moves = std::bool_constant<
         is_restricted_reversible_moves_v<Rules>
 >;
 

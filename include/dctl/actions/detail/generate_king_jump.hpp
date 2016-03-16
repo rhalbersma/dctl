@@ -117,7 +117,7 @@ private:
         auto next_target(Iterator jumper, action_type current) const
         {
                 //raii::Visit<Builder> guard{builder, *jumper};
-                return reverse_dispatch(jumper, current, is_reversible_king_jump_direction_t<rules_type>{});
+                return reverse_dispatch(jumper, current, is_reversible_king_jump_direction<rules_type>{});
         }
 
         template<class Iterator>
