@@ -20,20 +20,22 @@ class Count<ToMove, Piece::pawn, select::push, Reverse, State>
         using   set_type =   set_t<State>;
 
         template<int Direction>
-        using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
+        using pawn_push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+
 public:
         auto operator()(State const& state) const noexcept
         {
                 auto const active_pawns = pieces<ToMove, Piece::pawn>(state);
                 return active_pawns.any() ? directions_lfold<left_up, right_up>(active_pawns, state.not_occupied()) : 0;
         }
+
 private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const noexcept
         {
-                return (... + push_targets<Directions<bearing.degrees()>{}>{}(active_pawns, not_occupied).count());
+                return (... + pawn_push_targets<Directions<bearing.degrees()>{}>{}(active_pawns, not_occupied).count());
         }
 };
 

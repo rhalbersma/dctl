@@ -1,9 +1,9 @@
 #include <dctl/board/angle.hpp>                 // angle, _deg, rotate
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
-#include <range/v3/all.hpp>                     // all_of
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK_EQUAL
+#include <algorithm>                            // all_of
 #include <vector>                               // vector
 
 namespace dctl {
@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RotateAngle180SymmetryForAllDirections, T, BoardSe
         };
 
         BOOST_CHECK(
-                ranges::all_of(directions, [](auto dir) {
+                std::all_of(directions.cbegin(), directions.cend(), [](auto dir) {
                         return T::shift_size(dir) == T::shift_size(rotate(dir, 180_deg));
                 })
         );

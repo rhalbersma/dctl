@@ -1,12 +1,13 @@
-#include <board/group.hpp>                            // action::is_realized, make
-#include <dctl/board/angle.hpp>                       // _deg, inverse, rotate
+#include <board/group.hpp>                      // action::is_realized, make
+#include <dctl/board/angle.hpp>                 // _deg, inverse, rotate
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
 #include <dctl/board/dimensions.hpp>            // Dimensions
-#include <range/v3/all.hpp>                     // all_of
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
+#include <algorithm>                            // all_of
 #include <type_traits>                          // common_type
+#include <vector>                               // vector
 
 namespace dctl {
 namespace board {
@@ -35,7 +36,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
 
         using CyclicGroup = std::common_type_t<decltype(C1), decltype(C2), decltype(C4)>;
 
-        CyclicGroup const C_N[] =
+        auto const C_N = std::vector<CyclicGroup>
         {
                 C1, C2, C4
         };
@@ -43,7 +44,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
         auto const dim = Dimensions{ T::width(), T::height(), T::inverted() };
 
         BOOST_CHECK(
-                ranges::all_of(C_N, [&](auto const& g) {
+                std::all_of(C_N.cbegin(), C_N.cend(), [&](auto const& g) {
                         return group::action::is_realized(dim, g);
                 })
         );
