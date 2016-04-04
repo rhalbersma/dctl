@@ -33,7 +33,7 @@ public:
                 case 225 : return left_down() ;
                 case 270 : return down()      ;
                 case 315 : return right_down();
-                default  : return throw std::invalid_argument("Shift direction angles shall be a multiple of 45 degrees"), 0;
+                default  : return static_cast<void>(throw std::invalid_argument("Shift direction angles shall be a multiple of 45 degrees")), 0;
                 }
         }
 };
