@@ -12,13 +12,19 @@ class Dimensions
         int const width_;
         int const height_;
         bool const inverted_;
+
+        constexpr auto assert_invariant() const noexcept
+        {
+                assert(0 <= width_ );
+                assert(0 <= height_);
+        }
+
 public:
         constexpr Dimensions(int const w, int const h, bool const i) noexcept
         :
                 width_{w}, height_{h}, inverted_{i}
         {
-                assert(0 <= width_ );
-                assert(0 <= height_);
+                assert_invariant();
         }
 
         constexpr auto width() const noexcept { return width_; }
@@ -65,7 +71,7 @@ constexpr auto rotate(Dimensions const& dim, angle const a)
         case  90 : return Dimensions{ dim.height(), dim.width() , static_cast<bool>(width_parity(dim)  ^ ll_parity(dim)) };
         case 180 : return Dimensions{ dim.width() , dim.height(), static_cast<bool>(width_parity(dim)  ^ ul_parity(dim)) };
         case 270 : return Dimensions{ dim.height(), dim.width() , static_cast<bool>(height_parity(dim) ^ ll_parity(dim)) };
-        default  : return throw std::invalid_argument("Rotations of Dimensions objects shall be in multiples of 90 degrees."), dim;
+        default  : return static_cast<void>(throw std::invalid_argument("Rotations of Dimensions objects shall be in multiples of 90 degrees.")), dim;
         }
 }
 

@@ -43,7 +43,7 @@ constexpr auto rotate(Coordinates<origin::screen_centered> const& coord, angle c
         case  90 : return Coordinates<origin::screen_centered>{ -coord.y(),  coord.x() };
         case 180 : return Coordinates<origin::screen_centered>{ -coord.x(), -coord.y() };
         case 270 : return Coordinates<origin::screen_centered>{  coord.y(), -coord.x() };
-        default  : return throw std::invalid_argument("Rotations of Coordinates objects shall be in multiples of 90 degrees."), coord;
+        default  : return static_cast<void>(throw std::invalid_argument("Rotations of Coordinates objects shall be in multiples of 90 degrees.")), coord;
         }
 }
 
