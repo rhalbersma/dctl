@@ -9,36 +9,33 @@ class angle
 {
         int const degrees_ = 0;
 
-        static constexpr auto as_angle(int const n) noexcept
+        constexpr auto assert_invariant() const noexcept
         {
-                return xstd::euclidean_div(n, 360).rem;
+                assert(0 <= degrees_ && degrees_ < 360);
         }
 
-        static constexpr auto assert_traits() noexcept
+        static constexpr auto assert_type_traits() noexcept
         {
                 using T = angle;
+                static_assert( std::is_trivially_destructible_v<T>);
+                static_assert(!std::is_trivially_default_constructible_v<T>);
                 static_assert( std::is_nothrow_default_constructible_v<T>);
                 static_assert( std::is_trivially_copy_constructible_v<T>);
                 static_assert( std::is_trivially_move_constructible_v<T>);
                 static_assert(!std::is_copy_assignable_v<T>);
                 static_assert(!std::is_move_assignable_v<T>);
-                static_assert( std::is_trivially_copyable_v<T>);
                 static_assert( std::is_standard_layout_v<T>);
                 static_assert( std::is_literal_type_v<T>);
         }
 
-        constexpr auto invariant() const noexcept
-        {
-                return 0 <= degrees_ && degrees_ < 360;
-        }
 public:
         angle() = default;
 
         explicit constexpr angle(int const n) noexcept
         :
-                degrees_{as_angle(n)}
+                degrees_{xstd::euclidean_div(n, 360).rem}
         {
-                assert(invariant());
+                assert_invariant();
         }
 
         constexpr auto degrees() const noexcept
