@@ -6,95 +6,120 @@
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
+#include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
-#include <xstd/type_traits.hpp>                 // to_underlying_type
-#include <boost/container/static_vector.hpp>
+#include <xstd/type_traits.hpp>                 // to_underlying_type, value_t
 #include <algorithm>                            // find_if
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
-#include <dctl/state/piece_placement/bwk/action.hpp>
 
 namespace dctl {
 namespace core {
 namespace detail {
 
-template<class DuplicatesPolicy, class State, class Sequence>
+template<Color ToMove, class DuplicatesPolicy, class State, class SequenceContainer>
 class Builder
 {
 public:
+        using action_type = xstd::value_t<SequenceContainer>;
         using  board_type = board_t<State>;
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
         using square_type = std::size_t;
-        using action_type = typename Sequence::value_type;
 
 private:
         State const& state;
-        Sequence& actions;
         set_type initial_targets_;
         set_type not_occupied_;
-        Piece with_{Piece::pawn};
-        Piece into_{Piece::pawn};
+        SequenceContainer& actions;
+        action_type candidate_action{};
 
 public:
-        explicit Builder(State const& s, Sequence& a)
+        explicit Builder(State const& s, SequenceContainer& a)
         :
                 state{s},
-                actions{a},
-                initial_targets_(state.pieces(!state.to_move())),
-                not_occupied_(state.not_occupied())
+                initial_targets_(pieces<!ToMove>(state)),
+                not_occupied_(state.not_occupied()),
+                actions{a}
         {}
-
-        auto make_launch(square_type sq)
-        {
-                not_occupied_.set(sq);
-        }
-
-        auto undo_launch(square_type sq)
-        {
-                not_occupied_.reset(sq);
-        }
 
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_v<rules_type>);
-                initial_targets_ ^= state.pieces(!state.to_move(), Piece::king);
+                initial_targets_ ^= pieces<!ToMove, Piece::king>(state);
         }
 
-        auto set_with(Piece p) noexcept
+        auto make_launch(std::size_t const sq)
         {
-                with_ = p;
+                candidate_action.set_from(sq);
+                not_occupied_.set(sq);
         }
 
-        auto set_into(Piece p) noexcept
+        auto undo_launch(std::size_t const sq)
         {
-                into_ = p;
+                not_occupied_.reset(sq);
         }
 
-        auto targets() const
+        auto capture_piece(std::size_t const sq)
         {
-                return initial_targets_;
+                capture_piece_dispatch(sq, capture_category_t<rules_type>{});
+        }
+
+        auto release_piece(std::size_t const sq)
+        {
+                release_piece_dispatch(sq, capture_category_t<rules_type>{});
+        }
+
+        auto set_with(Piece const p) noexcept
+        {
+                candidate_action.set_with(p);
+        }
+
+        auto set_into(Piece const p) noexcept
+        {
+                candidate_action.set_into(p);
+        }
+
+        auto finalize(std::size_t const dest_sq)
+        {
+                candidate_action.set_dest(dest_sq);
+                precedence_dispatch(precedence_category_t<rules_type>{});
+        }
+
+        auto active_pawns() const noexcept
+        {
+                return pieces<ToMove, Piece::pawn>(state);
+        }
+
+        auto active_kings() const noexcept
+        {
+                return pieces<ToMove, Piece::king>(state);
+        }
+
+        auto current_targets() const
+        {
+                return initial_targets_ & ~candidate_action.captured();
         }
 
         template<class Iterator>
-        auto targets(Iterator it, action_type current) const
+        auto current_targets(Iterator it) const
         {
-                return targets<ray::direction_v<Iterator>.degrees()>(current).test(*it);
+                return current_targets<ray::direction_v<Iterator>.degrees()>().test(*it);
         }
 
         template<int Direction>
-        auto targets(action_type current) const
+        auto current_targets() const
         {
-                return initial_targets_ & ~current.captured(state) & set_type(*std::prev(along_wave<Direction>(path())));
+                return current_targets() & set_type(*std::prev(along_wave<Direction>(not_occupied())));
         }
 
-        auto path() const
+        auto not_occupied() const
         {
                 return not_occupied_;
         }
 
-        auto path(square_type sq) const
+        auto not_occupied(square_type sq) const
         {
                 return not_occupied_.test(sq);
         }
@@ -103,7 +128,7 @@ public:
         auto path() const
         {
                 auto constexpr jump_start = board::JumpStart<board_type>::mask(angle{Direction});
-                return path() & jump_start;
+                return not_occupied() & jump_start;
         }
 
         template<int Direction>
@@ -119,7 +144,7 @@ public:
 
         auto with() const noexcept
         {
-                return with_;
+                return candidate_action.with();
         }
 
         auto is_with(Piece p) const noexcept
@@ -134,7 +159,7 @@ public:
 
         auto into() const noexcept
         {
-                return into_;
+                return candidate_action.into();
         }
 
         auto is_into(Piece p) const noexcept
@@ -162,12 +187,29 @@ public:
                 return 0;
         }
 
-        auto append_to(action_type current) const
+private:
+        auto capture_piece_dispatch(std::size_t const sq, stopped_capture_tag)
         {
-                precedence_dispatch(current, precedence_category_t<rules_type>{});
+                candidate_action.capture_piece(sq);
         }
 
-private:
+        auto capture_piece_dispatch(std::size_t const sq, passing_capture_tag)
+        {
+                candidate_action.capture_piece(sq);
+                not_occupied_.set(sq);
+        }
+
+        auto release_piece_dispatch(std::size_t const sq, stopped_capture_tag)
+        {
+                candidate_action.release_piece(sq);
+        }
+
+        auto release_piece_dispatch(std::size_t const sq, passing_capture_tag)
+        {
+                candidate_action.release_piece(sq);
+                not_occupied_.reset(sq);
+        }
+
         template<int Direction>
         static auto along_wave(set_type const& s)
         {
@@ -184,65 +226,54 @@ private:
                 return set_type::size() - 1 - n;
         }
 
-        auto precedence_dispatch(action_type const& current, trivial_precedence_tag) const
+        auto precedence_dispatch(trivial_precedence_tag) const
         {
-                duplicates_dispatch(current, trivial_precedence_tag{}, DuplicatesPolicy{});
+                duplicates_dispatch(trivial_precedence_tag{}, DuplicatesPolicy{});
         }
 
-        auto precedence_dispatch(action_type const& current, nontrivial_precedence_tag) const
+        auto precedence_dispatch(nontrivial_precedence_tag) const
         {
                 if (actions.empty())
-                        return actions.push_back(current);
+                        return actions.push_back(candidate_action);
 
-                if (equal_to(current, actions.back()))
-                        return duplicates_dispatch(current, nontrivial_precedence_tag{}, DuplicatesPolicy{});
+                if (precedence::equal_to<rules_type>{}(candidate_action, actions.back()))
+                        return duplicates_dispatch(nontrivial_precedence_tag{}, DuplicatesPolicy{});
 
-                if (less(current, actions.back()))
+                if (precedence::less<rules_type>{}(candidate_action, actions.back()))
                         return;
 
                 actions.clear();
-                actions.push_back(current);
+                actions.push_back(candidate_action);
         }
 
         template<class PrecedenceCategory>
-        auto duplicates_dispatch(action_type const& current, PrecedenceCategory, keep_duplicates_tag) const
+        auto duplicates_dispatch(PrecedenceCategory, keep_duplicates_tag) const
         {
-                actions.push_back(current);
+                actions.push_back(candidate_action);
         }
 
-        auto duplicates_dispatch(action_type const& current, trivial_precedence_tag, drop_duplicates_tag) const
+        auto duplicates_dispatch(trivial_precedence_tag, drop_duplicates_tag) const
         {
                 if (actions.empty())
-                        return actions.push_back(current);
-                add_if_not_duplicate(current);
+                        return actions.push_back(candidate_action);
+                add_if_not_duplicate();
         }
 
-        auto duplicates_dispatch(action_type const& current, nontrivial_precedence_tag, drop_duplicates_tag) const
+        auto duplicates_dispatch(nontrivial_precedence_tag, drop_duplicates_tag) const
         {
-                add_if_not_duplicate(current);
+                add_if_not_duplicate();
         }
 
-        auto add_if_not_duplicate(action_type const& current) const
+        auto add_if_not_duplicate() const
         {
-                static_assert(DuplicatesPolicy{});
                 assert(!actions.empty());
-                if (!is_large(current) || std::find(actions.begin(), actions.end(), current) == actions.end())
-                        actions.push_back(current);
+                if (!is_large(candidate_action) || std::find(actions.begin(), actions.end(), candidate_action) == actions.end())
+                        actions.push_back(candidate_action);
         }
 
-        auto equal_to(action_type const& a1, action_type const& a2) const
+        auto is_large(action_type const& a) const noexcept
         {
-                return precedence::equal_to<rules_type>{}(a1, a2, state);
-        }
-
-        auto less(action_type const& a1, action_type const& a2) const
-        {
-                return precedence::less<rules_type>{}(a1, a2, state);
-        }
-
-        auto is_large(action_type const& current) const noexcept
-        {
-                return large_jump_v<rules_type> <= current.num_captured(state);
+                return large_jump_v<rules_type> <= a.num_captured();
         }
 };
 

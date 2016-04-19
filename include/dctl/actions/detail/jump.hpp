@@ -13,7 +13,6 @@
 #include <dctl/utility/static_vector.hpp>               // static_vector
 #include <dctl/utility/type_traits.hpp>                 // rules_t, board_t
 #include <cassert>                                      // assert
-#include <dctl/actions/detail/counter.hpp>
 #include <dctl/rule_traits.hpp>
 #include <type_traits>
 
@@ -40,21 +39,21 @@ template<Color ToMove, class DuplicatesPolicy, class Reverse>
 class Actions<ToMove, select::jump, DuplicatesPolicy, Reverse>
 {
 public:
-        template<class State, class Sequence>
-        auto generate(State const& state, Sequence& actions) const
+        template<class State, class SequenceContainer>
+        auto generate(State const& state, SequenceContainer& actions) const
         {
                 using Builder = /*std::conditional_t<
                         std::is_same_v<Sequence, MoveCounter> && !DuplicatesPolicy{},
                         Counter<ToMove, DuplicatesPolicy, State>,*/
-                        Builder<DuplicatesPolicy, State, Sequence>;
+                        Builder<ToMove, DuplicatesPolicy, State, SequenceContainer>;
                 //>;
 
                 using KingJump = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>;
                 using PawnJump = Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder>;
 
                 Builder builder{state, actions};
-                KingJump{state, builder}();
-                PawnJump{state, builder}();
+                KingJump{builder}();
+                PawnJump{builder}();
         }
 
         template<class State>

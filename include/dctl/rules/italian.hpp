@@ -19,14 +19,14 @@ struct Italian
 
         struct precedence_tuple
         {
-                template<class Action, class... State>
-                constexpr auto operator()(Action const& a, State const&... s) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
                 {
                         return std::make_tuple(
-                                a.num_captured(s...),
-                                a.is_with_king(s...),
-                                a.num_captured_kings(s...),
-                                a.piece_order(s...)
+                                a.num_captured(),
+                                a.is_with_king(),
+                                a.num_captured_kings(),
+                                a.piece_order()
                         );
                 }
         };

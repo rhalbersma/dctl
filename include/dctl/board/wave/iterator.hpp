@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/board/set_type.hpp>                    // set_type
-#include <dctl/board/wave/cursor.hpp>                 // Cursor
+#include <dctl/board/wave/cursor.hpp>           // Cursor
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <iterator>                             // bidirectional_iterator_tag
 
@@ -15,7 +15,7 @@ using Iterator = boost::counting_iterator
         int                                     // DifferenceType
 >;
 
-template<class Board, int Direction, class Set = get_set_type<Board>>
+template<class Board, int Direction, class Set = set_t<Board>>
 Iterator<Board, Direction> make_iterator(Set const& s)
 {
         return { Cursor<Board, Direction>{s} };

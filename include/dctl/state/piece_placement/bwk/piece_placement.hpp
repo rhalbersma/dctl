@@ -1,14 +1,12 @@
 #pragma once
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/board/set_type.hpp>
 #include <dctl/state/piece_placement/invariant.hpp>
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
-#include <dctl/state/piece_placement/bwk/action.hpp>
 
 namespace dctl {
-namespace detail {
 namespace bwk {
 
 template<class Board>
@@ -16,7 +14,7 @@ class PiecePlacement
 {
 public:
         using board_type = Board;
-        using set_type = get_set_type<Board>;
+        using   set_type = set_t<Board>;
 private:
         set_type by_color[2];
         set_type kings;
@@ -29,7 +27,7 @@ public:
                 by_color{b, w},
                 kings{k}
         {
-                assert(invariant(*this));
+                detail::assert_invariant(*this);
         }
 
         template<class Action>
@@ -50,25 +48,7 @@ public:
                         kings.set(a.dest());
                 }
 
-                assert(invariant(*this));
-                return *this;
-        }
-
-        template<class Rules>
-        auto& make(Action<Rules, Board> const& delta)
-        {
-                pieces(Color::black) ^= delta.pieces(Color::black);
-                pieces(Color::white) ^= delta.pieces(Color::white);
-                kings ^= delta.kings();
-                return *this;
-        }
-
-        template<class Rules>
-        auto& undo(Action<Rules, Board> const& delta)
-        {
-                pieces(Color::black) ^= delta.pieces(Color::black);
-                pieces(Color::white) ^= delta.pieces(Color::white);
-                kings ^= delta.kings();
+                detail::assert_invariant(*this);
                 return *this;
         }
 
@@ -110,5 +90,4 @@ private:
 };
 
 }       // namespace bwk
-}       // namespace detail
 }       // namespace dctl

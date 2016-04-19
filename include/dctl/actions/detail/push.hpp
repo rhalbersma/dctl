@@ -20,14 +20,14 @@ template<Color ToMove, class DuplicatesPolicy, class Reverse>
 class Actions<ToMove, select::push, DuplicatesPolicy, Reverse>
 {
 public:
-        template<class State, class Sequence>
-        auto generate(State const& state, Sequence& actions) const
+        template<class State, class SequenceContainer>
+        auto generate(State const& state, SequenceContainer& actions) const
         {
-                using KingPush = Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>;
-                using PawnPush = Generate<ToMove, Piece::pawn, select::push, Reverse, State, Sequence>;
+                using KingPush = Generate<ToMove, Piece::king, select::push, Reverse, State, SequenceContainer>;
+                using PawnPush = Generate<ToMove, Piece::pawn, select::push, Reverse, State, SequenceContainer>;
 
-                KingPush{state, actions}();
-                PawnPush{state, actions}();
+                KingPush{actions}(state);
+                PawnPush{actions}(state);
         }
 
         template<class State>

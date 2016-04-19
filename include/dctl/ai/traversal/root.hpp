@@ -12,12 +12,12 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/action/ostream.hpp>
 #include <boost/container/static_vector.hpp>
-#include <numeric>
 #include <cstddef>
 #include <iomanip>
 #include <iostream>
 #include <iterator>                     // distance
 #include <memory>
+#include <numeric>
 #include <utility>
 
 namespace dctl {
@@ -177,8 +177,8 @@ std::size_t walk(State const& p, int depth, int ply, Actions successor, Enhancem
         if (terminal.first) {
                 nodes = terminal.second;
         } else {
-                using R = typename State::rules_type;
-                using B = typename State::board_type;
+                using R = rules_t<State>;
+                using B = board_t<State>;
 
                 static_vector<Action<R,B>> moves;
                 successor.generate(p, moves);
@@ -211,7 +211,7 @@ auto iperft_bulk_counting(Actions const& successor, State& state, int depth)
         if (depth == 1)
                 return successor.count(state);
 
-        static_vector<detail::bwk::Action<rules_t<State>, board_t<State>>> moves;
+        static_vector<Action<rules_t<State>, board_t<State>>> moves;
         successor.generate(state, moves);
         return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
                 state.make(a);
@@ -227,8 +227,7 @@ auto perft_bulk_counting(Actions const& successor, State const& state, int depth
         if (depth == 1)
                 return successor.count(state);
 
-        static_vector<detail::bwk::Action<rules_t<State>, board_t<State>>> moves;
-        //static_vector<Action<rules_t<State>, board_t<State>>> moves;
+        static_vector<Action<rules_t<State>, board_t<State>>> moves;
         successor.generate(state, moves);
         return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
                 return n + perft_bulk_counting(successor, result(state, a), depth - 1);
@@ -241,7 +240,7 @@ auto perft_node_bulk_counting(Actions const& successor, Node const& node, int de
         if (depth == 1)
                 return successor.count(node.state);
 
-        static_vector<detail::bwk::Action<rules_t<decltype(node.state)>, board_t<decltype(node.state)>>> moves;
+        static_vector<Action<rules_t<decltype(node.state)>, board_t<decltype(node.state)>>> moves;
         successor.generate(node.state, moves);
         return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
                 return n + perft_node_bulk_counting(successor, child(node, a), depth - 1);
@@ -382,7 +381,7 @@ auto nperft(State const& s, int depth, Actions successor)
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
-        using Node = Node<State, detail::bwk::Action<rules_t<State>, board_t<State>>>;
+        using Node = Node<State, Action<rules_t<State>, board_t<State>>>;
         auto const n = root<Node>(s);
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
@@ -397,9 +396,7 @@ std::size_t divide(State const& p, int depth, Actions successor, Enhancements e)
 {
         std::size_t leaf_nodes = 0;
 
-        using R = typename State::rules_type;
-        using B = typename State::board_type;
-        std::vector<Action<R, B>> moves;
+        std::vector<Action<rules_t<State>, board_t<State>>> moves;
         successor.generate(p, moves);
 
         announce(p, depth, moves.size());

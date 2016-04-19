@@ -14,7 +14,7 @@ struct International
 
         // 4. The capture
         static constexpr auto is_backward_pawn_jump = true;     // 4.1
-        static constexpr auto is_superior_rank_jump = false; // 4.2 (implied by 3.1)
+        static constexpr auto is_superior_rank_jump = false;    // 4.2 (implied by 3.1)
         static constexpr auto is_passing_capture = false;       // 4.11
         static constexpr auto is_quantity_precedence = true;    // 4.13
         static constexpr auto is_quality_precedence = false;    // 4.13
@@ -22,10 +22,10 @@ struct International
 
         struct precedence_tuple
         {
-                template<class Action, class... State>
-                constexpr auto operator()(Action const& a, State const&... s) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
                 {
-                        return a.num_captured(s...);
+                        return a.num_captured();
                 }
         };
 

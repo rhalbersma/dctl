@@ -162,12 +162,12 @@ namespace precedence {
 template<class Rules>
 struct equal_to
 {
-        template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1&& a1, Action2&& a2, State const&... s) const noexcept
+        template<class Action1, class Action2>
+        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
                 return
-                        precedence_tuple_t<Rules>{}(std::forward<Action1>(a1), s...) ==
-                        precedence_tuple_t<Rules>{}(std::forward<Action2>(a2), s...)
+                        precedence_tuple_t<Rules>{}(std::forward<Action1>(a1)) ==
+                        precedence_tuple_t<Rules>{}(std::forward<Action2>(a2))
                 ;
         }
 };
@@ -175,12 +175,12 @@ struct equal_to
 template<class Rules>
 struct less
 {
-        template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1&& a1, Action2&& a2, State const&... s) const noexcept
+        template<class Action1, class Action2>
+        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
                 return
-                        precedence_tuple_t<Rules>{}(std::forward<Action1>(a1), s...) <
-                        precedence_tuple_t<Rules>{}(std::forward<Action2>(a2), s...)
+                        precedence_tuple_t<Rules>{}(std::forward<Action1>(a1)) <
+                        precedence_tuple_t<Rules>{}(std::forward<Action2>(a2))
                 ;
         }
 };
@@ -188,60 +188,60 @@ struct less
 template<class Rules>
 struct not_equal_to
 {
-        template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1&& a1, Action2&& a2, State&&... s) const noexcept
+        template<class Action1, class Action2>
+        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return !equal_to<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2), std::forward<State>(s)...);
+                return !equal_to<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
         }
 };
 
 template<class Rules>
 struct greater
 {
-        template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1&& a1, Action2&& a2, State&&... s) const noexcept
+        template<class Action1, class Action2>
+        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return less<Rules>{}(std::forward<Action1>(a2), std::forward<Action1>(a1), std::forward<State>(s)...);
+                return less<Rules>{}(std::forward<Action1>(a2), std::forward<Action1>(a1));
         }
 };
 
 template<class Rules>
 struct greater_equal
 {
-        template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1&& a1, Action2&& a2, State&&... s) const noexcept
+        template<class Action1, class Action2>
+        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return !less<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2), std::forward<State>(s)...);
+                return !less<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
         }
 };
 
 template<class Rules>
 struct less_equal
 {
-        template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1&& a1, Action2&& a2, State const&... s) const noexcept
+        template<class Action1, class Action2>
+        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return !less<Rules>{}(std::forward<Action1>(a2), std::forward<Action1>(a1), s...);
+                return !less<Rules>{}(std::forward<Action1>(a2), std::forward<Action1>(a1));
         }
 };
 
 template<class Rules>
 struct equivalent_to
 {
-        template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2, State const&... s) const noexcept
+        template<class Action1, class Action2>
+        constexpr auto operator()(Action1 const& a1, Action2 const& a2) const noexcept
         {
-                return !(less<Rules>{}(a1, a2, s...) || less<Rules>{}(a2, a1, s...));
+                return !(less<Rules>{}(a1, a2) || less<Rules>{}(a2, a1));
         }
 };
 
 template<class Rules>
 struct not_equivalent_to
 {
-        template<class Action1, class Action2, class... State>
-        constexpr auto operator()(Action1&& a1, Action2&& a2, State&&... s) const noexcept
+        template<class Action1, class Action2>
+        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return !equivalent_to<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2), std::forward<State>(s)...);
+                return !equivalent_to<Rules>{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
         }
 };
 

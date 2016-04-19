@@ -19,15 +19,15 @@ struct Frisian
 
         struct precedence_tuple
         {
-                template<class Action, class... State>
-                constexpr auto operator()(Action const& a, State const&... s) const noexcept
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
                 {
-                        auto const k = a.num_captured_kings(s...);
-                        auto const n = a.num_captured(s...);
+                        auto const k = a.num_captured_kings();
+                        auto const n = a.num_captured();
                         constexpr auto N = 65;
                         auto const v = N * (n + k) - k;
                         return std::make_tuple(
-                                v, a.is_with_king(s...)
+                                v, a.is_with_king()
                         );
                 }
         };

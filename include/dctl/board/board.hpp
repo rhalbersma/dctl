@@ -8,7 +8,9 @@
 #include <dctl/board/shift.hpp>                 // Shift
 #include <dctl/color.hpp>                       // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
+#include <xstd/bitset.hpp>                      // bitset
 #include <xstd/cstddef.hpp>                     // _z
+#include <xstd/limits.hpp>                      // align_on
 #include <range/v3/all.hpp>                     // view::iota
 #include <array>                                // array
 #include <cstddef>                              // size_t
@@ -64,6 +66,8 @@ public:
         {
                 return NumBits;
         }
+
+        using set_type = xstd::bitset<xstd::align_on(bits(), 64)>;
 
         static constexpr auto shift_size(angle const direction)
         {

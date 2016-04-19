@@ -16,24 +16,22 @@ class Actions
         using Impl = detail::Actions<ToMove, Select, std::bool_constant<!KeepDuplicates>, std::bool_constant<Reverse>>;
 
         template<Color ToMove, class State>
-        auto invariant(State const& state, std::size_t n) const
+        auto assert_invariants(State const& state, std::size_t const n) const
         {
-                return
-                        count <ToMove>(state) ==  n      &&
-                        detect<ToMove>(state) == (n > 0)
-                ;
+                assert(count <ToMove>(state) ==  n);
+                assert(detect<ToMove>(state) == (n > 0));
         }
 
 public:
-        template<Color ToMove, class State, class Sequence>
-        auto generate(State const& state, Sequence& actions) const
+        template<Color ToMove, class State, class SequenceContainer>
+        auto generate(State const& state, SequenceContainer& actions) const
         {
                 Impl<ToMove>{}.generate(state, actions);
-                assert((invariant<ToMove>(state, actions.size())));
+                assert_invariants<ToMove>(state, actions.size());
         }
 
-        template<class State, class Sequence>
-        auto generate(State const& state, Sequence& actions) const
+        template<class State, class SequenceContainer>
+        auto generate(State const& state, SequenceContainer& actions) const
         {
                 return
                         state.is_to_move(Color::black) ?

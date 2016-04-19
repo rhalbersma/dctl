@@ -2,7 +2,7 @@
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/board/set_type.hpp>
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cstddef>
 
@@ -13,7 +13,7 @@ class MostRecentlyPushedKings
 {
 public:
         enum { M = max_same_king_push_v<Rules> };
-        enum { N = get_set_type<Board>::size() };
+        enum { N = set_t<Board>::size() };
 
 private:
         std::size_t index_[2]{ N, N };

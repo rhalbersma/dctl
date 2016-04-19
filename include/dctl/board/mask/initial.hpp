@@ -2,8 +2,8 @@
 #include <dctl/board/coordinates.hpp>           // ulo_from_sq
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/color.hpp>                       // black, white
-#include <dctl/board/set_type.hpp>              // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <array>                                // array
 #include <cassert>                              // assert
@@ -38,7 +38,7 @@ class Initial
         }
 
         static constexpr auto N = Board::height() / 2 + 1;
-        using table_type = std::array<get_set_type<Board>, N>;
+        using table_type = std::array<set_t<Board>, N>;
 
         static constexpr table_type table[] =
         {

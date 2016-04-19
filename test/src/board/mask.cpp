@@ -1,5 +1,5 @@
 #include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
-#include <dctl/board/set_type.hpp>              // set_type
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
 #include <xstd/cstddef.hpp>                     // _z
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
         );
 
         BOOST_CHECK(
-                ranges::accumulate(columns, get_set_type<T>{}, [](auto result, auto i){
+                ranges::accumulate(columns, set_t<T>{}, [](auto result, auto i){
                         return result ^ Column<T>::mask(Color::white, i);
                 }) == squares_v<T>
         );
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
         );
 
         BOOST_CHECK(
-                ranges::accumulate(rows, get_set_type<T>{}, [](auto result, auto i){
+                ranges::accumulate(rows, set_t<T>{}, [](auto result, auto i){
                         return result ^ Row<T>::mask(Color::white, i);
                 }) == squares_v<T>
         );
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSeq
         );
 
         BOOST_CHECK(
-                ranges::accumulate(jump_groups, get_set_type<T>{}, [](auto result, auto i){
+                ranges::accumulate(jump_groups, set_t<T>{}, [](auto result, auto i){
                         return result ^ JumpGroup<T>::mask(i);
                 }) == squares_v<T>
         );
