@@ -6,6 +6,7 @@
 #include <dctl/board/wave/patterns.hpp>                 // PushTargets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
+#include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
 #include <dctl/board/wave/patterns.hpp>                 // PushTargets
 #include <type_traits>                                  // false_type

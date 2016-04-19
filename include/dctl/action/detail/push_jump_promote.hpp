@@ -1,8 +1,8 @@
 #pragma once
 #include <dctl/piece.hpp>
-#include <dctl/board/set_type.hpp>      // set_type
 #include <dctl/utility/logic.hpp>
-#include <xstd/cstdint.hpp>
+#include <dctl/utility/type_traits.hpp> // set_t
+#include <xstd/cstdint.hpp>             // uint_fast
 #include <cassert>                      // assert
 #include <cstddef>                      // size_t
 
@@ -13,7 +13,7 @@ template<class Rules, class Board>
 class PushJumpPromote
 {
 public:
-        using    set_type = get_set_type<Board>;
+        using    set_type = set_t<Board>;
         using square_type = xstd::uint_fast_t<set_type::size()>;
 
 private:
@@ -31,9 +31,7 @@ private:
 public:
         PushJumpPromote() = default;
 
-        // pawn push
-        template<class... State>
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, bool promotion, State const&...) noexcept
+        constexpr PushJumpPromote(std::size_t const src, std::size_t const dst, bool const promotion) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
@@ -44,9 +42,7 @@ public:
                 assert(invariant());
         }
 
-        // king push
-        template<class... State>
-        constexpr PushJumpPromote(std::size_t src, std::size_t dst, State const&...) noexcept
+        constexpr PushJumpPromote(std::size_t const src, std::size_t const dst) noexcept
         :
                 captured_{},
                 from_{static_cast<square_type>(src)},
@@ -57,26 +53,14 @@ public:
                 assert(invariant());
         }
 
-        template<class State>
-        PushJumpPromote(State const&)
-        :
-                captured_{},
-                from_{},
-                dest_{},
-                with_{Piece::pawn},
-                into_{Piece::king}
-        {}
+        auto capture_piece(std::size_t const sq) { captured_.set(sq); }
+        auto release_piece(std::size_t const sq) { captured_.reset(sq); }
+        auto set_from(std::size_t const src) { from_ = static_cast<square_type>(src); }
+        auto set_dest(std::size_t const dst) { dest_ = static_cast<square_type>(dst); }
+        auto set_with(Piece const p) { with_ = p; }
+        auto set_into(Piece const p) { into_ = p; }
 
-        template<class... State> auto pawn_jump_depart(std::size_t src, State const&...) { from_ = static_cast<square_type>(src); }
-        template<class... State> auto pawn_jump_arrive(std::size_t dst, State const&...) { dest_ = static_cast<square_type>(dst); }
-        template<class... State> auto king_jump_depart(std::size_t src, State const&...) { from_ = static_cast<square_type>(src); }
-        template<class... State> auto king_jump_arrive(std::size_t dst, State const&...) { dest_ = static_cast<square_type>(dst); }
-        template<class... State> auto capture(std::size_t sq, State const&...) { captured_.set(sq); }
-        auto promote(std::size_t) { into_ = Piece::king; }
-        template<class... State> auto king_captures(set_type const&, State const&...) {}
-
-        template<class... State>
-        constexpr auto captured(State const&...) const noexcept
+        constexpr auto captured() const noexcept
         {
                 return captured_;
         }
@@ -96,20 +80,14 @@ public:
                 return with_;
         }
 
-        constexpr auto is_with(Piece p) const noexcept
-        {
-                return with() == p;
-        }
-
-        template<class... State>
-        constexpr auto is_with_king(State const&...) const noexcept
-        {
-                return is_with(Piece::king);
-        }
-
         constexpr auto into() const noexcept
         {
                 return into_;
+        }
+
+        constexpr auto is_with(Piece p) const noexcept
+        {
+                return with() == p;
         }
 
         constexpr auto is_into(Piece p) const noexcept
@@ -132,10 +110,14 @@ public:
                 return is_with(Piece::king) && !is_jump();
         }
 
-        template<class... State>
-        constexpr auto num_captured(State const&...) const noexcept
+        constexpr auto num_captured() const noexcept
         {
                 return captured().count();
+        }
+
+        constexpr auto is_with_king() const noexcept
+        {
+                return is_with(Piece::king);
         }
 };
 

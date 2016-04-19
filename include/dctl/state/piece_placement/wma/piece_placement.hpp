@@ -1,8 +1,8 @@
 #pragma once
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/board/set_type.hpp>
 #include <dctl/state/piece_placement/invariant.hpp>
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
 
@@ -15,7 +15,7 @@ class PiecePlacement
 {
 public:
         using board_type = Board;
-        using set_type = get_set_type<Board>;
+        using   set_type = set_t<Board>;
 
 private:
         set_type white_;

@@ -8,6 +8,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_long_ranged_king_t
+#include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {

@@ -1,36 +1,39 @@
 #pragma once
-#include <dctl/board/mask.hpp>          // squares, Promotion
+#include <dctl/board/mask.hpp>                          // squares, Promotion
 #include <dctl/color.hpp>                               // black, white
 #include <dctl/piece.hpp>                               // pawn, king
 #include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t
+#include <cassert>
 
 namespace dctl {
 namespace detail {
 
 template<class PiecePlacement>
-constexpr auto invariant(PiecePlacement const& p) noexcept
+constexpr auto assert_invariant(PiecePlacement const& p) noexcept
 {
-        using board_type = board_t<PiecePlacement>;
+        assert(disjoint(p.pieces(), p.not_occupied()));
 
-        return
-                 board::squares_v<board_type> == (p.pieces() | p.not_occupied()) &&
-                                         disjoint(p.pieces() , p.not_occupied()) &&
-                 p.pieces() == (pieces<Color::black>(p) | pieces<Color::white>(p)) &&
-                       disjoint(pieces<Color::black>(p) , pieces<Color::white>(p)) &&
-                 p.pieces() == (pieces<Piece::pawn >(p) | pieces<Piece::king >(p)) &&
-                       disjoint(pieces<Piece::pawn >(p) , pieces<Piece::king >(p)) &&
-                 pieces<Color::black>(p) == (pieces<Color::black, Piece::pawn>(p) | pieces<Color::black, Piece::king>(p)) &&
-                                    disjoint(pieces<Color::black, Piece::pawn>(p) , pieces<Color::black, Piece::king>(p)) &&
-                 pieces<Color::white>(p) == (pieces<Color::white, Piece::pawn>(p) | pieces<Color::white, Piece::king>(p)) &&
-                                    disjoint(pieces<Color::white, Piece::pawn>(p) , pieces<Color::white, Piece::king>(p)) &&
-                 pieces<Piece::pawn >(p) == (pieces<Color::black, Piece::pawn>(p) | pieces<Color::white, Piece::pawn>(p)) &&
-                                    disjoint(pieces<Color::black, Piece::pawn>(p) , pieces<Color::black, Piece::king>(p)) &&
-                 pieces<Piece::king >(p) == (pieces<Color::black, Piece::king>(p) | pieces<Color::white, Piece::king>(p)) &&
-                                    disjoint(pieces<Color::black, Piece::pawn>(p) , pieces<Color::black, Piece::king>(p)) &&
-                 disjoint(pieces<Color::black, Piece::pawn>(p), board::Promotion<board_type>::mask(Color::black)) &&
-                 disjoint(pieces<Color::white, Piece::pawn>(p), board::Promotion<board_type>::mask(Color::white))
-        ;
+        assert(disjoint(pieces<Color::black>(p), pieces<Color::white>(p)));
+        assert(disjoint(pieces<Piece::pawn >(p), pieces<Piece::king >(p)));
+
+        assert(disjoint(pieces<Color::black, Piece::pawn>(p), pieces<Color::black, Piece::king>(p)));
+        assert(disjoint(pieces<Color::white, Piece::pawn>(p), pieces<Color::white, Piece::king>(p)));
+        assert(disjoint(pieces<Color::black, Piece::pawn>(p), pieces<Color::black, Piece::king>(p)));
+        assert(disjoint(pieces<Color::black, Piece::pawn>(p), pieces<Color::black, Piece::king>(p)));
+
+        assert(disjoint(pieces<Color::black, Piece::pawn>(p), board::Promotion<board_t<PiecePlacement>>::mask(Color::black)));
+        assert(disjoint(pieces<Color::white, Piece::pawn>(p), board::Promotion<board_t<PiecePlacement>>::mask(Color::white)));
+
+        assert(board::squares_v<board_type> == (p.pieces() | p.not_occupied()));
+
+        assert(p.pieces() == (pieces<Color::black>(p) | pieces<Color::white>(p)));
+        assert(p.pieces() == (pieces<Piece::pawn >(p) | pieces<Piece::king >(p)));
+
+        assert(pieces<Color::black>(p) == (pieces<Color::black, Piece::pawn>(p) | pieces<Color::black, Piece::king>(p)));
+        assert(pieces<Color::white>(p) == (pieces<Color::white, Piece::pawn>(p) | pieces<Color::white, Piece::king>(p)));
+        assert(pieces<Piece::pawn >(p) == (pieces<Color::black, Piece::pawn>(p) | pieces<Color::white, Piece::pawn>(p)));
+        assert(pieces<Piece::king >(p) == (pieces<Color::black, Piece::king>(p) | pieces<Color::white, Piece::king>(p)));
 }
 
 }       // namespace detail

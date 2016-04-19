@@ -2,8 +2,8 @@
 #include <dctl/board/coordinates.hpp>           // to_llo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/color.hpp>                       // black, white
-#include <dctl/board/set_type.hpp>              // set_type
 #include <dctl/utility/make_array.hpp>          // make_array
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <array>                                // array
 #include <cassert>                              // assert
@@ -34,7 +34,7 @@ class Column
                 return make_set_if<Board>(is_column{ToMove, column});
         }
 
-        using table_type = std::array<get_set_type<Board>, Board::width()>;
+        using table_type = std::array<set_t<Board>, Board::width()>;
         static constexpr table_type table[] =
         {
                 make_array<Board::width()>(init<Color::black>),

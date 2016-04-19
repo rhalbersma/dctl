@@ -4,8 +4,7 @@
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/protocols.hpp>
 #include <dctl/setup/i_token.hpp>
-#include <dctl/board/set_type.hpp>
-#include <dctl/utility/type_traits.hpp>
+#include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
 #include <cctype>                       // isdigit
@@ -52,7 +51,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 {
         State<Rules, Board> operator()(std::string const& s) const
         {
-                using set_type = get_set_type<Board>;
+                using set_type = set_t<Board>;
                 set_type by_color[2]{};
                 set_type by_piece[2]{};
                 auto p_side = Color::black;
@@ -143,7 +142,7 @@ struct read<Rules, Board, dxp::protocol, Token>
 {
         State<Rules, Board> operator()(std::string const& s) const
         {
-                using set_type = get_set_type<Board>;
+                using set_type = set_t<Board>;
                 set_type by_color[2]{};
                 set_type by_piece[2]{};
                 auto p_side = Color::black;

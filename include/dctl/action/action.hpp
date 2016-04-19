@@ -4,7 +4,7 @@
 #include <dctl/action/detail/precedence_ordering.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>                 // is_quality_precedence, is_ordering_precedence
-#include <dctl/board/set_type.hpp>              // set_type
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // optional_base
 #include <cassert>                              // assert
 #include <tuple>                                // forward_as_tuple

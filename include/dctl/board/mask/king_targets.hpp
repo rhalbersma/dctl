@@ -3,8 +3,8 @@
 #include <dctl/board/mask/squares.hpp>  // Squares
 #include <dctl/board/ray/fill.hpp>      // fill
 #include <dctl/board/ray/iterator.hpp>  // Iterator
-#include <dctl/board/set_type.hpp>      // set_type
 #include <dctl/utility/make_array.hpp>  // make_array
+#include <dctl/utility/type_traits.hpp> // set_t
 #include <array>                        // array
 #include <cstddef>                      // size_t
 
@@ -18,13 +18,13 @@ class KingTargets
         static constexpr auto init(std::size_t sq) noexcept
         {
                 constexpr auto squares = squares_v<Board>;
-                return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : get_set_type<Board>{};
+                return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : set_t<Board>{};
         }
 
         static constexpr auto theta = 45_deg;
         static constexpr auto beta  =  0_deg;
 
-        using table_type = std::array<get_set_type<Board>, Board::bits()>;
+        using table_type = std::array<set_t<Board>, Board::bits()>;
         static table_type const table[];
 
 public:

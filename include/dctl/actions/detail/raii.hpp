@@ -8,25 +8,60 @@ namespace core {
 namespace raii {
 
 template<class Builder>
-class Launch
+class toggle_king_targets
 {
         Builder& builder;
-        std::size_t square;
 public:
-        ~Launch()
+        ~toggle_king_targets()
+        {
+                builder.toggle_king_targets();
+        }
+
+        toggle_king_targets(Builder& b)
+        :
+                builder{b}
+        {
+                builder.toggle_king_targets();
+        }
+};
+
+template<class Builder>
+class launch
+{
+        Builder& builder;
+        std::size_t const square;
+public:
+        ~launch()
         {
                 builder.undo_launch(square);
         }
 
-        Launch(Launch const&) = delete;
-        Launch& operator=(Launch const&) = delete;
-
-        Launch(Builder& b, std::size_t sq)
+        launch(Builder& b, std::size_t const sq)
         :
                 builder{b},
                 square{sq}
         {
                 builder.make_launch(square);
+        }
+};
+
+template<class Builder>
+class capture
+{
+        Builder& builder;
+        std::size_t const square;
+public:
+        ~capture()
+        {
+                builder.release_piece(square);
+        }
+
+        capture(Builder& b, std::size_t const sq)
+        :
+                builder{b},
+                square{sq}
+        {
+                builder.capture_piece(square);
         }
 };
 
@@ -48,27 +83,6 @@ public:
                 builder{b}
         {
                 builder.visit(sq);
-        }
-};
-
-template<class Builder>
-class ToggleKingTargets
-{
-        Builder& builder;
-public:
-        ~ToggleKingTargets()
-        {
-                builder.toggle_king_targets();
-        }
-
-        ToggleKingTargets(ToggleKingTargets const&) = delete;
-        ToggleKingTargets& operator=(ToggleKingTargets const&) = delete;
-
-        ToggleKingTargets(Builder& b)
-        :
-                builder{b}
-        {
-                builder.toggle_king_targets();
         }
 };
 
@@ -98,20 +112,17 @@ public:
 };
 
 template<class Builder>
-class SetPromotion
+class promotion
 {
         Builder& builder;
 public:
-        ~SetPromotion()
+        ~promotion()
         {
                 assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
                 builder.set_into(Piece::pawn);
         }
 
-        SetPromotion(SetPromotion const&) = delete;
-        SetPromotion& operator=(SetPromotion const&) = delete;
-
-        SetPromotion(Builder& b)
+        promotion(Builder& b)
         :
                 builder{b}
         {

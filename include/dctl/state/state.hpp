@@ -11,7 +11,7 @@
 #include <dctl/state/to_move/zobrist.hpp>
 #include <dctl/state/reversible_actions.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/board/set_type.hpp>
+#include <dctl/utility/type_traits.hpp>         // set_t
 #include <dctl/utility/zobrist/accumulate.hpp>
 #include <cassert>                      // assert
 #include <tuple>
@@ -25,10 +25,10 @@ class State
 public:
         using board_type = Board;
         using rules_type = Rules;
-        using   set_type = get_set_type<Board>;
+        using   set_type = set_t<Board>;
 
 private:
-        detail::bwk::PiecePlacement<Board> piece_placement_{};
+        bwk::PiecePlacement<Board> piece_placement_{};
         PlayerToMove player_to_move_{};
 
 public:
@@ -51,20 +51,6 @@ public:
         {
                 piece_placement_.make(player_to_move_, a);
                 player_to_move_.make(a);
-                return *this;
-        }
-
-        auto& make(detail::bwk::Action<Rules, Board> const& a)
-        {
-                piece_placement_.make(a);
-                player_to_move_.make(a);
-                return *this;
-        }
-
-        auto& undo(detail::bwk::Action<Rules, Board> const& a)
-        {
-                piece_placement_.undo(a);
-                player_to_move_.undo(a);
                 return *this;
         }
 

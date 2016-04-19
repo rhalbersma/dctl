@@ -8,7 +8,8 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
-#include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t, value_t
+#include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
+#include <xstd/type_traits.hpp>                         // value_t
 #include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
@@ -16,39 +17,38 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State, class Sequence>
-class Generate<ToMove, Piece::king, select::push, Reverse, State, Sequence>
+template<Color ToMove, class Reverse, class State, class SequenceContainer>
+class Generate<ToMove, Piece::king, select::push, Reverse, State, SequenceContainer>
 {
-        using board_type = board_t<State>;
-        using rules_type = rules_t<State>;
-        using   set_type =   set_t<State>;
+        using action_type = xstd::value_t<SequenceContainer>;
+        using  board_type = board_t<State>;
+        using  rules_type = rules_t<State>;
+        using    set_type =   set_t<State>;
 
         template<int Direction>
         using wave_push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
-        State const& state;
-        Sequence& actions;
+        SequenceContainer& actions;
 public:
-        Generate(State const& s, Sequence& a) noexcept
+        Generate(SequenceContainer& a)
         :
-                state{s},
                 actions{a}
         {}
 
-        auto operator()() const
+        auto operator()(State const& state) const
         {
-                king_range_dispatch(king_range_category_t<rules_type>{});
+                king_range_dispatch(state, king_range_category_t<rules_type>{});
         }
 private:
-        auto king_range_dispatch(short_ranged_tag) const
+        auto king_range_dispatch(State const& state, short_ranged_tag) const
         {
                 auto const active_kings = pieces<ToMove, Piece::king>(state);
                 if (active_kings.any())
                         wave_directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied());
         }
 
-        auto king_range_dispatch(long_ranged_tag) const
+        auto king_range_dispatch(State const& state, long_ranged_tag) const
         {
                 pieces<ToMove, Piece::king>(state).for_each([&](auto const& from_sq){
                         ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq, state.not_occupied());
@@ -58,13 +58,13 @@ private:
         template<template<int> class... Directions>
         auto wave_directions_lfold(set_type const active_kings, set_type const not_occupied) const
         {
-                return (..., wave_targets<Directions<bearing.degrees()>{}>(active_kings, not_occupied));
+                return (... , wave_targets<Directions<bearing.degrees()>{}>(active_kings, not_occupied));
         }
 
         template<template<int> class... Directions>
         auto ray_directions_lfold(std::size_t const from, set_type const not_occupied) const
         {
-                return (..., ray_targets(along_ray<Directions<bearing.degrees()>{}>(from), not_occupied));
+                return (... , ray_targets(along_ray<Directions<bearing.degrees()>{}>(from), not_occupied));
         }
 
         template<int Direction>
@@ -73,11 +73,10 @@ private:
                 wave_push_targets<Direction>{}(
                         active_kings,
                         not_occupied
-                ).for_each([this](auto const& dest_sq){
+                ).for_each([this](auto const dest_sq){
                         actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
-                                dest_sq,
-                                state
+                                dest_sq
                         );
                 });
         }
@@ -88,11 +87,10 @@ private:
                 ray::classical(
                         from,
                         not_occupied
-                ).for_each([this, from](auto const& dest_sq){
+                ).for_each([this, from](auto const dest_sq){
                         actions.emplace_back(
                                 *from,
-                                dest_sq,
-                                state
+                                dest_sq
                         );
                 });
         }

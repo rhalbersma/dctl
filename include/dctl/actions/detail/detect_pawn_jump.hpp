@@ -7,6 +7,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_superior_rank_jump
+#include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {

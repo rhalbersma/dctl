@@ -8,7 +8,8 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/state/promotion.hpp>                     // is_promotion
-#include <dctl/utility/type_traits.hpp>                 // board_t, set_t, value_t
+#include <dctl/utility/type_traits.hpp>                 // board_t, set_t
+#include <xstd/type_traits.hpp>                         // value_t
 #include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
@@ -16,26 +17,25 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State, class Sequence>
-class Generate<ToMove, Piece::pawn, select::push, Reverse, State, Sequence>
+template<Color ToMove, class Reverse, class State, class SequenceContainer>
+class Generate<ToMove, Piece::pawn, select::push, Reverse, State, SequenceContainer>
 {
-        using board_type = board_t<State>;
-        using   set_type =   set_t<State>;
+        using action_type = xstd::value_t<SequenceContainer>;
+        using  board_type = board_t<State>;
+        using    set_type =   set_t<State>;
 
         template<int Direction>
         using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
-        State const& state;
-        Sequence& actions;
+        SequenceContainer& actions;
 public:
-        Generate(State const& s, Sequence& a) noexcept
+        Generate(SequenceContainer& a)
         :
-                state{s},
                 actions{a}
         {}
 
-        auto operator()() const
+        auto operator()(State const& state) const
         {
                 auto const active_pawns = pieces<ToMove, Piece::pawn>(state);
                 if (active_pawns.any())
@@ -45,7 +45,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const
         {
-                return (..., targets<Directions<bearing.degrees()>{}>(active_pawns, not_occupied));
+                return (... , targets<Directions<bearing.degrees()>{}>(active_pawns, not_occupied));
         }
 
         template<int Direction>
@@ -58,8 +58,7 @@ private:
                         actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq,
-                                is_promotion(dest_sq),
-                                state
+                                is_promotion(dest_sq)
                         );
                 });
         }

@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/angle.hpp>         // angle
-#include <dctl/board/set_type.hpp>      // set_type
 #include <dctl/utility/shift.hpp>       // shift_assign
+#include <dctl/utility/type_traits.hpp> // set_t
 #include <boost/operators.hpp>          // totally_ordered, unit_steppable
 
 namespace dctl {
@@ -18,7 +18,7 @@ class Cursor
         static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");
 
-        using set_type = get_set_type<Board>;
+        using set_type = set_t<Board>;
 
         set_type cursor_{};
 public:
