@@ -190,30 +190,24 @@ public:
 private:
         auto capture_piece_dispatch(std::size_t const sq, stopped_capture_tag)
         {
-                candidate_action.capture_piece(sq);
+                candidate_action.capture_piece(sq, is_king(sq));
         }
 
         auto capture_piece_dispatch(std::size_t const sq, passing_capture_tag)
         {
-                candidate_action.capture_piece(sq);
+                candidate_action.capture_piece(sq, is_king(sq));
                 not_occupied_.set(sq);
         }
 
         auto release_piece_dispatch(std::size_t const sq, stopped_capture_tag)
         {
-                candidate_action.release_piece(sq);
+                candidate_action.release_piece(sq, is_king(sq));
         }
 
         auto release_piece_dispatch(std::size_t const sq, passing_capture_tag)
         {
-                candidate_action.release_piece(sq);
+                candidate_action.release_piece(sq, is_king(sq));
                 not_occupied_.reset(sq);
-        }
-
-        template<int Direction>
-        static auto along_wave(set_type const& s)
-        {
-                return wave::make_iterator<board_type, Direction>(s);
         }
 
         auto is_king(square_type sq) const
@@ -221,9 +215,10 @@ private:
                 return pieces<Piece::king>(state).test(sq);
         }
 
-        auto reverse_index(std::size_t n) const noexcept
+        template<int Direction>
+        static auto along_wave(set_type const& s)
         {
-                return set_type::size() - 1 - n;
+                return wave::make_iterator<board_type, Direction>(s);
         }
 
         auto precedence_dispatch(trivial_precedence_tag) const
