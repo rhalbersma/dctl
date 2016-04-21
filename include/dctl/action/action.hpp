@@ -1,10 +1,9 @@
 #pragma once
-#include <dctl/action/detail/push_jump_promote.hpp>
-#include <dctl/action/detail/precedence_quality.hpp>
-#include <dctl/action/detail/precedence_ordering.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>                 // is_quality_precedence, is_ordering_precedence
+#include <dctl/utility/logic.hpp>
 #include <dctl/utility/type_traits.hpp>         // set_t
+#include <xstd/cstdint.hpp>
 #include <xstd/type_traits.hpp>                 // optional_base
 #include <cassert>                              // assert
 #include <tuple>                                // forward_as_tuple
@@ -14,35 +13,152 @@ namespace dctl {
 
 template<class Rules, class Board>
 class Action
-:       public detail::PushJumpPromote<Rules, Board>
-,       public xstd::optional_base<is_quality_precedence_v <Rules>, detail::PrecedenceQuality <Board>>
-,       public xstd::optional_base<is_ordering_precedence_v<Rules>, detail::PrecedenceOrdering<Board>>
 {
-        using PushJumpPromote    = detail::PushJumpPromote<Rules, Board>;
-        using PrecedenceQuality  = xstd::optional_base<is_quality_precedence_v <Rules>, detail::PrecedenceQuality <Board>>;
-        using PrecedenceOrdering = xstd::optional_base<is_ordering_precedence_v<Rules>, detail::PrecedenceOrdering<Board>>;
 public:
-        using rules_type = Rules;
-        using board_type = Board;
+        using  board_type = Board;
+        using  rules_type = Rules;
+        using    set_type = set_t<Board>;
+        using square_type = xstd::uint_fast_t<set_type::size()>;
 
+private:
+        set_type captured_pieces_;
+        set_type captured_kings_;
+        set_type piece_order_;
+        square_type from_;
+        square_type dest_;
+        Piece with_;
+        Piece into_;
+
+        constexpr auto invariant() const noexcept
+        {
+                return util::implies(from() == dest(), is_jump());
+        }
+
+public:
         Action() = default;
 
-        using PushJumpPromote::PushJumpPromote;
-
-        template<class Builder>
-        explicit constexpr Action(Builder const& b) noexcept
+        constexpr Action(std::size_t const src, std::size_t const dst, bool const promotion) noexcept
         :
-                PushJumpPromote{b},
-                PrecedenceQuality{b},
-                PrecedenceOrdering{b}
-        {}
-
-        using PushJumpPromote::num_captured;
-
-        template<class RulesType = rules_type, std::enable_if_t<is_quality_precedence_v<RulesType>>* = nullptr>
-        constexpr auto num_captured(Piece p) const noexcept
+                captured_pieces_{},
+                captured_kings_{},
+                piece_order_{},
+                from_{static_cast<square_type>(src)},
+                dest_{static_cast<square_type>(dst)},
+                with_{Piece::pawn},
+                into_{promotion ? Piece::king : Piece::pawn}
         {
-                return PrecedenceQuality::num_captured(p);
+                assert(invariant());
+        }
+
+        constexpr Action(std::size_t const src, std::size_t const dst) noexcept
+        :
+                captured_pieces_{},
+                captured_kings_{},
+                piece_order_{},
+                from_{static_cast<square_type>(src)},
+                dest_{static_cast<square_type>(dst)},
+                with_{Piece::king},
+                into_{Piece::king}
+        {
+                assert(invariant());
+        }
+
+        auto capture_piece(std::size_t const sq, bool const is_king)
+        {
+                if (is_king) {
+                        captured_kings_.set(sq);
+                        piece_order_.set(set_type::size() - 1 - num_captured());
+                }
+                captured_pieces_.set(sq);
+        }
+
+        auto release_piece(std::size_t const sq, bool const is_king)
+        {
+                captured_pieces_.reset(sq);
+                if (is_king) {
+                        piece_order_.reset(set_type::size() - 1 - num_captured());
+                        captured_kings_.reset(sq);
+                }
+        }
+
+        auto set_from(std::size_t const src) { from_ = static_cast<square_type>(src); }
+        auto set_dest(std::size_t const dst) { dest_ = static_cast<square_type>(dst); }
+        auto set_with(Piece const p) { with_ = p; }
+        auto set_into(Piece const p) { into_ = p; }
+
+        constexpr auto captured() const noexcept
+        {
+                return captured_pieces_;
+        }
+
+        constexpr auto captured_kings() const noexcept
+        {
+                return captured_kings_;
+        }
+
+        constexpr auto from() const noexcept
+        {
+                return static_cast<std::size_t>(from_);
+        }
+
+        constexpr auto dest() const noexcept
+        {
+                return static_cast<std::size_t>(dest_);
+        }
+
+        constexpr auto with() const noexcept
+        {
+                return with_;
+        }
+
+        constexpr auto into() const noexcept
+        {
+                return into_;
+        }
+
+        constexpr auto is_with(Piece p) const noexcept
+        {
+                return with() == p;
+        }
+
+        constexpr auto is_into(Piece p) const noexcept
+        {
+                return into() == p;
+        }
+
+        constexpr auto is_jump() const noexcept
+        {
+                return captured().any();
+        }
+
+        constexpr auto is_promotion() const noexcept
+        {
+                return is_with(Piece::pawn) && !is_into(Piece::pawn);
+        }
+
+        constexpr auto is_reversible() const noexcept
+        {
+                return is_with(Piece::king) && !is_jump();
+        }
+
+        constexpr auto num_captured() const noexcept
+        {
+                return captured().count();
+        }
+
+        constexpr auto num_captured_kings() const noexcept
+        {
+                return captured_kings().count();
+        }
+
+        constexpr auto is_with_king() const noexcept
+        {
+                return is_with(Piece::king);
+        }
+
+        constexpr auto piece_order() const noexcept
+        {
+                return piece_order_;
         }
 };
 
