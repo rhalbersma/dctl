@@ -4,7 +4,7 @@ namespace dctl {
 namespace rules {
 
 // http://www.usacheckers.com/rulesofcheckers.php
-struct Checkers
+struct checkers
 {
         // THE DRAUGHTBOARD AND ITS ARRANGEMENT
         static constexpr auto is_algebraic_notation = false;    // 1.5

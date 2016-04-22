@@ -4,7 +4,7 @@ namespace dctl {
 namespace rules {
 
 // http://www.shashist.ru/kodeks/kodeks2004.doc
-struct Russian
+struct russian
 {
         static constexpr auto is_long_ranged_king = true;       // 1.4.5
 

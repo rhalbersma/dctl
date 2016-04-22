@@ -1,6 +1,6 @@
 #include <actions/fixture.hpp>          // run
-#include <dctl/board/types.hpp>         // International
-#include <dctl/rules/international.hpp> // International
+#include <dctl/board/types.hpp>         // international
+#include <dctl/rules/international.hpp> // international
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string
 #include <vector>                       // vector
@@ -8,11 +8,11 @@
 namespace dctl {
 namespace core {
 
-using F = Fixture<rules::International, board::International>;
+using F = Fixture<rules::international, board::international>;
 
-BOOST_AUTO_TEST_SUITE(ActionsRulebookInternational)
+BOOST_AUTO_TEST_SUITE(ActionsRulebookinternational)
 
-        // States from the International rules (French tutorial):
+        // States from the international rules (French tutorial):
         // http://www.ffjd.fr/Web/index.php?page=reglesdujeu
 
         BOOST_AUTO_TEST_SUITE(FrenchTutorial)
@@ -102,10 +102,10 @@ BOOST_AUTO_TEST_SUITE(ActionsRulebookInternational)
 
         BOOST_AUTO_TEST_SUITE_END()
 
-        // States from the official International rules (Italian translation):
+        // States from the official international rules (italian translation):
         // http://www.fid.it/regolamenti/2008/RegTec_CAPO_II.pdf
 
-        BOOST_AUTO_TEST_SUITE(ItalianOfficialVersion)
+        BOOST_AUTO_TEST_SUITE(italianOfficialVersion)
 
                 BOOST_FIXTURE_TEST_CASE(KingPushRange, F)               // Art. 3.9
                 {

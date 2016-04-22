@@ -4,7 +4,7 @@ namespace dctl {
 namespace rules {
 
 // http://americanpoolcheckers.us/americanpoolcheckers/index.php/history/apca-tournament-rules-of-play
-struct Pool
+struct pool
 {
         static constexpr auto initial_gap = 2;                  // 5
 

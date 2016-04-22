@@ -3,7 +3,7 @@
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/board/types.hpp>                 // International
+#include <dctl/board/types.hpp>                 // international
 #include <dctl/setup/diagram.hpp>               // diagram, bits, squares
 #include <dctl/board/algebraic.hpp>
 #include <iterator>
@@ -19,31 +19,31 @@ BOOST_AUTO_TEST_SUITE(SetupLayout)
 
 using BSequence = boost::mpl::vector
 <
-        board::Checkers,
-        board::Board< 8, 10>,
-        board::Board<10,  8>,
-        board::International,
-        board::Board<10, 12>,
-        board::Board<12, 10>,
-        board::Compact1210,
-        board::Canadian,
-        board::Checkers,
-        board::Ktar< 8, 10>,
-        board::Ktar<10,  8>,
-        board::International,
-        board::Ktar<10, 11>,
-        board::Ktar<10, 12>,
-        board::Compact1012,
-        board::Ktar<12, 10>,
-        board::Canadian,
-        board::Board<10, 9>,
-        board::Board<11, 9>,
-        board::Board<21, 21>
+        board::checkers,
+        board::rectangular< 8, 10>,
+        board::rectangular<10,  8>,
+        board::international,
+        board::rectangular<10, 12>,
+        board::rectangular<12, 10>,
+        board::compact1210,
+        board::canadian,
+        board::checkers,
+        board::ktar< 8, 10>,
+        board::ktar<10,  8>,
+        board::international,
+        board::ktar<10, 11>,
+        board::ktar<10, 12>,
+        board::compact1012,
+        board::ktar<12, 10>,
+        board::canadian,
+        board::rectangular<10, 9>,
+        board::rectangular<11, 9>,
+        board::rectangular<21, 21>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)
 {
-        auto const p = State<rules::International, T>::initial();
+        auto const p = State<rules::international, T>::initial();
         std::cout << setup::diagram<pdn::protocol>()(p);
         std::cout << "W = " << T::width() << ", H = " << T::height() << ", bits = " << T::bits() << "\n\n";
 }

@@ -1,4 +1,4 @@
-#include <dctl/rules/thai.hpp>          // Thai
+#include <dctl/rules/thai.hpp>          // thai
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, is_long_ranged_king, is_trivial, initial_position_gap, is_land_behind_piece, is_passing_capture, jumpsep
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
@@ -7,7 +7,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesThai)
 
-using T = Thai;
+using T = thai;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {

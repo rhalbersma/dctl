@@ -7,20 +7,20 @@ namespace board {
 
 using BoardSequence = boost::mpl::vector
 <
-        Micro,
-        Mini,
-        Checkers,
-        Roman,
-        Spantsireti,
-        International,
-        Frisian,
-        Ktar<10, 11>,
-        Ktar<10, 12>,
-        Compact1012,
-        Compact1210,
-        Canadian,
-        SriLankan,
-        Dumm
+        micro,
+        mini,
+        checkers,
+        roman,
+        spantsireti,
+        international,
+        frisian,
+        ktar<10, 11>,
+        ktar<10, 12>,
+        compact1012,
+        compact1210,
+        canadian,
+        srilankan,
+        dumm
 >;
 
 }       // namespace board

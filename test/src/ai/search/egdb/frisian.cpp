@@ -7,9 +7,9 @@
 namespace dctl {
 namespace search {
 
-BOOST_AUTO_TEST_SUITE(SearchEGDBFrisian)
+BOOST_AUTO_TEST_SUITE(SearchEGDBfrisian)
 
-using F = Fixture< State<rules::Frisian, board::International>, DefaultObjective >;
+using F = Fixture< State<rules::frisian, board::international>, DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(Walinga, F)
 {

@@ -1,5 +1,5 @@
-#include <dctl/board/types.hpp>                 // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
-                                                // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
+#include <dctl/board/types.hpp>                 // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
+                                                // ktar<10, 12>, compact1012, compact120, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -15,9 +15,9 @@ template<class>
 struct remove_orthogonal_capture;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCapture>
-struct remove_orthogonal_capture<Board<Width, Height, Inverted, OrthogonalCapture>>
+struct remove_orthogonal_capture<rectangular<Width, Height, Inverted, OrthogonalCapture>>
 {
-        using type = Board<Width, Height, Inverted, false>;
+        using type = rectangular<Width, Height, Inverted, false>;
 };
 
 template<class T>
@@ -27,9 +27,9 @@ template<class>
 struct add_orthogonal_capture;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCapture>
-struct add_orthogonal_capture<Board<Width, Height, Inverted, OrthogonalCapture>>
+struct add_orthogonal_capture<rectangular<Width, Height, Inverted, OrthogonalCapture>>
 {
-        using type = Board<Width, Height, Inverted, true>;
+        using type = rectangular<Width, Height, Inverted, true>;
 };
 
 template<class T>
@@ -37,14 +37,14 @@ using add_orthogonal_capture_t = typename add_orthogonal_capture<T>::type;
 
 using SmallBoardSequence = boost::mpl::vector
 <
-        Micro,
-        Mini,
-        Checkers,
-        Roman,
-        Spantsireti,
-        International,
-        Frisian,
-        Ktar<10, 11>
+        micro,
+        mini,
+        checkers,
+        roman,
+        spantsireti,
+        international,
+        frisian,
+        ktar<10, 11>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
@@ -55,17 +55,17 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
 
 using IntermediateBoardSequence = boost::mpl::vector
 <
-        Ktar <10, 12>,
-        Board<12, 10>
+        ktar <10, 12>,
+        rectangular<12, 10>
 >;
 
 BOOST_AUTO_TEST_CASE(RemoveAddOrthogonalCapture)
 {
-        static_assert(std::is_same_v<remove_orthogonal_capture_t<Ktar <10, 12>>, Compact1012>);
-        static_assert(std::is_same_v<   add_orthogonal_capture_t<Compact1012>, Ktar <10, 12>>);
+        static_assert(std::is_same_v<remove_orthogonal_capture_t<ktar <10, 12>>, compact1012>);
+        static_assert(std::is_same_v<   add_orthogonal_capture_t<compact1012>, ktar <10, 12>>);
 
-        static_assert(std::is_same_v<remove_orthogonal_capture_t<Board<12, 10>>, Compact1210>);
-        static_assert(std::is_same_v<   add_orthogonal_capture_t<Compact1210>, Board<12, 10>>);
+        static_assert(std::is_same_v<remove_orthogonal_capture_t<rectangular<12, 10>>, compact1210>);
+        static_assert(std::is_same_v<   add_orthogonal_capture_t<compact1210>, rectangular<12, 10>>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)
@@ -76,9 +76,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSeque
 
 using LargeBoardSequence = boost::mpl::vector
 <
-        Canadian,
-        Dumm,
-        SriLankan
+        canadian,
+        dumm,
+        srilankan
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs128, T, LargeBoardSequence)

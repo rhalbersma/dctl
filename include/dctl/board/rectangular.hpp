@@ -28,7 +28,7 @@ template
         bool Inverted = false,
         bool OrthogonalCaptures = true
 >
-class Board
+class rectangular
 {
         static_assert(0 <= Width);
         static_assert(0 <= Height);
@@ -95,7 +95,7 @@ public:
         {
                 std::stringstream sstr;
                 auto coord = to_llo(square_from_bit(n), inner_grid);
-                sstr << Labels<Board>::col[coord.x()] << Labels<Board>::row[coord.y()];
+                sstr << Labels<rectangular>::col[coord.x()] << Labels<rectangular>::row[coord.y()];
                 return sstr.str();
         }
 private:
@@ -139,23 +139,23 @@ public:
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr angle
-Board<Width, Height, Inverted, OrthogonalCaptures>::orientation;
+rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr InnerGrid
-Board<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
+rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr OuterGrid
-Board<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
+rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<std::size_t, Board<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
-Board<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
+constexpr std::array<std::size_t, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
+rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<int, Board<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
-Board<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
+constexpr std::array<int, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
+rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 
 }       // namespace board
 }       // namespace dctl

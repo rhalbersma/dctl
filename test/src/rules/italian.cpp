@@ -1,4 +1,4 @@
-#include <dctl/rules/italian.hpp>       // Italian
+#include <dctl/rules/italian.hpp>       // italian
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/piece.hpp>               // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_superior_rank_jump, is_ordering, equal_to, less
@@ -11,7 +11,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesItalian)
 
-using T = Italian;
+using T = italian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {

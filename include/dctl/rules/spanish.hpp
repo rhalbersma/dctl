@@ -5,7 +5,7 @@ namespace dctl {
 namespace rules {
 
 // http://www.fpdamas.pt/downloads/Regras%20Damas%20Cl%C3%A1ssicas%20-%20atualizado.pdf
-struct Spanish
+struct spanish
 {
         static constexpr auto is_long_ranged_king = true;
         static constexpr auto is_backward_pawn_jump = false;
