@@ -1,6 +1,6 @@
 #pragma once
+#include <dctl/ai/eval/feature.hpp>     // Feature
 #include <dctl/color.hpp>               // Player
-#include <dctl/eval/feature.hpp>    // Feature
 
 namespace dctl {
 namespace evaluate {

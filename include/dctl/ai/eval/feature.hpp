@@ -1,9 +1,10 @@
 #pragma once
+#include <dctl/ai/eval/weight.hpp>      // Weight
 #include <dctl/color.hpp>               // Player
 #include <dctl/piece.hpp>
 #include <dctl/board/mask.hpp>          // Column, Row
-#include <dctl/eval/weight.hpp>     // Weight
-#include <dctl/actions.hpp>           // count, select::push
+#include <dctl/actions.hpp>             // count, select::push
+#include <xstd/cstddef.hpp>
 #include <cstdlib>                      // abs
 
 namespace dctl {

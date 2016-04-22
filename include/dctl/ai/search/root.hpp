@@ -1,15 +1,15 @@
 #pragma once
+#include <dctl/ai/eval/score.hpp>
+#include <dctl/ai/node.hpp>
 #include <dctl/ai/search/bound.hpp>
 #include <dctl/ai/search/objective.hpp>
 #include <dctl/ai/search/score.hpp>
 #include <dctl/ai/search/transposition.hpp>
 #include <dctl/ai/search/variation.hpp>
-#include <dctl/eval/score.hpp>
 #include <dctl/utility/static_vector.hpp>
 #include <dctl/utility/hash/extract.hpp>
 #include <dctl/utility/hash/map.hpp>
 #include <dctl/utility/hash/replace.hpp>
-#include <dctl/ai/node.hpp>
 #include <dctl/actions.hpp>
 
 #include <dctl/utility/algorithm.hpp>

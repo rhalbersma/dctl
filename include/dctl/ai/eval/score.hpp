@@ -1,8 +1,8 @@
 #pragma once
+#include <dctl/ai/eval/delta.hpp>
+#include <dctl/ai/eval/feature.hpp>
+#include <dctl/ai/eval/weight.hpp>
 #include <dctl/color.hpp>
-#include <dctl/eval/delta.hpp>
-#include <dctl/eval/feature.hpp>
-#include <dctl/eval/weight.hpp>
 #include <iomanip>
 #include <iostream>
 
