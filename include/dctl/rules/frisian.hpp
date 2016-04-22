@@ -5,7 +5,7 @@ namespace dctl {
 namespace rules {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
-struct Frisian
+struct frisian
 {
         static constexpr auto is_backward_pawn_jump = true;
         static constexpr auto is_long_ranged_king = true;

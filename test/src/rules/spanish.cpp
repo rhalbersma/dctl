@@ -1,4 +1,4 @@
-#include <dctl/rules/spanish.hpp>       // Spanish
+#include <dctl/rules/spanish.hpp>       // spanish
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/piece.hpp>               // Piece
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, is_long_ranged_king, is_trivial, equal_to, less
@@ -11,7 +11,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesSpanish)
 
-using T = Spanish;
+using T = spanish;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {

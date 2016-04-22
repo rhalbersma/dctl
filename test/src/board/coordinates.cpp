@@ -1,7 +1,7 @@
 #include <board/group.hpp>                      // action::is_realized, make_group
 #include <dctl/board/angle.hpp>                 // _deg, inverse, rotate
-#include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
-                                                // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
+#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
+                                                // ktar<10, 12>, compact1012, compact120, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/board/coordinates.hpp>           // operator==, rotate, to_sco
 #include <range/v3/all.hpp>
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

@@ -1,7 +1,7 @@
 #include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
 #include <dctl/utility/type_traits.hpp>         // set_t
-#include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsireti, International, Frisian, Ktar<10, 11>,
-                                                // Ktar<10, 12>, Compact1012, Compact120, Board<12, 10>, Canadian, SriLankan, Dumm
+#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
+                                                // ktar<10, 12>, compact1012, compact120, rectangular<12, 10>, canadian, srilankan, dumm
 #include <xstd/cstddef.hpp>                     // _z
 #include <range/v3/all.hpp>                     // all_of, view::iota
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

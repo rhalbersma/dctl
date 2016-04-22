@@ -1,5 +1,5 @@
 #include <dctl/rule_traits.hpp>                 // is_trivial, is_ordering, is_absolute_modality
-#include <dctl/rules.hpp>                       // Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
+#include <dctl/rules.hpp>                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE(IsTrivialPrecedence)
 
         using VariantsTrue = boost::mpl::vector
         <
-                Checkers, Pool, Russian, Thai
+                checkers, pool, russian, thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE(IsTrivialPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
-                Czech, Frisian, International, Italian, Spanish
+                czech, frisian, international, italian, spanish
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_SUITE(IsQuantityPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
-                Checkers, Czech, Pool, Russian, Thai
+                checkers, czech, pool, russian, thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_SUITE(IsQuantityPrecedence)
 
         using VariantsTrue = boost::mpl::vector
         <
-                Frisian, International, Italian, Spanish
+                frisian, international, italian, spanish
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_SUITE(IsQualityPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
-                Checkers, Czech, International, Pool, Russian, Thai
+                checkers, czech, international, pool, russian, thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_SUITE(IsQualityPrecedence)
 
         using VariantsTrue = boost::mpl::vector
         <
-                Frisian, Italian, Spanish
+                frisian, italian, spanish
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_SUITE(IsModalityPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
-                Checkers, International, Pool, Russian, Spanish, Thai
+                checkers, international, pool, russian, spanish, thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_SUITE(IsModalityPrecedence)
 
         using VariantsTrue = boost::mpl::vector
         <
-                Czech, Frisian, Italian
+                czech, frisian, italian
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_SUITE(IsOrderingPrecedence)
 
         using VariantsFalse = boost::mpl::vector
         <
-                Checkers, Czech, Frisian, International, Pool, Russian, Spanish, Thai
+                checkers, czech, frisian, international, pool, russian, spanish, thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_SUITE(IsOrderingPrecedence)
 
         using VariantsTrue = boost::mpl::vector
         <
-                Italian
+                italian
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceTrivialIsConsistentWithTraits)
 
         using VariantsTrue = boost::mpl::vector
         <
-                Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
+                checkers, czech, frisian, international, italian, pool, russian, spanish, thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)

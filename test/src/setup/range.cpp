@@ -7,7 +7,7 @@
 using namespace dctl;
 using namespace ranges;
 using square = int;
-using B = board::Checkers;
+using B = board::checkers;
 
 inline
 auto row_number(square sq)
@@ -72,7 +72,7 @@ auto format_bytes()
 }
 
 template<class CharT, class Traits, int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::Board<Width, Height, Inverted, OrthogonalCaptures> const& b)
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::rectangular<Width, Height, Inverted, OrthogonalCaptures> const& b)
 {
         using Coord = board::Coordinates<board::origin::upper_left>;
 

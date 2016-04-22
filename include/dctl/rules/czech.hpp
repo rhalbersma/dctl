@@ -4,7 +4,7 @@ namespace dctl {
 namespace rules {
 
 // http://www.damweb.cz/pravidla/cdfull.html
-struct Czech
+struct czech
 {
         static constexpr auto is_algebraic_notation = true;     // 2.6
         static constexpr auto jumpsep = ':';

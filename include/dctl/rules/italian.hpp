@@ -5,7 +5,7 @@ namespace dctl {
 namespace rules {
 
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
-struct Italian
+struct italian
 {
         static constexpr auto is_long_ranged_king = false;      // 4.7
 

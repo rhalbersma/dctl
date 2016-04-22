@@ -4,7 +4,7 @@ namespace dctl {
 namespace rules {
 
 // http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20international%20draughts.doc
-struct International
+struct international
 {
         // 2. The material
         static constexpr auto initial_gap = 2;                  // 2.8
@@ -41,10 +41,10 @@ struct International
         static constexpr auto jumpsep = 'x';                    // 8.2.3
 };
 
-using Brazilian  = International;
-using Philippine = International;
-using Canadian   = International;
-using SriLankan  = International;
+using Brazilian  = international;
+using Philippine = international;
+using canadian   = international;
+using srilankan  = international;
 
 }       // namespace rules
 }       // namespace dctl

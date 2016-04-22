@@ -3,7 +3,7 @@
 namespace dctl {
 namespace rules {
 
-struct Thai
+struct thai
 {
         static constexpr auto is_long_ranged_king = true;
         static constexpr auto is_backward_pawn_jump = false;

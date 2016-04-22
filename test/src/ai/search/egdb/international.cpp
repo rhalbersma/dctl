@@ -7,9 +7,9 @@
 namespace dctl {
 namespace search {
 
-BOOST_AUTO_TEST_SUITE(SearchEGDBInternational)
+BOOST_AUTO_TEST_SUITE(SearchEGDBinternational)
 
-using F = Fixture< State<rules::International, board::International>, DefaultObjective >;
+using F = Fixture< State<rules::international, board::international>, DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {
@@ -20,7 +20,7 @@ BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
         run(tests);
 }
 
-// Michel Grimminkc's statistics on longest wins in the International endgame databases
+// Michel Grimminkc's statistics on longest wins in the international endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/index.html
 
 BOOST_FIXTURE_TEST_CASE(Longestl11, F)

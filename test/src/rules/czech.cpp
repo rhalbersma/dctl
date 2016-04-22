@@ -1,4 +1,4 @@
-#include <dctl/rules/czech.hpp>         // Czech
+#include <dctl/rules/czech.hpp>         // czech
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/piece.hpp>               // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, jumpsep, is_absolute_modality, equal_to, less
@@ -10,7 +10,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesCzech)
 
-using T = Czech;
+using T = czech;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
