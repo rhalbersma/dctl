@@ -2,7 +2,7 @@
 #include <dctl/state.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/actions.hpp>
-#include <dctl/ai/node.hpp>
+#include <dctl/aima/node.hpp>
 #include <range/v3/all.hpp>
 #include <iomanip>
 #include <iostream>
@@ -91,6 +91,6 @@ int main()
                 }
 
                 auto const a = actions[static_cast<std::size_t>(choice)];
-                game.push(result(state, a));
+                game.push(aima::result(state, a));
         }
 }
