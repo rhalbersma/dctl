@@ -80,7 +80,7 @@ bool is_cycle(State const& /*p*/)
         auto q = grand_parent(*grand_parent(p));
 
         // compare the ancestor hash indices with the current hash index
-        for (auto i = 4_z; i <= p.reversible_actions(); i += 2) {
+        for (auto i = 4_zu; i <= p.reversible_actions(); i += 2) {
                 if (q->hash() == p.hash())
                         return true;
                 q = grand_parent(*q);
