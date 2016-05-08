@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, BoardSequence)
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)
 {
         using namespace xstd::support_literals;
-        auto const columns = ranges::view::iota(0_z, T::width());
+        auto const columns = ranges::view::iota(0_zu, T::width());
 
         BOOST_CHECK(
                 ranges::all_of(columns, [=](auto i){
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
 BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 {
         using namespace xstd::support_literals;
-        auto const rows = ranges::view::iota(0_z, T::height());
+        auto const rows = ranges::view::iota(0_zu, T::height());
 
         BOOST_CHECK(
                 ranges::all_of(rows, [=](auto i){
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSequence)
 {
         using namespace xstd::support_literals;
-        auto const jump_groups = ranges::view::iota(0_z, 4_z);
+        auto const jump_groups = ranges::view::iota(0_zu, 4_zu);
 
         BOOST_CHECK(
                 ranges::all_of(jump_groups, [=](auto i){
