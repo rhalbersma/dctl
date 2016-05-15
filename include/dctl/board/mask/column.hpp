@@ -16,7 +16,7 @@ template<class Board>
 class Column
 {
         template<Color ToMove>
-        static constexpr auto init(int column) noexcept
+        struct init
         {
                 // simulate a constexpr lambda (not allowed in C++14)
                 struct is_column
@@ -31,14 +31,17 @@ class Column
                         }
                 };
 
-                return make_set_if<Board>(is_column{ToMove, column});
-        }
+                constexpr auto operator()(int column) const noexcept
+                {
+                        return make_set_if<Board>(is_column{ToMove, column});
+                }
+        };
 
         using table_type = std::array<set_t<Board>, Board::width()>;
         static constexpr table_type table[] =
         {
-                make_array<Board::width()>(init<Color::black>),
-                make_array<Board::width()>(init<Color::white>)
+                make_array<Board::width()>(init<Color::black>{}),
+                make_array<Board::width()>(init<Color::white>{})
         };
 
 public:

@@ -2,6 +2,7 @@
 #include <xstd/cstdlib.hpp>     // euclidean_div
 #include <cassert>              // assert
 #include <type_traits>          // integral_constant
+#include <experimental/type_traits>
 
 namespace dctl {
 
@@ -17,15 +18,15 @@ class angle
         static constexpr auto assert_type_traits() noexcept
         {
                 using T = angle;
-                static_assert( std::is_trivially_destructible_v<T>);
-                static_assert(!std::is_trivially_default_constructible_v<T>);
-                static_assert( std::is_nothrow_default_constructible_v<T>);
-                static_assert( std::is_trivially_copy_constructible_v<T>);
-                static_assert( std::is_trivially_move_constructible_v<T>);
-                static_assert(!std::is_copy_assignable_v<T>);
-                static_assert(!std::is_move_assignable_v<T>);
-                static_assert( std::is_standard_layout_v<T>);
-                static_assert( std::is_literal_type_v<T>);
+                static_assert( std::experimental::is_trivially_destructible_v<T>);
+                static_assert(!std::experimental::is_trivially_default_constructible_v<T>);
+                static_assert( std::experimental::is_nothrow_default_constructible_v<T>);
+                static_assert( std::experimental::is_trivially_copy_constructible_v<T>);
+                static_assert( std::experimental::is_trivially_move_constructible_v<T>);
+                static_assert(!std::experimental::is_copy_assignable_v<T>);
+                static_assert(!std::experimental::is_move_assignable_v<T>);
+                static_assert( std::experimental::is_standard_layout_v<T>);
+                static_assert( std::experimental::is_literal_type_v<T>);
         }
 
 public:

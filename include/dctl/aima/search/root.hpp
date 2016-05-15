@@ -22,7 +22,7 @@
 #include <dctl/action/ostream.hpp>
 
 #include <xstd/cstddef.hpp>
-#include <range/v3/all.hpp>
+#include <boost/algorithm/cxx11/iota.hpp>
 #include <cassert>                      // assert
 #include <cstddef>
 #include <iostream>
@@ -162,7 +162,7 @@ private:
                 assert(!moves.empty());
 
                 Order move_order;
-                move_order |= ranges::action::push_back(ranges::view::iota(0, static_cast<int>(moves.size()))); // generate indices [0, moves.size() - 1]
+                boost::algorithm::iota_n(std::back_inserter(move_order), 0, moves.size()); // generate indices [0, moves.size() - 1]
 
                 // internal iterative deepening (IID)
                 if (!(TT_entry && TT_entry->has_move())) {
