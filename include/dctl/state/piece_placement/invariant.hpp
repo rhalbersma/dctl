@@ -25,7 +25,7 @@ constexpr auto assert_invariant(PiecePlacement const& p) noexcept
         assert(disjoint(pieces<Color::black, Piece::pawn>(p), board::Promotion<board_t<PiecePlacement>>::mask(Color::black)));
         assert(disjoint(pieces<Color::white, Piece::pawn>(p), board::Promotion<board_t<PiecePlacement>>::mask(Color::white)));
 
-        assert(board::squares_v<board_type> == (p.pieces() | p.not_occupied()));
+        assert(board::squares_v<board_t<PiecePlacement>> == (p.pieces() | p.not_occupied()));
 
         assert(p.pieces() == (pieces<Color::black>(p) | pieces<Color::white>(p)));
         assert(p.pieces() == (pieces<Piece::pawn >(p) | pieces<Piece::king >(p)));

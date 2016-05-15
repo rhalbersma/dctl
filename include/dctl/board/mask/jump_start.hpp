@@ -40,8 +40,8 @@ class JumpStart
                 return make_set_if<Board>(is_jump_start{segment});
         }
 
-        static constexpr auto theta = Board::is_orthogonal_captures ? 45_deg : 90_deg;
-        static constexpr auto beta  = Board::is_orthogonal_captures ?  0_deg : 45_deg;
+        static constexpr angle theta = Board::is_orthogonal_captures ? 45_deg : 90_deg;
+        static constexpr angle beta  = Board::is_orthogonal_captures ?  0_deg : 45_deg;
         static constexpr auto N     = Board::is_orthogonal_captures ?      8 :      4;
 
         using table_type = std::array<set_t<Board>, N>;

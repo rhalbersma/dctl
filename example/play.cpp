@@ -3,7 +3,7 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/actions.hpp>
 #include <dctl/aima/node.hpp>
-#include <range/v3/all.hpp>
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <stack>
@@ -35,7 +35,7 @@ int main()
 
                 std::vector<Action<Rules, Board>> actions;
                 core::Actions<>{}.generate(state, actions);
-                ranges::sort(actions, [](auto const& lhs, auto const& rhs) {
+                std::sort(actions.begin(), actions.end(), [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);
                 });
 
@@ -51,7 +51,7 @@ int main()
                 int choice = 0;
 
                 for (std::string input; std::getline(std::cin, input);) {
-                        ranges::transform(input, begin(input), ::tolower);
+                        std::transform(input.begin(), input.end(), input.begin(), ::tolower);
 
                         if (actions.empty()) {
                                 if (input.empty() || input == "u")

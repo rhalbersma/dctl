@@ -2,10 +2,11 @@
 #include <dctl/action/ostream.hpp>
 #include <dctl/state/state.hpp>
 #include <dctl/setup/setup.hpp>
-#include <dctl/actions.hpp>           // generate
-#include <range/v3/all.hpp>             // is_permutation, transform, back_inserter
+#include <dctl/actions.hpp>             // generate
 #include <boost/algorithm/string.hpp>   // trim_copy
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK, BOOST_CHECK_EQUAL
+#include <algorithm>                    // is_permutation, transform
+#include <iterator>                     // back_inserter
 #include <string>                       // string
 #include <vector>                       // vector
 
@@ -22,18 +23,18 @@ struct Fixture
                 std::vector<Action<Rules, Board>> moves;
                 core::Actions<>{}.generate(p, moves);
 
-                auto const N = ranges::size(rng);
+                auto const N = rng.size();
                 BOOST_CHECK_EQUAL(moves.size(), N);
 
                 std::vector<std::string> notations;
-                ranges::transform(moves, ranges::back_inserter(notations), [](auto const& m) {
+                std::transform(moves.begin(), moves.end(), std::back_inserter(notations), [](auto const& m) {
                         return move::str_numeric(m);
                 });
 
                 using boost::algorithm::trim_copy;
                 BOOST_CHECK(
-                        ranges::is_permutation(
-                                rng, notations, [](auto const& lhs, auto const& rhs) {
+                        std::is_permutation(
+                                rng.begin(), rng.end(), notations.begin(), notations.end(), [](auto const& lhs, auto const& rhs) {
                                 return trim_copy(lhs) == trim_copy(rhs);
                         })
                 );

@@ -6,6 +6,9 @@
 #include <range/v3/all.hpp>                     // all_of, view::iota
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
+#include <algorithm>
+#include <numeric>
+#include <vector>
 
 namespace dctl {
 namespace board {
@@ -71,19 +74,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSequence)
 {
-        using namespace xstd::support_literals;
-        auto const jump_groups = ranges::view::iota(0_zu, 4_zu);
+        auto const jump_groups = std::vector<std::size_t>{ 0, 1, 2, 3 };
 
         BOOST_CHECK(
-                ranges::all_of(jump_groups, [=](auto i){
-                        return ranges::all_of(jump_groups, [=](auto j){
+                std::all_of(jump_groups.begin(), jump_groups.end(), [=](auto i){
+                        return std::all_of(jump_groups.begin(), jump_groups.end(), [=](auto j){
                                 return i == j ? true : disjoint(JumpGroup<T>::mask(i), JumpGroup<T>::mask(j));
                         });
                 })
         );
 
         BOOST_CHECK(
-                ranges::accumulate(jump_groups, set_t<T>{}, [](auto result, auto i){
+                std::accumulate(jump_groups.begin(), jump_groups.end(), set_t<T>{}, [](auto result, auto i){
                         return result ^ JumpGroup<T>::mask(i);
                 }) == squares_v<T>
         );
