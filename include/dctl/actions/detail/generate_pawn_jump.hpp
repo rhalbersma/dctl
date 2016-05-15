@@ -90,7 +90,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold() const
         {
-                return (... , sources<Directions<bearing.degrees()>{}>());
+                (... , sources<Directions<bearing.degrees()>{}>());
         }
 
         template<int Direction>
@@ -101,7 +101,7 @@ private:
                         builder.current_targets(),
                         builder.not_occupied()
                 ).for_each([this](auto const from_sq){
-                        jump(along_ray<Direction>(from_sq));
+                        this->jump(this->along_ray<Direction>(from_sq));
                 });
         }
 
@@ -114,7 +114,7 @@ private:
         }
 
         template<class Iterator>
-        auto capture(Iterator const jumper) const
+        void capture(Iterator const jumper) const
         {
                 assert(is_onboard(jumper));
                 raii::capture<Builder> guard{builder, *jumper};
@@ -302,12 +302,12 @@ private:
         }
 
         template<int Direction>
-        static auto along_ray(std::size_t const sq) noexcept
+        auto along_ray(std::size_t const sq) const noexcept
         {
                 return ray::make_iterator<board_type, Direction>(sq);
         }
 
-        static auto is_promotion(std::size_t const sq) noexcept
+        auto is_promotion(std::size_t const sq) const noexcept
         {
                 return dctl::is_promotion<board_type, ToMove>(sq);
         }

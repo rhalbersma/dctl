@@ -37,8 +37,7 @@ using BSequence = boost::mpl::vector
         board::ktar<12, 10>,
         board::canadian,
         board::rectangular<10, 9>,
-        board::rectangular<11, 9>,
-        board::rectangular<21, 21>
+        board::rectangular<11, 9>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)

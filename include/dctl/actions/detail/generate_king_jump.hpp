@@ -56,9 +56,9 @@ public:
 private:
         auto sources() const
         {
-                builder.active_kings().for_each([this](auto const from_sq){
+                builder.active_kings().for_each([this](auto const from_sq) {
                         raii::launch<Builder> guard{builder, from_sq};
-                        source_dispatch(from_sq, jump_category_t<rules_type>{});
+                        this->source_dispatch(from_sq, jump_category_t<rules_type>{});
                 });
         }
 
@@ -75,7 +75,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(std::size_t from_sq) const
         {
-                return (... , first_target(along_ray<Directions<bearing.degrees()>{}>(from_sq)));
+                (... , first_target(along_ray<Directions<bearing.degrees()>{}>(from_sq)));
         }
 
         template<class Iterator>
@@ -89,7 +89,7 @@ private:
         }
 
         template<class Iterator>
-        auto capture(Iterator jumper) const
+        void capture(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
                 raii::capture<Builder> guard{builder, *jumper};
@@ -262,7 +262,7 @@ private:
         }
 
         template<int Direction>
-        static auto along_ray(std::size_t sq)
+        auto along_ray(std::size_t const sq) const
         {
                 return ray::make_iterator<board_type, Direction>(sq);
         }

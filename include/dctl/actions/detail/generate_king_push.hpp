@@ -50,21 +50,21 @@ private:
 
         auto king_range_dispatch(State const& state, long_ranged_tag) const
         {
-                pieces<ToMove, Piece::king>(state).for_each([&](auto const& from_sq){
-                        ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq, state.not_occupied());
+                pieces<ToMove, Piece::king>(state).for_each([&, this](auto const& from_sq){
+                        this->ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq, state.not_occupied());
                 });
         }
 
         template<template<int> class... Directions>
         auto wave_directions_lfold(set_type const active_kings, set_type const not_occupied) const
         {
-                return (... , wave_targets<Directions<bearing.degrees()>{}>(active_kings, not_occupied));
+                (... , wave_targets<Directions<bearing.degrees()>{}>(active_kings, not_occupied));
         }
 
         template<template<int> class... Directions>
         auto ray_directions_lfold(std::size_t const from, set_type const not_occupied) const
         {
-                return (... , ray_targets(along_ray<Directions<bearing.degrees()>{}>(from), not_occupied));
+                (... , ray_targets(along_ray<Directions<bearing.degrees()>{}>(from), not_occupied));
         }
 
         template<int Direction>
@@ -75,7 +75,7 @@ private:
                         not_occupied
                 ).for_each([this](auto const dest_sq){
                         actions.emplace_back(
-                                *std::prev(along_ray<Direction>(dest_sq)),
+                                *std::prev(this->along_ray<Direction>(dest_sq)),
                                 dest_sq
                         );
                 });
@@ -96,7 +96,7 @@ private:
         }
 
         template<int Direction>
-        static auto along_ray(std::size_t const sq)
+        auto along_ray(std::size_t const sq) const
         {
                 return ray::make_iterator<board_type, Direction>(sq);
         }

@@ -58,5 +58,8 @@ public:
         }
 };
 
+template<class Board, int Direction>
+constexpr decltype(Cursor<Board, Direction>::theta) Cursor<Board, Direction>::theta;
+
 }       // namespace wave
 }       // namespace dctl
