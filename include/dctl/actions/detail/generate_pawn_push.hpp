@@ -45,7 +45,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const
         {
-                return (... , targets<Directions<bearing.degrees()>{}>(active_pawns, not_occupied));
+                (... , targets<Directions<bearing.degrees()>{}>(active_pawns, not_occupied));
         }
 
         template<int Direction>
@@ -56,20 +56,20 @@ private:
                         not_occupied
                 ).for_each([this](auto const dest_sq){
                         actions.emplace_back(
-                                *std::prev(along_ray<Direction>(dest_sq)),
+                                *std::prev(this->along_ray<Direction>(dest_sq)),
                                 dest_sq,
-                                is_promotion(dest_sq)
+                                this->is_promotion(dest_sq)
                         );
                 });
         }
 
         template<int Direction>
-        static auto along_ray(std::size_t const sq) noexcept
+        auto along_ray(std::size_t const sq) const noexcept
         {
                 return ray::make_iterator<board_type, Direction>(sq);
         }
 
-        static auto is_promotion(std::size_t const sq) noexcept
+        auto is_promotion(std::size_t const sq) const noexcept
         {
                 return dctl::is_promotion<board_type, ToMove>(sq);
         }

@@ -15,11 +15,14 @@ template<class Board>
 class KingTargets
 {
         template<int Direction>
-        static constexpr auto init(std::size_t sq) noexcept
+        struct init
         {
-                constexpr auto squares = squares_v<Board>;
-                return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : set_t<Board>{};
-        }
+                constexpr auto operator()(std::size_t sq) const noexcept
+                {
+                        constexpr auto squares = squares_v<Board>;
+                        return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : set_t<Board>{};
+                }
+        };
 
         static constexpr auto theta = 45_deg;
         static constexpr auto beta  =  0_deg;
@@ -47,14 +50,14 @@ template<class Board>
 typename KingTargets<Board>::table_type const
 KingTargets<Board>::table[] =
 {
-        make_array<Board::bits()>(init<  0>),
-        make_array<Board::bits()>(init< 45>),
-        make_array<Board::bits()>(init< 90>),
-        make_array<Board::bits()>(init<135>),
-        make_array<Board::bits()>(init<180>),
-        make_array<Board::bits()>(init<225>),
-        make_array<Board::bits()>(init<270>),
-        make_array<Board::bits()>(init<315>)
+        make_array<Board::bits()>(init<  0>{}),
+        make_array<Board::bits()>(init< 45>{}),
+        make_array<Board::bits()>(init< 90>{}),
+        make_array<Board::bits()>(init<135>{}),
+        make_array<Board::bits()>(init<180>{}),
+        make_array<Board::bits()>(init<225>{}),
+        make_array<Board::bits()>(init<270>{}),
+        make_array<Board::bits()>(init<315>{})
 };
 
 }       // namespace board

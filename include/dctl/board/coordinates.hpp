@@ -155,7 +155,7 @@ constexpr auto to_ulo(int sq, Grid const& grid)
 
         auto const row_mod = sq_offset >= grid.edge_lo();
         auto const col_mod = row_mod ^ !grid.ul_parity();
-        assert(row_mod ^ col_mod == !grid.ul_parity());
+        assert((row_mod ^ col_mod) == !grid.ul_parity());
 
         auto const sq_base = row_mod ? grid.edge_lo() : grid.edge_le();
         auto const col_div = sq_offset - sq_base;

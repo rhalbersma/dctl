@@ -48,7 +48,6 @@ public:
 inline namespace literals {
 inline namespace angle_literals {
 
-inline
 constexpr auto operator"" _deg(unsigned long long const n) noexcept
 {
         return angle{static_cast<int>(n)};
@@ -57,67 +56,56 @@ constexpr auto operator"" _deg(unsigned long long const n) noexcept
 }       // namespace angle_literals
 }       // namespace literals
 
-inline
 constexpr auto operator==(angle const a, angle const b) noexcept
 {
         return a.degrees() == b.degrees();
 }
 
-inline
 constexpr auto operator!=(angle const a, angle const b) noexcept
 {
         return !(a == b);
 }
 
-inline
 constexpr auto operator+(angle const a) noexcept
 {
         return angle{+a.degrees()};
 }
 
-inline
 constexpr auto operator-(angle const a) noexcept
 {
         return angle{-a.degrees()};
 }
 
-inline
 constexpr auto operator+(angle const a, angle const b) noexcept
 {
         return angle{a.degrees() + b.degrees()};
 }
 
-inline
 constexpr auto operator-(angle const a, angle const b) noexcept
 {
         return angle{a.degrees() - b.degrees()};
 }
 
-inline
 constexpr auto operator*(angle const a, int const n) noexcept
 {
         return angle{a.degrees() * n};
 }
 
-inline
 constexpr auto operator*(int const n, angle const a) noexcept
 {
         return angle{n * a.degrees()};
 }
 
-inline
 constexpr auto inverse(angle const a) noexcept
 {
         return -a;
 }
 
-inline
 constexpr auto rotate(angle const a, angle const b) noexcept
 {
         return a + b;
 }
 
-inline
 constexpr auto mirror(angle const a, angle const b) noexcept
 {
         // a.rotate(inverse(b)).inverse().rotate(b)
@@ -152,49 +140,41 @@ template<int N> using left_down  = angle_constant<N + 225>;
 template<int N> using down       = angle_constant<N + 270>;
 template<int N> using right_down = angle_constant<N + 315>;
 
-inline
 constexpr auto is_orthogonal(angle const a) noexcept
 {
         return a.degrees() % 90 == 0;
 }
 
-inline
 constexpr auto is_diagonal(angle const a) noexcept
 {
         return a.degrees() % 90 == 45;
 }
 
-inline
 constexpr auto is_up(angle const a) noexcept
 {
         return 0 < a.degrees() && a.degrees() < 180;
 }
 
-inline
 constexpr auto is_down(angle const a) noexcept
 {
         return 180 < a.degrees();
 }
 
-inline
 constexpr auto is_left(angle const a) noexcept
 {
         return 90 < a.degrees() && a.degrees() < 270;
 }
 
-inline
 constexpr auto is_right(angle const a) noexcept
 {
         return 270 < a.degrees() || a.degrees() < 90;
 }
 
-inline
 constexpr auto is_positive(angle const a) noexcept
 {
         return 0 < a.degrees() && a.degrees() <= 180;
 }
 
-inline
 constexpr auto is_negative(angle const a) noexcept
 {
         return a.degrees() == 0 || 180 < a.degrees();

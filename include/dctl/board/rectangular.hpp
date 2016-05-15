@@ -32,14 +32,10 @@ class rectangular
 {
         static_assert(0 <= Width);
         static_assert(0 <= Height);
-
-private:
-        static constexpr auto dimensions = Dimensions{Width, Height, Inverted};
-
 public:
         static constexpr auto is_orthogonal_captures = OrthogonalCaptures;
         static constexpr auto edge = OrthogonalCaptures ? 2 : 1;
-        static constexpr auto inner_grid = InnerGrid{dimensions};
+        static constexpr auto inner_grid = InnerGrid{Dimensions{Width, Height, Inverted}};
         static constexpr auto orientation = size_minimizing_orientation(OuterGrid{inner_grid, edge});
 
 private:
@@ -67,7 +63,7 @@ public:
                 return NumBits;
         }
 
-        using set_type = xstd::bitset<xstd::align_on(bits(), 64)>;
+        using set_type = xstd::bitset<xstd::align_on(NumBits, 64)>;
 
         static constexpr auto shift_size(angle const direction)
         {
@@ -138,15 +134,15 @@ public:
 };
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr angle
+constexpr decltype(rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation)
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr InnerGrid
+constexpr decltype(rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid)
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr OuterGrid
+constexpr decltype(rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid)
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
