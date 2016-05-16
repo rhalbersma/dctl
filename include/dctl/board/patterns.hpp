@@ -1,16 +1,17 @@
 #pragma once
-#include <dctl/rule_traits.hpp>                 // short_ranged_tag, long_ranged_tag
-#include <dctl/board/wave/algorithm.hpp>        // Fill
-#include <dctl/board/wave/iterator.hpp>         // make_iterator
-#include <iterator>                             // next, prev
+#include <dctl/rule_traits.hpp>         // short_ranged_tag, long_ranged_tag
+#include <dctl/board/algorithm.hpp>     // Fill
+#include <dctl/board/wave/iterator.hpp> // make_iterator
+#include <iterator>                     // next, prev
 
 namespace dctl {
+namespace board {
 
 template<class Board, int Direction, class KingRangeCategory>
-struct PushTargets;
+struct push_targets;
 
 template<class Board, int Direction>
-struct PushTargets<Board, Direction, short_ranged_tag>
+struct push_targets<Board, Direction, short_ranged_tag>
 {
         template<class Set>
         auto operator()(Set const& active_pieces, Set const& not_occupied) const
@@ -20,7 +21,7 @@ struct PushTargets<Board, Direction, short_ranged_tag>
 };
 
 template<class Board, int Direction>
-struct PushTargets<Board, Direction, long_ranged_tag>
+struct push_targets<Board, Direction, long_ranged_tag>
 {
         template<class Set>
         auto operator()(Set const& active_pieces, Set const& not_occupied) const
@@ -30,10 +31,10 @@ struct PushTargets<Board, Direction, long_ranged_tag>
 };
 
 template<class Board, int Direction, class KingRangeCategory>
-class JumpSources;
+class jump_sources;
 
 template<class Board, int Direction>
-class JumpSources<Board, Direction, short_ranged_tag>
+class jump_sources<Board, Direction, short_ranged_tag>
 {
         template<class Set>
         auto prev_set(Set const s) const
@@ -49,10 +50,10 @@ public:
 };
 
 template<class Board, int Direction, class KingRangeCategory>
-class JumpTargets;
+class jump_targets;
 
 template<class Board, int Direction>
-class JumpTargets<Board, Direction, short_ranged_tag>
+class jump_targets<Board, Direction, short_ranged_tag>
 {
         template<class Set>
         auto next_set(Set const s) const
@@ -74,7 +75,7 @@ public:
 };
 
 template<class Board, int Direction>
-class JumpTargets<Board, Direction, long_ranged_tag>
+class jump_targets<Board, Direction, long_ranged_tag>
 {
 public:
         template<class Set>
@@ -88,4 +89,5 @@ public:
         }
 };
 
+}       // namespace board
 }       // namespace dctl

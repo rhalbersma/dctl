@@ -3,6 +3,7 @@
 #include <dctl/actions/select/push.hpp>                 // select
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
+#include <dctl/board/patterns.hpp>                      // push_targets
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
@@ -25,7 +26,7 @@ class Generate<ToMove, Piece::pawn, select::push, Reverse, State, SequenceContai
         using    set_type =   set_t<State>;
 
         template<int Direction>
-        using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
+        using push_targets = board::push_targets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
         SequenceContainer& actions;
@@ -66,7 +67,7 @@ private:
         template<int Direction>
         auto along_ray(std::size_t const sq) const noexcept
         {
-                return ray::make_iterator<board_type, Direction>(sq);
+                return board::ray::make_iterator<board_type, Direction>(sq);
         }
 
         auto is_promotion(std::size_t const sq) const noexcept

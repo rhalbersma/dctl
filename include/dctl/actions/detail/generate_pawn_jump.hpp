@@ -6,8 +6,9 @@
 #include <dctl/actions/select/jump.hpp>                 // jumps
 #include <dctl/board/angle.hpp>                         // _deg, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
+#include <dctl/board/patterns.hpp>                      // jump_sources
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/board/wave.hpp>                          // make_iterator, JumpTargets
+#include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
@@ -31,12 +32,12 @@ class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder>
         using    set_type =    set_t<Builder>;
 
         template<int Direction>
-        using jump_sources = JumpSources<board_type, Direction, short_ranged_tag>;
+        using jump_sources = board::jump_sources<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(bearing));
+        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(bearing));
 
         Builder& builder;
 public:
@@ -214,7 +215,7 @@ private:
         auto turn_dispatch(Iterator jumper, forward_pawn_jump_tag, diagonal_jump_tag) const
         {
                 static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                return scan(ray::mirror<up<bearing.degrees()>{}>(jumper));
+                return scan(board::ray::mirror<up<bearing.degrees()>{}>(jumper));
         }
 
         template<class Iterator>
@@ -270,13 +271,13 @@ private:
         template<template<int> class... Directions, class Iterator>
         auto turn_directions_lfold(Iterator jumper) const
         {
-                return (... | scan(ray::turn<Directions<bearing.degrees()>{}>(jumper)));
+                return (... | scan(board::ray::turn<Directions<bearing.degrees()>{}>(jumper)));
         }
 
         template<int... Directions, class Iterator>
         auto rotate_directions_lfold(Iterator jumper) const
         {
-                return (... | scan(ray::rotate<Directions>(jumper)));
+                return (... | scan(board::ray::rotate<Directions>(jumper)));
         }
 
         template<class Iterator>
@@ -304,7 +305,7 @@ private:
         template<int Direction>
         auto along_ray(std::size_t const sq) const noexcept
         {
-                return ray::make_iterator<board_type, Direction>(sq);
+                return board::ray::make_iterator<board_type, Direction>(sq);
         }
 
         auto is_promotion(std::size_t const sq) const noexcept

@@ -5,12 +5,13 @@
 #include <boost/operators.hpp>          // totally_ordered, unit_steppable
 
 namespace dctl {
+namespace board {
 namespace wave {
 
 template<class Board, int Direction>
-class Cursor
-:       boost::totally_ordered< Cursor<Board, Direction>        // != >= > <=
-,       boost::unit_steppable < Cursor<Board, Direction>        // ++, --
+class cursor
+:       boost::totally_ordered< cursor<Board, Direction>        // != >= > <=
+,       boost::unit_steppable < cursor<Board, Direction>        // ++, --
 > >
 {
         static constexpr auto theta = angle{Direction};
@@ -22,18 +23,18 @@ class Cursor
 
         set_type cursor_{};
 public:
-        Cursor() = default;
+        cursor() = default;
 
-        explicit Cursor(set_type const& c) noexcept
+        explicit cursor(set_type const& c) noexcept
         :
                 cursor_{c}
         {}
 
         template<class, int>
-        friend class Cursor;
+        friend class cursor;
 
         template<int M>
-        /* implicit */ Cursor(Cursor<Board, M> const& other) noexcept
+        /* implicit */ cursor(cursor<Board, M> const& other) noexcept
         :
                 cursor_{other.cursor_}
         {}
@@ -59,7 +60,8 @@ public:
 };
 
 template<class Board, int Direction>
-constexpr decltype(Cursor<Board, Direction>::theta) Cursor<Board, Direction>::theta;
+constexpr angle cursor<Board, Direction>::theta;
 
 }       // namespace wave
+}       // namespace board
 }       // namespace dctl
