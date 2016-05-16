@@ -134,15 +134,15 @@ public:
 };
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr decltype(rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation)
+constexpr angle
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr decltype(rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid)
+constexpr InnerGrid
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr decltype(rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid)
+constexpr OuterGrid
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
 template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>

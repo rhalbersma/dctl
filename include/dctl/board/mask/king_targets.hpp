@@ -2,7 +2,7 @@
 #include <dctl/board/angle.hpp>         // angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/mask/squares.hpp>  // Squares
 #include <dctl/board/ray/fill.hpp>      // fill
-#include <dctl/board/ray/iterator.hpp>  // Iterator
+#include <dctl/board/ray/iterator.hpp>  // iterator
 #include <dctl/utility/make_array.hpp>  // make_array
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <array>                        // array
@@ -17,7 +17,7 @@ class KingTargets
         template<int Direction>
         struct init
         {
-                constexpr auto operator()(std::size_t sq) const noexcept
+                constexpr auto operator()(std::size_t const sq) const noexcept
                 {
                         constexpr auto squares = squares_v<Board>;
                         return squares.test(sq) ? ray::fill(ray::make_iterator<Board, Direction>(sq), squares) : set_t<Board>{};
@@ -31,7 +31,7 @@ class KingTargets
         static table_type const table[];
 
 public:
-        static constexpr auto mask(angle const alpha, std::size_t const sq) noexcept
+        static constexpr auto mask(std::size_t const sq, angle const alpha) noexcept
         {
                 auto const segment = (alpha.degrees() - beta.degrees()) / theta.degrees();
                 return table[segment][sq];

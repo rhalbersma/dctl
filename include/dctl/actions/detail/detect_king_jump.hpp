@@ -4,7 +4,7 @@
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/board/wave/patterns.hpp>                 // JumpTargets
+#include <dctl/board/patterns.hpp>                      // jump_targets
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_long_ranged_king_t
@@ -23,7 +23,7 @@ class Detect<ToMove, Piece::king, select::jump, Reverse, State>
         using     set_type =   set_t<State>;
 
         template<int Direction>
-        using jump_targets = JumpTargets<board_type, Direction, king_range_category_t<rules_type>>;
+        using jump_targets = board::jump_targets<board_type, Direction, king_range_category_t<rules_type>>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
 public:

@@ -4,13 +4,14 @@
 #include <cstddef>              // size_t
 
 namespace dctl {
+namespace board {
 namespace ray {
 
 template<class Board, int Direction>
-class Cursor
-:       boost::totally_ordered< Cursor<Board, Direction>        // != >= > <=
-,       boost::unit_steppable < Cursor<Board, Direction>        // ++, --
-,       boost::additive       < Cursor<Board, Direction>, int   // +, -
+class cursor
+:       boost::totally_ordered< cursor<Board, Direction>        // != >= > <=
+,       boost::unit_steppable < cursor<Board, Direction>        // ++, --
+,       boost::additive       < cursor<Board, Direction>, int   // +, -
 > > >
 {
         static constexpr auto theta = angle{Direction};
@@ -22,18 +23,18 @@ class Cursor
 
         int cursor_{};
 public:
-        Cursor() = default;
+        cursor() = default;
 
-        explicit Cursor(Square c) noexcept
+        explicit cursor(Square c) noexcept
         :
                 cursor_{static_cast<int>(c)}
         {}
 
         template<class, int>
-        friend class Cursor;
+        friend class cursor;
 
         template<int M>
-        /* implicit */ Cursor(Cursor<Board, M> const& other) noexcept
+        /* implicit */ cursor(cursor<Board, M> const& other) noexcept
         :
                 cursor_{other.cursor_}
         {}
@@ -72,14 +73,15 @@ public:
         }
 
         // number of increments / decrements between lhs and rhs
-        friend auto operator-(Cursor const& lhs, Cursor const& rhs) noexcept
+        friend auto operator-(cursor const& lhs, cursor const& rhs) noexcept
         {
                 return (lhs.cursor_ - rhs.cursor_) / N;
         }
 };
 
 template<class Board, int Direction>
-constexpr decltype(Cursor<Board, Direction>::theta) Cursor<Board, Direction>::theta;
+constexpr angle cursor<Board, Direction>::theta;
 
 }       // namespace ray
+}       // namespace board
 }       // namespace dctl

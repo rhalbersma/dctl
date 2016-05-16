@@ -3,6 +3,7 @@
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/bearing.hpp>                       // bearing
+#include <dctl/board/patterns.hpp>                      // push_targets
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
@@ -26,7 +27,7 @@ class Generate<ToMove, Piece::king, select::push, Reverse, State, SequenceContai
         using    set_type =   set_t<State>;
 
         template<int Direction>
-        using wave_push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
+        using push_targets = board::push_targets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
         SequenceContainer& actions;
@@ -70,7 +71,7 @@ private:
         template<int Direction>
         auto wave_targets(set_type const active_kings, set_type const not_occupied) const
         {
-                wave_push_targets<Direction>{}(
+                push_targets<Direction>{}(
                         active_kings,
                         not_occupied
                 ).for_each([this](auto const dest_sq){
@@ -84,7 +85,7 @@ private:
         template<class Iterator>
         auto ray_targets(Iterator const from, set_type const not_occupied) const
         {
-                ray::classical(
+                board::ray::classical(
                         from,
                         not_occupied
                 ).for_each([this, from](auto const dest_sq){
@@ -98,7 +99,7 @@ private:
         template<int Direction>
         auto along_ray(std::size_t const sq) const
         {
-                return ray::make_iterator<board_type, Direction>(sq);
+                return board::ray::make_iterator<board_type, Direction>(sq);
         }
 };
 

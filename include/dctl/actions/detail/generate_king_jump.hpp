@@ -31,7 +31,7 @@ class Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(ray::direction_v<Iterator>, inverse(bearing));
+        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(bearing));
 
         Builder& builder;
 public:
@@ -81,7 +81,7 @@ private:
         template<class Iterator>
         auto first_target(Iterator jumper) const
         {
-                slide(jumper, builder.template path<ray::direction_v<Iterator>.degrees()>());
+                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
                 if (is_onboard(jumper) && builder.current_targets(jumper)) {
                         assert(is_onboard(std::next(jumper)));
                         capture(jumper);
@@ -133,7 +133,7 @@ private:
         auto reverse(Iterator jumper) const
         {
                 static_assert(is_reversible_king_jump_direction_v<rules_type>);
-                return scan(ray::rotate<180>(jumper));
+                return scan(board::ray::rotate<180>(jumper));
         }
 
         template<class Iterator>
@@ -186,13 +186,13 @@ private:
         template<int... Directions, class Iterator>
         auto rotate_directions_lfold(Iterator jumper) const
         {
-                return (... | scan(ray::rotate<Directions>(jumper)));
+                return (... | scan(board::ray::rotate<Directions>(jumper)));
         }
 
         template<class Iterator>
         auto scan(Iterator jumper) const
         {
-                slide(jumper, builder.template path<ray::direction_v<Iterator>.degrees()>());
+                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
                 return is_en_prise(jumper);
         }
 
@@ -264,7 +264,7 @@ private:
         template<int Direction>
         auto along_ray(std::size_t const sq) const
         {
-                return ray::make_iterator<board_type, Direction>(sq);
+                return board::ray::make_iterator<board_type, Direction>(sq);
         }
 };
 

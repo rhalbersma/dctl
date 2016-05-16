@@ -5,6 +5,7 @@
 #include <type_traits>                  // bool_constant
 
 namespace dctl {
+namespace board {
 namespace ray {
 
 template<class T>
@@ -17,13 +18,14 @@ template<int N>
 using is_positive_t = std::bool_constant<is_positive_v<N>>;
 
 template<class Board, int Direction>
-constexpr auto direction_v<Iterator<Board, Direction>> = angle{Direction};
+constexpr auto direction_v<iterator<Board, Direction>> = angle{Direction};
 
 template<class Board, int Direction>
-constexpr auto is_onboard(Iterator<Board, Direction> it)
+constexpr auto is_onboard(iterator<Board, Direction> it)
 {
         return *it < set_t<Board>::size();
 }
 
 }       // namespace ray
+}       // namespace board
 }       // namespace dctl

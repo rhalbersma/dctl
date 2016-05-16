@@ -3,6 +3,7 @@
 #include <dctl/utility/shift.hpp>       // shift
 
 namespace dctl {
+namespace board {
 namespace detail {
 namespace loop {
 
@@ -44,4 +45,5 @@ struct Fill
         }
 };
 
+}       // namespace board
 }       // namespace dctl

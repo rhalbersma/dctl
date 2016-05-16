@@ -105,7 +105,7 @@ public:
         template<class Iterator>
         auto current_targets(Iterator it) const
         {
-                return current_targets<ray::direction_v<Iterator>.degrees()>().test(*it);
+                return current_targets<board::ray::direction_v<Iterator>.degrees()>().test(*it);
         }
 
         template<int Direction>
@@ -218,7 +218,7 @@ private:
         template<int Direction>
         static auto along_wave(set_type const& s)
         {
-                return wave::make_iterator<board_type, Direction>(s);
+                return board::wave::make_iterator<board_type, Direction>(s);
         }
 
         auto precedence_dispatch(trivial_precedence_tag) const

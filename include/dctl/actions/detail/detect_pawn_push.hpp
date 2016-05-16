@@ -3,7 +3,7 @@
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/board/wave/patterns.hpp>                 // PushTargets
+#include <dctl/board/patterns.hpp>                      // push_targets
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
@@ -20,7 +20,7 @@ class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
         using   set_type =   set_t<State>;
 
         template<int Direction>
-        using push_targets = PushTargets<board_type, Direction, short_ranged_tag>;
+        using push_targets = board::push_targets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
 public:
