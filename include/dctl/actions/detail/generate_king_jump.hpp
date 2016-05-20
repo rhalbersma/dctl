@@ -89,7 +89,8 @@ private:
         }
 
         template<class Iterator>
-        void capture(Iterator jumper) const
+        auto capture(Iterator jumper) const
+                -> void
         {
                 assert(is_onboard(jumper));
                 raii::capture<Builder> guard{builder, *jumper};

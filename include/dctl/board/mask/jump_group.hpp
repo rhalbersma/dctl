@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/coordinates.hpp>           // to_llo
+#include <dctl/board/detail/coordinates.hpp>    // to_llo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/cstdlib.hpp>                     // euclidean_div
@@ -22,10 +22,10 @@ class JumpGroup
 
                         constexpr auto operator()(int dest_sq) const noexcept
                         {
-                                auto const from_coord = to_llo(from_sq_, Board::inner_grid);
-                                auto const dest_coord = to_llo(dest_sq , Board::inner_grid);
-                                auto const delta_x = xstd::euclidean_div(from_coord.x() - dest_coord.x(), 4).rem;
-                                auto const delta_y = xstd::euclidean_div(from_coord.y() - dest_coord.y(), 4).rem;
+                                auto const from_coord = detail::to_llo(from_sq_, Board::inner_grid);
+                                auto const dest_coord = detail::to_llo(dest_sq , Board::inner_grid);
+                                auto const delta_x = xstd::euclidean_div(from_coord.x - dest_coord.x, 4).rem;
+                                auto const delta_y = xstd::euclidean_div(from_coord.y - dest_coord.y, 4).rem;
                                 return
                                         (delta_x == 0 && delta_y == 0) ||
                                         (delta_x == 2 && delta_y == 2)

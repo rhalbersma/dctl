@@ -1,5 +1,5 @@
 #include <dctl/board/types.hpp>                 // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
-                                                // ktar<10, 12>, compact1012, compact120, rectangular<12, 10>, canadian, srilankan, dumm
+                                                // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -12,26 +12,20 @@ namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
 
-template<class>
-struct remove_orthogonal_capture;
-
-template<int Width, int Height, bool Inverted, bool OrthogonalCapture>
-struct remove_orthogonal_capture<rectangular<Width, Height, Inverted, OrthogonalCapture>>
-{
-        using type = rectangular<Width, Height, Inverted, false>;
-};
+template<class Board>
+struct remove_orthogonal_capture
+:
+        rectangular<Board::width, Board::height, Board::is_inverted, false>
+{};
 
 template<class T>
 using remove_orthogonal_capture_t = typename remove_orthogonal_capture<T>::type;
 
-template<class>
-struct add_orthogonal_capture;
-
-template<int Width, int Height, bool Inverted, bool OrthogonalCapture>
-struct add_orthogonal_capture<rectangular<Width, Height, Inverted, OrthogonalCapture>>
-{
-        using type = rectangular<Width, Height, Inverted, true>;
-};
+template<class Board>
+struct add_orthogonal_capture
+:
+        rectangular<Board::width, Board::height, Board::is_inverted, true>
+{};
 
 template<class T>
 using add_orthogonal_capture_t = typename add_orthogonal_capture<T>::type;
@@ -56,17 +50,17 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
 
 using IntermediateBoardSequence = boost::mpl::vector
 <
-        ktar <10, 12>,
+               ktar<10, 12>,
         rectangular<12, 10>
 >;
 
 BOOST_AUTO_TEST_CASE(RemoveAddOrthogonalCapture)
 {
-        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<ktar <10, 12>>, compact1012>);
-        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<compact1012>, ktar <10, 12>>);
+        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<   ktar<10,12>>, xstd::_t<compact_10_12 >>);
+        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<compact_10_12 >, xstd::_t<ktar   <10,12>>>);
 
-        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<rectangular<12, 10>>, compact1210>);
-        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<compact1210>, rectangular<12, 10>>);
+        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<rectangular<12,10>>, xstd::_t<    compact_12_10 >>);
+        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<    compact_12_10 >, xstd::_t<rectangular<12,10>>>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)

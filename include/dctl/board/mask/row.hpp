@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/coordinates.hpp>           // to_llo
+#include <dctl/board/detail/coordinates.hpp>    // to_llo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/color.hpp>                       // black, white
 #include <dctl/utility/make_array.hpp>          // make_array
@@ -22,32 +22,32 @@ class Row
                 struct is_row
                 {
                         Color const to_move;
-                        int const row_;
+                        std::size_t const row_;
 
                         constexpr auto operator()(int sq) const noexcept
                         {
-                                assert(row_ < Board::height());
-                                return to_llo(sq, Board::inner_grid).y() == (to_move == Color::white ? row_ : Board::height() - 1 - row_);
+                                assert(row_ < Board::height);
+                                return detail::to_llo(sq, Board::inner_grid).y == (to_move == Color::white ? row_ : Board::height - 1 - row_);
                         }
                 };
 
-                constexpr auto operator()(int row) const noexcept
+                constexpr auto operator()(std::size_t const row) const noexcept
                 {
                         return make_set_if<Board>(is_row{ToMove, row});
                 }
         };
 
-        using table_type = std::array<set_t<Board>, Board::height()>;
+        using table_type = std::array<set_t<Board>, Board::height>;
         static constexpr table_type table[] =
         {
-                make_array<Board::height()>(init<Color::black>{}),
-                make_array<Board::height()>(init<Color::white>{})
+                make_array<Board::height>(init<Color::black>{}),
+                make_array<Board::height>(init<Color::white>{})
         };
 
 public:
-        static constexpr auto mask(Color c, std::size_t row) noexcept
+        static constexpr auto mask(Color const c, std::size_t const row) noexcept
         {
-                assert(row < Board::height());
+                assert(row < Board::height);
                 return table[xstd::to_underlying_type(c)][row];
         }
 };

@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(ktar10x12)
         auto const leafs = std::vector<std::size_t>{ 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'961, 41'291'394, 263'895'730, 1'731'541'289 };
 
         // board with international initial moves and no orthogonal capture support: fits into 64 bits
-        auto const p = State<rules::international, board::compact1012>::initial();
+        auto const p = State<rules::international, board::compact_10_12>::initial();
         test(p, unique_gen, leafs);
 
         // board with international initial moves and orthogonal capture support: does not fit into 64 bits
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(Board12x10)
         auto const leafs = std::vector<std::size_t>{ 11, 121, 1'222, 10'053, 79'049, 584'100, 4'369'366, 31'839'056, 236'364'607, 1'742'748'504 };
 
         // board with regular coloring and no orthogonal capture support: fits into 64 bits
-        auto const p = State<rules::international, board::compact1210>::initial();
+        auto const p = State<rules::international, board::compact_12_10>::initial();
         test(p, unique_gen, leafs);
 
         // board with canadian initial moves and orthogonal capture support: does not fit into 64 bits

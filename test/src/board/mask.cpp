@@ -1,7 +1,7 @@
 #include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
-                                                // ktar<10, 12>, compact1012, compact120, rectangular<12, 10>, canadian, srilankan, dumm
+                                                // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <xstd/cstddef.hpp>                     // _z
 #include <range/v3/all.hpp>                     // all_of, view::iota
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -23,11 +23,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, BoardSequence)
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)
 {
         using namespace xstd::support_literals;
-        auto const columns = ranges::view::iota(0_zu, T::width());
+        auto const columns = ranges::view::iota(0_zu, T::width);
 
         BOOST_CHECK(
                 ranges::all_of(columns, [=](auto i){
-                        return Column<T>::mask(Color::black, i) == Column<T>::mask(Color::white, T::width() - 1 - i);
+                        return Column<T>::mask(Color::black, i) == Column<T>::mask(Color::white, T::width - 1 - i);
                 })
         );
 
@@ -49,11 +49,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
 BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 {
         using namespace xstd::support_literals;
-        auto const rows = ranges::view::iota(0_zu, T::height());
+        auto const rows = ranges::view::iota(0_zu, T::height);
 
         BOOST_CHECK(
                 ranges::all_of(rows, [=](auto i){
-                        return Row<T>::mask(Color::black, i) == Row<T>::mask(Color::white, T::height() - 1 - i);
+                        return Row<T>::mask(Color::black, i) == Row<T>::mask(Color::white, T::height - 1 - i);
                 })
         );
 

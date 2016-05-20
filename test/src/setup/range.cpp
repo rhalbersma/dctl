@@ -12,7 +12,7 @@ using B = board::checkers;
 inline
 auto row_number(square sq)
 {
-        return board::to_ulo(sq, B::inner_grid).y();
+        return board::detail::to_ulo(sq, B::inner_grid).y;
 }
 
 inline
@@ -71,13 +71,14 @@ auto format_bytes()
         });
 }
 
-template<class CharT, class Traits, int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+template<class CharT, class Traits, std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::rectangular<Width, Height, Inverted, OrthogonalCaptures> const& b)
 {
-        using Coord = board::Coordinates<board::origin::upper_left>;
+        using Coord = board::detail::coordinates<board::detail::upper_left>;
+        using namespace xstd::support_literals;
 
-        RANGES_FOR(auto y, view::iota(0, b.height())) {
-                RANGES_FOR(auto x, view::iota(0, b.width())) {
+        RANGES_FOR(auto y, view::iota(0_zu, b.height)) {
+                RANGES_FOR(auto x, view::iota(0_zu, b.width)) {
                         auto const coord = Coord{x, y};
                         if (b.is_square(coord)) {
                                 ostr << std::setw(2) << b.to_square(coord);
@@ -92,6 +93,5 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::rectangular<Wid
 
 int main()
 {
-        using namespace xstd::literals;
         std::cout << B{};
 }

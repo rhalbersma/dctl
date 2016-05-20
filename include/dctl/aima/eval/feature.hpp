@@ -40,7 +40,7 @@ public:
         {
                 using namespace xstd::support_literals;
                 int score = 0;
-                for (auto i = 1_zu; i < Board::height(); ++i)
+                for (auto i = 1_zu; i < Board::height; ++i)
                         score += Weight<Rules, Board>::tempo[i] * static_cast<int>((p.pieces(ToMove) & board::Row<Board>::mask(ToMove, i)).count());
                 return score;
         }
@@ -50,7 +50,7 @@ public:
         {
                 using namespace xstd::support_literals;
                 int score = 0;
-                for (auto i = 1_zu; i < Board::width() / 2; ++i) {
+                for (auto i = 1_zu; i < Board::width / 2; ++i) {
                         score += Weight<Rules, Board>::center[i] *
                         (
                                 static_cast<int>((p.pieces(ToMove) & board::Column<Board>::mask( ToMove, i)).count()) +
@@ -65,7 +65,7 @@ public:
         {
                 using namespace xstd::support_literals;
                 int score = 0;
-                for (auto i = 0_zu; i < Board::width() / 2; ++i) {
+                for (auto i = 0_zu; i < Board::width / 2; ++i) {
                         score += Weight<Rules, Board>::balance[i] *
                         (
                                 static_cast<int>((p.pieces(ToMove) & board::Column<Board>::mask( ToMove, i)).count()) -

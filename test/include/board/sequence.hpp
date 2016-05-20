@@ -16,8 +16,8 @@ using BoardSequence = boost::mpl::vector
         frisian,
         ktar<10, 11>,
         ktar<10, 12>,
-        compact1012,
-        compact1210,
+        compact_10_12,
+        compact_12_10,
         canadian,
         srilankan,
         dumm
