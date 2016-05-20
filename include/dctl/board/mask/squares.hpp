@@ -12,7 +12,7 @@ private:
         // simulate a constexpr lambda (not allowed in C++14)
         struct is_squares
         {
-                constexpr auto operator()(int sq) const noexcept
+                constexpr auto operator()(std::size_t const sq) const noexcept
                 {
                         return sq < Board::size();
                 }

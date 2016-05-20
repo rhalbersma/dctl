@@ -19,13 +19,13 @@ class cursor
         static constexpr auto N = is_positive(theta) ? -S : S;
         static_assert(N != 0, "Cursors need a non-zero stride.");
 
-        using Square = std::size_t;
+        using square_type = std::size_t;
 
         int cursor_{};
 public:
         cursor() = default;
 
-        explicit cursor(Square c) noexcept
+        explicit cursor(square_type c) noexcept
         :
                 cursor_{static_cast<int>(c)}
         {}
@@ -41,7 +41,7 @@ public:
 
         /* implicit */ operator auto() const noexcept
         {
-                return static_cast<Square>(cursor_);
+                return static_cast<square_type>(cursor_);
         }
 
         // operator++(int) provided by boost::unit_steppable
@@ -58,15 +58,15 @@ public:
                 return *this;
         }
 
-        // operator+(Cursor, int) provided by boost::additive
-        auto& operator+=(std::size_t n) noexcept
+        // operator+(cursor, int) provided by boost::additive
+        auto& operator+=(std::size_t const n) noexcept
         {
                 cursor_ += static_cast<int>(n) * N;
                 return *this;
         }
 
-        // operator-(Cursor, int) provided by boost::additive
-        auto& operator-=(std::size_t n) noexcept
+        // operator-(cursor, int) provided by boost::additive
+        auto& operator-=(std::size_t const n) noexcept
         {
                 cursor_ -= static_cast<int>(n) * N;
                 return *this;

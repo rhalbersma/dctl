@@ -20,7 +20,7 @@ template<class Rules, class Board>
 struct xnotation
 :
         std::conditional_t<
-                (Board::width() == 10),
+                (Board::width == 10),
                 notation_constant<Notation::numeric>,
                 notation_constant<Notation::algebraic>
         >

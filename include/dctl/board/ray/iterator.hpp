@@ -17,7 +17,8 @@ using iterator = boost::counting_iterator
 >;
 
 template<class Board, int Direction>
-iterator<Board, Direction> make_iterator(std::size_t const sq)
+auto make_iterator(std::size_t const sq)
+        -> iterator<Board, Direction>
 {
         return { cursor<Board, Direction>{sq} };
 }

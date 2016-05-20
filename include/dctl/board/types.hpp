@@ -5,26 +5,27 @@ namespace dctl {
 namespace board {
 
 // smaller square boards (fit into 64-bits, even with orthogonal capture)
-using micro         = rectangular< 4,  4>;
-using mini          = rectangular< 6,  6>;
-using checkers      = rectangular< 8,  8>;
-using roman         = rectangular< 8,  8, true>;
-using spantsireti   = rectangular<10,  8>;
-using international = rectangular<10, 10>;
-using frisian       = rectangular<10, 10, false, true>;
+struct micro         : rectangular< 4,  4> {};
+struct mini          : rectangular< 6,  6> {};
+struct checkers      : rectangular< 8,  8> {};
+struct roman         : rectangular< 8,  8, true> {};
+struct international : rectangular<10, 10> {};
+struct frisian       : rectangular<10, 10, false, true> {};
 
-// rectangular boards with front lines of square boards of the same width
-template<int Width, int Height>
-using ktar          = rectangular<Width, Height, true>;
+struct spantsireti   : rectangular<10,  8> {};
 
-// without orthogonal capture, rectangular<12, 10> and ktar<10, 12> fit into 64-bits
-using compact1012   = rectangular<10, 12, true , false>;
-using compact1210   = rectangular<12, 10, false, false>;
+// rectangular boards with front line layouts of square boards of the same width
+template<std::size_t Width, std::size_t Height, bool IsOrthogonalCaptures = true>
+struct ktar          : rectangular<Width, Height, true, IsOrthogonalCaptures> {};
+
+// without orthogonal captures, ktar<10, 12> and rectangular<12, 10>fit into 64-bits
+struct compact_10_12 : ktar<10, 12, false> {};
+struct compact_12_10 : rectangular<12, 10, false, false> {};
 
 // larger square boards (do not fit into 64-bits, even without orthogonal capture)
-using canadian      = rectangular<12, 12>;
-using srilankan     = rectangular<12, 12, true>;
-using dumm          = rectangular<14, 14>;
+struct canadian      : rectangular<12, 12> {};
+struct srilankan     : rectangular<12, 12, true> {};
+struct dumm          : rectangular<14, 14> {};
 
 }       // namespace board
 }       // namespace dctl
