@@ -24,7 +24,7 @@ class Column
                         Color const to_move;
                         std::size_t const column_;
 
-                        constexpr auto operator()(int sq) const noexcept
+                        constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 assert(column_ < Board::width);
                                 return detail::to_llo(sq, Board::inner_grid).x == (to_move == Color::white ? column_ : Board::width - 1 - column_);

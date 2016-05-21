@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/utility/type_traits.hpp>         // set_t
+#include <cstddef>                              // size_t
 
 namespace dctl {
 namespace board {

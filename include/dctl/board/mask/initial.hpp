@@ -24,7 +24,7 @@ class Initial
                         Color const to_move;
                         std::size_t const rows_;
 
-                        constexpr auto operator()(int sq) const noexcept
+                        constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 auto const separation = Board::height - 2 * rows_;
                                 auto const y = detail::to_llo(sq, Board::inner_grid).y;
