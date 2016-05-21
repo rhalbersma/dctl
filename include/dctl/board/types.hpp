@@ -1,30 +1,31 @@
 #pragma once
 #include <dctl/board/rectangular.hpp>   // rectangular
+#include <dctl/board/traits.hpp>        // invert, add_orthogonal_captures, remove_orthogonal_captures
 
 namespace dctl {
 namespace board {
 
-// smaller square boards (fit into 64-bits, even with orthogonal capture)
+// fit into 64-bits, even with orthogonal capture
 struct micro         : rectangular< 4,  4> {};
 struct mini          : rectangular< 6,  6> {};
 struct checkers      : rectangular< 8,  8> {};
-struct roman         : rectangular< 8,  8, true> {};
 struct international : rectangular<10, 10> {};
-struct frisian       : rectangular<10, 10, false, true> {};
 
-struct spantsireti   : rectangular<10,  8> {};
+struct roman         :  invert_t<checkers> {};
+struct frisian       : add_orthogonal_captures_t<international> {};
 
-// rectangular boards with front line layouts of square boards of the same width
+struct spantsiretti   : rectangular<10,  8> {};
+
 template<std::size_t Width, std::size_t Height, bool IsOrthogonalCaptures = true>
 struct ktar          : rectangular<Width, Height, true, IsOrthogonalCaptures> {};
 
-// without orthogonal captures, ktar<10, 12> and rectangular<12, 10>fit into 64-bits
-struct compact_10_12 : ktar<10, 12, false> {};
-struct compact_12_10 : rectangular<12, 10, false, false> {};
+// fit into 64-bits if and only if without orthogonal captures
+struct compact_10_12 : remove_orthogonal_captures_t<       ktar<10, 12>> {};
+struct compact_12_10 : remove_orthogonal_captures_t<rectangular<12, 10>> {};
 
-// larger square boards (do not fit into 64-bits, even without orthogonal capture)
+// do not fit into 64-bits, even without orthogonal capture
 struct canadian      : rectangular<12, 12> {};
-struct srilankan     : rectangular<12, 12, true> {};
+struct srilankan     :  invert_t<canadian> {};
 struct dumm          : rectangular<14, 14> {};
 
 }       // namespace board

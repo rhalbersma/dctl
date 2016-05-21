@@ -11,7 +11,7 @@ using BoardSequence = boost::mpl::vector
         mini,
         checkers,
         roman,
-        spantsireti,
+        spantsiretti,
         international,
         frisian,
         ktar<10, 11>,

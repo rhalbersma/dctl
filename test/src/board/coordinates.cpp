@@ -1,6 +1,6 @@
 #include <board/group.hpp>                      // action::is_realized, make_group
 #include <dctl/board/angle.hpp>                 // _deg, inverse, rotate
-#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
+#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/board/detail/coordinates.hpp>    // operator==, rotate, to_sco
 #include <range/v3/all.hpp>

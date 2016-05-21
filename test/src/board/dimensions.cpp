@@ -1,6 +1,6 @@
 #include <board/group.hpp>                      // action::is_realized, make
 #include <dctl/board/angle.hpp>                 // _deg, inverse, rotate
-#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
+#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/board/detail/dimensions.hpp>     // Dimensions
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

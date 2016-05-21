@@ -1,5 +1,6 @@
-#include <dctl/board/types.hpp>                 // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
+#include <dctl/board/types.hpp>                 // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
+#include <dctl/board/traits.hpp>                // add_orthogonal_captures, remove_orthogonal_captures
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -12,31 +13,13 @@ namespace board {
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
 
-template<class Board>
-struct remove_orthogonal_capture
-:
-        rectangular<Board::width, Board::height, Board::is_inverted, false>
-{};
-
-template<class T>
-using remove_orthogonal_capture_t = typename remove_orthogonal_capture<T>::type;
-
-template<class Board>
-struct add_orthogonal_capture
-:
-        rectangular<Board::width, Board::height, Board::is_inverted, true>
-{};
-
-template<class T>
-using add_orthogonal_capture_t = typename add_orthogonal_capture<T>::type;
-
 using SmallBoardSequence = boost::mpl::vector
 <
         micro,
         mini,
         checkers,
         roman,
-        spantsireti,
+        spantsiretti,
         international,
         frisian,
         ktar<10, 11>
@@ -44,8 +27,8 @@ using SmallBoardSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
 {
-        static_assert(set_t<remove_orthogonal_capture_t<T>>::size() <= 64);
-        static_assert(set_t<   add_orthogonal_capture_t<T>>::size() <= 64);
+        static_assert(set_t<remove_orthogonal_captures_t<T>>::size() <= 64);
+        static_assert(set_t<   add_orthogonal_captures_t<T>>::size() <= 64);
 }
 
 using IntermediateBoardSequence = boost::mpl::vector
@@ -54,19 +37,10 @@ using IntermediateBoardSequence = boost::mpl::vector
         rectangular<12, 10>
 >;
 
-BOOST_AUTO_TEST_CASE(RemoveAddOrthogonalCapture)
-{
-        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<   ktar<10,12>>, xstd::_t<compact_10_12 >>);
-        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<compact_10_12 >, xstd::_t<ktar   <10,12>>>);
-
-        static_assert(std::experimental::is_same_v<remove_orthogonal_capture_t<rectangular<12,10>>, xstd::_t<    compact_12_10 >>);
-        static_assert(std::experimental::is_same_v<   add_orthogonal_capture_t<    compact_12_10 >, xstd::_t<rectangular<12,10>>>);
-}
-
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)
 {
-        static_assert(set_t<remove_orthogonal_capture_t<T>>::size() <=  64);
-        static_assert(set_t<   add_orthogonal_capture_t<T>>::size() <= 128);
+        static_assert(set_t<remove_orthogonal_captures_t<T>>::size() <=  64);
+        static_assert(set_t<   add_orthogonal_captures_t<T>>::size() <= 128);
 }
 
 using LargeBoardSequence = boost::mpl::vector
@@ -78,8 +52,8 @@ using LargeBoardSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs128, T, LargeBoardSequence)
 {
-        static_assert(set_t<remove_orthogonal_capture_t<T>>::size() <= 128);
-        static_assert(set_t<   add_orthogonal_capture_t<T>>::size() <= 128);
+        static_assert(set_t<remove_orthogonal_captures_t<T>>::size() <= 128);
+        static_assert(set_t<   add_orthogonal_captures_t<T>>::size() <= 128);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
