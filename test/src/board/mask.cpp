@@ -1,6 +1,6 @@
 #include <dctl/board/mask.hpp>                  // Column, JumpGroup, Row, Squares
 #include <dctl/utility/type_traits.hpp>         // set_t
-#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsireti, international, frisian, ktar<10, 11>,
+#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <xstd/cstddef.hpp>                     // _z
 #include <range/v3/all.hpp>                     // all_of, view::iota

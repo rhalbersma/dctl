@@ -13,9 +13,9 @@ namespace traversal {
 
 BOOST_AUTO_TEST_SUITE(WalkInitialRectangular)
 
-BOOST_AUTO_TEST_CASE(spantsireti)
+BOOST_AUTO_TEST_CASE(spantsiretti)
 {
-        auto const p = State<rules::international, board::spantsireti>::initial();
+        auto const p = State<rules::international, board::spantsiretti>::initial();
         auto const leafs = std::vector<std::size_t>{ 9, 81, 658, 4'265, 27'117, 167'140, 1'029'319, 6'127'190, 36'751'086, 218'398'167, 1'306'818'894 };
         test(p, unique_gen, leafs);
 }
