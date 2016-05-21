@@ -13,14 +13,14 @@ namespace board {
 template<class Board>
 class JumpGroup
 {
-        static constexpr auto init(int from_sq) noexcept
+        static constexpr auto init(std::size_t const from_sq) noexcept
         {
                 // simulate a constexpr lambda (not allowed in C++14)
                 struct is_jump_group
                 {
-                        int from_sq_;
+                        std::size_t const from_sq_;
 
-                        constexpr auto operator()(int dest_sq) const noexcept
+                        constexpr auto operator()(std::size_t const dest_sq) const noexcept
                         {
                                 auto const from_coord = detail::to_llo(from_sq_, Board::inner_grid);
                                 auto const dest_coord = detail::to_llo(dest_sq , Board::inner_grid);
@@ -46,7 +46,7 @@ class JumpGroup
         }};
 
 public:
-        static constexpr auto mask(std::size_t n) noexcept
+        static constexpr auto mask(std::size_t const n) noexcept
         {
                 assert(n < 4);
                 return table[n];

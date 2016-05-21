@@ -4,7 +4,7 @@
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/utility/make_array.hpp>          // make_array
 #include <dctl/utility/type_traits.hpp>         // set_t
-#include <xstd/cstddef.hpp>
+#include <xstd/cstddef.hpp>                     // _zu
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -15,17 +15,17 @@ namespace board {
 template<class Board>
 class JumpStart
 {
-        static constexpr auto init(int segment) noexcept
+        static constexpr auto init(std::size_t const segment) noexcept
         {
                 // simulate a constexpr lambda (not allowed in C++14)
                 struct is_jump_start
                 {
-                        int const segment;
+                        std::size_t const segment;
 
-                        constexpr auto operator()(int sq) const noexcept
+                        constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 using namespace xstd::support_literals;
-                                auto const alpha = rotate(segment * theta + beta, Board::orientation);
+                                auto const alpha = rotate(segment * theta + beta, inverse(Board::orientation));
                                 auto const offset = is_diagonal(alpha) ? 2_zu : 4_zu;
                                 auto const min_x = is_left(alpha) ? offset : 0;
                                 auto const max_x = Board::width - (is_right(alpha) ? offset : 0);
