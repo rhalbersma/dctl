@@ -11,7 +11,7 @@ namespace dctl {
 namespace aima {
 namespace search {
 
-auto const unique_gen = core::Actions<core::select::legal, true >{};
+auto const drop_duplicates_gen = core::Actions<core::select::legal, drop_duplicates_tag>{};
 
 template<class State, class Objective>
 class Fixture
@@ -39,7 +39,7 @@ public:
                 for (auto const& t : tests) {
                         root_.clear_hash();
                         auto const position = setup::read<Rules, Board, pdn::protocol>()(t.first);
-                        auto const value = root_.analyze(position, unique_gen, t.second);
+                        auto const value = root_.analyze(position, drop_duplicates_gen, t.second);
                         BOOST_WARN_EQUAL(win_value(t.second), value);
                 }
         }

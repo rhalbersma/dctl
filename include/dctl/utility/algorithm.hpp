@@ -13,8 +13,8 @@ template
         class InputIterator, class T, class UnaryPredicate,
         class DifferenceType = typename std::iterator_traits<InputIterator>::difference_type
 >
-std::pair<InputIterator, DifferenceType>
-count_until(InputIterator begin, InputIterator end, T const& value, UnaryPredicate pred)
+auto count_until(InputIterator begin, InputIterator end, T const& value, UnaryPredicate pred)
+        -> std::pair<InputIterator, DifferenceType>
 {
         DifferenceType count = 0;
         auto const it = std::find_if(
@@ -27,8 +27,8 @@ count_until(InputIterator begin, InputIterator end, T const& value, UnaryPredica
 
 // O(N) complexity
 template<class InputIterator, class T, class BinaryOperation, class UnaryPredicate>
-std::pair<InputIterator, T>
-accumulate_until(InputIterator begin, InputIterator end, T init, BinaryOperation op, UnaryPredicate pred)
+auto accumulate_until(InputIterator begin, InputIterator end, T init, BinaryOperation op, UnaryPredicate pred)
+        -> std::pair<InputIterator, T>
 {
         auto const it = std::find_if(
                 begin, end,

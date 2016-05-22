@@ -1,29 +1,30 @@
 #pragma once
-#include <string>                       // string
-#include <type_traits>                  // is_base_of
+#include <cstddef>      // size_t
+#include <string>       // string
+#include <type_traits>  // is_base_of
 
 namespace dctl {
 namespace factory {
 
 template
 <
-        int HeaderLength,
-        int MaxBodyLength,
+        std::size_t HeaderLength,
+        std::size_t MaxBodyLength,
         char Terminator
 >
 struct make_header_body_terminator
 {
-        static std::string header(std::string const& input)
+        static auto header(std::string const& input)
         {
                 return input.substr(0, HeaderLength);
         }
 
-        static std::string body(std::string const& input)
+        static auto body(std::string const& input)
         {
                 return input.substr(HeaderLength);
         }
 
-        static char terminator()
+        static auto terminator()
         {
                 return terminator_;
         }

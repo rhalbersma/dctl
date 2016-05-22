@@ -14,7 +14,6 @@
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
-#include <type_traits>                                  // is_base_of, false_type, true_type
 
 namespace dctl {
 namespace core {
@@ -115,17 +114,17 @@ private:
         auto next_target(Iterator jumper) const
         {
                 //raii::Visit<Builder> guard{builder, *jumper};
-                return reverse_dispatch(jumper, is_reversible_king_jump_direction<rules_type>{});
+                return reverse_dispatch(jumper, king_jump_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto reverse_dispatch(Iterator jumper, std::false_type) const
+        auto reverse_dispatch(Iterator jumper, forward_king_jump_tag) const
         {
                 return scan_turn(jumper);
         }
 
         template<class Iterator>
-        auto reverse_dispatch(Iterator jumper, std::true_type) const
+        auto reverse_dispatch(Iterator jumper, reverse_king_jump_tag) const
         {
                 return scan_turn(jumper) | reverse(jumper);
         }
@@ -133,7 +132,7 @@ private:
         template<class Iterator>
         auto reverse(Iterator jumper) const
         {
-                static_assert(is_reversible_king_jump_direction_v<rules_type>);
+                static_assert(is_reverse_king_jump_v<rules_type>);
                 return scan(board::ray::rotate<180>(jumper));
         }
 

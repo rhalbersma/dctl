@@ -22,7 +22,8 @@ struct make_const_callable_t
 };
 
 template<class MutableLambda>
-make_const_callable_t<MutableLambda> make_const_callable(MutableLambda&& f)
+auto make_const_callable(MutableLambda&& f)
+        -> make_const_callable_t<MutableLambda>
 {
         return { std::forward<MutableLambda>(f) };
 }

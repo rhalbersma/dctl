@@ -62,7 +62,7 @@ public:
         constexpr auto edge_lo() const noexcept { return upper_left_is_square() ? right_down() : left_down(); }
         constexpr auto edge_ro() const noexcept { return edge_lo() + (inner_.edge_ro() - inner_.edge_lo()); }
 
-        constexpr auto size() const noexcept { return modulo() * ((height() - 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) + 1; }
+        constexpr auto size() const noexcept { return modulo() * ((height() + 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) - 1; }
 
         friend constexpr auto rotate(OuterGrid const g, angle const a)
         {

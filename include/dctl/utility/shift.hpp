@@ -34,7 +34,7 @@ template<>
 struct ShiftAssign<false>
 {
         template<class T>
-        constexpr void operator()(T& t, std::size_t const n) const
+        constexpr auto operator()(T& t, std::size_t const n) const
         {
                 t <<= n;
         }
@@ -44,7 +44,7 @@ template<>
 struct ShiftAssign<true>
 {
         template<class T>
-        constexpr void operator()(T& t, std::size_t const n) const
+        constexpr auto operator()(T& t, std::size_t const n) const
         {
                 t >>= n;
         }

@@ -8,7 +8,6 @@
 #include <dctl/piece.hpp>                               // king
 #include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
-#include <type_traits>                                  // false_type
 
 namespace dctl {
 namespace core {

@@ -2,6 +2,7 @@
 #include <dctl/actions/detail/specializations.hpp>      // Generate
 #include <dctl/actions/select/legal.hpp>                // legal
 #include <dctl/color.hpp>                               // Color, black, white
+#include <dctl/rule_traits.hpp>
 #include <cassert>                                      // assert
 #include <cstddef>                                      // size_t
 #include <type_traits>                                  // bool_constant
@@ -9,11 +10,11 @@
 namespace dctl {
 namespace core {
 
-template<class Select = select::legal, bool KeepDuplicates = false, bool Reverse = false>
+template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
 class Actions
 {
         template<Color ToMove>
-        using Impl = detail::Actions<ToMove, Select, std::bool_constant<!KeepDuplicates>, std::bool_constant<Reverse>>;
+        using Impl = detail::Actions<ToMove, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
 
         template<Color ToMove, class State>
         auto assert_invariants(State const& state, std::size_t const n) const

@@ -16,7 +16,6 @@
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
-#include <type_traits>                                  // false_type, true_type
 
 namespace dctl {
 namespace core {
@@ -49,15 +48,15 @@ public:
         auto operator()() const
         {
                 if (builder.active_pawns().any())
-                        pawn_jump_king_dispatch(is_superior_rank_jump_t<rules_type>{});
+                        pawn_jump_king_dispatch(rank_jump_category_t<rules_type>{});
         }
 private:
-        auto pawn_jump_king_dispatch(std::false_type) const
+        auto pawn_jump_king_dispatch(inferior_rank_jump_tag) const
         {
                 directions();
         }
 
-        auto pawn_jump_king_dispatch(std::true_type) const
+        auto pawn_jump_king_dispatch(superior_rank_jump_tag) const
         {
                 raii::toggle_king_targets<Builder> guard{builder};
                 directions();
@@ -170,17 +169,17 @@ private:
         template<class Iterator>
         auto on_promotion_dispatch(Iterator jumper, passing_promotion_tag) const
         {
-                king_jumps_dispatch(jumper, is_superior_rank_jump_t<rules_type>{});
+                king_jumps_dispatch(jumper, rank_jump_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto king_jumps_dispatch(Iterator jumper, std::false_type) const
+        auto king_jumps_dispatch(Iterator jumper, inferior_rank_jump_tag) const
         {
                 king_jumps_try_next(jumper);
         }
 
         template<class Iterator>
-        auto king_jumps_dispatch(Iterator jumper, std::true_type) const
+        auto king_jumps_dispatch(Iterator jumper, superior_rank_jump_tag) const
         {
                 raii::toggle_king_targets<Builder> guard{builder};
                 king_jumps_try_next(jumper);

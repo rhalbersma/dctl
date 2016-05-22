@@ -1,12 +1,14 @@
 #pragma once
+#include <cstddef>      // size_t
 
 namespace dctl {
 namespace group {
 
 template<class Function, class Object>
-constexpr Object apply(Function fun, Object const& obj, int n) noexcept
+constexpr auto apply(Function fun, Object const& obj, std::size_t const n) noexcept
+        -> Object
 {
-        return n ? fun(apply(fun, obj, n - 1)) : obj;
+        return (n == 0) ? obj : fun(apply(fun, obj, n - 1));
 }
 
 struct is_identity

@@ -13,9 +13,8 @@
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <dctl/utility/zobrist/accumulate.hpp>
-#include <cassert>                      // assert
+#include <cassert>                              // assert
 #include <tuple>
-#include <type_traits>                  // false_type, true_type
 
 namespace dctl {
 
@@ -56,17 +55,17 @@ public:
 
         // observers
 
-        auto pieces(Color c) const
+        auto pieces(Color const c) const
         {
                 return piece_placement_.pieces(c);
         }
 
-        auto pieces(Piece p) const
+        auto pieces(Piece const p) const
         {
                 return piece_placement_.pieces(p);
         }
 
-        auto pieces(Color c, Piece p) const
+        auto pieces(Color const c, Piece const p) const
         {
                 return piece_placement_.pieces(c, p);
         }
@@ -81,17 +80,17 @@ public:
                 return piece_placement_.not_occupied();
         }
 
-        auto king_targets(Color c) const
+        auto king_targets(Color const c) const
         {
                 return pieces(c);
         }
 
-        auto pawn_targets(Color c) const
+        auto pawn_targets(Color const c) const
         {
-                return pawn_targets_dispatch(c, is_superior_rank_jump_t<rules_type>{});
+                return pawn_targets_dispatch(c, rank_jump_category_t<rules_type>{});
         }
 
-        auto num_pieces(Color c, Piece p) const noexcept
+        auto num_pieces(Color const c, Piece const p) const noexcept
         {
                 return piece_placement_.num_pieces(c, p);
         }
@@ -101,7 +100,7 @@ public:
                 return player_to_move_;
         }
 
-        auto is_to_move(Color c) const noexcept
+        auto is_to_move(Color const c) const noexcept
         {
                 return to_move() == c;
         }
@@ -111,12 +110,12 @@ public:
                 return std::size_t{0};
         }
 private:
-        auto pawn_targets_dispatch(Color c, std::false_type) const
+        auto pawn_targets_dispatch(Color const c, inferior_rank_jump_tag) const
         {
                 return pieces(c);
         }
 
-        auto pawn_targets_dispatch(Color c, std::true_type) const
+        auto pawn_targets_dispatch(Color const c, superior_rank_jump_tag) const
         {
                 return pieces(c, Piece::pawn);
         }
