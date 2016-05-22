@@ -41,13 +41,14 @@ constexpr auto operator!=(coordinates<Origin> const lhs, coordinates<Origin> con
 }
 
 constexpr auto rotate(coordinates<screen_centered> const coord, angle const a)
+        -> coordinates<screen_centered>
 {
         switch (a.degrees()) {
         case   0 : return coord;
-        case  90 : return coordinates<screen_centered>{ -coord.y,  coord.x };
-        case 180 : return coordinates<screen_centered>{ -coord.x, -coord.y };
-        case 270 : return coordinates<screen_centered>{  coord.y, -coord.x };
-        default  : return static_cast<void>(throw std::invalid_argument("Rotations of Coordinates objects shall be in multiples of 90 degrees.")), coord;
+        case  90 : return { -coord.y,  coord.x };
+        case 180 : return { -coord.x, -coord.y };
+        case 270 : return {  coord.y, -coord.x };
+        default  : return static_cast<void>(throw std::invalid_argument("Not a multiple of 90 degrees.")), coord;
         }
 }
 

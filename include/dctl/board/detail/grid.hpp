@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/angle.hpp>                 // angle
-#include <dctl/board/detail/dimensions.hpp>     // Dimensions
+#include <dctl/board/detail/dimensions.hpp>     // dimensions
 #include <cassert>                              // assert
 
 namespace dctl {
@@ -9,9 +9,9 @@ namespace detail {
 
 class InnerGrid
 {
-        Dimensions dim;
+        dimensions dim;
 public:
-        explicit constexpr InnerGrid(Dimensions const& d) noexcept : dim{d} {}
+        explicit constexpr InnerGrid(dimensions const& d) noexcept : dim{d} {}
 
         constexpr auto width()       const noexcept { return dim.width; }
         constexpr auto height()      const noexcept { return dim.height; }
@@ -62,7 +62,7 @@ public:
         constexpr auto edge_lo() const noexcept { return upper_left_is_square() ? right_down() : left_down(); }
         constexpr auto edge_ro() const noexcept { return edge_lo() + (inner_.edge_ro() - inner_.edge_lo()); }
 
-        constexpr auto size() const noexcept { return modulo() * ((height() + 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) - 1; }
+        constexpr auto size() const noexcept { return modulo() * ((height() - 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) + 1; }
 
         friend constexpr auto rotate(OuterGrid const g, angle const a)
         {

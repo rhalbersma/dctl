@@ -43,6 +43,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)
         std::cout << "W = " << T::width << ", H = " << T::height << ", P = " << T::is_inverted << ", bits = " << T::bits() << "\n\n";
 }
 
+BOOST_AUTO_TEST_CASE(Grid)
+{
+        auto const d = board::detail::dimensions{1,1,true};
+        auto const i = board::detail::InnerGrid{d};
+        auto const o = board::detail::OuterGrid{i, 2};
+        std::cout << "W = " << i.width() << ", H = " << i.height() << ", P = " << i.is_inverted() << ", bits = " << i.size() << "\n\n";
+        std::cout << "W = " << o.width() << ", H = " << o.height() << ", P = " << o.is_inverted() << ", bits = " << o.size() << "\n\n";
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace setup

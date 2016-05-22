@@ -2,7 +2,7 @@
 #include <dctl/board/angle.hpp>                         // angle, inverse
 #include <dctl/board/algebraic.hpp>                     // Labels
 #include <dctl/board/detail/coordinates.hpp>            // to_llo, transform
-#include <dctl/board/detail/dimensions.hpp>             // Dimensions
+#include <dctl/board/detail/dimensions.hpp>             // dimensions
 #include <dctl/board/detail/grid.hpp>                   // InnerGrid, OuterGrid
 #include <dctl/board/detail/optimal_orientation.hpp>    // size_minimizing_orientation
 #include <dctl/board/detail/shift_size.hpp>             // shift_size
@@ -38,7 +38,7 @@ public:
         static constexpr auto is_orthogonal_captures = IsOrthogonalCaptures;
 
         static constexpr auto edge = is_orthogonal_captures ? 2 : 1;
-        static constexpr auto inner_grid = detail::InnerGrid{detail::Dimensions{width, height, is_inverted}};
+        static constexpr auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
         static constexpr auto orientation = detail::optimal_orientation(detail::OuterGrid{inner_grid, edge});
 
 private:
