@@ -8,8 +8,8 @@ namespace dctl {
 namespace aima {
 namespace traversal {
 
-auto const    unique_gen = core::Actions<core::select::legal, false>{};
-auto const duplicate_gen = core::Actions<core::select::legal, true >{};
+auto const keep_duplicates_gen = core::Actions<core::select::legal, keep_duplicates_tag>{};
+auto const drop_duplicates_gen = core::Actions<core::select::legal, drop_duplicates_tag>{};
 
 template<class State, class Actions, class Range>
 void test(State const& s, Actions successor, Range const& leafs)

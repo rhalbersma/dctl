@@ -10,8 +10,8 @@ XSTD_PP_TTI_CONSTANT(initial_position_gap, 2)
 
 XSTD_PP_TTI_CONSTANT(is_long_ranged_king, false)
 
-using short_ranged_tag = std::false_type;
-using  long_ranged_tag = std::true_type;
+struct short_ranged_tag : std::false_type {};
+struct  long_ranged_tag : std:: true_type {};
 
 template<class Rules>
 using king_range_category_t = std::conditional_t<
@@ -40,8 +40,8 @@ using king_range_category_halt_behind_king_t = std::conditional_t<
 
 XSTD_PP_TTI_CONSTANT(is_backward_pawn_jump, false)
 
-using  forward_pawn_jump_tag = std::false_type;
-using backward_pawn_jump_tag = std::true_type;
+struct  forward_pawn_jump_tag : std::false_type {};
+struct backward_pawn_jump_tag : std:: true_type {};
 
 template<class Rules>
 using pawn_jump_category_t = std::conditional_t<
@@ -52,8 +52,8 @@ using pawn_jump_category_t = std::conditional_t<
 
 XSTD_PP_TTI_CONSTANT(is_orthogonal_jump, false)
 
-using   diagonal_jump_tag = std::false_type;
-using orthogonal_jump_tag = std::true_type;
+struct   diagonal_jump_tag : std::false_type {};
+struct orthogonal_jump_tag : std:: true_type {};
 
 template<class Rules>
 using jump_category_t = std::conditional_t<
@@ -64,10 +64,20 @@ using jump_category_t = std::conditional_t<
 
 XSTD_PP_TTI_CONSTANT(is_superior_rank_jump, false)
 
+struct inferior_rank_jump_tag : std::false_type {};
+struct superior_rank_jump_tag : std:: true_type {};
+
+template<class Rules>
+using rank_jump_category_t = std::conditional_t<
+        is_superior_rank_jump_v<Rules>,
+        superior_rank_jump_tag,
+        inferior_rank_jump_tag
+>;
+
 XSTD_PP_TTI_CONSTANT(is_passing_promotion, false)
 
-using stopped_promotion_tag = std::false_type;
-using passing_promotion_tag = std::true_type;
+struct stopped_promotion_tag : std::false_type {};
+struct passing_promotion_tag : std:: true_type {};
 
 template<class Rules>
 using promotion_category_t = std::conditional_t<
@@ -78,8 +88,8 @@ using promotion_category_t = std::conditional_t<
 
 XSTD_PP_TTI_CONSTANT(is_passing_capture, false)
 
-using stopped_capture_tag = std::false_type;
-using passing_capture_tag = std::true_type;
+struct stopped_capture_tag : std::false_type {};
+struct passing_capture_tag : std:: true_type {};
 
 template<class Rules>
 using capture_category_t = std::conditional_t<
@@ -89,20 +99,25 @@ using capture_category_t = std::conditional_t<
 >;
 
 template<class Rules>
-constexpr auto is_reversible_king_jump_direction_v =
+constexpr auto is_reverse_king_jump_v =
         is_passing_capture_v<Rules> && is_long_ranged_king_v<Rules>
 ;
 
+struct forward_king_jump_tag : std::false_type {};
+struct reverse_king_jump_tag : std:: true_type {};
+
 template<class Rules>
-using is_reversible_king_jump_direction = std::bool_constant<
-        is_reversible_king_jump_direction_v<Rules>>
-;
+using king_jump_category_t = std::conditional_t<
+        is_reverse_king_jump_v<Rules>,
+        reverse_king_jump_tag,
+        forward_king_jump_tag
+>;
 
 template<class Rules>
 constexpr auto large_jump_v =
         ((is_orthogonal_jump_v<Rules> && is_backward_pawn_jump_v<Rules>) ||
-         (is_orthogonal_jump_v<Rules> && is_reversible_king_jump_direction_v<Rules>) ||
-         (is_reversible_king_jump_direction_v<Rules> && is_backward_pawn_jump_v<Rules>)) ? 3 : 4
+         (is_orthogonal_jump_v<Rules> && is_reverse_king_jump_v<Rules>) ||
+         (is_reverse_king_jump_v<Rules> && is_backward_pawn_jump_v<Rules>)) ? 3 : 4
 ;
 
 template<class Rules>
@@ -111,7 +126,7 @@ using large_jump = std::integral_constant<int, large_jump_v<Rules>>;
 template<class Rules>
 constexpr auto is_unambiguous_pawn_jump_v =
         !(is_backward_pawn_jump_v<Rules> || is_passing_promotion_v<Rules> ||
-        (is_orthogonal_jump_v<Rules> && is_reversible_king_jump_direction_v<Rules>))
+        (is_orthogonal_jump_v<Rules> && is_reverse_king_jump_v<Rules>))
 ;
 
 template<class Rules>
@@ -135,8 +150,8 @@ struct empty_tuple
 
 XSTD_PP_TTI_TYPENAME(precedence_tuple, empty_tuple)
 
-using    trivial_precedence_tag = std::false_type;
-using nontrivial_precedence_tag = std::true_type;
+struct    trivial_precedence_tag : std::false_type {};
+struct nontrivial_precedence_tag : std:: true_type {};
 
 template<class Rules>
 using precedence_category_t = std::conditional_t<
@@ -154,8 +169,8 @@ using is_trivial_precedence = std::is_same<
 template<class Rules>
 constexpr auto is_trivial_precedence_v = is_trivial_precedence<Rules>::value;
 
-using keep_duplicates_tag = std::false_type;
-using drop_duplicates_tag = std::true_type;
+struct keep_duplicates_tag : std::false_type {};
+struct drop_duplicates_tag : std:: true_type {};
 
 namespace precedence {
 
@@ -269,8 +284,8 @@ using is_restricted_reversible_moves = std::bool_constant<
 
 XSTD_PP_TTI_CONSTANT(is_algebraic_notation, false)
 
-using   numeric_notation_tag = std::false_type;
-using algebraic_notation_tag = std::true_type;
+struct   numeric_notation_tag : std::false_type {};
+struct algebraic_notation_tag : std:: true_type {};
 
 template<class Rules>
 using notation_category_t = std::conditional_t<

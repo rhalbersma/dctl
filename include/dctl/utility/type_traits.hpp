@@ -3,10 +3,10 @@
 namespace dctl {
 
 template<class T> using action_t = typename T::action_type;
-template<class T> using  board_t = typename T::board_type;
-template<class T> using  rules_t = typename T::rules_type;
-template<class T> using    set_t = typename T::set_type;
+template<class T> using  board_t = typename T:: board_type;
+template<class T> using  rules_t = typename T:: rules_type;
+template<class T> using    set_t = typename T::   set_type;
 template<class T> using square_t = typename T::square_type;
-template<class T> using  state_t = typename T::state_type;
+template<class T> using  state_t = typename T:: state_type;
 
 }       // namespace dctl

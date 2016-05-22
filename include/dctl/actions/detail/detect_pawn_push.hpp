@@ -7,7 +7,6 @@
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
-#include <type_traits>                                  // false_type
 
 namespace dctl {
 namespace core {

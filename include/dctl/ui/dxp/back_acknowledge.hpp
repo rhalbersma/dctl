@@ -35,7 +35,7 @@ public:
 
         // observers
 
-        AcceptanceCode acceptance_code() const
+        auto acceptance_code() const
         {
                 return acceptance_code_;
         }
