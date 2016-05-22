@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/angle.hpp>         // angle
-#include <dctl/board/detail/grid.hpp>   // EdgedGrid
-#include <xstd/cstddef.hpp>             // _z
+#include <dctl/board/detail/grid.hpp>   // OuterGrid
+#include <xstd/cstddef.hpp>             // _zu
 #include <stdexcept>                    // invalid_argument
 
 namespace dctl {
@@ -31,7 +31,7 @@ public:
                 case 225 : return left_down(g) ;
                 case 270 : return down(g)      ;
                 case 315 : return right_down(g);
-                default  : return static_cast<void>(throw std::invalid_argument("Shift direction angles shall be a multiple of 45 degrees")), std::size_t(0);
+                default  : return static_cast<void>(throw std::invalid_argument("Not a multiple of 45 degrees")), std::size_t(0);
                 }
         }
 };

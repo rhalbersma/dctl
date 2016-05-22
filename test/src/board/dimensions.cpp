@@ -2,7 +2,7 @@
 #include <dctl/board/angle.hpp>                 // _deg, inverse, rotate
 #include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
-#include <dctl/board/detail/dimensions.hpp>     // Dimensions
+#include <dctl/board/detail/dimensions.hpp>     // dimensions
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
 #include <algorithm>                            // all_of
@@ -13,9 +13,9 @@ namespace dctl {
 namespace board {
 namespace detail {
 
-BOOST_AUTO_TEST_SUITE(GridDimensions)
+BOOST_AUTO_TEST_SUITE(Griddimensions)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimensions, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimensions, T, BoardSequence)
 {
         auto const op = [](auto i, auto j){ return rotate(i, j); };
         auto const inv = [](auto i){ return inverse(i); };
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
                 C1, C2, C4
         };
 
-        auto const dim = Dimensions{ T::width, T::height, T::is_inverted };
+        auto const dim = dimensions{ T::width, T::height, T::is_inverted };
 
         BOOST_CHECK(
                 std::all_of(C_N.cbegin(), C_N.cend(), [&](auto const& g) {
