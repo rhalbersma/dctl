@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/utility/make_array.hpp>  // make_array
+#include <dctl/utility/fill_array.hpp>  // fill_array
 #include <xstd/bitset.hpp>              // bitset
 #include <array>                        // array
 #include <cassert>                      // assert
@@ -88,10 +88,10 @@ private:
 
         static constexpr auto init(int n)
         {
-                return make_array<1 + K>(lambda{n});
+                return fill_array<1 + K>(lambda{n});
         }
 
-        static constexpr table_type table = make_array<1 + N>(init);
+        static constexpr table_type table = fill_array<1 + N>(init);
 
 public:
         static index_type coefficient(int n, int k)
