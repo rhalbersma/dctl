@@ -2,7 +2,7 @@
 #include <dctl/board/detail/coordinates.hpp>    // to_llo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
 #include <dctl/color.hpp>                       // black, white
-#include <dctl/utility/make_array.hpp>          // make_array
+#include <dctl/utility/fill_array.hpp>          // fill_array
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <array>                                // array
@@ -40,8 +40,8 @@ class Row
         using table_type = std::array<set_t<Board>, Board::height>;
         static constexpr table_type table[] =
         {
-                make_array<Board::height>(init<Color::black>{}),
-                make_array<Board::height>(init<Color::white>{})
+                fill_array<Board::height>(init<Color::black>{}),
+                fill_array<Board::height>(init<Color::white>{})
         };
 
 public:

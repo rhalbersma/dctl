@@ -2,7 +2,7 @@
 #include <dctl/board/angle.hpp>                 // angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/detail/coordinates.hpp>    // to_ulo
 #include <dctl/board/mask/make_set_if.hpp>      // make_set_if
-#include <dctl/utility/make_array.hpp>          // make_array
+#include <dctl/utility/fill_array.hpp>          // fill_array
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/cstddef.hpp>                     // _zu
 #include <array>                                // array
@@ -47,7 +47,7 @@ class JumpStart
         static constexpr auto N      = Board::is_orthogonal_captures ?      8 :      4;
 
         using table_type = std::array<set_t<Board>, N>;
-        static constexpr table_type table = make_array<N>(init);
+        static constexpr table_type table = fill_array<N>(init);
 
 public:
         static constexpr auto mask(angle const alpha) noexcept

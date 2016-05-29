@@ -3,7 +3,7 @@
 #include <dctl/board/mask/squares.hpp>  // Squares
 #include <dctl/board/ray/fill.hpp>      // fill
 #include <dctl/board/ray/iterator.hpp>  // iterator
-#include <dctl/utility/make_array.hpp>  // make_array
+#include <dctl/utility/fill_array.hpp>  // fill_array
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <array>                        // array
 #include <cstddef>                      // size_t
@@ -50,14 +50,14 @@ template<class Board>
 typename KingTargets<Board>::table_type const
 KingTargets<Board>::table[] =
 {
-        make_array<Board::bits()>(init<  0>{}),
-        make_array<Board::bits()>(init< 45>{}),
-        make_array<Board::bits()>(init< 90>{}),
-        make_array<Board::bits()>(init<135>{}),
-        make_array<Board::bits()>(init<180>{}),
-        make_array<Board::bits()>(init<225>{}),
-        make_array<Board::bits()>(init<270>{}),
-        make_array<Board::bits()>(init<315>{})
+        fill_array<Board::bits()>(init<  0>{}),
+        fill_array<Board::bits()>(init< 45>{}),
+        fill_array<Board::bits()>(init< 90>{}),
+        fill_array<Board::bits()>(init<135>{}),
+        fill_array<Board::bits()>(init<180>{}),
+        fill_array<Board::bits()>(init<225>{}),
+        fill_array<Board::bits()>(init<270>{}),
+        fill_array<Board::bits()>(init<315>{})
 };
 
 }       // namespace board
