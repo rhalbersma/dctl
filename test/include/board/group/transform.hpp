@@ -3,38 +3,41 @@
 
 namespace dctl {
 namespace group {
+namespace detail {
 
-template<class Function, class Object>
-constexpr auto apply(Function fun, Object const& obj, std::size_t const n) noexcept
-        -> Object
+template<class UnaryFunction, class Arg>
+constexpr auto iterate(UnaryFunction fun, Arg const& arg, std::size_t const n) noexcept
+        -> Arg
 {
-        return (n == 0) ? obj : fun(apply(fun, obj, n - 1));
+        return (n == 0) ? arg : fun(iterate(fun, arg, n - 1));
 }
+
+}       // namespace detail
 
 struct is_identity
 {
-        template<class Function, class Object>
-        constexpr auto operator()(Function fun, Object const& obj) const noexcept
+        template<class UnaryFunction, class Arg>
+        constexpr auto operator()(UnaryFunction fun, Arg const& arg) const noexcept
         {
-                return apply(fun, obj, 1) == apply(fun, obj, 0);
+                return detail::iterate(fun, arg, 1) == detail::iterate(fun, arg, 0);
         }
 };
 
 struct is_involution
 {
-        template<class Function, class Object>
-        constexpr auto operator()(Function fun, Object const& obj) const noexcept
+        template<class UnaryFunction, class Arg>
+        constexpr auto operator()(UnaryFunction fun, Arg const& arg) const noexcept
         {
-                return apply(fun, obj, 2) == apply(fun, obj, 0);
+                return detail::iterate(fun, arg, 2) == detail::iterate(fun, arg, 0);
         }
 };
 
 struct is_idempotent
 {
-        template<class Function, class Object>
-        constexpr auto operator()(Function fun, Object const& obj) const noexcept
+        template<class UnaryFunction, class Arg>
+        constexpr auto operator()(UnaryFunction fun, Arg const& arg) const noexcept
         {
-                return apply(fun, obj, 2) == apply(fun, obj, 1);
+                return detail::iterate(fun, arg, 2) == detail::iterate(fun, arg, 1);
         }
 };
 

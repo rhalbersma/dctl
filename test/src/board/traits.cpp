@@ -1,7 +1,9 @@
 #include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
+#include <board/transform.hpp>                  // is_involution, is_idempotent
 #include <dctl/board/rectangular.hpp>           // rectangular
 #include <dctl/board/traits.hpp>                // is_empty, is_pushable, is_jumpable, invert, add_orthogonal_captures, remove_orthogonal_captures
+#include <dctl/utility/logic.hpp>               // implies
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE
 
@@ -49,16 +51,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, BoardSequence)
 
 BOOST_AUTO_TEST_CASE(Invert)
 {
-        static_assert(std::experimental::is_same_v<invert_t<checkers>, xstd::_t<roman>>);
-        static_assert(std::experimental::is_same_v<invert_t<roman>, xstd::_t<checkers>>);
+        static_assert(std::experimental::is_same_v<invert_t<checkers>, xstd::_t<roman   >>);
+        static_assert(std::experimental::is_same_v<invert_t<roman   >, xstd::_t<checkers>>);
 
-        static_assert(std::experimental::is_same_v<invert_t<canadian>, xstd::_t<srilankan>>);
-        static_assert(std::experimental::is_same_v<invert_t<srilankan>, xstd::_t<canadian>>);
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(InvertIsInvolution, T, BoardSequence)
-{
-        static_assert(std::experimental::is_same_v<invert_t<invert_t<T>>, xstd::_t<T>>);
+        static_assert(std::experimental::is_same_v<invert_t<canadian >, xstd::_t<srilankan>>);
+        static_assert(std::experimental::is_same_v<invert_t<srilankan>, xstd::_t<canadian >>);
 }
 
 BOOST_AUTO_TEST_CASE(AddRemoveOrthogonalCaptures)
@@ -70,10 +67,21 @@ BOOST_AUTO_TEST_CASE(AddRemoveOrthogonalCaptures)
         static_assert(std::experimental::is_same_v<remove_orthogonal_captures_t<rectangular<12,10>>, xstd::_t<    compact_12_10 >>);
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE(InvertIsInvolution, T, BoardSequence)
+{
+        static_assert(traits::is_involution_v<invert_t, T>);
+}
+
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesAreIdemPotent, T, BoardSequence)
 {
-        static_assert(std::experimental::is_same_v<   add_orthogonal_captures_t<   add_orthogonal_captures_t<T>>,    add_orthogonal_captures_t<T>>);
-        static_assert(std::experimental::is_same_v<remove_orthogonal_captures_t<remove_orthogonal_captures_t<T>>, remove_orthogonal_captures_t<T>>);
+        static_assert(traits::is_idempotent_v<   add_orthogonal_captures_t, T>);
+        static_assert(traits::is_idempotent_v<remove_orthogonal_captures_t, T>);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, BoardSequence)
+{
+        static_assert(util::implies( T::is_orthogonal_captures, traits::is_identity_v<   add_orthogonal_captures_t, T>));
+        static_assert(util::implies(!T::is_orthogonal_captures, traits::is_identity_v<remove_orthogonal_captures_t, T>));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

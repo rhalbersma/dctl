@@ -1,16 +1,14 @@
-#include <iostream>
-#include <typeinfo>
+#include <dctl/board/types.hpp>                 // international
+#include <dctl/setup/diagram.hpp>               // diagram, bits, squares
+#include <dctl/rules.hpp>
+#include <dctl/setup/string.hpp>
+#include <dctl/state/state.hpp>
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/board/types.hpp>                 // international
-#include <dctl/setup/diagram.hpp>               // diagram, bits, squares
-#include <dctl/board/algebraic.hpp>
+#include <iostream>
 #include <iterator>
-#include <dctl/state/state.hpp>
-#include <dctl/setup/diagram.hpp>
-#include <dctl/rules.hpp>
-#include <dctl/setup/string.hpp>
+#include <typeinfo>
 
 namespace dctl {
 namespace setup {
