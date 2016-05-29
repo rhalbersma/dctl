@@ -9,12 +9,10 @@ namespace board {
 struct micro         : rectangular< 4,  4> {};
 struct mini          : rectangular< 6,  6> {};
 struct checkers      : rectangular< 8,  8> {};
-struct international : rectangular<10, 10> {};
-
 struct roman         :  invert_t<checkers> {};
+struct spantsiretti  : rectangular<10,  8> {};
+struct international : rectangular<10, 10> {};
 struct frisian       : add_orthogonal_captures_t<international> {};
-
-struct spantsiretti   : rectangular<10,  8> {};
 
 template<std::size_t Width, std::size_t Height, bool IsOrthogonalCaptures = true>
 struct ktar          : rectangular<Width, Height, true, IsOrthogonalCaptures> {};

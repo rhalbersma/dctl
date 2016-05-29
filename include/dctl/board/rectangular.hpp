@@ -1,13 +1,12 @@
 #pragma once
 #include <dctl/board/angle.hpp>                         // angle, inverse
-#include <dctl/board/algebraic.hpp>                     // Labels
 #include <dctl/board/detail/coordinates.hpp>            // to_llo, transform
 #include <dctl/board/detail/dimensions.hpp>             // dimensions
 #include <dctl/board/detail/grid.hpp>                   // InnerGrid, OuterGrid
 #include <dctl/board/detail/optimal_orientation.hpp>    // size_minimizing_orientation
 #include <dctl/board/detail/shift_size.hpp>             // shift_size
 #include <dctl/color.hpp>                               // black, white
-#include <dctl/utility/make_array.hpp>                  // make_array
+#include <dctl/utility/fill_array.hpp>                  // fill_array
 #include <xstd/bitset.hpp>                              // bitset
 #include <xstd/cstddef.hpp>                             // _zu
 #include <xstd/limits.hpp>                              // align_on
@@ -95,7 +94,7 @@ public:
                 assert(n < NumBits);
                 std::stringstream sstr;
                 auto coord = detail::to_llo(square_from_bit(n), inner_grid);
-                sstr << Labels<rectangular>::col[coord.x] << Labels<rectangular>::row[coord.y];
+                sstr << column_label(coord.x) << row_label(coord.y);
                 return sstr.str();
         }
 private:
@@ -111,12 +110,23 @@ private:
                 return detail::transform(n, outer_grid, inner_grid, orientation);
         }
 
+        static constexpr auto column_label(std::size_t const n) noexcept
+        {
+                assert(n < width);
+                return static_cast<char>('a' + n);
+        }
+
+        static constexpr auto row_label(std::size_t const n) noexcept
+        {
+                assert(n < height);
+                return 1 + n;
+        }
+
         static constexpr std::array<std::size_t, NumSquares>
-        table_bit_from_square = make_array<NumSquares>(init_bit_from_square);
+        table_bit_from_square = fill_array<NumSquares>(init_bit_from_square);
 
         static constexpr std::array<std::size_t, NumBits>
-        table_square_from_bit = make_array<NumBits>(init_square_from_bit);
-
+        table_square_from_bit = fill_array<NumBits>(init_square_from_bit);
 public:
         static constexpr auto bit_from_square(std::size_t const sq)
         {
