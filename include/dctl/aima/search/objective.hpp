@@ -134,7 +134,7 @@ bool is_no_progress(State const& /*p*/, std::true_type)
 {
         //using Rules = typename State::rules_type;
 
-        return false;//p.reversible_actions() >= max_reversible_moves_v<Rules>;
+        return false;//p.reversible_actions() >= max_reversible_moves_or_v<Rules>;
 }
 
 }       // namespace detail

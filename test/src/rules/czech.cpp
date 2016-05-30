@@ -14,16 +14,17 @@ using T = czech;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
-        static_assert(!is_backward_pawn_jump_v<T>);
-        static_assert(is_long_ranged_king_v<T>);
+        static_assert(!is_backward_pawn_jump_or_v<T>);
+        static_assert(is_long_ranged_king_or_v<T>);
 
-        static_assert(jumpsep_v<T> == ':');
+        static_assert(jumpsep_or_v<T> == ':');
 
         static_assert(!is_trivial_precedence_v<T>);
-        static_assert( is_modality_precedence_v<T>);
+        static_assert( is_modality_precedence_or_v<T>);
 
         struct Action
         {
+                using rules_type = czech;
                 Piece with;
                 constexpr auto is_with_king() const noexcept { return with == Piece::king; }
         };
@@ -34,7 +35,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 { Piece::king }
         };
 
-        BOOST_CHECK(precedence::is_consistent<T>(moves));
+        BOOST_CHECK(precedence::is_consistent(moves));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

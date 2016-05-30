@@ -24,6 +24,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
 # NOT A DEFECT: padding is a diagnostic only (useful to turn on during future optimizations)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-padded")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs")
 
 # KNOWN ISSUE: Boost.Test does some macro magic that requires static initialization
 # http://hadesmem.googlecode.com/svn-history/r1861/trunk/tests/injector.cpp

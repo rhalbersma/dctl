@@ -17,7 +17,7 @@ struct italian
         static constexpr auto is_quality_precedence = true;     // 6.8
         static constexpr auto is_ordering_precedence = true;    // 6.9
 
-        struct precedence_tuple
+        struct tuple_type
         {
                 template<class Action>
                 constexpr auto operator()(Action const& a) const noexcept
