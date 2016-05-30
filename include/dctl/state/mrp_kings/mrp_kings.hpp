@@ -12,7 +12,7 @@ template<class Rules, class Board>
 class MostRecentlyPushedKings
 {
 public:
-        enum { M = max_same_king_push_v<Rules> };
+        enum { M = max_same_king_push_or_v<Rules> };
         enum { N = set_t<Board>::size() };
 
 private:

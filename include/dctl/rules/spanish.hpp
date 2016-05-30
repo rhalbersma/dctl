@@ -13,7 +13,7 @@ struct spanish
         static constexpr auto is_quantity_precedence = true;
         static constexpr auto is_quality_precedence = true;
 
-        struct precedence_tuple
+        struct tuple_type
         {
                 template<class Action>
                 constexpr auto operator()(Action const& a) const noexcept

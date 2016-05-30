@@ -162,13 +162,13 @@ public:
         }
 };
 
-template<class Rules, class Board, std::enable_if_t<!is_ordering_precedence_v<Rules>>* = nullptr>
+template<class Rules, class Board, std::enable_if_t<!is_ordering_precedence_or_v<Rules>>* = nullptr>
 auto as_tuple(Action<Rules, Board> const& a) noexcept
 {
         return std::make_tuple(a.from(), a.dest(), a.captured());
 }
 
-template<class Rules, class Board, std::enable_if_t< is_ordering_precedence_v<Rules>>* = nullptr>
+template<class Rules, class Board, std::enable_if_t< is_ordering_precedence_or_v<Rules>>* = nullptr>
 auto as_tuple(Action<Rules, Board> const& a) noexcept
 {
         return std::make_tuple(a.from(), a.dest(), a.captured(), a.piece_order());

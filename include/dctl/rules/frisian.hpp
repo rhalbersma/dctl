@@ -17,7 +17,7 @@ struct frisian
         static constexpr auto is_quality_precedence = true;
         static constexpr auto is_modality_precedence = true;
 
-        struct precedence_tuple
+        struct tuple_type
         {
                 template<class Action>
                 constexpr auto operator()(Action const& a) const noexcept

@@ -11,13 +11,13 @@ using T = thai;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
-        static_assert(!is_backward_pawn_jump_v<T>);
-        static_assert(is_long_ranged_king_v<T>);
+        static_assert(!is_backward_pawn_jump_or_v<T>);
+        static_assert(is_long_ranged_king_or_v<T>);
 
-        static_assert(initial_position_gap_v<T> == 4);
-        static_assert(is_land_behind_piece_v<T>);
-        static_assert(is_passing_capture_v<T>);
-        static_assert(jumpsep_v<T> == '-');
+        static_assert(initial_position_gap_or_v<T> == 4);
+        static_assert(is_land_behind_piece_or_v<T>);
+        static_assert(is_passing_capture_or_v<T>);
+        static_assert(jumpsep_or_v<T> == '-');
 
         static_assert(is_trivial_precedence_v<T>);
 }

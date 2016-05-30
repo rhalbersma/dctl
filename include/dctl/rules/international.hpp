@@ -20,7 +20,7 @@ struct international
         static constexpr auto is_quality_precedence = false;    // 4.13
         static constexpr auto is_modality_precedence = false;   // 4.14
 
-        struct precedence_tuple
+        struct tuple_type
         {
                 template<class Action>
                 constexpr auto operator()(Action const& a) const noexcept

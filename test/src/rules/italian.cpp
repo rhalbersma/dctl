@@ -15,19 +15,20 @@ using T = italian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
-        static_assert(!is_backward_pawn_jump_v<T>);
-        static_assert(!is_long_ranged_king_v<T>);
+        static_assert(!is_backward_pawn_jump_or_v<T>);
+        static_assert(!is_long_ranged_king_or_v<T>);
 
-        static_assert(is_superior_rank_jump_v<T>);
+        static_assert(is_superior_rank_jump_or_v<T>);
 
         static_assert(!is_trivial_precedence_v<T>);
-        static_assert( is_quantity_precedence_v<T>);
-        static_assert( is_modality_precedence_v<T>);
-        static_assert( is_quality_precedence_v<T>);
-        static_assert( is_ordering_precedence_v<T>);
+        static_assert( is_quantity_precedence_or_v<T>);
+        static_assert( is_modality_precedence_or_v<T>);
+        static_assert( is_quality_precedence_or_v<T>);
+        static_assert( is_ordering_precedence_or_v<T>);
 
         struct Action
         {
+                using rules_type = italian;
                 std::size_t num_captured_;
                 std::size_t num_captured_kings_;
                 Piece with_;
@@ -59,7 +60,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 { 3, 2, Piece::king, { 1, 2 } }
         };
 
-        BOOST_CHECK(precedence::is_consistent<T>(moves));
+        BOOST_CHECK(precedence::is_consistent(moves));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

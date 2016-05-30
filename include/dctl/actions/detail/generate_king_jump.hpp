@@ -48,7 +48,7 @@ public:
         template<class Iterator>
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
-                static_assert(is_passing_promotion_v<rules_type>);
+                static_assert(is_passing_promotion_or_v<rules_type>);
                 assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
                 try_next(jumper);
         }

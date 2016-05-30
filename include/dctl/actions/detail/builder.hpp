@@ -46,7 +46,7 @@ public:
 
         auto toggle_king_targets() noexcept
         {
-                static_assert(is_superior_rank_jump_v<rules_type>);
+                static_assert(is_superior_rank_jump_or_v<rules_type>);
                 initial_targets_ ^= pieces<!ToMove, Piece::king>(state);
         }
 
@@ -231,10 +231,10 @@ private:
                 if (actions.empty())
                         return actions.push_back(candidate_action);
 
-                if (precedence::equal_to<rules_type>{}(candidate_action, actions.back()))
+                if (precedence::equal_to{}(candidate_action, actions.back()))
                         return duplicates_dispatch(nontrivial_precedence_tag{}, DuplicatesPolicy{});
 
-                if (precedence::less<rules_type>{}(candidate_action, actions.back()))
+                if (precedence::less{}(candidate_action, actions.back()))
                         return;
 
                 actions.clear();
