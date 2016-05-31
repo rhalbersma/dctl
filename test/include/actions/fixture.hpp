@@ -27,14 +27,14 @@ struct Fixture
                 BOOST_CHECK_EQUAL(moves.size(), N);
 
                 std::vector<std::string> notations;
-                std::transform(moves.begin(), moves.end(), std::back_inserter(notations), [](auto const& m) {
+                std::transform(moves.cbegin(), moves.cend(), std::back_inserter(notations), [](auto const& m) {
                         return move::str_numeric(m);
                 });
 
                 using boost::algorithm::trim_copy;
                 BOOST_CHECK(
                         std::is_permutation(
-                                rng.begin(), rng.end(), notations.begin(), notations.end(), [](auto const& lhs, auto const& rhs) {
+                                rng.cbegin(), rng.cend(), notations.cbegin(), notations.cend(), [](auto const& lhs, auto const& rhs) {
                                 return trim_copy(lhs) == trim_copy(rhs);
                         })
                 );

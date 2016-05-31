@@ -80,7 +80,7 @@ public:
         {
                 auto const actions = problem.actions(state_);
                 std::vector<node> children(actions.size());
-                std::transform(actions.begin(), actions.end(), children.begin(), [](auto const& action) {
+                std::transform(actions.cbegin(), actions.cend(), children.begin(), [](auto const& action) {
                         return child_node(problem, action);
                 });
                 return children;
@@ -96,7 +96,7 @@ public:
         {
                 auto const p = path();
                 std::vector<Action> s(p.size() - 1);
-                std::transform(std::next(p.begin()), p.end(), s.begin(), [](auto const& n) {
+                std::transform(std::next(p.cbegin()), p.cend(), s.begin(), [](auto const& n) {
                         assert(n.action_);
                         return *n.action_;
                 });

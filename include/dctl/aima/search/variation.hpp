@@ -9,7 +9,7 @@ inline void update_variation(Variation& line, int move, Variation const& continu
 {
         line.clear();
         line.push_back(move);
-        line.insert(line.begin(), continuation.begin(), continuation.end());
+        line.insert(line.begin(), continuation.cbegin(), continuation.cend());
 }
 
 }       // namespace search
