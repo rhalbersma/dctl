@@ -85,7 +85,7 @@ public:
         auto finalize(std::size_t const dest_sq)
         {
                 candidate_action.set_dest(dest_sq);
-                precedence_dispatch(precedence_category_t<rules_type>{});
+                precedence_duplicates_dispatch(precedence_category_t<rules_type>{}, DuplicatesPolicy{});
         }
 
         auto active_pawns() const noexcept
@@ -222,30 +222,20 @@ private:
                 return board::wave::make_iterator<board_type, Direction>(s);
         }
 
-        auto precedence_dispatch(trivial_precedence_tag) const
+        auto precedence_duplicates_dispatch(trivial_precedence_tag, keep_duplicates_tag) const
         {
                 assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
-                duplicates_dispatch(trivial_precedence_tag{}, DuplicatesPolicy{});
-        }
-
-        auto precedence_dispatch(nontrivial_precedence_tag) const
-        {
-                duplicates_dispatch(nontrivial_precedence_tag{}, DuplicatesPolicy{});
-        }
-
-        auto duplicates_dispatch(trivial_precedence_tag, keep_duplicates_tag) const
-        {
                 actions.push_back(candidate_action);
         }
 
-        auto duplicates_dispatch(trivial_precedence_tag, drop_duplicates_tag) const
+        auto precedence_duplicates_dispatch(trivial_precedence_tag, drop_duplicates_tag) const
         {
                 if (actions.empty())
                         return actions.push_back(candidate_action);
                 add_if_not_duplicate();
         }
 
-        auto duplicates_dispatch(nontrivial_precedence_tag, keep_duplicates_tag) const
+        auto precedence_duplicates_dispatch(nontrivial_precedence_tag, keep_duplicates_tag) const
         {
                 if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back()))
                         return actions.push_back(candidate_action);
@@ -258,7 +248,7 @@ private:
                 assert(precedence::less{}(candidate_action, actions.back()));
         }
 
-        auto duplicates_dispatch(nontrivial_precedence_tag, drop_duplicates_tag) const
+        auto precedence_duplicates_dispatch(nontrivial_precedence_tag, drop_duplicates_tag) const
         {
                 if (actions.empty())
                         return actions.push_back(candidate_action);
