@@ -51,7 +51,7 @@ int main()
                 int choice = 0;
 
                 for (std::string input; std::getline(std::cin, input);) {
-                        std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+                        std::transform(input.cbegin(), input.cend(), input.begin(), ::tolower);
 
                         if (actions.empty()) {
                                 if (input.empty() || input == "u")

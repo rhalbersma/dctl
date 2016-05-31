@@ -201,7 +201,7 @@ auto perft_nobulk_counting(Actions successor, State const& state, int depth)
 
         static_vector<Action<rules_t<State>, board_t<State>>> moves;
         successor.generate(state, moves);
-        return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
+        return std::accumulate(moves.cbegin(), moves.cend(), std::size_t{0}, [&](auto n, auto const& a){
                 return n + perft_nobulk_counting(successor, result(state, a), depth - 1);
         });
 }
@@ -214,7 +214,7 @@ auto iperft_bulk_counting(Actions const& successor, State& state, int depth)
 
         static_vector<Action<rules_t<State>, board_t<State>>> moves;
         successor.generate(state, moves);
-        return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
+        return std::accumulate(moves.cbegin(), moves.cend(), std::size_t{0}, [&](auto n, auto const& a){
                 state.make(a);
                 auto const res = n + iperft_bulk_counting(successor, state, depth - 1);
                 state.undo(a);
@@ -230,7 +230,7 @@ auto perft_bulk_counting(Actions const& successor, State const& state, int depth
 
         static_vector<Action<rules_t<State>, board_t<State>>> moves;
         successor.generate(state, moves);
-        return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
+        return std::accumulate(moves.cbegin(), moves.cend(), std::size_t{0}, [&](auto n, auto const& a){
                 return n + perft_bulk_counting(successor, result(state, a), depth - 1);
         });
 }
@@ -243,7 +243,7 @@ auto perft_node_bulk_counting(Actions const& successor, Node const& node, int de
 
         static_vector<Action<rules_t<decltype(node.state)>, board_t<decltype(node.state)>>> moves;
         successor.generate(node.state, moves);
-        return std::accumulate(moves.begin(), moves.end(), std::size_t{0}, [&](auto n, auto const& a){
+        return std::accumulate(moves.cbegin(), moves.cend(), std::size_t{0}, [&](auto n, auto const& a){
                 return n + perft_node_bulk_counting(successor, child(node, a), depth - 1);
         });
 }

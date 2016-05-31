@@ -77,15 +77,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(JumpGroupsEquivalencePartitionSquares, T, BoardSeq
         auto const jump_groups = std::vector<std::size_t>{ 0, 1, 2, 3 };
 
         BOOST_CHECK(
-                std::all_of(jump_groups.begin(), jump_groups.end(), [=](auto i){
-                        return std::all_of(jump_groups.begin(), jump_groups.end(), [=](auto j){
+                std::all_of(jump_groups.cbegin(), jump_groups.cend(), [=](auto i){
+                        return std::all_of(jump_groups.cbegin(), jump_groups.cend(), [=](auto j){
                                 return i == j ? true : disjoint(JumpGroup<T>::mask(i), JumpGroup<T>::mask(j));
                         });
                 })
         );
 
         BOOST_CHECK(
-                std::accumulate(jump_groups.begin(), jump_groups.end(), set_t<T>{}, [](auto result, auto i){
+                std::accumulate(jump_groups.cbegin(), jump_groups.cend(), set_t<T>{}, [](auto result, auto i){
                         return result ^ JumpGroup<T>::mask(i);
                 }) == squares_v<T>
         );

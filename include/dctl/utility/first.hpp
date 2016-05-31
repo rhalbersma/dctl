@@ -13,7 +13,7 @@ struct First<false>
         template<class Set>
         constexpr auto operator()(Set const& s) const
         {
-                return *s.begin();
+                return *s.cbegin();
         }
 };
 
@@ -23,7 +23,7 @@ struct First<true>
         template<class Set>
         constexpr auto operator()(Set const& s) const
         {
-                return *s.rbegin();
+                return *s.crbegin();
         }
 };
 
