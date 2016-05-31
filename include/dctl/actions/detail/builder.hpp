@@ -13,6 +13,7 @@
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
+#include <experimental/type_traits>
 
 namespace dctl {
 namespace core {
@@ -223,26 +224,16 @@ private:
 
         auto precedence_dispatch(trivial_precedence_tag) const
         {
+                assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
                 duplicates_dispatch(trivial_precedence_tag{}, DuplicatesPolicy{});
         }
 
         auto precedence_dispatch(nontrivial_precedence_tag) const
         {
-                if (actions.empty())
-                        return actions.push_back(candidate_action);
-
-                if (precedence::equal_to{}(candidate_action, actions.back()))
-                        return duplicates_dispatch(nontrivial_precedence_tag{}, DuplicatesPolicy{});
-
-                if (precedence::less{}(candidate_action, actions.back()))
-                        return;
-
-                actions.clear();
-                actions.push_back(candidate_action);
+                duplicates_dispatch(nontrivial_precedence_tag{}, DuplicatesPolicy{});
         }
 
-        template<class PrecedenceCategory>
-        auto duplicates_dispatch(PrecedenceCategory, keep_duplicates_tag) const
+        auto duplicates_dispatch(trivial_precedence_tag, keep_duplicates_tag) const
         {
                 actions.push_back(candidate_action);
         }
@@ -254,15 +245,41 @@ private:
                 add_if_not_duplicate();
         }
 
+        auto duplicates_dispatch(nontrivial_precedence_tag, keep_duplicates_tag) const
+        {
+                if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back()))
+                        return actions.push_back(candidate_action);
+
+                if (precedence::greater{}(candidate_action, actions.back())) {
+                        actions.clear();
+                        return actions.push_back(candidate_action);
+                }
+
+                assert(precedence::less{}(candidate_action, actions.back()));
+        }
+
         auto duplicates_dispatch(nontrivial_precedence_tag, drop_duplicates_tag) const
         {
-                add_if_not_duplicate();
+                if (actions.empty())
+                        return actions.push_back(candidate_action);
+
+                if (precedence::equal_to{}(candidate_action, actions.back()))
+                        return add_if_not_duplicate();
+
+                if (precedence::greater{}(candidate_action, actions.back())) {
+                        actions.clear();
+                        return actions.push_back(candidate_action);
+                }
+
+                assert(precedence::less{}(candidate_action, actions.back()));
         }
 
         auto add_if_not_duplicate() const
         {
+                static_assert(std::experimental::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!actions.empty());
-                if (!is_large(candidate_action) || std::find(actions.begin(), actions.end(), candidate_action) == actions.end())
+                assert(precedence::equal_to{}(candidate_action, actions.back()));
+                if (!is_large(candidate_action) || std::find(actions.cbegin(), actions.cend(), candidate_action) == actions.cend())
                         actions.push_back(candidate_action);
         }
 
