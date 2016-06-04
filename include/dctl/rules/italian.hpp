@@ -23,7 +23,7 @@ struct italian
                 constexpr auto operator()(Action const& a) const noexcept
                 {
                         return std::make_tuple(
-                                a.num_captured(),
+                                a.num_captured_pieces(),
                                 a.is_with_king(),
                                 a.num_captured_kings(),
                                 a.piece_order()

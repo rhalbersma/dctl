@@ -37,8 +37,8 @@ public:
                 pieces(c).set  (a.dest());
 
                 if (a.is_jump()) {
-                        pieces(!c) ^= a.captured();
-                        kings &= ~a.captured();
+                        pieces(!c) ^= a.captured_pieces();
+                        kings &= ~a.captured_pieces();
                 }
 
                 if (a.is_with(Piece::king)) {

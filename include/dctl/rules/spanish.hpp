@@ -19,7 +19,7 @@ struct spanish
                 constexpr auto operator()(Action const& a) const noexcept
                 {
                         return std::make_tuple(
-                                a.num_captured(),
+                                a.num_captured_pieces(),
                                 a.num_captured_kings()
                         );
                 }

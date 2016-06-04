@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 Piece with_;
                 std::vector<std::size_t> piece_order_;
 
-                auto num_captured()       const noexcept { return num_captured_;        }
+                auto num_captured_pieces()       const noexcept { return num_captured_;        }
                 auto num_captured_kings() const noexcept { return num_captured_kings_;  }
                 auto is_with_king()       const noexcept { return with_ == Piece::king; }
                 auto const& piece_order() const noexcept { return piece_order_;         }

@@ -11,7 +11,7 @@ enum class Color
         white = 1
 };
 
-constexpr auto operator!(Color c) noexcept
+constexpr auto operator!(Color const c) noexcept
 {
         return static_cast<Color>(!xstd::to_underlying_type(c));
 }

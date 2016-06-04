@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 std::size_t num_captured_kings_;
                 Piece with_;
 
-                constexpr auto num_captured()       const noexcept { return num_captured_;        }
+                constexpr auto num_captured_pieces()       const noexcept { return num_captured_;        }
                 constexpr auto num_captured_kings() const noexcept { return num_captured_kings_;  }
                 constexpr auto is_with_king()       const noexcept { return with_ == Piece::king; }
         };

@@ -52,9 +52,9 @@ public:
                         pawns_.set(a.dest());
 
                 if (a.is_jump()) {
-                        pieces_ ^= a.captured();
-                        white_ &= ~a.captured();
-                        pawns_ &= ~a.captured();
+                        pieces_ ^= a.captured_pieces();
+                        white_ &= ~a.captured_pieces();
+                        pawns_ &= ~a.captured_pieces();
                 }
 
                 assert(invariant(*this));

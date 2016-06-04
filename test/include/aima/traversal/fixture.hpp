@@ -15,7 +15,7 @@ template<class State, class Actions, class Range>
 void test(State const& s, Actions successor, Range const& leafs)
 {
         auto depth = 0;
-        for (auto&& node_count : leafs) {
+        for (auto const& node_count : leafs) {
                 BOOST_CHECK_EQUAL(node_count, perft_bulk_counting(successor, s, ++depth));
         }
 }

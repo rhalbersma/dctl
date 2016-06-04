@@ -100,7 +100,7 @@ public:
 
         auto current_targets() const
         {
-                return initial_targets_ & ~candidate_action.captured();
+                return initial_targets_ & ~candidate_action.captured_pieces();
         }
 
         template<class Iterator>
@@ -183,7 +183,7 @@ public:
                 return to_move() == c;
         }
 
-        auto num_captured() const noexcept
+        auto num_captured_pieces() const noexcept
         {
                 return 0;
         }
@@ -275,7 +275,7 @@ private:
 
         auto is_large(action_type const& a) const noexcept
         {
-                return large_jump_v<rules_type> <= a.num_captured();
+                return large_jump_v<rules_type> <= a.num_captured_pieces();
         }
 };
 

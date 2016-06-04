@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         {
                 using rules_type = international;
                 std::size_t num_captured_;
-                constexpr auto num_captured() const noexcept { return num_captured_; }
+                constexpr auto num_captured_pieces() const noexcept { return num_captured_; }
         };
 
         auto const moves = std::vector<Action>
