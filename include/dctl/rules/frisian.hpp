@@ -23,7 +23,7 @@ struct frisian
                 constexpr auto operator()(Action const& a) const noexcept
                 {
                         auto const k = a.num_captured_kings();
-                        auto const n = a.num_captured();
+                        auto const n = a.num_captured_pieces();
                         constexpr auto N = 65;
                         auto const v = N * (n + k) - k;
                         return std::make_tuple(

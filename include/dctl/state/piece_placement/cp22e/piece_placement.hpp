@@ -38,9 +38,9 @@ public:
                 pieces(c, a.into()).set  (a.dest());
 
                 if (a.is_jump()) {
-                        pieces(!c, Piece::pawn) &= ~a.captured();
-                        pieces(!c, Piece::king) &= ~a.captured();
-                        not_occupied_ ^= a.captured();
+                        pieces(!c, Piece::pawn) &= ~a.captured_pieces();
+                        pieces(!c, Piece::king) &= ~a.captured_pieces();
+                        not_occupied_ ^= a.captured_pieces();
                 }
 
                 not_occupied_.set  (a.from());

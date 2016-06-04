@@ -31,7 +31,7 @@ public:
                 dest_sq_{std::stoi(message.substr(6, 2).c_str())},
                 num_captured_{std::stoi(message.substr(8, 2).c_str())}
         {
-                for (auto i = 0; i < num_captured(); ++i) {
+                for (auto i = 0; i < num_captured_pieces(); ++i) {
                         auto const index = static_cast<std::size_t>(10 + 2 * i);
                         captured_pieces_.push_back(std::stoi(message.substr(index, 2).c_str()));
                 }
@@ -54,7 +54,7 @@ public:
                 return dest_sq_;
         }
 
-        int num_captured() const
+        int num_captured_pieces() const
         {
                 return num_captured_;
         }
@@ -81,7 +81,7 @@ private:
 
         std::string do_body() const override
         {
-                return body(seconds(), from_sq(), dest_sq(), num_captured(), captured_pieces());
+                return body(seconds(), from_sq(), dest_sq(), num_captured_pieces(), captured_pieces());
         }
 
         static std::string body(int s, int f, int d, int n, std::vector<int> const& c)

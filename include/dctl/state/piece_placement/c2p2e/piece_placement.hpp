@@ -42,9 +42,9 @@ public:
                 pieces(a.into()).set  (a.dest());
 
                 if (a.is_jump()) {
-                        pieces(!c) ^= a.captured();
-                        pieces(Piece::pawn ) &= ~a.captured();
-                        pieces(Piece::king ) &= ~a.captured();
+                        pieces(!c) ^= a.captured_pieces();
+                        pieces(Piece::pawn ) &= ~a.captured_pieces();
+                        pieces(Piece::king ) &= ~a.captured_pieces();
                 }
 
                 not_occupied_ = board::squares_v<Board> ^ (pieces(Color::black) | pieces(Color::white));

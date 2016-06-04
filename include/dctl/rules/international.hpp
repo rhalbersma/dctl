@@ -25,7 +25,7 @@ struct international
                 template<class Action>
                 constexpr auto operator()(Action const& a) const noexcept
                 {
-                        return a.num_captured();
+                        return a.num_captured_pieces();
                 }
         };
 

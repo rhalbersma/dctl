@@ -1,8 +1,8 @@
 #include <dctl/action.hpp>
-#include <dctl/state.hpp>
-#include <dctl/setup/string.hpp>
 #include <dctl/actions.hpp>
 #include <dctl/aima/node.hpp>
+#include <dctl/setup/string.hpp>
+#include <dctl/state.hpp>
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
@@ -10,7 +10,7 @@
 
 // customize rules and board from these headers
 #include <dctl/rules.hpp>
-#include <dctl/board/types.hpp>
+#include <dctl/board.hpp>
 
 using namespace dctl;
 
@@ -20,7 +20,7 @@ int main()
         using Board = board::international;
         using State = State<Rules, Board>;
 
-        auto initial = setup::read<rules::international, board::international, pdn::protocol>()(
+        auto initial = setup::read<Rules, Board, pdn::protocol>()(
                 "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
         );//        State::initial();
 
@@ -43,7 +43,7 @@ int main()
                         std::cout << "\nNo valid moves (Undo or stop [U/s]): ";
                 } else {
                         auto index = 0;
-                        for (auto&& a : actions)
+                        for (auto const& a : actions)
                                 std::cout << std::setw(2) << index++ << ". " << a << '\n';
                         std::cout << "\nEnter move number, undo or stop [0/u/s]): ";
                 }
