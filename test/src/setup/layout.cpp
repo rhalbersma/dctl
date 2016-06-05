@@ -1,4 +1,5 @@
 #include <dctl/board/types.hpp>                 // international
+#include <dctl/action.hpp>
 #include <dctl/setup/diagram.hpp>               // diagram, bits, squares
 #include <dctl/rules.hpp>
 #include <dctl/setup/string.hpp>
@@ -34,11 +35,30 @@ using BSequence = boost::mpl::vector
         board::dumm
 >;
 
+using RSequence = boost::mpl::vector
+<
+        rules::checkers,
+        rules::czech,
+        rules::frisian,
+        rules::international,
+        rules::italian,
+        rules::pool,
+        rules::russian,
+        rules::spanish,
+        rules::thai
+>;
+
 BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)
 {
         auto const p = State<rules::international, T>::initial();
         std::cout << setup::diagram<pdn::protocol>()(p);
         std::cout << "W = " << T::width << ", H = " << T::height << ", P = " << T::is_inverted << ", bits = " << T::bits() << "\n\n";
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(ActionSize, T, RSequence)
+{
+        using A = Action<T, board::international>;
+        std::cout << "sizeof(Action) = " << sizeof(A) << "\n";
 }
 
 BOOST_AUTO_TEST_CASE(Grid)

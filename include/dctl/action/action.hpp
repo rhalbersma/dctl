@@ -38,16 +38,16 @@ struct ordering_action
 };
 
 template<class Rules, class Board>
-using conditional_quality = std::conditional_t<
-        is_quality_precedence_or_v<Rules>,
-        quality_action<Board>,
+using conditional_ordering = std::conditional_t<
+        is_ordering_precedence_or_v<Rules>,
+        ordering_action<Board>,
         util::tagged_empty_base<0>
 >;
 
 template<class Rules, class Board>
-using conditional_ordering = std::conditional_t<
-        is_ordering_precedence_or_v<Rules>,
-        ordering_action<Board>,
+using conditional_quality = std::conditional_t<
+        is_quality_precedence_or_v<Rules>,
+        quality_action<Board>,
         util::tagged_empty_base<1>
 >;
 
@@ -57,16 +57,16 @@ template<class Rules, class Board>
 class Action
 :
         std::tuple<
-                detail::conditional_quality<Rules, Board>,
                 detail::conditional_ordering<Rules, Board>,
+                detail::conditional_quality <Rules, Board>,
                 detail::base_action<Board>
         >
 {
-        enum tuple_idx { quality, ordering, push_jump_promote };
+        enum tuple_idx { ordering, quality, push_jump_promote };
 
         using base = std::tuple<
-                detail::conditional_quality<Rules, Board>,
                 detail::conditional_ordering<Rules, Board>,
+                detail::conditional_quality <Rules, Board>,
                 detail::base_action<Board>
         >;
 
@@ -114,6 +114,12 @@ public:
         auto set_with(Piece const p) { with() = p; }
         auto set_into(Piece const p) { into() = p; }
 
+        template<class RulesType = rules_type, std::enable_if_t<is_ordering_precedence_or_v<RulesType>>* = nullptr>
+        constexpr auto piece_order() const noexcept
+        {
+                return std::get<tuple_idx::ordering>(*this).piece_order_;
+        }
+
         template<class RulesType = rules_type, std::enable_if_t<is_quality_precedence_or_v<RulesType>>* = nullptr>
         constexpr auto captured_kings() const noexcept
         {
@@ -126,15 +132,14 @@ public:
                 return captured_kings().count();
         }
 
-        template<class RulesType = rules_type, std::enable_if_t<is_ordering_precedence_or_v<RulesType>>* = nullptr>
-        constexpr auto piece_order() const noexcept
-        {
-                return std::get<tuple_idx::ordering>(*this).piece_order_;
-        }
-
         constexpr auto captured_pieces() const noexcept
         {
                 return std::get<tuple_idx::push_jump_promote>(*this).captured_pieces_;
+        }
+
+        constexpr auto num_captured_pieces() const noexcept
+        {
+                return captured_pieces().count();
         }
 
         constexpr auto from() const noexcept
@@ -185,11 +190,6 @@ public:
         constexpr auto is_reversible() const noexcept
         {
                 return is_with(Piece::king) && !is_jump();
-        }
-
-        constexpr auto num_captured_pieces() const noexcept
-        {
-                return captured_pieces().count();
         }
 
 private:
