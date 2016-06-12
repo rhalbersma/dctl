@@ -53,7 +53,7 @@ class capture
 public:
         ~capture()
         {
-                builder.release_piece(square);
+                builder.release(square);
         }
 
         capture(Builder& b, std::size_t const sq)
@@ -61,7 +61,7 @@ public:
                 builder{b},
                 square{sq}
         {
-                builder.capture_piece(square);
+                builder.capture(square);
         }
 };
 
@@ -94,8 +94,8 @@ public:
         ~SetKingJump()
         {
                 assert(builder.is_with(Piece::king) && builder.is_into(Piece::king));
-                builder.set_with(Piece::pawn);
-                builder.set_into(Piece::pawn);
+                builder.with(Piece::pawn);
+                builder.into(Piece::pawn);
         }
 
         SetKingJump(SetKingJump const&) = delete;
@@ -106,8 +106,8 @@ public:
                 builder{b}
         {
                 assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::pawn));
-                builder.set_with(Piece::king);
-                builder.set_into(Piece::king);
+                builder.with(Piece::king);
+                builder.into(Piece::king);
         }
 };
 
@@ -119,7 +119,7 @@ public:
         ~promotion()
         {
                 assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
-                builder.set_into(Piece::pawn);
+                builder.into(Piece::pawn);
         }
 
         promotion(Builder& b)
@@ -127,7 +127,7 @@ public:
                 builder{b}
         {
                 assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::pawn));
-                builder.set_into(Piece::king);
+                builder.into(Piece::king);
         }
 };
 

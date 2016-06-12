@@ -1,9 +1,9 @@
 #pragma once
 #include <dctl/aima/problem.hpp>
 #include <dctl/aima/node.hpp>
+#include <experimental/optional>
 #include <queue>
 #include <stack>
-#include <experimental/optional>
 
 namespace dctl {
 namespace aima {

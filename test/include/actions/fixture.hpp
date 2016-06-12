@@ -20,7 +20,7 @@ struct Fixture
         void test(std::string const& FEN, Range const& rng)
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>{}(FEN);
-                std::vector<Action<Rules, Board>> moves;
+                std::vector<action<Rules, Board>> moves;
                 core::Actions<>{}.generate(p, moves);
 
                 auto const N = rng.size();

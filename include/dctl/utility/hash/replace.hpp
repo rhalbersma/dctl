@@ -1,7 +1,7 @@
 #pragma once
-#include <algorithm>    // min_element
-#include <iterator>     // iterator_traits
-#include <experimental/type_traits>  // is_same
+#include <experimental/type_traits>     // is_same
+#include <algorithm>                    // min_element
+#include <iterator>                     // iterator_traits
 
 namespace dctl {
 namespace hash {

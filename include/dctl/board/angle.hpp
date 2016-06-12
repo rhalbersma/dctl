@@ -1,8 +1,8 @@
 #pragma once
-#include <xstd/cstdlib.hpp>     // euclidean_div
-#include <cassert>              // assert
-#include <type_traits>          // integral_constant
+#include <xstd/cstdlib.hpp>             // euclidean_div
 #include <experimental/type_traits>
+#include <cassert>                      // assert
+#include <type_traits>                  // integral_constant
 
 namespace dctl {
 

@@ -157,7 +157,7 @@ private:
                 using R = typename State::rules_type;
                 using B = typename State::board_type;
 
-                static_vector<Action<R,B>> moves;
+                static_vector<action<R,B>> moves;
                 successor.generate(p, moves);
                 assert(!moves.empty());
 
@@ -286,7 +286,7 @@ private:
 
                 using R = typename State::rules_type;
                 using B = typename State::board_type;
-                std::vector<Action<R,B>> moves;
+                std::vector<action<R,B>> moves;
                 successor.generate(p, moves);
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
@@ -307,7 +307,7 @@ private:
 
                 using R = typename State::rules_type;
                 using B = typename State::board_type;
-                std::vector<Action<R,B>> moves;
+                std::vector<action<R,B>> moves;
                 successor.generate(p, moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 

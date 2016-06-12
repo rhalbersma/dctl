@@ -1,8 +1,8 @@
 #pragma once
-#include <cassert>                      // assert
-#include <algorithm>                    // reverse, transform
-#include <vector>                       // vector
 #include <experimental/optional>        // nullopt_t, optional
+#include <algorithm>                    // reverse, transform
+#include <cassert>                      // assert
+#include <vector>                       // vector
 
 namespace dctl {
 namespace aima {
