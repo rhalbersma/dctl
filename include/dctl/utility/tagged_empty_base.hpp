@@ -16,8 +16,6 @@ struct tagged_empty_base
 
 }       // namespace block_adl
 
-// deriving from tagged_empty_base will not make util an associated namespace
-// this prevents ADL from finding overloads for unrestricted templates
 using block_adl::tagged_empty_base;
 
 }       // namespace util

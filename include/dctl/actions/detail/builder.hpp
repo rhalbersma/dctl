@@ -9,11 +9,11 @@
 #include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type, value_t
+#include <experimental/type_traits>
 #include <algorithm>                            // find_if
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
-#include <experimental/type_traits>
 
 namespace dctl {
 namespace core {
@@ -53,7 +53,7 @@ public:
 
         auto make_launch(std::size_t const sq)
         {
-                candidate_action.set_from(sq);
+                candidate_action.from(sq);
                 not_occupied_.set(sq);
         }
 
@@ -62,29 +62,29 @@ public:
                 not_occupied_.reset(sq);
         }
 
-        auto capture_piece(std::size_t const sq)
+        auto capture(std::size_t const sq)
         {
-                capture_piece_dispatch(sq, capture_category_t<rules_type>{});
+                capture_dispatch(sq, capture_category_t<rules_type>{});
         }
 
-        auto release_piece(std::size_t const sq)
+        auto release(std::size_t const sq)
         {
-                release_piece_dispatch(sq, capture_category_t<rules_type>{});
+                release_dispatch(sq, capture_category_t<rules_type>{});
         }
 
-        auto set_with(Piece const p) noexcept
+        auto with(Piece const p) noexcept
         {
-                candidate_action.set_with(p);
+                candidate_action.with(p);
         }
 
-        auto set_into(Piece const p) noexcept
+        auto into(Piece const p) noexcept
         {
-                candidate_action.set_into(p);
+                candidate_action.into(p);
         }
 
-        auto finalize(std::size_t const dest_sq)
+        auto finalize(std::size_t const sq)
         {
-                candidate_action.set_dest(dest_sq);
+                candidate_action.dest(sq);
                 precedence_duplicates_dispatch(precedence_category_t<rules_type>{}, DuplicatesPolicy{});
         }
 
@@ -148,14 +148,9 @@ public:
                 return candidate_action.with();
         }
 
-        auto is_with(Piece p) const noexcept
+        auto is_with(Piece const p) const noexcept
         {
                 return with() == p;
-        }
-
-        auto is_with_king() const noexcept
-        {
-                return is_with(Piece::king);
         }
 
         auto into() const noexcept
@@ -163,7 +158,7 @@ public:
                 return candidate_action.into();
         }
 
-        auto is_into(Piece p) const noexcept
+        auto is_into(Piece const p) const noexcept
         {
                 return into() == p;
         }
@@ -189,25 +184,25 @@ public:
         }
 
 private:
-        auto capture_piece_dispatch(std::size_t const sq, stopped_capture_tag)
+        auto capture_dispatch(std::size_t const sq, stopped_capture_tag)
         {
-                candidate_action.capture_piece(sq, is_king(sq));
+                candidate_action.capture(sq, is_king(sq));
         }
 
-        auto capture_piece_dispatch(std::size_t const sq, passing_capture_tag)
+        auto capture_dispatch(std::size_t const sq, passing_capture_tag)
         {
-                candidate_action.capture_piece(sq, is_king(sq));
+                candidate_action.capture(sq, is_king(sq));
                 not_occupied_.set(sq);
         }
 
-        auto release_piece_dispatch(std::size_t const sq, stopped_capture_tag)
+        auto release_dispatch(std::size_t const sq, stopped_capture_tag)
         {
-                candidate_action.release_piece(sq, is_king(sq));
+                candidate_action.release(sq, is_king(sq));
         }
 
-        auto release_piece_dispatch(std::size_t const sq, passing_capture_tag)
+        auto release_dispatch(std::size_t const sq, passing_capture_tag)
         {
-                candidate_action.release_piece(sq, is_king(sq));
+                candidate_action.release(sq, is_king(sq));
                 not_occupied_.reset(sq);
         }
 

@@ -33,7 +33,7 @@ int main()
                 std::cout << fen << state;
                 //std::cout << "[" << p.reversible_actions() << "]\n";
 
-                std::vector<Action<Rules, Board>> actions;
+                std::vector<action<Rules, Board>> actions;
                 core::Actions<>{}.generate(state, actions);
                 std::sort(actions.begin(), actions.end(), [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);

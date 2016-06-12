@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/utility/type_traits.hpp> // action_t
-#include <cassert>                      // assert
 #include <experimental/optional>        // optional, nullopt_t
+#include <cassert>                      // assert
 
 namespace dctl {
 namespace aima {

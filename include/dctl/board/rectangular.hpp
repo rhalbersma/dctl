@@ -9,6 +9,7 @@
 #include <dctl/utility/fill_array.hpp>                  // fill_array
 #include <xstd/bitset.hpp>                              // bitset
 #include <xstd/cstddef.hpp>                             // _zu
+#include <xstd/cstdint.hpp>                             // uint_fast
 #include <xstd/limits.hpp>                              // align_on
 #include <range/v3/all.hpp>                             // view::iota
 #include <array>                                        // array
@@ -62,7 +63,8 @@ public:
                 return NumBits;
         }
 
-        using set_type = xstd::bitset<xstd::align_on(NumBits, 64)>;
+        using    set_type = xstd::bitset<xstd::align_on(NumBits, 64)>;
+        using square_type = std::size_t;//xstd::uint_fast_t<set_type::size()>;
 
         static constexpr auto shift_size(angle const direction)
         {

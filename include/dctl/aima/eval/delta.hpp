@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/aima/eval/feature.hpp>     // Feature
+#include <dctl/aima/eval/feature.hpp>   // Feature
 #include <dctl/color.hpp>               // Player
 
 namespace dctl {
@@ -14,40 +14,40 @@ private:
 
 public:
         template<class State>
-        static auto value(State const& p)
+        static auto value(State const& s)
         {
-                return Active::value(p) - Passive::value(p);
+                return Active::value(s) - Passive::value(s);
         }
 
 private:
         template<class State>
-        static auto material(State const& p)
+        static auto material(State const& s)
         {
-                return Active::material(p) - Passive::material(p);
+                return Active::material(s) - Passive::material(s);
         }
 
         template<class State>
-        static auto tempo(State const& p)
+        static auto tempo(State const& s)
         {
-                return Active::tempo(p) - Passive::tempo(p);
+                return Active::tempo(s) - Passive::tempo(s);
         }
 
         template<class State>
-        static auto center(State const& p)
+        static auto center(State const& s)
         {
-                return Active::center(p) - Passive::center(p);
+                return Active::center(s) - Passive::center(s);
         }
 
         template<class State>
-        static auto balance(State const& p)
+        static auto balance(State const& s)
         {
-                return Active::balance(p) - Passive::balance(p);
+                return Active::balance(s) - Passive::balance(s);
         }
 
         template<class State>
-        static auto mobility(State const& p)
+        static auto mobility(State const& s)
         {
-                return Active::mobility(p) - Passive::mobility(p);
+                return Active::mobility(s) - Passive::mobility(s);
         }
 };
 

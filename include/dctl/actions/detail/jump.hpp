@@ -62,7 +62,7 @@ public:
                 using counter_container = /* std::conditional_t<
                         is_trivial_precedence_v<rules_t<State>> && !DuplicatesPolicy{},
                         MoveCounter,*/
-                        static_vector<Action<rules_t<State>, board_t<State>>>;
+                        static_vector<action<rules_t<State>, board_t<State>>>;
                 //>;
 
                 counter_container actions;

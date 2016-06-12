@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/action/action.hpp>       // Action
+#include <dctl/action/action.hpp>       // action
 #include <dctl/action/manip.hpp>        // notation, pushsep, jumpsep
 #include <dctl/action/traits.hpp>       // notation, pushsep, jumpsep
 #include <dctl/rule_traits.hpp>         // jumpsep, pushsep
@@ -79,7 +79,7 @@ auto str_numeric(Action const& m)
 }       // namespace move
 
 template<class CharT, class Traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, Action<Rules, Board> const& m)
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> const& m)
 {
         switch(move::getnotation<Rules, Board>(ostr)) {
         case Notation::algebraic : return move::print_algebraic(ostr, m);

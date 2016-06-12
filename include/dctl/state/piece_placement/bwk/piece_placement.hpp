@@ -41,10 +41,10 @@ public:
                         kings &= ~a.captured_pieces();
                 }
 
-                if (a.is_with(Piece::king)) {
+                if (a.with() == Piece::king) {
                         kings.reset(a.from());
                         kings.set(a.dest());
-                } else if (a.is_into(Piece::king)) {
+                } else if (a.into() == Piece::king) {
                         kings.set(a.dest());
                 }
 
