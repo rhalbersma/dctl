@@ -11,7 +11,7 @@
 #include <xstd/cstddef.hpp>                             // _zu
 #include <xstd/cstdint.hpp>                             // uint_fast
 #include <xstd/limits.hpp>                              // align_on
-#include <range/v3/all.hpp>                             // view::iota
+#include <boost/range/irange.hpp>                       // irange
 #include <array>                                        // array
 #include <cstddef>                                      // size_t
 #include <iomanip>                                      // setfill
@@ -74,13 +74,13 @@ public:
         static auto squares() noexcept
         {
                 using namespace xstd::support_literals;
-                return ranges::view::iota(0_zu, size());
+                return boost::irange(0_zu, size());
         }
 
         static auto bitnrs() noexcept
         {
                 using namespace xstd::support_literals;
-                return ranges::view::iota(0_zu, bits());
+                return boost::irange(0_zu, bits());
         }
 
         static auto numeric_from_bit(std::size_t const n)
