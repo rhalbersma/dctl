@@ -56,13 +56,6 @@ include_directories(${project_include_dirs})
 set(XSTD_include_dirs ${PROJECT_SOURCE_DIR}/../xstd/include)
 include_directories(${XSTD_include_dirs})
 
-#--------------------------------
-# Eric Niebler's range-v3 library
-#--------------------------------
-set(RANGE_V3_include_dirs ${PROJECT_SOURCE_DIR}/../range-v3/include)
-include_directories(SYSTEM ${RANGE_V3_include_dirs})
-add_definitions(-DRANGES_SUPPRESS_IOTA_WARNING)
-
 #----------------
 # Boost libraries
 #----------------

@@ -103,7 +103,6 @@ Clone the `dctl` and the accompanying `xstd` repository (containing C++ Standard
       cd ~/projects/ 
       hg clone https://bitbucket.org/rhalbersma/dctl/
       hg clone https://bitbucket.org/rhalbersma/xstd/
-      git clone https://github.com/ericniebler/range-v3.git
 
 ### Test-suite
 

@@ -2,7 +2,7 @@
 #include <dctl/setup/content.hpp>
 #include <dctl/setup/i_token.hpp>
 #include <dctl/utility/type_traits.hpp>
-#include <range/v3/all.hpp>
+#include <boost/range/irange.hpp>
 #include <iomanip>                      // setw
 #include <sstream>                      // stringstream
 #include <string>                       // string
@@ -24,12 +24,11 @@ public:
         {
                 using Board = board_t<State>;
                 using Coord = board::detail::coordinates<board::detail::upper_left>;
-                using namespace ranges;
                 using namespace xstd::support_literals;
 
                 std::stringstream ostr;
-                RANGES_FOR(auto y, view::iota(0_zu, Board::height)) {
-                        RANGES_FOR(auto x, view::iota(0_zu, Board::width)) {
+                for (auto y : boost::irange(0_zu, Board::height)) {
+                        for (auto x : boost::irange(0_zu, Board::width)) {
                                 auto const coord = Coord{x, y};
                                 if (Board::is_square(coord)) {
                                         ostr << std::setw(2) << content<Content>(p, Board::bit_from_square(Board::to_square(coord)));
