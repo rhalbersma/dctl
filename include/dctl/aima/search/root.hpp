@@ -256,12 +256,12 @@ private:
                 std::cout << " time ";
                 std::cout << std::setw( 6) << split.count();
 
-                auto const nps = static_cast<double>(node_count) / std::chrono::duration_cast<std::chrono::seconds>(split).count();
+                auto const nps = static_cast<double>(node_count) / static_cast<double>(std::chrono::duration_cast<std::chrono::seconds>(split).count());
                 std::cout << " nps ";
                 std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
                 std::cout << std::setw( 7) << nps;
 
-                auto const hashfull = 1000 * (static_cast<double>(TT.size()) / TT.capacity());
+                auto const hashfull = 1000 * (static_cast<double>(TT.size()) / static_cast<double>(TT.capacity()));
                 std::cout << " hashfull ";
                 std::cout << std::setw( 4) << std::right << hashfull;
 

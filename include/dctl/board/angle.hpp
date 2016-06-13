@@ -32,9 +32,10 @@ class angle
 public:
         angle() = default;
 
-        explicit constexpr angle(int const n) noexcept
+        template<class Integral>
+        explicit constexpr angle(Integral const n) noexcept
         :
-                degrees_{xstd::euclidean_div(n, 360).rem}
+                degrees_{xstd::euclidean_div(static_cast<int>(n), 360).rem}
         {
                 assert_invariant();
         }
@@ -86,14 +87,16 @@ constexpr auto operator-(angle const a, angle const b) noexcept
         return angle{a.degrees() - b.degrees()};
 }
 
-constexpr auto operator*(angle const a, int const n) noexcept
+template<class Integral>
+constexpr auto operator*(angle const a, Integral const n) noexcept
 {
-        return angle{a.degrees() * n};
+        return angle{a.degrees() * static_cast<int>(n)};
 }
 
-constexpr auto operator*(int const n, angle const a) noexcept
+template<class Integral>
+constexpr auto operator*(Integral const n, angle const a) noexcept
 {
-        return angle{n * a.degrees()};
+        return angle{static_cast<int>(n) * a.degrees()};
 }
 
 constexpr auto inverse(angle const a) noexcept

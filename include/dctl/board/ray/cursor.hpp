@@ -15,9 +15,9 @@ class cursor
 > > >
 {
         static constexpr auto theta = angle{Direction};
-        static constexpr auto S = Board::shift_size(theta);
-        static constexpr auto N = is_positive(theta) ? -S : S;
-        static_assert(N != 0, "Cursors need a non-zero stride.");
+        static constexpr auto stride = static_cast<int>(Board::shift_size(theta));
+        static constexpr auto N = is_positive(theta) ? -stride : stride;
+        static_assert(stride != 0, "Cursors need a non-zero stride.");
 
         using square_type = std::size_t;
 
@@ -25,9 +25,9 @@ class cursor
 public:
         cursor() = default;
 
-        explicit cursor(square_type c) noexcept
+        explicit cursor(square_type const sq) noexcept
         :
-                cursor_{static_cast<int>(c)}
+                cursor_{static_cast<int>(sq)}
         {}
 
         template<class, int>

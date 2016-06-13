@@ -31,7 +31,7 @@ public:
                 case 225 : return left_down(g) ;
                 case 270 : return down(g)      ;
                 case 315 : return right_down(g);
-                default  : return static_cast<void>(throw std::invalid_argument("Not a multiple of 45 degrees")), std::size_t(0);
+                default  : return static_cast<void>(throw std::invalid_argument("Not a multiple of 45 degrees")), std::size_t{0};
                 }
         }
 };

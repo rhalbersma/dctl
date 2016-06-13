@@ -70,7 +70,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 
                 std::stringstream sstr(s);
                 char ch;
-                int sq;
+                std::size_t sq;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch (ch) {
