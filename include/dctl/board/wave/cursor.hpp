@@ -15,9 +15,8 @@ class cursor
 > >
 {
         static constexpr auto theta = angle{Direction};
-        static constexpr auto S = Board::shift_size(theta);
-        static constexpr auto N = is_positive(theta) ? -S : S;
-        static_assert(N != 0, "Cursors need a non-zero stride.");
+        static constexpr auto stride = Board::shift_size(theta);
+        static_assert(stride != 0, "Cursors need a non-zero stride.");
 
         using set_type = set_t<Board>;
 
@@ -47,14 +46,14 @@ public:
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
         {
-                util::ShiftAssign<is_positive(theta)>{}(cursor_, S);
+                util::ShiftAssign<is_positive(theta)>{}(cursor_, stride);
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
         auto& operator--() noexcept
         {
-                util::ShiftAssign<is_negative(theta)>{}(cursor_, S);
+                util::ShiftAssign<is_negative(theta)>{}(cursor_, stride);
                 return *this;
         }
 };

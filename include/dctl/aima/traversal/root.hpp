@@ -50,7 +50,7 @@ struct Enhancements<default_tag, State>
 
         std::pair<bool, std::size_t> find(State const& /* p */, int /* depth */) const
         {
-                return std::make_pair(false, std::size_t(0));
+                return std::make_pair(false, std::size_t{0});
         }
 
         template<class Actions>
@@ -87,7 +87,7 @@ struct Enhancements<bulk_tag, State>
 
         std::pair<bool, std::size_t> find(State const& /* p */, int /* depth */) const
         {
-                return std::make_pair(false, std::size_t(0));
+                return std::make_pair(false, std::size_t{0});
         }
 
         template<class Actions>
@@ -139,7 +139,7 @@ struct Enhancements<hash_tag, State>
                 auto const TT_entry = handle_->TT_.find(p);
                 return (TT_entry && TT_entry->depth() == depth) ?
                         std::make_pair(true, std::size_t(TT_entry->nodes())) :
-                        std::make_pair(false, std::size_t(0))
+                        std::make_pair(false, std::size_t{0})
                 ;
         }
 
@@ -148,7 +148,7 @@ struct Enhancements<hash_tag, State>
         {
                 return (depth == 1) ?
                         std::make_pair(true, std::size_t(successor.count(p))) :
-                        std::make_pair(false, std::size_t(0))
+                        std::make_pair(false, std::size_t{0})
                 ;
         }
 

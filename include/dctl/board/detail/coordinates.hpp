@@ -65,21 +65,21 @@ constexpr auto sco_from_ulo(std::size_t const value, std::size_t const bound) no
 
 constexpr auto ulo_from_sco(int const value, std::size_t const bound) noexcept
 {
-        return (value + (bound - 1)) / 2;
+        return (static_cast<std::size_t>(value) + (bound - 1)) / 2;
 }
 
 template<class Grid>
 constexpr auto to_ulo(coordinates<screen_centered> const coord, Grid const grid) noexcept
         -> coordinates<upper_left>
 {
-        return { ulo_from_sco(coord.x, grid.width ()), ulo_from_sco(coord.y, grid.height()) };
+        return { ulo_from_sco(coord.x, grid.width()), ulo_from_sco(coord.y, grid.height()) };
 }
 
 template<class Grid>
 constexpr auto to_sco(coordinates<upper_left> const coord, Grid const grid) noexcept
         -> coordinates<screen_centered>
 {
-        return { sco_from_ulo(coord.x, grid.width ()), sco_from_ulo(coord.y, grid.height()) };
+        return { sco_from_ulo(coord.x, grid.width()), sco_from_ulo(coord.y, grid.height()) };
 }
 
 template<class Grid>
@@ -147,7 +147,7 @@ constexpr auto to_ulo(std::size_t const sq, Grid const grid)
         auto const sq_offset = sq % grid.modulo();
         assert(row_div * grid.modulo() + sq_offset == sq);
 
-        auto const row_mod = sq_offset >= grid.edge_lo();
+        auto const row_mod = static_cast<std::size_t>(sq_offset >= grid.edge_lo());
         auto const col_mod = row_mod ^ !grid.upper_left_is_square();
         assert((row_mod ^ col_mod) == !grid.upper_left_is_square());
 

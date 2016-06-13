@@ -8,7 +8,7 @@ namespace traversal {
 class Transposition
 {
         std::size_t nodes_ : 59;        // 5.8e17 nodes
-        int         depth_ :  5;        // 32 ply
+        std::size_t depth_ :  5;        // 32 ply
 
 public:
         constexpr Transposition() noexcept
@@ -17,10 +17,10 @@ public:
                 depth_{0}
         {}
 
-        constexpr Transposition(std::size_t n, int d) noexcept
+        constexpr Transposition(std::size_t const n, std::size_t const d) noexcept
         :
-                nodes_{n},
-                depth_{d}
+                nodes_{n & ((1ULL << 59) - 1)},
+                depth_{d & ((1ULL <<  5) - 1)}
         {}
 
         constexpr auto nodes() const noexcept

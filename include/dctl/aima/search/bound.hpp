@@ -8,13 +8,13 @@ namespace aima {
 
 struct Bound
 {
-        enum {
+        enum : unsigned {
                 lower = 1,
                 upper = 2,
                 exact = lower ^ upper
         };
 
-        static int type(int value, int alpha, int beta)
+        static auto type(int value, int alpha, int beta)
         {
                 return
                         value >= beta  ? lower :
@@ -23,7 +23,7 @@ struct Bound
                 ;
         }
 
-        static std::string print(int bound)
+        static std::string print(unsigned bound)
         {
                 std::stringstream sstr;
                 switch (bound) {

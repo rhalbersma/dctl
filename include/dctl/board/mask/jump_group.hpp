@@ -24,8 +24,8 @@ class JumpGroup
                         {
                                 auto const from_coord = detail::to_llo(from_sq_, Board::inner_grid);
                                 auto const dest_coord = detail::to_llo(dest_sq , Board::inner_grid);
-                                auto const delta_x = xstd::euclidean_div(from_coord.x - dest_coord.x, 4).rem;
-                                auto const delta_y = xstd::euclidean_div(from_coord.y - dest_coord.y, 4).rem;
+                                auto const delta_x = xstd::euclidean_div(static_cast<int>(from_coord.x) - static_cast<int>(dest_coord.x), 4).rem;
+                                auto const delta_y = xstd::euclidean_div(static_cast<int>(from_coord.x) - static_cast<int>(dest_coord.x), 4).rem;
                                 return
                                         (delta_x == 0 && delta_y == 0) ||
                                         (delta_x == 2 && delta_y == 2)

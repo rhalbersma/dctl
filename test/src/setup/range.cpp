@@ -6,7 +6,7 @@
 
 using namespace dctl;
 using namespace ranges;
-using square = int;
+using square = std::size_t;
 using B = board::checkers;
 
 inline
