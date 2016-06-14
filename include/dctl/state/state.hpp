@@ -38,7 +38,7 @@ public:
                 player_to_move_{c}
         {}
 
-        static State initial(std::size_t const separation = initial_position_gap_or_v<Rules> - Board::height % 2)
+        static State initial(std::size_t const separation = initial_position_gap_or_v<Rules> + Board::height % 2)
         {
                 auto const b = board::Initial<Board>::mask(Color::black, separation);
                 auto const w = board::Initial<Board>::mask(Color::white, separation);

@@ -1,11 +1,12 @@
 #pragma once
+#include <xstd/type_traits.hpp> // value_t
 #include <initializer_list>     // initializer_list
 #include <tuple>                // make_tuple, get
 #include <vector>               // vector
 
 namespace dctl {
 
-template<class Set, class Op, class Inv, class Element = typename Set::value_type>
+template<class Set, class Op, class Inv, class Element = xstd::value_t<Set>>
 auto make_group(Set elements, Op op, Inv inv, Element id = Element{})
 {
         return std::make_tuple(elements, op, inv, id);

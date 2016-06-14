@@ -1,7 +1,7 @@
 #include <board/group.hpp>              // axioms::is_realized, make
 #include <dctl/board/angle.hpp>         // _deg, inverse, rotate
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
-#include <algorithm>                    // all_of
+#include <boost/algorithm/cxx11/all_of.hpp>                    // all_of
 #include <type_traits>                  // common_type
 #include <vector>                       // vector
 
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(GroupAxiomsAreRealizedOnCyclicGroups)
         };
 
         BOOST_CHECK(
-                std::all_of(C_N.cbegin(), C_N.cend(), [](auto const& g){
+                boost::algorithm::all_of(C_N, [](auto const& g){
                         return axioms::is_realized(g);
                 })
         );
