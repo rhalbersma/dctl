@@ -1,25 +1,23 @@
-#include <board/group.hpp>              // is_idempotent, is_identity, is_involution
-#include <dctl/board/angle.hpp>         // _deg, inverse, rotate, mirror
-#include <boost/algorithm/cxx11/all_of.hpp>
-#include <boost/range/irange.hpp>       // irange
-#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
+#include <board/group.hpp>                      // is_idempotent, is_identity, is_involution
+#include <dctl/board/angle.hpp>                 // _deg, inverse, rotate, mirror
+#include <boost/algorithm/cxx11/all_of.hpp>     // all_of
+#include <boost/range/irange.hpp>               // irange
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
 
 namespace dctl {
 
 BOOST_AUTO_TEST_SUITE(AngleTransform)
 
+auto const angles = boost::irange(-2 * 360, 2 * 360 + 1);
+
 BOOST_AUTO_TEST_CASE(AngleConstructorIsIdempotentOnIntegers)
 {
-        auto const angles = boost::irange(-2 * 360, 2 * 360 + 1);
-
         BOOST_CHECK(
                 boost::algorithm::all_of(angles, [](auto i){
                         return group::is_idempotent{}([](auto j) { return angle{j}; }, angle{i});
                 })
         );
 }
-
-auto const angles = boost::irange(0, 360);
 
 BOOST_AUTO_TEST_CASE(AngleConstructorIsIdentityOnAllAngles)
 {
@@ -34,7 +32,7 @@ BOOST_AUTO_TEST_CASE(Rotate0DegIsIdentityOnAllAngles)
 {
         BOOST_CHECK(
                 boost::algorithm::all_of(angles, [](auto i){
-                        return group::is_involution{}([](auto j) { return rotate(angle{j}, 0_deg); }, angle{i});
+                        return group::is_identity{}([](auto j) { return rotate(angle{j}, 0_deg); }, angle{i});
                 })
         );
 }

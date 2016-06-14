@@ -1,6 +1,6 @@
 #pragma once
-#include <board/group/primitives.hpp>   // set, op, id
-#include <algorithm>                    // all_of
+#include <board/group/primitives.hpp>           // set, op, id
+#include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 
 namespace dctl {
 namespace group {
@@ -12,8 +12,8 @@ auto is_associativity(Object const& obj, Group const& g) noexcept
         auto const set = group::set(g);
         auto const op = group::op(g);
 
-        return std::all_of(set.cbegin(), set.cend(), [&](auto const& a) {
-                return std::all_of(set.cbegin(), set.cend(), [&](auto const& b){
+        return boost::algorithm::all_of(set, [&](auto const& a) {
+                return boost::algorithm::all_of(set, [&](auto const& b){
                         return op(obj, op(a, b)) == op(op(obj, a), b);
                 });
         });

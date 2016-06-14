@@ -2,13 +2,14 @@
 #include <dctl/action/ostream.hpp>
 #include <dctl/state/state.hpp>
 #include <dctl/setup/setup.hpp>
-#include <dctl/actions.hpp>             // generate
-#include <boost/algorithm/string.hpp>   // trim_copy
-#include <boost/test/unit_test.hpp>     // BOOST_CHECK, BOOST_CHECK_EQUAL
-#include <algorithm>                    // is_permutation, transform
-#include <iterator>                     // back_inserter
-#include <string>                       // string
-#include <vector>                       // vector
+#include <dctl/actions.hpp>                             // generate
+#include <boost/algorithm/cxx11/is_permutation.hpp>     // is_permutation
+#include <boost/algorithm/string.hpp>                   // trim_copy
+#include <boost/range/adaptor/transformed.hpp>          // transformed
+#include <boost/test/unit_test.hpp>                     // BOOST_CHECK, BOOST_CHECK_EQUAL
+#include <functional>                                   // cref
+#include <string>                                       // string
+#include <vector>                                       // vector
 
 namespace dctl {
 namespace core {
@@ -23,19 +24,18 @@ struct Fixture
                 std::vector<action<Rules, Board>> moves;
                 core::Actions<>{}.generate(p, moves);
 
-                auto const N = rng.size();
-                BOOST_CHECK_EQUAL(moves.size(), N);
+                BOOST_CHECK_EQUAL(moves.size(), rng.size());
 
-                std::vector<std::string> notations;
-                std::transform(moves.cbegin(), moves.cend(), std::back_inserter(notations), [](auto const& m) {
-                        return move::str_numeric(m);
-                });
+                auto const move_str = [](auto const& m) { return move::str_numeric(m); };
+                auto const notations = moves | boost::adaptors::transformed(std::cref(move_str));
 
-                using boost::algorithm::trim_copy;
                 BOOST_CHECK(
-                        std::is_permutation(
-                                rng.cbegin(), rng.cend(), notations.cbegin(), notations.cend(), [](auto const& lhs, auto const& rhs) {
-                                return trim_copy(lhs) == trim_copy(rhs);
+                        boost::algorithm::is_permutation(
+                                rng, notations.begin(), [](auto const& lhs, auto const& rhs) {
+                                return
+                                        boost::algorithm::trim_copy(lhs) ==
+                                        boost::algorithm::trim_copy(rhs)
+                                ;
                         })
                 );
         }

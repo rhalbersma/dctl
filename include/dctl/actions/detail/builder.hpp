@@ -9,8 +9,8 @@
 #include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type, value_t
+#include <boost/range/algorithm.hpp>            // find
 #include <experimental/type_traits>
-#include <algorithm>                            // find_if
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
@@ -264,7 +264,7 @@ private:
                 static_assert(std::experimental::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!actions.empty());
                 assert(precedence::equal_to{}(candidate_action, actions.back()));
-                if (!is_large(candidate_action) || std::find(actions.cbegin(), actions.cend(), candidate_action) == actions.cend())
+                if (!is_large(candidate_action) || boost::find(actions, candidate_action) == actions.cend())
                         actions.push_back(candidate_action);
         }
 
