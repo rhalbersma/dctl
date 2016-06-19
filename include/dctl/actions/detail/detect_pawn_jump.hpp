@@ -7,7 +7,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_superior_rank_jump
-#include <dctl/state/piece_placement/pieces.hpp>
+#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {
@@ -74,7 +74,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied) const noexcept
         {
-                return (... || jump_targets<Directions<bearing.degrees()>{}>{}(active_pawns, pawn_targets, not_occupied).any());
+                return (... || jump_targets<Directions<bearing.degrees>{}>{}(active_pawns, pawn_targets, not_occupied).any());
         }
 };
 

@@ -7,6 +7,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/rule_traits.hpp>                         // short_ranged_tag
+#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
 
 namespace dctl {
@@ -35,7 +36,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const noexcept
         {
-                return (... + pawn_push_targets<Directions<bearing.degrees()>{}>{}(active_pawns, not_occupied).count());
+                return (... + pawn_push_targets<Directions<bearing.degrees>{}>{}(active_pawns, not_occupied).count());
         }
 };
 

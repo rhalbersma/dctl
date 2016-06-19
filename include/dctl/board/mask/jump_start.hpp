@@ -52,7 +52,7 @@ class JumpStart
 public:
         static constexpr auto mask(angle const alpha) noexcept
         {
-                auto const segment = static_cast<std::size_t>((alpha.degrees() - beta.degrees()) / theta.degrees());
+                auto const segment = static_cast<std::size_t>((alpha.degrees - beta.degrees) / theta.degrees);
                 assert(segment < N);
                 return table[segment];
         }

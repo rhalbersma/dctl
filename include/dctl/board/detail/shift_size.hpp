@@ -22,7 +22,7 @@ public:
         constexpr auto operator()(OuterGrid const g, angle const a) const
         {
                 using namespace xstd::support_literals;
-                switch (a.degrees()) {
+                switch (a.degrees) {
                 case   0 : return right(g)     ;
                 case  45 : return right_up(g)  ;
                 case  90 : return up(g)        ;

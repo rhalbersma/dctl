@@ -8,13 +8,13 @@ using namespace dctl;
 
 using Rules = rules::international;
 using Board = board::international;
-using F = aima::search::Fixture< State<Rules, Board>, aima::search::DefaultObjective >;
+using F = aima::search::Fixture< state<Rules, Board>, aima::search::DefaultObjective >;
 
 BOOST_AUTO_TEST_SUITE(SearchInitial)
 
 BOOST_FIXTURE_TEST_CASE(I, F)
 {
-        auto const p = State<Rules, Board>::initial();
+        auto const p = state<Rules, Board>::initial();
         root_.analyze(p, aima::search::drop_duplicates_gen, 71);
 }
 

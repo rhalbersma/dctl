@@ -8,6 +8,7 @@
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // pawn
+#include <dctl/state/pieces.hpp>
 #include <dctl/state/promotion.hpp>                     // is_promotion
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
 #include <xstd/type_traits.hpp>                         // value_t
@@ -46,7 +47,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const
         {
-                (... , targets<Directions<bearing.degrees()>{}>(active_pawns, not_occupied));
+                (... , targets<Directions<bearing.degrees>{}>(active_pawns, not_occupied));
         }
 
         template<int Direction>

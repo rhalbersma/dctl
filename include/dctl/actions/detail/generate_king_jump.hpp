@@ -10,7 +10,6 @@
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                         // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
-#include <dctl/state/piece_placement/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
@@ -74,13 +73,13 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(std::size_t from_sq) const
         {
-                (... , first_target(along_ray<Directions<bearing.degrees()>{}>(from_sq)));
+                (... , first_target(along_ray<Directions<bearing.degrees>{}>(from_sq)));
         }
 
         template<class Iterator>
         auto first_target(Iterator jumper) const
         {
-                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
+                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees>());
                 if (is_onboard(jumper) && builder.current_targets(jumper)) {
                         assert(is_onboard(std::next(jumper)));
                         capture(jumper);
@@ -192,25 +191,25 @@ private:
         template<class Iterator>
         auto scan(Iterator jumper) const
         {
-                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
+                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees>());
                 return is_en_prise(jumper);
         }
 
         template<class Iterator>
-        auto slide(Iterator& jumper, set_type const& path) const
+        auto slide(Iterator& jumper, set_type const path) const
         {
                 assert(is_onboard(jumper));
                 slide_dispatch(jumper, path, king_range_category_t<rules_type>{});
         }
 
         template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const& /* path */, short_ranged_tag) const
+        auto slide_dispatch(Iterator& jumper, set_type const /* path */, short_ranged_tag) const
         {
                 ++jumper;
         }
 
         template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const& path, long_ranged_tag) const
+        auto slide_dispatch(Iterator& jumper, set_type const path, long_ranged_tag) const
         {
                 do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
         }

@@ -6,7 +6,7 @@
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/state/piece_placement/pieces.hpp>
+#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type, value_t
 #include <boost/range/algorithm.hpp>            // find
@@ -106,7 +106,7 @@ public:
         template<class Iterator>
         auto current_targets(Iterator it) const
         {
-                return current_targets<board::ray::direction_v<Iterator>.degrees()>().test(*it);
+                return current_targets<board::ray::direction_v<Iterator>.degrees>().test(*it);
         }
 
         template<int Direction>
@@ -173,7 +173,7 @@ public:
                 return state.to_move();
         }
 
-        auto is_to_move(Color c) const noexcept
+        auto is_to_move(Color const c) const noexcept
         {
                 return to_move() == c;
         }
@@ -212,7 +212,7 @@ private:
         }
 
         template<int Direction>
-        static auto along_wave(set_type const& s)
+        static auto along_wave(set_type const s)
         {
                 return board::wave::make_iterator<board_type, Direction>(s);
         }

@@ -33,7 +33,7 @@ class KingTargets
 public:
         static constexpr auto mask(std::size_t const sq, angle const alpha) noexcept
         {
-                auto const segment = (alpha.degrees() - beta.degrees()) / theta.degrees();
+                auto const segment = (alpha.degrees - beta.degrees) / theta.degrees;
                 return table[segment][sq];
         }
 };
