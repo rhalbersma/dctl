@@ -10,7 +10,7 @@ namespace dctl {
 namespace zobrist {
 
 template<std::size_t N>
-class PiecePlacement
+class base_state
 {
         static std::array<std::size_t, N> const by_color[2];
         static std::array<std::size_t, N> const by_piece[2];
@@ -28,7 +28,7 @@ public:
 
 template<std::size_t N>
 std::array<std::size_t, N> const
-PiecePlacement<N>::by_color[2] =
+base_state<N>::by_color[2] =
 {
         random::runif<N>(),
         random::runif<N>()
@@ -36,7 +36,7 @@ PiecePlacement<N>::by_color[2] =
 
 template<std::size_t N>
 std::array<std::size_t, N> const
-PiecePlacement<N>::by_piece[2] =
+base_state<N>::by_piece[2] =
 {
         random::runif<N>(),
         random::runif<N>()
