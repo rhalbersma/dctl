@@ -1,40 +1,37 @@
 #pragma once
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/state/piece_placement/invariant.hpp>
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
-#include <cassert>                              // assert
 
 namespace dctl {
 namespace detail {
 namespace c2p2e {
+namespace block_adl {
 
 template<class Board>
-class PiecePlacement
+class base_state
 {
 public:
         using board_type = Board;
         using   set_type = set_t<Board>;
 private:
-        set_type by_color[2];
-        set_type by_piece[2];
+        set_type by_color_[2];
+        set_type by_piece_[2];
         set_type not_occupied_;
 
 public:
-        PiecePlacement() = default;
+        base_state() = default;
 
-        PiecePlacement(set_type const& b, set_type const& w, set_type const& p, set_type const& k)
+        base_state(set_type const b, set_type const w, set_type const p, set_type const k)
         :
-                by_color{b, w},
-                by_piece{p, k},
+                by_color_{b, w},
+                by_piece_{p, k},
                 not_occupied_{board::squares_v<Board> ^ (b | w)}
-        {
-                assert(invariant(*this));
-        }
+        {}
 
         template<class Action>
-        auto& make(Color c, Action const& a)
+        auto& make(Color const c, Action const& a)
         {
                 pieces(c).reset(a.from());
                 pieces(c).set  (a.dest());
@@ -49,21 +46,20 @@ public:
 
                 not_occupied_ = board::squares_v<Board> ^ (pieces(Color::black) | pieces(Color::white));
 
-                assert(invariant(*this));
                 return *this;
         }
 
-        auto pieces(Color c) const noexcept
+        auto pieces(Color const c) const noexcept
         {
-                return by_color[xstd::to_underlying_type(c)];
+                return by_color_[xstd::to_underlying_type(c)];
         }
 
-        auto pieces(Piece p) const noexcept
+        auto pieces(Piece const p) const noexcept
         {
-                return by_piece[xstd::to_underlying_type(p)];
+                return by_piece_[xstd::to_underlying_type(p)];
         }
 
-        auto pieces(Color c, Piece p) const noexcept
+        auto pieces(Color const c, Piece const p) const noexcept
         {
                 return pieces(c) & pieces(p);
         }
@@ -78,22 +74,26 @@ public:
                 return not_occupied_;
         }
 
-        auto num_pieces(Color c, Piece p) const noexcept
+        auto num_pieces(Color const c, Piece const p) const noexcept
         {
                 return pieces(c, p).count();
         }
 
 private:
-        auto& pieces(Color c) noexcept
+        auto& pieces(Color const c) noexcept
         {
-                return by_color[xstd::to_underlying_type(c)];
+                return by_color_[xstd::to_underlying_type(c)];
         }
 
-        auto& pieces(Piece p) noexcept
+        auto& pieces(Piece const p) noexcept
         {
-                return by_piece[xstd::to_underlying_type(p)];
+                return by_piece_[xstd::to_underlying_type(p)];
         }
 };
+
+}       // namespace block_adl
+
+using block_adl::base_state;
 
 }       // namespace c2p2e
 }       // namespace detail
