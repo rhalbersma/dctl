@@ -19,7 +19,7 @@ auto getpositionformat(std::ostream& ostr)
 }
 
 template<class CharT, class Traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, State<Rules, Board> const& p)
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, state<Rules, Board> const& p)
 {
         switch (getpositionformat(ostr)) {
         case manip::StateFormat::diag : return ostr << setup::diagram<pdn::protocol>()(p);

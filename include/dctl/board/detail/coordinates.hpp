@@ -43,7 +43,7 @@ constexpr auto operator!=(coordinates<Origin> const lhs, coordinates<Origin> con
 constexpr auto rotate(coordinates<screen_centered> const coord, angle const a)
         -> coordinates<screen_centered>
 {
-        switch (a.degrees()) {
+        switch (a.degrees) {
         case   0 : return coord;
         case  90 : return { -coord.y,  coord.x };
         case 180 : return { -coord.x, -coord.y };

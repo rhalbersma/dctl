@@ -13,26 +13,26 @@ auto const angles = boost::irange(-2 * 360, 2 * 360 + 1);
 BOOST_AUTO_TEST_CASE(AngleConstructorIsIdempotentOnIntegers)
 {
         BOOST_CHECK(
-                boost::algorithm::all_of(angles, [](auto i){
-                        return group::is_idempotent{}([](auto j) { return angle{j}; }, angle{i});
+                boost::algorithm::all_of(angles, [](auto const i){
+                        return group::is_idempotent{}([](auto const j) { return angle{j.degrees}; }, angle{i});
                 })
         );
 }
 
-BOOST_AUTO_TEST_CASE(AngleConstructorIsIdentityOnAllAngles)
+BOOST_AUTO_TEST_CASE(RotateZeroDegIsIdentityOnAllAngles)
 {
         BOOST_CHECK(
-                boost::algorithm::all_of(angles, [](auto i){
-                        return group::is_identity{}([](auto j) { return angle{j}; }, angle{i});
+                boost::algorithm::all_of(angles, [](auto const i){
+                        return group::is_identity{}([](auto const j) { return rotate(j, 0_deg); }, angle{i});
                 })
         );
 }
 
-BOOST_AUTO_TEST_CASE(Rotate0DegIsIdentityOnAllAngles)
+BOOST_AUTO_TEST_CASE(RotateOneHundredAndEightyDegIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
-                boost::algorithm::all_of(angles, [](auto i){
-                        return group::is_identity{}([](auto j) { return rotate(angle{j}, 0_deg); }, angle{i});
+                boost::algorithm::all_of(angles, [](auto const i){
+                        return group::is_involution{}([](auto const j) { return rotate(j, 180_deg); }, angle{i});
                 })
         );
 }
@@ -40,17 +40,8 @@ BOOST_AUTO_TEST_CASE(Rotate0DegIsIdentityOnAllAngles)
 BOOST_AUTO_TEST_CASE(InverseIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
-                boost::algorithm::all_of(angles, [](auto i){
-                        return group::is_involution{}([](auto j) { return inverse(angle{j}); }, angle{i});
-                })
-        );
-}
-
-BOOST_AUTO_TEST_CASE(Rotate180DegIsInvolutionOnAllAngles)
-{
-        BOOST_CHECK(
-                boost::algorithm::all_of(angles, [](auto i){
-                        return group::is_involution{}([](auto j) { return rotate(angle{j}, 180_deg); }, angle{i});
+                boost::algorithm::all_of(angles, [](auto const i){
+                        return group::is_involution{}([](auto const j) { return inverse(j); }, angle{i});
                 })
         );
 }
@@ -58,9 +49,9 @@ BOOST_AUTO_TEST_CASE(Rotate180DegIsInvolutionOnAllAngles)
 BOOST_AUTO_TEST_CASE(MirrorIsInvolutionOnAllAnglePairs)
 {
         BOOST_CHECK(
-                boost::algorithm::all_of(angles, [](auto i){
-                        return boost::algorithm::all_of(angles, [=](auto j) {
-                                return group::is_involution{}([=](auto k) { return mirror(angle{k}, angle{i}); }, angle{j});
+                boost::algorithm::all_of(angles, [](auto const i){
+                        return boost::algorithm::all_of(angles, [=](auto const j) {
+                                return group::is_involution{}([=](auto const k) { return mirror(k, angle{j}); }, angle{i});
                         });
                 })
         );

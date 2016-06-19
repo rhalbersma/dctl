@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllAngles)
 
         BOOST_CHECK(
                 boost::algorithm::all_of(C_N, [=](auto const& g){
-                        return boost::algorithm::all_of(angles, [&](auto a){
+                        return boost::algorithm::all_of(angles, [&](auto const a){
                                 return group::action::is_realized(angle{a}, g);
                         });
                 })

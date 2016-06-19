@@ -18,7 +18,7 @@ int main()
 {
         using Rules = rules::international;
         using Board = board::international;
-        using State = State<Rules, Board>;
+        using State = state<Rules, Board>;
 
         auto initial = setup::read<Rules, Board, pdn::protocol>()(
                 "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"

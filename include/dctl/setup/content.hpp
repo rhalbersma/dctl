@@ -9,7 +9,7 @@ namespace dctl {
 namespace setup {
 
 template<class Token, class State>
-auto content(State const& p, std::size_t n)
+auto content(State const& p, std::size_t const n)
 {
         assert(n < set_t<State>::size());
 

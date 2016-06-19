@@ -64,7 +64,7 @@ public:
         }
 
         using    set_type = xstd::bitset<xstd::align_on(NumBits, 64)>;
-        using square_type = std::size_t;//xstd::uint_fast_t<set_type::size()>;
+        using square_type = xstd::uint_fast_t<set_type::size()>;
 
         static constexpr auto shift_size(angle const direction)
         {

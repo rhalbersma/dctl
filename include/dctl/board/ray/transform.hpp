@@ -8,14 +8,14 @@ namespace ray {
 
 template<int Theta, class Board, int Direction>
 auto rotate(iterator<Board, Direction> it)
-        -> iterator<Board, rotate(angle{Direction}, angle{Theta}).degrees()>
+        -> iterator<Board, rotate(angle{Direction}, angle{Theta}).degrees>
 {
         return { it.base() };
 }
 
 template<int Theta, class Board, int Direction>
 auto mirror(iterator<Board, Direction> it)
-        -> iterator<Board, mirror(angle{Direction}, angle{Theta}).degrees()>
+        -> iterator<Board, mirror(angle{Direction}, angle{Theta}).degrees>
 {
         return { it.base() };
 }

@@ -7,9 +7,10 @@ class PlayerToMove
 {
         Color player_to_move = Color::black;
 
-        constexpr auto flip() noexcept
+        constexpr auto& flip() noexcept
         {
                 player_to_move = !player_to_move;
+                return *this;
         }
 public:
         PlayerToMove() = default;
@@ -25,17 +26,15 @@ public:
         }
 
         template<class Action>
-        constexpr auto& make(Action const& /* a */) noexcept
+        constexpr auto& make(Action&& /* a */) noexcept
         {
-                flip();
-                return *this;
+                return flip();
         }
 
         template<class Action>
-        constexpr auto& undo(Action const& /* a */) noexcept
+        constexpr auto& undo(Action&& /* a */) noexcept
         {
-                flip();
-                return *this;
+                return flip();
         }
 };
 

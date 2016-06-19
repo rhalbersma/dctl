@@ -90,7 +90,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold() const
         {
-                (... , sources<Directions<bearing.degrees()>{}>());
+                (... , sources<Directions<bearing.degrees>{}>());
         }
 
         template<int Direction>
@@ -215,7 +215,7 @@ private:
         auto turn_dispatch(Iterator jumper, forward_pawn_jump_tag, diagonal_jump_tag) const
         {
                 static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                return scan(board::ray::mirror<up<bearing.degrees()>{}>(jumper));
+                return scan(board::ray::mirror<up<bearing.degrees>{}>(jumper));
         }
 
         template<class Iterator>
@@ -233,31 +233,31 @@ private:
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, up<bearing.degrees()>) const
+        auto turn_dispatch(Iterator jumper, up<bearing.degrees>) const
         {
                 return turn_directions_lfold<left_up, right_up, left, right>(jumper);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, left_up<bearing.degrees()>) const
+        auto turn_dispatch(Iterator jumper, left_up<bearing.degrees>) const
         {
                 return turn_directions_lfold<up, right_up, left, right>(jumper);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, right_up<bearing.degrees()>) const
+        auto turn_dispatch(Iterator jumper, right_up<bearing.degrees>) const
         {
                 return turn_directions_lfold<up, left_up, left, right>(jumper);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, left<bearing.degrees()>) const
+        auto turn_dispatch(Iterator jumper, left<bearing.degrees>) const
         {
                 return turn_directions_lfold<up, left_up, right_up>(jumper);
         }
 
         template<class Iterator>
-        auto turn_dispatch(Iterator jumper, right<bearing.degrees()>) const
+        auto turn_dispatch(Iterator jumper, right<bearing.degrees>) const
         {
                 return turn_directions_lfold<up, left_up, right_up>(jumper);
         }
@@ -271,7 +271,7 @@ private:
         template<template<int> class... Directions, class Iterator>
         auto turn_directions_lfold(Iterator jumper) const
         {
-                return (... | scan(board::ray::turn<Directions<bearing.degrees()>{}>(jumper)));
+                return (... | scan(board::ray::turn<Directions<bearing.degrees>{}>(jumper)));
         }
 
         template<int... Directions, class Iterator>

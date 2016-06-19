@@ -7,6 +7,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // king_range_category
+#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {
@@ -36,7 +37,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_kings, set_type const not_occupied) const noexcept
         {
-                return (... + king_push_targets<Directions<bearing.degrees()>{}>{}(active_kings, not_occupied).count());
+                return (... + king_push_targets<Directions<bearing.degrees>{}>{}(active_kings, not_occupied).count());
         }
 };
 

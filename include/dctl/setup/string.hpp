@@ -25,7 +25,7 @@ auto read_color(char c)
 }
 
 template<class Token>
-char write_color(Color c)
+char write_color(Color const c)
 {
         return Token::color[xstd::to_underlying_type(c)];
 }
@@ -49,7 +49,7 @@ struct write;
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
-        State<Rules, Board> operator()(std::string const& s) const
+        state<Rules, Board> operator()(std::string const& s) const
         {
                 using set_type = set_t<Board>;
                 set_type by_color[2]{};
@@ -63,7 +63,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
+                        return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
 
                 auto setup_color = p_side;
                 auto setup_piece = Piece::pawn;
@@ -98,7 +98,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 break;
                         }
                 }
-                return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
+                return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
         }
 };
 
@@ -140,7 +140,7 @@ struct write<pdn::protocol, Token>
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
-        State<Rules, Board> operator()(std::string const& s) const
+        state<Rules, Board> operator()(std::string const& s) const
         {
                 using set_type = set_t<Board>;
                 set_type by_color[2]{};
@@ -154,7 +154,7 @@ struct read<Rules, Board, dxp::protocol, Token>
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
+                        return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
 
                 std::stringstream sstr(s);
                 char ch;
@@ -173,7 +173,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                         if (toupper(ch) != Token::empty)
                                 by_piece[isupper(ch)].set(b);   // king or pawn
                 }
-                return { by_color[0], by_color[1], by_piece[0], by_piece[1], p_side };
+                return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
         }
 };
 
@@ -181,7 +181,7 @@ template<class Token>
 struct write<dxp::protocol, Token>
 {
         template<class Rules, class Board>
-        std::string operator()(State<Rules, Board> const& p) const
+        std::string operator()(state<Rules, Board> const& p) const
         {
                 std::stringstream sstr;
                 sstr << write_color<Token>(p.to_move());    // side to move

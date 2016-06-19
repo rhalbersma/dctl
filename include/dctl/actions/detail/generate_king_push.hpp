@@ -9,6 +9,7 @@
 #include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
+#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <xstd/type_traits.hpp>                         // value_t
 #include <cstddef>                                      // size_t
@@ -59,13 +60,13 @@ private:
         template<template<int> class... Directions>
         auto wave_directions_lfold(set_type const active_kings, set_type const not_occupied) const
         {
-                (... , wave_targets<Directions<bearing.degrees()>{}>(active_kings, not_occupied));
+                (... , wave_targets<Directions<bearing.degrees>{}>(active_kings, not_occupied));
         }
 
         template<template<int> class... Directions>
         auto ray_directions_lfold(std::size_t const from, set_type const not_occupied) const
         {
-                (... , ray_targets(along_ray<Directions<bearing.degrees()>{}>(from), not_occupied));
+                (... , ray_targets(along_ray<Directions<bearing.degrees>{}>(from), not_occupied));
         }
 
         template<int Direction>

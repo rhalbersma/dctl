@@ -6,6 +6,7 @@
 #include <dctl/board/patterns.hpp>                      // push_targets
 #include <dctl/color.hpp>                               // Player
 #include <dctl/piece.hpp>                               // pawn
+#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
 
 namespace dctl {
@@ -32,7 +33,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const noexcept
         {
-                return (... || push_targets<Directions<bearing.degrees()>{}>{}(active_pawns, not_occupied).any());
+                return (... || push_targets<Directions<bearing.degrees>{}>{}(active_pawns, not_occupied).any());
         }
 };
 

@@ -63,7 +63,7 @@ constexpr auto lower_right_is_square(dimensions const dim) noexcept
 constexpr auto rotate(dimensions const dim, angle const a)
         -> dimensions
 {
-        switch (a.degrees()) {
+        switch (a.degrees) {
         case   0 : return dim;
         case  90 : return { dim.height, dim.width , !upper_left_is_square(dim) };
         case 180 : return { dim.width , dim.height, !upper_right_is_square(dim) };
