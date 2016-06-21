@@ -15,6 +15,7 @@ class base_state
 public:
         using board_type = Board;
         using   set_type = set_t<Board>;
+
 private:
         set_type by_color_[2];
         set_type by_piece_[2];

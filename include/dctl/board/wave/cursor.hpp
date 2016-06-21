@@ -24,7 +24,7 @@ class cursor
 public:
         cursor() = default;
 
-        explicit cursor(set_type const& c) noexcept
+        explicit cursor(set_type const c) noexcept
         :
                 cursor_{c}
         {}
