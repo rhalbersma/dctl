@@ -1,8 +1,10 @@
 #pragma once
-#include <dctl/color.hpp>
-#include <dctl/piece.hpp>
-#include <dctl/utility/type_traits.hpp>         // set_t
-#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <dctl/color.hpp>               // black, white
+#include <dctl/piece.hpp>               // pawn, king
+#include <dctl/utility/type_traits.hpp> // set_t
+#include <xstd/bitset.hpp>              // disjoint
+#include <xstd/type_traits.hpp>         // to_underlying_type
+#include <cassert>                      // assert
 
 namespace dctl {
 namespace detail {
