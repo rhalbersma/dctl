@@ -46,7 +46,7 @@ using block_adl::ordering_precedence_or_t;
 
 }       // namespace detail
 
-template<class Rules, class Board>
+template<class Rules, class Board = board_t<Rules>>
 class action
 :
         detail::ordering_precedence_or_t<Rules, Board>,
@@ -55,16 +55,16 @@ class action
         using ordering_precedence_or_t = detail::ordering_precedence_or_t<Rules, Board>;
         using quality_precedence_or_t = detail::quality_precedence_or_t<Rules, Board>;
 public:
-        using  board_type = Board;
         using  rules_type = Rules;
+        using  board_type = Board;
         using    set_type =    set_t<Board>;
         using square_type = square_t<Board>;
 private:
         set_type captured_pieces_;
         square_type from_;
         square_type dest_;
-        Piece with_;
-        Piece into_;
+        piece with_;
+        piece into_;
 
         constexpr auto assert_invariants() const noexcept
         {
@@ -81,8 +81,8 @@ public:
                 captured_pieces_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
-                with_{Piece::pawn},
-                into_{promotion ? Piece::king : Piece::pawn}
+                with_{piece::pawn},
+                into_{promotion ? piece::king : piece::pawn}
         {
                 assert_invariants();
         }
@@ -94,8 +94,8 @@ public:
                 captured_pieces_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
-                with_{Piece::king},
-                into_{Piece::king}
+                with_{piece::king},
+                into_{piece::king}
         {
                 assert_invariants();
         }
@@ -144,7 +144,7 @@ public:
                 return dest_;
         }
 
-        constexpr auto with(Piece const p) noexcept
+        constexpr auto with(piece const p) noexcept
         {
                 with_ = p;
         }
@@ -154,7 +154,7 @@ public:
                 return with_;
         }
 
-        constexpr auto into(Piece const p) noexcept
+        constexpr auto into(piece const p) noexcept
         {
                 into_ = p;
         }
@@ -194,7 +194,7 @@ public:
 
         constexpr auto is_with_king() const noexcept
         {
-                return with() == Piece::king;
+                return with() == piece::king;
         }
 
         constexpr auto is_jump() const noexcept
@@ -204,12 +204,12 @@ public:
 
         constexpr auto is_promotion() const noexcept
         {
-                return with() == Piece::pawn && into() != Piece::pawn;
+                return with() == piece::pawn && into() != piece::pawn;
         }
 
         constexpr auto is_reversible() const noexcept
         {
-                return with() == Piece::king && !is_jump();
+                return with() == piece::king && !is_jump();
         }
 private:
         constexpr auto capture_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::false_type, std::false_type)
@@ -273,7 +273,7 @@ private:
 
         constexpr auto is_demotion() const noexcept
         {
-                return with() != Piece::pawn && into() == Piece::pawn;
+                return with() != piece::pawn && into() == piece::pawn;
         }
 };
 

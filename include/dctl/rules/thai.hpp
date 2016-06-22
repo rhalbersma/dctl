@@ -1,10 +1,13 @@
 #pragma once
+#include <dctl/board.hpp>       // checkers
 
 namespace dctl {
 namespace rules {
+namespace block_adl {
 
 struct thai
 {
+        using board_type = board::checkers;
         static constexpr auto is_long_ranged_king = true;
         static constexpr auto is_backward_pawn_jump = false;
 
@@ -13,6 +16,10 @@ struct thai
         static constexpr auto is_passing_capture = true;
         static constexpr auto jumpsep = '-';
 };
+
+}       // namespace block_adl
+
+using block_adl::thai;
 
 }       // namespace rules
 }       // namespace dctl

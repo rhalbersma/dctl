@@ -4,7 +4,7 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/patterns.hpp>                      // push_targets
-#include <dctl/color.hpp>                               // Color
+#include <dctl/color.hpp>                               // color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/rule_traits.hpp>                         // short_ranged_tag
 #include <dctl/state/pieces.hpp>
@@ -14,8 +14,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State>
-class Count<ToMove, Piece::pawn, select::push, Reverse, State>
+template<color ToMove, class Reverse, class State>
+class Count<ToMove, piece::pawn, select::push, Reverse, State>
 {
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
@@ -28,7 +28,7 @@ class Count<ToMove, Piece::pawn, select::push, Reverse, State>
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_pawns = pieces<ToMove, Piece::pawn>(state);
+                auto const active_pawns = pieces<ToMove, piece::pawn>(state);
                 return active_pawns.any() ? directions_lfold<left_up, right_up>(active_pawns, state.not_occupied()) : 0;
         }
 

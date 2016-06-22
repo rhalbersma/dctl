@@ -1,4 +1,4 @@
-#include <dctl/board/types.hpp>                 // international
+#include <dctl/board.hpp>                       // international
 #include <dctl/action.hpp>
 #include <dctl/setup/diagram.hpp>               // diagram, bits, squares
 #include <dctl/rules.hpp>

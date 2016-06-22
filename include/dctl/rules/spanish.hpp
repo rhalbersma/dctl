@@ -1,12 +1,15 @@
 #pragma once
-#include <tuple>        // make_tuple
+#include <dctl/board.hpp>       // roman
+#include <tuple>                // make_tuple
 
 namespace dctl {
 namespace rules {
+namespace block_adl {
 
 // http://www.fpdamas.pt/downloads/Regras%20Damas%20Cl%C3%A1ssicas%20-%20atualizado.pdf
 struct spanish
 {
+        using board_type = board::roman;
         static constexpr auto is_long_ranged_king = true;
         static constexpr auto is_backward_pawn_jump = false;
 
@@ -25,6 +28,10 @@ struct spanish
                 }
         };
 };
+
+}       // namespace block_adl
+
+using block_adl::spanish;
 
 }       // namespace rules
 }       // namespace dctl

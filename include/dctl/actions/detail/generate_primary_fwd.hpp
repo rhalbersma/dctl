@@ -1,12 +1,12 @@
 #pragma once
-#include <dctl/color.hpp>       // Color
-#include <dctl/piece.hpp>       // Piece
+#include <dctl/color.hpp>       // color
+#include <dctl/piece.hpp>       // piece
 
 namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color, Piece, class, class...>
+template<color, piece, class, class...>
 class Generate;
 
 }       // namespace detail

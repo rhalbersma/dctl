@@ -5,7 +5,7 @@ namespace dctl {
 
 class PlayerToMove
 {
-        Color player_to_move = Color::black;
+        color player_to_move = color::black;
 
         constexpr auto& flip() noexcept
         {
@@ -15,7 +15,7 @@ class PlayerToMove
 public:
         PlayerToMove() = default;
 
-        explicit constexpr PlayerToMove(Color c) noexcept
+        explicit constexpr PlayerToMove(color c) noexcept
         :
                 player_to_move{c}
         {}

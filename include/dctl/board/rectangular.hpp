@@ -20,13 +20,14 @@
 
 namespace dctl {
 namespace board {
+namespace block_adl {
 
 template
 <
         std::size_t Width,
         std::size_t Height,
         bool IsInverted = false,
-        bool IsOrthogonalCaptures = true
+        bool IsOrthogonalCaptures = false
 >
 class rectangular
 {
@@ -172,6 +173,10 @@ rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr std::array<std::size_t, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
+
+}       // namespace block_adl
+
+using block_adl::rectangular;
 
 }       // namespace board
 }       // namespace dctl

@@ -17,7 +17,7 @@ using iterator = boost::counting_iterator
 >;
 
 template<class Board, int Direction, class Set = set_t<Board>>
-auto make_iterator(Set const& s)
+auto make_iterator(Set const s)
         -> iterator<Board, Direction>
 {
         return { cursor<Board, Direction>{s} };

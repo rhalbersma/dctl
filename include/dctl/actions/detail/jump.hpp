@@ -8,7 +8,7 @@
 #include <dctl/actions/detail/generate_king_jump.hpp>   // Generate (king jump specialization)
 #include <dctl/actions/detail/generate_pawn_jump.hpp>   // Generate (pawn jump specialization)
 #include <dctl/actions/select/jump.hpp>                 // jump
-#include <dctl/color.hpp>                               // Color
+#include <dctl/color.hpp>                               // color
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/utility/static_vector.hpp>               // static_vector
 #include <dctl/utility/type_traits.hpp>                 // rules_t, board_t
@@ -35,7 +35,7 @@ public:
         }
 };
 
-template<Color ToMove, class DuplicatesPolicy, class Reverse>
+template<color ToMove, class DuplicatesPolicy, class Reverse>
 class Actions<ToMove, select::jump, DuplicatesPolicy, Reverse>
 {
 public:
@@ -48,8 +48,8 @@ public:
                         Builder<ToMove, DuplicatesPolicy, State, SequenceContainer>;
                 //>;
 
-                using KingJump = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>;
-                using PawnJump = Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder>;
+                using KingJump = Generate<ToMove, piece::king, select::jump, Reverse, State, Builder>;
+                using PawnJump = Generate<ToMove, piece::pawn, select::jump, Reverse, State, Builder>;
 
                 Builder builder{state, actions};
                 KingJump{builder}();
@@ -73,8 +73,8 @@ public:
         template<class State>
         auto detect(State const& state) const noexcept
         {
-                using PawnJump = Detect<ToMove, Piece::pawn, select::jump, Reverse, State>;
-                using KingJump = Detect<ToMove, Piece::king, select::jump, Reverse, State>;
+                using PawnJump = Detect<ToMove, piece::pawn, select::jump, Reverse, State>;
+                using KingJump = Detect<ToMove, piece::king, select::jump, Reverse, State>;
 
                 return PawnJump{}(state) || KingJump{}(state);
         }

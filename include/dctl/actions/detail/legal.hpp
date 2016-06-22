@@ -5,13 +5,13 @@
 #include <dctl/actions/select/legal.hpp>        // legal
 #include <dctl/actions/select/jump.hpp>         // jump
 #include <dctl/actions/select/push.hpp>         // push
-#include <dctl/color.hpp>                       // Color
+#include <dctl/color.hpp>                       // color
 
 namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class DuplicatesPolicy, class Reverse>
+template<color ToMove, class DuplicatesPolicy, class Reverse>
 class Actions<ToMove, select::legal, DuplicatesPolicy, Reverse>
 {
         using Jump = Actions<ToMove, select::jump, DuplicatesPolicy, Reverse>;

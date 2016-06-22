@@ -9,7 +9,7 @@
 #include <dctl/board/patterns.hpp>                      // jump_sources
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
 #include <dctl/board/wave.hpp>                          // make_iterator
-#include <dctl/color.hpp>                               // Color
+#include <dctl/color.hpp>                               // color
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/state/promotion.hpp>                     // is_promotion
@@ -21,10 +21,10 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State, class Builder>
-class Generate<ToMove, Piece::pawn, select::jump, Reverse, State, Builder>
+template<color ToMove, class Reverse, class State, class Builder>
+class Generate<ToMove, piece::pawn, select::jump, Reverse, State, Builder>
 {
-        using  KingJumps = Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>;
+        using  KingJumps = Generate<ToMove, piece::king, select::jump, Reverse, State, Builder>;
         using action_type = action_t<Builder>;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;

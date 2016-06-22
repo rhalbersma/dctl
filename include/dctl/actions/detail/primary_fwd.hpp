@@ -1,11 +1,11 @@
 #pragma once
-#include <dctl/color.hpp>       // Color
+#include <dctl/color.hpp>       // color
 
 namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color, class, class...>
+template<color, class, class...>
 class Actions;
 
 }       // namespace detail

@@ -15,21 +15,21 @@ namespace board {
 template<class Board>
 class Initial
 {
-        template<Color ToMove>
+        template<color ToMove>
         struct init
         {
                 // simulate a constexpr lambda (not allowed in C++14)
                 struct is_initial
                 {
-                        Color const to_move;
+                        color const to_move;
                         std::size_t const rows_;
 
                         constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 auto const separation = Board::height - 2 * rows_;
                                 auto const y = detail::to_llo(sq, Board::inner_grid).y;
-                                auto const min_y = to_move == Color::white ? 0 : Board::height - (Board::height - separation) / 2;
-                                auto const max_y = to_move == Color::white ? (Board::height - separation) / 2 : Board::height;
+                                auto const min_y = to_move == color::white ? 0 : Board::height - (Board::height - separation) / 2;
+                                auto const max_y = to_move == color::white ? (Board::height - separation) / 2 : Board::height;
                                 return min_y <= y && y < max_y;
                         }
                 };
@@ -45,12 +45,12 @@ class Initial
 
         static constexpr table_type table[] =
         {
-                fill_array<N>(init<Color::black>{}),
-                fill_array<N>(init<Color::white>{})
+                fill_array<N>(init<color::black>{}),
+                fill_array<N>(init<color::white>{})
         };
 
 public:
-        static constexpr auto mask(Color const c, std::size_t const separation) noexcept
+        static constexpr auto mask(color const c, std::size_t const separation) noexcept
         {
                 assert((Board::height - separation) % 2 == 0);
                 assert(Board::height % 2 <= separation && separation <= Board::height);

@@ -15,19 +15,19 @@ namespace board {
 template<class Board>
 class Column
 {
-        template<Color ToMove>
+        template<color ToMove>
         struct init
         {
                 // simulate a constexpr lambda (not allowed in C++14)
                 struct is_column
                 {
-                        Color const to_move;
+                        color const to_move;
                         std::size_t const column_;
 
                         constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 assert(column_ < Board::width);
-                                return detail::to_llo(sq, Board::inner_grid).x == (to_move == Color::white ? column_ : Board::width - 1 - column_);
+                                return detail::to_llo(sq, Board::inner_grid).x == (to_move == color::white ? column_ : Board::width - 1 - column_);
                         }
                 };
 
@@ -40,12 +40,12 @@ class Column
         using table_type = std::array<set_t<Board>, Board::width>;
         static constexpr table_type table[] =
         {
-                fill_array<Board::width>(init<Color::black>{}),
-                fill_array<Board::width>(init<Color::white>{})
+                fill_array<Board::width>(init<color::black>{}),
+                fill_array<Board::width>(init<color::white>{})
         };
 
 public:
-        static constexpr auto mask(Color const c, std::size_t const column) noexcept
+        static constexpr auto mask(color const c, std::size_t const column) noexcept
         {
                 assert(column < Board::width);
                 return table[xstd::to_underlying_type(c)][column];

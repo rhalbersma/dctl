@@ -1,11 +1,15 @@
 #pragma once
+#include <dctl/board.hpp>       // international
 
 namespace dctl {
 namespace rules {
+namespace block_adl {
 
 // http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20international%20draughts.doc
 struct international
 {
+        using board_type = board::international;
+
         // 2. The material
         static constexpr auto initial_gap = 2;                  // 2.8
 
@@ -41,8 +45,12 @@ struct international
         static constexpr auto jumpsep = 'x';                    // 8.2.3
 };
 
-using Brazilian  = international;
-using Philippine = international;
+}       // namespace block_adl
+
+using block_adl::international;
+
+using brazilian  = international;
+using philippine = international;
 using canadian   = international;
 using srilankan  = international;
 

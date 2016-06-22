@@ -6,7 +6,7 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, _deg, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
-#include <dctl/color.hpp>                               // Color
+#include <dctl/color.hpp>                               // color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                         // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
@@ -18,8 +18,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State, class Builder>
-class Generate<ToMove, Piece::king, select::jump, Reverse, State, Builder>
+template<color ToMove, class Reverse, class State, class Builder>
+class Generate<ToMove, piece::king, select::jump, Reverse, State, Builder>
 {
         using action_type = action_t<Builder>;
         using  board_type =  board_t<Builder>;
@@ -48,7 +48,7 @@ public:
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
                 static_assert(is_passing_promotion_or_v<rules_type>);
-                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
+                assert(builder.is_with(piece::pawn) && builder.is_into(piece::king));
                 try_next(jumper);
         }
 private:

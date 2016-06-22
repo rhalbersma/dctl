@@ -18,14 +18,14 @@ template<class Token>
 auto read_color(char c)
 {
         switch (c) {
-        case Token::black : return Color::black;
-        case Token::white : return Color::white;
-        default           : assert(false); return Color::black;
+        case Token::black : return color::black;
+        case Token::white : return color::white;
+        default           : assert(false); return color::black;
         }
 }
 
 template<class Token>
-char write_color(Color const c)
+char write_color(color const c)
 {
         return Token::color[xstd::to_underlying_type(c)];
 }
@@ -54,7 +54,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                 using set_type = set_t<Board>;
                 set_type by_color[2]{};
                 set_type by_piece[2]{};
-                auto p_side = Color::black;
+                auto p_side = color::black;
 
                 assert(by_color[0].none());
                 assert(by_color[1].none());
@@ -66,7 +66,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                         return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
 
                 auto setup_color = p_side;
-                auto setup_piece = Piece::pawn;
+                auto setup_piece = piece::pawn;
 
                 std::stringstream sstr(s);
                 char ch;
@@ -83,7 +83,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 setup_color = read_color<Token>(ch);
                                 break;
                         case Token::king :                                      // setup kings
-                                setup_piece = Piece::king;
+                                setup_piece = piece::king;
                                 break;
                         default:
                                 if (isdigit(ch)) {
@@ -94,7 +94,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         by_color[xstd::to_underlying_type(setup_color)].set(b);
                                         by_piece[xstd::to_underlying_type(setup_piece)].set(b);
                                 }
-                                setup_piece = Piece::pawn;
+                                setup_piece = piece::pawn;
                                 break;
                         }
                 }
@@ -106,24 +106,24 @@ template<class Token>
 struct write<pdn::protocol, Token>
 {
         template<class State>
-        std::string operator()(State const& p) const
+        std::string operator()(State const& s) const
         {
                 using Board = board_t<State>;
 
                 std::stringstream sstr;
                 sstr << Token::quote;                                   // opening quotes
-                sstr << write_color<Token>(p.to_move());                // side to move
+                sstr << write_color<Token>(s.to_move());                // side to move
 
                 for (auto i = 0; i < 2; ++i) {
-                        auto c = i ? Color::white : Color::black;
-                        if (p.pieces(c).any()) {
+                        auto c = i ? color::white : color::black;
+                        if (s.pieces(c).any()) {
                                 sstr << Token::colon;                   // colon
                                 sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
                         }
-                        auto const bs = p.pieces(c);
+                        auto const bs = s.pieces(c);
                         std::size_t n = 0;
                         for (auto sq : bs) {
-                                if (p.pieces(Piece::king).test(sq))
+                                if (s.pieces(piece::king).test(sq))
                                         sstr << Token::king;            // king tag
                                 sstr << Board::square_from_bit(sq) + 1; // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
@@ -145,7 +145,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 using set_type = set_t<Board>;
                 set_type by_color[2]{};
                 set_type by_piece[2]{};
-                auto p_side = Color::black;
+                auto p_side = color::black;
 
                 assert(by_color[0].none());
                 assert(by_color[1].none());
@@ -165,8 +165,8 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : by_color[xstd::to_underlying_type(Color::black)].set(b); break;
-                        case Token::white : by_color[xstd::to_underlying_type(Color::white)].set(b); break;
+                        case Token::black : by_color[xstd::to_underlying_type(color::black)].set(b); break;
+                        case Token::white : by_color[xstd::to_underlying_type(color::white)].set(b); break;
                         case Token::empty : break;
                         default           : assert(false);
                         }

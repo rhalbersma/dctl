@@ -1,6 +1,6 @@
 #include <actions/fixture.hpp>          // run
-#include <dctl/board/types.hpp>         // international
-#include <dctl/rules/international.hpp> // international
+#include <dctl/board.hpp>               // international
+#include <dctl/rules.hpp>               // international
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string
 #include <vector>                       // vector
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_SUITE(ActionsRulebookinternational)
                         test(FEN, legal);
                 }
 
-                BOOST_FIXTURE_TEST_CASE(NumberOfPieces, F)              // Art. 4.13
+                BOOST_FIXTURE_TEST_CASE(NumberOfpieces, F)              // Art. 4.13
                 {
                         auto const FEN = "W:WK48:B7,8,31,34,K42,44";
                         auto const legal = std::vector<std::string>{ "48x50" };

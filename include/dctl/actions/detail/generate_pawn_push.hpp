@@ -6,7 +6,7 @@
 #include <dctl/board/patterns.hpp>                      // push_targets
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/board/wave.hpp>                          // make_iterator
-#include <dctl/color.hpp>                               // Color
+#include <dctl/color.hpp>                               // color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/state/pieces.hpp>
 #include <dctl/state/promotion.hpp>                     // is_promotion
@@ -19,8 +19,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State, class SequenceContainer>
-class Generate<ToMove, Piece::pawn, select::push, Reverse, State, SequenceContainer>
+template<color ToMove, class Reverse, class State, class SequenceContainer>
+class Generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContainer>
 {
         using action_type = xstd::value_t<SequenceContainer>;
         using  board_type = board_t<State>;
@@ -39,7 +39,7 @@ public:
 
         auto operator()(State const& state) const
         {
-                auto const active_pawns = pieces<ToMove, Piece::pawn>(state);
+                auto const active_pawns = pieces<ToMove, piece::pawn>(state);
                 if (active_pawns.any())
                         directions_lfold<left_up, right_up>(active_pawns, state.not_occupied());
         }

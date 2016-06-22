@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/board/types.hpp>         // international
-#include <dctl/rules.hpp>      // international
+#include <dctl/board.hpp>               // international
+#include <dctl/rules.hpp>               // international
 #include <dctl/setup/setup.hpp>         // read, write
 
 namespace dctl {

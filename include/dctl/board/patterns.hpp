@@ -14,7 +14,7 @@ template<class Board, int Direction>
 struct push_targets<Board, Direction, short_ranged_tag>
 {
         template<class Set>
-        auto operator()(Set const& active_pieces, Set const& not_occupied) const
+        auto operator()(Set const active_pieces, Set const not_occupied) const
         {
                 return Set(*std::next(wave::make_iterator<Board, Direction>(active_pieces))) & not_occupied;
         }
@@ -24,7 +24,7 @@ template<class Board, int Direction>
 struct push_targets<Board, Direction, long_ranged_tag>
 {
         template<class Set>
-        auto operator()(Set const& active_pieces, Set const& not_occupied) const
+        auto operator()(Set const active_pieces, Set const not_occupied) const
         {
                 return active_pieces ^ Fill<Board, Direction>{}(active_pieces, not_occupied);
         }
@@ -79,7 +79,7 @@ class jump_targets<Board, Direction, long_ranged_tag>
 {
 public:
         template<class Set>
-        auto operator()(Set const& active_pieces, Set const& passive_pieces, Set const& not_occupied) const
+        auto operator()(Set const active_pieces, Set const passive_pieces, Set const not_occupied) const
         {
                 return
                         Set(*std::next(wave::make_iterator<Board, Direction>(Fill<Board, Direction>{}(active_pieces, not_occupied)))) &

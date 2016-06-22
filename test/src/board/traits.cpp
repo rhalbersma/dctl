@@ -60,10 +60,7 @@ BOOST_AUTO_TEST_CASE(Invert)
 
 BOOST_AUTO_TEST_CASE(AddRemoveOrthogonalCaptures)
 {
-        static_assert(std::experimental::is_same_v<   add_orthogonal_captures_t<compact_10_12 >, xstd::_t<ktar   <10,12>>>);
         static_assert(std::experimental::is_same_v<remove_orthogonal_captures_t<   ktar<10,12>>, xstd::_t<compact_10_12 >>);
-
-        static_assert(std::experimental::is_same_v<   add_orthogonal_captures_t<    compact_12_10 >, xstd::_t<rectangular<12,10>>>);
         static_assert(std::experimental::is_same_v<remove_orthogonal_captures_t<rectangular<12,10>>, xstd::_t<    compact_12_10 >>);
 }
 

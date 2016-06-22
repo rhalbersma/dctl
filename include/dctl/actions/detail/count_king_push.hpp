@@ -4,7 +4,7 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/patterns.hpp>                      // push_targets
-#include <dctl/color.hpp>                               // Color
+#include <dctl/color.hpp>                               // color
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // king_range_category
 #include <dctl/state/pieces.hpp>
@@ -14,8 +14,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State>
-class Count<ToMove, Piece::king, select::push, Reverse, State>
+template<color ToMove, class Reverse, class State>
+class Count<ToMove, piece::king, select::push, Reverse, State>
 {
         using board_type = board_t<State>;
         using rules_type = rules_t<State>;
@@ -29,7 +29,7 @@ class Count<ToMove, Piece::king, select::push, Reverse, State>
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_kings = pieces<ToMove, Piece::king>(state);
+                auto const active_kings = pieces<ToMove, piece::king>(state);
                 return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied()) : 0;
         }
 
