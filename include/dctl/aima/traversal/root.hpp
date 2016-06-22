@@ -241,7 +241,8 @@ auto perft_node_bulk_counting(Actions const& successor, Node const& node, int de
         if (depth == 1)
                 return successor.count(node.state);
 
-        static_vector<action<rules_t<decltype(node.state)>, board_t<decltype(node.state)>>> moves;
+        using state_type = decltype(node.state);
+        static_vector<action<rules_t<state_type>, board_t<state_type>>> moves;
         successor.generate(node.state, moves);
         return boost::accumulate(moves, std::size_t{0}, [&](auto n, auto const& a){
                 return n + perft_node_bulk_counting(successor, child(node, a), depth - 1);
