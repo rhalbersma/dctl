@@ -1,11 +1,14 @@
 #pragma once
+#include <dctl/board.hpp>       // checkers
 
 namespace dctl {
 namespace rules {
+namespace block_adl {
 
 // http://americanpoolcheckers.us/americanpoolcheckers/index.php/history/apca-tournament-rules-of-play
 struct pool
 {
+        using board_type = board::checkers;
         static constexpr auto initial_gap = 2;                  // 5
 
         static constexpr auto is_backward_pawn_jump = true;     // 14
@@ -18,6 +21,10 @@ struct pool
         static constexpr auto max_repetitions = 3;              // 26
         static constexpr auto max_reversible_moves = 30;        // 26
 };
+
+}       // namespace block_adl
+
+using block_adl::pool;
 
 }       // namespace rules
 }       // namespace dctl

@@ -1,12 +1,16 @@
 #pragma once
+#include <dctl/board.hpp>       // checkers
+#include <tuple>                // make_tuple
 
 namespace dctl {
 namespace rules {
+namespace block_adl {
 
 // http://www.usacheckers.com/rulesofcheckers.php
 struct checkers
 {
         // THE DRAUGHTBOARD AND ITS ARRANGEMENT
+        using board_type = board::checkers;
         static constexpr auto is_algebraic_notation = false;    // 1.5
 
         // DRAUGHT PIECES AND THEIR ARRANGEMENT
@@ -28,6 +32,10 @@ struct checkers
         static constexpr auto max_repetitions = 3;              // 1.32.1
         static constexpr auto max_reversible_moves = 80;        // 1.32.2
 };
+
+}       // namespace block_adl
+
+using block_adl::checkers;
 
 }       // namespace rules
 }       // namespace dctl

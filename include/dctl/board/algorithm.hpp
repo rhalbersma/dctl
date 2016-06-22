@@ -10,7 +10,7 @@ namespace loop {
 // Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
 template<bool Sign, int N, class Set>
-auto fill(Set generator, Set const& propagator)
+auto fill(Set generator, Set const propagator)
 {
         Set flood {};
         while (generator.any()) {
@@ -24,7 +24,7 @@ auto fill(Set generator, Set const& propagator)
 
 // direction-wise flood-fill copy over propagator
 template<bool Sign, int N, class Set>
-auto fill(Set const& generator, Set const& propagator)
+auto fill(Set const generator, Set const propagator)
 {
         return loop::fill<Sign, N>(generator, propagator);
 }
@@ -35,7 +35,7 @@ template<class Board, int Direction>
 struct Fill
 {
         template<class Set>
-        auto operator()(Set const& generator, Set const& propagator) const
+        auto operator()(Set const generator, Set const propagator) const
         {
                 constexpr auto theta = angle{Direction};
                 return detail::fill<

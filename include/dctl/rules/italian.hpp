@@ -1,12 +1,16 @@
 #pragma once
-#include <tuple>        // make_tuple
+#include <dctl/board.hpp>       // roman
+#include <tuple>                // make_tuple
 
 namespace dctl {
 namespace rules {
+namespace block_adl {
 
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 struct italian
 {
+        using board_type = board::roman;
+
         static constexpr auto is_long_ranged_king = false;      // 4.7
 
         static constexpr auto is_backward_pawn_jump = false;    // 5.3(a)
@@ -34,6 +38,10 @@ struct italian
         static constexpr auto max_repetitions = 4;              // 9.3(b1)
         static constexpr auto max_reversible_moves = 80;        // 10.4
 };
+
+}       // namespace block_adl
+
+using block_adl::italian;
 
 }       // namespace rules
 }       // namespace dctl

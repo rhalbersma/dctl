@@ -12,7 +12,7 @@ namespace egdb {
 template
 <
         int BoardSize = 64,
-        int MaxPieces = 32,
+        int Maxpieces = 32,
         class Range = xstd::bitset<BoardSize>,
         class Index = std::ptrdiff_t
 >
@@ -27,7 +27,7 @@ private:
         static constexpr auto N = (BoardSize < MaxN) ? BoardSize : MaxN;
 
         static constexpr auto MaxK = (N + 1) / 2;
-        static constexpr auto K = (MaxPieces < MaxK) ? MaxPieces : MaxK;
+        static constexpr auto K = (Maxpieces < MaxK) ? Maxpieces : MaxK;
 
         using row_type = std::array<index_type, 1 + K>;
         using table_type = std::array<row_type, 1 + N>;

@@ -11,7 +11,7 @@ template<>
 struct First<false>
 {
         template<class Set>
-        constexpr auto operator()(Set const& s) const
+        constexpr auto operator()(Set const s) const
         {
                 return *s.cbegin();
         }
@@ -21,7 +21,7 @@ template<>
 struct First<true>
 {
         template<class Set>
-        constexpr auto operator()(Set const& s) const
+        constexpr auto operator()(Set const s) const
         {
                 return *s.crbegin();
         }

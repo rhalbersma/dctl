@@ -1,4 +1,4 @@
-#include <dctl/board/types.hpp>
+#include <dctl/board.hpp>
 #include <boost/range/irange.hpp>
 #include <cstddef>
 #include <iostream>

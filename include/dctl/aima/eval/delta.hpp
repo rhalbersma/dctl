@@ -5,7 +5,7 @@
 namespace dctl {
 namespace evaluate {
 
-template<Color ToMove>
+template<color ToMove>
 class Delta
 {
 private:

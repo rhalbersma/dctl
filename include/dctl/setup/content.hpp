@@ -9,21 +9,21 @@ namespace dctl {
 namespace setup {
 
 template<class Token, class State>
-auto content(State const& p, std::size_t const n)
+auto content(State const& s, std::size_t const n)
 {
         assert(n < set_t<State>::size());
 
         std::stringstream sstr;
-        if (p.pieces(Color::black).test(n)) {
-                if (p.pieces(Piece::king).test(n))
-                        sstr << Token::upper[xstd::to_underlying_type(Color::black)];   // black king
+        if (s.pieces(color::black).test(n)) {
+                if (s.pieces(piece::king).test(n))
+                        sstr << Token::upper[xstd::to_underlying_type(color::black)];   // black king
                 else
-                        sstr << Token::lower[xstd::to_underlying_type(Color::black)];   // black pawn
-        } else if (p.pieces(Color::white).test(n)) {
-                if (p.pieces(Piece::king).test(n))
-                        sstr << Token::upper[xstd::to_underlying_type(Color::white)];   // white king
+                        sstr << Token::lower[xstd::to_underlying_type(color::black)];   // black pawn
+        } else if (s.pieces(color::white).test(n)) {
+                if (s.pieces(piece::king).test(n))
+                        sstr << Token::upper[xstd::to_underlying_type(color::white)];   // white king
                 else
-                        sstr << Token::lower[xstd::to_underlying_type(Color::white)];   // white pawn
+                        sstr << Token::lower[xstd::to_underlying_type(color::white)];   // white pawn
         } else
                 sstr << Token::empty;                                                   // empty square
         return sstr.str();

@@ -1,6 +1,6 @@
 #include <actions/fixture.hpp>          // run
-#include <dctl/board/types.hpp>         // roman
-#include <dctl/rules/italian.hpp>       // italian
+#include <dctl/board.hpp>               // roman
+#include <dctl/rules.hpp>               // italian
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string
 #include <vector>                       // vector
@@ -43,7 +43,7 @@ BOOST_FIXTURE_TEST_CASE(KingJumpContinuation, F)        // Art. 5.9
         test(FEN, legal);
 }
 
-BOOST_FIXTURE_TEST_CASE(NumberOfPieces, F)              // Art. 6.6
+BOOST_FIXTURE_TEST_CASE(NumberOfpieces, F)              // Art. 6.6
 {
         auto const FEN = "W:WK21,31:B10,18,27";
         auto const legal = std::vector<std::string>{ "31x06" };

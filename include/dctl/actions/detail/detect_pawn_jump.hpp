@@ -4,7 +4,7 @@
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/patterns.hpp>                      // jump_targets
-#include <dctl/color.hpp>                               // Color
+#include <dctl/color.hpp>                               // color
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_superior_rank_jump
 #include <dctl/state/pieces.hpp>
@@ -14,8 +14,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State>
-class Detect<ToMove, Piece::pawn, select::jump, Reverse, State>
+template<color ToMove, class Reverse, class State>
+class Detect<ToMove, piece::pawn, select::jump, Reverse, State>
 {
         using   board_type = board_t<State>;
         using   rules_type = rules_t<State>;
@@ -28,7 +28,7 @@ class Detect<ToMove, Piece::pawn, select::jump, Reverse, State>
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_pawns = pieces<ToMove, Piece::pawn>(state);
+                auto const active_pawns = pieces<ToMove, piece::pawn>(state);
                 return active_pawns.any() ? directions_dispatch(
                         active_pawns, state.pawn_targets(!ToMove), state.not_occupied(),
                         pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{}

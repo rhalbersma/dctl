@@ -13,8 +13,8 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class Reverse, class State>
-class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
+template<color ToMove, class Reverse, class State>
+class Detect<ToMove, piece::pawn, select::push, Reverse, State>
 {
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
@@ -26,7 +26,7 @@ class Detect<ToMove, Piece::pawn, select::push, Reverse, State>
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_pawns = pieces<ToMove, Piece::pawn>(state);
+                auto const active_pawns = pieces<ToMove, piece::pawn>(state);
                 return active_pawns.any() ? directions_lfold<left_up, right_up>(active_pawns, state.not_occupied()) : false;
         }
 private:

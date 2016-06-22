@@ -27,21 +27,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
 
         BOOST_CHECK(
                 boost::algorithm::all_of(columns, [=](auto i){
-                        return Column<T>::mask(Color::black, i) == Column<T>::mask(Color::white, T::width - 1 - i);
+                        return Column<T>::mask(color::black, i) == Column<T>::mask(color::white, T::width - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 boost::algorithm::all_of(columns, [=](auto i){
                         return boost::algorithm::all_of(columns, [=](auto j){
-                                return i == j ? true : disjoint(Column<T>::mask(Color::white, i), Column<T>::mask(Color::white, j));
+                                return i == j ? true : disjoint(Column<T>::mask(color::white, i), Column<T>::mask(color::white, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(columns, set_t<T>{}, [](auto result, auto i){
-                        return result ^ Column<T>::mask(Color::white, i);
+                        return result ^ Column<T>::mask(color::white, i);
                 }) == squares_v<T>
         );
 }
@@ -53,21 +53,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
-                        return Row<T>::mask(Color::black, i) == Row<T>::mask(Color::white, T::height - 1 - i);
+                        return Row<T>::mask(color::black, i) == Row<T>::mask(color::white, T::height - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
                         return boost::algorithm::all_of(rows, [=](auto j){
-                                return i == j ? true : disjoint(Row<T>::mask(Color::white, i), Row<T>::mask(Color::white, j));
+                                return i == j ? true : disjoint(Row<T>::mask(color::white, i), Row<T>::mask(color::white, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(rows, set_t<T>{}, [](auto result, auto i){
-                        return result ^ Row<T>::mask(Color::white, i);
+                        return result ^ Row<T>::mask(color::white, i);
                 }) == squares_v<T>
         );
 }

@@ -13,12 +13,12 @@ class MostRecentlyPushedKings
         static std::array<std::size_t, 1 + N> const index_[];
         static std::array<std::size_t, 1 + M> const count_[];
 public:
-        static auto const& index(Color c)
+        static auto const& index(color c)
         {
                 return index_[xstd::to_underlying_type(c)];
         }
 
-        static auto const& count(Color c)
+        static auto const& count(color c)
         {
                 return count_[xstd::to_underlying_type(c)];
         }

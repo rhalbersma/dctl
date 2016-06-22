@@ -7,7 +7,7 @@ namespace board {
 namespace ray {
 
 template<class Board, int Direction, class Set>
-auto fill(iterator<Board, Direction> from, Set const& propagator)
+auto fill(iterator<Board, Direction> from, Set const propagator)
 {
         Set targets {};
         for (++from; is_onboard(from) && propagator.test(*from); ++from)

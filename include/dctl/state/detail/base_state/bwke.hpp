@@ -32,7 +32,7 @@ public:
         {}
 
         template<class Action>
-        auto& make(Color const c, Action const& a)
+        auto& make(color const c, Action const& a)
         {
                 pieces(c).reset(a.from());
                 pieces(c).set  (a.dest());
@@ -43,10 +43,10 @@ public:
                         not_occupied_ ^= a.captured_pieces();
                 }
 
-                if (a.with() == Piece::king) {
+                if (a.with() == piece::king) {
                         kings_.reset(a.from());
                         kings_.set(a.dest());
-                } else if (a.into() == Piece::king) {
+                } else if (a.into() == piece::king) {
                         kings_.set(a.dest());
                 }
 
@@ -56,19 +56,19 @@ public:
                 return *this;
         }
 
-        auto pieces(Color const c) const noexcept
+        auto pieces(color const c) const noexcept
         {
                 return by_color_[xstd::to_underlying_type(c)];
         }
 
-        auto pieces(Piece const p) const noexcept
+        auto pieces(piece const p) const noexcept
         {
-                return p == Piece::pawn ? pieces() ^ kings_ : kings_;
+                return p == piece::pawn ? pieces() ^ kings_ : kings_;
         }
 
-        auto pieces(Color const c, Piece const p) const noexcept
+        auto pieces(color const c, piece const p) const noexcept
         {
-                return pieces(c) & (p == Piece::pawn ? ~kings_ : kings_);
+                return pieces(c) & (p == piece::pawn ? ~kings_ : kings_);
         }
 
         auto pieces() const noexcept
@@ -81,13 +81,13 @@ public:
                 return not_occupied_;
         }
 
-        auto num_pieces(Color const c, Piece const p) const noexcept
+        auto num_pieces(color const c, piece const p) const noexcept
         {
                 return pieces(c, p).count();
         }
 
 private:
-        auto& pieces(Color const c) noexcept
+        auto& pieces(color const c) noexcept
         {
                 return by_color_[xstd::to_underlying_type(c)];
         }

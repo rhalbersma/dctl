@@ -10,7 +10,7 @@ namespace board {
 namespace ray {
 
 template<class Board, int Direction, class Set = set_t<Board>>
-auto classical(iterator<Board, Direction> from, Set const& propagator)
+auto classical(iterator<Board, Direction> from, Set const propagator)
 {
         constexpr auto theta = angle{Direction};
         auto targets = KingTargets<Board>::mask(*from, theta);

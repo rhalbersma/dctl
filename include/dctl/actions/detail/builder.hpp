@@ -19,7 +19,7 @@ namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class DuplicatesPolicy, class State, class SequenceContainer>
+template<color ToMove, class DuplicatesPolicy, class State, class SequenceContainer>
 class Builder
 {
 public:
@@ -48,7 +48,7 @@ public:
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_or_v<rules_type>);
-                initial_targets_ ^= pieces<!ToMove, Piece::king>(state);
+                initial_targets_ ^= pieces<!ToMove, piece::king>(state);
         }
 
         auto make_launch(std::size_t const sq)
@@ -72,12 +72,12 @@ public:
                 release_dispatch(sq, capture_category_t<rules_type>{});
         }
 
-        auto with(Piece const p) noexcept
+        auto with(piece const p) noexcept
         {
                 candidate_action.with(p);
         }
 
-        auto into(Piece const p) noexcept
+        auto into(piece const p) noexcept
         {
                 candidate_action.into(p);
         }
@@ -90,12 +90,12 @@ public:
 
         auto active_pawns() const noexcept
         {
-                return pieces<ToMove, Piece::pawn>(state);
+                return pieces<ToMove, piece::pawn>(state);
         }
 
         auto active_kings() const noexcept
         {
-                return pieces<ToMove, Piece::king>(state);
+                return pieces<ToMove, piece::king>(state);
         }
 
         auto current_targets() const
@@ -140,7 +140,7 @@ public:
 
         auto is_last_jumped_king(square_type sq) const
         {
-                return pieces<Piece::king>(state).test(sq);
+                return pieces<piece::king>(state).test(sq);
         }
 
         auto with() const noexcept
@@ -148,7 +148,7 @@ public:
                 return candidate_action.with();
         }
 
-        auto is_with(Piece const p) const noexcept
+        auto is_with(piece const p) const noexcept
         {
                 return with() == p;
         }
@@ -158,14 +158,14 @@ public:
                 return candidate_action.into();
         }
 
-        auto is_into(Piece const p) const noexcept
+        auto is_into(piece const p) const noexcept
         {
                 return into() == p;
         }
 
         constexpr auto is_promotion() const noexcept
         {
-                return is_with(Piece::pawn) && !is_into(Piece::pawn);
+                return is_with(piece::pawn) && !is_into(piece::pawn);
         }
 
         auto to_move() const noexcept
@@ -173,7 +173,7 @@ public:
                 return state.to_move();
         }
 
-        auto is_to_move(Color const c) const noexcept
+        auto is_to_move(color const c) const noexcept
         {
                 return to_move() == c;
         }
@@ -208,7 +208,7 @@ private:
 
         auto is_king(square_type sq) const
         {
-                return pieces<Piece::king>(state).test(sq);
+                return pieces<piece::king>(state).test(sq);
         }
 
         template<int Direction>

@@ -28,9 +28,9 @@ template<>
 struct is_terminal<NoActionsLeft>
 {
         template<class State, class Actions>
-        bool operator()(State const& p, Actions successor) const
+        bool operator()(State const& s, Actions successor) const
         {
-                return !successor.detect(p);
+                return !successor.detect(s);
         }
 };
 
@@ -38,11 +38,11 @@ template<>
 struct is_terminal<Kingscourt>
 {
         template<class State>
-        bool operator()(State const& p) const
+        bool operator()(State const& s) const
         {
                 return
-                        (active_kings(p).size() - passive_kings(p).size() < 0) ||
-                        is_terminal<NoActionsLeft>()(p)
+                        (active_kings(s).size() - passive_kings(s).size() < 0) ||
+                        is_terminal<NoActionsLeft>()(s)
                 ;
         }
 };
@@ -115,42 +115,42 @@ template<>
 struct cycle<SecondPlayerWin>
 {
         template<class State>
-        static int value(State const& p)
+        static int value(State const& s)
         {
-                return -cycle<FirstPlayerWin>::value(p);
+                return -cycle<FirstPlayerWin>::value(s);
         }
 };
 
 namespace detail {
 
 template<class State>
-bool is_no_progress(State const& /* p */, std::false_type)
+bool is_no_progress(State const& /* s */, std::false_type)
 {
         return false;
 }
 
 template<class State>
-bool is_no_progress(State const& /*p*/, std::true_type)
+bool is_no_progress(State const& /* s */, std::true_type)
 {
         //using Rules = typename State::rules_type;
 
-        return false;//p.reversible_actions() >= max_reversible_moves_or_v<Rules>;
+        return false;//s.reversible_actions() >= max_reversible_moves_or_v<Rules>;
 }
 
 }       // namespace detail
 
 template<class State>
-bool is_no_progress(State const& p)
+bool is_no_progress(State const& s)
 {
         using Rules = typename State::rules_type;
 
-        return detail::is_no_progress(p, is_restricted_reversible_moves<Rules>{});
+        return detail::is_no_progress(s, is_restricted_reversible_moves<Rules>{});
 }
 
 template<class State>
-bool is_draw(State const& p)
+bool is_draw(State const& s)
 {
-        return is_cycle(p) || is_no_progress(p);
+        return is_cycle(s) || is_no_progress(s);
 }
 
 template
@@ -162,12 +162,12 @@ template
 struct GameObjective
 {
         template<class State, class Actions>
-        static int value(State const& p, Actions successor)
+        static int value(State const& s, Actions successor)
         {
-                if (is_cycle(p))
-                        return cycle<CycleScoring>::value(p);
+                if (is_cycle(s))
+                        return cycle<CycleScoring>::value(s);
 
-                if (is_terminal<TerminalDetection>()(p, successor))
+                if (is_terminal<TerminalDetection>()(s, successor))
                         return terminal<TerminalScoring>::value();
 
                 return -infinity();

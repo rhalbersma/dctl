@@ -2,7 +2,7 @@
 
 namespace dctl {
 
-enum class Piece
+enum class piece
 :
         unsigned char
 {

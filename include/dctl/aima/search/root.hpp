@@ -52,14 +52,14 @@ public:
         }
 
         template<class Actions>
-        int analyze(State const& p, Actions successor, int depth)
+        int analyze(State const& s, Actions successor, int depth)
         {
-                return iterative_deepening(p, successor, depth);
+                return iterative_deepening(s, successor, depth);
         }
 
-        int solve(State const& p, int depth)
+        int solve(State const& s, int depth)
         {
-                return proof_verify(p, depth);
+                return proof_verify(s, depth);
         }
 
         void resize_hash(std::size_t n)
@@ -84,30 +84,30 @@ public:
 
 private:
         template<class Actions>
-        int iterative_deepening(State const& p, Actions successor, int depth)
+        int iterative_deepening(State const& s, Actions successor, int depth)
         {
                 auto score = -infinity();
                 int alpha, beta;
 
                 Variation pv;
-                announce(p, depth);
+                announce(s, depth);
                 statistics_.reset();
                 util::Stopwatch stopwatch;
                 stopwatch.start_stop();
                 for (auto i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
                         alpha = -infinity();
                         beta = infinity();
-                        score = pvs<PV>(p, successor, alpha, beta, i, 0, pv);
-                        insert_pv(p, successor, pv, score);
+                        score = pvs<PV>(s, successor, alpha, beta, i, 0, pv);
+                        insert_pv(s, successor, pv, score);
                         stopwatch.split_reset();
-                        report(i, score, stopwatch, p, successor, pv);
+                        report(i, score, stopwatch, s, successor, pv);
                 }
 
                 return score;
         }
 
         template<int NodeType, class Actions>
-        int pvs(State const& p, Actions successor, int alpha, int beta, int depth, int ply, Variation& refutation)
+        int pvs(State const& s, Actions successor, int alpha, int beta, int depth, int ply, Variation& refutation)
         {
                 using namespace xstd::support_literals;
                 statistics_.collect(ply);
@@ -133,11 +133,11 @@ private:
                 assert(is_pv(NodeType) == (alpha <  beta - 1));
 
                 // terminal positions
-                auto const terminal_value = Objective::value(p, successor);
+                auto const terminal_value = Objective::value(s, successor);
                 if (is_finite(terminal_value)) {
                         if (depth > 0) {
                                 auto const type = Bound::type(terminal_value, alpha, beta);
-                                TT.insert(p, { terminal_value, type, depth, Transposition::no_move() } );
+                                TT.insert(s, { terminal_value, type, depth, Transposition::no_move() } );
                                 if (type == Bound::exact)
                                         refutation.clear();
                         }
@@ -146,10 +146,10 @@ private:
 
                 // return evaluation in leaf nodes with valid moves
                 if (depth <= 0 || ply >= MAX_PLY)
-                        return evaluate::score(p);
+                        return evaluate::score(s);
 
                 // TT cut-off for exact win/loss scores or for deep enough heuristic scores
-                auto TT_entry = TT.find(p);
+                auto TT_entry = TT.find(s);
                 if (TT_entry && (is_mate(TT_entry->value()) || TT_entry->depth() >= depth) && TT_entry->is_cutoff(alpha, beta))
                         return TT_entry->value();
 
@@ -158,7 +158,7 @@ private:
                 using B = typename State::board_type;
 
                 static_vector<action<R,B>> moves;
-                successor.generate(p, moves);
+                successor.generate(s, moves);
                 assert(!moves.empty());
 
                 Order move_order;
@@ -168,8 +168,8 @@ private:
                 if (!(TT_entry && TT_entry->has_move())) {
                         auto const IID_depth = is_pv(NodeType) ? depth - 2 : depth / 2;
                         if (IID_depth > 0) {
-                                pvs<NodeType>(p, successor, alpha, beta, IID_depth, ply, refutation);
-                                TT_entry = TT.find(p);
+                                pvs<NodeType>(s, successor, alpha, beta, IID_depth, ply, refutation);
+                                TT_entry = TT.find(s);
                                 assert(TT_entry);
                         }
                 }
@@ -189,7 +189,7 @@ private:
                 Variation continuation;
 
                 for (auto const& i : move_order) {
-                        auto q = result(p, moves[static_cast<std::size_t>(i)]);
+                        auto q = result(s, moves[static_cast<std::size_t>(i)]);
 
                         // TODO: TT singular extension
 
@@ -223,18 +223,18 @@ private:
                 assert(best_move != Transposition::no_move());
 
                 auto const type = Bound::type(best_value, original_alpha, beta);
-                TT.insert(p, { best_value, type, depth, best_move } );
+                TT.insert(s, { best_value, type, depth, best_move } );
                 return best_value;
         }
-        void announce(State const& p, int depth)
+        void announce(State const& s, int depth)
         {
-                std::cout << setup::diagram<pdn::protocol>()(p);
-                std::cout << setup::write<pdn::protocol>()(p) << '\n';
+                std::cout << setup::diagram<pdn::protocol>()(s);
+                std::cout << setup::write<pdn::protocol>()(s) << '\n';
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
         template<class Stopwatch, class Actions>
-        void report(int depth, int value, Stopwatch const& stopwatch, State const& p, Actions successor, Variation const& pv)
+        void report(int depth, int value, Stopwatch const& stopwatch, State const& s, Actions successor, Variation const& pv)
         {
                 std::cout << "info";
 
@@ -266,56 +266,56 @@ private:
                 std::cout << std::setw( 4) << std::right << hashfull;
 
                 std::cout << '\n';
-                print_pv(p, successor, pv);
+                print_pv(s, successor, pv);
         }
 
         template<class Actions>
-        void insert_pv(State const& p, Actions successor, Variation const& pv, int value, int ply = 0)
+        void insert_pv(State const& s, Actions successor, Variation const& pv, int value, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         assert(
-                                (value == evaluate::score(p)) ||
-                                (value == draw_value() && is_draw(p)) ||
-                                (value == loss_min() && !successor.detect(p))
+                                (value == evaluate::score(s)) ||
+                                (value == draw_value() && is_draw(s)) ||
+                                (value == loss_min() && !successor.detect(s))
                                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
                         );
-                        TT.insert(p, Transposition(value, Bound::exact, depth, Transposition::no_move()));
+                        TT.insert(s, Transposition(value, Bound::exact, depth, Transposition::no_move()));
                         return;
                 }
 
                 using R = typename State::rules_type;
                 using B = typename State::board_type;
                 std::vector<action<R,B>> moves;
-                successor.generate(p, moves);
+                successor.generate(s, moves);
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
-                TT.insert(p, Transposition(value, Bound::exact, depth, static_cast<int>(index)));
+                TT.insert(s, Transposition(value, Bound::exact, depth, static_cast<int>(index)));
 
-                insert_pv(result(p, best_move), successor, pv, -stretch(value), ply + 1);
+                insert_pv(result(s, best_move), successor, pv, -stretch(value), ply + 1);
         }
 
         template<class Actions>
-        void print_pv(State const& p, Actions successor, Variation const& pv, int ply = 0)
+        void print_pv(State const& s, Actions successor, Variation const& pv, int ply = 0)
         {
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         std::cout << std::endl /*'\n'*/;
-                        std::cout << setup::diagram<pdn::protocol>()(p);
+                        std::cout << setup::diagram<pdn::protocol>()(s);
                         return;
                 }
 
                 using R = typename State::rules_type;
                 using B = typename State::board_type;
                 std::vector<action<R,B>> moves;
-                successor.generate(p, moves);
+                successor.generate(s, moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
                 if (!(ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
                 std::cout << best_move;
                 std::cout << ((ply % 10 == 9) ? '\n' : ' ');
 
-                auto q = result(p, best_move);
+                auto q = result(s, best_move);
                 //if (q.same_king_push(!q.to_move()))
                         //std::cout << "^" << q.same_king_push(!q.to_move());
                 print_pv(q, successor, pv, ply + 1);

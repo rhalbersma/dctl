@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/types.hpp>
+#include <dctl/board.hpp>
 #include <boost/mpl/vector.hpp>
 
 namespace dctl {

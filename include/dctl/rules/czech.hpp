@@ -1,11 +1,14 @@
 #pragma once
+#include <dctl/board.hpp>       // checkers
 
 namespace dctl {
 namespace rules {
+namespace block_adl {
 
 // http://www.damweb.cz/pravidla/cdfull.html
 struct czech
 {
+        using board_type = board::checkers;
         static constexpr auto is_algebraic_notation = true;     // 2.6
         static constexpr auto jumpsep = ':';
 
@@ -22,6 +25,10 @@ struct czech
                 }
         };
 };
+
+}       // namespace block_adl
+
+using block_adl::czech;
 
 }       // namespace rules
 }       // namespace dctl

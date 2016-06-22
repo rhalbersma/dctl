@@ -93,9 +93,9 @@ class SetKingJump
 public:
         ~SetKingJump()
         {
-                assert(builder.is_with(Piece::king) && builder.is_into(Piece::king));
-                builder.with(Piece::pawn);
-                builder.into(Piece::pawn);
+                assert(builder.is_with(piece::king) && builder.is_into(piece::king));
+                builder.with(piece::pawn);
+                builder.into(piece::pawn);
         }
 
         SetKingJump(SetKingJump const&) = delete;
@@ -105,9 +105,9 @@ public:
         :
                 builder{b}
         {
-                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::pawn));
-                builder.with(Piece::king);
-                builder.into(Piece::king);
+                assert(builder.is_with(piece::pawn) && builder.is_into(piece::pawn));
+                builder.with(piece::king);
+                builder.into(piece::king);
         }
 };
 
@@ -118,16 +118,16 @@ class promotion
 public:
         ~promotion()
         {
-                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
-                builder.into(Piece::pawn);
+                assert(builder.is_with(piece::pawn) && builder.is_into(piece::king));
+                builder.into(piece::pawn);
         }
 
         promotion(Builder& b)
         :
                 builder{b}
         {
-                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::pawn));
-                builder.into(Piece::king);
+                assert(builder.is_with(piece::pawn) && builder.is_into(piece::pawn));
+                builder.into(piece::king);
         }
 };
 

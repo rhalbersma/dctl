@@ -10,7 +10,7 @@
 namespace dctl {
 namespace evaluate {
 
-template<Color ToMove>
+template<color ToMove>
 class Feature
 {
 public:
@@ -32,8 +32,8 @@ public:
                 using rules_type = rules_t<State>;
                 using board_type = board_t<State>;
                 return
-                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(ToMove, Piece::pawn)) +
-                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(ToMove, Piece::king))
+                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(ToMove, piece::pawn)) +
+                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(ToMove, piece::king))
                 ;
         }
 

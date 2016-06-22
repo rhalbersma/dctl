@@ -5,15 +5,15 @@
 namespace dctl {
 
 template<class TabulationHash>
-auto hash_xor_accumulate(TabulationHash const& h, Color p)
+auto hash_xor_accumulate(TabulationHash const& h, color p)
 {
         return h.player(p);
 }
 
 template<class TabulationHash, class Action>
-auto hash_xor_accumulate(TabulationHash const& h, Action const& /* m */, xstd::type_is<Color>)
+auto hash_xor_accumulate(TabulationHash const& h, Action const& /* m */, xstd::type_is<color>)
 {
-        return h.player(Color::white);
+        return h.player(color::white);
 }
 
 }       // namespace dctl

@@ -9,22 +9,22 @@
 #include <dctl/actions/detail/generate_king_push.hpp>   // Generate (king push specialization)
 #include <dctl/actions/detail/generate_pawn_push.hpp>   // Generate (pawn push specialization)
 #include <dctl/actions/select/push.hpp>                 // push
-#include <dctl/color.hpp>                               // Color
+#include <dctl/color.hpp>                               // color
 #include <dctl/piece.hpp>                               // king, pawn
 
 namespace dctl {
 namespace core {
 namespace detail {
 
-template<Color ToMove, class DuplicatesPolicy, class Reverse>
+template<color ToMove, class DuplicatesPolicy, class Reverse>
 class Actions<ToMove, select::push, DuplicatesPolicy, Reverse>
 {
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const
         {
-                using KingPush = Generate<ToMove, Piece::king, select::push, Reverse, State, SequenceContainer>;
-                using PawnPush = Generate<ToMove, Piece::pawn, select::push, Reverse, State, SequenceContainer>;
+                using KingPush = Generate<ToMove, piece::king, select::push, Reverse, State, SequenceContainer>;
+                using PawnPush = Generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContainer>;
 
                 KingPush{actions}(state);
                 PawnPush{actions}(state);
@@ -33,8 +33,8 @@ public:
         template<class State>
         auto count(State const& state) const noexcept
         {
-                using KingPush = Count<ToMove, Piece::king, select::push, Reverse, State>;
-                using PawnPush = Count<ToMove, Piece::pawn, select::push, Reverse, State>;
+                using KingPush = Count<ToMove, piece::king, select::push, Reverse, State>;
+                using PawnPush = Count<ToMove, piece::pawn, select::push, Reverse, State>;
 
                 return KingPush{}(state) + PawnPush{}(state);
         }
@@ -42,8 +42,8 @@ public:
         template<class State>
         auto detect(State const& state) const noexcept
         {
-                using PawnPush = Detect<ToMove, Piece::pawn, select::push, Reverse, State>;
-                using KingPush = Detect<ToMove, Piece::king, select::push, Reverse, State>;
+                using PawnPush = Detect<ToMove, piece::pawn, select::push, Reverse, State>;
+                using KingPush = Detect<ToMove, piece::king, select::push, Reverse, State>;
 
                 return PawnPush{}(state) || KingPush{}(state);
         }
