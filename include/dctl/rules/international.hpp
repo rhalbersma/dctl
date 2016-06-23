@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/board.hpp>       // international
 
 namespace dctl {
 namespace rules {
@@ -8,9 +7,10 @@ namespace block_adl {
 // http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20international%20draughts.doc
 struct international
 {
-        using board_type = board::international;
-
         // 2. The material
+        static constexpr auto width = 10;                       // 2.1
+        static constexpr auto height = 10;                      // 2.1
+        static constexpr auto is_inverted = false;              // 2.4
         static constexpr auto initial_gap = 2;                  // 2.8
 
         // 3. The movement of the piece

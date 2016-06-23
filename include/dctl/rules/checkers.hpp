@@ -1,6 +1,4 @@
 #pragma once
-#include <dctl/board.hpp>       // checkers
-#include <tuple>                // make_tuple
 
 namespace dctl {
 namespace rules {
@@ -10,7 +8,9 @@ namespace block_adl {
 struct checkers
 {
         // THE DRAUGHTBOARD AND ITS ARRANGEMENT
-        using board_type = board::checkers;
+        static constexpr auto width = 8;                        // 1.1
+        static constexpr auto height = 8;                       // 1.1
+        static constexpr auto is_inverted = false;              // 1.4
         static constexpr auto is_algebraic_notation = false;    // 1.5
 
         // DRAUGHT PIECES AND THEIR ARRANGEMENT

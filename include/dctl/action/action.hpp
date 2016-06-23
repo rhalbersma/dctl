@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/piece.hpp>                       // pawn, king
-#include <dctl/rule_traits.hpp>                 // is_quality_precedence, is_ordering_precedence
+#include <dctl/rule_traits.hpp>                 // rectangular, is_quality_precedence, is_ordering_precedence
 #include <dctl/utility/logic.hpp>               // implies
 #include <dctl/utility/tagged_empty_base.hpp>   // tagged_empty_base
 #include <dctl/utility/type_traits.hpp>         // set_t, square_t
@@ -46,7 +46,7 @@ using block_adl::ordering_precedence_or_t;
 
 }       // namespace detail
 
-template<class Rules, class Board = board_t<Rules>>
+template<class Rules, class Board = rectangular_t<Rules>>
 class action
 :
         detail::ordering_precedence_or_t<Rules, Board>,
