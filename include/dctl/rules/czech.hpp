@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/board.hpp>       // checkers
 
 namespace dctl {
 namespace rules {
@@ -8,7 +7,9 @@ namespace block_adl {
 // http://www.damweb.cz/pravidla/cdfull.html
 struct czech
 {
-        using board_type = board::checkers;
+        static constexpr auto width = 8;                        // 2.1
+        static constexpr auto height = 8;                       // 2.1
+        static constexpr auto is_inverted = false;              // 2.4
         static constexpr auto is_algebraic_notation = true;     // 2.6
         static constexpr auto jumpsep = ':';
 

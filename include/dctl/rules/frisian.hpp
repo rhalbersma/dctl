@@ -1,6 +1,5 @@
 #pragma once
-#include <dctl/board.hpp>       // frisian
-#include <tuple>                // make_tuple
+#include <tuple>        // make_tuple
 
 namespace dctl {
 namespace rules {
@@ -9,7 +8,10 @@ namespace block_adl {
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
 struct frisian
 {
-        using board_type = board::frisian;
+        static constexpr auto width = 10;
+        static constexpr auto height = 10;
+        static constexpr auto is_inverted = false;
+
         static constexpr auto is_backward_pawn_jump = true;
         static constexpr auto is_long_ranged_king = true;
 

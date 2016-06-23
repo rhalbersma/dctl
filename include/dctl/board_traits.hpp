@@ -5,7 +5,6 @@
 #include <cstddef>                      // size_t
 
 namespace dctl {
-namespace board {
 
 template<class Board>
 constexpr auto is_placeable = std::min(Board::width, Board::height) >= 1 && (!Board::is_inverted || std::max(Board::width, Board::height) > 1);
@@ -22,27 +21,27 @@ template<class Board>
 struct invert;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalCaptures>
-struct invert<rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
+struct invert<board::rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
 :
-        rectangular<Width, Height, !IsInverted, IsOrthogonalCaptures>
+        board::rectangular<Width, Height, !IsInverted, IsOrthogonalCaptures>
 {};
 
 template<class Board>
 struct remove_orthogonal_captures;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalCaptures>
-struct remove_orthogonal_captures<rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
+struct remove_orthogonal_captures<board::rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
 :
-        rectangular<Width, Height, IsInverted, false>
+        board::rectangular<Width, Height, IsInverted, false>
 {};
 
 template<class Board>
 struct add_orthogonal_captures;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalCaptures>
-struct add_orthogonal_captures<rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
+struct add_orthogonal_captures<board::rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
 :
-        rectangular<Width, Height, IsInverted, true>
+        board::rectangular<Width, Height, IsInverted, true>
 {};
 
 }       // namespace detail
@@ -56,5 +55,4 @@ using remove_orthogonal_captures_t = typename detail::remove_orthogonal_captures
 template<class Board>
 using add_orthogonal_captures_t = typename detail::add_orthogonal_captures<xstd::_t<Board>>::type;
 
-}       // namespace board
 }       // namespace dctl

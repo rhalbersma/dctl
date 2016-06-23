@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/board.hpp>       // checkers
 
 namespace dctl {
 namespace rules {
@@ -7,7 +6,6 @@ namespace block_adl {
 
 struct thai
 {
-        using board_type = board::checkers;
         static constexpr auto is_long_ranged_king = true;
         static constexpr auto is_backward_pawn_jump = false;
 

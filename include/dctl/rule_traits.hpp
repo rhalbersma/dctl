@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/board/rectangular.hpp>   // rectangular
 #include <dctl/utility/type_traits.hpp> // rules_t
 #include <xstd/pp/tti.hpp>              // XSTD_PP_TTI_CONSTANT, XSTD_PP_TTI_TYPENAME
 #include <experimental/type_traits>     // is_same
@@ -7,6 +8,10 @@
 #include <utility>                      // forward
 
 namespace dctl {
+
+XSTD_PP_TTI_CONSTANT(width, 8)
+XSTD_PP_TTI_CONSTANT(height, 8)
+XSTD_PP_TTI_CONSTANT(is_inverted, false)
 
 XSTD_PP_TTI_CONSTANT(initial_position_gap, 2)
 
@@ -62,6 +67,14 @@ using jump_category_t = std::conditional_t<
         is_orthogonal_jump_or_v<Rules>,
         orthogonal_jump_tag,
           diagonal_jump_tag
+>;
+
+template<class Rules>
+using rectangular_t = board::rectangular<
+        width_or_v<Rules>,
+        height_or_v<Rules>,
+        is_inverted_or_v<Rules>,
+        is_orthogonal_jump_or_v<Rules>
 >;
 
 XSTD_PP_TTI_CONSTANT(is_superior_rank_jump, false)

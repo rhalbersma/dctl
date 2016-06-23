@@ -1,6 +1,6 @@
 #include <dctl/board.hpp>                       // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
-#include <dctl/board/traits.hpp>                // add_orthogonal_captures, remove_orthogonal_captures
+#include <dctl/board_traits.hpp>                // add_orthogonal_captures, remove_orthogonal_captures
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

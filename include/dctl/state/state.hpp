@@ -1,8 +1,9 @@
 #pragma once
+#include <dctl/action/action.hpp>
 #include <dctl/color.hpp>
 #include <dctl/piece.hpp>
 #include <dctl/board/mask.hpp>
-#include <dctl/action/action.hpp>
+#include <dctl/rule_traits.hpp>
 #include <dctl/state/mrp_kings/mrp_kings.hpp>
 #include <dctl/state/mrp_kings/zobrist.hpp>
 #include <dctl/state/detail/base_state.hpp>
@@ -11,7 +12,6 @@
 #include <dctl/state/to_move/to_move.hpp>
 #include <dctl/state/to_move/zobrist.hpp>
 #include <dctl/state/reversible_actions.hpp>
-#include <dctl/rule_traits.hpp>
 #include <dctl/utility/tagged_empty_base.hpp>
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <dctl/utility/zobrist/accumulate.hpp>
@@ -46,7 +46,7 @@ using block_adl::most_recently_pushed_kings_or_t;
 
 }       // namespace detail
 
-template<class Rules, class Board = board_t<Rules>>
+template<class Rules, class Board = rectangular_t<Rules>>
 class state
 :
         detail::most_recently_pushed_kings_or_t<Rules, Board>
