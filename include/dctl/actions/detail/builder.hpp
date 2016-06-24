@@ -225,6 +225,7 @@ private:
 
         auto precedence_duplicates_dispatch(trivial_precedence_tag, drop_duplicates_tag) const
         {
+                assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
                 if (actions.empty() || is_small() || is_unique()) {
                         return actions.push_back(candidate_action);
                 }
