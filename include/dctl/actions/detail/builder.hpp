@@ -9,7 +9,7 @@
 #include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type, value_t
-#include <boost/range/algorithm.hpp>            // find
+#include <boost/algorithm/cxx11/none_of.hpp>    // none_of
 #include <experimental/type_traits>
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -264,13 +264,14 @@ private:
                 static_assert(std::experimental::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!actions.empty());
                 assert(precedence::equal_to{}(candidate_action, actions.back()));
-                if (!is_large(candidate_action) || boost::find(actions, candidate_action) == actions.cend())
+                if (is_small(candidate_action) || boost::algorithm::none_of(actions, [&](auto const& a) { return a == candidate_action; })) {
                         actions.push_back(candidate_action);
+                }
         }
 
-        auto is_large(action_type const& a) const noexcept
+        auto is_small(action_type const& a) const noexcept
         {
-                return large_jump_v<rules_type> <= a.num_captured_pieces();
+                return a.num_captured_pieces() < large_jump_v<rules_type>;
         }
 };
 
