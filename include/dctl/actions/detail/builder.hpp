@@ -260,7 +260,7 @@ private:
                 return candidate_action.num_captured_pieces() < large_jump_v<rules_type>;
         }
 
-        auto is_unique() const noexcept
+        auto is_unique() const // Throws: Nothing.
         {
                 static_assert(std::experimental::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!actions.empty());
