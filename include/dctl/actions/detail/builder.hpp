@@ -225,53 +225,46 @@ private:
 
         auto precedence_duplicates_dispatch(trivial_precedence_tag, drop_duplicates_tag) const
         {
-                if (actions.empty())
+                if (actions.empty() || is_small() || is_unique()) {
                         return actions.push_back(candidate_action);
-                add_if_not_duplicate();
+                }
         }
 
         auto precedence_duplicates_dispatch(nontrivial_precedence_tag, keep_duplicates_tag) const
         {
-                if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back()))
+                if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back())) {
                         return actions.push_back(candidate_action);
-
+                }
                 if (precedence::greater{}(candidate_action, actions.back())) {
                         actions.clear();
                         return actions.push_back(candidate_action);
                 }
-
                 assert(precedence::less{}(candidate_action, actions.back()));
         }
 
         auto precedence_duplicates_dispatch(nontrivial_precedence_tag, drop_duplicates_tag) const
         {
-                if (actions.empty())
+                if (actions.empty() || (precedence::equal_to{}(candidate_action, actions.back()) && (is_small() || is_unique()))) {
                         return actions.push_back(candidate_action);
-
-                if (precedence::equal_to{}(candidate_action, actions.back()))
-                        return add_if_not_duplicate();
-
+                }
                 if (precedence::greater{}(candidate_action, actions.back())) {
                         actions.clear();
                         return actions.push_back(candidate_action);
                 }
-
                 assert(precedence::less{}(candidate_action, actions.back()));
         }
 
-        auto add_if_not_duplicate() const
+        auto is_small() const noexcept
+        {
+                return candidate_action.num_captured_pieces() < large_jump_v<rules_type>;
+        }
+
+        auto is_unique() const noexcept
         {
                 static_assert(std::experimental::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!actions.empty());
                 assert(precedence::equal_to{}(candidate_action, actions.back()));
-                if (is_small(candidate_action) || boost::algorithm::none_of(actions, [&](auto const& a) { return a == candidate_action; })) {
-                        actions.push_back(candidate_action);
-                }
-        }
-
-        auto is_small(action_type const& a) const noexcept
-        {
-                return a.num_captured_pieces() < large_jump_v<rules_type>;
+                return boost::algorithm::none_of(actions, [&](auto const& a) { return a == candidate_action; });
         }
 };
 
