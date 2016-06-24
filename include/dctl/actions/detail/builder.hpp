@@ -120,7 +120,7 @@ public:
                 return not_occupied_;
         }
 
-        auto not_occupied(square_type sq) const
+        auto not_occupied(square_type const sq) const
         {
                 return not_occupied_.test(sq);
         }
@@ -133,12 +133,12 @@ public:
         }
 
         template<int Direction>
-        auto path(square_type sq) const
+        auto path(square_type const sq) const
         {
                 return path<Direction>().test(sq);
         }
 
-        auto is_last_jumped_king(square_type sq) const
+        auto is_last_jumped_king(square_type const sq) const
         {
                 return pieces<piece::king>(state).test(sq);
         }
@@ -226,33 +226,53 @@ private:
         auto precedence_duplicates_dispatch(trivial_precedence_tag, drop_duplicates_tag) const
         {
                 assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
-                if (actions.empty() || is_small() || is_unique()) {
-                        return actions.push_back(candidate_action);
-                }
+                if (actions.empty() || is_small() || is_unique())
+                        actions.push_back(candidate_action);
         }
 
         auto precedence_duplicates_dispatch(nontrivial_precedence_tag, keep_duplicates_tag) const
         {
-                if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back())) {
+                if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back()))
                         return actions.push_back(candidate_action);
-                }
-                if (precedence::greater{}(candidate_action, actions.back())) {
-                        actions.clear();
-                        return actions.push_back(candidate_action);
-                }
-                assert(precedence::less{}(candidate_action, actions.back()));
+                if (precedence::less{}(candidate_action, actions.back()))
+                        return;
+                assert(precedence::greater{}(candidate_action, actions.back()));
+                actions.clear();
+                actions.push_back(candidate_action);
         }
 
         auto precedence_duplicates_dispatch(nontrivial_precedence_tag, drop_duplicates_tag) const
         {
-                if (actions.empty() || (precedence::equal_to{}(candidate_action, actions.back()) && (is_small() || is_unique()))) {
-                        return actions.push_back(candidate_action);
+                if (actions.empty())
+                        return actions.push_back(candidate_action);/*
+                if (precedence::equal_to{}(candidate_action, actions.back())) {
+                        if (is_small() || is_unique())
+                                actions.push_back(candidate_action);
+                        return;
                 }
-                if (precedence::greater{}(candidate_action, actions.back())) {
+                if (precedence::less{}(candidate_action, actions.back()))
+                        return;
+                assert(precedence::greater{}(candidate_action, actions.back()));
+                actions.clear();
+                actions.push_back(candidate_action);*/
+
+                switch(precedence::compare{}(candidate_action, actions.back())) {
+                case -1 :
+                        assert(precedence::less{}(candidate_action, actions.back()));
+                        return;
+                case  0 :
+                        assert(precedence::equal_to{}(candidate_action, actions.back()));
+                        if (is_small() || is_unique())
+                                actions.push_back(candidate_action);
+                        return;
+                case +1 :
+                        assert(precedence::greater{}(candidate_action, actions.back()));
                         actions.clear();
-                        return actions.push_back(candidate_action);
+                        actions.push_back(candidate_action);
+                        return;
+                default:
+                        assert(false);
                 }
-                assert(precedence::less{}(candidate_action, actions.back()));
         }
 
         auto is_small() const noexcept
