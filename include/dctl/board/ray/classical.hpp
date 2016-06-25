@@ -1,9 +1,9 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // angle, is_positive
-#include <dctl/mask/king_targets.hpp>     // king_targets
-#include <dctl/board/ray/iterator.hpp>          // iterator
-#include <dctl/utility/first.hpp>               // First
-#include <dctl/utility/type_traits.hpp>         // set_t
+#include <dctl/board/angle.hpp>         // angle
+#include <dctl/board/shift.hpp>         // first, shift_sign
+#include <dctl/mask/king_targets.hpp>   // king_targets
+#include <dctl/board/ray/iterator.hpp>  // iterator
+#include <dctl/utility/type_traits.hpp> // set_t
 
 namespace dctl {
 namespace board {
@@ -16,7 +16,7 @@ auto classical(iterator<Board, Direction> from, Set const propagator)
         auto targets = mask::king_targets<Board>{}(*from, theta);
         auto const blockers = targets & ~propagator;
         if (blockers.any()) {
-                auto const first = util::First<is_positive(theta)>{}(blockers);
+                auto const first = board::first<board::shift_sign_v<Direction>>{}(blockers);
                 targets ^= mask::king_targets<Board>{}(first, theta);
                 targets.reset(first);
         }

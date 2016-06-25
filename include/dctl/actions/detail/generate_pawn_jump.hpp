@@ -7,7 +7,6 @@
 #include <dctl/board/angle.hpp>                         // _deg, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // color
 #include <dctl/mask/jump_sources.hpp>                   // jump_sources
 #include <dctl/mask/promotion.hpp>                      // is_promotion

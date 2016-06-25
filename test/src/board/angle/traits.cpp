@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(RightIsNotLeft)
                 })
         );
 }
-
+/*
 BOOST_AUTO_TEST_CASE(PositiveIsNotNegative)
 {
         auto const angles = std::vector<angle>{ 45_deg, 90_deg, 135_deg, 180_deg };
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(NegativeIsNotPositive)
                 })
         );
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace dctl
