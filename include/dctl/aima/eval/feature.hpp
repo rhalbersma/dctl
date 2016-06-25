@@ -1,8 +1,9 @@
 #pragma once
 #include <dctl/aima/eval/weight.hpp>    // Weight
 #include <dctl/actions.hpp>             // count, select::push
-#include <dctl/board/mask.hpp>          // Column, Row
 #include <dctl/color.hpp>               // Player
+#include <dctl/mask/column.hpp>         // column
+#include <dctl/mask/row.hpp>            // row
 #include <dctl/piece.hpp>
 #include <xstd/cstddef.hpp>
 #include <cstdlib>                      // abs
@@ -17,7 +18,7 @@ public:
         template<class State>
         static auto value(State const& s)
         {
-                int score = 0;
+                auto score = 0;
                 score += material(s);
                 score += tempo(s);
                 score += center(s);
@@ -43,9 +44,9 @@ public:
                 using rules_type = rules_t<State>;
                 using board_type = board_t<State>;
                 using namespace xstd::support_literals;
-                int score = 0;
+                auto score = 0;
                 for (auto i = 1_zu; i < board_type::height; ++i)
-                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(ToMove) & board::Row<board_type>::mask(ToMove, i)).count());
+                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(ToMove) & mask::row<board_type>{}(ToMove, i)).count());
                 return score;
         }
 
@@ -55,12 +56,12 @@ public:
                 using rules_type = rules_t<State>;
                 using board_type = board_t<State>;
                 using namespace xstd::support_literals;
-                int score = 0;
+                auto score = 0;
                 for (auto i = 1_zu; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::center[i] *
                         (
-                                static_cast<int>((s.pieces(ToMove) & board::Column<board_type>::mask( ToMove, i)).count()) +
-                                static_cast<int>((s.pieces(ToMove) & board::Column<board_type>::mask(!ToMove, i)).count())
+                                static_cast<int>((s.pieces(ToMove) & mask::column<board_type>{}( ToMove, i)).count()) +
+                                static_cast<int>((s.pieces(ToMove) & mask::column<board_type>{}(!ToMove, i)).count())
                         );
                 }
                 return score;
@@ -72,12 +73,12 @@ public:
                 using rules_type = rules_t<State>;
                 using board_type = board_t<State>;
                 using namespace xstd::support_literals;
-                int score = 0;
+                auto score = 0;
                 for (auto i = 0_zu; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::balance[i] *
                         (
-                                static_cast<int>((s.pieces(ToMove) & board::Column<board_type>::mask( ToMove, i)).count()) -
-                                static_cast<int>((s.pieces(ToMove) & board::Column<board_type>::mask(!ToMove, i)).count())
+                                static_cast<int>((s.pieces(ToMove) & mask::column<board_type>{}( ToMove, i)).count()) -
+                                static_cast<int>((s.pieces(ToMove) & mask::column<board_type>{}(!ToMove, i)).count())
                         );
                 }
                 return -abs(score);

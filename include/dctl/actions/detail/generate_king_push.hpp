@@ -3,10 +3,10 @@
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/board/patterns.hpp>                      // push_targets
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // color
+#include <dctl/mask/push_targets.hpp>                   // push_targets
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
 #include <dctl/state/pieces.hpp>
@@ -20,7 +20,7 @@ namespace core {
 namespace detail {
 
 template<color ToMove, class Reverse, class State, class SequenceContainer>
-class Generate<ToMove, piece::king, select::push, Reverse, State, SequenceContainer>
+class generate<ToMove, piece::king, select::push, Reverse, State, SequenceContainer>
 {
         using action_type = xstd::value_t<SequenceContainer>;
         using  board_type = board_t<State>;
@@ -28,12 +28,12 @@ class Generate<ToMove, piece::king, select::push, Reverse, State, SequenceContai
         using    set_type =   set_t<State>;
 
         template<int Direction>
-        using push_targets = board::push_targets<board_type, Direction, short_ranged_tag>;
+        using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
         SequenceContainer& actions;
 public:
-        Generate(SequenceContainer& a)
+        generate(SequenceContainer& a)
         :
                 actions{a}
         {}

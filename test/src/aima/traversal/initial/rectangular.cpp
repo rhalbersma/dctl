@@ -11,7 +11,7 @@ namespace dctl {
 namespace aima {
 namespace traversal {
 
-BOOST_AUTO_TEST_SUITE(WalkInitialRectangular)
+BOOST_AUTO_TEST_SUITE(WalkinitialRectangular)
 
 BOOST_AUTO_TEST_CASE(spantsiretti)
 {

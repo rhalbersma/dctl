@@ -9,12 +9,12 @@
 
 namespace dctl::aima::traversal {
 
-BOOST_AUTO_TEST_SUITE(WalkInitialBoard8x8)
+BOOST_AUTO_TEST_SUITE(WalkinitialBoard8x8)
 
 // The "Standard validation generator moves" thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-78.html
 
-BOOST_AUTO_TEST_CASE(BrazilianInitial)
+BOOST_AUTO_TEST_CASE(Brazilianinitial)
 {
         auto const p = state<rules::brazilian, board::checkers>::initial();
         auto const leafs = std::vector<std::vector<std::size_t>> {
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(BrazilianInitial)
 // The "Standard validation generator moves" thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-57.html
 
-BOOST_AUTO_TEST_CASE(poolInitial)
+BOOST_AUTO_TEST_CASE(poolinitial)
 {
         auto const p = state<rules::pool>::initial();
         auto const leafs = std::vector<std::vector<std::size_t>> {
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(poolInitial)
 // The "Standard validation generator moves" thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
 
-BOOST_AUTO_TEST_CASE(russianInitial)
+BOOST_AUTO_TEST_CASE(russianinitial)
 {
         auto const p = state<rules::russian>::initial();
         auto const leafs = std::vector<std::vector<std::size_t>> {
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(russianInitial)
 // The "Standard validation generator moves" thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-126.html
 
-BOOST_AUTO_TEST_CASE(checkersInitial)
+BOOST_AUTO_TEST_CASE(checkersinitial)
 {
         auto const p = state<rules::checkers>::initial();
         auto const leafs = std::vector<std::vector<std::size_t>> {
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(checkersInitial)
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 
-BOOST_AUTO_TEST_CASE(czechInitial)
+BOOST_AUTO_TEST_CASE(czechinitial)
 {
         auto const p = state<rules::czech>::initial();
         auto const leafs = std::vector<std::vector<std::size_t>> {
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(czechInitial)
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 
-BOOST_AUTO_TEST_CASE(spanishInitial)
+BOOST_AUTO_TEST_CASE(spanishinitial)
 {
         auto const p = state<rules::spanish>::initial();
         auto const leafs = std::vector<std::vector<std::size_t>> {
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(spanishInitial)
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 
-BOOST_AUTO_TEST_CASE(italianInitial)
+BOOST_AUTO_TEST_CASE(italianinitial)
 {
         auto const p = state<rules::italian>::initial();
         auto const leafs = std::vector<std::vector<std::size_t>> {
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(italianInitial)
 // The alternative game rules thread on the FMJD forum
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 
-BOOST_AUTO_TEST_CASE(thaiInitial)
+BOOST_AUTO_TEST_CASE(thaiinitial)
 {
         auto const p = state<rules::thai>::initial(2);
         auto const leafs = std::vector<std::vector<std::size_t>> {

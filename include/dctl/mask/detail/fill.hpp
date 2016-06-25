@@ -3,14 +3,14 @@
 #include <dctl/utility/shift.hpp>       // shift
 
 namespace dctl {
-namespace board {
+namespace mask {
 namespace detail {
 namespace loop {
 
 // Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
 template<bool Sign, int N, class Set>
-auto fill(Set generator, Set const propagator)
+constexpr auto fill(Set generator, Set const propagator)
 {
         Set flood {};
         while (generator.any()) {
@@ -22,28 +22,20 @@ auto fill(Set generator, Set const propagator)
 
 }       // namespace loop
 
-// direction-wise flood-fill copy over propagator
-template<bool Sign, int N, class Set>
-auto fill(Set const generator, Set const propagator)
-{
-        return loop::fill<Sign, N>(generator, propagator);
-}
-
-}       // namespace detail
-
 template<class Board, int Direction>
-struct Fill
+struct fill
 {
         template<class Set>
-        auto operator()(Set const generator, Set const propagator) const
+        constexpr auto operator()(Set const generator, Set const propagator) const noexcept
         {
                 constexpr auto theta = angle{Direction};
-                return detail::fill<
+                return loop::fill<
                         is_positive(theta),
                         Board::shift_size(theta)
                 >(generator, propagator);
         }
 };
 
-}       // namespace board
+}       // namespace detail
+}       // namespace mask
 }       // namespace dctl

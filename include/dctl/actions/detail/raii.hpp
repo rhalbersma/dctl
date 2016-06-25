@@ -87,21 +87,21 @@ public:
 };
 
 template<class Builder>
-class SetKingJump
+class Setking_jump
 {
         Builder& builder;
 public:
-        ~SetKingJump()
+        ~Setking_jump()
         {
                 assert(builder.is_with(piece::king) && builder.is_into(piece::king));
                 builder.with(piece::pawn);
                 builder.into(piece::pawn);
         }
 
-        SetKingJump(SetKingJump const&) = delete;
-        SetKingJump& operator=(SetKingJump const&) = delete;
+        Setking_jump(Setking_jump const&) = delete;
+        Setking_jump& operator=(Setking_jump const&) = delete;
 
-        SetKingJump(Builder& b)
+        Setking_jump(Builder& b)
         :
                 builder{b}
         {

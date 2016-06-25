@@ -3,11 +3,12 @@
 #include <xstd/cstddef.hpp>             // _zu
 
 namespace dctl {
-namespace board {
+namespace mask {
+namespace detail {
 
 /* NOTE: for C++11/14, constexpr predicate != lambda expression */
 template<class Board, class Set = set_t<Board>, class UnaryPredicate>
-constexpr auto make_set_if(UnaryPredicate pred) noexcept
+constexpr auto copy_if(UnaryPredicate pred) noexcept
 {
         using namespace xstd::support_literals;
         Set result{};
@@ -17,5 +18,6 @@ constexpr auto make_set_if(UnaryPredicate pred) noexcept
         return result;
 }
 
-}       // namespace board
+}       // namespace detail
+}       // namespace mask
 }       // namespace dctl

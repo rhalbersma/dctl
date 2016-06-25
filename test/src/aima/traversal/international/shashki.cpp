@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_SUITE(WalkInternationalShashki)
 // The "Standard validation generator moves" thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-58.html
 
-BOOST_AUTO_TEST_CASE(FrontRows)
+BOOST_AUTO_TEST_CASE(Frontrows)
 {
         auto const p = setup::read<rules::international, board::international, pdn::protocol>()(
                 "W:B16,17,18,19,20:W31,32,33,34,35"

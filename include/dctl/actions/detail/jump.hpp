@@ -48,12 +48,12 @@ public:
                         Builder<ToMove, DuplicatesPolicy, State, SequenceContainer>;
                 //>;
 
-                using KingJump = Generate<ToMove, piece::king, select::jump, Reverse, State, Builder>;
-                using PawnJump = Generate<ToMove, piece::pawn, select::jump, Reverse, State, Builder>;
+                using king_jump = detail::generate<ToMove, piece::king, select::jump, Reverse, State, Builder>;
+                using pawn_jump = detail::generate<ToMove, piece::pawn, select::jump, Reverse, State, Builder>;
 
                 Builder builder{state, actions};
-                KingJump{builder}();
-                PawnJump{builder}();
+                king_jump{builder}();
+                pawn_jump{builder}();
         }
 
         template<class State>
@@ -73,10 +73,10 @@ public:
         template<class State>
         auto detect(State const& state) const noexcept
         {
-                using PawnJump = Detect<ToMove, piece::pawn, select::jump, Reverse, State>;
-                using KingJump = Detect<ToMove, piece::king, select::jump, Reverse, State>;
+                using pawn_jump = Detect<ToMove, piece::pawn, select::jump, Reverse, State>;
+                using king_jump = Detect<ToMove, piece::king, select::jump, Reverse, State>;
 
-                return PawnJump{}(state) || KingJump{}(state);
+                return pawn_jump{}(state) || king_jump{}(state);
         }
 };
 

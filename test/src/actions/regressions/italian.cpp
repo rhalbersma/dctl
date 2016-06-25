@@ -17,9 +17,9 @@ BOOST_AUTO_TEST_SUITE(ActionsRegressionsitalian)
 
                 BOOST_FIXTURE_TEST_CASE(AliotoDomenico, F)      // Art. 6.9
                 {
-                        auto const FEN = "W:WK30:B10,K12,K18,20,K26,K27";
+                        auto const fen = "W:WK30:B10,K12,K18,20,K26,K27";
                         auto const legal = std::vector<std::string>{ "30x05" };
-                        test(FEN, legal);
+                        test(fen, legal);
                 }
 
         BOOST_AUTO_TEST_SUITE_END()
@@ -28,16 +28,16 @@ BOOST_AUTO_TEST_SUITE(ActionsRegressionsitalian)
 
                 BOOST_FIXTURE_TEST_CASE(NoActions, F)           // Art 5.3(b)
                 {
-                        auto const FEN = "W:W32:BK28";
+                        auto const fen = "W:W32:BK28";
                         auto const legal = std::vector<std::string>{ /* NO MOVES */ };
-                        test(FEN, legal);
+                        test(fen, legal);
                 }
 
-                BOOST_FIXTURE_TEST_CASE(PawnPush, F)            // Art 5.3(b)
+                BOOST_FIXTURE_TEST_CASE(pawn_push, F)            // Art 5.3(b)
                 {
-                        auto const FEN = "W:W30:BK26";
+                        auto const fen = "W:W30:BK26";
                         auto const legal = std::vector<std::string>{ "30-27" };
-                        test(FEN, legal);
+                        test(fen, legal);
                 }
 
         BOOST_AUTO_TEST_SUITE_END()

@@ -28,7 +28,7 @@ public:
         base_state(set_type const b, set_type const w, set_type const p, set_type const k)
         :
                 by_color_piece{{b & p, b & k}, {w & p, w & k}},
-                not_occupied_{board::squares_v<Board> ^ (b | w)}
+                not_occupied_{mask::squares_v<Board> ^ (b | w)}
         {}
 
         template<class Action>
@@ -66,7 +66,7 @@ public:
 
         auto pieces() const noexcept
         {
-                return board::squares_v<Board> ^ not_occupied();
+                return mask::squares_v<Board> ^ not_occupied();
         }
 
         auto not_occupied() const noexcept

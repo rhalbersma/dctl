@@ -31,19 +31,19 @@ BOOST_AUTO_TEST_CASE(WiegerWesselink)
                 dxp::protocol, TokenInterface<'X', 'O', '.'>
         >()(w);
 
-        // write the above position as a FEN string with the PDN protocol
-        auto const FEN_w = write<pdn::protocol>()(pos_w);
+        // write the above position as a fen string with the PDN protocol
+        auto const fen_w = write<pdn::protocol>()(pos_w);
 
-        // convert the new FEN string to a new position and back into a new FEN string
-        auto const pos_r = read<rules::international, board::international, pdn::protocol>()(FEN_w);
-        auto const FEN_r = write<pdn::protocol>()(pos_r);
+        // convert the new fen string to a new position and back into a new fen string
+        auto const pos_r = read<rules::international, board::international, pdn::protocol>()(fen_w);
+        auto const fen_r = write<pdn::protocol>()(pos_r);
 
         // the two positions have been parsed through different protocols,
-        // but they should have identical FEN strings
-        BOOST_CHECK_EQUAL(FEN_w, FEN_r);
+        // but they should have identical fen strings
+        BOOST_CHECK_EQUAL(fen_w, fen_r);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace setup
+}       // namespace maskup
 }       // namespace dctl

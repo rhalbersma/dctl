@@ -10,7 +10,7 @@ namespace detail {
 
 constexpr auto optimal_orientation(OuterGrid const g)
 {
-        // simulate a constexpr lambda (not allowed in C++14)
+        // simulate a constexpr lambda (allowed in C++17)
         struct grid_less
         {
                 OuterGrid g;

@@ -28,7 +28,7 @@ public:
         :
                 by_color_{b, w},
                 kings_{k},
-                not_occupied_{board::squares_v<Board> ^ (b | w)}
+                not_occupied_{mask::squares_v<Board> ^ (b | w)}
         {}
 
         template<class Action>
@@ -73,7 +73,7 @@ public:
 
         auto pieces() const noexcept
         {
-                return board::squares_v<Board> ^ not_occupied();
+                return mask::squares_v<Board> ^ not_occupied();
         }
 
         auto not_occupied() const noexcept

@@ -3,8 +3,8 @@
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/board/patterns.hpp>                      // push_targets
 #include <dctl/color.hpp>                               // color
+#include <dctl/mask/push_targets.hpp>                   // push_targets
 #include <dctl/piece.hpp>                               // king
 #include <dctl/rule_traits.hpp>                         // king_range_category
 #include <dctl/state/pieces.hpp>
@@ -22,7 +22,7 @@ class Count<ToMove, piece::king, select::push, Reverse, State>
         using   set_type =   set_t<State>;
 
         template<int Direction>
-        using king_push_targets = board::push_targets<board_type, Direction, king_range_category_t<rules_type>>;
+        using king_push_targets = mask::push_targets<board_type, Direction, king_range_category_t<rules_type>>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
 

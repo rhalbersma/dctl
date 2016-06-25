@@ -9,7 +9,7 @@
 
 namespace dctl::aima::traversal {
 
-BOOST_AUTO_TEST_SUITE(WalkInitialBoard10x10)
+BOOST_AUTO_TEST_SUITE(WalkinitialBoard10x10)
 
 // The "Standard validation generator moves" thread on the Shashki forum
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-69.html

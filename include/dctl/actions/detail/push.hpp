@@ -23,29 +23,29 @@ public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const
         {
-                using KingPush = Generate<ToMove, piece::king, select::push, Reverse, State, SequenceContainer>;
-                using PawnPush = Generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContainer>;
+                using king_push = detail::generate<ToMove, piece::king, select::push, Reverse, State, SequenceContainer>;
+                using pawn_push = detail::generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContainer>;
 
-                KingPush{actions}(state);
-                PawnPush{actions}(state);
+                king_push{actions}(state);
+                pawn_push{actions}(state);
         }
 
         template<class State>
         auto count(State const& state) const noexcept
         {
-                using KingPush = Count<ToMove, piece::king, select::push, Reverse, State>;
-                using PawnPush = Count<ToMove, piece::pawn, select::push, Reverse, State>;
+                using king_push = Count<ToMove, piece::king, select::push, Reverse, State>;
+                using pawn_push = Count<ToMove, piece::pawn, select::push, Reverse, State>;
 
-                return KingPush{}(state) + PawnPush{}(state);
+                return king_push{}(state) + pawn_push{}(state);
         }
 
         template<class State>
         auto detect(State const& state) const noexcept
         {
-                using PawnPush = Detect<ToMove, piece::pawn, select::push, Reverse, State>;
-                using KingPush = Detect<ToMove, piece::king, select::push, Reverse, State>;
+                using pawn_push = Detect<ToMove, piece::pawn, select::push, Reverse, State>;
+                using king_push = Detect<ToMove, piece::king, select::push, Reverse, State>;
 
-                return PawnPush{}(state) || KingPush{}(state);
+                return pawn_push{}(state) || king_push{}(state);
         }
 };
 

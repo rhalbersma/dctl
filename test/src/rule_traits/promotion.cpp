@@ -7,24 +7,24 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(PromotionCategory)
+BOOST_AUTO_TEST_SUITE(promotionCategory)
 
-using VariantsStoppedPromotionTag = boost::mpl::vector
+using VariantsStoppedpromotionTag = boost::mpl::vector
 <
         checkers, czech, frisian, international, italian, pool, spanish, thai
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedPromotionTag, T, VariantsStoppedPromotionTag)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedpromotionTag, T, VariantsStoppedpromotionTag)
 {
         static_assert(!is_passing_promotion_or_v<T>);
 }
 
-using VariantsPassingPromotionTag = boost::mpl::vector
+using VariantsPassingpromotionTag = boost::mpl::vector
 <
         russian
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingPromotionTag, T, VariantsPassingPromotionTag)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingpromotionTag, T, VariantsPassingpromotionTag)
 {
         static_assert(is_passing_promotion_or_v<T>);
 }

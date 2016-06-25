@@ -1,18 +1,18 @@
 #pragma once
-#include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, ToggleKingTargets, SetPromotion
+#include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, Toggleking_targets, Setpromotion
 #include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/detail/generate_king_jump.hpp>   // promote_en_passant
 #include <dctl/actions/select/jump.hpp>                 // jumps
 #include <dctl/board/angle.hpp>                         // _deg, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/board/patterns.hpp>                      // jump_sources
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // color
+#include <dctl/mask/jump_sources.hpp>                   // jump_sources
+#include <dctl/mask/promotion.hpp>                      // is_promotion
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
-#include <dctl/state/promotion.hpp>                     // is_promotion
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
@@ -22,16 +22,16 @@ namespace core {
 namespace detail {
 
 template<color ToMove, class Reverse, class State, class Builder>
-class Generate<ToMove, piece::pawn, select::jump, Reverse, State, Builder>
+class generate<ToMove, piece::pawn, select::jump, Reverse, State, Builder>
 {
-        using  KingJumps = Generate<ToMove, piece::king, select::jump, Reverse, State, Builder>;
+        using  king_jumps = generate<ToMove, piece::king, select::jump, Reverse, State, Builder>;
         using action_type = action_t<Builder>;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
 
         template<int Direction>
-        using jump_sources = board::jump_sources<board_type, Direction, short_ranged_tag>;
+        using jump_sources = mask::jump_sources<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
 
@@ -40,7 +40,7 @@ class Generate<ToMove, piece::pawn, select::jump, Reverse, State, Builder>
 
         Builder& builder;
 public:
-        Generate(Builder& b) noexcept
+        generate(Builder& b) noexcept
         :
                 builder{b}
         {}
@@ -188,7 +188,7 @@ private:
         template<class Iterator>
         auto king_jumps_try_next(Iterator jumper) const
         {
-                KingJumps{builder}.try_next(jumper, promotion_category_t<rules_type>{});
+                king_jumps{builder}.try_next(jumper, promotion_category_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -308,9 +308,9 @@ private:
                 return board::ray::make_iterator<board_type, Direction>(sq);
         }
 
-        auto is_promotion(std::size_t const sq) const noexcept
+        auto is_promotion(std::size_t const sq) const // Throws: Nothing.
         {
-                return dctl::is_promotion<board_type, ToMove>(sq);
+                return mask::promotion_v<board_type, ToMove>.test(sq);
         }
 };
 

@@ -48,7 +48,7 @@ using RSequence = boost::mpl::vector
         rules::thai
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Initial, T, BSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(initial, T, BSequence)
 {
         auto const p = state<rules::international, T>::initial();
         std::cout << setup::diagram<pdn::protocol>()(p);
@@ -78,5 +78,5 @@ BOOST_AUTO_TEST_CASE(Grid)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace setup
+}       // namespace maskup
 }       // namespace dctl

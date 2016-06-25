@@ -11,7 +11,7 @@ namespace dctl {
 namespace aima {
 namespace traversal {
 
-BOOST_AUTO_TEST_SUITE(WalkInitialLarge)
+BOOST_AUTO_TEST_SUITE(WalkinitialLarge)
 
 // The "Perft on large boards" thread on the FMJD forum (results until depth=10)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=4563&start=3

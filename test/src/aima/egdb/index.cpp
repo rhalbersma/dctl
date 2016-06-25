@@ -1,6 +1,6 @@
 #include <dctl/aima/egdb/index.hpp>
 #include <dctl/board.hpp>
-#include <dctl/board/mask.hpp>
+#include <dctl/mask/squares.hpp>
 #include <xstd/bitset.hpp>                      // bitset
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)
         auto const bin = Binomial{};
 
         using Board = board::international;
-        auto const ghosts = *((~board::squares_v<Board>).data());
+        auto const ghosts = *((~mask::squares_v<Board>).data());
 
         for (auto i : boost::irange(b, e)) {
                 //auto const pos = colex::combination_unrank1({N, K}, i, ghosts, bin);

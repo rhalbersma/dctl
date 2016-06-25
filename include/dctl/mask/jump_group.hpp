@@ -1,29 +1,27 @@
 #pragma once
 #include <dctl/board/detail/coordinates.hpp>    // to_llo
-#include <dctl/board/mask/make_set_if.hpp>      // make_set_if
+#include <dctl/mask/detail/copy_if.hpp>         // copy_if
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/cstdlib.hpp>                     // euclidean_div
-#include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 
 namespace dctl {
-namespace board {
+namespace mask {
 
 template<class Board>
-class JumpGroup
+class jump_group
 {
-        static constexpr auto init(std::size_t const from_sq) noexcept
+        template<std::size_t FromSquare>
+        struct init
         {
-                // simulate a constexpr lambda (not allowed in C++14)
                 struct is_jump_group
                 {
-                        std::size_t const from_sq_;
-
+                        // simulate a constexpr lambda (allowed in C++17)
                         constexpr auto operator()(std::size_t const dest_sq) const noexcept
                         {
-                                auto const from_coord = detail::to_llo(from_sq_, Board::inner_grid);
-                                auto const dest_coord = detail::to_llo(dest_sq , Board::inner_grid);
+                                auto const from_coord = board::detail::to_llo(FromSquare, Board::inner_grid);
+                                auto const dest_coord = board::detail::to_llo(dest_sq   , Board::inner_grid);
                                 auto const delta_x = xstd::euclidean_div(static_cast<int>(from_coord.x) - static_cast<int>(dest_coord.x), 4).rem;
                                 auto const delta_y = xstd::euclidean_div(static_cast<int>(from_coord.y) - static_cast<int>(dest_coord.y), 4).rem;
                                 return
@@ -33,29 +31,34 @@ class JumpGroup
                         }
                 };
 
-                return make_set_if<Board>(is_jump_group{from_sq});
-        }
+                // simulate a constexpr lambda (allowed in C++17)
+                constexpr auto operator()() const noexcept
+                {
+                        return detail::copy_if<Board>(is_jump_group{});
+                }
+        };
 
-        using table_type = std::array<set_t<Board>, 4>;
-        static constexpr table_type table =
-        {{
-                init(Board::edge_le() + 0),
-                init(Board::edge_le() + 1),
-                init(Board::edge_lo() + 0),
-                init(Board::edge_lo() + 1)
-        }};
+        using value_type = set_t<Board>;
+
+        static constexpr value_type value[] =
+        {
+                init<Board::edge_le() + 0>{}(),
+                init<Board::edge_le() + 1>{}(),
+                init<Board::edge_lo() + 0>{}(),
+                init<Board::edge_lo() + 1>{}()
+        };
 
 public:
-        static constexpr auto mask(std::size_t const n) noexcept
+        constexpr auto operator()(std::size_t const n) const noexcept
         {
                 assert(n < 4);
-                return table[n];
+                return value[n];
         }
 };
 
 template<class Board>
-constexpr typename JumpGroup<Board>::table_type
-JumpGroup<Board>::table;
+constexpr typename jump_group<Board>::value_type
+jump_group<Board>::value[];
 
-}       // namespace board
+}       // namespace mask
 }       // namespace dctl

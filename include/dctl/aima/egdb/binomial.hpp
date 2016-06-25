@@ -75,7 +75,7 @@ private:
                 return (n * choose(n - 1, k - 1)) / k;
         }
 
-        // simulate a constexpr lambda (not allowed in C++14)
+        // simulate a constexpr lambda (allowed in C++17)
         struct lambda
         {
                 int n;

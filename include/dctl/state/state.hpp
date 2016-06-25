@@ -1,8 +1,10 @@
 #pragma once
 #include <dctl/action/action.hpp>
 #include <dctl/color.hpp>
+#include <dctl/mask/initial.hpp>
+#include <dctl/mask/promotion.hpp>
+#include <dctl/mask/squares.hpp>
 #include <dctl/piece.hpp>
-#include <dctl/board/mask.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/state/mrp_kings/mrp_kings.hpp>
 #include <dctl/state/mrp_kings/zobrist.hpp>
@@ -63,6 +65,16 @@ private:
 
         constexpr auto assert_invariants() const noexcept
         {
+                assert(mask::squares_v<board_type> == (pieces() | not_occupied()));
+
+                assert(pieces() == (pieces(color::black) | pieces(color::white)));
+                assert(pieces() == (pieces(piece::pawn ) | pieces(piece::king )));
+
+                assert(pieces(color::black) == (pieces(color::black, piece::pawn) | pieces(color::black, piece::king)));
+                assert(pieces(color::white) == (pieces(color::white, piece::pawn) | pieces(color::white, piece::king)));
+                assert(pieces(piece::pawn ) == (pieces(color::black, piece::pawn) | pieces(color::white, piece::pawn)));
+                assert(pieces(piece::king ) == (pieces(color::black, piece::king) | pieces(color::white, piece::king)));
+
                 assert(xstd::disjoint(pieces(), not_occupied()));
 
                 assert(xstd::disjoint(pieces(color::black), pieces(color::white)));
@@ -73,22 +85,11 @@ private:
                 assert(xstd::disjoint(pieces(color::black, piece::pawn), pieces(color::white, piece::pawn)));
                 assert(xstd::disjoint(pieces(color::black, piece::king), pieces(color::white, piece::king)));
 
-                assert(xstd::disjoint(pieces(color::black, piece::pawn), board::Promotion<board_type>::mask(color::black)));
-                assert(xstd::disjoint(pieces(color::white, piece::pawn), board::Promotion<board_type>::mask(color::white)));
-
-                assert(board::squares_v<board_type> == (pieces() | not_occupied()));
-
-                assert(pieces() == (pieces(color::black) | pieces(color::white)));
-                assert(pieces() == (pieces(piece::pawn ) | pieces(piece::king )));
-
-                assert(pieces(color::black) == (pieces(color::black, piece::pawn) | pieces(color::black, piece::king)));
-                assert(pieces(color::white) == (pieces(color::white, piece::pawn) | pieces(color::white, piece::king)));
-                assert(pieces(piece::pawn ) == (pieces(color::black, piece::pawn) | pieces(color::white, piece::pawn)));
-                assert(pieces(piece::king ) == (pieces(color::black, piece::king) | pieces(color::white, piece::king)));
+                assert(xstd::disjoint(pieces(color::black, piece::pawn), mask::promotion_v<board_type, color::black>));
+                assert(xstd::disjoint(pieces(color::white, piece::pawn), mask::promotion_v<board_type, color::white>));
         }
 
 public:
-        // initialize with a set of bitboards and a color
         state(color const c, set_type const black, set_type const white, set_type const pawns, set_type const kings)
         :
                 most_recently_pushed_kings_or_t{},
@@ -100,9 +101,9 @@ public:
 
         static state initial(std::size_t const separation = initial_position_gap_or_v<Rules> + Board::height % 2)
         {
-                auto const b = board::Initial<Board>::mask(color::black, separation);
-                auto const w = board::Initial<Board>::mask(color::white, separation);
-                return { color::white, b, w, b | w, set_type{} };
+                auto const bp = mask::initial<board_type>{}(color::black, separation);
+                auto const wp = mask::initial<board_type>{}(color::white, separation);
+                return { color::white, bp, wp, bp | wp, {} };
         }
 
         template<class Action>
