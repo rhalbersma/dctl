@@ -4,7 +4,6 @@
 #include <dctl/board/detail/dimensions.hpp>             // dimensions
 #include <dctl/board/detail/grid.hpp>                   // InnerGrid, OuterGrid
 #include <dctl/board/detail/optimal_orientation.hpp>    // size_minimizing_orientation
-#include <dctl/board/detail/shift_size.hpp>             // shift_size
 #include <dctl/color.hpp>                               // black, white
 #include <dctl/utility/fill_array.hpp>                  // fill_array
 #include <xstd/bitset.hpp>                              // bitset
@@ -41,9 +40,9 @@ public:
         static constexpr auto edge = is_orthogonal_captures ? 2 : 1;
         static constexpr auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
         static constexpr auto orientation = detail::optimal_orientation(detail::OuterGrid{inner_grid, edge});
+        static constexpr auto outer_grid = detail::OuterGrid{rotate(inner_grid, orientation), edge};
 
 private:
-        static constexpr auto outer_grid = detail::OuterGrid{rotate(inner_grid, orientation), edge};
         static constexpr auto NumBits = outer_grid.size();
         static constexpr auto NumSquares = inner_grid.size();
 
@@ -66,11 +65,6 @@ public:
 
         using    set_type = xstd::bitset<xstd::align_on(NumBits, 64)>;
         using square_type = xstd::uint_fast_t<set_type::size()>;
-
-        static constexpr auto shift_size(angle const direction)
-        {
-                return detail::shift_size{}(outer_grid, direction);
-        }
 
         static auto squares() noexcept
         {

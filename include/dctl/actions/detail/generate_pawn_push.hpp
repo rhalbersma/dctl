@@ -4,7 +4,6 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator
-#include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // color
 #include <dctl/mask/promotion.hpp>                      // is_promotion
 #include <dctl/mask/push_targets.hpp>                   // push_targets

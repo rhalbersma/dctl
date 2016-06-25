@@ -28,11 +28,11 @@ BOOST_AUTO_TEST_CASE(RotateZeroDegIsIdentityOnAllAngles)
         );
 }
 
-BOOST_AUTO_TEST_CASE(RotateOneHundredAndEightyDegIsInvolutionOnAllAngles)
+BOOST_AUTO_TEST_CASE(ReverseIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
                 boost::algorithm::all_of(angles, [](auto const i){
-                        return group::is_involution{}([](auto const j) { return rotate(j, 180_deg); }, angle{i});
+                        return group::is_involution{}([](auto const j) { return reverse(j); }, angle{i});
                 })
         );
 }

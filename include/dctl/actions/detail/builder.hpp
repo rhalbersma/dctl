@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/angle.hpp>                 // angle, is_orthogonal
 #include <dctl/board/ray.hpp>
-#include <dctl/board/wave/iterator.hpp>
+#include <dctl/mask/push_sources.hpp>
 #include <dctl/color.hpp>
 #include <dctl/mask/jump_start.hpp>             // jump_start
 #include <dctl/piece.hpp>
@@ -35,6 +35,9 @@ private:
         set_type not_occupied_;
         SequenceContainer& actions;
         action_type candidate_action{};
+
+        template<int Direction>
+        using push_sources = mask::push_sources<board_type, Direction, short_ranged_tag>;
 
 public:
         explicit Builder(State const& s, SequenceContainer& a)
@@ -112,7 +115,7 @@ public:
         template<int Direction>
         auto current_targets() const
         {
-                return current_targets() & set_type(*std::prev(along_wave<Direction>(not_occupied())));
+                return push_sources<Direction>{}(current_targets(), not_occupied());
         }
 
         auto not_occupied() const
@@ -209,12 +212,6 @@ private:
         auto is_king(square_type sq) const
         {
                 return pieces<piece::king>(state).test(sq);
-        }
-
-        template<int Direction>
-        static auto along_wave(set_type const s)
-        {
-                return board::wave::make_iterator<board_type, Direction>(s);
         }
 
         auto precedence_duplicates_dispatch(trivial_precedence_tag, keep_duplicates_tag) const

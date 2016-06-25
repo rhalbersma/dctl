@@ -109,6 +109,11 @@ constexpr auto rotate(angle const a, angle const b) noexcept
         return a + b;
 }
 
+constexpr auto reverse(angle const a) noexcept
+{
+        return rotate(a, 180_deg);
+}
+
 constexpr auto mirror(angle const a, angle const b) noexcept
 {
         // a.rotate(inverse(b)).inverse().rotate(b)
@@ -171,16 +176,6 @@ constexpr auto is_left(angle const a) noexcept
 constexpr auto is_right(angle const a) noexcept
 {
         return 270 < a.degrees || a.degrees < 90;
-}
-
-constexpr auto is_positive(angle const a) noexcept
-{
-        return 0 < a.degrees && a.degrees <= 180;
-}
-
-constexpr auto is_negative(angle const a) noexcept
-{
-        return a.degrees == 0 || 180 < a.degrees;
 }
 
 }       // namespace dctl

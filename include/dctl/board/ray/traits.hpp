@@ -11,12 +11,6 @@ namespace ray {
 template<class T>
 constexpr auto direction_v = angle{};
 
-template<int N>
-constexpr auto is_positive_v = is_positive(angle{N});
-
-template<int N>
-using is_positive_t = std::bool_constant<is_positive_v<N>>;
-
 template<class Board, int Direction>
 constexpr auto direction_v<iterator<Board, Direction>> = angle{Direction};
 

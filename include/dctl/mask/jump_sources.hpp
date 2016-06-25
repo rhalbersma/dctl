@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/board/wave/iterator.hpp> // make_iterator
-#include <dctl/rule_traits.hpp>         // short_ranged_tag
-#include <iterator>                     // prev
+#include <dctl/mask/detail/iterator.hpp>        // make_iterator
+#include <dctl/rule_traits.hpp>                 // short_ranged_tag
+#include <iterator>                             // prev
 
 namespace dctl {
 namespace mask {
@@ -15,7 +15,7 @@ class jump_sources<Board, Direction, short_ranged_tag>
         template<class Set>
         auto prev_set(Set const s) const
         {
-                return Set(*std::prev(board::wave::make_iterator<Board, Direction>(s)));
+                return Set(*std::prev(detail::make_iterator<Board, Direction>(s)));
         }
 
 public:
