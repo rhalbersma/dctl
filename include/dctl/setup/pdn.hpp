@@ -16,5 +16,5 @@ struct TokenSet<pdn::protocol>
         static const auto quote = '"';
 };
 
-}       // namespace setup
+}       // namespace maskup
 }       // namespace dctl

@@ -43,5 +43,5 @@ char const TokenInterface<B, W, E>::upper[] = {
         static_cast<char>(toupper(white))
 };
 
-}       // namespace setup
+}       // namespace maskup
 }       // namespace dctl

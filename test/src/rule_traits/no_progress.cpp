@@ -7,7 +7,7 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(MaxSameKingPush)
+BOOST_AUTO_TEST_SUITE(MaxSameking_push)
 
 using VariantsZero = boost::mpl::vector
 <

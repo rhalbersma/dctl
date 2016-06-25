@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, SetKingJump
+#include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, Setking_jump
 #include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
@@ -19,7 +19,7 @@ namespace core {
 namespace detail {
 
 template<color ToMove, class Reverse, class State, class Builder>
-class Generate<ToMove, piece::king, select::jump, Reverse, State, Builder>
+class generate<ToMove, piece::king, select::jump, Reverse, State, Builder>
 {
         using action_type = action_t<Builder>;
         using  board_type =  board_t<Builder>;
@@ -33,14 +33,14 @@ class Generate<ToMove, piece::king, select::jump, Reverse, State, Builder>
 
         Builder& builder;
 public:
-        Generate(Builder& b) noexcept
+        generate(Builder& b) noexcept
         :
                 builder{b}
         {}
 
         auto operator()() const
         {
-                raii::SetKingJump<Builder> guard{builder};
+                raii::Setking_jump<Builder> guard{builder};
                 sources();
         }
 

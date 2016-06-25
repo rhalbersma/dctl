@@ -1,9 +1,9 @@
 #pragma once
 #include <dctl/board/angle.hpp>                 // angle, is_orthogonal
-#include <dctl/board/mask.hpp>                  // JumpStart
 #include <dctl/board/ray.hpp>
 #include <dctl/board/wave/iterator.hpp>
 #include <dctl/color.hpp>
+#include <dctl/mask/jump_start.hpp>             // jump_start
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/state/pieces.hpp>
@@ -128,7 +128,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                auto constexpr jump_start = board::JumpStart<board_type>::mask(angle{Direction});
+                auto constexpr jump_start = mask::jump_start<board_type>{}(angle{Direction});
                 return not_occupied() & jump_start;
         }
 

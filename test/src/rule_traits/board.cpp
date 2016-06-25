@@ -7,7 +7,7 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(InitialStateGap)
+BOOST_AUTO_TEST_SUITE(initialStateGap)
 
 using VariantsTwo = boost::mpl::vector
 <

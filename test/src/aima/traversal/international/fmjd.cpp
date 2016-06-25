@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(AllKings)
 // The "Perft" thread on the FMJD forum (results until depth=9)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2308&start=60
 
-BOOST_AUTO_TEST_CASE(AlmostPromotion)
+BOOST_AUTO_TEST_CASE(Almostpromotion)
 {
         auto const p = setup::read<rules::international, board::international, pdn::protocol>()(
                  "W:W6,7,8,9,10:B41,42,43,44,45"

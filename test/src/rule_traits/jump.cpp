@@ -7,7 +7,7 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(IsBackwardPawnJump)
+BOOST_AUTO_TEST_SUITE(IsBackwardpawn_jump)
 
         using VariantsFalse = boost::mpl::vector
         <
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(IsPawnJumpKing)
+BOOST_AUTO_TEST_SUITE(Ispawn_jumpKing)
 
         using VariantsTrue = boost::mpl::vector
         <

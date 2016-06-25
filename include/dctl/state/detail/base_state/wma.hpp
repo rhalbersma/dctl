@@ -82,7 +82,7 @@ public:
 
         auto not_occupied() const noexcept
         {
-                return board::squares_v<Board> ^ pieces();
+                return mask::squares_v<Board> ^ pieces();
         }
 
         auto num_pieces(color const c, piece const p) const noexcept

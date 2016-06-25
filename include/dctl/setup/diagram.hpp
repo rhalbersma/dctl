@@ -42,5 +42,5 @@ public:
         }
 };
 
-}       // namespace setup
+}       // namespace maskup
 }       // namespace dctl

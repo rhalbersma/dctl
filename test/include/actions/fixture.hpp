@@ -18,9 +18,9 @@ template<class Rules, class Board>
 struct Fixture
 {
         template<class Range>
-        void test(std::string const& FEN, Range const& rng)
+        void test(std::string const& fen, Range const& rng)
         {
-                auto const p = setup::read<Rules, Board, pdn::protocol>{}(FEN);
+                auto const p = setup::read<Rules, Board, pdn::protocol>{}(fen);
                 std::vector<action<Rules, Board>> moves;
                 core::Actions<>{}.generate(p, moves);
 

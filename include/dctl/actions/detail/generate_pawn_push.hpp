@@ -3,13 +3,13 @@
 #include <dctl/actions/select/push.hpp>                 // select
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/board/patterns.hpp>                      // push_targets
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/board/wave.hpp>                          // make_iterator
 #include <dctl/color.hpp>                               // color
+#include <dctl/mask/promotion.hpp>                      // is_promotion
+#include <dctl/mask/push_targets.hpp>                   // push_targets
 #include <dctl/piece.hpp>                               // pawn
 #include <dctl/state/pieces.hpp>
-#include <dctl/state/promotion.hpp>                     // is_promotion
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
 #include <xstd/type_traits.hpp>                         // value_t
 #include <cstddef>                                      // size_t
@@ -20,19 +20,19 @@ namespace core {
 namespace detail {
 
 template<color ToMove, class Reverse, class State, class SequenceContainer>
-class Generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContainer>
+class generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContainer>
 {
         using action_type = xstd::value_t<SequenceContainer>;
         using  board_type = board_t<State>;
         using    set_type =   set_t<State>;
 
         template<int Direction>
-        using push_targets = board::push_targets<board_type, Direction, short_ranged_tag>;
+        using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
         SequenceContainer& actions;
 public:
-        Generate(SequenceContainer& a)
+        generate(SequenceContainer& a)
         :
                 actions{a}
         {}
@@ -71,9 +71,9 @@ private:
                 return board::ray::make_iterator<board_type, Direction>(sq);
         }
 
-        auto is_promotion(std::size_t const sq) const noexcept
+        auto is_promotion(std::size_t const sq) const // Throws: Nothing.
         {
-                return dctl::is_promotion<board_type, ToMove>(sq);
+                return mask::promotion_v<board_type, ToMove>.test(sq);
         }
 };
 

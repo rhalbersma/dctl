@@ -7,7 +7,7 @@ namespace core {
 namespace detail {
 
 template<color, piece, class, class...>
-class Generate;
+class generate;
 
 }       // namespace detail
 }       // namespace core
