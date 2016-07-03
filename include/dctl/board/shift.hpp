@@ -95,9 +95,7 @@ constexpr auto shift_sign_v = shift_sign{}(Direction);
 template<class Board>
 class shift_size
 {
-        static constexpr auto g = Board::outer_grid;
-
-        constexpr auto left_down () const noexcept { return (g.width() + g.edge()) / 2; }
+        constexpr auto left_down () const noexcept { return (Board::outer_grid.width() + Board::outer_grid.edge()) / 2; }
         constexpr auto right_down() const noexcept { return left_down() + 1;            }
         constexpr auto right     () const noexcept { return right_down() - left_down(); }
         constexpr auto down      () const noexcept { return right_down() + left_down(); }
