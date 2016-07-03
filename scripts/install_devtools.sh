@@ -16,10 +16,10 @@ add-apt-repository ppa:ubuntu-toolchain-r/test
 apt-get update
 apt-get install g++-5
 
-# http://llvm.org/apt/ 
-add-apt-repository "deb     http://llvm.org/apt/trusty/ llvm-toolchain-trusty main"
-add-apt-repository "deb-src http://llvm.org/apt/trusty/ llvm-toolchain-trusty main"
-wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key             | apt-key add -
+# http://apt.llvm.org/ 
+add-apt-repository "deb     http://apt.llvm.org/trusty/ llvm-toolchain-trusty main"
+add-apt-repository "deb-src http://apt.llvm.org/trusty/ llvm-toolchain-trusty main"
+wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key             | apt-key add -
 apt-get update
 apt-get install clang-3.8 lldb-3.8 
 
