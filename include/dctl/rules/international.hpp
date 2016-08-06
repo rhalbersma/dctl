@@ -8,21 +8,21 @@ namespace block_adl {
 struct international
 {
         // 2. The material
-        static constexpr auto width = 10;                       // 2.1
-        static constexpr auto height = 10;                      // 2.1
-        static constexpr auto is_inverted = false;              // 2.4
-        static constexpr auto initial_gap = 2;                  // 2.8
+        static constexpr auto width                     = 10;           // 2.1
+        static constexpr auto height                    = 10;           // 2.1
+        static constexpr auto is_inverted               = false;        // 2.4
+        static constexpr auto initial_position_gap      = 2;            // 2.8
 
         // 3. The movement of the piece
-        static constexpr auto is_long_ranged_king = true;       // 3.9
+        static constexpr auto is_long_ranged_king       = true;         // 3.9
 
         // 4. The capture
-        static constexpr auto is_backward_pawn_jump = true;     // 4.1
-        static constexpr auto is_superior_rank_jump = false;    // 4.2 (implied by 3.1)
-        static constexpr auto is_passing_capture = false;       // 4.11
-        static constexpr auto is_quantity_precedence = true;    // 4.13
-        static constexpr auto is_quality_precedence = false;    // 4.13
-        static constexpr auto is_modality_precedence = false;   // 4.14
+        static constexpr auto is_backward_pawn_jump     = true;         // 4.1
+        static constexpr auto is_superior_rank_jump     = false;        // 4.2 (implied by 3.1)
+        static constexpr auto is_passing_capture        = false;        // 4.11
+        static constexpr auto is_quantity_precedence    = true;         // 4.13
+        static constexpr auto is_quality_precedence     = false;        // 4.13
+        static constexpr auto is_modality_precedence    = false;        // 4.14
 
         struct tuple_type
         {
@@ -33,16 +33,16 @@ struct international
                 }
         };
 
-        static constexpr auto is_passing_promotion = false;     // 4.15 (and 3.5)
+        static constexpr auto is_passing_promotion      = false;        // 4.15 (and 3.5)
 
         // 6. The draw
-        static constexpr auto max_repetitions = 3;              // 6.1
-        static constexpr auto max_reversible_moves = 50;        // 6.2
+        static constexpr auto max_repetitions           = 3;            // 6.1
+        static constexpr auto max_reversible_moves      = 50;           // 6.2
 
         // 8. Notation
-        static constexpr auto is_algebraic_notation = false;    // 8.1 (and 2.6)
-        static constexpr auto pushsep = '-';                    // 8.2.2
-        static constexpr auto jumpsep = 'x';                    // 8.2.3
+        static constexpr auto is_algebraic_notation     = false;        // 8.1 (and 2.6)
+        static constexpr auto pushsep                   = '-';          // 8.2.2
+        static constexpr auto jumpsep                   = 'x';          // 8.2.3
 };
 
 }       // namespace block_adl
