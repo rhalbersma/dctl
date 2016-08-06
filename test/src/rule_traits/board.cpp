@@ -1,4 +1,4 @@
-#include <dctl/rule_traits.hpp>                 // initial_gap
+#include <dctl/rule_traits.hpp>                 // initial_position_gap
 #include <dctl/rules.hpp>                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

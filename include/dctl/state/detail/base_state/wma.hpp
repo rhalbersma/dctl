@@ -24,11 +24,16 @@ private:
 public:
         base_state() = default;
 
-        base_state(set_type const b, set_type const w, set_type const p, set_type const /* k */)
+        base_state(set_type const w, set_type const m, set_type const a) noexcept
         :
                 white_{w},
-                pawns_{p},
-                pieces_{b | w}
+                pawns_{m},
+                pieces_{a}
+        {}
+
+        base_state(set_type const b, set_type const w, set_type const p, set_type const /* k */) noexcept
+        :
+                base_state{w, p, b | w}
         {}
 
         template<class Action>

@@ -25,10 +25,15 @@ private:
 public:
         base_state() = default;
 
-        base_state(set_type const b, set_type const w, set_type const /* p */, set_type const k)
+        base_state(set_type const b, set_type const w, set_type const k)
         :
                 by_color_{b, w},
                 kings_{k}
+        {}
+
+        base_state(set_type const b, set_type const w, set_type const /* p */, set_type const k)
+        :
+                base_state(b, w, k)
         {}
 
         template<class Action>
