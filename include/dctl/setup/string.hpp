@@ -194,5 +194,5 @@ struct write<dxp::protocol, Token>
         }
 };
 
-}       // namespace maskup
+}       // namespace setup
 }       // namespace dctl

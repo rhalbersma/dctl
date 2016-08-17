@@ -31,7 +31,7 @@ class generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContai
         static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
         SequenceContainer& actions;
 public:
-        generate(SequenceContainer& a)
+        explicit generate(SequenceContainer& a) noexcept
         :
                 actions{a}
         {}
