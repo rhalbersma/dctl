@@ -45,5 +45,5 @@ BOOST_AUTO_TEST_CASE(WiegerWesselink)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace maskup
+}       // namespace setup
 }       // namespace dctl

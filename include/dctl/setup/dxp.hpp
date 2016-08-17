@@ -12,5 +12,5 @@ struct TokenSet<dxp::protocol>
 {
 };
 
-}       // namespace maskup
+}       // namespace setup
 }       // namespace dctl

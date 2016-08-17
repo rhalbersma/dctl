@@ -29,5 +29,5 @@ auto content(State const& s, std::size_t const n)
         return sstr.str();
 }
 
-}       // namespace maskup
+}       // namespace setup
 }       // namespace dctl

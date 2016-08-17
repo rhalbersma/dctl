@@ -33,7 +33,7 @@ class generate<ToMove, piece::king, select::jump, Reverse, State, Builder>
 
         Builder& builder;
 public:
-        generate(Builder& b) noexcept
+        explicit generate(Builder& b) noexcept
         :
                 builder{b}
         {}
