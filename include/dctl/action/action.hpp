@@ -174,24 +174,6 @@ public:
                 return captured_pieces().count();
         }
 
-        constexpr auto captured_kings() const noexcept
-        {
-                static_assert(is_quality_precedence_or_v<rules_type>);
-                return this->captured_kings_;
-        }
-
-        constexpr auto num_captured_kings() const noexcept
-        {
-                static_assert(is_quality_precedence_or_v<rules_type>);
-                return captured_kings().count();
-        }
-
-        constexpr auto piece_order() const noexcept
-        {
-                static_assert(is_ordering_precedence_or_v<rules_type>);
-                return this->piece_order_;
-        }
-
         constexpr auto is_with_king() const noexcept
         {
                 return with() == piece::king;
@@ -210,6 +192,33 @@ public:
         constexpr auto is_reversible() const noexcept
         {
                 return with() == piece::king && !is_jump();
+        }
+
+        template<class RulesType = rules_type, std::enable_if_t<
+					is_quality_precedence_or_v<RulesType> &&
+					std::experimental::is_same_v<RulesType, rules_type>
+        >* = nullptr>
+        constexpr auto captured_kings() const noexcept
+        {
+                return this->captured_kings_;
+        }
+
+        template<class RulesType = rules_type, std::enable_if_t<
+        		is_quality_precedence_or_v<RulesType> &&
+				std::experimental::is_same_v<RulesType, rules_type>
+        >* = nullptr>
+        constexpr auto num_captured_kings() const noexcept
+        {
+                return captured_kings().count();
+        }
+
+        template<class RulesType = rules_type, std::enable_if_t<
+				is_ordering_precedence_or_v<RulesType> &&
+				std::experimental::is_same_v<RulesType, rules_type>
+        >* = nullptr>
+        constexpr auto piece_order() const noexcept
+        {
+                return this->piece_order_;
         }
 private:
         constexpr auto capture_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::false_type, std::false_type)
@@ -277,15 +286,17 @@ private:
         }
 };
 
-template<class Rules, class Board,
-        std::enable_if_t<!is_ordering_precedence_or_v<Rules>>* = nullptr>
+template<class Rules, class Board, std::enable_if_t<
+		!is_ordering_precedence_or_v<Rules>
+>* = nullptr>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {
         return std::make_tuple(a.from(), a.dest(), a.captured_pieces());
 }
 
-template<class Rules, class Board,
-        std::enable_if_t< is_ordering_precedence_or_v<Rules>>* = nullptr>
+template<class Rules, class Board, std::enable_if_t<
+		is_ordering_precedence_or_v<Rules>
+>* = nullptr>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {
         return std::make_tuple(a.from(), a.dest(), a.captured_pieces(), a.piece_order());
