@@ -1,15 +1,14 @@
 #include <actions/fixture.hpp>          // run
-#include <dctl/board.hpp>               // roman
-#include <dctl/rules.hpp>               // italian
+#include <dctl/board.hpp>               // Roman
+#include <dctl/rules.hpp>               // Italian
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string
 
 namespace dctl {
-namespace core {
 
-using F = Fixture<rules::italian, board::roman>;
+using F = Fixture<rules::Italian, board::Italian>;
 
-BOOST_AUTO_TEST_SUITE(ActionsRegressionsitalian)
+BOOST_AUTO_TEST_SUITE(ActionsRegressionsItalian)
 
         BOOST_AUTO_TEST_SUITE(JumpPrecedenceOrderOfKings)
 
@@ -44,5 +43,4 @@ BOOST_AUTO_TEST_SUITE(ActionsRegressionsitalian)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace core
 }       // namespace dctl

@@ -5,7 +5,7 @@ namespace rules {
 namespace block_adl {
 
 // http://www.damweb.cz/pravidla/cdfull.html
-struct czech
+struct Czech
 {
         static constexpr auto width                     = 8;            // 2.1
         static constexpr auto height                    = 8;            // 2.1
@@ -29,7 +29,7 @@ struct czech
 
 }       // namespace block_adl
 
-using block_adl::czech;
+using block_adl::Czech;
 
 }       // namespace rules
 }       // namespace dctl

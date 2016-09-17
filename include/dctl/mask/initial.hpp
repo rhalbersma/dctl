@@ -15,7 +15,7 @@ namespace mask {
 template<class Board>
 class initial
 {
-        template<color ToMove>
+        template<class Color>
         struct init
         {
                 // simulate a constexpr lambda (allowed in C++17)
@@ -24,7 +24,7 @@ class initial
                         using namespace xstd::support_literals;
                         set_t<Board> result {};
                         for (auto r = 0_zu; r < rows; ++r)
-                                result ^= row<Board>{}(ToMove, r);
+                                result ^= row<Board, Color>{}(r);
                         return result;
                 }
         };
@@ -34,12 +34,12 @@ class initial
 
         static constexpr value_type value[] =
         {
-                fill_array<N>(init<color::black>{}),
-                fill_array<N>(init<color::white>{})
+                fill_array<N>(init<black_type>{}),
+                fill_array<N>(init<white_type>{})
         };
 
 public:
-        constexpr auto operator()(color const to_move, std::size_t const separation) const noexcept
+        constexpr auto operator()(Color const to_move, std::size_t const separation) const noexcept
         {
                 assert((Board::height - separation) % 2 == 0);
                 assert(Board::height % 2 <= separation); assert(separation <= Board::height);

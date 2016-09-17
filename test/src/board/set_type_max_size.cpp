@@ -1,11 +1,10 @@
-#include <dctl/board.hpp>                       // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
-                                                // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
+#include <dctl/board.hpp>                       // Micro, Mini, Checkers, Roman, Spantsiretti, International, Frisian, Ktar<10, 11>,
+                                                // Ktar<10, 12>, Compact_10_12, Compact_12_10, Rectangular<12, 10>, Canadian, SriLankan, Dumm
 #include <dctl/board_traits.hpp>                // add_orthogonal_captures, remove_orthogonal_captures
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
-#include <experimental/type_traits>
 #include <type_traits>                          // is_same
 
 namespace dctl {
@@ -15,14 +14,14 @@ BOOST_AUTO_TEST_SUITE(TestBoard)
 
 using SmallBoardSequence = boost::mpl::vector
 <
-        micro,
-        mini,
-        checkers,
-        roman,
-        spantsiretti,
-        international,
-        frisian,
-        ktar<10, 11>
+        Micro,
+        Mini,
+        Checkers,
+        Italian,
+        Spantsiretti,
+        International,
+        Frisian,
+        Ktar<10, 11>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
@@ -33,8 +32,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
 
 using IntermediateBoardSequence = boost::mpl::vector
 <
-               ktar<10, 12>,
-        rectangular<12, 10>
+               Ktar<10, 12>,
+        Rectangular<12, 10>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)
@@ -45,9 +44,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSeque
 
 using LargeBoardSequence = boost::mpl::vector
 <
-        canadian,
-        dumm,
-        srilankan
+        Canadian,
+        Dumm,
+        SriLankan
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs128, T, LargeBoardSequence)

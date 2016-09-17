@@ -3,19 +3,16 @@
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/color.hpp>                               // color
 #include <dctl/mask/push_targets.hpp>                   // push_targets
-#include <dctl/piece.hpp>                               // king
+#include <dctl/piece.hpp>                               // king_type
 #include <dctl/rule_traits.hpp>                         // king_range_category
-#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {
-namespace core {
 namespace detail {
 
-template<color ToMove, class Reverse, class State>
-class Count<ToMove, piece::king, select::push, Reverse, State>
+template<class Color, class Reverse, class State>
+class Count<Color, king_type, select::push, Reverse, State>
 {
         using board_type = board_t<State>;
         using rules_type = rules_t<State>;
@@ -24,12 +21,12 @@ class Count<ToMove, piece::king, select::push, Reverse, State>
         template<int Direction>
         using king_push_targets = mask::push_targets<board_type, Direction, king_range_category_t<rules_type>>;
 
-        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
 
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_kings = pieces<ToMove, piece::king>(state);
+                auto const active_kings = state.pieces(Color{}, king_type{});
                 return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied()) : 0;
         }
 
@@ -42,5 +39,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

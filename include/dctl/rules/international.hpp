@@ -4,8 +4,8 @@ namespace dctl {
 namespace rules {
 namespace block_adl {
 
-// http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20international%20draughts.doc
-struct international
+// http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20International%20draughts.doc
+struct International
 {
         // 2. The material
         static constexpr auto width                     = 10;           // 2.1
@@ -13,7 +13,7 @@ struct international
         static constexpr auto is_inverted               = false;        // 2.4
         static constexpr auto initial_position_gap      = 2;            // 2.8
 
-        // 3. The movement of the piece
+        // 3. The movement of the Piece
         static constexpr auto is_long_ranged_king       = true;         // 3.9
 
         // 4. The capture
@@ -47,12 +47,12 @@ struct international
 
 }       // namespace block_adl
 
-using block_adl::international;
+using block_adl::International;
 
-using brazilian  = international;
-using philippine = international;
-using canadian   = international;
-using srilankan  = international;
+using Brazilian  = International;
+using Philippine = International;
+using Canadian   = International;
+using SriLankan  = International;
 
 }       // namespace rules
 }       // namespace dctl

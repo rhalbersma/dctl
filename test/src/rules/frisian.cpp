@@ -1,4 +1,4 @@
-#include <dctl/rules/frisian.hpp>       // frisian
+#include <dctl/rules/frisian.hpp>       // Frisian
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/piece.hpp>               // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_orthogonal_jump, equal_to, less
@@ -11,7 +11,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesFrisian)
 
-using T = frisian;
+using T = Frisian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
@@ -27,34 +27,34 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = frisian;
+                using rules_type = Frisian;
                 std::size_t num_captured_;
                 std::size_t num_captured_kings_;
-                piece with_;
+                Piece with_;
 
                 constexpr auto num_captured_pieces()       const noexcept { return num_captured_;        }
                 constexpr auto num_captured_kings() const noexcept { return num_captured_kings_;  }
-                constexpr auto is_with_king()       const noexcept { return with_ == piece::king; }
+                constexpr auto is_with_king()       const noexcept { return with_ == Piece::king; }
         };
 
         auto const moves = std::vector<Action>
         {
-                { 1, 0, piece::pawn },
-                { 1, 0, piece::king },
-                { 1, 1, piece::pawn },
-                { 1, 1, piece::king },
-                { 2, 0, piece::pawn },
-                { 2, 0, piece::king },
-                { 2, 1, piece::pawn },
-                { 2, 1, piece::king },
-                { 3, 0, piece::pawn },
-                { 3, 0, piece::king },
-                { 2, 2, piece::pawn },
-                { 2, 2, piece::king },
-                { 3, 1, piece::pawn },
-                { 3, 1, piece::king },
-                { 4, 0, piece::pawn },
-                { 4, 0, piece::king }
+                { 1, 0, Piece::pawn },
+                { 1, 0, Piece::king },
+                { 1, 1, Piece::pawn },
+                { 1, 1, Piece::king },
+                { 2, 0, Piece::pawn },
+                { 2, 0, Piece::king },
+                { 2, 1, Piece::pawn },
+                { 2, 1, Piece::king },
+                { 3, 0, Piece::pawn },
+                { 3, 0, Piece::king },
+                { 2, 2, Piece::pawn },
+                { 2, 2, Piece::king },
+                { 3, 1, Piece::pawn },
+                { 3, 1, Piece::king },
+                { 4, 0, Piece::pawn },
+                { 4, 0, Piece::king }
         };
 
         BOOST_CHECK(precedence::is_consistent(moves));
@@ -62,5 +62,5 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace frisian
+}       // namespace Frisian
 }       // namespace dctl

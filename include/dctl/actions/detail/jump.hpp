@@ -8,7 +8,7 @@
 #include <dctl/actions/detail/generate_king_jump.hpp>   // Generate (king jump specialization)
 #include <dctl/actions/detail/generate_pawn_jump.hpp>   // Generate (pawn jump specialization)
 #include <dctl/actions/select/jump.hpp>                 // jump
-#include <dctl/color.hpp>                               // color
+#include <dctl/color.hpp>                               // Color
 #include <dctl/piece.hpp>                               // king, pawn
 #include <dctl/utility/static_vector.hpp>               // static_vector
 #include <dctl/utility/type_traits.hpp>                 // rules_t, board_t
@@ -17,7 +17,6 @@
 #include <type_traits>
 
 namespace dctl {
-namespace core {
 namespace detail {
 
 class MoveCounter
@@ -35,21 +34,21 @@ public:
         }
 };
 
-template<color ToMove, class DuplicatesPolicy, class Reverse>
-class Actions<ToMove, select::jump, DuplicatesPolicy, Reverse>
+template<class Color, class DuplicatesPolicy, class Reverse>
+class Actions<Color, select::jump, DuplicatesPolicy, Reverse>
 {
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const
         {
                 using Builder = /*std::conditional_t<
-                        std::is_same_v<Sequence, MoveCounter> && !DuplicatesPolicy{},
-                        Counter<ToMove, DuplicatesPolicy, State>,*/
-                        Builder<ToMove, DuplicatesPolicy, State, SequenceContainer>;
+                        std::is_same<Sequence, MoveCounter> && !DuplicatesPolicy{},
+                        Counter<Color, DuplicatesPolicy, State>,*/
+                        Builder<Color, DuplicatesPolicy, State, SequenceContainer>;
                 //>;
 
-                using king_jump = detail::generate<ToMove, piece::king, select::jump, Reverse, State, Builder>;
-                using pawn_jump = detail::generate<ToMove, piece::pawn, select::jump, Reverse, State, Builder>;
+                using king_jump = Generate<Color, king_type, select::jump, Reverse, State, Builder>;
+                using pawn_jump = Generate<Color, pawn_type, select::jump, Reverse, State, Builder>;
 
                 Builder builder{state, actions};
                 king_jump{builder}();
@@ -73,13 +72,12 @@ public:
         template<class State>
         auto detect(State const& state) const noexcept
         {
-                using pawn_jump = Detect<ToMove, piece::pawn, select::jump, Reverse, State>;
-                using king_jump = Detect<ToMove, piece::king, select::jump, Reverse, State>;
+                using pawn_jump = Detect<Color, pawn_type, select::jump, Reverse, State>;
+                using king_jump = Detect<Color, king_type, select::jump, Reverse, State>;
 
                 return pawn_jump{}(state) || king_jump{}(state);
         }
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

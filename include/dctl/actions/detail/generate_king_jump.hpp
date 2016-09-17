@@ -6,34 +6,32 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, _deg, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
-#include <dctl/color.hpp>                               // color
-#include <dctl/piece.hpp>                               // king
+#include <dctl/piece.hpp>                               // king_type
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
-                                                        // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
+                                                        // is_long_ranged_land_after_Piece_t, is_halt_behind_final_king_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 
 namespace dctl {
-namespace core {
 namespace detail {
 
-template<color ToMove, class Reverse, class State, class Builder>
-class generate<ToMove, piece::king, select::jump, Reverse, State, Builder>
+template<class Color, class Reverse, class State, class Builder>
+class Generate<Color, king_type, select::jump, Reverse, State, Builder>
 {
         using action_type = action_t<Builder>;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
 
-        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(bearing));
 
         Builder& builder;
 public:
-        explicit generate(Builder& b) noexcept
+        explicit Generate(Builder& b) noexcept
         :
                 builder{b}
         {}
@@ -48,7 +46,7 @@ public:
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
                 static_assert(is_passing_promotion_or_v<rules_type>);
-                assert(builder.is_with(piece::pawn) && builder.is_into(piece::king));
+                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
                 try_next(jumper);
         }
 private:
@@ -138,7 +136,7 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                return scan_turn_dispatch(jumper, king_range_category_land_behind_piece_t<rules_type>{});
+                return scan_turn_dispatch(jumper, king_range_category_land_behind_Piece_t<rules_type>{});
         }
 
         template<class Iterator>
@@ -228,16 +226,17 @@ private:
         template<class Iterator>
         auto add(Iterator dest_sq) const
         {
-                halt_dispatch(dest_sq, king_range_category_land_behind_piece_t<rules_type>{}, king_range_category_halt_behind_king_t<rules_type>{});
+                halt_dispatch(dest_sq, king_range_category_land_behind_Piece_t<rules_type>{}, king_range_category_halt_behind_king_t<rules_type>{});
         }
 
         template<class Iterator>
         auto halt_dispatch(Iterator dest_sq, long_ranged_tag, short_ranged_tag) const
         {
-                if (builder.is_last_jumped_king(*std::prev(dest_sq)))
+                if (builder.is_last_jumped_king(*std::prev(dest_sq))) {
                         halt_dispatch(dest_sq, short_ranged_tag{}, short_ranged_tag{});
-                else
+                } else {
                         halt_dispatch(dest_sq,  long_ranged_tag{},  long_ranged_tag{});
+                }
         }
 
         template<class Iterator>
@@ -252,7 +251,10 @@ private:
                 // builder.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(is_onboard(dest_sq) && builder.not_occupied(*dest_sq));
-                do add_jump(*dest_sq++); while (is_onboard(dest_sq) && builder.not_occupied(*dest_sq));
+                do {
+                        add_jump(*dest_sq++);
+                }
+                while (is_onboard(dest_sq) && builder.not_occupied(*dest_sq));
         }
 
         auto add_jump(std::size_t const dest_sq) const
@@ -268,5 +270,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

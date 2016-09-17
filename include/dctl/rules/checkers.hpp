@@ -5,7 +5,7 @@ namespace rules {
 namespace block_adl {
 
 // http://www.usacheckers.com/rulesofcheckers.php
-struct checkers
+struct Checkers
 {
         // THE DRAUGHTBOARD AND ITS ARRANGEMENT
         static constexpr auto width                     = 8;            // 1.1
@@ -35,7 +35,7 @@ struct checkers
 
 }       // namespace block_adl
 
-using block_adl::checkers;
+using block_adl::Checkers;
 
 }       // namespace rules
 }       // namespace dctl

@@ -16,13 +16,10 @@ using namespace dctl;
 
 int main()
 {
-        using Rules = rules::international;
-        using Board = board::international;
-        using State = state<Rules, Board>;
+        using Rules = rules::International;
+        using State = state<Rules>;
 
-        auto initial = setup::read<Rules, Board, pdn::protocol>()(
-                "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
-        );//        State::initial();
+        auto initial = State::initial();
 
         std::stack<State> game;
         game.push(initial);
@@ -33,14 +30,14 @@ int main()
                 std::cout << fen << state;
                 //std::cout << "[" << p.reversible_actions() << "]\n";
 
-                std::vector<action<Rules, Board>> actions;
-                core::Actions<>{}.generate(state, actions);
+                std::vector<action<Rules>> actions;
+                Actions<>{}.generate(state, actions);
                 boost::sort(actions, [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);
                 });
 
                 if (actions.empty()) {
-                        std::cout << "\nNo valid moves (Undo or stop [U/s]): ";
+                        std::cout << "\nNo valid moves (Undo or stop [u/s]): ";
                 } else {
                         auto index = 0;
                         for (auto const& a : actions)

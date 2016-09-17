@@ -4,22 +4,19 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator
-#include <dctl/color.hpp>                               // color
 #include <dctl/mask/push_targets.hpp>                   // push_targets
-#include <dctl/piece.hpp>                               // king
+#include <dctl/piece.hpp>                               // king_type
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
-#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <xstd/type_traits.hpp>                         // value_t
 #include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
 namespace dctl {
-namespace core {
 namespace detail {
 
-template<color ToMove, class Reverse, class State, class SequenceContainer>
-class generate<ToMove, piece::king, select::push, Reverse, State, SequenceContainer>
+template<class Color, class Reverse, class State, class SequenceContainer>
+class Generate<Color, king_type, select::push, Reverse, State, SequenceContainer>
 {
         using action_type = xstd::value_t<SequenceContainer>;
         using  board_type = board_t<State>;
@@ -29,10 +26,10 @@ class generate<ToMove, piece::king, select::push, Reverse, State, SequenceContai
         template<int Direction>
         using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
         SequenceContainer& actions;
 public:
-        explicit generate(SequenceContainer& a) noexcept
+        explicit Generate(SequenceContainer& a) noexcept
         :
                 actions{a}
         {}
@@ -44,14 +41,14 @@ public:
 private:
         auto king_range_dispatch(State const& state, short_ranged_tag) const
         {
-                auto const active_kings = pieces<ToMove, piece::king>(state);
+                auto const active_kings = state.pieces(Color{}, king_type{});
                 if (active_kings.any())
                         wave_directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied());
         }
 
         auto king_range_dispatch(State const& state, long_ranged_tag) const
         {
-                pieces<ToMove, piece::king>(state).for_each([&, this](auto const& from_sq){
+                state.pieces(Color{}, king_type{}).for_each([&, this](auto const& from_sq){
                         this->ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq, state.not_occupied());
                 });
         }
@@ -104,5 +101,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

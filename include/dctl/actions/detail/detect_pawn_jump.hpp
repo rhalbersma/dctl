@@ -3,19 +3,16 @@
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/color.hpp>                               // color
 #include <dctl/mask/jump_targets.hpp>                   // jump_targets
-#include <dctl/piece.hpp>                               // pawn
+#include <dctl/piece.hpp>                               // pawn_type
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_superior_rank_jump
-#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {
-namespace core {
 namespace detail {
 
-template<color ToMove, class Reverse, class State>
-class Detect<ToMove, piece::pawn, select::jump, Reverse, State>
+template<class Color, class Reverse, class State>
+class Detect<Color, pawn_type, select::jump, Reverse, State>
 {
         using   board_type = board_t<State>;
         using   rules_type = rules_t<State>;
@@ -24,13 +21,13 @@ class Detect<ToMove, piece::pawn, select::jump, Reverse, State>
         template<int Direction>
         using jump_targets = mask::jump_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_pawns = pieces<ToMove, piece::pawn>(state);
+                auto const active_pawns = state.pieces(Color{}, pawn_type{});
                 return active_pawns.any() ? directions_dispatch(
-                        active_pawns, state.pawn_targets(!ToMove), state.not_occupied(),
+                        active_pawns, state.pawn_targets(Color{}), state.not_occupied(),
                         pawn_jump_category_t<rules_type>{}, jump_category_t<rules_type>{}
                 ) : false;
         }
@@ -39,7 +36,7 @@ private:
                 set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied,
                 forward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
-                return directions_lfold<left_up, right_up>(
+                return directions_lfold<right_up, left_up>(
                         active_pawns, pawn_targets, not_occupied
                 );
         }
@@ -48,7 +45,7 @@ private:
                 set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied,
                 backward_pawn_jump_tag, diagonal_jump_tag) const noexcept
         {
-                return directions_lfold<left_up, right_up, left_down, right_down>(
+                return directions_lfold<right_up, left_up, left_down, right_down>(
                         active_pawns, pawn_targets, not_occupied
                 );
         }
@@ -57,7 +54,7 @@ private:
                 set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied,
                 forward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
-                return directions_lfold<up, left_up, right_up, left, right>(
+                return directions_lfold<right, right_up, up, left_up, left>(
                         active_pawns, pawn_targets, not_occupied
                 );
         }
@@ -66,7 +63,7 @@ private:
                 set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied,
                 backward_pawn_jump_tag, orthogonal_jump_tag) const noexcept
         {
-                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(
+                return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(
                         active_pawns, pawn_targets, not_occupied
                 );
         }
@@ -79,5 +76,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

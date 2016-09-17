@@ -6,7 +6,7 @@ namespace rules {
 namespace block_adl {
 
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
-struct italian
+struct Italian
 {
         // Art. 2 - Il materiale
         static constexpr auto width                     = 8;            // 2.1
@@ -35,7 +35,7 @@ struct italian
                                 a.num_captured_pieces(),
                                 a.is_with_king(),
                                 a.num_captured_kings(),
-                                a.piece_order()
+                                a.Piece_order()
                         );
                 }
         };
@@ -46,7 +46,7 @@ struct italian
 
 }       // namespace block_adl
 
-using block_adl::italian;
+using block_adl::Italian;
 
 }       // namespace rules
 }       // namespace dctl

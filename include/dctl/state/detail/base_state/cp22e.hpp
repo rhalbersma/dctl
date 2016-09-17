@@ -19,7 +19,7 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        set_type by_color_piece[2][2];
+        set_type by_Color_Piece[2][2];
         set_type not_occupied_;
 
 public:
@@ -27,19 +27,19 @@ public:
 
         base_state(set_type const b, set_type const w, set_type const p, set_type const k)
         :
-                by_color_piece{{b & p, b & k}, {w & p, w & k}},
+                by_Color_Piece{{b & p, b & k}, {w & p, w & k}},
                 not_occupied_{mask::squares_v<Board> ^ (b | w)}
         {}
 
         template<class Action>
-        auto& make(color const c, Action const& a)
+        auto& make(Color const c, Action const& a)
         {
                 pieces(c, a.with()).reset(a.from());
                 pieces(c, a.into()).set  (a.dest());
 
                 if (a.is_jump()) {
-                        pieces(!c, piece::pawn) &= ~a.captured_pieces();
-                        pieces(!c, piece::king) &= ~a.captured_pieces();
+                        pieces(!c, Piece::pawn) &= ~a.captured_pieces();
+                        pieces(!c, Piece::king) &= ~a.captured_pieces();
                         not_occupied_ ^= a.captured_pieces();
                 }
 
@@ -49,19 +49,19 @@ public:
                 return *this;
         }
 
-        auto pieces(color const c) const noexcept
+        auto pieces(Color const c) const noexcept
         {
-                return pieces(c, piece::pawn) ^ pieces(c, piece::king);
+                return pieces(c, Piece::pawn) ^ pieces(c, Piece::king);
         }
 
-        auto pieces(piece const p) const noexcept
+        auto pieces(Piece const p) const noexcept
         {
-                return pieces(color::black, p) ^ pieces(color::white, p);
+                return pieces(Color::black, p) ^ pieces(Color::white, p);
         }
 
-        auto pieces(color const c, piece const p) const noexcept
+        auto pieces(Color const c, Piece const p) const noexcept
         {
-                return by_color_piece[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
+                return by_Color_Piece[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 
         auto pieces() const noexcept
@@ -74,15 +74,15 @@ public:
                 return not_occupied_;
         }
 
-        auto num_pieces(color const c, piece const p) const noexcept
+        auto num_pieces(Color const c, Piece const p) const noexcept
         {
                 return pieces(c, p).count();
         }
 
 private:
-        auto& pieces(color const c, piece const p) noexcept
+        auto& pieces(Color const c, Piece const p) noexcept
         {
-                return by_color_piece[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
+                return by_Color_Piece[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 };
 

@@ -5,7 +5,7 @@ namespace rules {
 namespace block_adl {
 
 // http://www.shashist.ru/kodeks/kodeks2004.doc
-struct russian
+struct Russian
 {
         static constexpr auto is_long_ranged_king = true;       // 1.4.5
 
@@ -18,9 +18,9 @@ struct russian
 
 }       // namespace block_adl
 
-using block_adl::russian;
+using block_adl::Russian;
 
-using shashki = russian;
+using Shashki = Russian;
 
 }       // namespace rules
 }       // namespace dctl

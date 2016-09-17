@@ -3,9 +3,8 @@
 #include <dctl/utility/type_traits.hpp> // rules_t
 #include <xstd/pp/tti.hpp>              // XSTD_PP_TTI_CONSTANT, XSTD_PP_TTI_TYPENAME
 #include <xstd/tuple.hpp>               // compare
-#include <experimental/type_traits>     // is_same
 #include <tuple>                        // make_tuple
-#include <type_traits>                  // bool_constant, conditional, false_type, true_type
+#include <type_traits>                  // bool_constant, conditional, is_same, false_type, true_type
 #include <utility>                      // forward
 
 namespace dctl {
@@ -28,11 +27,11 @@ using king_range_category_t = std::conditional_t<
         short_ranged_tag
 >;
 
-XSTD_PP_TTI_CONSTANT(is_land_behind_piece, false)
+XSTD_PP_TTI_CONSTANT(is_land_behind_Piece, false)
 
 template<class Rules>
-using king_range_category_land_behind_piece_t = std::conditional_t<
-        is_land_behind_piece_or_v<Rules>,
+using king_range_category_land_behind_Piece_t = std::conditional_t<
+        is_land_behind_Piece_or_v<Rules>,
         short_ranged_tag,
         king_range_category_t<Rules>
 >;
@@ -43,7 +42,7 @@ template<class Rules>
 using king_range_category_halt_behind_king_t = std::conditional_t<
         is_halt_behind_king_or_v<Rules>,
         short_ranged_tag,
-        king_range_category_land_behind_piece_t<Rules>
+        king_range_category_land_behind_Piece_t<Rules>
 >;
 
 XSTD_PP_TTI_CONSTANT(is_backward_pawn_jump, false)
@@ -71,7 +70,7 @@ using jump_category_t = std::conditional_t<
 >;
 
 template<class Rules>
-using rectangular_t = board::rectangular<
+using rectangular_t = board::Rectangular<
         width_or_v<Rules>,
         height_or_v<Rules>,
         is_inverted_or_v<Rules>,
@@ -197,7 +196,7 @@ struct compare
         {
                 using rules_type1 = rules_t<std::decay_t<Action1>>;
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::experimental::is_same_v<rules_type1, rules_type2>);
+                static_assert(std::is_same<rules_type1, rules_type2>{});
                 return xstd::compare(
                         tuple_or_t<rules_type1>{}(std::forward<Action1>(a1)),
                         tuple_or_t<rules_type2>{}(std::forward<Action2>(a2))
@@ -212,7 +211,7 @@ struct equal_to
         {
                 using rules_type1 = rules_t<std::decay_t<Action1>>;
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::experimental::is_same_v<rules_type1, rules_type2>);
+                static_assert(std::is_same<rules_type1, rules_type2>{});
                 return
                         tuple_or_t<rules_type1>{}(std::forward<Action1>(a1)) ==
                         tuple_or_t<rules_type2>{}(std::forward<Action2>(a2))
@@ -227,7 +226,7 @@ struct less
         {
                 using rules_type1 = rules_t<std::decay_t<Action1>>;
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::experimental::is_same_v<rules_type1, rules_type2>);
+                static_assert(std::is_same<rules_type1, rules_type2>{});
                 return
                         tuple_or_t<rules_type1>{}(std::forward<Action1>(a1)) <
                         tuple_or_t<rules_type2>{}(std::forward<Action2>(a2))

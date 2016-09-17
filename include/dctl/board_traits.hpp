@@ -21,27 +21,27 @@ template<class Board>
 struct invert;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalCaptures>
-struct invert<board::rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
+struct invert<board::Rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
 :
-        board::rectangular<Width, Height, !IsInverted, IsOrthogonalCaptures>
+        board::Rectangular<Width, Height, !IsInverted, IsOrthogonalCaptures>
 {};
 
 template<class Board>
 struct remove_orthogonal_captures;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalCaptures>
-struct remove_orthogonal_captures<board::rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
+struct remove_orthogonal_captures<board::Rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
 :
-        board::rectangular<Width, Height, IsInverted, false>
+        board::Rectangular<Width, Height, IsInverted, false>
 {};
 
 template<class Board>
 struct add_orthogonal_captures;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalCaptures>
-struct add_orthogonal_captures<board::rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
+struct add_orthogonal_captures<board::Rectangular<Width, Height, IsInverted, IsOrthogonalCaptures>>
 :
-        board::rectangular<Width, Height, IsInverted, true>
+        board::Rectangular<Width, Height, IsInverted, true>
 {};
 
 }       // namespace detail

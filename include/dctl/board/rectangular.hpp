@@ -3,7 +3,7 @@
 #include <dctl/board/detail/coordinates.hpp>            // to_llo, transform
 #include <dctl/board/detail/dimensions.hpp>             // dimensions
 #include <dctl/board/detail/grid.hpp>                   // InnerGrid, OuterGrid
-#include <dctl/board/detail/optimal_orientation.hpp>    // size_minimizing_orientation
+#include <dctl/board/detail/optimal_orientation.hpp>    // size_Minimizing_orientation
 #include <dctl/color.hpp>                               // black, white
 #include <dctl/utility/fill_array.hpp>                  // fill_array
 #include <xstd/bitset.hpp>                              // bitset
@@ -28,10 +28,10 @@ template
         bool IsInverted = false,
         bool IsOrthogonalCaptures = false
 >
-class rectangular
+class Rectangular
 {
 public:
-        using type = rectangular;
+        using type = Rectangular;
         static constexpr auto width                  = Width;
         static constexpr auto height                 = Height;
         static constexpr auto is_inverted            = IsInverted;
@@ -150,27 +150,27 @@ public:
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr angle
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation;
+Rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr detail::InnerGrid
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
+Rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
 constexpr detail::OuterGrid
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
+Rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<std::size_t, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
+constexpr std::array<std::size_t, Rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
+Rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<std::size_t, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
+constexpr std::array<std::size_t, Rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
+Rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 
 }       // namespace block_adl
 
-using block_adl::rectangular;
+using block_adl::Rectangular;
 
 }       // namespace board
 }       // namespace dctl

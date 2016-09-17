@@ -17,7 +17,7 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        set_type by_color_[2];
+        set_type by_Color_[2];
         set_type kings_;
         set_type not_occupied_;
 
@@ -26,13 +26,13 @@ public:
 
         base_state(set_type const b, set_type const w, set_type const /* p */, set_type const k)
         :
-                by_color_{b, w},
+                by_Color_{b, w},
                 kings_{k},
                 not_occupied_{mask::squares_v<Board> ^ (b | w)}
         {}
 
         template<class Action>
-        auto& make(color const c, Action const& a)
+        auto& make(Color const c, Action const& a)
         {
                 pieces(c).reset(a.from());
                 pieces(c).set  (a.dest());
@@ -43,10 +43,10 @@ public:
                         not_occupied_ ^= a.captured_pieces();
                 }
 
-                if (a.with() == piece::king) {
+                if (a.with() == Piece::king) {
                         kings_.reset(a.from());
                         kings_.set(a.dest());
-                } else if (a.into() == piece::king) {
+                } else if (a.into() == Piece::king) {
                         kings_.set(a.dest());
                 }
 
@@ -56,19 +56,19 @@ public:
                 return *this;
         }
 
-        auto pieces(color const c) const noexcept
+        auto pieces(Color const c) const noexcept
         {
-                return by_color_[xstd::to_underlying_type(c)];
+                return by_Color_[xstd::to_underlying_type(c)];
         }
 
-        auto pieces(piece const p) const noexcept
+        auto pieces(Piece const p) const noexcept
         {
-                return p == piece::pawn ? pieces() ^ kings_ : kings_;
+                return p == Piece::pawn ? pieces() ^ kings_ : kings_;
         }
 
-        auto pieces(color const c, piece const p) const noexcept
+        auto pieces(Color const c, Piece const p) const noexcept
         {
-                return pieces(c) & (p == piece::pawn ? ~kings_ : kings_);
+                return pieces(c) & (p == Piece::pawn ? ~kings_ : kings_);
         }
 
         auto pieces() const noexcept
@@ -81,15 +81,15 @@ public:
                 return not_occupied_;
         }
 
-        auto num_pieces(color const c, piece const p) const noexcept
+        auto num_pieces(Color const c, Piece const p) const noexcept
         {
                 return pieces(c, p).count();
         }
 
 private:
-        auto& pieces(color const c) noexcept
+        auto& pieces(Color const c) noexcept
         {
-                return by_color_[xstd::to_underlying_type(c)];
+                return by_Color_[xstd::to_underlying_type(c)];
         }
 };
 
