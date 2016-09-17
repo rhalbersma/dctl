@@ -29,7 +29,7 @@ using quality_precedence_or_t = std::conditional_t<
 template<class Board>
 struct base_ordering_precedence
 {
-        set_t<Board> Piece_order_;
+        set_t<Board> piece_order_;
 };
 
 template<class Rules, class Board>
@@ -103,11 +103,9 @@ public:
         constexpr auto capture(std::size_t const sq, bool const is_king) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
-                capture_quality_ordering_dispatch(
-                        sq, is_king,
-                        is_quality_precedence_or_t<rules_type>{},
-                        is_ordering_precedence_or_t<rules_type>{}
-                );
+                if constexpr (is_quality_precedence_or_t<rules_type>{} || is_ordering_precedence_or_t<rules_type>{}) {
+                        capture_quality_ordering(sq, is_king);
+                }
                 captured_pieces_.set(sq);
         }
 
@@ -115,11 +113,9 @@ public:
         {
                 assert(is_onboard(sq));
                 captured_pieces_.reset(sq);
-                release_quality_ordering_dispatch(
-                        sq, is_king,
-                        is_quality_precedence_or_t<rules_type>{},
-                        is_ordering_precedence_or_t<rules_type>{}
-                );
+                if constexpr (is_quality_precedence_or_t<rules_type>{} || is_ordering_precedence_or_t<rules_type>{}) {
+                        release_quality_ordering(sq, is_king);
+                }
         }
 
         constexpr auto from(std::size_t const sq) // Throws: Nothing.
@@ -218,60 +214,34 @@ public:
         >* = nullptr>
         constexpr auto Piece_order() const noexcept
         {
-                return this->Piece_order_;
+                return this->piece_order_;
         }
 private:
-        constexpr auto capture_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::false_type, std::false_type)
+        constexpr auto capture_quality_ordering(std::size_t const sq, bool const is_king)
         {
-                // no-op
-        }
-
-        constexpr auto capture_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::true_type, std::false_type)
-        {
+                static_assert(is_quality_precedence_or_t<rules_type>{} || is_ordering_precedence_or_t<rules_type>{});
                 if (is_king) {
-                        this->captured_kings_.set(sq);
+                        if constexpr (is_quality_precedence_or_t<rules_type>{}) {
+                                this->captured_kings_.set(sq);
+                        }
+
+                        if constexpr (is_ordering_precedence_or_t<rules_type>{}) {
+                                this->piece_order_.set(set_type::size() - 1 - num_captured_pieces());
+                        }
                 }
         }
 
-        constexpr auto capture_quality_ordering_dispatch(std::size_t const /*sq*/, bool const is_king, std::false_type, std::true_type)
+        constexpr auto release_quality_ordering(std::size_t const sq, bool const is_king)
         {
+                static_assert(is_quality_precedence_or_t<rules_type>{} || is_ordering_precedence_or_t<rules_type>{});
                 if (is_king) {
-                        this->Piece_order_.set(set_type::size() - 1 - num_captured_pieces());
-                }
-        }
+                        if constexpr (is_ordering_precedence_or_t<rules_type>{}) {
+                                this->piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
+                        }
 
-        constexpr auto capture_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::true_type, std::true_type)
-        {
-                if (is_king) {
-                        this->captured_kings_.set(sq);
-                        this->Piece_order_.set(set_type::size() - 1 - num_captured_pieces());
-                }
-        }
-
-        constexpr auto release_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::false_type, std::false_type)
-        {
-                // no-op
-        }
-
-        constexpr auto release_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::true_type, std::false_type)
-        {
-                if (is_king) {
-                        this->captured_kings_.reset(sq);
-                }
-        }
-
-        constexpr auto release_quality_ordering_dispatch(std::size_t const /*sq*/, bool const is_king, std::false_type, std::true_type)
-        {
-                if (is_king) {
-                        this->Piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
-                }
-        }
-
-        constexpr auto release_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::true_type, std::true_type)
-        {
-                if (is_king) {
-                        this->Piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
-                        this->captured_kings_.reset(sq);
+                        if constexpr (is_quality_precedence_or_t<rules_type>{}) {
+                                this->captured_kings_.reset(sq);
+                        }
                 }
         }
 

@@ -35,8 +35,7 @@ public:
 
         auto operator()(State const& state) const
         {
-                auto const active_pawns = state.pieces(Color{}, pawn_type{});
-                if (active_pawns.any())
+                if (auto const active_pawns = state.pieces(Color{}, pawn_type{}); active_pawns.any())
                         directions_lfold<left_up, right_up>(active_pawns, state.not_occupied());
         }
 private:

@@ -185,7 +185,13 @@ public:
 
         auto pawn_targets(Color const c) const noexcept
         {
-                return pawn_targets_dispatch(c, rank_jump_category_t<rules_type>{});
+                if constexpr (std::is_same<rank_jump_category_t<rules_type>, inferior_rank_jump_tag>{}) {
+                        return pieces(!c);
+                }
+
+                if constexpr (std::is_same<rank_jump_category_t<rules_type>, superior_rank_jump_tag>{}) {
+                        return pieces(!c, pawn_type{});
+                }
         }
 
         template<Color Side>
@@ -212,16 +218,6 @@ public:
         auto hash() const
         {
                 return std::size_t{0};
-        }
-private:
-        auto pawn_targets_dispatch(Color const c, inferior_rank_jump_tag) const noexcept
-        {
-                return pieces(!c);
-        }
-
-        auto pawn_targets_dispatch(Color const c, superior_rank_jump_tag) const noexcept
-        {
-                return pieces(!c, pawn_type{});
         }
 };
 

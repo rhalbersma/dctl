@@ -41,11 +41,11 @@ public:
 
                 if (a.is_jump()) {
                         pieces(!c) ^= a.captured_pieces();
-                        pieces(Piece::pawn ) &= ~a.captured_pieces();
-                        pieces(Piece::king ) &= ~a.captured_pieces();
+                        pieces(pawn_type{}) &= ~a.captured_pieces();
+                        pieces(king_type{}) &= ~a.captured_pieces();
                 }
 
-                not_occupied_ = mask::squares_v<Board> ^ (pieces(Color::black) | pieces(Color::white));
+                not_occupied_ = mask::squares_v<Board> ^ (pieces(black_type{}) | pieces(white_type{}));
 
                 return *this;
         }

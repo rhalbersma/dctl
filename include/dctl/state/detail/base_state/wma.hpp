@@ -42,7 +42,7 @@ public:
                 pieces_.reset(a.from());
                 pieces_.set  (a.dest());
 
-                if (c == Color::white) {
+                if (c == white_type{}) {
                         white_.reset(a.from());
                         white_.set  (a.dest());
                 }
@@ -64,19 +64,19 @@ public:
 
         auto pieces(Color const c) const noexcept
         {
-                return c == Color::black ? pieces_ ^ white_ : white_;
+                return c == black_type{} ? pieces_ ^ white_ : white_;
         }
 
         auto pieces(Piece const p) const noexcept
         {
-                return p == Piece::pawn ? pawns_ : pieces_ ^ pawns_;
+                return p == pawn_type{} ? pawns_ : pieces_ ^ pawns_;
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
         {
-                return c == Color::black ?
-                        (p == Piece::pawn ?  ~white_ & pawns_ : pieces_ ^ (white_ | pawns_)) :
-                        (p == Piece::pawn ?   white_ & pawns_ : white_ & ~pawns_)
+                return c == black_type{} ?
+                        (p == pawn_type{} ?  ~white_ & pawns_ : pieces_ ^ (white_ | pawns_)) :
+                        (p == pawn_type{} ?   white_ & pawns_ : white_ & ~pawns_)
                 ;
         }
 

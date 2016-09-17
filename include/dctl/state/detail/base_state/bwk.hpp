@@ -74,7 +74,7 @@ public:
 
         auto pieces() const noexcept
         {
-                return pieces(Color::black) ^ pieces(Color::white);
+                return pieces(black_type{}) ^ pieces(white_type{});
         }
 
         auto not_occupied() const noexcept

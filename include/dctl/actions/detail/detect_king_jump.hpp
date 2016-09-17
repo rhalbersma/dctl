@@ -27,28 +27,22 @@ public:
         auto operator()(State const& state) const noexcept
         {
                 auto const active_kings = state.pieces(Color{}, king_type{});
-                return active_kings.any() ? directions_dispatch(
-                        active_kings, state.king_targets(Color{}), state.not_occupied(),
-                        jump_category_t<rules_type>{}
-                ) : false;
+                return active_kings.any() ? directions(active_kings, state.king_targets(Color{}), state.not_occupied()) : false;
         }
 private:
-        auto directions_dispatch(
-                set_type const active_kings, set_type const king_targets, set_type const not_occupied,
-                diagonal_jump_tag) const noexcept
+        auto directions(set_type const active_kings, set_type const king_targets, set_type const not_occupied) const noexcept
         {
-                return directions_lfold<left_up, right_up, left_down, right_down>(
-                        active_kings, king_targets, not_occupied
-                );
-        }
+                if constexpr (std::is_same<jump_category_t<rules_type>, diagonal_jump_tag>{}) {
+                        return directions_lfold<right_up, left_up, left_down, right_down>(
+                                active_kings, king_targets, not_occupied
+                        );
+                }
 
-        auto directions_dispatch(
-                set_type const active_kings, set_type const king_targets, set_type const not_occupied,
-                orthogonal_jump_tag) const noexcept
-        {
-                return directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(
-                        active_kings, king_targets, not_occupied
-                );
+                if constexpr (std::is_same<jump_category_t<rules_type>, orthogonal_jump_tag>{}) {
+                        return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(
+                                active_kings, king_targets, not_occupied
+                        );
+                }
         }
 
         template<template<int> class... Directions>
