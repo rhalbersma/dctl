@@ -65,12 +65,18 @@ public:
 
         auto capture(std::size_t const sq)
         {
-                capture_dispatch(sq, capture_category_t<rules_type>{});
+                candidate_action.capture(sq, is_king(sq));
+                if constexpr (std::is_same<capture_category_t<rules_type>, passing_capture_tag>{}) {
+                        not_occupied_.set(sq);
+                }
         }
 
         auto release(std::size_t const sq)
         {
-                release_dispatch(sq, capture_category_t<rules_type>{});
+                if constexpr (std::is_same<capture_category_t<rules_type>, passing_capture_tag>{}) {
+                        not_occupied_.reset(sq);
+                }
+                candidate_action.release(sq, is_king(sq));
         }
 
         auto with(Piece const p) noexcept
@@ -86,7 +92,7 @@ public:
         auto finalize(std::size_t const sq)
         {
                 candidate_action.dest(sq);
-                precedence_duplicates_dispatch(precedence_category_t<rules_type>{}, DuplicatesPolicy{});
+                precedence_duplicates();
         }
 
         auto active_pawns() const noexcept
@@ -185,88 +191,77 @@ public:
         }
 
 private:
-        auto capture_dispatch(std::size_t const sq, stopped_capture_tag)
-        {
-                candidate_action.capture(sq, is_king(sq));
-        }
-
-        auto capture_dispatch(std::size_t const sq, passing_capture_tag)
-        {
-                candidate_action.capture(sq, is_king(sq));
-                not_occupied_.set(sq);
-        }
-
-        auto release_dispatch(std::size_t const sq, stopped_capture_tag)
-        {
-                candidate_action.release(sq, is_king(sq));
-        }
-
-        auto release_dispatch(std::size_t const sq, passing_capture_tag)
-        {
-                candidate_action.release(sq, is_king(sq));
-                not_occupied_.reset(sq);
-        }
-
         auto is_king(square_type sq) const
         {
                 return state.pieces(king_type{}).test(sq);
         }
 
-        auto precedence_duplicates_dispatch(trivial_precedence_tag, keep_duplicates_tag) const
+        auto precedence_duplicates() const
         {
-                assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
-                actions.push_back(candidate_action);
-        }
-
-        auto precedence_duplicates_dispatch(trivial_precedence_tag, drop_duplicates_tag) const
-        {
-                assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
-                if (actions.empty() || is_small() || is_unique())
+                if constexpr (
+                        std::is_same<precedence_category_t<rules_type>, trivial_precedence_tag>{} &&
+                        std::is_same<                 DuplicatesPolicy,    keep_duplicates_tag>{}
+                ){
+                        assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
                         actions.push_back(candidate_action);
-        }
-
-        auto precedence_duplicates_dispatch(nontrivial_precedence_tag, keep_duplicates_tag) const
-        {
-                if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back()))
-                        return actions.push_back(candidate_action);
-                if (precedence::less{}(candidate_action, actions.back()))
-                        return;
-                assert(precedence::greater{}(candidate_action, actions.back()));
-                actions.clear();
-                actions.push_back(candidate_action);
-        }
-
-        auto precedence_duplicates_dispatch(nontrivial_precedence_tag, drop_duplicates_tag) const
-        {
-                if (actions.empty())
-                        return actions.push_back(candidate_action);/*
-                if (precedence::equal_to{}(candidate_action, actions.back())) {
-                        if (is_small() || is_unique())
-                                actions.push_back(candidate_action);
-                        return;
                 }
-                if (precedence::less{}(candidate_action, actions.back()))
-                        return;
-                assert(precedence::greater{}(candidate_action, actions.back()));
-                actions.clear();
-                actions.push_back(candidate_action);*/
 
-                switch(precedence::compare{}(candidate_action, actions.back())) {
-                case -1 :
-                        assert(precedence::less{}(candidate_action, actions.back()));
-                        return;
-                case  0 :
-                        assert(precedence::equal_to{}(candidate_action, actions.back()));
-                        if (is_small() || is_unique())
+                if constexpr (
+                        std::is_same<precedence_category_t<rules_type>, trivial_precedence_tag>{} &&
+                        std::is_same<                 DuplicatesPolicy,    drop_duplicates_tag>{}
+                ){
+                        assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
+                        if (actions.empty() || is_small() || is_unique())
                                 actions.push_back(candidate_action);
-                        return;
-                case +1 :
+                }
+
+                if constexpr (
+                        std::is_same<precedence_category_t<rules_type>, nontrivial_precedence_tag>{} &&
+                        std::is_same<                 DuplicatesPolicy,       keep_duplicates_tag>{}
+                ){
+                        if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back()))
+                                return actions.push_back(candidate_action);
+                        if (precedence::less{}(candidate_action, actions.back()))
+                                return;
                         assert(precedence::greater{}(candidate_action, actions.back()));
                         actions.clear();
                         actions.push_back(candidate_action);
-                        return;
-                default:
-                        assert(false);
+                }
+
+                if constexpr (
+                        std::is_same<precedence_category_t<rules_type>, nontrivial_precedence_tag>{} &&
+                        std::is_same<                 DuplicatesPolicy,       drop_duplicates_tag>{}
+                ){
+                        if (actions.empty())
+                                return actions.push_back(candidate_action);/*
+                        if (precedence::equal_to{}(candidate_action, actions.back())) {
+                                if (is_small() || is_unique())
+                                        actions.push_back(candidate_action);
+                                return;
+                        }
+                        if (precedence::less{}(candidate_action, actions.back()))
+                                return;
+                        assert(precedence::greater{}(candidate_action, actions.back()));
+                        actions.clear();
+                        actions.push_back(candidate_action);*/
+
+                        switch(precedence::compare{}(candidate_action, actions.back())) {
+                        case -1 :
+                                assert(precedence::less{}(candidate_action, actions.back()));
+                                return;
+                        case  0 :
+                                assert(precedence::equal_to{}(candidate_action, actions.back()));
+                                if (is_small() || is_unique())
+                                        actions.push_back(candidate_action);
+                                return;
+                        case +1 :
+                                assert(precedence::greater{}(candidate_action, actions.back()));
+                                actions.clear();
+                                actions.push_back(candidate_action);
+                                return;
+                        default:
+                                assert(false);
+                        }
                 }
         }
 

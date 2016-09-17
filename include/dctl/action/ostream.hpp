@@ -84,7 +84,6 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> c
         switch(move::getnotation<Rules, Board>(ostr)) {
         case Notation::algebraic : return move::print_algebraic(ostr, m);
         case Notation::numeric   : return move::print_numeric(ostr, m);
-        default: assert(false); return ostr;
         }
 }
 

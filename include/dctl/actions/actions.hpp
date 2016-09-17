@@ -17,7 +17,7 @@ class Actions
         using Impl = detail::Actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
 
         template<class Color, class State>
-        auto assert_invariants(State const& state, std::size_t const n) const
+        auto assert_invariants([[maybe_unused]] State const& state, [[maybe_unused]] std::size_t const n) const
         {
                 assert(count <Color>(state) ==  n);
                 assert(detect<Color>(state) == (n > 0));

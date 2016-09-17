@@ -16,25 +16,23 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")# -stdlib=libc++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
 
 # highest general warning level
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")
 
 # NOT A DEFECT: no C++98 compatibility
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat -Wno-c++98-compat-pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat -Wno-c++98-compat-pedantic")
 
-# NOT A DEFECT: padding is a diagnostic only (useful to turn on during future optimizations)
+# NOT A DEFECT: padding is a diagnostic only (useful to turn on during optimizations)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-padded")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs")
 
 # KNOWN ISSUE: Boost.Test does some macro magic that requires static initialization
 # http://hadesmem.googlecode.com/svn-history/r1861/trunk/tests/injector.cpp
 # http://stackoverflow.com/a/15708829/819272 for a rationale for this warning by Howard Hinnant
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-global-constructors")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-disabled-macro-expansion")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-global-constructors")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-disabled-macro-expansion")
 
 # TODO: DXP message classes with virtual functions should not be header-only
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
 
 # optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Os -march=native -mtune=native")
@@ -59,7 +57,7 @@ include_directories(${XSTD_include_dirs})
 #----------------
 # Boost libraries
 #----------------
-find_package(Boost 1.60.0 REQUIRED COMPONENTS chrono system timer unit_test_framework)
+find_package(Boost 1.61.0 REQUIRED COMPONENTS chrono system timer unit_test_framework)
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 add_definitions(-D BOOST_ALL_DYN_LINK)
 add_definitions(-D BOOST_TEST_MAIN)

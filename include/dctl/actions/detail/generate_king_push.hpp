@@ -36,23 +36,18 @@ public:
 
         auto operator()(State const& state) const
         {
-                king_range_dispatch(state, king_range_category_t<rules_type>{});
+                if constexpr (std::is_same<king_range_category_t<rules_type>, short_ranged_tag>{}) {
+                        if (auto const active_kings = state.pieces(Color{}, king_type{}); active_kings.any())
+                                wave_directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied());
+                }
+
+                if constexpr (std::is_same<king_range_category_t<rules_type>,  long_ranged_tag>{}) {
+                        state.pieces(Color{}, king_type{}).for_each([&, this](auto const& from_sq){
+                                this->ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq, state.not_occupied());
+                        });
+                }
         }
 private:
-        auto king_range_dispatch(State const& state, short_ranged_tag) const
-        {
-                auto const active_kings = state.pieces(Color{}, king_type{});
-                if (active_kings.any())
-                        wave_directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied());
-        }
-
-        auto king_range_dispatch(State const& state, long_ranged_tag) const
-        {
-                state.pieces(Color{}, king_type{}).for_each([&, this](auto const& from_sq){
-                        this->ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq, state.not_occupied());
-                });
-        }
-
         template<template<int> class... Directions>
         auto wave_directions_lfold(set_type const active_kings, set_type const not_occupied) const
         {

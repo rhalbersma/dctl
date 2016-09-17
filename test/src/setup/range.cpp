@@ -15,8 +15,7 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::Rectangular<Wid
 
         for (auto y : boost::irange(0_zu, b.height)) {
                 for (auto x : boost::irange(0_zu, b.width)) {
-                        auto const coord = Coord{x, y};
-                        if (b.is_square(coord)) {
+                        if (auto const coord = Coord{x, y}; b.is_square(coord)) {
                                 ostr << std::setw(2) << b.to_square(coord);
                         } else {
                                 ostr << std::string(2, ' ');

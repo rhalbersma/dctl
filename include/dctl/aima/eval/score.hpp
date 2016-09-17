@@ -12,7 +12,7 @@ namespace evaluate {
 template<class State>
 static int score (State const& s)
 {
-        return (s.is_to_move(Color::black)) ?
+        return (s.is_to_move(black_type{})) ?
                 Delta<black_type>::value(s) :
                 Delta<white_type>::value(s)
         ;
@@ -33,7 +33,7 @@ static void print_break_down(State const& s)
         for (auto i = 0; i < 26; ++i)
                 std::cout << "-";
         std::cout<< '\n';
-        std::cout << "Evaluate" << std::setw(6) << score<Color::black>(s) << std::setw(6) << score<Color::white>(s) << std::setw(6) << Delta<black_type>(s) << '\n';
+        std::cout << "Evaluate" << std::setw(6) << Feature<black_type>::value(s)    << std::setw(6) << Feature<white_type>::value(s)    << std::setw(6) << Delta<black_type>::value(s) << '\n';
         std::cout<< '\n';
 }
 
