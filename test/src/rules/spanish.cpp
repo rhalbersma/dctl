@@ -1,6 +1,6 @@
-#include <dctl/rules/spanish.hpp>       // spanish
+#include <dctl/rules/spanish.hpp>       // Spanish
 #include <rules/precedence.hpp>         // precedence::is_consistent
-#include <dctl/piece.hpp>               // piece
+#include <dctl/piece.hpp>               // Piece
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, is_long_ranged_king, is_trivial, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                      // size_t
@@ -11,7 +11,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesSpanish)
 
-using T = spanish;
+using T = Spanish;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = spanish;
+                using rules_type = Spanish;
                 std::size_t num_captured_;
                 std::size_t num_captured_kings_;
                 constexpr auto num_captured_pieces()       const noexcept { return num_captured_;       }

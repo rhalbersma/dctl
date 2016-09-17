@@ -1,5 +1,5 @@
-#include <dctl/rule_traits.hpp>                 // king_range_category, long_ranged_tag, short_ranged_tag, is_land_behind_piece, is_halt_behind_king
-#include <dctl/rules.hpp>                       // checkers, czech, frisian, international, italian, killer, pool, russian, spanish, thai
+#include <dctl/rule_traits.hpp>                 // king_range_category, long_ranged_tag, short_ranged_tag, is_land_behind_Piece, is_halt_behind_king
+#include <dctl/rules.hpp>                       // Checkers, Czech, Frisian, International, Italian, Killer, Pool, Russian, Spanish, Thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         using VariantsShortRangedTag = boost::mpl::vector
         <
-                checkers, italian
+                Checkers, Italian
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsShortRangedTag, T, VariantsShortRangedTag)
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         using VariantsLongRangedTag = boost::mpl::vector
         <
-                czech, frisian, international, pool, russian, spanish, thai
+                Czech, Frisian, International, Pool, Russian, Spanish, Thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsLongRangedTag, T, VariantsLongRangedTag)
@@ -31,26 +31,26 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(IsLandBehindpiece)
+BOOST_AUTO_TEST_SUITE(IsLandBehindPiece)
 
         using VariantsFalse = boost::mpl::vector
         <
-                checkers, czech, frisian, international, italian, pool, russian, spanish
+                Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!is_land_behind_piece_or_v<T>);
+                static_assert(!is_land_behind_Piece_or_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
         <
-                thai
+                Thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
-                static_assert(is_land_behind_piece_or_v<T>);
+                static_assert(is_land_behind_Piece_or_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_SUITE(IsHaltBehindKing)
 
         using Variants = boost::mpl::vector
         <
-                checkers, czech, frisian, international, italian, pool, russian, spanish, thai
+                Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalseT, T, Variants)
@@ -67,9 +67,9 @@ BOOST_AUTO_TEST_SUITE(IsHaltBehindKing)
                 static_assert(!is_halt_behind_king_or_v<T>);
         }
 
-        BOOST_AUTO_TEST_CASE_TEMPLATE(IsTruekillerT, T, Variants)
+        BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrueKillerT, T, Variants)
         {
-                static_assert(is_halt_behind_king_or_v<killer<T>>);
+                static_assert(is_halt_behind_king_or_v<Killer<T>>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

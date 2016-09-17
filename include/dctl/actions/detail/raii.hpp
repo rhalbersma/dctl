@@ -4,7 +4,6 @@
 #include <cstddef>              // size_t
 
 namespace dctl {
-namespace core {
 namespace raii {
 
 template<class Builder>
@@ -93,9 +92,9 @@ class Setking_jump
 public:
         ~Setking_jump()
         {
-                assert(builder.is_with(piece::king) && builder.is_into(piece::king));
-                builder.with(piece::pawn);
-                builder.into(piece::pawn);
+                assert(builder.is_with(Piece::king) && builder.is_into(Piece::king));
+                builder.with(Piece::pawn);
+                builder.into(Piece::pawn);
         }
 
         Setking_jump(Setking_jump const&) = delete;
@@ -105,9 +104,9 @@ public:
         :
                 builder{b}
         {
-                assert(builder.is_with(piece::pawn) && builder.is_into(piece::pawn));
-                builder.with(piece::king);
-                builder.into(piece::king);
+                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::pawn));
+                builder.with(Piece::king);
+                builder.into(Piece::king);
         }
 };
 
@@ -118,19 +117,18 @@ class promotion
 public:
         ~promotion()
         {
-                assert(builder.is_with(piece::pawn) && builder.is_into(piece::king));
-                builder.into(piece::pawn);
+                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
+                builder.into(Piece::pawn);
         }
 
         promotion(Builder& b)
         :
                 builder{b}
         {
-                assert(builder.is_with(piece::pawn) && builder.is_into(piece::pawn));
-                builder.into(piece::king);
+                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::pawn));
+                builder.into(Piece::king);
         }
 };
 
 }       // namespace raii
-}       // namespace core
 }       // namespace dctl

@@ -1,83 +1,80 @@
 #pragma once
 #include <dctl/actions/detail/specializations.hpp>      // Generate
 #include <dctl/actions/select/legal.hpp>                // legal
-#include <dctl/color.hpp>                               // color, black, white
+#include <dctl/color.hpp>                               // black, white
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/type_traits.hpp>
 #include <cassert>                                      // assert
 #include <cstddef>                                      // size_t
-#include <experimental/type_traits>                     // is_same
-#include <type_traits>                                  // bool_constant
+#include <type_traits>                                  // bool_constant, is_same
 
 namespace dctl {
-namespace core {
 
 template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
 class Actions
 {
-        template<color ToMove>
-        using Impl = detail::Actions<ToMove, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
+        template<class Color>
+        using Impl = detail::Actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
 
-        template<color ToMove, class State>
+        template<class Color, class State>
         auto assert_invariants(State const& state, std::size_t const n) const
         {
-                assert(count <ToMove>(state) ==  n);
-                assert(detect<ToMove>(state) == (n > 0));
+                assert(count <Color>(state) ==  n);
+                assert(detect<Color>(state) == (n > 0));
         }
 
 public:
-        template<color ToMove, class State, class SequenceContainer>
-        auto generate(State const& state, SequenceContainer& actions) const
-        {
-                using action_type = xstd::value_t<SequenceContainer>;
-                static_assert(std::experimental::is_same_v<rules_t<State>, rules_t<action_type>>);
-                static_assert(std::experimental::is_same_v<board_t<State>, board_t<action_type>>);
-                Impl<ToMove>{}.generate(state, actions);
-                assert_invariants<ToMove>(state, actions.size());
-        }
-
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const
         {
                 return
-                        state.is_to_move(color::black) ?
-                        generate<color::black>(state, actions) :
-                        generate<color::white>(state, actions)
+                        state.is_to_move(Color::black) ?
+                        generate<black_type>(state, actions) :
+                        generate<white_type>(state, actions)
                 ;
         }
 
-        template<color ToMove, class State>
-        auto count(State const& state) const
+        template<class Color, class State, class SequenceContainer>
+        auto generate(State const& state, SequenceContainer& actions) const
         {
-                return Impl<ToMove>{}.count(state);
+                using action_type = xstd::value_t<SequenceContainer>;
+                static_assert(std::is_same<rules_t<State>, rules_t<action_type>>{});
+                static_assert(std::is_same<board_t<State>, board_t<action_type>>{});
+                Impl<Color>{}.generate(state, actions);
+                assert_invariants<Color>(state, actions.size());
         }
 
         template<class State>
         auto count(State const& state) const
         {
                 return
-                        state.is_to_move(color::black) ?
-                        count<color::black>(state) :
-                        count<color::white>(state)
+                        state.is_to_move(Color::black) ?
+                        count<black_type>(state) :
+                        count<white_type>(state)
                 ;
         }
 
-        template<color ToMove, class State>
-        auto detect(State const& state) const
+        template<class Color, class State>
+        auto count(State const& state) const
         {
-                return Impl<ToMove>{}.detect(state);
+                return Impl<Color>{}.count(state);
         }
 
         template<class State>
         auto detect(State const& state) const
         {
                 return
-                        state.is_to_move(color::black) ?
-                        detect<color::black>(state) :
-                        detect<color::white>(state)
+                        state.is_to_move(Color::black) ?
+                        detect<black_type>(state) :
+                        detect<white_type>(state)
                 ;
+        }
+
+        template<class Color, class State>
+        auto detect(State const& state) const
+        {
+                return Impl<Color>{}.detect(state);
         }
 };
 
-}       // namespace core
 }       // namespace dctl

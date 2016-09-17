@@ -9,7 +9,6 @@
 #include <dctl/state/mrp_kings/mrp_kings.hpp>
 #include <dctl/state/mrp_kings/zobrist.hpp>
 #include <dctl/state/detail/base_state.hpp>
-#include <dctl/state/pieces.hpp>
 #include <dctl/state/player_to_move.hpp>
 #include <dctl/state/to_move/to_move.hpp>
 #include <dctl/state/to_move/zobrist.hpp>
@@ -19,9 +18,8 @@
 #include <dctl/utility/zobrist/accumulate.hpp>
 #include <xstd/bitset.hpp>
 #include <experimental/optional>
-#include <experimental/type_traits>
 #include <cassert>                              // assert
-#include <type_traits>
+#include <type_traits>                          // is_same
 #include <tuple>
 
 namespace dctl {
@@ -67,30 +65,30 @@ private:
         {
                 assert(mask::squares_v<board_type> == (pieces() | not_occupied()));
 
-                assert(pieces() == (pieces(color::black) | pieces(color::white)));
-                assert(pieces() == (pieces(piece::pawn ) | pieces(piece::king )));
+                assert(pieces() == (pieces(black_type{}) | pieces(white_type{})));
+                assert(pieces() == (pieces( pawn_type{}) | pieces( king_type{})));
 
-                assert(pieces(color::black) == (pieces(color::black, piece::pawn) | pieces(color::black, piece::king)));
-                assert(pieces(color::white) == (pieces(color::white, piece::pawn) | pieces(color::white, piece::king)));
-                assert(pieces(piece::pawn ) == (pieces(color::black, piece::pawn) | pieces(color::white, piece::pawn)));
-                assert(pieces(piece::king ) == (pieces(color::black, piece::king) | pieces(color::white, piece::king)));
+                assert(pieces(black_type{}) == (pieces(black_type{}, pawn_type{}) | pieces(black_type{}, king_type{})));
+                assert(pieces(white_type{}) == (pieces(white_type{}, pawn_type{}) | pieces(white_type{}, king_type{})));
+                assert(pieces( pawn_type{}) == (pieces(black_type{}, pawn_type{}) | pieces(white_type{}, pawn_type{})));
+                assert(pieces( king_type{}) == (pieces(black_type{}, king_type{}) | pieces(white_type{}, king_type{})));
 
                 assert(xstd::disjoint(pieces(), not_occupied()));
 
-                assert(xstd::disjoint(pieces(color::black), pieces(color::white)));
-                assert(xstd::disjoint(pieces(piece::pawn ), pieces(piece::king )));
+                assert(xstd::disjoint(pieces(black_type{}), pieces(white_type{})));
+                assert(xstd::disjoint(pieces( pawn_type{}), pieces( king_type{})));
 
-                assert(xstd::disjoint(pieces(color::black, piece::pawn), pieces(color::black, piece::king)));
-                assert(xstd::disjoint(pieces(color::white, piece::pawn), pieces(color::white, piece::king)));
-                assert(xstd::disjoint(pieces(color::black, piece::pawn), pieces(color::white, piece::pawn)));
-                assert(xstd::disjoint(pieces(color::black, piece::king), pieces(color::white, piece::king)));
+                assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), pieces(black_type{}, king_type{})));
+                assert(xstd::disjoint(pieces(white_type{}, pawn_type{}), pieces(white_type{}, king_type{})));
+                assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), pieces(white_type{}, pawn_type{})));
+                assert(xstd::disjoint(pieces(black_type{}, king_type{}), pieces(white_type{}, king_type{})));
 
-                assert(xstd::disjoint(pieces(color::black, piece::pawn), mask::promotion_v<board_type, color::black>));
-                assert(xstd::disjoint(pieces(color::white, piece::pawn), mask::promotion_v<board_type, color::white>));
+                assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), mask::promotion_v<board_type, black_type>));
+                assert(xstd::disjoint(pieces(white_type{}, pawn_type{}), mask::promotion_v<board_type, white_type>));
         }
 
 public:
-        state(color const c, set_type const black, set_type const white, set_type const pawns, set_type const kings)
+        state(Color const c, set_type const black, set_type const white, set_type const pawns, set_type const kings)
         :
                 most_recently_pushed_kings_or_t{},
                 player_to_move_{c},
@@ -101,16 +99,16 @@ public:
 
         static state initial(std::size_t const separation = initial_position_gap_or_v<Rules> + Board::height % 2)
         {
-                auto const bp = mask::initial<board_type>{}(color::black, separation);
-                auto const wp = mask::initial<board_type>{}(color::white, separation);
-                return { color::white, bp, wp, bp | wp, {} };
+                auto const bp = mask::initial<board_type>{}(Color::black, separation);
+                auto const wp = mask::initial<board_type>{}(Color::white, separation);
+                return { Color::white, bp, wp, bp | wp, {} };
         }
 
         template<class Action>
         auto& make(Action const& a)
         {
-                static_assert(std::experimental::is_same_v<rules_type, rules_t<Action>>);
-                static_assert(std::experimental::is_same_v<board_type, board_t<Action>>);
+                static_assert(std::is_same<rules_type, rules_t<Action>>{});
+                static_assert(std::is_same<board_type, board_t<Action>>{});
                 piece_placement_.make(player_to_move_, a);
                 player_to_move_.make(a);
                 assert_invariants();
@@ -119,19 +117,49 @@ public:
 
         // observers
 
-        auto pieces(color const c) const noexcept
+        auto pieces(Color const c) const noexcept
         {
                 return piece_placement_.pieces(c);
         }
 
-        auto pieces(piece const p) const noexcept
+        template<Color Side>
+        auto pieces(color_constant<Side>) const noexcept
+        {
+                return pieces(Side);
+        }
+
+        auto pieces(Piece const p) const noexcept
         {
                 return piece_placement_.pieces(p);
         }
 
-        auto pieces(color const c, piece const p) const noexcept
+        template<Piece Type>
+        auto pieces(piece_constant<Type>) const noexcept
+        {
+                return pieces(Type);
+        }
+
+        auto pieces(Color const c, Piece const p) const noexcept
         {
                 return piece_placement_.pieces(c, p);
+        }
+
+        template<Color Side>
+        auto pieces(color_constant<Side>, Piece p) const noexcept
+        {
+                return pieces(Side, p);
+        }
+
+        template<Piece Type>
+        auto pieces(Color c, piece_constant<Type>) const noexcept
+        {
+                return pieces(c, Type);
+        }
+
+        template<Color Side, Piece Type>
+        auto pieces(color_constant<Side>, piece_constant<Type>) const noexcept
+        {
+                return pieces(Side, Type);
         }
 
         auto pieces() const noexcept
@@ -144,17 +172,29 @@ public:
                 return piece_placement_.not_occupied();
         }
 
-        auto king_targets(color const c) const noexcept
+        auto king_targets(Color const c) const noexcept
         {
-                return pieces(c);
+                return pieces(!c);
         }
 
-        auto pawn_targets(color const c) const noexcept
+        template<Color Side>
+        auto king_targets(color_constant<Side>) const noexcept
+        {
+                return king_targets(Side);
+        }
+
+        auto pawn_targets(Color const c) const noexcept
         {
                 return pawn_targets_dispatch(c, rank_jump_category_t<rules_type>{});
         }
 
-        auto num_pieces(color const c, piece const p) const noexcept
+        template<Color Side>
+        auto pawn_targets(color_constant<Side>) const noexcept
+        {
+                return pawn_targets(Side);
+        }
+
+        auto num_pieces(Color const c, Piece const p) const noexcept
         {
                 return piece_placement_.num_pieces(c, p);
         }
@@ -164,7 +204,7 @@ public:
                 return player_to_move_;
         }
 
-        auto is_to_move(color const c) const noexcept
+        auto is_to_move(Color const c) const noexcept
         {
                 return to_move() == c;
         }
@@ -174,14 +214,14 @@ public:
                 return std::size_t{0};
         }
 private:
-        auto pawn_targets_dispatch(color const c, inferior_rank_jump_tag) const noexcept
+        auto pawn_targets_dispatch(Color const c, inferior_rank_jump_tag) const noexcept
         {
-                return pieces(c);
+                return pieces(!c);
         }
 
-        auto pawn_targets_dispatch(color const c, superior_rank_jump_tag) const noexcept
+        auto pawn_targets_dispatch(Color const c, superior_rank_jump_tag) const noexcept
         {
-                return pieces(c, piece::pawn);
+                return pieces(!c, pawn_type{});
         }
 };
 

@@ -12,7 +12,6 @@
 #include <vector>                                       // vector
 
 namespace dctl {
-namespace core {
 
 template<class Rules, class Board>
 struct Fixture
@@ -22,7 +21,7 @@ struct Fixture
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>{}(fen);
                 std::vector<action<Rules, Board>> moves;
-                core::Actions<>{}.generate(p, moves);
+                Actions<>{}.generate(p, moves);
 
                 BOOST_CHECK_EQUAL(moves.size(), rng.size());
 
@@ -41,5 +40,4 @@ struct Fixture
         }
 };
 
-}       // namespace core
 }       // namespace dctl

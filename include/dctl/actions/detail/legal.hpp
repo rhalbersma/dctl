@@ -5,17 +5,15 @@
 #include <dctl/actions/select/legal.hpp>        // legal
 #include <dctl/actions/select/jump.hpp>         // jump
 #include <dctl/actions/select/push.hpp>         // push
-#include <dctl/color.hpp>                       // color
 
 namespace dctl {
-namespace core {
 namespace detail {
 
-template<color ToMove, class DuplicatesPolicy, class Reverse>
-class Actions<ToMove, select::legal, DuplicatesPolicy, Reverse>
+template<class Color, class DuplicatesPolicy, class Reverse>
+class Actions<Color, select::legal, DuplicatesPolicy, Reverse>
 {
-        using Jump = Actions<ToMove, select::jump, DuplicatesPolicy, Reverse>;
-        using Push = Actions<ToMove, select::push, DuplicatesPolicy, Reverse>;
+        using Jump = Actions<Color, select::jump, DuplicatesPolicy, Reverse>;
+        using Push = Actions<Color, select::push, DuplicatesPolicy, Reverse>;
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const
@@ -40,5 +38,4 @@ public:
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

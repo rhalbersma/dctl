@@ -6,7 +6,7 @@ namespace rules {
 namespace block_adl {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
-struct frisian
+struct Frisian
 {
         static constexpr auto width                     = 10;
         static constexpr auto height                    = 10;
@@ -40,7 +40,7 @@ struct frisian
 
 }       // namespace block_adl
 
-using block_adl::frisian;
+using block_adl::Frisian;
 
 }       // namespace rules
 }       // namespace dctl

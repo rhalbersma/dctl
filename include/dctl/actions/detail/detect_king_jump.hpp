@@ -5,18 +5,15 @@
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/mask/jump_targets.hpp>                   // jump_targets
-#include <dctl/color.hpp>                               // color
-#include <dctl/piece.hpp>                               // king
+#include <dctl/piece.hpp>                               // king_type
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_long_ranged_king_t
-#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
 
 namespace dctl {
-namespace core {
 namespace detail {
 
-template<color ToMove, class Reverse, class State>
-class Detect<ToMove, piece::king, select::jump, Reverse, State>
+template<class Color , class Reverse, class State>
+class Detect<Color, king_type, select::jump, Reverse, State>
 {
         using   board_type = board_t<State>;
         using   rules_type = rules_t<State>;
@@ -25,13 +22,13 @@ class Detect<ToMove, piece::king, select::jump, Reverse, State>
         template<int Direction>
         using jump_targets = mask::jump_targets<board_type, Direction, king_range_category_t<rules_type>>;
 
-        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_kings = pieces<ToMove, piece::king>(state);
+                auto const active_kings = state.pieces(Color{}, king_type{});
                 return active_kings.any() ? directions_dispatch(
-                        active_kings, state.king_targets(!ToMove), state.not_occupied(),
+                        active_kings, state.king_targets(Color{}), state.not_occupied(),
                         jump_category_t<rules_type>{}
                 ) : false;
         }
@@ -62,5 +59,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

@@ -11,7 +11,7 @@ namespace dctl {
 namespace aima {
 namespace search {
 
-auto const drop_duplicates_gen = core::Actions<core::select::legal, drop_duplicates_tag>{};
+auto const drop_duplicates_gen = Actions<select::legal, drop_duplicates_tag>{};
 
 template<class State, class Objective>
 class Fixture

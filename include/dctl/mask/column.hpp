@@ -15,7 +15,7 @@ namespace mask {
 template<class Board>
 class column
 {
-        template<color ToMove>
+        template<class Color>
         struct init
         {
                 struct is_column
@@ -26,7 +26,7 @@ class column
                         constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 assert(column_ < Board::width);
-                                return board::detail::to_llo(sq, Board::inner_grid).x == (ToMove == color::white ? column_ : Board::width - 1 - column_);
+                                return board::detail::to_llo(sq, Board::inner_grid).x == (std::is_same<Color, white_type>{} ? column_ : Board::width - 1 - column_);
                         }
                 };
 
@@ -41,12 +41,12 @@ class column
 
         static constexpr value_type value[] =
         {
-                fill_array<Board::width>(init<color::black>{}),
-                fill_array<Board::width>(init<color::white>{})
+                fill_array<Board::width>(init<black_type>{}),
+                fill_array<Board::width>(init<white_type>{})
         };
 
 public:
-        constexpr auto operator()(color const to_move, std::size_t const column) const noexcept
+        constexpr auto operator()(Color const to_move, std::size_t const column) const noexcept
         {
                 assert(column < Board::width);
                 return value[xstd::to_underlying_type(to_move)][column];

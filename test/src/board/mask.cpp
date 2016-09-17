@@ -3,8 +3,8 @@
 #include <dctl/mask/row.hpp>                    // row
 #include <dctl/mask/squares.hpp>                // squares
 #include <dctl/utility/type_traits.hpp>         // set_t
-#include <board/sequence.hpp>                   // micro, mini, checkers, roman, spantsiretti, international, frisian, ktar<10, 11>,
-                                                // ktar<10, 12>, compact_10_12, compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
+#include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsiretti, International, Frisian, Ktar<10, 11>,
+                                                // Ktar<10, 12>, Compact_10_12, Compact_12_10, Rectangular<12, 10>, Canadian, SriLankan, Dumm
 #include <xstd/cstddef.hpp>                     // _z
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/range/numeric.hpp>              // accumulate
@@ -30,21 +30,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(columnsEquivalencePartitionSquares, T, board::Boar
 
         BOOST_CHECK(
                 boost::algorithm::all_of(columns, [=](auto i){
-                        return column<T>{}(color::black, i) == column<T>{}(color::white, T::width - 1 - i);
+                        return column<T>{}(Color::black, i) == column<T>{}(Color::white, T::width - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 boost::algorithm::all_of(columns, [=](auto i){
                         return boost::algorithm::all_of(columns, [=](auto j){
-                                return i == j ? true : disjoint(column<T>{}(color::white, i), column<T>{}(color::white, j));
+                                return i == j ? true : disjoint(column<T>{}(Color::white, i), column<T>{}(Color::white, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(columns, set_t<T>{}, [](auto result, auto i){
-                        return result ^ column<T>{}(color::white, i);
+                        return result ^ column<T>{}(Color::white, i);
                 }) == squares_v<T>
         );
 }
@@ -56,21 +56,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(rowsEquivalencePartitionSquares, T, board::BoardSe
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
-                        return row<T>{}(color::black, i) == row<T>{}(color::white, T::height - 1 - i);
+                        return row<T, black_type>{}(i) == row<T, white_type>{}(T::height - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
                         return boost::algorithm::all_of(rows, [=](auto j){
-                                return i == j ? true : disjoint(row<T>{}(color::white, i), row<T>{}(color::white, j));
+                                return i == j ? true : disjoint(row<T, white_type>{}(i), row<T, white_type>{}(j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(rows, set_t<T>{}, [](auto result, auto i){
-                        return result ^ row<T>{}(color::white, i);
+                        return result ^ row<T, white_type>{}(i);
                 }) == squares_v<T>
         );
 }

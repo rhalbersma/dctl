@@ -5,10 +5,10 @@
 
 using namespace dctl;
 using square = std::size_t;
-using B = board::checkers;
+using B = board::Checkers;
 
 template<class CharT, class Traits, std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::rectangular<Width, Height, Inverted, OrthogonalCaptures> const& b)
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::Rectangular<Width, Height, Inverted, OrthogonalCaptures> const& b)
 {
         using Coord = board::detail::coordinates<board::detail::upper_left>;
         using namespace xstd::support_literals;

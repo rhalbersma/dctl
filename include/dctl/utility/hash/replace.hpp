@@ -1,7 +1,7 @@
 #pragma once
-#include <experimental/type_traits>     // is_same
-#include <algorithm>                    // min_element
-#include <iterator>                     // iterator_traits
+#include <algorithm>    // min_element
+#include <iterator>     // iterator_traits
+#include <type_traits>  // is_same
 
 namespace dctl {
 namespace hash {
@@ -12,7 +12,7 @@ struct EmptyOldMin
         template<class ForwardIterator, class Value>
         bool operator()(ForwardIterator first, ForwardIterator last, Value const& value) const
         {
-                static_assert(std::experimental::is_same_v<typename std::iterator_traits<ForwardIterator>::value_type, Value>);
+                static_assert(std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, Value>{});
                 using tag_type = typename Value::first_type;
 
                 // 1) fill an empty slot or replace an existing entry with the same tag
@@ -28,7 +28,7 @@ struct EmptyOldMin
                         }
                 }
 
-                // 2) replace the minimal entry with respect to the Predicate
+                // 2) replace the Minimal entry with respect to the Predicate
                 auto it = std::min_element(first, last, Predicate());
                 *it = value;
                 return false;

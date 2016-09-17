@@ -7,7 +7,7 @@
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <tuple>                                // make_tuple
-#include <type_traits>                          // conditional, enable_if
+#include <type_traits>                          // conditional, enable_if, is_same
 
 namespace dctl {
 namespace detail {
@@ -29,7 +29,7 @@ using quality_precedence_or_t = std::conditional_t<
 template<class Board>
 struct base_ordering_precedence
 {
-        set_t<Board> piece_order_;
+        set_t<Board> Piece_order_;
 };
 
 template<class Rules, class Board>
@@ -50,10 +50,10 @@ template<class Rules, class Board = rectangular_t<Rules>>
 class action
 :
         detail::ordering_precedence_or_t<Rules, Board>,
-        detail::quality_precedence_or_t<Rules, Board>
+        detail:: quality_precedence_or_t<Rules, Board>
 {
         using ordering_precedence_or_t = detail::ordering_precedence_or_t<Rules, Board>;
-        using quality_precedence_or_t = detail::quality_precedence_or_t<Rules, Board>;
+        using  quality_precedence_or_t = detail:: quality_precedence_or_t<Rules, Board>;
 public:
         using  rules_type = Rules;
         using  board_type = Board;
@@ -63,8 +63,8 @@ private:
         set_type captured_pieces_;
         square_type from_;
         square_type dest_;
-        piece with_;
-        piece into_;
+        Piece with_;
+        Piece into_;
 
         constexpr auto assert_invariants() const noexcept
         {
@@ -81,8 +81,8 @@ public:
                 captured_pieces_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
-                with_{piece::pawn},
-                into_{promotion ? piece::king : piece::pawn}
+                with_{Piece::pawn},
+                into_{promotion ? Piece::king : Piece::pawn}
         {
                 assert_invariants();
         }
@@ -94,8 +94,8 @@ public:
                 captured_pieces_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
-                with_{piece::king},
-                into_{piece::king}
+                with_{Piece::king},
+                into_{Piece::king}
         {
                 assert_invariants();
         }
@@ -144,7 +144,7 @@ public:
                 return dest_;
         }
 
-        constexpr auto with(piece const p) noexcept
+        constexpr auto with(Piece const p) noexcept
         {
                 with_ = p;
         }
@@ -154,7 +154,7 @@ public:
                 return with_;
         }
 
-        constexpr auto into(piece const p) noexcept
+        constexpr auto into(Piece const p) noexcept
         {
                 into_ = p;
         }
@@ -176,7 +176,7 @@ public:
 
         constexpr auto is_with_king() const noexcept
         {
-                return with() == piece::king;
+                return with() == Piece::king;
         }
 
         constexpr auto is_jump() const noexcept
@@ -186,17 +186,17 @@ public:
 
         constexpr auto is_promotion() const noexcept
         {
-                return with() == piece::pawn && into() != piece::pawn;
+                return with() == Piece::pawn && into() != Piece::pawn;
         }
 
         constexpr auto is_reversible() const noexcept
         {
-                return with() == piece::king && !is_jump();
+                return with() == Piece::king && !is_jump();
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-					is_quality_precedence_or_v<RulesType> &&
-					std::experimental::is_same_v<RulesType, rules_type>
+                is_quality_precedence_or_v<RulesType> &&
+		std::is_same<RulesType, rules_type>{}
         >* = nullptr>
         constexpr auto captured_kings() const noexcept
         {
@@ -204,8 +204,8 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-        		is_quality_precedence_or_v<RulesType> &&
-				std::experimental::is_same_v<RulesType, rules_type>
+        	is_quality_precedence_or_v<RulesType> &&
+		std::is_same<RulesType, rules_type>{}
         >* = nullptr>
         constexpr auto num_captured_kings() const noexcept
         {
@@ -213,12 +213,12 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-				is_ordering_precedence_or_v<RulesType> &&
-				std::experimental::is_same_v<RulesType, rules_type>
+		is_ordering_precedence_or_v<RulesType> &&
+		std::is_same<RulesType, rules_type>{}
         >* = nullptr>
-        constexpr auto piece_order() const noexcept
+        constexpr auto Piece_order() const noexcept
         {
-                return this->piece_order_;
+                return this->Piece_order_;
         }
 private:
         constexpr auto capture_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::false_type, std::false_type)
@@ -236,7 +236,7 @@ private:
         constexpr auto capture_quality_ordering_dispatch(std::size_t const /*sq*/, bool const is_king, std::false_type, std::true_type)
         {
                 if (is_king) {
-                        this->piece_order_.set(set_type::size() - 1 - num_captured_pieces());
+                        this->Piece_order_.set(set_type::size() - 1 - num_captured_pieces());
                 }
         }
 
@@ -244,7 +244,7 @@ private:
         {
                 if (is_king) {
                         this->captured_kings_.set(sq);
-                        this->piece_order_.set(set_type::size() - 1 - num_captured_pieces());
+                        this->Piece_order_.set(set_type::size() - 1 - num_captured_pieces());
                 }
         }
 
@@ -263,14 +263,14 @@ private:
         constexpr auto release_quality_ordering_dispatch(std::size_t const /*sq*/, bool const is_king, std::false_type, std::true_type)
         {
                 if (is_king) {
-                        this->piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
+                        this->Piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
                 }
         }
 
         constexpr auto release_quality_ordering_dispatch(std::size_t const sq, bool const is_king, std::true_type, std::true_type)
         {
                 if (is_king) {
-                        this->piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
+                        this->Piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
                         this->captured_kings_.reset(sq);
                 }
         }
@@ -282,12 +282,12 @@ private:
 
         constexpr auto is_demotion() const noexcept
         {
-                return with() != piece::pawn && into() == piece::pawn;
+                return with() != Piece::pawn && into() == Piece::pawn;
         }
 };
 
 template<class Rules, class Board, std::enable_if_t<
-		!is_ordering_precedence_or_v<Rules>
+        !is_ordering_precedence_or_v<Rules>
 >* = nullptr>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {
@@ -295,11 +295,11 @@ constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 }
 
 template<class Rules, class Board, std::enable_if_t<
-		is_ordering_precedence_or_v<Rules>
+	is_ordering_precedence_or_v<Rules>
 >* = nullptr>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {
-        return std::make_tuple(a.from(), a.dest(), a.captured_pieces(), a.piece_order());
+        return std::make_tuple(a.from(), a.dest(), a.captured_pieces(), a.Piece_order());
 }
 
 template<class Rules, class Board>

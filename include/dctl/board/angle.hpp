@@ -1,6 +1,5 @@
 #pragma once
 #include <xstd/cstdlib.hpp>             // euclidean_div
-#include <experimental/type_traits>
 #include <cassert>                      // assert
 #include <type_traits>                  // integral_constant
 
@@ -12,19 +11,19 @@ class angle
         {
                 using T = angle;
 
-                static_assert( std::experimental::is_trivially_destructible_v<T>);
-                static_assert( std::experimental::is_nothrow_default_constructible_v<T>);
-                static_assert( std::experimental::is_trivially_copy_constructible_v<T>);
-                static_assert( std::experimental::is_trivially_move_constructible_v<T>);
-                static_assert(!std::experimental::is_copy_assignable_v<T>);
-                static_assert(!std::experimental::is_move_assignable_v<T>);
+                static_assert( std::is_trivially_destructible<T>{});
+                static_assert( std::is_nothrow_default_constructible<T>{});
+                static_assert( std::is_trivially_copy_constructible<T>{});
+                static_assert( std::is_trivially_move_constructible<T>{});
+                static_assert(!std::is_copy_assignable<T>{});
+                static_assert(!std::is_move_assignable<T>{});
 
-                static_assert( std::experimental::is_trivially_copyable_v<T>);
-                static_assert(!std::experimental::is_trivially_default_constructible_v<T>);
-                static_assert(!std::experimental::is_trivial_v<T>);
-                static_assert( std::experimental::is_standard_layout_v<T>);
-                static_assert(!std::experimental::is_pod_v<T>);
-                static_assert( std::experimental::is_literal_type_v<T>);
+                static_assert( std::is_trivially_copyable<T>{});
+                static_assert(!std::is_trivially_default_constructible<T>{});
+                static_assert(!std::is_trivial<T>{});
+                static_assert( std::is_standard_layout<T>{});
+                static_assert(!std::is_pod<T>{});
+                static_assert( std::is_literal_type<T>{});
         }
 
         constexpr auto assert_invariants() const noexcept

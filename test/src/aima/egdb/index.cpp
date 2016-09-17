@@ -19,7 +19,7 @@ namespace dctl {
 namespace egdb {
 
 BOOST_AUTO_TEST_SUITE(EndgameDatabaseIndex)
-
+/*
 using U = int;
 
 using SetTypes = boost::mpl::vector
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)
         auto const e = Binomial::coefficient(N, K);
         auto const bin = Binomial{};
 
-        using Board = board::international;
+        using Board = board::International;
         auto const ghosts = *((~mask::squares_v<Board>).data());
 
         for (auto i : boost::irange(b, e)) {
@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetUnRank, T, SetTypes)
                 BOOST_CHECK_EQUAL(idx, i);
         }
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace egdb

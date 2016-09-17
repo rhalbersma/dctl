@@ -13,7 +13,7 @@ class ToMove
 {
         static std::array<std::size_t, 2> const to_move_;
 public:
-        static auto player(color p) noexcept
+        static auto player(Color p) noexcept
         {
                 return to_move_[xstd::to_underlying_type(p)];
         }

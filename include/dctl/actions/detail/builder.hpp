@@ -6,28 +6,26 @@
 #include <dctl/mask/jump_start.hpp>             // jump_start
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/state/pieces.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
-#include <xstd/type_traits.hpp>                 // to_underlying_type, value_t
+#include <xstd/type_traits.hpp>                 // value_t
 #include <boost/algorithm/cxx11/none_of.hpp>    // none_of
-#include <experimental/type_traits>
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
+#include <type_traits>                          // is_same
 
 namespace dctl {
-namespace core {
 namespace detail {
 
-template<color ToMove, class DuplicatesPolicy, class State, class SequenceContainer>
+template<class Color, class DuplicatesPolicy, class State, class SequenceContainer>
 class Builder
 {
 public:
         using action_type = xstd::value_t<SequenceContainer>;
-        using  board_type = board_t<State>;
-        using  rules_type = rules_t<State>;
-        using    set_type =   set_t<State>;
-        using square_type = std::size_t;
+        using  board_type =       board_t<State>;
+        using  rules_type =       rules_t<State>;
+        using    set_type =         set_t<State>;
+        using square_type =   std::size_t;
 
 private:
         State const& state;
@@ -43,7 +41,7 @@ public:
         explicit Builder(State const& s, SequenceContainer& a)
         :
                 state{s},
-                initial_targets_(pieces<!ToMove>(state)),
+                initial_targets_(state.pieces(opposite<Color>{})),
                 not_occupied_(state.not_occupied()),
                 actions{a}
         {}
@@ -51,7 +49,7 @@ public:
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_or_v<rules_type>);
-                initial_targets_ ^= pieces<!ToMove, piece::king>(state);
+                initial_targets_ ^= state.pieces(opposite<Color>{}, king_type{});
         }
 
         auto make_launch(std::size_t const sq)
@@ -75,12 +73,12 @@ public:
                 release_dispatch(sq, capture_category_t<rules_type>{});
         }
 
-        auto with(piece const p) noexcept
+        auto with(Piece const p) noexcept
         {
                 candidate_action.with(p);
         }
 
-        auto into(piece const p) noexcept
+        auto into(Piece const p) noexcept
         {
                 candidate_action.into(p);
         }
@@ -93,12 +91,12 @@ public:
 
         auto active_pawns() const noexcept
         {
-                return pieces<ToMove, piece::pawn>(state);
+                return state.pieces(Color{}, pawn_type{});
         }
 
         auto active_kings() const noexcept
         {
-                return pieces<ToMove, piece::king>(state);
+                return state.pieces(Color{}, king_type{});
         }
 
         auto current_targets() const
@@ -143,7 +141,7 @@ public:
 
         auto is_last_jumped_king(square_type const sq) const
         {
-                return pieces<piece::king>(state).test(sq);
+                return state.pieces(king_type{}).test(sq);
         }
 
         auto with() const noexcept
@@ -151,7 +149,7 @@ public:
                 return candidate_action.with();
         }
 
-        auto is_with(piece const p) const noexcept
+        auto is_with(Piece const p) const noexcept
         {
                 return with() == p;
         }
@@ -161,14 +159,14 @@ public:
                 return candidate_action.into();
         }
 
-        auto is_into(piece const p) const noexcept
+        auto is_into(Piece const p) const noexcept
         {
                 return into() == p;
         }
 
         constexpr auto is_promotion() const noexcept
         {
-                return is_with(piece::pawn) && !is_into(piece::pawn);
+                return is_with(Piece::pawn) && !is_into(Piece::pawn);
         }
 
         auto to_move() const noexcept
@@ -176,7 +174,7 @@ public:
                 return state.to_move();
         }
 
-        auto is_to_move(color const c) const noexcept
+        auto is_to_move(Color const c) const noexcept
         {
                 return to_move() == c;
         }
@@ -211,7 +209,7 @@ private:
 
         auto is_king(square_type sq) const
         {
-                return pieces<piece::king>(state).test(sq);
+                return state.pieces(king_type{}).test(sq);
         }
 
         auto precedence_duplicates_dispatch(trivial_precedence_tag, keep_duplicates_tag) const
@@ -279,7 +277,7 @@ private:
 
         auto is_unique() const // Throws: Nothing.
         {
-                static_assert(std::experimental::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
+                static_assert(std::is_same<DuplicatesPolicy, drop_duplicates_tag>{});
                 assert(!actions.empty());
                 assert(precedence::equal_to{}(candidate_action, actions.back()));
                 return boost::algorithm::none_of(actions, [&](auto const& a) { return a == candidate_action; });
@@ -287,5 +285,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

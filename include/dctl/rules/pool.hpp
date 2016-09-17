@@ -5,7 +5,7 @@ namespace rules {
 namespace block_adl {
 
 // http://americanpoolcheckers.us/americanpoolcheckers/index.php/history/apca-tournament-rules-of-play
-struct pool
+struct Pool
 {
         static constexpr auto width                     = 8;            // 1
         static constexpr auto height                    = 8;            // 1
@@ -25,7 +25,7 @@ struct pool
 
 }       // namespace block_adl
 
-using block_adl::pool;
+using block_adl::Pool;
 
 }       // namespace rules
 }       // namespace dctl

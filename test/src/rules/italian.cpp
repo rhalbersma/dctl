@@ -1,4 +1,4 @@
-#include <dctl/rules/italian.hpp>       // italian
+#include <dctl/rules/italian.hpp>       // Italian
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/piece.hpp>               // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_superior_rank_jump, is_ordering, equal_to, less
@@ -11,7 +11,7 @@ namespace rules {
 
 BOOST_AUTO_TEST_SUITE(RulesItalian)
 
-using T = italian;
+using T = Italian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
@@ -28,36 +28,36 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = italian;
+                using rules_type = Italian;
                 std::size_t num_captured_;
                 std::size_t num_captured_kings_;
-                piece with_;
-                std::vector<std::size_t> piece_order_;
+                Piece with_;
+                std::vector<std::size_t> Piece_order_;
 
                 auto num_captured_pieces()       const noexcept { return num_captured_;        }
                 auto num_captured_kings() const noexcept { return num_captured_kings_;  }
-                auto is_with_king()       const noexcept { return with_ == piece::king; }
-                auto const& piece_order() const noexcept { return piece_order_;         }
+                auto is_with_king()       const noexcept { return with_ == Piece::king; }
+                auto const& Piece_order() const noexcept { return Piece_order_;         }
         };
 
         auto const moves = std::vector<Action>
         {
-                { 1, 0, piece::pawn, {      } },
-                { 1, 0, piece::king, {      } },
-                { 1, 1, piece::king, { 0    } },
-                { 2, 0, piece::pawn, {      } },
-                { 2, 0, piece::king, {      } },
-                { 2, 1, piece::king, { 0    } },
-                { 2, 1, piece::king, { 1    } },
-                { 2, 2, piece::king, { 0, 1 } },
-                { 3, 0, piece::pawn, {      } },
-                { 3, 0, piece::king, {      } },
-                { 3, 1, piece::king, { 0    } },
-                { 3, 1, piece::king, { 1    } },
-                { 3, 1, piece::king, { 2    } },
-                { 3, 2, piece::king, { 0, 1 } },
-                { 3, 2, piece::king, { 0, 2 } },
-                { 3, 2, piece::king, { 1, 2 } }
+                { 1, 0, Piece::pawn, {      } },
+                { 1, 0, Piece::king, {      } },
+                { 1, 1, Piece::king, { 0    } },
+                { 2, 0, Piece::pawn, {      } },
+                { 2, 0, Piece::king, {      } },
+                { 2, 1, Piece::king, { 0    } },
+                { 2, 1, Piece::king, { 1    } },
+                { 2, 2, Piece::king, { 0, 1 } },
+                { 3, 0, Piece::pawn, {      } },
+                { 3, 0, Piece::king, {      } },
+                { 3, 1, Piece::king, { 0    } },
+                { 3, 1, Piece::king, { 1    } },
+                { 3, 1, Piece::king, { 2    } },
+                { 3, 2, Piece::king, { 0, 1 } },
+                { 3, 2, Piece::king, { 0, 2 } },
+                { 3, 2, Piece::king, { 1, 2 } }
         };
 
         BOOST_CHECK(precedence::is_consistent(moves));

@@ -4,22 +4,19 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator
-#include <dctl/color.hpp>                               // color
 #include <dctl/mask/promotion.hpp>                      // is_promotion
 #include <dctl/mask/push_targets.hpp>                   // push_targets
-#include <dctl/piece.hpp>                               // pawn
-#include <dctl/state/pieces.hpp>
+#include <dctl/piece.hpp>                               // pawn_type
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
 #include <xstd/type_traits.hpp>                         // value_t
 #include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
 namespace dctl {
-namespace core {
 namespace detail {
 
-template<color ToMove, class Reverse, class State, class SequenceContainer>
-class generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContainer>
+template<class Color, class Reverse, class State, class SequenceContainer>
+class Generate<Color, pawn_type, select::push, Reverse, State, SequenceContainer>
 {
         using action_type = xstd::value_t<SequenceContainer>;
         using  board_type = board_t<State>;
@@ -28,17 +25,17 @@ class generate<ToMove, piece::pawn, select::push, Reverse, State, SequenceContai
         template<int Direction>
         using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto bearing = bearing_v<board_type, ToMove, Reverse::value>;
+        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
         SequenceContainer& actions;
 public:
-        explicit generate(SequenceContainer& a) noexcept
+        explicit Generate(SequenceContainer& a) noexcept
         :
                 actions{a}
         {}
 
         auto operator()(State const& state) const
         {
-                auto const active_pawns = pieces<ToMove, piece::pawn>(state);
+                auto const active_pawns = state.pieces(Color{}, pawn_type{});
                 if (active_pawns.any())
                         directions_lfold<left_up, right_up>(active_pawns, state.not_occupied());
         }
@@ -72,10 +69,9 @@ private:
 
         auto is_promotion(std::size_t const sq) const // Throws: Nothing.
         {
-                return mask::promotion_v<board_type, ToMove>.test(sq);
+                return mask::promotion_v<board_type, Color>.test(sq);
         }
 };
 
 }       // namespace detail
-}       // namespace core
 }       // namespace dctl

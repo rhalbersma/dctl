@@ -12,10 +12,9 @@
 namespace dctl {
 namespace mask {
 
-template<class Board>
+template<class Board, class Color>
 class row
 {
-        template<color ToMove>
         struct init
         {
                 struct is_row
@@ -26,7 +25,7 @@ class row
                         constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 assert(row_ < Board::height);
-                                return board::detail::to_llo(sq, Board::inner_grid).y == (ToMove == color::white ? row_ : Board::height - 1 - row_);
+                                return board::detail::to_llo(sq, Board::inner_grid).y == (std::is_same<Color, white_type>{} ? row_ : Board::height - 1 - row_);
                         }
                 };
 
@@ -39,23 +38,19 @@ class row
 
         using value_type = std::array<set_t<Board>, Board::height>;
 
-        static constexpr value_type value[] =
-        {
-                fill_array<Board::height>(init<color::black>{}),
-                fill_array<Board::height>(init<color::white>{})
-        };
+        static constexpr value_type value = fill_array<Board::height>(init{});
 
 public:
-        constexpr auto operator()(color const to_move, std::size_t const row) const noexcept
+        constexpr auto operator()(std::size_t const row) const noexcept
         {
                 assert(row < Board::height);
-                return value[xstd::to_underlying_type(to_move)][row];
+                return value[row];
         }
 };
 
-template<class Board>
-constexpr typename row<Board>::value_type
-row<Board>::value[];
+template<class Board, class Color>
+constexpr typename row<Board, Color>::value_type
+row<Board, Color>::value;
 
 }       // namespace mask
 }       // namespace dctl

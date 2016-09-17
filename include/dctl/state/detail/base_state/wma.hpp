@@ -37,20 +37,20 @@ public:
         {}
 
         template<class Action>
-        auto& make(color const c, Action const& a)
+        auto& make(Color const c, Action const& a)
         {
                 pieces_.reset(a.from());
                 pieces_.set  (a.dest());
 
-                if (c == color::white) {
+                if (c == Color::white) {
                         white_.reset(a.from());
                         white_.set  (a.dest());
                 }
 
-                if (a.with() == piece::pawn)
+                if (a.with() == Piece::pawn)
                         pawns_.reset(a.from());
 
-                if (a.into() == piece::pawn)
+                if (a.into() == Piece::pawn)
                         pawns_.set(a.dest());
 
                 if (a.is_jump()) {
@@ -62,21 +62,21 @@ public:
                 return *this;
         }
 
-        auto pieces(color const c) const noexcept
+        auto pieces(Color const c) const noexcept
         {
-                return c == color::black ? pieces_ ^ white_ : white_;
+                return c == Color::black ? pieces_ ^ white_ : white_;
         }
 
-        auto pieces(piece const p) const noexcept
+        auto pieces(Piece const p) const noexcept
         {
-                return p == piece::pawn ? pawns_ : pieces_ ^ pawns_;
+                return p == Piece::pawn ? pawns_ : pieces_ ^ pawns_;
         }
 
-        auto pieces(color const c, piece const p) const noexcept
+        auto pieces(Color const c, Piece const p) const noexcept
         {
-                return c == color::black ?
-                        (p == piece::pawn ?  ~white_ & pawns_ : pieces_ ^ (white_ | pawns_)) :
-                        (p == piece::pawn ?   white_ & pawns_ : white_ & ~pawns_)
+                return c == Color::black ?
+                        (p == Piece::pawn ?  ~white_ & pawns_ : pieces_ ^ (white_ | pawns_)) :
+                        (p == Piece::pawn ?   white_ & pawns_ : white_ & ~pawns_)
                 ;
         }
 
@@ -90,7 +90,7 @@ public:
                 return mask::squares_v<Board> ^ pieces();
         }
 
-        auto num_pieces(color const c, piece const p) const noexcept
+        auto num_pieces(Color const c, Piece const p) const noexcept
         {
                 return pieces(c, p).count();
         }

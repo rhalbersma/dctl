@@ -1,5 +1,5 @@
 #include <dctl/rule_traits.hpp>                 // is_backward_pawn_jump, is_superior_rank_jump, is_orthogonal_jump, capture_category, stopped_capture_tag, passing_capture_tag
-#include <dctl/rules.hpp>                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
+#include <dctl/rules.hpp>                       // Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish, Thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_SUITE(IsBackwardpawn_jump)
 
         using VariantsFalse = boost::mpl::vector
         <
-                checkers, czech, italian, spanish, thai
+                Checkers, Czech, Italian, Spanish, Thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE(IsBackwardpawn_jump)
 
         using VariantsTrue = boost::mpl::vector
         <
-                frisian, international, pool, russian
+                Frisian, International, Pool, Russian
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
         using VariantsFalse = boost::mpl::vector
         <
-                checkers, czech, international, italian, pool, russian, spanish, thai
+                Checkers, Czech, International, Italian, Pool, Russian, Spanish, Thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
         using VariantsTrue = boost::mpl::vector
         <
-                frisian
+                Frisian
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_SUITE(Ispawn_jumpKing)
 
         using VariantsTrue = boost::mpl::vector
         <
-                checkers, czech, frisian, international, pool, russian, spanish, thai
+                Checkers, Czech, Frisian, International, Pool, Russian, Spanish, Thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsTrue)
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_SUITE(Ispawn_jumpKing)
 
         using VariantsFalse = boost::mpl::vector
         <
-                italian
+                Italian
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsFalse)
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
         using VariantsStoppedJumpRemovalTag = boost::mpl::vector
         <
-                checkers, czech, frisian, international, italian, pool, russian, spanish
+                Checkers, Czech, Frisian, International, Italian, Pool, Russian, Spanish
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedJumpRemovalTag, T, VariantsStoppedJumpRemovalTag)
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
         using VariantsPassingJumpRemovalTag = boost::mpl::vector
         <
-                thai
+                Thai
         >;
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingJumpRemovalTag, T, VariantsPassingJumpRemovalTag)
