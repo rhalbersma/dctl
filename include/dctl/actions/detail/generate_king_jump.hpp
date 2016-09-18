@@ -124,7 +124,7 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                if constexpr (is_land_behind_piece_or_v<rules_type>) {
+                if constexpr (is_land_behind_piece_v<rules_type>) {
                         return scan(jumper) | turn(jumper);
                 } else {
                         // builder.template path<Direction>() would be an ERROR here
@@ -191,22 +191,19 @@ private:
         template<class Iterator>
         auto halt(Iterator dest_sq) const
         {
-                if constexpr (std::is_same<king_range_category_land_behind_piece_t<rules_type>, short_ranged_tag>{}) {
-                        static_assert(std::is_same<king_range_category_halt_behind_king_t<rules_type>, short_ranged_tag>{});
+                if constexpr (is_land_behind_piece_v<rules_type>) {
+                        static_assert(is_halt_behind_king_v<rules_type>);
                         return add_halting_jump(*dest_sq);
                 }
-                if constexpr (
-                        std::is_same<king_range_category_land_behind_piece_t<rules_type>, long_ranged_tag>{} &&
-                        std::is_same<king_range_category_halt_behind_king_t<rules_type>, short_ranged_tag>{}
-                ) {
+                if constexpr (!is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
                         if (builder.is_last_jumped_king(*std::prev(dest_sq))) {
                                 return add_halting_jump(*dest_sq);
                         } else {
                                 return add_sliding_jumps(dest_sq);
                         }
                 }
-                if constexpr (std::is_same<king_range_category_halt_behind_king_t<rules_type>, long_ranged_tag>{}) {
-                        static_assert(std::is_same<king_range_category_land_behind_piece_t<rules_type>, long_ranged_tag>{});
+                if constexpr (!is_halt_behind_king_v<rules_type>) {
+                        static_assert(!is_land_behind_piece_v<rules_type>);
                         return add_sliding_jumps(dest_sq);
                 }
         }

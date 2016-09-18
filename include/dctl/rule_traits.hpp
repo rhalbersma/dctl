@@ -30,19 +30,29 @@ using king_range_category_t = std::conditional_t<
 XSTD_PP_TTI_CONSTANT(is_land_behind_piece, false)
 
 template<class Rules>
+constexpr auto is_land_behind_piece_v =
+        !is_long_ranged_king_or_v<Rules> || is_land_behind_piece_or_v<Rules>
+;
+
+template<class Rules>
 using king_range_category_land_behind_piece_t = std::conditional_t<
-        is_land_behind_piece_or_v<Rules>,
+        is_land_behind_piece_v<Rules>,
         short_ranged_tag,
-        king_range_category_t<Rules>
+         long_ranged_tag
 >;
 
 XSTD_PP_TTI_CONSTANT(is_halt_behind_king, false)
 
 template<class Rules>
+constexpr auto is_halt_behind_king_v =
+        is_land_behind_piece_v<Rules> || is_halt_behind_king_or_v<Rules>
+;
+
+template<class Rules>
 using king_range_category_halt_behind_king_t = std::conditional_t<
-        is_halt_behind_king_or_v<Rules>,
+        is_halt_behind_king_v<Rules>,
         short_ranged_tag,
-        king_range_category_land_behind_piece_t<Rules>
+         long_ranged_tag
 >;
 
 XSTD_PP_TTI_CONSTANT(is_backward_pawn_jump, false)
@@ -165,24 +175,18 @@ struct empty_tuple
 
 XSTD_PP_TTI_TYPENAME(tuple, empty_tuple)
 
+template<class Rules>
+constexpr auto is_nontrivial_precedence_v = is_tuple_v<Rules>;
+
 struct    trivial_precedence_tag : std::false_type {};
 struct nontrivial_precedence_tag : std:: true_type {};
 
 template<class Rules>
 using precedence_category_t = std::conditional_t<
-        is_tuple_v<Rules>,
+        is_nontrivial_precedence_v<Rules>,
         nontrivial_precedence_tag,
            trivial_precedence_tag
 >;
-
-template<class Rules>
-using is_trivial_precedence = std::is_same<
-        precedence_category_t<Rules>,
-        trivial_precedence_tag
->;
-
-template<class Rules>
-constexpr auto is_trivial_precedence_v = is_trivial_precedence<Rules>::value;
 
 struct keep_duplicates_tag : std::false_type {};
 struct drop_duplicates_tag : std:: true_type {};
