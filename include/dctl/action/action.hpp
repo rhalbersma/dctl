@@ -224,7 +224,6 @@ private:
                         if constexpr (is_quality_precedence_or_t<rules_type>{}) {
                                 this->captured_kings_.set(sq);
                         }
-
                         if constexpr (is_ordering_precedence_or_t<rules_type>{}) {
                                 this->piece_order_.set(set_type::size() - 1 - num_captured_pieces());
                         }
@@ -238,7 +237,6 @@ private:
                         if constexpr (is_ordering_precedence_or_t<rules_type>{}) {
                                 this->piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
                         }
-
                         if constexpr (is_quality_precedence_or_t<rules_type>{}) {
                                 this->captured_kings_.reset(sq);
                         }

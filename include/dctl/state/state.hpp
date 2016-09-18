@@ -188,7 +188,6 @@ public:
                 if constexpr (std::is_same<rank_jump_category_t<rules_type>, inferior_rank_jump_tag>{}) {
                         return pieces(!c);
                 }
-
                 if constexpr (std::is_same<rank_jump_category_t<rules_type>, superior_rank_jump_tag>{}) {
                         return pieces(!c, pawn_type{});
                 }
