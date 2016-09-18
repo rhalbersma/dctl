@@ -185,11 +185,10 @@ public:
 
         auto pawn_targets(Color const c) const noexcept
         {
-                if constexpr (std::is_same<rank_jump_category_t<rules_type>, inferior_rank_jump_tag>{}) {
-                        return pieces(!c);
-                }
-                if constexpr (std::is_same<rank_jump_category_t<rules_type>, superior_rank_jump_tag>{}) {
+                if constexpr (is_superior_rank_jump_or_v<rules_type>) {
                         return pieces(!c, pawn_type{});
+                } else {
+                        return pieces(!c);
                 }
         }
 

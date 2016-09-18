@@ -26,7 +26,7 @@ class column
                         constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 assert(column_ < Board::width);
-                                return board::detail::to_llo(sq, Board::inner_grid).x == (std::is_same<Color, white_type>{} ? column_ : Board::width - 1 - column_);
+                                return board::detail::to_llo(sq, Board::inner_grid).x == (Color{} == white_type{} ? column_ : Board::width - 1 - column_);
                         }
                 };
 
