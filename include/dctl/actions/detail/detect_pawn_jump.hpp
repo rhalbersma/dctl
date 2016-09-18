@@ -35,7 +35,7 @@ private:
         auto directions(set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied) const noexcept
         {
                 if constexpr (
-                        std::is_same<pawn_jump_category_t<rules_type>, forward_pawn_jump_tag>{} &&
+                        !is_backward_pawn_jump_or_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,     diagonal_jump_tag>{}
                 ) {
                         return directions_lfold<right_up, left_up>(
@@ -43,7 +43,7 @@ private:
                         );
                 }
                 if constexpr (
-                        std::is_same<pawn_jump_category_t<rules_type>, backward_pawn_jump_tag>{} &&
+                        is_backward_pawn_jump_or_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,      diagonal_jump_tag>{}
                 ) {
                         return directions_lfold<right_up, left_up, left_down, right_down>(
@@ -51,7 +51,7 @@ private:
                         );
                 }
                 if constexpr (
-                        std::is_same<pawn_jump_category_t<rules_type>, forward_pawn_jump_tag>{} &&
+                        !is_backward_pawn_jump_or_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,   orthogonal_jump_tag>{}
                 ) {
                         return directions_lfold<right, right_up, up, left_up, left>(
@@ -59,7 +59,7 @@ private:
                         );
                 }
                 if constexpr (
-                        std::is_same<pawn_jump_category_t<rules_type>, backward_pawn_jump_tag>{} &&
+                        is_backward_pawn_jump_or_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,    orthogonal_jump_tag>{}
                 ) {
                         return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(

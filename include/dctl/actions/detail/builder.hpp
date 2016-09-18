@@ -199,14 +199,14 @@ private:
         auto precedence_duplicates() const
         {
                 if constexpr (
-                        std::is_same<precedence_category_t<rules_type>, trivial_precedence_tag>{} &&
+                        !is_nontrivial_precedence_v<rules_type> &&
                         std::is_same<                 DuplicatesPolicy,    keep_duplicates_tag>{}
                 ){
                         assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
                         actions.push_back(candidate_action);
                 }
                 if constexpr (
-                        std::is_same<precedence_category_t<rules_type>, trivial_precedence_tag>{} &&
+                        !is_nontrivial_precedence_v<rules_type> &&
                         std::is_same<                 DuplicatesPolicy,    drop_duplicates_tag>{}
                 ){
                         assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
@@ -214,7 +214,7 @@ private:
                                 actions.push_back(candidate_action);
                 }
                 if constexpr (
-                        std::is_same<precedence_category_t<rules_type>, nontrivial_precedence_tag>{} &&
+                        is_nontrivial_precedence_v<rules_type> &&
                         std::is_same<                 DuplicatesPolicy,       keep_duplicates_tag>{}
                 ){
                         if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back()))
@@ -226,7 +226,7 @@ private:
                         actions.push_back(candidate_action);
                 }
                 if constexpr (
-                        std::is_same<precedence_category_t<rules_type>, nontrivial_precedence_tag>{} &&
+                        is_nontrivial_precedence_v<rules_type> &&
                         std::is_same<                 DuplicatesPolicy,       drop_duplicates_tag>{}
                 ){
                         if (actions.empty())
