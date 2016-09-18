@@ -8,10 +8,11 @@
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
 #include <dctl/piece.hpp>                               // king_type
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
-                                                        // is_long_ranged_land_after_Piece_t, is_halt_behind_final_king_t
+                                                        // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
+#include <type_traits>                                  // is_same
 
 namespace dctl {
 namespace detail {
@@ -24,10 +25,10 @@ class Generate<Color, king_type, select::jump, Reverse, State, Builder>
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
 
-        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
+        static constexpr auto orientation = bearing_v<board_type, Color, Reverse>.degrees;
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(bearing));
+        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(angle{orientation}));
 
         Builder& builder;
 public:
@@ -54,24 +55,19 @@ private:
         {
                 builder.active_kings().for_each([this](auto const from_sq) {
                         raii::launch<Builder> guard{builder, from_sq};
-                        this->source_dispatch(from_sq, jump_category_t<rules_type>{});
+                        if constexpr (std::is_same<jump_category_t<rules_type>, diagonal_jump_tag>{}) {
+                                directions_lfold<right_up, left_up, left_down, right_down>(from_sq);
+                        }
+                        if constexpr (std::is_same<jump_category_t<rules_type>, orthogonal_jump_tag>{}) {
+                                directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(from_sq);
+                        }
                 });
-        }
-
-        auto source_dispatch(std::size_t from_sq, diagonal_jump_tag) const
-        {
-                directions_lfold<left_up, right_up, left_down, right_down>(from_sq);
-        }
-
-        auto source_dispatch(std::size_t from_sq, orthogonal_jump_tag) const
-        {
-                directions_lfold<up, left_up, right_up, left, right, left_down, right_down, down>(from_sq);
         }
 
         template<template<int> class... Directions>
         auto directions_lfold(std::size_t from_sq) const
         {
-                (... , first_target(along_ray<Directions<bearing.degrees>{}>(from_sq)));
+                (... , first_target(along_ray<Directions<orientation>{}>(from_sq)));
         }
 
         template<class Iterator>
@@ -104,26 +100,19 @@ private:
         auto try_next(Iterator jumper) const
         {
                 if (!next_target(jumper))
-                        add(jumper);
+                        halt(jumper);
         }
 
         template<class Iterator>
         auto next_target(Iterator jumper) const
         {
                 //raii::Visit<Builder> guard{builder, *jumper};
-                return reverse_dispatch(jumper, king_jump_category_t<rules_type>{});
-        }
-
-        template<class Iterator>
-        auto reverse_dispatch(Iterator jumper, forward_king_jump_tag) const
-        {
-                return scan_turn(jumper);
-        }
-
-        template<class Iterator>
-        auto reverse_dispatch(Iterator jumper, reverse_king_jump_tag) const
-        {
-                return scan_turn(jumper) | reverse(jumper);
+                if constexpr (std::is_same<king_jump_category_t<rules_type>, forward_king_jump_tag>{}) {
+                        return scan_turn(jumper);
+                }
+                if constexpr (std::is_same<king_jump_category_t<rules_type>, reverse_king_jump_tag>{}) {
+                        return scan_turn(jumper) | reverse(jumper);
+                }
         }
 
         template<class Iterator>
@@ -136,48 +125,34 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                return scan_turn_dispatch(jumper, king_range_category_land_behind_Piece_t<rules_type>{});
-        }
-
-        template<class Iterator>
-        auto scan_turn_dispatch(Iterator jumper, short_ranged_tag) const
-        {
-                return scan(jumper) | turn(jumper);
-        }
-
-        template<class Iterator>
-        auto scan_turn_dispatch(Iterator jumper, long_ranged_tag) const
-        {
-                // builder.template path<Direction>() would be an ERROR here
-                // because we need all landing squares rather than the directional launching squares subset
-                assert(is_onboard(jumper) && builder.not_occupied(*jumper));
-                auto found_next = turn(jumper);
-                auto slider = std::next(jumper);
-                while (is_onboard(slider) && builder.not_occupied(*slider)) {
-                        found_next |= turn(slider);
-                        ++slider;
+                if constexpr (std::is_same<king_range_category_land_behind_piece_t<rules_type>, short_ranged_tag>{}) {
+                        return scan(jumper) | turn(jumper);
                 }
-                return found_next |= is_en_prise(slider);
+                if constexpr (std::is_same<king_range_category_land_behind_piece_t<rules_type>, long_ranged_tag>{}) {
+                        // builder.template path<Direction>() would be an ERROR here
+                        // because we need all landing squares rather than the directional launching squares subset
+                        assert(is_onboard(jumper) && builder.not_occupied(*jumper));
+                        auto found_next = turn(jumper);
+                        auto slider = std::next(jumper);
+                        while (is_onboard(slider) && builder.not_occupied(*slider)) {
+                                found_next |= turn(slider);
+                                ++slider;
+                        }
+                        return found_next |= is_en_prise(slider);
+                }
         }
 
         template<class Iterator>
         auto turn(Iterator jumper) const
         {
-                return turn_dispatch(jumper, jump_category_t<rules_type>{});
-        }
-
-        template<class Iterator>
-        auto turn_dispatch(Iterator jumper, diagonal_jump_tag) const
-        {
-                static_assert(is_diagonal(direction_v<Iterator>));
-                return rotate_directions_lfold<+90, -90>(jumper);
-        }
-
-        template<class Iterator>
-        auto turn_dispatch(Iterator jumper, orthogonal_jump_tag) const
-        {
-                static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
-                return rotate_directions_lfold<+45, -45, +90, -90, +135, -135>(jumper);
+                if constexpr (std::is_same<jump_category_t<rules_type>, diagonal_jump_tag>{}) {
+                        static_assert(is_diagonal(direction_v<Iterator>));
+                        return rotate_directions_lfold<-90, +90>(jumper);
+                }
+                if constexpr (std::is_same<jump_category_t<rules_type>, orthogonal_jump_tag>{}) {
+                        static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
+                        return rotate_directions_lfold<-135, -90, -45, +45, +90, +135>(jumper);
+                }
         }
 
         template<int... Directions, class Iterator>
@@ -197,19 +172,12 @@ private:
         auto slide(Iterator& jumper, set_type const path) const
         {
                 assert(is_onboard(jumper));
-                slide_dispatch(jumper, path, king_range_category_t<rules_type>{});
-        }
-
-        template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const /* path */, short_ranged_tag) const
-        {
-                ++jumper;
-        }
-
-        template<class Iterator>
-        auto slide_dispatch(Iterator& jumper, set_type const path, long_ranged_tag) const
-        {
-                do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
+                if constexpr (std::is_same<king_range_category_t<rules_type>, short_ranged_tag>{}) {
+                        ++jumper;
+                }
+                if constexpr (std::is_same<king_range_category_t<rules_type>, long_ranged_tag>{}) {
+                        do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
+                }
         }
 
         template<class Iterator>
@@ -224,40 +192,38 @@ private:
         }
 
         template<class Iterator>
-        auto add(Iterator dest_sq) const
+        auto halt(Iterator dest_sq) const
         {
-                halt_dispatch(dest_sq, king_range_category_land_behind_Piece_t<rules_type>{}, king_range_category_halt_behind_king_t<rules_type>{});
-        }
-
-        template<class Iterator>
-        auto halt_dispatch(Iterator dest_sq, long_ranged_tag, short_ranged_tag) const
-        {
-                if (builder.is_last_jumped_king(*std::prev(dest_sq))) {
-                        halt_dispatch(dest_sq, short_ranged_tag{}, short_ranged_tag{});
-                } else {
-                        halt_dispatch(dest_sq,  long_ranged_tag{},  long_ranged_tag{});
+                if constexpr (std::is_same<king_range_category_land_behind_piece_t<rules_type>, short_ranged_tag>{}) {
+                        static_assert(std::is_same<king_range_category_halt_behind_king_t<rules_type>, short_ranged_tag>{});
+                        return add_halting_jump(*dest_sq);
+                }
+                if constexpr (
+                        std::is_same<king_range_category_land_behind_piece_t<rules_type>, long_ranged_tag>{} &&
+                        std::is_same<king_range_category_halt_behind_king_t<rules_type>, short_ranged_tag>{}
+                ) {
+                        if (builder.is_last_jumped_king(*std::prev(dest_sq))) {
+                                return add_halting_jump(*dest_sq);
+                        } else {
+                                return add_sliding_jumps(dest_sq);
+                        }
+                }
+                if constexpr (std::is_same<king_range_category_halt_behind_king_t<rules_type>, long_ranged_tag>{}) {
+                        static_assert(std::is_same<king_range_category_land_behind_piece_t<rules_type>, long_ranged_tag>{});
+                        return add_sliding_jumps(dest_sq);
                 }
         }
 
         template<class Iterator>
-        auto halt_dispatch(Iterator dest_sq, short_ranged_tag, short_ranged_tag) const
-        {
-                add_jump(*dest_sq);
-        }
-
-        template<class Iterator>
-        auto halt_dispatch(Iterator dest_sq, long_ranged_tag, long_ranged_tag) const
+        auto add_sliding_jumps(Iterator dest_sq) const
         {
                 // builder.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(is_onboard(dest_sq) && builder.not_occupied(*dest_sq));
-                do {
-                        add_jump(*dest_sq++);
-                }
-                while (is_onboard(dest_sq) && builder.not_occupied(*dest_sq));
+                do add_halting_jump(*dest_sq++); while (is_onboard(dest_sq) && builder.not_occupied(*dest_sq));
         }
 
-        auto add_jump(std::size_t const dest_sq) const
+        auto add_halting_jump(std::size_t const dest_sq) const
         {
                 builder.finalize(dest_sq);
         }

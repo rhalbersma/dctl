@@ -11,6 +11,7 @@
 #include <xstd/type_traits.hpp>                         // value_t
 #include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
+#include <type_traits>                                  // is_same
 
 namespace dctl {
 namespace detail {
@@ -26,7 +27,7 @@ class Generate<Color, king_type, select::push, Reverse, State, SequenceContainer
         template<int Direction>
         using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
+        static constexpr auto orientation = bearing_v<board_type, Color, Reverse>.degrees;
         SequenceContainer& actions;
 public:
         explicit Generate(SequenceContainer& a) noexcept
@@ -37,13 +38,13 @@ public:
         auto operator()(State const& state) const
         {
                 if constexpr (std::is_same<king_range_category_t<rules_type>, short_ranged_tag>{}) {
-                        if (auto const active_kings = state.pieces(Color{}, king_type{}); active_kings.any())
-                                wave_directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied());
+                        if (auto const active_kings = state.pieces(Color{}, king_type{}); active_kings.any()) {
+                                wave_directions_lfold<right_up, left_up, left_down, right_down>(active_kings, state.not_occupied());
+                        }
                 }
-
                 if constexpr (std::is_same<king_range_category_t<rules_type>,  long_ranged_tag>{}) {
                         state.pieces(Color{}, king_type{}).for_each([&, this](auto const& from_sq){
-                                this->ray_directions_lfold<left_up, right_up, left_down, right_down>(from_sq, state.not_occupied());
+                                this->ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, state.not_occupied());
                         });
                 }
         }
@@ -51,13 +52,13 @@ private:
         template<template<int> class... Directions>
         auto wave_directions_lfold(set_type const active_kings, set_type const not_occupied) const
         {
-                (... , wave_targets<Directions<bearing.degrees>{}>(active_kings, not_occupied));
+                (... , wave_targets<Directions<orientation>{}>(active_kings, not_occupied));
         }
 
         template<template<int> class... Directions>
         auto ray_directions_lfold(std::size_t const from, set_type const not_occupied) const
         {
-                (... , ray_targets(along_ray<Directions<bearing.degrees>{}>(from), not_occupied));
+                (... , ray_targets(along_ray<Directions<orientation>{}>(from), not_occupied));
         }
 
         template<int Direction>
