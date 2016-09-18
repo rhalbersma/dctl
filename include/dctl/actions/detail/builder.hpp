@@ -205,7 +205,6 @@ private:
                         assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
                         actions.push_back(candidate_action);
                 }
-
                 if constexpr (
                         std::is_same<precedence_category_t<rules_type>, trivial_precedence_tag>{} &&
                         std::is_same<                 DuplicatesPolicy,    drop_duplicates_tag>{}
@@ -214,7 +213,6 @@ private:
                         if (actions.empty() || is_small() || is_unique())
                                 actions.push_back(candidate_action);
                 }
-
                 if constexpr (
                         std::is_same<precedence_category_t<rules_type>, nontrivial_precedence_tag>{} &&
                         std::is_same<                 DuplicatesPolicy,       keep_duplicates_tag>{}
@@ -227,7 +225,6 @@ private:
                         actions.clear();
                         actions.push_back(candidate_action);
                 }
-
                 if constexpr (
                         std::is_same<precedence_category_t<rules_type>, nontrivial_precedence_tag>{} &&
                         std::is_same<                 DuplicatesPolicy,       drop_duplicates_tag>{}
