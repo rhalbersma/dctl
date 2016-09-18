@@ -107,11 +107,10 @@ private:
         auto next_target(Iterator jumper) const
         {
                 //raii::Visit<Builder> guard{builder, *jumper};
-                if constexpr (std::is_same<king_jump_category_t<rules_type>, forward_king_jump_tag>{}) {
-                        return scan_turn(jumper);
-                }
-                if constexpr (std::is_same<king_jump_category_t<rules_type>, reverse_king_jump_tag>{}) {
+                if constexpr (is_reverse_king_jump_v<rules_type>) {
                         return scan_turn(jumper) | reverse(jumper);
+                } else {
+                        return scan_turn(jumper);
                 }
         }
 
@@ -125,10 +124,9 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                if constexpr (std::is_same<king_range_category_land_behind_piece_t<rules_type>, short_ranged_tag>{}) {
+                if constexpr (is_land_behind_piece_or_v<rules_type>) {
                         return scan(jumper) | turn(jumper);
-                }
-                if constexpr (std::is_same<king_range_category_land_behind_piece_t<rules_type>, long_ranged_tag>{}) {
+                } else {
                         // builder.template path<Direction>() would be an ERROR here
                         // because we need all landing squares rather than the directional launching squares subset
                         assert(is_onboard(jumper) && builder.not_occupied(*jumper));
@@ -172,11 +170,10 @@ private:
         auto slide(Iterator& jumper, set_type const path) const
         {
                 assert(is_onboard(jumper));
-                if constexpr (std::is_same<king_range_category_t<rules_type>, short_ranged_tag>{}) {
-                        ++jumper;
-                }
-                if constexpr (std::is_same<king_range_category_t<rules_type>, long_ranged_tag>{}) {
+                if constexpr (is_long_ranged_king_or_v<rules_type>) {
                         do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
+                } else {
+                        ++jumper;
                 }
         }
 

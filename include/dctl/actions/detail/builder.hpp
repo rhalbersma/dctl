@@ -66,14 +66,14 @@ public:
         auto capture(std::size_t const sq)
         {
                 candidate_action.capture(sq, is_king(sq));
-                if constexpr (std::is_same<capture_category_t<rules_type>, passing_capture_tag>{}) {
+                if constexpr (is_passing_capture_or_v<rules_type>) {
                         not_occupied_.set(sq);
                 }
         }
 
         auto release(std::size_t const sq)
         {
-                if constexpr (std::is_same<capture_category_t<rules_type>, passing_capture_tag>{}) {
+                if constexpr (is_passing_capture_or_v<rules_type>) {
                         not_occupied_.reset(sq);
                 }
                 candidate_action.release(sq, is_king(sq));

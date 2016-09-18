@@ -4,7 +4,7 @@
 #include <xstd/pp/tti.hpp>              // XSTD_PP_TTI_CONSTANT, XSTD_PP_TTI_TYPENAME
 #include <xstd/tuple.hpp>               // compare
 #include <tuple>                        // make_tuple
-#include <type_traits>                  // bool_constant, conditional, is_same, false_type, true_type
+#include <type_traits>                  // bool_constant, conditional, decay, is_same, false_type, true_type
 #include <utility>                      // forward
 
 namespace dctl {

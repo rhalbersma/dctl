@@ -49,13 +49,10 @@ public:
                 if (builder.active_pawns().none()) {
                         return;
                 }
-
-                if constexpr (std::is_same<rank_jump_category_t<rules_type>, inferior_rank_jump_tag>{}) {
-                        directions();
-                }
-
-                if constexpr (std::is_same<rank_jump_category_t<rules_type>, superior_rank_jump_tag>{}) {
+                if constexpr (is_superior_rank_jump_or_v<rules_type>) {
                         raii::toggle_king_targets<Builder> guard{builder};
+                        directions();
+                } else {
                         directions();
                 }
         }
@@ -133,17 +130,16 @@ private:
         template<class Iterator>
         auto try_promotion(Iterator jumper) const
         {
-                if constexpr (std::is_same<promotion_category_t<rules_type>, stopped_promotion_tag>{}) {
+                if constexpr (is_passing_promotion_or_v<rules_type>) {
+                        if (is_promotion(*jumper))
+                                return on_promotion(jumper);
+                        return try_next(jumper);
+                } else {
                         if (next_target(jumper))
                                 return;
                         if (is_promotion(*jumper))
                                 return on_promotion(jumper);
                         return add_jump(*jumper);
-                }
-                if constexpr (std::is_same<promotion_category_t<rules_type>, passing_promotion_tag>{}) {
-                        if (is_promotion(*jumper))
-                                return on_promotion(jumper);
-                        return try_next(jumper);
                 }
         }
 
@@ -151,23 +147,21 @@ private:
         auto on_promotion(Iterator jumper) const
         {
                 raii::promotion<Builder> guard{builder};
-
-                if constexpr (std::is_same<promotion_category_t<rules_type>, stopped_promotion_tag>{}) {
-                        return add_jump(*jumper);
-                }
-                if constexpr (std::is_same<promotion_category_t<rules_type>, passing_promotion_tag>{}) {
+                if constexpr (is_passing_promotion_or_v<rules_type>) {
                         return on_king_jump(jumper);
+                } else {
+                        return add_jump(*jumper);
                 }
         }
 
         template<class Iterator>
         auto on_king_jump(Iterator jumper) const
         {
-                if constexpr (std::is_same<rank_jump_category_t<rules_type>, inferior_rank_jump_tag>{}) {
-                        king_jumps_try_next(jumper);
-                }
-                if constexpr (std::is_same<rank_jump_category_t<rules_type>, superior_rank_jump_tag>{}) {
+                static_assert(is_passing_promotion_or_v<rules_type>);
+                if constexpr (is_superior_rank_jump_or_v<rules_type>) {
                         raii::toggle_king_targets<Builder> guard{builder};
+                        king_jumps_try_next(jumper);
+                } else {
                         king_jumps_try_next(jumper);
                 }
         }
@@ -216,19 +210,19 @@ private:
                 ) {
                         static_assert(!is_down(direction_v<Iterator>));
 
-                        if constexpr (std::is_same<angle_constant<direction_v<Iterator>>, right<orientation>>{}) {
+                        if constexpr (direction_v<Iterator> == right<orientation>{}) {
                                 return turn_directions_lfold<right_up, up, left_up>(jumper);
                         }
-                        if constexpr (std::is_same<angle_constant<direction_v<Iterator>>, right_up<orientation>>{}) {
+                        if constexpr (direction_v<Iterator> == right_up<orientation>{}) {
                                 return turn_directions_lfold<right, up, left_up, left>(jumper);
                         }
-                        if constexpr (std::is_same<angle_constant<direction_v<Iterator>>, up<orientation>>{}) {
+                        if constexpr (direction_v<Iterator> == up<orientation>{}) {
                                 return turn_directions_lfold<right, right_up, left_up, left>(jumper);
                         }
-                        if constexpr (std::is_same<angle_constant<direction_v<Iterator>>, left_up<orientation>>{}) {
+                        if constexpr (direction_v<Iterator> == left_up<orientation>{}) {
                                 return turn_directions_lfold<right, right_up, up, left>(jumper);
                         }
-                        if constexpr (std::is_same<angle_constant<direction_v<Iterator>>, left<orientation>>{}) {
+                        if constexpr (direction_v<Iterator> == left<orientation>{}) {
                                 return turn_directions_lfold<right_up, up, left_up>(jumper);
                         }
                 }

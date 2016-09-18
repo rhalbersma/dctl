@@ -25,7 +25,7 @@ class row
                         constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 assert(row_ < Board::height);
-                                return board::detail::to_llo(sq, Board::inner_grid).y == (std::is_same<Color, white_type>{} ? row_ : Board::height - 1 - row_);
+                                return board::detail::to_llo(sq, Board::inner_grid).y == (Color{} == white_type{} ? row_ : Board::height - 1 - row_);
                         }
                 };
 
