@@ -19,18 +19,20 @@ class Detect<Color, pawn_type, select::push, Reverse, State>
         template<int Direction>
         using pawn_push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
+        static constexpr auto orientation = bearing_v<board_type, Color, Reverse>.degrees;
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_pawns = state.pieces(Color{}, pawn_type{});
-                return active_pawns.any() ? directions_lfold<left_up, right_up>(active_pawns, state.not_occupied()) : false;
+                if (auto const active_pawns = state.pieces(Color{}, pawn_type{}); active_pawns.any()) {
+                        return directions_lfold<right_up, left_up>(active_pawns, state.not_occupied());
+                }
+                return false;
         }
 private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const noexcept
         {
-                return (... || pawn_push_targets<Directions<bearing.degrees>{}>{}(active_pawns, not_occupied).any());
+                return (... || pawn_push_targets<Directions<orientation>{}>{}(active_pawns, not_occupied).any());
         }
 };
 

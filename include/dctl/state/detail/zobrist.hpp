@@ -13,7 +13,7 @@ template<std::size_t N>
 class base_state
 {
         static std::array<std::size_t, N> const by_Color[2];
-        static std::array<std::size_t, N> const by_Piece[2];
+        static std::array<std::size_t, N> const by_piece[2];
 public:
         static auto const& pieces(Color c)
         {
@@ -22,7 +22,7 @@ public:
 
         static auto const& pieces(Piece p)
         {
-                return by_Piece[xstd::to_underlying_type(p)];
+                return by_piece[xstd::to_underlying_type(p)];
         }
 };
 
@@ -36,7 +36,7 @@ base_state<N>::by_Color[2] =
 
 template<std::size_t N>
 std::array<std::size_t, N> const
-base_state<N>::by_Piece[2] =
+base_state<N>::by_piece[2] =
 {
         random::runif<N>(),
         random::runif<N>()

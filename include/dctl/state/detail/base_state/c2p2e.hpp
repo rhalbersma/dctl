@@ -18,7 +18,7 @@ public:
 
 private:
         set_type by_Color_[2];
-        set_type by_Piece_[2];
+        set_type by_piece_[2];
         set_type not_occupied_;
 
 public:
@@ -27,7 +27,7 @@ public:
         base_state(set_type const b, set_type const w, set_type const p, set_type const k)
         :
                 by_Color_{b, w},
-                by_Piece_{p, k},
+                by_piece_{p, k},
                 not_occupied_{mask::squares_v<Board> ^ (b | w)}
         {}
 
@@ -57,7 +57,7 @@ public:
 
         auto pieces(Piece const p) const noexcept
         {
-                return by_Piece_[xstd::to_underlying_type(p)];
+                return by_piece_[xstd::to_underlying_type(p)];
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
@@ -88,7 +88,7 @@ private:
 
         auto& pieces(Piece const p) noexcept
         {
-                return by_Piece_[xstd::to_underlying_type(p)];
+                return by_piece_[xstd::to_underlying_type(p)];
         }
 };
 

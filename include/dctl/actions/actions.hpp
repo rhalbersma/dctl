@@ -16,10 +16,11 @@ class Actions
         template<class Color>
         using Impl = detail::Actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
 
-        template<class Color, class State>
-        auto assert_invariants([[maybe_unused]] State const& state, [[maybe_unused]] std::size_t const n) const
+        template<class Color, class State, class SequenceContainer>
+        auto assert_invariants([[maybe_unused]] State const& state, [[maybe_unused]] SequenceContainer const& actions) const
         {
-                assert(count <Color>(state) ==  n);
+                [[maybe_unused]] auto const n = actions.size();
+                assert( count<Color>(state) ==  n     );
                 assert(detect<Color>(state) == (n > 0));
         }
 
@@ -41,7 +42,7 @@ public:
                 static_assert(std::is_same<rules_t<State>, rules_t<action_type>>{});
                 static_assert(std::is_same<board_t<State>, board_t<action_type>>{});
                 Impl<Color>{}.generate(state, actions);
-                assert_invariants<Color>(state, actions.size());
+                assert_invariants<Color>(state, actions);
         }
 
         template<class State>

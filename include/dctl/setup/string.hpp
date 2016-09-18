@@ -53,20 +53,20 @@ struct read<Rules, Board, pdn::protocol, Token>
         {
                 using set_type = set_t<Board>;
                 set_type by_Color[2]{};
-                set_type by_Piece[2]{};
+                set_type by_piece[2]{};
                 auto p_side = Color::black;
 
                 assert(by_Color[0].none());
                 assert(by_Color[1].none());
-                assert(by_Piece[0].none());
-                assert(by_Piece[1].none());
+                assert(by_piece[0].none());
+                assert(by_piece[1].none());
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_side, by_Color[0], by_Color[1], by_Piece[0], by_Piece[1] };
+                        return { p_side, by_Color[0], by_Color[1], by_piece[0], by_piece[1] };
 
                 auto setup_Color = p_side;
-                auto setup_Piece = Piece::pawn;
+                auto setup_piece = Piece::pawn;
 
                 std::stringstream sstr(s);
                 char ch;
@@ -83,7 +83,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 setup_Color = read_Color<Token>(ch);
                                 break;
                         case Token::king :                                      // setup kings
-                                setup_Piece = Piece::king;
+                                setup_piece = Piece::king;
                                 break;
                         default:
                                 if (isdigit(ch)) {
@@ -92,13 +92,13 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
                                         by_Color[xstd::to_underlying_type(setup_Color)].set(b);
-                                        by_Piece[xstd::to_underlying_type(setup_Piece)].set(b);
+                                        by_piece[xstd::to_underlying_type(setup_piece)].set(b);
                                 }
-                                setup_Piece = Piece::pawn;
+                                setup_piece = Piece::pawn;
                                 break;
                         }
                 }
-                return { p_side, by_Color[0], by_Color[1], by_Piece[0], by_Piece[1] };
+                return { p_side, by_Color[0], by_Color[1], by_piece[0], by_piece[1] };
         }
 };
 
@@ -144,17 +144,17 @@ struct read<Rules, Board, dxp::protocol, Token>
         {
                 using set_type = set_t<Board>;
                 set_type by_Color[2]{};
-                set_type by_Piece[2]{};
+                set_type by_piece[2]{};
                 auto p_side = Color::black;
 
                 assert(by_Color[0].none());
                 assert(by_Color[1].none());
-                assert(by_Piece[0].none());
-                assert(by_Piece[1].none());
+                assert(by_piece[0].none());
+                assert(by_piece[1].none());
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_side, by_Color[0], by_Color[1], by_Piece[0], by_Piece[1] };
+                        return { p_side, by_Color[0], by_Color[1], by_piece[0], by_piece[1] };
 
                 std::stringstream sstr(s);
                 char ch;
@@ -171,9 +171,9 @@ struct read<Rules, Board, dxp::protocol, Token>
                         default           : assert(false);
                         }
                         if (toupper(ch) != Token::empty)
-                                by_Piece[isupper(ch)].set(b);   // king or pawn
+                                by_piece[isupper(ch)].set(b);   // king or pawn
                 }
-                return { p_side, by_Color[0], by_Color[1], by_Piece[0], by_Piece[1] };
+                return { p_side, by_Color[0], by_Color[1], by_piece[0], by_piece[1] };
         }
 };
 

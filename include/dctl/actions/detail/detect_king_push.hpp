@@ -19,18 +19,20 @@ class Detect<Color, king_type, select::push, Reverse, State>
         template<int Direction>
         using king_push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
+        static constexpr auto orientation = bearing_v<board_type, Color, Reverse>.degrees;
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_kings = state.pieces(Color{}, king_type{});
-                return active_kings.any() ? directions_lfold<left_up, right_up, left_down, right_down>(active_kings, state.not_occupied()) : false;
+                if (auto const active_kings = state.pieces(Color{}, king_type{}); active_kings.any()) {
+                        return directions_lfold<right_up, left_up, left_down, right_down>(active_kings, state.not_occupied());
+                }
+                return false;
         }
 private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_kings, set_type const not_occupied) const noexcept
         {
-                return (... || king_push_targets<Directions<bearing.degrees>{}>{}(active_kings, not_occupied).any());
+                return (... || king_push_targets<Directions<orientation>{}>{}(active_kings, not_occupied).any());
         }
 };
 

@@ -7,6 +7,7 @@
 #include <dctl/piece.hpp>                               // pawn_type
 #include <dctl/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump, is_superior_rank_jump
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
+#include <type_traits>                                  // is_same
 
 namespace dctl {
 namespace detail {
@@ -21,12 +22,14 @@ class Detect<Color, pawn_type, select::jump, Reverse, State>
         template<int Direction>
         using jump_targets = mask::jump_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto bearing = bearing_v<board_type, Color, Reverse::value>;
+        static constexpr auto orientation = bearing_v<board_type, Color, Reverse>.degrees;
 public:
         auto operator()(State const& state) const noexcept
         {
-                auto const active_pawns = state.pieces(Color{}, pawn_type{});
-                return active_pawns.any() ? directions(active_pawns, state.pawn_targets(Color{}), state.not_occupied()) : false;
+                if (auto const active_pawns = state.pieces(Color{}, pawn_type{}); active_pawns.any()) {
+                        return directions(active_pawns, state.pawn_targets(Color{}), state.not_occupied());
+                }
+                return false;
         }
 private:
         auto directions(set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied) const noexcept
@@ -39,7 +42,6 @@ private:
                                 active_pawns, pawn_targets, not_occupied
                         );
                 }
-
                 if constexpr (
                         std::is_same<pawn_jump_category_t<rules_type>, backward_pawn_jump_tag>{} &&
                         std::is_same<     jump_category_t<rules_type>,      diagonal_jump_tag>{}
@@ -48,7 +50,6 @@ private:
                                 active_pawns, pawn_targets, not_occupied
                         );
                 }
-
                 if constexpr (
                         std::is_same<pawn_jump_category_t<rules_type>, forward_pawn_jump_tag>{} &&
                         std::is_same<     jump_category_t<rules_type>,   orthogonal_jump_tag>{}
@@ -57,7 +58,6 @@ private:
                                 active_pawns, pawn_targets, not_occupied
                         );
                 }
-
                 if constexpr (
                         std::is_same<pawn_jump_category_t<rules_type>, backward_pawn_jump_tag>{} &&
                         std::is_same<     jump_category_t<rules_type>,    orthogonal_jump_tag>{}
@@ -71,7 +71,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied) const noexcept
         {
-                return (... || jump_targets<Directions<bearing.degrees>{}>{}(active_pawns, pawn_targets, not_occupied).any());
+                return (... || jump_targets<Directions<orientation>{}>{}(active_pawns, pawn_targets, not_occupied).any());
         }
 };
 

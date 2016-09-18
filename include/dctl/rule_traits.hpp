@@ -27,11 +27,11 @@ using king_range_category_t = std::conditional_t<
         short_ranged_tag
 >;
 
-XSTD_PP_TTI_CONSTANT(is_land_behind_Piece, false)
+XSTD_PP_TTI_CONSTANT(is_land_behind_piece, false)
 
 template<class Rules>
-using king_range_category_land_behind_Piece_t = std::conditional_t<
-        is_land_behind_Piece_or_v<Rules>,
+using king_range_category_land_behind_piece_t = std::conditional_t<
+        is_land_behind_piece_or_v<Rules>,
         short_ranged_tag,
         king_range_category_t<Rules>
 >;
@@ -42,7 +42,7 @@ template<class Rules>
 using king_range_category_halt_behind_king_t = std::conditional_t<
         is_halt_behind_king_or_v<Rules>,
         short_ranged_tag,
-        king_range_category_land_behind_Piece_t<Rules>
+        king_range_category_land_behind_piece_t<Rules>
 >;
 
 XSTD_PP_TTI_CONSTANT(is_backward_pawn_jump, false)
