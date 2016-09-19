@@ -22,7 +22,7 @@ auto getpushsep(std::ios_base& str)
 {
         if (auto const iword = pushsep(str))
                 return iword;
-        return pushsep_or_v<Rules>;
+        return pushsep_v<Rules>;
 }
 
 template<class Rules>
@@ -30,7 +30,7 @@ auto getjumpsep(std::ios_base& str)
 {
         if (auto const iword = jumpsep(str))
                 return iword;
-        return jumpsep_or_v<Rules>;
+        return jumpsep_v<Rules>;
 }
 
 template<class Action>

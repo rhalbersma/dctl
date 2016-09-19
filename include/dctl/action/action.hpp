@@ -20,8 +20,8 @@ struct base_quality_precedence
 };
 
 template<class Rules, class Board>
-using quality_precedence_or_t = std::conditional_t<
-        is_quality_precedence_or_v<Rules>,
+using quality_precedence_t = std::conditional_t<
+        is_quality_precedence_v<Rules>,
         base_quality_precedence<Board>,
         util::tagged_empty_base<0>
 >;
@@ -33,27 +33,27 @@ struct base_ordering_precedence
 };
 
 template<class Rules, class Board>
-using ordering_precedence_or_t = std::conditional_t<
-        is_ordering_precedence_or_v<Rules>,
+using ordering_precedence_t = std::conditional_t<
+        is_ordering_precedence_v<Rules>,
         base_ordering_precedence<Board>,
         util::tagged_empty_base<1>
 >;
 
 }       // namespace block_adl
 
-using block_adl::quality_precedence_or_t;
-using block_adl::ordering_precedence_or_t;
+using block_adl::quality_precedence_t;
+using block_adl::ordering_precedence_t;
 
 }       // namespace detail
 
 template<class Rules, class Board = rectangular_t<Rules>>
 class action
 :
-        detail::ordering_precedence_or_t<Rules, Board>,
-        detail:: quality_precedence_or_t<Rules, Board>
+        detail::ordering_precedence_t<Rules, Board>,
+        detail:: quality_precedence_t<Rules, Board>
 {
-        using ordering_precedence_or_t = detail::ordering_precedence_or_t<Rules, Board>;
-        using  quality_precedence_or_t = detail:: quality_precedence_or_t<Rules, Board>;
+        using ordering_precedence_t = detail::ordering_precedence_t<Rules, Board>;
+        using  quality_precedence_t = detail:: quality_precedence_t<Rules, Board>;
 public:
         using  rules_type = Rules;
         using  board_type = Board;
@@ -76,8 +76,8 @@ public:
 
         constexpr action(std::size_t const src, std::size_t const dst, bool const promotion) noexcept
         :
-                ordering_precedence_or_t{},
-                quality_precedence_or_t{},
+                ordering_precedence_t{},
+                quality_precedence_t{},
                 captured_pieces_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
@@ -89,8 +89,8 @@ public:
 
         constexpr action(std::size_t const src, std::size_t const dst) noexcept
         :
-                ordering_precedence_or_t{},
-                quality_precedence_or_t{},
+                ordering_precedence_t{},
+                quality_precedence_t{},
                 captured_pieces_{},
                 from_{static_cast<square_type>(src)},
                 dest_{static_cast<square_type>(dst)},
@@ -103,7 +103,7 @@ public:
         constexpr auto capture(std::size_t const sq, bool const is_king) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
-                if constexpr (is_quality_precedence_or_t<rules_type>{} || is_ordering_precedence_or_t<rules_type>{}) {
+                if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         capture_quality_ordering(sq, is_king);
                 }
                 captured_pieces_.set(sq);
@@ -113,7 +113,7 @@ public:
         {
                 assert(is_onboard(sq));
                 captured_pieces_.reset(sq);
-                if constexpr (is_quality_precedence_or_t<rules_type>{} || is_ordering_precedence_or_t<rules_type>{}) {
+                if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         release_quality_ordering(sq, is_king);
                 }
         }
@@ -191,7 +191,7 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-                is_quality_precedence_or_v<RulesType> &&
+                is_quality_precedence_v<RulesType> &&
 		std::is_same<RulesType, rules_type>{}
         >* = nullptr>
         constexpr auto captured_kings() const noexcept
@@ -200,7 +200,7 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-        	is_quality_precedence_or_v<RulesType> &&
+        	is_quality_precedence_v<RulesType> &&
 		std::is_same<RulesType, rules_type>{}
         >* = nullptr>
         constexpr auto num_captured_kings() const noexcept
@@ -209,7 +209,7 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-		is_ordering_precedence_or_v<RulesType> &&
+		is_ordering_precedence_v<RulesType> &&
 		std::is_same<RulesType, rules_type>{}
         >* = nullptr>
         constexpr auto Piece_order() const noexcept
@@ -219,12 +219,12 @@ public:
 private:
         constexpr auto capture_quality_ordering(std::size_t const sq, bool const is_king)
         {
-                static_assert(is_quality_precedence_or_t<rules_type>{} || is_ordering_precedence_or_t<rules_type>{});
+                static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
-                        if constexpr (is_quality_precedence_or_t<rules_type>{}) {
+                        if constexpr (is_quality_precedence_v<rules_type>) {
                                 this->captured_kings_.set(sq);
                         }
-                        if constexpr (is_ordering_precedence_or_t<rules_type>{}) {
+                        if constexpr (is_ordering_precedence_v<rules_type>) {
                                 this->piece_order_.set(set_type::size() - 1 - num_captured_pieces());
                         }
                 }
@@ -232,12 +232,12 @@ private:
 
         constexpr auto release_quality_ordering(std::size_t const sq, bool const is_king)
         {
-                static_assert(is_quality_precedence_or_t<rules_type>{} || is_ordering_precedence_or_t<rules_type>{});
+                static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
-                        if constexpr (is_ordering_precedence_or_t<rules_type>{}) {
+                        if constexpr (is_ordering_precedence_v<rules_type>) {
                                 this->piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
                         }
-                        if constexpr (is_quality_precedence_or_t<rules_type>{}) {
+                        if constexpr (is_quality_precedence_v<rules_type>) {
                                 this->captured_kings_.reset(sq);
                         }
                 }
@@ -255,7 +255,7 @@ private:
 };
 
 template<class Rules, class Board, std::enable_if_t<
-        !is_ordering_precedence_or_v<Rules>
+        !is_ordering_precedence_v<Rules>
 >* = nullptr>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {
@@ -263,7 +263,7 @@ constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 }
 
 template<class Rules, class Board, std::enable_if_t<
-	is_ordering_precedence_or_v<Rules>
+	is_ordering_precedence_v<Rules>
 >* = nullptr>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {

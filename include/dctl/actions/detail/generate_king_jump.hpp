@@ -46,7 +46,7 @@ public:
         template<class Iterator>
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
-                static_assert(is_passing_promotion_or_v<rules_type>);
+                static_assert(is_passing_promotion_v<rules_type>);
                 assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
                 try_next(jumper);
         }
@@ -124,7 +124,7 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                if constexpr (is_land_behind_piece_v<rules_type>) {
+                if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
                         return scan(jumper) | turn(jumper);
                 } else {
                         // builder.template path<Direction>() would be an ERROR here
@@ -170,7 +170,7 @@ private:
         auto slide(Iterator& jumper, set_type const path) const
         {
                 assert(is_onboard(jumper));
-                if constexpr (is_long_ranged_king_or_v<rules_type>) {
+                if constexpr (is_long_ranged_king_v<rules_type>) {
                         do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
                 } else {
                         ++jumper;
@@ -191,20 +191,18 @@ private:
         template<class Iterator>
         auto halt(Iterator dest_sq) const
         {
-                if constexpr (is_land_behind_piece_v<rules_type>) {
-                        static_assert(is_halt_behind_king_v<rules_type>);
-                        return add_halting_jump(*dest_sq);
-                }
-                if constexpr (!is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
+                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
                         if (builder.is_last_jumped_king(*std::prev(dest_sq))) {
                                 return add_halting_jump(*dest_sq);
                         } else {
                                 return add_sliding_jumps(dest_sq);
                         }
                 }
-                if constexpr (!is_halt_behind_king_v<rules_type>) {
-                        static_assert(!is_land_behind_piece_v<rules_type>);
+                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && !is_halt_behind_king_v<rules_type>) {
                         return add_sliding_jumps(dest_sq);
+                }
+                if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
+                        return add_halting_jump(*dest_sq);
                 }
         }
 

@@ -16,7 +16,7 @@ using VariantsStoppedpromotionTag = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedpromotionTag, T, VariantsStoppedpromotionTag)
 {
-        static_assert(!is_passing_promotion_or_v<T>);
+        static_assert(!is_passing_promotion_v<T>);
 }
 
 using VariantsPassingpromotionTag = boost::mpl::vector
@@ -26,7 +26,7 @@ using VariantsPassingpromotionTag = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsPassingpromotionTag, T, VariantsPassingpromotionTag)
 {
-        static_assert(is_passing_promotion_or_v<T>);
+        static_assert(is_passing_promotion_v<T>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
