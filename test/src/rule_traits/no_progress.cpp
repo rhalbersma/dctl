@@ -16,7 +16,7 @@ using VariantsZero = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, VariantsZero)
 {
-        static_assert(max_same_king_push_or_v<T> == 0);
+        static_assert(max_same_king_push_v<T> == 0);
 }
 
 using VariantsThree = boost::mpl::vector
@@ -26,7 +26,7 @@ using VariantsThree = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsThree, T, VariantsThree)
 {
-        static_assert(max_same_king_push_or_v<T> == 3);
+        static_assert(max_same_king_push_v<T> == 3);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

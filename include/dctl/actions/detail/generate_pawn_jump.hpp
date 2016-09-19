@@ -49,7 +49,7 @@ public:
                 if (builder.active_pawns().none()) {
                         return;
                 }
-                if constexpr (is_superior_rank_jump_or_v<rules_type>) {
+                if constexpr (is_superior_rank_jump_v<rules_type>) {
                         raii::toggle_king_targets<Builder> guard{builder};
                         directions();
                 } else {
@@ -60,25 +60,25 @@ private:
         auto directions() const
         {
                 if constexpr (
-                        !is_backward_pawn_jump_or_v<rules_type> &&
+                        !is_backward_pawn_jump_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,     diagonal_jump_tag>{}
                 ) {
                         return directions_lfold<right_up, left_up>();
                 }
                 if constexpr (
-                        is_backward_pawn_jump_or_v<rules_type> &&
+                        is_backward_pawn_jump_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,      diagonal_jump_tag>{}
                 ) {
                         return directions_lfold<right_up, left_up, left_down, right_down>();
                 }
                 if constexpr (
-                        !is_backward_pawn_jump_or_v<rules_type> &&
+                        !is_backward_pawn_jump_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,   orthogonal_jump_tag>{}
                 ) {
                         return directions_lfold<right, right_up, up, left_up, left>();
                 }
                 if constexpr (
-                        is_backward_pawn_jump_or_v<rules_type> &&
+                        is_backward_pawn_jump_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,    orthogonal_jump_tag>{}
                 ) {
                         return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>();
@@ -130,7 +130,7 @@ private:
         template<class Iterator>
         auto try_promotion(Iterator jumper) const
         {
-                if constexpr (is_passing_promotion_or_v<rules_type>) {
+                if constexpr (is_passing_promotion_v<rules_type>) {
                         if (is_promotion(*jumper))
                                 return on_promotion(jumper);
                         return try_next(jumper);
@@ -147,7 +147,7 @@ private:
         auto on_promotion(Iterator jumper) const
         {
                 raii::promotion<Builder> guard{builder};
-                if constexpr (is_passing_promotion_or_v<rules_type>) {
+                if constexpr (is_passing_promotion_v<rules_type>) {
                         return on_king_jump(jumper);
                 } else {
                         return add_jump(*jumper);
@@ -157,8 +157,8 @@ private:
         template<class Iterator>
         auto on_king_jump(Iterator jumper) const
         {
-                static_assert(is_passing_promotion_or_v<rules_type>);
-                if constexpr (is_superior_rank_jump_or_v<rules_type>) {
+                static_assert(is_passing_promotion_v<rules_type>);
+                if constexpr (is_superior_rank_jump_v<rules_type>) {
                         raii::toggle_king_targets<Builder> guard{builder};
                         king_jumps_try_next(jumper);
                 } else {
@@ -169,7 +169,7 @@ private:
         template<class Iterator>
         auto king_jumps_try_next(Iterator jumper) const
         {
-                static_assert(is_passing_promotion_or_v<rules_type>);
+                static_assert(is_passing_promotion_v<rules_type>);
                 king_jumps{builder}.try_next(jumper, passing_promotion_tag{});
         }
 
@@ -191,21 +191,21 @@ private:
         auto turn(Iterator jumper) const
         {
                 if constexpr (
-                        !is_backward_pawn_jump_or_v<rules_type> &&
+                        !is_backward_pawn_jump_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,     diagonal_jump_tag>{}
                 ) {
                         static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
                         return scan(board::ray::mirror<up<orientation>{}>(jumper));
                 }
                 if constexpr (
-                        is_backward_pawn_jump_or_v<rules_type> &&
+                        is_backward_pawn_jump_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,      diagonal_jump_tag>{}
                 ) {
                         static_assert(is_diagonal(direction_v<Iterator>));
                         return rotate_directions_lfold<-90, +90>(jumper);
                 }
                 if constexpr (
-                        !is_backward_pawn_jump_or_v<rules_type> &&
+                        !is_backward_pawn_jump_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,   orthogonal_jump_tag>{}
                 ) {
                         static_assert(!is_down(direction_v<Iterator>));
@@ -227,7 +227,7 @@ private:
                         }
                 }
                 if constexpr (
-                        is_backward_pawn_jump_or_v<rules_type> &&
+                        is_backward_pawn_jump_v<rules_type> &&
                         std::is_same<     jump_category_t<rules_type>,    orthogonal_jump_tag>{}
                 ) {
                         return rotate_directions_lfold<-135, -90, -45, +45, +90, +135>(jumper);

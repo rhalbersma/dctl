@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE(PushSep)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsHyphen, T, VariantsHyphen)
         {
-                static_assert(pushsep_or_v<T> == '-');
+                static_assert(pushsep_v<T> == '-');
         }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_SUITE(JumpSep)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsCross, T, VariantsCross)
         {
-                static_assert(jumpsep_or_v<T> == 'x');
+                static_assert(jumpsep_v<T> == 'x');
         }
 
         using VariantsColon = boost::mpl::vector
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_SUITE(JumpSep)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsColon, T, VariantsColon)
         {
-                static_assert(jumpsep_or_v<T> == ':');
+                static_assert(jumpsep_v<T> == ':');
         }
 
         using VariantsHyphen = boost::mpl::vector
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_SUITE(JumpSep)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsHyphen, T, VariantsHyphen)
         {
-                static_assert(jumpsep_or_v<T> == '-');
+                static_assert(jumpsep_v<T> == '-');
         }
 
 BOOST_AUTO_TEST_SUITE_END()

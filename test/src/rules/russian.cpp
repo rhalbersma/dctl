@@ -11,11 +11,11 @@ using T = Russian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
-        static_assert(is_backward_pawn_jump_or_v<T>);
-        static_assert(is_long_ranged_king_or_v<T>);
+        static_assert(is_backward_pawn_jump_v<T>);
+        static_assert(is_long_ranged_king_v<T>);
 
-        static_assert(jumpsep_or_v<T> == ':');
-        static_assert(is_passing_promotion_or_v<T>);
+        static_assert(jumpsep_v<T> == ':');
+        static_assert(is_passing_promotion_v<T>);
 
         static_assert(!is_nontrivial_precedence_v<T>);
 }

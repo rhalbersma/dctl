@@ -36,7 +36,7 @@ public:
 
         auto operator()(State const& state) const
         {
-                if constexpr (is_long_ranged_king_or_v<rules_type>) {
+                if constexpr (is_long_ranged_king_v<rules_type>) {
                         state.pieces(Color{}, king_type{}).for_each([&, this](auto const& from_sq){
                                 this->ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, state.not_occupied());
                         });

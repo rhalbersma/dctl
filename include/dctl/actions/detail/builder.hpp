@@ -48,7 +48,7 @@ public:
 
         auto toggle_king_targets() noexcept
         {
-                static_assert(is_superior_rank_jump_or_v<rules_type>);
+                static_assert(is_superior_rank_jump_v<rules_type>);
                 initial_targets_ ^= state.pieces(opposite<Color>{}, king_type{});
         }
 
@@ -66,14 +66,14 @@ public:
         auto capture(std::size_t const sq)
         {
                 candidate_action.capture(sq, is_king(sq));
-                if constexpr (is_passing_capture_or_v<rules_type>) {
+                if constexpr (is_passing_capture_v<rules_type>) {
                         not_occupied_.set(sq);
                 }
         }
 
         auto release(std::size_t const sq)
         {
-                if constexpr (is_passing_capture_or_v<rules_type>) {
+                if constexpr (is_passing_capture_v<rules_type>) {
                         not_occupied_.reset(sq);
                 }
                 candidate_action.release(sq, is_king(sq));

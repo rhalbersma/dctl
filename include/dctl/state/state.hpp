@@ -34,7 +34,7 @@ struct most_recently_pushed_kings
 };
 
 template<class Rules, class Board>
-using most_recently_pushed_kings_or_t = std::conditional_t<
+using most_recently_pushed_kings_t = std::conditional_t<
         is_restricted_king_push_v<Rules>,
         most_recently_pushed_kings<Board>,
         util::tagged_empty_base<0>
@@ -42,16 +42,16 @@ using most_recently_pushed_kings_or_t = std::conditional_t<
 
 }       // namespace block_adl
 
-using block_adl::most_recently_pushed_kings_or_t;
+using block_adl::most_recently_pushed_kings_t;
 
 }       // namespace detail
 
 template<class Rules, class Board = rectangular_t<Rules>>
 class state
 :
-        detail::most_recently_pushed_kings_or_t<Rules, Board>
+        detail::most_recently_pushed_kings_t<Rules, Board>
 {
-        using most_recently_pushed_kings_or_t = detail::most_recently_pushed_kings_or_t<Rules, Board>;
+        using most_recently_pushed_kings_t = detail::most_recently_pushed_kings_t<Rules, Board>;
 public:
         using rules_type = Rules;
         using board_type = Board;
@@ -90,14 +90,14 @@ private:
 public:
         state(Color const c, set_type const black, set_type const white, set_type const pawns, set_type const kings)
         :
-                most_recently_pushed_kings_or_t{},
+                most_recently_pushed_kings_t{},
                 player_to_move_{c},
                 piece_placement_{black, white, pawns, kings}
         {
                 assert_invariants();
         }
 
-        static state initial(std::size_t const separation = initial_position_gap_or_v<Rules> + Board::height % 2)
+        static state initial(std::size_t const separation = initial_position_gap_v<Rules> + Board::height % 2)
         {
                 auto const bp = mask::initial<board_type>{}(Color::black, separation);
                 auto const wp = mask::initial<board_type>{}(Color::white, separation);
@@ -185,7 +185,7 @@ public:
 
         auto pawn_targets(Color const c) const noexcept
         {
-                if constexpr (is_superior_rank_jump_or_v<rules_type>) {
+                if constexpr (is_superior_rank_jump_v<rules_type>) {
                         return pieces(!c, pawn_type{});
                 } else {
                         return pieces(!c);
