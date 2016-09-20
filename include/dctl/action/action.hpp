@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/piece.hpp>                       // pawn, king
 #include <dctl/rule_traits.hpp>                 // rectangular, is_quality_precedence, is_ordering_precedence
-#include <dctl/utility/logic.hpp>               // implies
 #include <dctl/utility/tagged_empty_base.hpp>   // tagged_empty_base
 #include <dctl/utility/type_traits.hpp>         // set_t, square_t
 #include <cassert>                              // assert
@@ -68,7 +67,7 @@ private:
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(util::implies(from() == dest(), is_jump()));
+                assert(from() != dest() || is_jump());
                 assert(!is_demotion());
         }
 public:

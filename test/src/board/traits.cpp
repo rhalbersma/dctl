@@ -3,7 +3,6 @@
 #include <board/transform.hpp>                  // is_involution, is_idempotent
 #include <dctl/board/rectangular.hpp>           // rectangular
 #include <dctl/board_traits.hpp>                // is_empty, is_pushable, is_jumpable, invert, add_orthogonal_captures, remove_orthogonal_captures
-#include <dctl/utility/logic.hpp>               // implies
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE
 #include <type_traits>                          // is_same
@@ -72,8 +71,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesAreIdemPotent, T, Board
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, BoardSequence)
 {
-        static_assert(util::implies( T::is_orthogonal_captures, traits::is_identity_v<   add_orthogonal_captures_t, T>));
-        static_assert(util::implies(!T::is_orthogonal_captures, traits::is_identity_v<remove_orthogonal_captures_t, T>));
+        static_assert(!T::is_orthogonal_captures || traits::is_identity_v<   add_orthogonal_captures_t, T>);
+        static_assert( T::is_orthogonal_captures || traits::is_identity_v<remove_orthogonal_captures_t, T>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
