@@ -55,11 +55,10 @@ private:
         {
                 builder.active_kings().for_each([this](auto const from_sq) {
                         raii::launch<Builder> guard{builder, from_sq};
-                        if constexpr (std::is_same<jump_category_t<rules_type>, diagonal_jump_tag>{}) {
-                                directions_lfold<right_up, left_up, left_down, right_down>(from_sq);
-                        }
-                        if constexpr (std::is_same<jump_category_t<rules_type>, orthogonal_jump_tag>{}) {
+                        if constexpr (is_orthogonal_jump_v<rules_type>) {
                                 directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(from_sq);
+                        } else {
+                                directions_lfold<right_up, left_up, left_down, right_down>(from_sq);
                         }
                 });
         }
@@ -143,13 +142,12 @@ private:
         template<class Iterator>
         auto turn(Iterator jumper) const
         {
-                if constexpr (std::is_same<jump_category_t<rules_type>, diagonal_jump_tag>{}) {
-                        static_assert(is_diagonal(direction_v<Iterator>));
-                        return rotate_directions_lfold<-90, +90>(jumper);
-                }
-                if constexpr (std::is_same<jump_category_t<rules_type>, orthogonal_jump_tag>{}) {
+                if constexpr (is_orthogonal_jump_v<rules_type>) {
                         static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
                         return rotate_directions_lfold<-135, -90, -45, +45, +90, +135>(jumper);
+                } else {
+                        static_assert(is_diagonal(direction_v<Iterator>));
+                        return rotate_directions_lfold<-90, +90>(jumper);
                 }
         }
 

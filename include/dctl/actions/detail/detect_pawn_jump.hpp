@@ -34,34 +34,22 @@ public:
 private:
         auto directions(set_type const active_pawns, set_type const pawn_targets, set_type const not_occupied) const noexcept
         {
-                if constexpr (
-                        !is_backward_pawn_jump_v<rules_type> &&
-                        std::is_same<     jump_category_t<rules_type>,     diagonal_jump_tag>{}
-                ) {
+                if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right_up, left_up>(
                                 active_pawns, pawn_targets, not_occupied
                         );
                 }
-                if constexpr (
-                        is_backward_pawn_jump_v<rules_type> &&
-                        std::is_same<     jump_category_t<rules_type>,      diagonal_jump_tag>{}
-                ) {
+                if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right_up, left_up, left_down, right_down>(
                                 active_pawns, pawn_targets, not_occupied
                         );
                 }
-                if constexpr (
-                        !is_backward_pawn_jump_v<rules_type> &&
-                        std::is_same<     jump_category_t<rules_type>,   orthogonal_jump_tag>{}
-                ) {
+                if constexpr (!is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right, right_up, up, left_up, left>(
                                 active_pawns, pawn_targets, not_occupied
                         );
                 }
-                if constexpr (
-                        is_backward_pawn_jump_v<rules_type> &&
-                        std::is_same<     jump_category_t<rules_type>,    orthogonal_jump_tag>{}
-                ) {
+                if constexpr (is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(
                                 active_pawns, pawn_targets, not_occupied
                         );

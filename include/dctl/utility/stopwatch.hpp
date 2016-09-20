@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/utility/logic.hpp>       // implies
 #include <cassert>                      // assert
 #include <chrono>                       // duration_cast, high_resolution_clock, milliseconds
 #include <vector>                       // vector
@@ -18,8 +17,8 @@ class Stopwatch
         bool invariant() const noexcept
         {
                 return
-                        implies(splits.empty()    , !is_running) &&
-                        implies(splits.size() == 1,  is_running)
+                        (!splits.empty()     || !is_running) &&
+                        ( splits.size() != 1 ||  is_running)
                 ;
         }
 
