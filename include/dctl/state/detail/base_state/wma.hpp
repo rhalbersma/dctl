@@ -64,20 +64,72 @@ public:
 
         auto pieces(Color const c) const noexcept
         {
-                return c == black_type{} ? pieces_ ^ white_ : white_;
+                return c == black_type{} ? pieces(black_type{}) : pieces(white_type{});
+        }
+
+        auto pieces(black_type) const noexcept
+        {
+                return pieces_ ^ white_;
+        }
+
+        auto pieces(white_type) const noexcept
+        {
+                return white_;
         }
 
         auto pieces(Piece const p) const noexcept
         {
-                return p == pawn_type{} ? pawns_ : pieces_ ^ pawns_;
+                return p == pawn_type{} ? pieces(pawn_type{}) : pieces(king_type{});
+        }
+
+        auto pieces(pawn_type) const noexcept
+        {
+                return pawns_;
+        }
+
+        auto pieces(king_type) const noexcept
+        {
+                return pieces_ ^ pawns_;
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
         {
                 return c == black_type{} ?
-                        (p == pawn_type{} ?  ~white_ & pawns_ : pieces_ ^ (white_ | pawns_)) :
-                        (p == pawn_type{} ?   white_ & pawns_ : white_ & ~pawns_)
+                        (p == pawn_type{} ?  pieces(black_type{}, pawn_type{}) : pieces(black_type{}, king_type{})) :
+                        (p == pawn_type{} ?  pieces(white_type{}, pawn_type{}) : pieces(white_type{}, king_type{}))
                 ;
+        }
+
+        template<Piece Type>
+        auto pieces(Color const c, piece_constant<Type>) const noexcept
+        {
+                return c == black_type{} ? pieces(black_type{}, Type) : pieces(white_type{}, Type);
+        }
+
+        template<Color Side>
+        auto pieces(color_constant<Side>, Piece const p) const noexcept
+        {
+                return p == pawn_type{} ? pieces(Side, pawn_type{}) : pieces(Side, king_type{});
+        }
+
+        auto pieces(black_type, pawn_type) const noexcept
+        {
+                return ~white_ & pawns_;
+        }
+
+        auto pieces(black_type, king_type) const noexcept
+        {
+                return pieces_ ^ (white_ | pawns_);
+        }
+
+        auto pieces(white_type, pawn_type) const noexcept
+        {
+                return white_ & pawns_;
+        }
+
+        auto pieces(white_type, king_type) const noexcept
+        {
+                return white_ & ~pawns_;
         }
 
         auto pieces() const noexcept
@@ -87,7 +139,7 @@ public:
 
         auto not_occupied() const noexcept
         {
-                return mask::squares_v<Board> ^ pieces();
+                return mask::squares_v<board_type> ^ pieces();
         }
 
         auto num_pieces(Color const c, Piece const p) const noexcept

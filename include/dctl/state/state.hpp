@@ -115,8 +115,6 @@ public:
                 return *this;
         }
 
-        // observers
-
         auto pieces(Color const c) const noexcept
         {
                 return piece_placement_.pieces(c);

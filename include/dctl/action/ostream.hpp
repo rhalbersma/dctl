@@ -3,6 +3,7 @@
 #include <dctl/action/manip.hpp>        // notation, pushsep, jumpsep
 #include <dctl/action/traits.hpp>       // notation, pushsep, jumpsep
 #include <dctl/rule_traits.hpp>         // jumpsep, pushsep
+#include <dctl/utility/type_traits.hpp> // board_t, rules_t
 #include <cassert>                      // assert
 #include <iosfwd>                       // ostream
 #include <sstream>                      // stringstream
@@ -36,27 +37,27 @@ auto getjumpsep(std::ios_base& str)
 template<class Action>
 auto separator(std::ostream& ostr, Action const& m)
 {
-        using Rules = typename Action::rules_type;
-        return (m.is_jump() ? getjumpsep<Rules>(ostr) : getpushsep<Rules>(ostr));
+        using rules_type = rules_t<Action>;
+        return (m.is_jump() ? getjumpsep<rules_type>(ostr) : getpushsep<rules_type>(ostr));
 }
 
 template<class Action>
 auto& print_algebraic(std::ostream& ostr, Action const& m)
 {
-        using Board = typename Action::board_type;
-        ostr << Board::algebraic_from_bit(m.from());
+        using board_type = board_t<Action>;
+        ostr << board_type::algebraic_from_bit(m.from());
         ostr << separator(ostr, m);
-        ostr << Board::algebraic_from_bit(m.dest());
+        ostr << board_type::algebraic_from_bit(m.dest());
         return ostr;
 }
 
 template<class Action>
 auto& print_numeric(std::ostream& ostr, Action const& m)
 {
-        using Board = typename Action::board_type;
-        ostr << Board::numeric_from_bit(m.from());
+        using board_type = board_t<Action>;
+        ostr << board_type::numeric_from_bit(m.from());
         ostr << separator(ostr, m);
-        ostr << Board::numeric_from_bit(m.dest());
+        ostr << board_type::numeric_from_bit(m.dest());
         return ostr;
 }
 

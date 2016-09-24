@@ -3,7 +3,7 @@
 #include <dctl/color.hpp>                       // black, white
 #include <dctl/mask/row.hpp>                    // row
 #include <dctl/utility/fill_array.hpp>          // fill_array
-#include <dctl/utility/type_traits.hpp>         // set_t
+#include <dctl/utility/type_traits.hpp>         // set_t, value_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <array>                                // array
 #include <cassert>                              // assert
@@ -50,7 +50,7 @@ public:
 };
 
 template<class Board>
-constexpr typename initial<Board>::value_type
+constexpr value_t<initial<Board>>
 initial<Board>::value[];
 
 }       // namespace mask

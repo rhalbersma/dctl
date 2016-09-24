@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/detail/coordinates.hpp>    // to_llo
 #include <dctl/mask/detail/copy_if.hpp>         // copy_if
-#include <dctl/utility/type_traits.hpp>         // set_t
+#include <dctl/utility/type_traits.hpp>         // set_t, value_t
 #include <xstd/cstdlib.hpp>                     // euclidean_div
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -57,7 +57,7 @@ public:
 };
 
 template<class Board>
-constexpr typename jump_group<Board>::value_type
+constexpr value_t<jump_group<Board>>
 jump_group<Board>::value[];
 
 }       // namespace mask

@@ -52,18 +52,18 @@ struct read<Rules, Board, pdn::protocol, Token>
         state<Rules, Board> operator()(std::string const& s) const
         {
                 using set_type = set_t<Board>;
-                set_type by_Color[2]{};
+                set_type by_color[2]{};
                 set_type by_piece[2]{};
                 auto p_side = Color::black;
 
-                assert(by_Color[0].none());
-                assert(by_Color[1].none());
+                assert(by_color[0].none());
+                assert(by_color[1].none());
                 assert(by_piece[0].none());
                 assert(by_piece[1].none());
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_side, by_Color[0], by_Color[1], by_piece[0], by_piece[1] };
+                        return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
 
                 auto setup_Color = p_side;
                 auto setup_piece = Piece::pawn;
@@ -91,14 +91,14 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
-                                        by_Color[xstd::to_underlying_type(setup_Color)].set(b);
+                                        by_color[xstd::to_underlying_type(setup_Color)].set(b);
                                         by_piece[xstd::to_underlying_type(setup_piece)].set(b);
                                 }
                                 setup_piece = Piece::pawn;
                                 break;
                         }
                 }
-                return { p_side, by_Color[0], by_Color[1], by_piece[0], by_piece[1] };
+                return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
         }
 };
 
@@ -143,18 +143,18 @@ struct read<Rules, Board, dxp::protocol, Token>
         state<Rules, Board> operator()(std::string const& s) const
         {
                 using set_type = set_t<Board>;
-                set_type by_Color[2]{};
+                set_type by_color[2]{};
                 set_type by_piece[2]{};
                 auto p_side = Color::black;
 
-                assert(by_Color[0].none());
-                assert(by_Color[1].none());
+                assert(by_color[0].none());
+                assert(by_color[1].none());
                 assert(by_piece[0].none());
                 assert(by_piece[1].none());
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_side, by_Color[0], by_Color[1], by_piece[0], by_piece[1] };
+                        return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
 
                 std::stringstream sstr(s);
                 char ch;
@@ -165,15 +165,15 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : by_Color[xstd::to_underlying_type(Color::black)].set(b); break;
-                        case Token::white : by_Color[xstd::to_underlying_type(Color::white)].set(b); break;
+                        case Token::black : by_color[xstd::to_underlying_type(Color::black)].set(b); break;
+                        case Token::white : by_color[xstd::to_underlying_type(Color::white)].set(b); break;
                         case Token::empty : break;
                         default           : assert(false);
                         }
                         if (toupper(ch) != Token::empty)
                                 by_piece[isupper(ch)].set(b);   // king or pawn
                 }
-                return { p_side, by_Color[0], by_Color[1], by_piece[0], by_piece[1] };
+                return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
         }
 };
 
