@@ -46,9 +46,9 @@ class jump_start
                 }
         };
 
-        static constexpr angle theta = Board::is_orthogonal_captures ? 45_deg : 90_deg;
-        static constexpr angle beta  = Board::is_orthogonal_captures ?  0_deg : 45_deg;
-        static constexpr auto N      = Board::is_orthogonal_captures ?      8 :      4;
+        static constexpr angle theta = Board::is_orthogonal_jump ? 45_deg : 90_deg;
+        static constexpr angle beta  = Board::is_orthogonal_jump ?  0_deg : 45_deg;
+        static constexpr auto N      = Board::is_orthogonal_jump ?      8 :      4;
         using value_type = std::array<set_t<Board>, N>;
 
         static constexpr value_type value = fill_array<N>(init{});

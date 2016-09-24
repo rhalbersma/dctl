@@ -1,7 +1,6 @@
 #include <dctl/ui/dxp/message.hpp>                      // Message
 #include <dctl/ui/dxp/types.hpp>                        // GameRequest, GameAcknowledge, Action, GameEnd, Chat, BackRequest, BackAcknowledge
 #include <dctl/utility/factory/factory.hpp>             // Factory
-#include <xstd/type_traits.hpp>
 #include <boost/mpl/for_each.hpp>                       // for_each
 #include <boost/mpl/identity.hpp>                       // make_identity
 #include <boost/mpl/vector.hpp>                         // vector
@@ -25,7 +24,7 @@ BOOST_AUTO_TEST_CASE(MesanderMessageExamples)
 {
         Factory<Message> f;
         boost::mpl::for_each<Messages, boost::mpl::make_identity<>>([&](auto Id) {
-                using T = xstd::_t<decltype(Id)>;
+                using T = typename decltype(Id)::type;
                 f.insert(T::identifier(), T::create);
         });
 

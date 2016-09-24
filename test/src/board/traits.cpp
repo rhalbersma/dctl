@@ -51,11 +51,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, BoardSequence)
 
 BOOST_AUTO_TEST_CASE(Invert)
 {
-        static_assert(std::is_same<invert_t<Checkers>, xstd::_t<Italian >>{});
-        static_assert(std::is_same<invert_t<Italian >, xstd::_t<Checkers>>{});
+        static_assert(std::is_same<invert_t<Checkers>, Italian >{});
+        static_assert(std::is_same<invert_t<Italian >, Checkers>{});
 
-        static_assert(std::is_same<invert_t<Canadian >, xstd::_t<SriLankan>>{});
-        static_assert(std::is_same<invert_t<SriLankan>, xstd::_t<Canadian >>{});
+        static_assert(std::is_same<invert_t<Canadian >, SriLankan>{});
+        static_assert(std::is_same<invert_t<SriLankan>, Canadian >{});
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(InvertIsInvolution, T, BoardSequence)
@@ -71,8 +71,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesAreIdemPotent, T, Board
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, BoardSequence)
 {
-        static_assert(!T::is_orthogonal_captures || traits::is_identity_v<   add_orthogonal_captures_t, T>);
-        static_assert( T::is_orthogonal_captures || traits::is_identity_v<remove_orthogonal_captures_t, T>);
+        static_assert(!T::is_orthogonal_jump || traits::is_identity_v<   add_orthogonal_captures_t, T>);
+        static_assert( T::is_orthogonal_jump || traits::is_identity_v<remove_orthogonal_captures_t, T>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

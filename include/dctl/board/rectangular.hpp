@@ -26,18 +26,18 @@ template
         std::size_t Width,
         std::size_t Height,
         bool IsInverted = false,
-        bool IsOrthogonalCaptures = false
+        bool IsOrthogonalJump = false
 >
 class Rectangular
 {
 public:
         using type = Rectangular;
-        static constexpr auto width                  = Width;
-        static constexpr auto height                 = Height;
-        static constexpr auto is_inverted            = IsInverted;
-        static constexpr auto is_orthogonal_captures = IsOrthogonalCaptures;
+        static constexpr auto width              = Width;
+        static constexpr auto height             = Height;
+        static constexpr auto is_inverted        = IsInverted;
+        static constexpr auto is_orthogonal_jump = IsOrthogonalJump;
 
-        static constexpr auto edge = is_orthogonal_captures ? 2 : 1;
+        static constexpr auto edge = is_orthogonal_jump ? 2 : 1;
         static constexpr auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
         static constexpr auto orientation = detail::optimal_orientation(detail::OuterGrid{inner_grid, edge});
         static constexpr auto outer_grid = detail::OuterGrid{rotate(inner_grid, orientation), edge};
