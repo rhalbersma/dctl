@@ -4,7 +4,7 @@
 #include <dctl/board/ray/iterator.hpp>  // iterator
 #include <dctl/mask/squares.hpp>        // squares
 #include <dctl/utility/fill_array.hpp>  // fill_array
-#include <dctl/utility/type_traits.hpp> // set_t
+#include <dctl/utility/type_traits.hpp> // set_t, value_t
 #include <array>                        // array
 #include <cstddef>                      // size_t
 
@@ -48,7 +48,7 @@ constexpr angle
 king_targets<Board>::beta;
 
 template<class Board>
-typename king_targets<Board>::value_type const
+value_t<king_targets<Board>> const
 king_targets<Board>::value[] =
 {
         fill_array<Board::bits()>(init<  0>{}),

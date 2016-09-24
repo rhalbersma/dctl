@@ -30,15 +30,15 @@ public:
         }
 
         using Test = std::pair<std::string, int>;
-        using Rules = typename State::rules_type;
-        using Board = typename State::board_type;
+        using rules_type = rules_t<State>;
+        using board_type = board_t<State>;
 
         template<class Range>
         void run(Range const& tests)
         {
                 for (auto const& t : tests) {
                         root_.clear_hash();
-                        auto const position = setup::read<Rules, Board, pdn::protocol>()(t.first);
+                        auto const position = setup::read<rules_type, board_type, pdn::protocol>()(t.first);
                         auto const value = root_.analyze(position, drop_duplicates_gen, t.second);
                         BOOST_WARN_EQUAL(win_value(t.second), value);
                 }

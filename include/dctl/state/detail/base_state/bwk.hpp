@@ -19,7 +19,7 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        set_type by_Color_[2];
+        set_type by_color_[2];
         set_type kings_;
 
 public:
@@ -27,7 +27,7 @@ public:
 
         base_state(set_type const b, set_type const w, set_type const k)
         :
-                by_Color_{b, w},
+                by_color_{b, w},
                 kings_{k}
         {}
 
@@ -59,7 +59,7 @@ public:
 
         auto pieces(Color const c) const noexcept
         {
-                return by_Color_[xstd::to_underlying_type(c)];
+                return by_color_[xstd::to_underlying_type(c)];
         }
 
         auto pieces(Piece const p) const noexcept
@@ -79,7 +79,7 @@ public:
 
         auto not_occupied() const noexcept
         {
-                return mask::squares_v<Board> ^ pieces();
+                return mask::squares_v<board_type> ^ pieces();
         }
 
         auto num_pieces(Color const c, Piece const p) const noexcept
@@ -90,7 +90,7 @@ public:
 private:
         auto& pieces(Color const c) noexcept
         {
-                return by_Color_[xstd::to_underlying_type(c)];
+                return by_color_[xstd::to_underlying_type(c)];
         }
 };
 

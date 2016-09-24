@@ -192,7 +192,7 @@ public:
         template<class RulesType = rules_type, std::enable_if_t<
                 is_quality_precedence_v<RulesType> &&
 		std::is_same<RulesType, rules_type>{}
-        >* = nullptr>
+        >...>
         constexpr auto captured_kings() const noexcept
         {
                 return this->captured_kings_;
@@ -201,7 +201,7 @@ public:
         template<class RulesType = rules_type, std::enable_if_t<
         	is_quality_precedence_v<RulesType> &&
 		std::is_same<RulesType, rules_type>{}
-        >* = nullptr>
+        >...>
         constexpr auto num_captured_kings() const noexcept
         {
                 return captured_kings().count();
@@ -210,7 +210,7 @@ public:
         template<class RulesType = rules_type, std::enable_if_t<
 		is_ordering_precedence_v<RulesType> &&
 		std::is_same<RulesType, rules_type>{}
-        >* = nullptr>
+        >...>
         constexpr auto Piece_order() const noexcept
         {
                 return this->piece_order_;
@@ -255,7 +255,7 @@ private:
 
 template<class Rules, class Board, std::enable_if_t<
         !is_ordering_precedence_v<Rules>
->* = nullptr>
+>...>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {
         return std::make_tuple(a.from(), a.dest(), a.captured_pieces());
@@ -263,7 +263,7 @@ constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 
 template<class Rules, class Board, std::enable_if_t<
 	is_ordering_precedence_v<Rules>
->* = nullptr>
+>...>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {
         return std::make_tuple(a.from(), a.dest(), a.captured_pieces(), a.Piece_order());

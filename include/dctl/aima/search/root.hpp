@@ -154,8 +154,8 @@ private:
                         return TT_entry->value();
 
                 // generate moves
-                using R = typename State::rules_type;
-                using B = typename State::board_type;
+                using R = rules_t<State>;
+                using B = board_t<State>;
 
                 static_vector<action<R,B>> moves;
                 successor.generate(s, moves);
@@ -284,8 +284,8 @@ private:
                         return;
                 }
 
-                using R = typename State::rules_type;
-                using B = typename State::board_type;
+                using R = rules_t<State>;
+                using B = board_t<State>;
                 std::vector<action<R,B>> moves;
                 successor.generate(s, moves);
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
@@ -305,8 +305,8 @@ private:
                         return;
                 }
 
-                using R = typename State::rules_type;
-                using B = typename State::board_type;
+                using R = rules_t<State>;
+                using B = board_t<State>;
                 std::vector<action<R,B>> moves;
                 successor.generate(s, moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];

@@ -71,7 +71,7 @@ constexpr angle
 jump_start<Board>::beta;
 
 template<class Board>
-constexpr typename jump_start<Board>::value_type
+constexpr value_t<jump_start<Board>>
 jump_start<Board>::value;
 
 }       // namespace mask

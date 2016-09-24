@@ -17,7 +17,7 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        set_type by_Color_[2];
+        set_type by_color_[2];
         set_type by_piece_[2];
         set_type not_occupied_;
 
@@ -26,9 +26,9 @@ public:
 
         base_state(set_type const b, set_type const w, set_type const p, set_type const k)
         :
-                by_Color_{b, w},
+                by_color_{b, w},
                 by_piece_{p, k},
-                not_occupied_{mask::squares_v<Board> ^ (b | w)}
+                not_occupied_{mask::squares_v<board_type> ^ (b | w)}
         {}
 
         template<class Action>
@@ -45,14 +45,14 @@ public:
                         pieces(king_type{}) &= ~a.captured_pieces();
                 }
 
-                not_occupied_ = mask::squares_v<Board> ^ (pieces(black_type{}) | pieces(white_type{}));
+                not_occupied_ = mask::squares_v<board_type> ^ (pieces(black_type{}) | pieces(white_type{}));
 
                 return *this;
         }
 
         auto pieces(Color const c) const noexcept
         {
-                return by_Color_[xstd::to_underlying_type(c)];
+                return by_color_[xstd::to_underlying_type(c)];
         }
 
         auto pieces(Piece const p) const noexcept
@@ -67,7 +67,7 @@ public:
 
         auto pieces() const noexcept
         {
-                return mask::squares_v<Board> ^ not_occupied();
+                return mask::squares_v<board_type> ^ not_occupied();
         }
 
         auto not_occupied() const noexcept
@@ -83,7 +83,7 @@ public:
 private:
         auto& pieces(Color const c) noexcept
         {
-                return by_Color_[xstd::to_underlying_type(c)];
+                return by_color_[xstd::to_underlying_type(c)];
         }
 
         auto& pieces(Piece const p) noexcept

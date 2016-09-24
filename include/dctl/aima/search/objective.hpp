@@ -132,9 +132,9 @@ bool is_no_progress(State const& /* s */, std::false_type)
 template<class State>
 bool is_no_progress(State const& /* s */, std::true_type)
 {
-        //using Rules = typename State::rules_type;
+        //using rules_type = rules_t<State>;
 
-        return false;//s.reversible_actions() >= max_reversible_moves_v<Rules>;
+        return false;//s.reversible_actions() >= max_reversible_moves_v<rules_type>;
 }
 
 }       // namespace detail
@@ -142,9 +142,9 @@ bool is_no_progress(State const& /* s */, std::true_type)
 template<class State>
 bool is_no_progress(State const& s)
 {
-        using Rules = typename State::rules_type;
+        using rules_type = rules_t<State>;
 
-        return detail::is_no_progress(s, is_restricted_reversible_moves<Rules>{});
+        return detail::is_no_progress(s, is_restricted_reversible_moves<rules_type>{});
 }
 
 template<class State>
