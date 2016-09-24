@@ -8,7 +8,6 @@
 #include <dctl/piece.hpp>                               // king_type
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_long_ranged_king_t
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
-#include <type_traits>                                  // is_same
 
 namespace dctl {
 namespace detail {

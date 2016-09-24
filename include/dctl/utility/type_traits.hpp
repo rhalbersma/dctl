@@ -8,5 +8,6 @@ template<class T> using  rules_t = typename T:: rules_type;
 template<class T> using    set_t = typename T::   set_type;
 template<class T> using square_t = typename T::square_type;
 template<class T> using  state_t = typename T:: state_type;
+template<class T> using  value_t = typename T:: value_type;
 
 }       // namespace dctl

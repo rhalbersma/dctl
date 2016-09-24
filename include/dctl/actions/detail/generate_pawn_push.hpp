@@ -7,8 +7,7 @@
 #include <dctl/mask/promotion.hpp>                      // is_promotion
 #include <dctl/mask/push_targets.hpp>                   // push_targets
 #include <dctl/piece.hpp>                               // pawn_type
-#include <dctl/utility/type_traits.hpp>                 // board_t, set_t
-#include <xstd/type_traits.hpp>                         // value_t
+#include <dctl/utility/type_traits.hpp>                 // board_t, set_t, value_t
 #include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
@@ -18,7 +17,7 @@ namespace detail {
 template<class Color, class Reverse, class State, class SequenceContainer>
 class Generate<Color, pawn_type, select::push, Reverse, State, SequenceContainer>
 {
-        using action_type = xstd::value_t<SequenceContainer>;
+        using action_type = value_t<SequenceContainer>;
         using  board_type = board_t<State>;
         using    set_type =   set_t<State>;
 

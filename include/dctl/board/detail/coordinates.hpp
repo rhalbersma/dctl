@@ -1,10 +1,10 @@
 #pragma once
-#include <dctl/board/angle.hpp> // angle
-#include <xstd/type_traits.hpp> // value_t
-#include <cassert>              // assert
-#include <cstddef>              // size_t
-#include <stdexcept>            // invalid_argument
-#include <tuple>                // tie
+#include <dctl/board/angle.hpp>         // angle
+#include <dctl/utility/type_traits.hpp> // value_t
+#include <cassert>                      // assert
+#include <cstddef>                      // size_t
+#include <stdexcept>                    // invalid_argument
+#include <tuple>                        // tie
 
 namespace dctl {
 namespace board {
@@ -17,7 +17,7 @@ struct screen_centered { using value_type = int;         };
 template<class Origin>
 struct coordinates
 {
-        using value_type = xstd::value_t<Origin>;
+        using value_type = value_t<Origin>;
         value_type const x;
         value_type const y;
 };

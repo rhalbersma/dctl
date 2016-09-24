@@ -3,7 +3,7 @@
 #include <dctl/actions/select/legal.hpp>                // legal
 #include <dctl/color.hpp>                               // black, white
 #include <dctl/rule_traits.hpp>
-#include <dctl/utility/type_traits.hpp>
+#include <dctl/utility/type_traits.hpp>                 // value_t
 #include <cassert>                                      // assert
 #include <cstddef>                                      // size_t
 #include <type_traits>                                  // bool_constant, is_same
@@ -38,7 +38,7 @@ public:
         template<class Color, class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const
         {
-                using action_type = xstd::value_t<SequenceContainer>;
+                using action_type = value_t<SequenceContainer>;
                 static_assert(std::is_same<rules_t<State>, rules_t<action_type>>{});
                 static_assert(std::is_same<board_t<State>, board_t<action_type>>{});
                 Impl<Color>{}.generate(state, actions);

@@ -6,8 +6,7 @@
 #include <dctl/mask/jump_start.hpp>             // jump_start
 #include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t
-#include <xstd/type_traits.hpp>                 // value_t
+#include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t, value_t
 #include <boost/algorithm/cxx11/none_of.hpp>    // none_of
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -21,7 +20,7 @@ template<class Color, class DuplicatesPolicy, class State, class SequenceContain
 class Builder
 {
 public:
-        using action_type = xstd::value_t<SequenceContainer>;
+        using action_type = value_t<SequenceContainer>;
         using  board_type =       board_t<State>;
         using  rules_type =       rules_t<State>;
         using    set_type =         set_t<State>;
