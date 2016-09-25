@@ -6,7 +6,7 @@
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/mask/promotion.hpp>                      // is_promotion
 #include <dctl/mask/push_targets.hpp>                   // push_targets
-#include <dctl/piece.hpp>                               // pawn_type
+#include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_type
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t, value_t
 #include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
@@ -14,9 +14,11 @@
 namespace dctl {
 namespace detail {
 
-template<class Color, class Reverse, class State, class SequenceContainer>
-class Generate<Color, pawn_type, select::push, Reverse, State, SequenceContainer>
+template<Color Side, class Reverse, class State, class SequenceContainer>
+class Generate<color_constant<Side>, pawn_type, select::push, Reverse, State, SequenceContainer>
 {
+        using  color_type = color_constant<Side>;
+        using  piece_type = pawn_type;
         using action_type = value_t<SequenceContainer>;
         using  board_type = board_t<State>;
         using    set_type =   set_t<State>;
@@ -24,7 +26,7 @@ class Generate<Color, pawn_type, select::push, Reverse, State, SequenceContainer
         template<int Direction>
         using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = bearing_v<board_type, Color, Reverse>.degrees;
+        static constexpr auto orientation = bearing_v<board_type, color_type, Reverse>.degrees;
         SequenceContainer& actions;
 public:
         explicit Generate(SequenceContainer& a) noexcept
@@ -34,28 +36,28 @@ public:
 
         auto operator()(State const& state) const
         {
-                if (auto const active_pawns = state.pieces(Color{}, pawn_type{}); active_pawns.any()) {
-                        directions_lfold<right_up, left_up>(active_pawns, state.not_occupied());
+                if (auto const sources = state.pieces(color_type{}, piece_type{}); sources.any()) {
+                        directions_lfold<right_up, left_up>(sources, state.not_occupied());
                 }
         }
 private:
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const active_pawns, set_type const not_occupied) const
+        auto directions_lfold(set_type const sources, set_type const not_occupied) const
         {
-                (... , targets<Directions<orientation>{}>(active_pawns, not_occupied));
+                (... , targets<Directions<orientation>{}>(sources, not_occupied));
         }
 
         template<int Direction>
-        auto targets(set_type const active_pawns, set_type const not_occupied) const
+        auto targets(set_type const sources, set_type const not_occupied) const
         {
                 push_targets<Direction>{}(
-                        active_pawns,
+                        sources,
                         not_occupied
                 ).for_each([this](auto const dest_sq){
                         actions.emplace_back(
-                                *std::prev(this->along_ray<Direction>(dest_sq)),
+                                *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq,
-                                this->is_promotion(dest_sq)
+                                is_promotion(dest_sq)
                         );
                 });
         }
@@ -68,7 +70,7 @@ private:
 
         auto is_promotion(std::size_t const sq) const // Throws: Nothing.
         {
-                return mask::promotion_v<board_type, Color>.test(sq);
+                return mask::promotion_v<board_type, color_type>.test(sq);
         }
 };
 

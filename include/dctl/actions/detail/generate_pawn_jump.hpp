@@ -7,10 +7,9 @@
 #include <dctl/board/angle.hpp>                         // _deg, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/color.hpp>                               // Color
 #include <dctl/mask/jump_sources.hpp>                   // jump_sources
 #include <dctl/mask/promotion.hpp>                      // is_promotion
-#include <dctl/piece.hpp>                               // king_type, pawn_type
+#include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_type, king_type
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
@@ -20,10 +19,12 @@
 namespace dctl {
 namespace detail {
 
-template<class Color, class Reverse, class State, class Builder>
-class Generate<Color, pawn_type, select::jump, Reverse, State, Builder>
+template<Color Side, class Reverse, class State, class Builder>
+class Generate<color_constant<Side>, pawn_type, select::jump, Reverse, State, Builder>
 {
-        using  king_jumps = Generate<Color, king_type, select::jump, Reverse, State, Builder>;
+        using  color_type = color_constant<Side>;
+        using  piece_type = pawn_type;
+        using  king_jumps = Generate<color_type, king_type, select::jump, Reverse, State, Builder>;
         using action_type = action_t<Builder>;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
@@ -32,7 +33,7 @@ class Generate<Color, pawn_type, select::jump, Reverse, State, Builder>
         template<int Direction>
         using jump_sources = mask::jump_sources<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = bearing_v<board_type, Color, Reverse>.degrees;
+        static constexpr auto orientation = bearing_v<board_type, color_type, Reverse>.degrees;
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(angle{orientation}));
@@ -87,7 +88,7 @@ private:
                         builder.current_targets(),
                         builder.not_occupied()
                 ).for_each([this](auto const from_sq){
-                        this->jump(this->along_ray<Direction>(from_sq));
+                        jump(along_ray<Direction>(from_sq));
                 });
         }
 
@@ -252,7 +253,7 @@ private:
 
         auto is_promotion(std::size_t const sq) const // Throws: Nothing.
         {
-                return mask::promotion_v<board_type, Color>.test(sq);
+                return mask::promotion_v<board_type, color_type>.test(sq);
         }
 };
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/piece.hpp>                       // pawn, king
+#include <dctl/color_piece.hpp>                 // pawn, king
 #include <dctl/rule_traits.hpp>                 // rectangular, is_quality_precedence, is_ordering_precedence
 #include <dctl/utility/tagged_empty_base.hpp>   // tagged_empty_base
 #include <dctl/utility/type_traits.hpp>         // set_t, square_t
@@ -13,7 +13,7 @@ namespace detail {
 namespace block_adl {
 
 template<class Board>
-struct base_quality_precedence
+struct BaseQualityPrecedence
 {
         set_t<Board> captured_kings_;
 };
@@ -21,12 +21,12 @@ struct base_quality_precedence
 template<class Rules, class Board>
 using quality_precedence_t = std::conditional_t<
         is_quality_precedence_v<Rules>,
-        base_quality_precedence<Board>,
+        BaseQualityPrecedence<Board>,
         util::tagged_empty_base<0>
 >;
 
 template<class Board>
-struct base_ordering_precedence
+struct BaseOrderingPrecedence
 {
         set_t<Board> piece_order_;
 };
@@ -34,7 +34,7 @@ struct base_ordering_precedence
 template<class Rules, class Board>
 using ordering_precedence_t = std::conditional_t<
         is_ordering_precedence_v<Rules>,
-        base_ordering_precedence<Board>,
+        BaseOrderingPrecedence<Board>,
         util::tagged_empty_base<1>
 >;
 
@@ -186,12 +186,12 @@ public:
 
         constexpr auto is_reversible() const noexcept
         {
-                return with() == Piece::king && !is_jump();
+                return is_with_king() && !is_jump();
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-                is_quality_precedence_v<RulesType> &&
-		std::is_same<RulesType, rules_type>{}
+                std::is_same<RulesType, rules_type>{} &&
+                is_quality_precedence_v<RulesType>
         >...>
         constexpr auto captured_kings() const noexcept
         {
@@ -199,8 +199,8 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-        	is_quality_precedence_v<RulesType> &&
-		std::is_same<RulesType, rules_type>{}
+		std::is_same<RulesType, rules_type>{} &&
+        	is_quality_precedence_v<RulesType>
         >...>
         constexpr auto num_captured_kings() const noexcept
         {
@@ -208,10 +208,10 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-		is_ordering_precedence_v<RulesType> &&
-		std::is_same<RulesType, rules_type>{}
+		std::is_same<RulesType, rules_type>{} &&
+		is_ordering_precedence_v<RulesType>
         >...>
-        constexpr auto Piece_order() const noexcept
+        constexpr auto piece_order() const noexcept
         {
                 return this->piece_order_;
         }
@@ -224,7 +224,7 @@ private:
                                 this->captured_kings_.set(sq);
                         }
                         if constexpr (is_ordering_precedence_v<rules_type>) {
-                                this->piece_order_.set(set_type::size() - 1 - num_captured_pieces());
+                                this->piece_order_.set(reverse_index());
                         }
                 }
         }
@@ -234,7 +234,7 @@ private:
                 static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
                         if constexpr (is_ordering_precedence_v<rules_type>) {
-                                this->piece_order_.reset(set_type::size() - 1 - num_captured_pieces());
+                                this->piece_order_.reset(reverse_index());
                         }
                         if constexpr (is_quality_precedence_v<rules_type>) {
                                 this->captured_kings_.reset(sq);
@@ -251,6 +251,11 @@ private:
         {
                 return with() != Piece::pawn && into() == Piece::pawn;
         }
+
+        constexpr auto reverse_index() const noexcept
+        {
+                return set_type::size() - 1 - num_captured_pieces();
+        }
 };
 
 template<class Rules, class Board, std::enable_if_t<
@@ -266,7 +271,7 @@ template<class Rules, class Board, std::enable_if_t<
 >...>
 constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
 {
-        return std::make_tuple(a.from(), a.dest(), a.captured_pieces(), a.Piece_order());
+        return std::make_tuple(a.from(), a.dest(), a.captured_pieces(), a.piece_order());
 }
 
 template<class Rules, class Board>

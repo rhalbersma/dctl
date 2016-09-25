@@ -1,6 +1,6 @@
 #include <dctl/rules/italian.hpp>       // Italian
 #include <rules/precedence.hpp>         // precedence::is_consistent
-#include <dctl/piece.hpp>               // king, pawn
+#include <dctl/color_piece.hpp>         // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_superior_rank_jump, is_ordering, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                      // size_t
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 auto num_captured_pieces()       const noexcept { return num_captured_;        }
                 auto num_captured_kings() const noexcept { return num_captured_kings_;  }
                 auto is_with_king()       const noexcept { return with_ == Piece::king; }
-                auto const& Piece_order() const noexcept { return piece_order_;         }
+                auto const& piece_order() const noexcept { return piece_order_;         }
         };
 
         auto const moves = std::vector<Action>

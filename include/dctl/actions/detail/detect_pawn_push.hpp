@@ -4,15 +4,17 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/mask/push_targets.hpp>                   // push_targets
-#include <dctl/piece.hpp>                               // pawn_type
+#include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_type
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t
 
 namespace dctl {
 namespace detail {
 
-template<class Color, class Reverse, class State>
-class Detect<Color, pawn_type, select::push, Reverse, State>
+template<Color Side, class Reverse, class State>
+class Detect<color_constant<Side>, pawn_type, select::push, Reverse, State>
 {
+        using color_type = color_constant<Side>;
+        using piece_type = pawn_type;
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
 
@@ -23,7 +25,7 @@ class Detect<Color, pawn_type, select::push, Reverse, State>
 public:
         auto operator()(State const& state) const noexcept
         {
-                if (auto const active_pawns = state.pieces(Color{}, pawn_type{}); active_pawns.any()) {
+                if (auto const active_pawns = state.pieces(color_type{}, piece_type{}); active_pawns.any()) {
                         return directions_lfold<right_up, left_up>(active_pawns, state.not_occupied());
                 }
                 return false;

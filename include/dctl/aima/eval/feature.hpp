@@ -1,10 +1,9 @@
 #pragma once
 #include <dctl/aima/eval/weight.hpp>    // Weight
 #include <dctl/actions.hpp>             // count, select::push
-#include <dctl/color.hpp>               // opposite
+#include <dctl/color_piece.hpp>               // opposite
 #include <dctl/mask/column.hpp>         // column
 #include <dctl/mask/row.hpp>            // row
-#include <dctl/piece.hpp>
 #include <xstd/cstddef.hpp>
 #include <cstdlib>                      // abs
 

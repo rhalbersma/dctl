@@ -35,7 +35,7 @@ struct Italian
                                 a.num_captured_pieces(),
                                 a.is_with_king(),
                                 a.num_captured_kings(),
-                                a.Piece_order()
+                                a.piece_order()
                         );
                 }
         };

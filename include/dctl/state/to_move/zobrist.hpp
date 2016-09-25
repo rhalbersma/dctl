@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/color.hpp>               // Player
+#include <dctl/color_piece.hpp>               // Player
 #include <dctl/utility/random/uniform.hpp>      // cat_zero_runif
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <array>                        // array

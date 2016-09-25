@@ -1,6 +1,6 @@
 #include <dctl/rules/frisian.hpp>       // Frisian
 #include <rules/precedence.hpp>         // precedence::is_consistent
-#include <dctl/piece.hpp>               // king, pawn
+#include <dctl/color_piece.hpp>         // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <cstddef>                      // size_t

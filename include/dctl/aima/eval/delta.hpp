@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/aima/eval/feature.hpp>   // Feature
-#include <dctl/color.hpp>               // flip
+#include <dctl/color_piece.hpp>               // flip
 
 namespace dctl {
 namespace evaluate {

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/color.hpp>      // white
+#include <dctl/color_piece.hpp>      // white
 #include <xstd/type_traits.hpp> // type_is
 
 namespace dctl {
