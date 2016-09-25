@@ -1,8 +1,7 @@
 #pragma once
-#include <dctl/color.hpp>
-#include <dctl/piece.hpp>
-#include <dctl/utility/type_traits.hpp>         // set_t
-#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
+#include <dctl/utility/type_traits.hpp> // set_t
+#include <xstd/type_traits.hpp>         // to_underlying_type
 
 namespace dctl {
 namespace detail {
@@ -10,7 +9,7 @@ namespace wma {
 namespace block_adl {
 
 template<class Board>
-class base_state
+class BaseState
 {
 public:
         using board_type = Board;
@@ -22,18 +21,18 @@ private:
         set_type pieces_;
 
 public:
-        base_state() = default;
+        BaseState() = default;
 
-        base_state(set_type const w, set_type const m, set_type const a) noexcept
+        BaseState(set_type const w, set_type const m, set_type const a) noexcept
         :
                 white_{w},
                 pawns_{m},
                 pieces_{a}
         {}
 
-        base_state(set_type const b, set_type const w, set_type const p, set_type const /* k */) noexcept
+        BaseState(set_type const b, set_type const w, set_type const p, set_type const /* k */) noexcept
         :
-                base_state{w, p, b | w}
+                BaseState{w, p, b | w}
         {}
 
         template<class Action>
@@ -101,15 +100,15 @@ public:
         }
 
         template<Piece Type>
-        auto pieces(Color const c, piece_constant<Type>) const noexcept
+        auto pieces(Color const c, piece_constant<Type> const p) const noexcept
         {
-                return c == black_type{} ? pieces(black_type{}, Type) : pieces(white_type{}, Type);
+                return c == black_type{} ? pieces(black_type{}, p) : pieces(white_type{}, p);
         }
 
         template<Color Side>
-        auto pieces(color_constant<Side>, Piece const p) const noexcept
+        auto pieces(color_constant<Side> const c, Piece const p) const noexcept
         {
-                return p == pawn_type{} ? pieces(Side, pawn_type{}) : pieces(Side, king_type{});
+                return p == pawn_type{} ? pieces(c, pawn_type{}) : pieces(c, king_type{});
         }
 
         auto pieces(black_type, pawn_type) const noexcept
@@ -141,16 +140,11 @@ public:
         {
                 return mask::squares_v<board_type> ^ pieces();
         }
-
-        auto num_pieces(Color const c, Piece const p) const noexcept
-        {
-                return pieces(c, p).count();
-        }
 };
 
 }       // namespace block_adl
 
-using block_adl::base_state;
+using block_adl::BaseState;
 
 }       // namespace wma
 }       // namespace detail

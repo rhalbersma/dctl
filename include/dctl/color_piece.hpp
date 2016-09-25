@@ -26,4 +26,18 @@ constexpr auto operator!(Color const c) noexcept
 template<class Color>
 using opposite = color_constant<!Color::value>;
 
+enum class Piece
+:
+        unsigned char
+{
+        pawn = 0,
+        king = 1
+};
+
+template<Piece Value>
+using piece_constant = std::integral_constant<Piece, Value>;
+
+using pawn_type = piece_constant<Piece::pawn>;
+using king_type = piece_constant<Piece::king>;
+
 }       // namespace dctl
