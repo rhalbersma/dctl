@@ -1,8 +1,7 @@
 #pragma once
-#include <dctl/color.hpp>
-#include <dctl/piece.hpp>
-#include <dctl/utility/type_traits.hpp>         // set_t
-#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
+#include <dctl/utility/type_traits.hpp> // set_t
+#include <xstd/type_traits.hpp>         // to_underlying_type
 
 namespace dctl {
 namespace detail {
@@ -10,7 +9,7 @@ namespace c2p2e {
 namespace block_adl {
 
 template<class Board>
-class base_state
+class BaseState
 {
 public:
         using board_type = Board;
@@ -22,9 +21,9 @@ private:
         set_type not_occupied_;
 
 public:
-        base_state() = default;
+        BaseState() = default;
 
-        base_state(set_type const b, set_type const w, set_type const p, set_type const k)
+        BaseState(set_type const b, set_type const w, set_type const p, set_type const k)
         :
                 by_color_{b, w},
                 by_piece_{p, k},
@@ -75,11 +74,6 @@ public:
                 return not_occupied_;
         }
 
-        auto num_pieces(Color const c, Piece const p) const noexcept
-        {
-                return pieces(c, p).count();
-        }
-
 private:
         auto& pieces(Color const c) noexcept
         {
@@ -94,7 +88,7 @@ private:
 
 }       // namespace block_adl
 
-using block_adl::base_state;
+using block_adl::BaseState;
 
 }       // namespace c2p2e
 }       // namespace detail
