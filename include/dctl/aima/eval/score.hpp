@@ -2,7 +2,7 @@
 #include <dctl/aima/eval/delta.hpp>
 #include <dctl/aima/eval/feature.hpp>
 #include <dctl/aima/eval/weight.hpp>
-#include <dctl/color.hpp>
+#include <dctl/color_piece.hpp>
 #include <iomanip>
 #include <iostream>
 

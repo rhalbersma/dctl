@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/state/state.hpp>
-#include <dctl/color.hpp>
+#include <dctl/color_piece.hpp>
 #include <dctl/setup/diagram.hpp>
 #include <dctl/setup/protocols.hpp>
 #include <dctl/setup/i_token.hpp>

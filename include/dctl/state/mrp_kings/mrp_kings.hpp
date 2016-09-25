@@ -1,6 +1,5 @@
 #pragma once
-#include <dctl/color.hpp>
-#include <dctl/piece.hpp>
+#include <dctl/color_piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -21,8 +20,8 @@ private:
         std::size_t by_color_piece_[2][2];
 
 public:
-        template<class base_state>
-        constexpr MostRecentlyPushedKings(base_state const& p)
+        template<class BaseState>
+        constexpr MostRecentlyPushedKings(BaseState const& p)
         :
                 by_color_piece_
                 {

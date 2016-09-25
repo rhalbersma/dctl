@@ -4,7 +4,7 @@
 #include <dctl/board/detail/dimensions.hpp>             // dimensions
 #include <dctl/board/detail/grid.hpp>                   // InnerGrid, OuterGrid
 #include <dctl/board/detail/optimal_orientation.hpp>    // size_Minimizing_orientation
-#include <dctl/color.hpp>                               // black, white
+#include <dctl/color_piece.hpp>                               // black, white
 #include <dctl/utility/fill_array.hpp>                  // fill_array
 #include <xstd/bitset.hpp>                              // bitset
 #include <xstd/cstddef.hpp>                             // _zu

@@ -5,7 +5,7 @@
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/mask/push_targets.hpp>                   // push_targets
-#include <dctl/piece.hpp>                               // king_type
+#include <dctl/color_piece.hpp>                         // Color, color_constant, king_type
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t, value_t
 #include <cstddef>                                      // size_t
@@ -14,9 +14,11 @@
 namespace dctl {
 namespace detail {
 
-template<class Color, class Reverse, class State, class SequenceContainer>
-class Generate<Color, king_type, select::push, Reverse, State, SequenceContainer>
+template<Color Side, class Reverse, class State, class SequenceContainer>
+class Generate<color_constant<Side>, king_type, select::push, Reverse, State, SequenceContainer>
 {
+        using  color_type = color_constant<Side>;
+        using  piece_type = king_type;
         using action_type = value_t<SequenceContainer>;
         using  board_type = board_t<State>;
         using  rules_type = rules_t<State>;
@@ -25,7 +27,7 @@ class Generate<Color, king_type, select::push, Reverse, State, SequenceContainer
         template<int Direction>
         using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = bearing_v<board_type, Color, Reverse>.degrees;
+        static constexpr auto orientation = bearing_v<board_type, color_type, Reverse>.degrees;
         SequenceContainer& actions;
 public:
         explicit Generate(SequenceContainer& a) noexcept
@@ -35,13 +37,14 @@ public:
 
         auto operator()(State const& state) const
         {
+                auto const sources = state.pieces(color_type{}, piece_type{});
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        state.pieces(Color{}, king_type{}).for_each([&, this](auto const& from_sq){
-                                this->ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, state.not_occupied());
+                        sources.for_each([&, this](auto const& from_sq){
+                                ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, state.not_occupied());
                         });
                 } else {
-                        if (auto const active_kings = state.pieces(Color{}, king_type{}); active_kings.any()) {
-                                wave_directions_lfold<right_up, left_up, left_down, right_down>(active_kings, state.not_occupied());
+                        if (sources.any()) {
+                                wave_directions_lfold<right_up, left_up, left_down, right_down>(sources, state.not_occupied());
                         }
                 }
         }
@@ -53,9 +56,9 @@ private:
         }
 
         template<template<int> class... Directions>
-        auto wave_directions_lfold(set_type const active_kings, set_type const not_occupied) const
+        auto wave_directions_lfold(set_type const sources, set_type const not_occupied) const
         {
-                (... , wave_targets<Directions<orientation>{}>(active_kings, not_occupied));
+                (... , wave_targets<Directions<orientation>{}>(sources, not_occupied));
         }
 
         template<class Iterator>
@@ -73,10 +76,10 @@ private:
         }
 
         template<int Direction>
-        auto wave_targets(set_type const active_kings, set_type const not_occupied) const
+        auto wave_targets(set_type const sources, set_type const not_occupied) const
         {
                 push_targets<Direction>{}(
-                        active_kings,
+                        sources,
                         not_occupied
                 ).for_each([this](auto const dest_sq){
                         actions.emplace_back(

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/color.hpp>       // opposite
+#include <dctl/color_piece.hpp>       // opposite
 #include <dctl/mask/row.hpp>    // row
 
 namespace dctl {

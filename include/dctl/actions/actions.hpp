@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/actions/detail/specializations.hpp>      // Generate
 #include <dctl/actions/select/legal.hpp>                // legal
-#include <dctl/color.hpp>                               // black, white
+#include <dctl/color_piece.hpp>                               // black, white
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/type_traits.hpp>                 // value_t
 #include <cassert>                                      // assert

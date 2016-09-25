@@ -2,9 +2,8 @@
 #include <dctl/board/angle.hpp>                 // angle, is_orthogonal
 #include <dctl/board/ray.hpp>
 #include <dctl/mask/push_sources.hpp>
-#include <dctl/color.hpp>
 #include <dctl/mask/jump_start.hpp>             // jump_start
-#include <dctl/piece.hpp>
+#include <dctl/color_piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t, value_t
 #include <boost/algorithm/cxx11/none_of.hpp>    // none_of
@@ -17,9 +16,13 @@ namespace dctl {
 namespace detail {
 
 template<class Color, class DuplicatesPolicy, class State, class SequenceContainer>
-class Builder
+class Builder;
+
+template<Color Side, class DuplicatesPolicy, class State, class SequenceContainer>
+class Builder<color_constant<Side>, DuplicatesPolicy, State, SequenceContainer>
 {
 public:
+        using  color_type = color_constant<Side>;
         using action_type = value_t<SequenceContainer>;
         using  board_type =       board_t<State>;
         using  rules_type =       rules_t<State>;
@@ -40,7 +43,7 @@ public:
         explicit Builder(State const& s, SequenceContainer& a)
         :
                 state{s},
-                initial_targets_(state.pieces(opposite<Color>{})),
+                initial_targets_(state.pieces(opposite<color_type>{})),
                 not_occupied_(state.not_occupied()),
                 actions{a}
         {}
@@ -48,7 +51,7 @@ public:
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_v<rules_type>);
-                initial_targets_ ^= state.pieces(opposite<Color>{}, king_type{});
+                initial_targets_ ^= state.pieces(opposite<color_type>{}, king_type{});
         }
 
         auto make_launch(std::size_t const sq)
@@ -96,12 +99,12 @@ public:
 
         auto active_pawns() const noexcept
         {
-                return state.pieces(Color{}, pawn_type{});
+                return state.pieces(color_type{}, pawn_type{});
         }
 
         auto active_kings() const noexcept
         {
-                return state.pieces(Color{}, king_type{});
+                return state.pieces(color_type{}, king_type{});
         }
 
         auto current_targets() const
@@ -199,14 +202,14 @@ private:
         {
                 if constexpr (
                         !is_nontrivial_precedence_v<rules_type> &&
-                        std::is_same<                 DuplicatesPolicy,    keep_duplicates_tag>{}
+                        std::is_same<DuplicatesPolicy, keep_duplicates_tag>{}
                 ){
                         assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
                         actions.push_back(candidate_action);
                 }
                 if constexpr (
                         !is_nontrivial_precedence_v<rules_type> &&
-                        std::is_same<                 DuplicatesPolicy,    drop_duplicates_tag>{}
+                        std::is_same<DuplicatesPolicy, drop_duplicates_tag>{}
                 ){
                         assert(actions.empty() || precedence::equal_to{}(candidate_action, actions.back()));
                         if (actions.empty() || is_small() || is_unique())
@@ -214,7 +217,7 @@ private:
                 }
                 if constexpr (
                         is_nontrivial_precedence_v<rules_type> &&
-                        std::is_same<                 DuplicatesPolicy,       keep_duplicates_tag>{}
+                        std::is_same<DuplicatesPolicy, keep_duplicates_tag>{}
                 ){
                         if (actions.empty() || precedence::equal_to{}(candidate_action, actions.back()))
                                 return actions.push_back(candidate_action);
@@ -226,7 +229,7 @@ private:
                 }
                 if constexpr (
                         is_nontrivial_precedence_v<rules_type> &&
-                        std::is_same<                 DuplicatesPolicy,       drop_duplicates_tag>{}
+                        std::is_same<DuplicatesPolicy, drop_duplicates_tag>{}
                 ){
                         if (actions.empty())
                                 return actions.push_back(candidate_action);/*

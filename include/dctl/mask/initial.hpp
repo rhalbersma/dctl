@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/detail/coordinates.hpp>    // to_llo
-#include <dctl/color.hpp>                       // black, white
+#include <dctl/color_piece.hpp>                       // black, white
 #include <dctl/mask/row.hpp>                    // row
 #include <dctl/utility/fill_array.hpp>          // fill_array
 #include <dctl/utility/type_traits.hpp>         // set_t, value_t

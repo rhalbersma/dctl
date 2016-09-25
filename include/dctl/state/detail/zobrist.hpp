@@ -1,6 +1,5 @@
 #pragma once
-#include <dctl/color.hpp>
-#include <dctl/piece.hpp>
+#include <dctl/color_piece.hpp>
 #include <dctl/utility/random/uniform.hpp>      // runif
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <array>                        // array
@@ -10,7 +9,7 @@ namespace dctl {
 namespace zobrist {
 
 template<std::size_t N>
-class base_state
+class BaseState
 {
         static std::array<std::size_t, N> const by_color[2];
         static std::array<std::size_t, N> const by_piece[2];
@@ -28,7 +27,7 @@ public:
 
 template<std::size_t N>
 std::array<std::size_t, N> const
-base_state<N>::by_color[2] =
+BaseState<N>::by_color[2] =
 {
         random::runif<N>(),
         random::runif<N>()
@@ -36,7 +35,7 @@ base_state<N>::by_color[2] =
 
 template<std::size_t N>
 std::array<std::size_t, N> const
-base_state<N>::by_piece[2] =
+BaseState<N>::by_piece[2] =
 {
         random::runif<N>(),
         random::runif<N>()

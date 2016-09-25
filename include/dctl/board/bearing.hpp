@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/angle.hpp> // _deg, inverse, rotate
-#include <dctl/color.hpp>       // white
+#include <dctl/color_piece.hpp>       // white
 
 namespace dctl {
 

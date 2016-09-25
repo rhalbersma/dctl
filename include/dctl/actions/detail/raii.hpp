@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/piece.hpp>       // pawn, king
+#include <dctl/color_piece.hpp> // pawn, king
 #include <cassert>              // assert
 #include <cstddef>              // size_t
 

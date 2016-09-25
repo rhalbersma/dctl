@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/color.hpp>
+#include <dctl/color_piece.hpp>
 
 namespace dctl {
 

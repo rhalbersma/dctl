@@ -1,14 +1,13 @@
 #pragma once
 #include <dctl/action/action.hpp>
-#include <dctl/color.hpp>
+#include <dctl/color_piece.hpp>
 #include <dctl/mask/initial.hpp>
 #include <dctl/mask/promotion.hpp>
 #include <dctl/mask/squares.hpp>
-#include <dctl/piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/state/mrp_kings/mrp_kings.hpp>
 #include <dctl/state/mrp_kings/zobrist.hpp>
-#include <dctl/state/detail/base_state.hpp>
+#include <dctl/state/base_state.hpp>
 #include <dctl/state/player_to_move.hpp>
 #include <dctl/state/to_move/to_move.hpp>
 #include <dctl/state/to_move/zobrist.hpp>
@@ -21,6 +20,7 @@
 #include <cassert>                              // assert
 #include <type_traits>                          // is_same
 #include <tuple>
+#include <utility>                              // forward
 
 namespace dctl {
 namespace detail {
@@ -59,7 +59,7 @@ public:
 
 private:
         PlayerToMove player_to_move_{};
-        detail::wma::base_state<board_type> piece_placement_{};
+        detail::wma::BaseState<board_type> placement_{};
 
         constexpr auto assert_invariants() const noexcept
         {
@@ -92,7 +92,7 @@ public:
         :
                 most_recently_pushed_kings_t{},
                 player_to_move_{c},
-                piece_placement_{black, white, pawns, kings}
+                placement_{black, white, pawns, kings}
         {
                 assert_invariants();
         }
@@ -109,65 +109,22 @@ public:
         {
                 static_assert(std::is_same<rules_type, rules_t<Action>>{});
                 static_assert(std::is_same<board_type, board_t<Action>>{});
-                piece_placement_.make(player_to_move_, a);
+                placement_.make(player_to_move_, a);
                 player_to_move_.make(a);
                 assert_invariants();
                 return *this;
         }
 
-        auto pieces(Color const c) const noexcept
+        template<class... Args>
+        auto pieces(Args&&... args) const noexcept
         {
-                return piece_placement_.pieces(c);
-        }
-
-        template<Color Side>
-        auto pieces(color_constant<Side>) const noexcept
-        {
-                return pieces(Side);
-        }
-
-        auto pieces(Piece const p) const noexcept
-        {
-                return piece_placement_.pieces(p);
-        }
-
-        template<Piece Type>
-        auto pieces(piece_constant<Type>) const noexcept
-        {
-                return pieces(Type);
-        }
-
-        auto pieces(Color const c, Piece const p) const noexcept
-        {
-                return piece_placement_.pieces(c, p);
-        }
-
-        template<Color Side>
-        auto pieces(color_constant<Side>, Piece p) const noexcept
-        {
-                return pieces(Side, p);
-        }
-
-        template<Piece Type>
-        auto pieces(Color c, piece_constant<Type>) const noexcept
-        {
-                return pieces(c, Type);
-        }
-
-        template<Color Side, Piece Type>
-        auto pieces(color_constant<Side>, piece_constant<Type>) const noexcept
-        {
-                return pieces(Side, Type);
-        }
-
-        auto pieces() const noexcept
-        {
-                return piece_placement_.pieces();
+                static_assert(sizeof...(Args) <= 2);
+                return placement_.pieces(std::forward<Args>(args)...);
         }
 
         auto not_occupied() const noexcept
         {
-                return piece_placement_.not_occupied();
+                return placement_.not_occupied();
         }
 
         auto king_targets(Color const c) const noexcept
@@ -196,9 +153,11 @@ public:
                 return pawn_targets(Side);
         }
 
-        auto num_pieces(Color const c, Piece const p) const noexcept
+        template<class... Args>
+        auto num_pieces(Args&&... args) const noexcept
         {
-                return piece_placement_.num_pieces(c, p);
+                static_assert(sizeof...(Args) <= 2);
+                return pieces(std::forward<Args>(args)...).count();
         }
 
         auto to_move() const noexcept
