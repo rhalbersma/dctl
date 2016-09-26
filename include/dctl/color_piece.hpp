@@ -12,8 +12,8 @@ enum class Color
         white = 1
 };
 
-template<Color Value>
-using color_constant = std::integral_constant<Color, Value>;
+template<Color Side>
+using color_constant = std::integral_constant<Color, Side>;
 
 using black_type = color_constant<Color::black>;
 using white_type = color_constant<Color::white>;
@@ -34,8 +34,8 @@ enum class Piece
         king = 1
 };
 
-template<Piece Value>
-using piece_constant = std::integral_constant<Piece, Value>;
+template<Piece Type>
+using piece_constant = std::integral_constant<Piece, Type>;
 
 using pawn_type = piece_constant<Piece::pawn>;
 using king_type = piece_constant<Piece::king>;

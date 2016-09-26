@@ -5,29 +5,34 @@
 #include <dctl/actions/select/legal.hpp>        // legal
 #include <dctl/actions/select/jump.hpp>         // jump
 #include <dctl/actions/select/push.hpp>         // push
+#include <dctl/color_piece.hpp>                 // Color, color_constant
 
 namespace dctl {
 namespace detail {
 
-template<class Color, class DuplicatesPolicy, class Reverse>
-class Actions<Color, select::legal, DuplicatesPolicy, Reverse>
+template<Color Side, class DuplicatesPolicy, class Reverse>
+class Actions<color_constant<Side>, select::legal, DuplicatesPolicy, Reverse>
 {
-        using Jump = Actions<Color, select::jump, DuplicatesPolicy, Reverse>;
-        using Push = Actions<Color, select::push, DuplicatesPolicy, Reverse>;
+        using color_type = color_constant<Side>;
+        using Jump = Actions<color_type, select::jump, DuplicatesPolicy, Reverse>;
+        using Push = Actions<color_type, select::push, DuplicatesPolicy, Reverse>;
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const
         {
-                Jump{}.generate(state, actions);
-                if (actions.empty())
+                if (Jump{}.generate(state, actions); actions.empty()) {
                         Push{}.generate(state, actions);
+                }
         }
 
         template<class State>
         auto count(State const& state) const
         {
-                auto const num_actions = Jump{}.count(state);
-                return num_actions ? num_actions : Push{}.count(state);
+                if (auto const num_actions = Jump{}.count(state); !num_actions) {
+                        return Push{}.count(state);
+                } else {
+                        return num_actions;
+                }
         }
 
         template<class State>

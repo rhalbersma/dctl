@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
 #include <dctl/utility/type_traits.hpp> // set_t
-#include <xstd/type_traits.hpp>         // to_underlying_type
 
 namespace dctl {
 namespace detail {
