@@ -16,16 +16,16 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        set_type by_color_piece[2][2];
-        set_type not_occupied_;
+        set_type color_piece_[2][2];
+        set_type none_;
 
 public:
         BaseState() = default;
 
         BaseState(set_type const b, set_type const w, set_type const p, set_type const k)
         :
-                by_color_piece{{b & p, b & k}, {w & p, w & k}},
-                not_occupied_{mask::squares_v<board_type> ^ (b | w)}
+                color_piece_{{b & p, b & k}, {w & p, w & k}},
+                none_{mask::squares_v<board_type> ^ (b | w)}
         {}
 
         template<class Action>
@@ -37,11 +37,11 @@ public:
                 if (a.is_jump()) {
                         pieces(!c, pawn_type{}) &= ~a.captured_pieces();
                         pieces(!c, king_type{}) &= ~a.captured_pieces();
-                        not_occupied_ ^= a.captured_pieces();
+                        none_ ^= a.captured_pieces();
                 }
 
-                not_occupied_.set  (a.from());
-                not_occupied_.reset(a.dest());
+                none_.set  (a.from());
+                none_.reset(a.dest());
 
                 return *this;
         }
@@ -58,23 +58,23 @@ public:
 
         auto pieces(Color const c, Piece const p) const noexcept
         {
-                return by_color_piece[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
+                return color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 
-        auto pieces() const noexcept
+        auto pieces(any_type) const noexcept
         {
-                return mask::squares_v<board_type> ^ not_occupied();
+                return mask::squares_v<board_type> ^ none_;
         }
 
-        auto not_occupied() const noexcept
+        auto pieces(none_type) const noexcept
         {
-                return not_occupied_;
+                return none_;
         }
 
 private:
         auto& pieces(Color const c, Piece const p) noexcept
         {
-                return by_color_piece[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
+                return color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 };
 

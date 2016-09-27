@@ -30,7 +30,7 @@ public:
         {
                 using namespace xstd::support_literals;
                 if (auto const sources = state.pieces(color_type{}, piece_type{}); sources.any()) {
-                        return directions_lfold<right_up, left_up>(sources, state.not_occupied());
+                        return directions_lfold<right_up, left_up>(sources, state.pieces(none_type{}));
                 }
                 return 0_zu;
         }

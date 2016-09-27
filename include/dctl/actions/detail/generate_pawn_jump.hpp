@@ -86,7 +86,7 @@ private:
                 jump_sources<Direction>{}(
                         builder.active_pawns(),
                         builder.current_targets(),
-                        builder.not_occupied()
+                        builder.pieces(none_type{})
                 ).for_each([this](auto const from_sq){
                         jump(along_ray<Direction>(from_sq));
                 });

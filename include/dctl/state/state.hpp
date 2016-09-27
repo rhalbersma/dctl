@@ -63,7 +63,7 @@ private:
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(mask::squares_v<board_type> == (pieces() | not_occupied()));
+                assert(mask::squares_v<board_type> == (pieces() | pieces(none_type{})));
 
                 assert(pieces() == (pieces(black_type{}) | pieces(white_type{})));
                 assert(pieces() == (pieces( pawn_type{}) | pieces( king_type{})));
@@ -73,7 +73,7 @@ private:
                 assert(pieces( pawn_type{}) == (pieces(black_type{}, pawn_type{}) | pieces(white_type{}, pawn_type{})));
                 assert(pieces( king_type{}) == (pieces(black_type{}, king_type{}) | pieces(white_type{}, king_type{})));
 
-                assert(xstd::disjoint(pieces(), not_occupied()));
+                assert(xstd::disjoint(pieces(), pieces(none_type{})));
 
                 assert(xstd::disjoint(pieces(black_type{}), pieces(white_type{})));
                 assert(xstd::disjoint(pieces( pawn_type{}), pieces( king_type{})));
@@ -120,11 +120,6 @@ public:
         {
                 static_assert(sizeof...(Args) <= 2);
                 return placement_.pieces(std::forward<Args>(args)...);
-        }
-
-        auto not_occupied() const noexcept
-        {
-                return placement_.not_occupied();
         }
 
         auto king_targets(Color const c) const noexcept

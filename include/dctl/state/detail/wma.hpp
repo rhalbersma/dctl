@@ -17,7 +17,7 @@ public:
 private:
         set_type white_;
         set_type pawns_;
-        set_type pieces_;
+        set_type any_;
 
 public:
         BaseState() = default;
@@ -26,7 +26,7 @@ public:
         :
                 white_{w},
                 pawns_{m},
-                pieces_{a}
+                any_{a}
         {}
 
         BaseState(set_type const b, set_type const w, set_type const p, set_type const /* k */) noexcept
@@ -37,8 +37,8 @@ public:
         template<class Action>
         auto& make(Color const c, Action const& a)
         {
-                pieces_.reset(a.from());
-                pieces_.set  (a.dest());
+                any_.reset(a.from());
+                any_.set  (a.dest());
 
                 if (c == white_type{}) {
                         white_.reset(a.from());
@@ -52,9 +52,9 @@ public:
                         pawns_.set(a.dest());
 
                 if (a.is_jump()) {
-                        pieces_ ^= a.captured_pieces();
                         white_ &= ~a.captured_pieces();
                         pawns_ &= ~a.captured_pieces();
+                        any_   ^=  a.captured_pieces();
                 }
 
                 return *this;
@@ -67,7 +67,7 @@ public:
 
         auto pieces(black_type) const noexcept
         {
-                return pieces_ ^ white_;
+                return any_ ^ white_;
         }
 
         auto pieces(white_type) const noexcept
@@ -87,7 +87,7 @@ public:
 
         auto pieces(king_type) const noexcept
         {
-                return pieces_ ^ pawns_;
+                return any_ ^ pawns_;
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
@@ -117,7 +117,7 @@ public:
 
         auto pieces(black_type, king_type) const noexcept
         {
-                return pieces_ ^ (white_ | pawns_);
+                return any_ ^ (white_ | pawns_);
         }
 
         auto pieces(white_type, pawn_type) const noexcept
@@ -130,14 +130,14 @@ public:
                 return white_ & ~pawns_;
         }
 
-        auto pieces() const noexcept
+        auto pieces(any_type) const noexcept
         {
-                return pieces_;
+                return any_;
         }
 
-        auto not_occupied() const noexcept
+        auto pieces(none_type) const noexcept
         {
-                return mask::squares_v<board_type> ^ pieces();
+                return mask::squares_v<board_type> ^ any_;
         }
 };
 

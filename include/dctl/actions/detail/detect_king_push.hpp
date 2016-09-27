@@ -26,7 +26,7 @@ public:
         auto operator()(State const& state) const noexcept
         {
                 if (auto const sources = state.pieces(color_type{}, piece_type{}); sources.any()) {
-                        return directions_lfold<right_up, left_up, left_down, right_down>(sources, state.not_occupied());
+                        return directions_lfold<right_up, left_up, left_down, right_down>(sources, state.pieces(none_type{}));
                 }
                 return false;
         }

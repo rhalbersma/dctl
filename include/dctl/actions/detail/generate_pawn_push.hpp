@@ -36,23 +36,23 @@ public:
 
         auto operator()(State const& state) const
         {
-                if (auto const sources = state.pieces(color_type{}, piece_type{}); sources.any()) {
-                        directions_lfold<right_up, left_up>(sources, state.not_occupied());
+                if (auto const generator = state.pieces(color_type{}, piece_type{}); generator.any()) {
+                        directions_lfold<right_up, left_up>(generator, state.pieces(none_type{}));
                 }
         }
 private:
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const sources, set_type const not_occupied) const
+        auto directions_lfold(set_type const generator, set_type const propagator) const
         {
-                (... , targets<Directions<orientation>{}>(sources, not_occupied));
+                (... , targets<Directions<orientation>{}>(generator, propagator));
         }
 
         template<int Direction>
-        auto targets(set_type const sources, set_type const not_occupied) const
+        auto targets(set_type const generator, set_type const propagator) const
         {
                 push_targets<Direction>{}(
-                        sources,
-                        not_occupied
+                        generator,
+                        propagator
                 ).for_each([this](auto const dest_sq){
                         actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),

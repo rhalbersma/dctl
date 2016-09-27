@@ -40,4 +40,7 @@ using piece_constant = std::integral_constant<Piece, Type>;
 using pawn_type = piece_constant<Piece::pawn>;
 using king_type = piece_constant<Piece::king>;
 
+using  any_type = std:: true_type;
+using none_type = std::false_type;
+
 }       // namespace dctl
