@@ -17,13 +17,13 @@ public:
 private:
         std::size_t index_[2]{ N, N };
         std::size_t count_[2]{};
-        std::size_t by_color_piece_[2][2];
+        std::size_t color_piece_[2][2];
 
 public:
         template<class BaseState>
         constexpr MostRecentlyPushedKings(BaseState const& p)
         :
-                by_color_piece_
+                color_piece_
                 {
                         {p.num_pieces(Color::black, Piece::pawn), p.num_pieces(Color::black, Piece::king)},
                         {p.num_pieces(Color::white, Piece::pawn), p.num_pieces(Color::white, Piece::king)}
@@ -155,12 +155,12 @@ private:
 
         constexpr auto& num_pieces(Color c, Piece p) noexcept
         {
-                return by_color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
+                return color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 
         constexpr auto const& num_pieces(Color c, Piece p) const noexcept
         {
-                return by_color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
+                return color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 
         constexpr auto is_onboard(std::size_t sq) const noexcept

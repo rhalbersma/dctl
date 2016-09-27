@@ -32,7 +32,7 @@ public:
 private:
         State const& state;
         set_type initial_targets_;
-        set_type not_occupied_;
+        set_type none_;
         SequenceContainer& actions;
         action_type candidate_action{};
 
@@ -44,7 +44,7 @@ public:
         :
                 state{s},
                 initial_targets_(state.pieces(opposite<color_type>{})),
-                not_occupied_(state.not_occupied()),
+                none_(state.pieces(none_type{})),
                 actions{a}
         {}
 
@@ -57,26 +57,26 @@ public:
         auto make_launch(std::size_t const sq)
         {
                 candidate_action.from(sq);
-                not_occupied_.set(sq);
+                none_.set(sq);
         }
 
         auto undo_launch(std::size_t const sq)
         {
-                not_occupied_.reset(sq);
+                none_.reset(sq);
         }
 
         auto capture(std::size_t const sq)
         {
                 candidate_action.capture(sq, is_king(sq));
                 if constexpr (is_passing_capture_v<rules_type>) {
-                        not_occupied_.set(sq);
+                        none_.set(sq);
                 }
         }
 
         auto release(std::size_t const sq)
         {
                 if constexpr (is_passing_capture_v<rules_type>) {
-                        not_occupied_.reset(sq);
+                        none_.reset(sq);
                 }
                 candidate_action.release(sq, is_king(sq));
         }
@@ -121,24 +121,24 @@ public:
         template<int Direction>
         auto current_targets() const
         {
-                return push_sources<Direction>{}(current_targets(), not_occupied());
+                return push_sources<Direction>{}(current_targets(), pieces(none_type{}));
         }
 
-        auto not_occupied() const
+        auto pieces(none_type) const
         {
-                return not_occupied_;
+                return none_;
         }
 
         auto not_occupied(square_type const sq) const
         {
-                return not_occupied_.test(sq);
+                return none_.test(sq);
         }
 
         template<int Direction>
         auto path() const
         {
                 auto constexpr jump_start = mask::jump_start<board_type>{}(angle{Direction});
-                return not_occupied() & jump_start;
+                return pieces(none_type{}) & jump_start;
         }
 
         template<int Direction>

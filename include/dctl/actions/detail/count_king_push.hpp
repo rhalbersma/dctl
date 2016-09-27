@@ -29,17 +29,17 @@ public:
         auto operator()(State const& state) const noexcept
         {
                 using namespace xstd::support_literals;
-                if (auto const sources = state.pieces(color_type{}, piece_type{}); sources.any()) {
-                        return directions_lfold<right_up, left_up, left_down, right_down>(sources, state.not_occupied());
+                if (auto const generator = state.pieces(color_type{}, piece_type{}); generator.any()) {
+                        return directions_lfold<right_up, left_up, left_down, right_down>(generator, state.pieces(none_type{}));
                 }
                 return 0_zu;
         }
 
 private:
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const sources, set_type const not_occupied) const noexcept
+        auto directions_lfold(set_type const generator, set_type const propagator) const noexcept
         {
-                return (... + king_push_targets<Directions<orientation>{}>{}(sources, not_occupied).count());
+                return (... + king_push_targets<Directions<orientation>{}>{}(generator, propagator).count());
         }
 };
 

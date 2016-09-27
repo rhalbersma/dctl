@@ -29,7 +29,7 @@ public:
         auto operator()(State const& state) const noexcept
         {
                 if (auto const sources = state.pieces(color_type{}, piece_type{}); sources.any()) {
-                        return directions(sources, state.king_targets(color_type{}), state.not_occupied());
+                        return directions(sources, state.king_targets(color_type{}), state.pieces(none_type{}));
                 }
                 return false;
         }
