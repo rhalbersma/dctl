@@ -4,7 +4,7 @@
 #include <cassert>                      // assert
 #include <cstddef>                      // size_t
 #include <stdexcept>                    // invalid_argument
-#include <tuple>                        // tie
+#include <tuple>                        // make_tuple
 
 namespace dctl {
 namespace board {
@@ -23,15 +23,15 @@ struct coordinates
 };
 
 template<class Origin>
-constexpr auto tied(coordinates<Origin> const coord) noexcept
+constexpr auto as_tuple(coordinates<Origin> const coord) noexcept
 {
-        return std::tie(coord.x, coord.y);
+        return std::make_tuple(coord.x, coord.y);
 }
 
 template<class Origin>
 constexpr auto operator==(coordinates<Origin> const lhs, coordinates<Origin> const rhs) noexcept
 {
-        return tied(lhs) == tied(rhs);
+        return as_tuple(lhs) == as_tuple(rhs);
 }
 
 template<class Origin>
