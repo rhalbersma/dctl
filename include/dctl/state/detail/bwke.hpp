@@ -65,14 +65,11 @@ public:
                 return p == pawn_type{} ? pieces(pawn_type{}) : pieces(king_type{});
         }
 
-        auto pieces(pawn_type) const noexcept
+        template<Piece Type>
+        auto pieces(piece_constant<Type> const p) const noexcept
         {
-                return pieces(any_type{}) ^ kings_;
-        }
-
-        auto pieces(king_type) const noexcept
-        {
-                return kings_;
+                if constexpr (p == pawn_type{}) { return kings_ ^ pieces(any_type{}); }
+                if constexpr (p == king_type{}) { return kings_;                      }
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
