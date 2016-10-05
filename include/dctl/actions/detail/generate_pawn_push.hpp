@@ -3,9 +3,9 @@
 #include <dctl/actions/select/push.hpp>                 // select
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
+#include <dctl/board/mask/promotion.hpp>                // is_promotion
+#include <dctl/board/mask/push_targets.hpp>             // push_targets
 #include <dctl/board/ray.hpp>                           // make_iterator
-#include <dctl/mask/promotion.hpp>                      // is_promotion
-#include <dctl/mask/push_targets.hpp>                   // push_targets
 #include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_type
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t, value_t
 #include <cstddef>                                      // size_t
@@ -24,9 +24,9 @@ class Generate<color_constant<Side>, pawn_type, select::push, Reverse, State, Se
         using    set_type =   set_t<State>;
 
         template<int Direction>
-        using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
+        using push_targets = board::mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = bearing_v<board_type, color_type, Reverse>.degrees;
+        static constexpr auto orientation = board::bearing_v<board_type, color_type, Reverse>.degrees();
         SequenceContainer& actions;
 public:
         explicit Generate(SequenceContainer& a) noexcept
@@ -37,7 +37,7 @@ public:
         auto operator()(State const& state) const
         {
                 if (auto const generator = state.pieces(color_type{}, piece_type{}); generator.any()) {
-                        directions_lfold<right_up, left_up>(generator, state.pieces(none_type{}));
+                        directions_lfold<board::right_up, board::left_up>(generator, state.pieces(none_type{}));
                 }
         }
 private:
@@ -70,7 +70,7 @@ private:
 
         auto is_promotion(std::size_t const sq) const // Throws: Nothing.
         {
-                return mask::promotion_v<board_type, color_type>.test(sq);
+                return board::mask::promotion_v<board_type, color_type>.test(sq);
         }
 };
 

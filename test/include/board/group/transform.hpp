@@ -2,6 +2,7 @@
 #include <cstddef>      // size_t
 
 namespace dctl {
+namespace board {
 namespace group {
 namespace detail {
 
@@ -42,4 +43,5 @@ struct is_idempotent
 };
 
 }       // namespace group
+}       // namespace board
 }       // namespace dctl

@@ -1,9 +1,10 @@
 #pragma once
-#include <dctl/mask/detail/iterator.hpp>        // make_iterator
+#include <dctl/board/mask/detail/iterator.hpp>  // make_iterator
 #include <dctl/rule_traits.hpp>                 // short_ranged_tag
 #include <iterator>                             // prev
 
 namespace dctl {
+namespace board {
 namespace mask {
 
 template<class Board, int Direction, class KingRangeCategory>
@@ -20,4 +21,5 @@ struct push_sources<Board, Direction, short_ranged_tag>
 };
 
 }       // namespace mask
+}       // namespace board
 }       // namespace dctl

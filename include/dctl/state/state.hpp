@@ -1,9 +1,9 @@
 #pragma once
 #include <dctl/action/action.hpp>
+#include <dctl/board/mask/initial.hpp>
+#include <dctl/board/mask/promotion.hpp>
+#include <dctl/board/mask/squares.hpp>
 #include <dctl/color_piece.hpp>
-#include <dctl/mask/initial.hpp>
-#include <dctl/mask/promotion.hpp>
-#include <dctl/mask/squares.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/state/mrp_kings/mrp_kings.hpp>
 #include <dctl/state/mrp_kings/zobrist.hpp>
@@ -63,7 +63,7 @@ private:
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(mask::squares_v<board_type> == (pieces() | pieces(none_type{})));
+                assert(board::mask::squares_v<board_type> == (pieces() | pieces(none_type{})));
 
                 assert(pieces() == (pieces(black_type{}) | pieces(white_type{})));
                 assert(pieces() == (pieces( pawn_type{}) | pieces( king_type{})));
@@ -83,8 +83,8 @@ private:
                 assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), pieces(white_type{}, pawn_type{})));
                 assert(xstd::disjoint(pieces(black_type{}, king_type{}), pieces(white_type{}, king_type{})));
 
-                assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), mask::promotion_v<board_type, black_type>));
-                assert(xstd::disjoint(pieces(white_type{}, pawn_type{}), mask::promotion_v<board_type, white_type>));
+                assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), board::mask::promotion_v<board_type, black_type>));
+                assert(xstd::disjoint(pieces(white_type{}, pawn_type{}), board::mask::promotion_v<board_type, white_type>));
         }
 
 public:
@@ -99,8 +99,8 @@ public:
 
         static state initial(std::size_t const separation = initial_position_gap_v<Rules> + Board::height % 2)
         {
-                auto const bp = mask::initial<board_type>{}(Color::black, separation);
-                auto const wp = mask::initial<board_type>{}(Color::white, separation);
+                auto const bp = board::mask::initial<board_type>{}(Color::black, separation);
+                auto const wp = board::mask::initial<board_type>{}(Color::white, separation);
                 return { Color::white, bp, wp, bp | wp, {} };
         }
 

@@ -1,9 +1,10 @@
 #pragma once
-#include <dctl/mask/detail/copy_if.hpp> // copy_if
-#include <dctl/utility/type_traits.hpp> // set_t
-#include <cstddef>                      // size_t
+#include <dctl/board/mask/detail/copy_if.hpp>   // copy_if
+#include <dctl/utility/type_traits.hpp>         // set_t
+#include <cstddef>                              // size_t
 
 namespace dctl {
+namespace board {
 namespace mask {
 
 template<class Board>
@@ -31,4 +32,5 @@ template<class Board>
 constexpr auto squares_v = squares<Board>{}();
 
 }       // namespace mask
+}       // namespace board
 }       // namespace dctl

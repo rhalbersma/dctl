@@ -4,7 +4,7 @@
 #include <boost/range/irange.hpp>               // irange
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
 
-namespace dctl {
+using namespace dctl::board;
 
 BOOST_AUTO_TEST_SUITE(AngleTransform)
 
@@ -14,34 +14,34 @@ BOOST_AUTO_TEST_CASE(AngleConstructorIsIdempotentOnIntegers)
 {
         BOOST_CHECK(
                 boost::algorithm::all_of(angles, [](auto const i){
-                        return group::is_idempotent{}([](auto const j) { return angle{j.degrees}; }, angle{i});
+                        return group::is_idempotent{}([](auto const j) { return Angle{j.degrees()}; }, Angle{i});
                 })
         );
 }
 
-BOOST_AUTO_TEST_CASE(RotateZeroDegIsIdentityOnAllAngles)
+BOOST_AUTO_TEST_CASE(RotateZeroDegIsIdentityOnAllangles)
 {
         BOOST_CHECK(
                 boost::algorithm::all_of(angles, [](auto const i){
-                        return group::is_identity{}([](auto const j) { return rotate(j, 0_deg); }, angle{i});
+                        return group::is_identity{}([](auto const j) { return rotate(j, 0_deg); }, Angle{i});
                 })
         );
 }
 
-BOOST_AUTO_TEST_CASE(ReverseIsInvolutionOnAllAngles)
+BOOST_AUTO_TEST_CASE(ReverseIsInvolutionOnAllangles)
 {
         BOOST_CHECK(
                 boost::algorithm::all_of(angles, [](auto const i){
-                        return group::is_involution{}([](auto const j) { return reverse(j); }, angle{i});
+                        return group::is_involution{}([](auto const j) { return reverse(j); }, Angle{i});
                 })
         );
 }
 
-BOOST_AUTO_TEST_CASE(InverseIsInvolutionOnAllAngles)
+BOOST_AUTO_TEST_CASE(InverseIsInvolutionOnAllangles)
 {
         BOOST_CHECK(
                 boost::algorithm::all_of(angles, [](auto const i){
-                        return group::is_involution{}([](auto const j) { return inverse(j); }, angle{i});
+                        return group::is_involution{}([](auto const j) { return inverse(j); }, Angle{i});
                 })
         );
 }
@@ -51,12 +51,10 @@ BOOST_AUTO_TEST_CASE(MirrorIsInvolutionOnAllAnglePairs)
         BOOST_CHECK(
                 boost::algorithm::all_of(angles, [](auto const i){
                         return boost::algorithm::all_of(angles, [=](auto const j) {
-                                return group::is_involution{}([=](auto const k) { return mirror(k, angle{j}); }, angle{i});
+                                return group::is_involution{}([=](auto const k) { return mirror(k, Angle{j}); }, Angle{i});
                         });
                 })
         );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace dctl

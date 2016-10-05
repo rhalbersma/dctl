@@ -5,6 +5,7 @@
 #include <vector>                       // vector
 
 namespace dctl {
+namespace board {
 
 template<class Set, class Op, class Inv, class Element = value_t<Set>>
 auto make_group(Set elements, Op op, Inv inv, Element id = Element{})
@@ -45,4 +46,5 @@ constexpr auto const& id(Group const& g) noexcept
 }
 
 }       // namespace group
+}       // namespace board
 }       // namespace dctl

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                         // angle, inverse
+#include <dctl/board/angle.hpp>                         // Angle, inverse
 #include <dctl/board/detail/coordinates.hpp>            // to_llo, transform
 #include <dctl/board/detail/dimensions.hpp>             // dimensions
 #include <dctl/board/detail/grid.hpp>                   // InnerGrid, OuterGrid
@@ -149,7 +149,7 @@ public:
 };
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr angle
+constexpr Angle
 Rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
 template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // angle
+#include <dctl/board/angle.hpp>                 // Angle
 #include <dctl/board/detail/dimensions.hpp>     // dimensions
 #include <cassert>                              // assert
 
@@ -31,7 +31,7 @@ public:
 
         constexpr auto size() const noexcept { return (width() * height()) / 2 + (width() * height() * upper_left_is_square()) % 2; }
 
-        friend constexpr auto rotate(InnerGrid const g, angle const a)
+        friend constexpr auto rotate(InnerGrid const g, Angle const a)
         {
                 return InnerGrid{rotate(g.dim, a)};
         }
@@ -64,7 +64,7 @@ public:
 
         constexpr auto size() const noexcept { return modulo() * ((height() - 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) + 1; }
 
-        friend constexpr auto rotate(OuterGrid const g, angle const a)
+        friend constexpr auto rotate(OuterGrid const g, Angle const a)
         {
                 return OuterGrid{rotate(g.inner_, a), g.edge_};
         }

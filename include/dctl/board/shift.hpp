@@ -84,8 +84,8 @@ struct shift_sign
 {
         constexpr auto operator()(int const n) const noexcept
         {
-                auto const a = angle{n};
-                return (a.degrees == 0 || 180 < a.degrees) ? direction::left : direction::right;
+                auto const a = Angle{n};
+                return (a.degrees() == 0 || 180 < a.degrees()) ? direction::left : direction::right;
         }
 };
 
@@ -106,8 +106,8 @@ class shift_size
 public:
         constexpr auto operator()(int const n) const
         {
-                auto const a = angle{n};
-                switch (a.degrees) {
+                auto const a = Angle{n};
+                switch (a.degrees()) {
                 case   0 : return right()     ;
                 case  45 : return right_up()  ;
                 case  90 : return up()        ;

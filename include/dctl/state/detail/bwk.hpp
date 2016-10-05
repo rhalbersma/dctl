@@ -89,7 +89,7 @@ public:
 
         auto pieces(none_type) const noexcept
         {
-                return mask::squares_v<board_type> ^ pieces(any_type{});
+                return board::mask::squares_v<board_type> ^ pieces(any_type{});
         }
 
 private:

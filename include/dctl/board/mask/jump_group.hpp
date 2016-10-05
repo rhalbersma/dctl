@@ -1,12 +1,13 @@
 #pragma once
 #include <dctl/board/detail/coordinates.hpp>    // to_llo
-#include <dctl/mask/detail/copy_if.hpp>         // copy_if
+#include <dctl/board/mask/detail/copy_if.hpp>   // copy_if
 #include <dctl/utility/type_traits.hpp>         // set_t, value_t
 #include <xstd/cstdlib.hpp>                     // euclidean_div
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 
 namespace dctl {
+namespace board {
 namespace mask {
 
 template<class Board>
@@ -61,4 +62,5 @@ constexpr value_t<jump_group<Board>>
 jump_group<Board>::value[];
 
 }       // namespace mask
+}       // namespace board
 }       // namespace dctl

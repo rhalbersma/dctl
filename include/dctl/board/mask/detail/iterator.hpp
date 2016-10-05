@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // angle, reverse
+#include <dctl/board/angle.hpp>                 // Angle, reverse
 #include <dctl/board/shift.hpp>                 // shift_assign, shift_sign, shift_size
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
@@ -7,6 +7,7 @@
 #include <iterator>                             // bidirectional_iterator_tag
 
 namespace dctl {
+namespace board {
 namespace mask {
 namespace detail {
 
@@ -17,7 +18,7 @@ class cursor
 > >
 {
         static constexpr auto sign_incr = board::shift_sign_v<Direction>;
-        static constexpr auto sign_decr = board::shift_sign_v<reverse(angle{Direction}).degrees>;
+        static constexpr auto sign_decr = board::shift_sign_v<reverse(Angle{Direction}).degrees()>;
         static constexpr auto stride    = board::shift_size_v<Board, Direction>;
         static_assert(stride != 0, "Cursors need a non-zero stride.");
 
@@ -78,4 +79,5 @@ auto make_iterator(Set const s)
 
 }       // namespace detail
 }       // namespace mask
+}       // namespace board
 }       // namespace dctl

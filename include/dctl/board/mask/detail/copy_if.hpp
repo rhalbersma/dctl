@@ -3,6 +3,7 @@
 #include <xstd/cstddef.hpp>             // _zu
 
 namespace dctl {
+namespace board {
 namespace mask {
 namespace detail {
 
@@ -20,4 +21,5 @@ constexpr auto copy_if(UnaryPredicate pred) noexcept
 
 }       // namespace detail
 }       // namespace mask
+}       // namespace board
 }       // namespace dctl
