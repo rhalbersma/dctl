@@ -82,15 +82,14 @@ struct shift_assign<direction::right, N>
 
 struct shift_sign
 {
-        constexpr auto operator()(int const n) const noexcept
+        constexpr auto operator()(Angle const a) const noexcept
         {
-                auto const a = Angle{n};
                 return (a == 0_deg || 180_deg < a) ? direction::left : direction::right;
         }
 };
 
 template<int Direction>
-constexpr auto shift_sign_v = shift_sign{}(Direction);
+constexpr auto shift_sign_v = shift_sign{}(Angle{Direction});
 
 template<class Board>
 class shift_size

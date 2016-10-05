@@ -21,7 +21,7 @@ class Detect<color_constant<Side>, pawn_type, select::push, Reverse, State>
         template<int Direction>
         using pawn_push_targets = board::mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, Color, Reverse>.degrees();
+        static constexpr auto orientation = board::bearing_v<board_type, color_type, Reverse>.degrees();
 public:
         auto operator()(State const& state) const noexcept
         {
