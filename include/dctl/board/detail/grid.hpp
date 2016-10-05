@@ -24,7 +24,7 @@ public:
 
         constexpr auto modulo() const noexcept { return width(); }
 
-        constexpr auto edge_le() const noexcept { return std::size_t{0};                                                         }
+        constexpr auto edge_le() const noexcept { return std::size_t{0};                                            }
         constexpr auto edge_re() const noexcept { return edge_le() + ((width() +  upper_left_is_square()) / 2 - 1); }
         constexpr auto edge_lo() const noexcept { return edge_re() + 1;                                             }
         constexpr auto edge_ro() const noexcept { return edge_lo() + ((width() + !upper_left_is_square()) / 2 - 1); }
@@ -60,7 +60,7 @@ public:
         constexpr auto edge_le() const noexcept { return inner_.edge_le(); }
         constexpr auto edge_re() const noexcept { return inner_.edge_re(); }
         constexpr auto edge_lo() const noexcept { return upper_left_is_square() ? right_down() : left_down(); }
-        constexpr auto edge_ro() const noexcept { return edge_lo() + (inner_.edge_ro() - inner_.edge_lo()); }
+        constexpr auto edge_ro() const noexcept { return edge_lo() + (inner_.edge_ro() - inner_.edge_lo());   }
 
         constexpr auto size() const noexcept { return modulo() * ((height() - 1) / 2) + ((height() % 2) ? edge_re() : edge_ro()) + 1; }
 

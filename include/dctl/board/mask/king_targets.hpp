@@ -35,7 +35,7 @@ class king_targets
 public:
         auto operator()(std::size_t const sq, Angle const alpha) const noexcept
         {
-                auto const segment = (alpha.degrees() - beta.degrees()) / theta.degrees();
+                auto const segment = (alpha - beta) / theta;
                 return value[segment][sq];
         }
 };
