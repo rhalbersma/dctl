@@ -5,8 +5,7 @@
 #include <type_traits>                  // common_type
 #include <vector>                       // vector
 
-namespace dctl {
-namespace group {
+using namespace dctl::board;
 
 BOOST_AUTO_TEST_SUITE(GroupCyclic)
 
@@ -45,12 +44,9 @@ BOOST_AUTO_TEST_CASE(GroupAxiomsAreRealizedOnCyclicGroups)
 
         BOOST_CHECK(
                 boost::algorithm::all_of(C_N, [](auto const& g){
-                        return axioms::is_realized(g);
+                        return group::axioms::is_realized(g);
                 })
         );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace group
-}       // namespace dctl

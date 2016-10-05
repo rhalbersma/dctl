@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/board/detail/coordinates.hpp>    // to_llo
-#include <dctl/color_piece.hpp>                       // black, white
-#include <dctl/mask/row.hpp>                    // row
+#include <dctl/board/mask/row.hpp>              // row
+#include <dctl/color_piece.hpp>                 // black, white
 #include <dctl/utility/fill_array.hpp>          // fill_array
 #include <dctl/utility/type_traits.hpp>         // set_t, value_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -10,6 +10,7 @@
 #include <cstddef>                              // size_t
 
 namespace dctl {
+namespace board {
 namespace mask {
 
 template<class Board>
@@ -54,4 +55,5 @@ constexpr value_t<initial<Board>>
 initial<Board>::value[];
 
 }       // namespace mask
+}       // namespace board
 }       // namespace dctl

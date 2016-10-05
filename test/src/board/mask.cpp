@@ -1,7 +1,7 @@
-#include <dctl/mask/column.hpp>                 // column
-#include <dctl/mask/jump_group.hpp>             // jump_group
-#include <dctl/mask/row.hpp>                    // row
-#include <dctl/mask/squares.hpp>                // squares
+#include <dctl/board/mask/column.hpp>           // column
+#include <dctl/board/mask/jump_group.hpp>       // jump_group
+#include <dctl/board/mask/row.hpp>              // row
+#include <dctl/board/mask/squares.hpp>          // squares
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsiretti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact_10_12, Compact_12_10, Rectangular<12, 10>, Canadian, SriLankan, Dumm
@@ -14,6 +14,7 @@
 #include <vector>
 
 namespace dctl {
+namespace board {
 namespace mask {
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
@@ -97,4 +98,5 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(jump_groupsEquivalencePartitionSquares, T, board::
 BOOST_AUTO_TEST_SUITE_END()
 
 }       // namespace mask
+}       // namespace board
 }       // namespace dctl

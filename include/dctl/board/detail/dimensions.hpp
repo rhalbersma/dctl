@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/board/angle.hpp> // angle
+#include <dctl/board/angle.hpp> // Angle
 #include <cstddef>              // size_t
 #include <stdexcept>            // invalid_argument
-#include <tuple>                // tie
+#include <tuple>                // make_tuple
 
 namespace dctl {
 namespace board {
@@ -15,14 +15,14 @@ struct dimensions
         bool const is_inverted;
 };
 
-constexpr auto tied(dimensions const dim) noexcept
+constexpr auto as_tuple(dimensions const dim) noexcept
 {
-        return std::tie(dim.width, dim.height, dim.is_inverted);
+        return std::make_tuple(dim.width, dim.height, dim.is_inverted);
 }
 
 constexpr auto operator==(dimensions const lhs, dimensions const rhs) noexcept
 {
-        return tied(lhs) == tied(rhs);
+        return as_tuple(lhs) == as_tuple(rhs);
 }
 
 constexpr auto operator!=(dimensions const lhs, dimensions const rhs) noexcept
@@ -60,10 +60,10 @@ constexpr auto lower_right_is_square(dimensions const dim) noexcept
         return width_parity(dim) ^ !lower_left_is_square(dim);
 }
 
-constexpr auto rotate(dimensions const dim, angle const a)
+constexpr auto rotate(dimensions const dim, Angle const a)
         -> dimensions
 {
-        switch (a.degrees) {
+        switch (a.degrees()) {
         case   0 : return dim;
         case  90 : return { dim.height, dim.width , !upper_left_is_square(dim) };
         case 180 : return { dim.width , dim.height, !upper_right_is_square(dim) };

@@ -3,6 +3,7 @@
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 
 namespace dctl {
+namespace board {
 namespace group {
 namespace action {
 
@@ -39,4 +40,5 @@ auto is_realized(Object const& obj, Group const& g) noexcept
 
 }       // namespace action
 }       // namespace group
+}       // namespace board
 }       // namespace dctl

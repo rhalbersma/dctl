@@ -3,7 +3,7 @@
 #include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
-#include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, _deg, rotate, inverse
+#include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
 #include <dctl/color_piece.hpp>                         // Color, color_constant, king_type
@@ -27,10 +27,10 @@ class Generate<color_constant<Side>, king_type, select::jump, Reverse, State, Bu
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
 
-        static constexpr auto orientation = bearing_v<board_type, color_type, Reverse>.degrees;
+        static constexpr auto orientation = board::bearing_v<board_type, color_type, Reverse>.degrees();
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(angle{orientation}));
+        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::Angle{orientation}));
 
         Builder& builder;
 public:
@@ -58,9 +58,9 @@ private:
                 builder.active_kings().for_each([this](auto const from_sq) {
                         raii::launch<Builder> guard{builder, from_sq};
                         if constexpr (is_orthogonal_jump_v<rules_type>) {
-                                directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(from_sq);
+                                directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left, board::left_down, board::down, board::right_down>(from_sq);
                         } else {
-                                directions_lfold<right_up, left_up, left_down, right_down>(from_sq);
+                                directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(from_sq);
                         }
                 });
         }
@@ -74,7 +74,7 @@ private:
         template<class Iterator>
         auto first_target(Iterator jumper) const
         {
-                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees>());
+                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
                 if (is_onboard(jumper) && builder.current_targets(jumper)) {
                         assert(is_onboard(std::next(jumper)));
                         capture(jumper);
@@ -162,7 +162,7 @@ private:
         template<class Iterator>
         auto scan(Iterator jumper) const
         {
-                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees>());
+                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
                 return is_en_prise(jumper);
         }
 

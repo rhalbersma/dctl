@@ -4,11 +4,11 @@
 #include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
 #include <dctl/actions/detail/generate_king_jump.hpp>   // promote_en_passant
 #include <dctl/actions/select/jump.hpp>                 // jumps
-#include <dctl/board/angle.hpp>                         // _deg, rotate, inverse
+#include <dctl/board/angle.hpp>                         // rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
+#include <dctl/board/mask/jump_sources.hpp>             // jump_sources
+#include <dctl/board/mask/promotion.hpp>                // is_promotion
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/mask/jump_sources.hpp>                   // jump_sources
-#include <dctl/mask/promotion.hpp>                      // is_promotion
 #include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_type, king_type
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
@@ -31,12 +31,12 @@ class Generate<color_constant<Side>, pawn_type, select::jump, Reverse, State, Bu
         using    set_type =    set_t<Builder>;
 
         template<int Direction>
-        using jump_sources = mask::jump_sources<board_type, Direction, short_ranged_tag>;
+        using jump_sources = board::mask::jump_sources<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = bearing_v<board_type, color_type, Reverse>.degrees;
+        static constexpr auto orientation = board::bearing_v<board_type, color_type, Reverse>.degrees();
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(angle{orientation}));
+        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::Angle{orientation}));
 
         Builder& builder;
 public:
@@ -61,16 +61,16 @@ private:
         auto directions() const
         {
                 if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<right_up, left_up>();
+                        return directions_lfold<board::right_up, board::left_up>();
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<right_up, left_up, left_down, right_down>();
+                        return directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>();
                 }
                 if constexpr (!is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<right, right_up, up, left_up, left>();
+                        return directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left>();
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>();
+                        return directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left, board::left_down, board::down, board::right_down>();
                 }
         }
 
@@ -181,7 +181,7 @@ private:
         {
                 if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
                         static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                        return scan(board::ray::mirror<up<orientation>{}>(jumper));
+                        return scan(board::ray::mirror<board::up<orientation>{}>(jumper));
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
                         static_assert(is_diagonal(direction_v<Iterator>));
@@ -190,20 +190,20 @@ private:
                 if constexpr (!is_backward_pawn_jump_v<rules_type> &&  is_orthogonal_jump_v<rules_type>) {
                         static_assert(!is_down(direction_v<Iterator>));
 
-                        if constexpr (direction_v<Iterator> == right<orientation>{}) {
-                                return turn_directions_lfold<right_up, up, left_up>(jumper);
+                        if constexpr (direction_v<Iterator> == board::right<orientation>{}) {
+                                return turn_directions_lfold<board::right_up, board::up, board::left_up>(jumper);
                         }
-                        if constexpr (direction_v<Iterator> == right_up<orientation>{}) {
-                                return turn_directions_lfold<right, up, left_up, left>(jumper);
+                        if constexpr (direction_v<Iterator> == board::right_up<orientation>{}) {
+                                return turn_directions_lfold<board::right, board::up, board::left_up, board::left>(jumper);
                         }
-                        if constexpr (direction_v<Iterator> == up<orientation>{}) {
-                                return turn_directions_lfold<right, right_up, left_up, left>(jumper);
+                        if constexpr (direction_v<Iterator> == board::up<orientation>{}) {
+                                return turn_directions_lfold<board::right, board::right_up, board::left_up, board::left>(jumper);
                         }
-                        if constexpr (direction_v<Iterator> == left_up<orientation>{}) {
-                                return turn_directions_lfold<right, right_up, up, left>(jumper);
+                        if constexpr (direction_v<Iterator> == board::left_up<orientation>{}) {
+                                return turn_directions_lfold<board::right, board::right_up, board::up, board::left>(jumper);
                         }
-                        if constexpr (direction_v<Iterator> == left<orientation>{}) {
-                                return turn_directions_lfold<right_up, up, left_up>(jumper);
+                        if constexpr (direction_v<Iterator> == board::left<orientation>{}) {
+                                return turn_directions_lfold<board::right_up, board::up, board::left_up>(jumper);
                         }
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> &&  is_orthogonal_jump_v<rules_type>) {
@@ -253,7 +253,7 @@ private:
 
         auto is_promotion(std::size_t const sq) const // Throws: Nothing.
         {
-                return mask::promotion_v<board_type, color_type>.test(sq);
+                return board::mask::promotion_v<board_type, color_type>.test(sq);
         }
 };
 

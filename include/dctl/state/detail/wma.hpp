@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/board/mask/squares.hpp>  // squares
 #include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
 #include <dctl/utility/type_traits.hpp> // set_t
 
@@ -120,7 +121,7 @@ public:
 
         auto pieces(none_type) const noexcept
         {
-                return mask::squares_v<board_type> ^ any_;
+                return board::mask::squares_v<board_type> ^ any_;
         }
 };
 

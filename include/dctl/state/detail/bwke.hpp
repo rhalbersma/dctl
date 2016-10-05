@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/board/mask/squares.hpp>  // squares
 #include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
@@ -27,7 +28,7 @@ public:
         :
                 color_{b, w},
                 kings_{k},
-                none_{mask::squares_v<board_type> ^ (b | w)}
+                none_{board::mask::squares_v<board_type> ^ (b | w)}
         {}
 
         template<class Action>
@@ -85,7 +86,7 @@ public:
 
         auto pieces(any_type) const noexcept
         {
-                return mask::squares_v<board_type> ^ none_;
+                return board::mask::squares_v<board_type> ^ none_;
         }
 
         auto pieces(none_type) const noexcept

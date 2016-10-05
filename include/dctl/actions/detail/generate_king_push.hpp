@@ -4,7 +4,7 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator
-#include <dctl/mask/push_targets.hpp>                   // push_targets
+#include <dctl/board/mask/push_targets.hpp>             // push_targets
 #include <dctl/color_piece.hpp>                         // Color, color_constant, king_type
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t, value_t
@@ -25,9 +25,9 @@ class Generate<color_constant<Side>, king_type, select::push, Reverse, State, Se
         using    set_type =   set_t<State>;
 
         template<int Direction>
-        using push_targets = mask::push_targets<board_type, Direction, short_ranged_tag>;
+        using push_targets = board::mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = bearing_v<board_type, color_type, Reverse>.degrees;
+        static constexpr auto orientation = board::bearing_v<board_type, color_type, Reverse>.degrees();
         SequenceContainer& actions;
 public:
         explicit Generate(SequenceContainer& a) noexcept
@@ -40,11 +40,11 @@ public:
                 auto const generator = state.pieces(color_type{}, piece_type{});
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         generator.for_each([&, this](auto const& from_sq){
-                                ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, state.pieces(none_type{}));
+                                ray_directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(from_sq, state.pieces(none_type{}));
                         });
                 } else {
                         if (generator.any()) {
-                                wave_directions_lfold<right_up, left_up, left_down, right_down>(generator, state.pieces(none_type{}));
+                                wave_directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(generator, state.pieces(none_type{}));
                         }
                 }
         }

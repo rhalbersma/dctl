@@ -4,7 +4,7 @@
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/mask/jump_targets.hpp>                   // jump_targets
+#include <dctl/board/mask/jump_targets.hpp>             // jump_targets
 #include <dctl/color_piece.hpp>                         // Color, color_constant, king_type
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_long_ranged_king_t
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t
@@ -22,9 +22,9 @@ class Detect<color_constant<Side>, king_type, select::jump, Reverse, State>
         using   set_type =   set_t<State>;
 
         template<int Direction>
-        using jump_targets = mask::jump_targets<board_type, Direction, king_range_category_t<rules_type>>;
+        using jump_targets = board::mask::jump_targets<board_type, Direction, king_range_category_t<rules_type>>;
 
-        static constexpr auto orientation = bearing_v<board_type, color_type, Reverse>.degrees;
+        static constexpr auto orientation = board::bearing_v<board_type, color_type, Reverse>.degrees();
 public:
         auto operator()(State const& state) const noexcept
         {
@@ -37,11 +37,11 @@ private:
         auto directions(set_type const sources, set_type const king_targets, set_type const not_occupied) const noexcept
         {
                 if constexpr (is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(
+                        return directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left, board::left_down, board::down, board::right_down>(
                                 sources, king_targets, not_occupied
                         );
                 } else {
-                        return directions_lfold<right_up, left_up, left_down, right_down>(
+                        return directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(
                                 sources, king_targets, not_occupied
                         );
                 }

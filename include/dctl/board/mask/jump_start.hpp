@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
+#include <dctl/board/angle.hpp>                 // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/detail/coordinates.hpp>    // to_ulo
-#include <dctl/mask/detail/copy_if.hpp>         // copy_if
+#include <dctl/board/mask/detail/copy_if.hpp>   // copy_if
 #include <dctl/utility/fill_array.hpp>          // fill_array
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/cstddef.hpp>                     // _zu
@@ -10,6 +10,7 @@
 #include <cstddef>                              // size_t
 
 namespace dctl {
+namespace board {
 namespace mask {
 
 template<class Board>
@@ -19,7 +20,7 @@ class jump_start
         {
                 struct is_jump_start
                 {
-                        std::size_t const segment_;
+                        int const segment_;
 
                         // simulate a constexpr lambda (allowed in C++17)
                         constexpr auto operator()(std::size_t const sq) const noexcept
@@ -40,34 +41,34 @@ class jump_start
                 };
 
                 // simulate a constexpr lambda (allowed in C++17)
-                constexpr auto operator()(std::size_t const segment) const
+                constexpr auto operator()(int const segment) const
                 {
                         return detail::copy_if<Board>(is_jump_start{segment});
                 }
         };
 
-        static constexpr angle theta = Board::is_orthogonal_jump ? 45_deg : 90_deg;
-        static constexpr angle beta  = Board::is_orthogonal_jump ?  0_deg : 45_deg;
+        static constexpr Angle theta = Board::is_orthogonal_jump ? 45_deg : 90_deg;
+        static constexpr Angle beta  = Board::is_orthogonal_jump ?  0_deg : 45_deg;
         static constexpr auto N      = Board::is_orthogonal_jump ?      8 :      4;
         using value_type = std::array<set_t<Board>, N>;
 
         static constexpr value_type value = fill_array<N>(init{});
 
 public:
-        constexpr auto operator()(angle const alpha) const noexcept
+        constexpr auto operator()(Angle const alpha) const noexcept
         {
-                auto const segment = static_cast<std::size_t>((alpha.degrees - beta.degrees) / theta.degrees);
+                auto const segment = static_cast<std::size_t>((alpha.degrees() - beta.degrees()) / theta.degrees());
                 assert(segment < N);
                 return value[segment];
         }
 };
 
 template<class Board>
-constexpr angle
+constexpr Angle
 jump_start<Board>::theta;
 
 template<class Board>
-constexpr angle
+constexpr Angle
 jump_start<Board>::beta;
 
 template<class Board>
@@ -75,4 +76,5 @@ constexpr value_t<jump_start<Board>>
 jump_start<Board>::value;
 
 }       // namespace mask
+}       // namespace board
 }       // namespace dctl

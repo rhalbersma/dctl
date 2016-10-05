@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // angle, is_orthogonal
+#include <dctl/board/angle.hpp>                 // Angle, is_orthogonal
+#include <dctl/board/mask/push_sources.hpp>
+#include <dctl/board/mask/jump_start.hpp>       // jump_start
 #include <dctl/board/ray.hpp>
-#include <dctl/mask/push_sources.hpp>
-#include <dctl/mask/jump_start.hpp>             // jump_start
 #include <dctl/color_piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t, value_t
@@ -37,7 +37,7 @@ private:
         action_type candidate_action{};
 
         template<int Direction>
-        using push_sources = mask::push_sources<board_type, Direction, short_ranged_tag>;
+        using push_sources = board::mask::push_sources<board_type, Direction, short_ranged_tag>;
 
 public:
         explicit Builder(State const& s, SequenceContainer& a)
@@ -115,7 +115,7 @@ public:
         template<class Iterator>
         auto current_targets(Iterator it) const
         {
-                return current_targets<board::ray::direction_v<Iterator>.degrees>().test(*it);
+                return current_targets<board::ray::direction_v<Iterator>.degrees()>().test(*it);
         }
 
         template<int Direction>
@@ -137,7 +137,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                auto constexpr jump_start = mask::jump_start<board_type>{}(angle{Direction});
+                auto constexpr jump_start = board::mask::jump_start<board_type>{}(board::Angle{Direction});
                 return pieces(none_type{}) & jump_start;
         }
 

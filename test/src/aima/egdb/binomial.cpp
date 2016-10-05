@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(CoefficientsAreSymmetric)
                         BOOST_CHECK_EQUAL(Binomial::coefficient(n, k), Binomial::coefficient(n, n - k));
 }
 
-BOOST_AUTO_TEST_CASE(CoefficientsSatisfyPascalTriangle)
+BOOST_AUTO_TEST_CASE(CoefficientsSatisfyPascalTriAngle)
 {
         auto constexpr N = 60;
         auto constexpr K = (N + 1) / 2;
