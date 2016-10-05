@@ -57,7 +57,7 @@ class jump_start
 public:
         constexpr auto operator()(Angle const alpha) const noexcept
         {
-                auto const segment = static_cast<std::size_t>((alpha.degrees() - beta.degrees()) / theta.degrees());
+                auto const segment = static_cast<std::size_t>((alpha - beta) / theta);
                 assert(segment < N);
                 return value[segment];
         }

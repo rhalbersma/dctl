@@ -1,7 +1,7 @@
 #pragma once
-#include <cassert>                      // assert
-#include <chrono>                       // duration_cast, high_resolution_clock, milliseconds
-#include <vector>                       // vector
+#include <cassert>      // assert
+#include <chrono>       // duration_cast, steady_clock, milliseconds
+#include <vector>       // vector
 
 namespace dctl {
 namespace util {
@@ -9,7 +9,7 @@ namespace util {
 class Stopwatch
 {
         using units = std::chrono::milliseconds;
-        using clock = std::chrono::high_resolution_clock;
+        using clock = std::chrono::steady_clock;
 
         std::vector<clock::time_point> splits;
         bool is_running = false;

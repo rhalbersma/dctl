@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseAngleSymmetryForAllDirections, T, BoardSequ
 
         BOOST_CHECK(
                 boost::algorithm::all_of(directions, [](auto dir) {
-                        return shift_size<T>{}(dir.degrees()) == shift_size<T>{}(reverse(dir).degrees());
+                        return shift_size<T>{}(dir) == shift_size<T>{}(reverse(dir));
                 })
         );
 }

@@ -61,9 +61,29 @@ constexpr auto operator==(Angle const a, Angle const b) noexcept
         return a.degrees() == b.degrees();
 }
 
+constexpr auto operator<(Angle const a, Angle const b) noexcept
+{
+        return a.degrees() < b.degrees();
+}
+
 constexpr auto operator!=(Angle const a, Angle const b) noexcept
 {
         return !(a == b);
+}
+
+constexpr auto operator>(Angle const a, Angle const b) noexcept
+{
+        return b < a;
+}
+
+constexpr auto operator>=(Angle const a, Angle const b) noexcept
+{
+        return !(a < b);
+}
+
+constexpr auto operator<=(Angle const a, Angle const b) noexcept
+{
+        return !(b < a);
 }
 
 constexpr auto operator+(Angle const a) noexcept
@@ -94,6 +114,24 @@ constexpr auto operator*(Angle const a, int const n) noexcept
 constexpr auto operator*(int const n, Angle const a) noexcept
 {
         return Angle{n * a.degrees()};
+}
+
+constexpr auto operator/(Angle const a, Angle const b) noexcept // Throws: Nothing.
+{
+        assert(b.degrees() != 0);
+        return a.degrees() / b.degrees();
+}
+
+constexpr auto operator/(Angle const a, int const n) noexcept // Throws: Nothing.
+{
+        assert(n != 0);
+        return Angle{a.degrees() / n};
+}
+
+constexpr auto operator%(Angle const a, Angle const b) noexcept // Throws: Nothing.
+{
+        assert(b.degrees() != 0);
+        return Angle{a.degrees() % b.degrees()};
 }
 
 constexpr auto inverse(Angle const a) noexcept
@@ -133,46 +171,49 @@ constexpr auto mirror(Angle const a, Angle const b) noexcept
 
 */
 
-template<int N>
-using Angle_constant = std::integral_constant<int, Angle{N}.degrees()>;
+namespace detail {
 
-template<int N> using right      = Angle_constant<N +   0>;
-template<int N> using right_up   = Angle_constant<N +  45>;
-template<int N> using up         = Angle_constant<N +  90>;
-template<int N> using left_up    = Angle_constant<N + 135>;
-template<int N> using left       = Angle_constant<N + 180>;
-template<int N> using left_down  = Angle_constant<N + 225>;
-template<int N> using down       = Angle_constant<N + 270>;
-template<int N> using right_down = Angle_constant<N + 315>;
+template<int N> using angle_constant = std::integral_constant<int, Angle{N}.degrees()>;
+
+}       // namespace detail
+
+template<int N> using right      = detail::angle_constant<N +   0>;
+template<int N> using right_up   = detail::angle_constant<N +  45>;
+template<int N> using up         = detail::angle_constant<N +  90>;
+template<int N> using left_up    = detail::angle_constant<N + 135>;
+template<int N> using left       = detail::angle_constant<N + 180>;
+template<int N> using left_down  = detail::angle_constant<N + 225>;
+template<int N> using down       = detail::angle_constant<N + 270>;
+template<int N> using right_down = detail::angle_constant<N + 315>;
 
 constexpr auto is_orthogonal(Angle const a) noexcept
 {
-        return a.degrees() % 90 == 0;
+        return a % 90_deg == 0_deg;
 }
 
 constexpr auto is_diagonal(Angle const a) noexcept
 {
-        return a.degrees() % 90 == 45;
+        return a % 90_deg == 45_deg;
 }
 
 constexpr auto is_up(Angle const a) noexcept
 {
-        return 0 < a.degrees() && a.degrees() < 180;
+        return 0_deg < a && a < 180_deg;
 }
 
 constexpr auto is_down(Angle const a) noexcept
 {
-        return 180 < a.degrees();
+        return 180_deg < a;
 }
 
 constexpr auto is_left(Angle const a) noexcept
 {
-        return 90 < a.degrees() && a.degrees() < 270;
+        return 90_deg < a && a < 270_deg;
 }
 
 constexpr auto is_right(Angle const a) noexcept
 {
-        return 270 < a.degrees() || a.degrees() < 90;
+        return 270_deg < a || a < 90_deg;
 }
 
 }       // namespace board
