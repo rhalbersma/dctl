@@ -19,7 +19,6 @@ class Generate<color_constant<Side>, pawn_type, select::push, Reverse, State, Se
 {
         using  color_type = color_constant<Side>;
         using  piece_type = pawn_type;
-        using action_type = value_t<SequenceContainer>;
         using  board_type = board_t<State>;
         using    set_type =   set_t<State>;
 

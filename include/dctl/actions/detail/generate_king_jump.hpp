@@ -22,7 +22,6 @@ class Generate<color_constant<Side>, king_type, select::jump, Reverse, State, Bu
 {
         using  color_type = color_constant<Side>;
         using  piece_type = king_type;
-        using action_type = action_t<Builder>;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;

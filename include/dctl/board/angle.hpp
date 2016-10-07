@@ -173,18 +173,18 @@ constexpr auto mirror(Angle const a, Angle const b) noexcept
 
 namespace detail {
 
-template<int N> using angle_constant = std::integral_constant<int, Angle{N}.degrees()>;
+template<int N> using angle_holder = std::integral_constant<int, Angle{N}.degrees()>;
 
 }       // namespace detail
 
-template<int N> using right      = detail::angle_constant<N +   0>;
-template<int N> using right_up   = detail::angle_constant<N +  45>;
-template<int N> using up         = detail::angle_constant<N +  90>;
-template<int N> using left_up    = detail::angle_constant<N + 135>;
-template<int N> using left       = detail::angle_constant<N + 180>;
-template<int N> using left_down  = detail::angle_constant<N + 225>;
-template<int N> using down       = detail::angle_constant<N + 270>;
-template<int N> using right_down = detail::angle_constant<N + 315>;
+template<int N> using right      = detail::angle_holder<N +   0>;
+template<int N> using right_up   = detail::angle_holder<N +  45>;
+template<int N> using up         = detail::angle_holder<N +  90>;
+template<int N> using left_up    = detail::angle_holder<N + 135>;
+template<int N> using left       = detail::angle_holder<N + 180>;
+template<int N> using left_down  = detail::angle_holder<N + 225>;
+template<int N> using down       = detail::angle_holder<N + 270>;
+template<int N> using right_down = detail::angle_holder<N + 315>;
 
 constexpr auto is_orthogonal(Angle const a) noexcept
 {
