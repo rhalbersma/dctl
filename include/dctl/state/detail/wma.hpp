@@ -61,11 +61,6 @@ public:
                 return *this;
         }
 
-        auto pieces(Color const c) const noexcept
-        {
-                return c == Color::black ? pieces(black_type{}) : pieces(white_type{});
-        }
-
         template<Color Side>
         auto pieces(color_constant<Side>) const noexcept
         {
@@ -73,9 +68,9 @@ public:
                 if constexpr (Side == Color::white) { return white_;        }
         }
 
-        auto pieces(Piece const p) const noexcept
+        auto pieces(Color const c) const noexcept
         {
-                return p == Piece::pawn ? pieces(pawn_type{}) : pieces(king_type{});
+                return c == Color::black ? pieces(black_type{}) : pieces(white_type{});
         }
 
         template<Piece Type>
@@ -85,12 +80,18 @@ public:
                 if constexpr (Type == Piece::king) { return pawns_ ^ any_; }
         }
 
-        auto pieces(Color const c, Piece const p) const noexcept
+        auto pieces(Piece const p) const noexcept
         {
-                return c == Color::black ?
-                        (p == Piece::pawn ?  pieces(black_type{}, pawn_type{}) : pieces(black_type{}, king_type{})) :
-                        (p == Piece::pawn ?  pieces(white_type{}, pawn_type{}) : pieces(white_type{}, king_type{}))
-                ;
+                return p == Piece::pawn ? pieces(pawn_type{}) : pieces(king_type{});
+        }
+
+        template<Color Side, Piece Type>
+        auto pieces(color_constant<Side>, piece_constant<Type>) const noexcept
+        {
+                if constexpr (Side == Color::black && Type == Piece::pawn) { return ~white_ &  pawns_;         }
+                if constexpr (Side == Color::black && Type == Piece::king) { return (white_ |  pawns_) ^ any_; }
+                if constexpr (Side == Color::white && Type == Piece::pawn) { return  white_ &  pawns_;         }
+                if constexpr (Side == Color::white && Type == Piece::king) { return  white_ & ~pawns_;         }
         }
 
         template<Piece Type>
@@ -105,13 +106,12 @@ public:
                 return p == Piece::pawn ? pieces(c, pawn_type{}) : pieces(c, king_type{});
         }
 
-        template<Color Side, Piece Type>
-        auto pieces(color_constant<Side>, piece_constant<Type>) const noexcept
+        auto pieces(Color const c, Piece const p) const noexcept
         {
-                if constexpr (Side == Color::black && Type == Piece::pawn) { return ~white_ &  pawns_;         }
-                if constexpr (Side == Color::black && Type == Piece::king) { return (white_ |  pawns_) ^ any_; }
-                if constexpr (Side == Color::white && Type == Piece::pawn) { return  white_ &  pawns_;         }
-                if constexpr (Side == Color::white && Type == Piece::king) { return  white_ & ~pawns_;         }
+                return pieces(
+                        c == Color::black ? black_type{} : white_type{},
+                        p == Piece::pawn  ?  pawn_type{} :  king_type{}
+                );
         }
 
         auto pieces(any_type) const noexcept
