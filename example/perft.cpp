@@ -8,12 +8,12 @@ int main(int argc, char* argv[])
         namespace po = boost::program_options;
 
         try {
-                po::options_description desc(
+                po::options_description man(
                         "NAME                                                                            \n\t"
-                                "perft, divide - performance test for search tree traversal              \n\n\t"
+                                "perft, divide - performance test for search tree traversal              \n\n"
 
-                        "SYNOPSIS                                                                        \n"
-                                "perft [OPTIONS]... POSITION                                             \n\n\t"
+                        "SYNOPSIS                                                                        \n\t"
+                                "perft [OPTIONS] <POSITION>                                              \n\n"
 
                         "DESCRIPTION                                                                     \n\t"
                                 "perft traverses a search tree from a given position to a limited depth. \n\t"
@@ -28,43 +28,39 @@ int main(int argc, char* argv[])
 
                         "OPTIONS"
                 );
-                desc.add_options()
-                        ("help", "\nproduce help message")
-                        ("depth,d"  , po::value<int>()                       , "\nThe depth to traverse the tree from the starting position.")
-                        ("FEN,F"    , po::value<std::string>()               , "\nThe position to traverse.")
-                        ("unique,u" , po::bool_switch()->default_value(false), "\nOnly keep unique moves during move generation.")
-                        ("verbose,v", po::bool_switch()->default_value(false), "\nGive debugging information.")
-                        ("bulk,b"   , po::bool_switch()->default_value(false), "\nInstead of counting nodes at \"depth 0\", return the number of moves generated at \"depth 1\".")
-                        ("hash,h"   , po::bool_switch()->default_value(false), "\nUse hashing to reduce the tree size.")
+
+                po::options_description gen("General options");
+                gen.add_options()
+                        ("help", "\nOutput a usage message and exit.")
+                        ("depth,d"   , po::value<int>()        ->value_name("DEPTH")   , "\nThe depth to traverse the tree from the starting position.")
+                        ("position,p", po::value<std::string>()->value_name("[format_options] POSITION"), "\nThe position to traverse.")
+                        ("unique,u"  , po::bool_switch()->default_value(false), "\nOnly keep unique moves during move generation.")
+                        ("verbose,v" , po::bool_switch()->default_value(false), "\nGive debugging information.")
                 ;
 
+                po::options_description opt("Optimization options");
+                opt.add_options()
+                        ("bulk,b", po::bool_switch()->default_value(false), "\nInstead of counting nodes at \"depth 0\", return the number of moves generated at \"depth 1\".")
+                        ("hash,h", po::value<int>()->value_name("SIZE"), "\nUse a hash table of SIZE megabytes to reduce the tree.")
+                ;
+
+                man.add(gen).add(opt);
+
                 po::positional_options_description p;
-                p.add("FEN", 1);
+                p.add("position", 1);
 
                 po::variables_map vm;
-                po::store(po::command_line_parser(argc, argv).
-                          options(desc).positional(p).run(), vm);
+                po::store(po::command_line_parser(argc, argv)
+                        .options(man)
+                        .positional(p)
+                        .run(),
+                        vm
+                );
                 po::notify(vm);
 
                 if (vm.count("help")) {
-                        std::cout << desc << "\n";
+                        std::cout << man << "\n";
                         return 0;
-                }
-
-                if (vm.count("depth")) {
-                        std::cout << "Depth level was set to "
-                         << vm["depth"].as<int>() << ".\n";
-                } else {
-                        std::cout << argv[0] << ": missing depth operand.\n";
-                        std::cout << "Try '"<< argv[0] << " --help' for more information.\n";
-                }
-
-                if (vm.count("FEN")) {
-                        std::cout << "Position to traverse is "
-                         << vm["FEN"].as<std::string>() << ".\n";
-                } else {
-                        std::cout << argv[0] << ": missing position operand.\n";
-                        std::cout << "Try '"<< argv[0] << " --help' for more information.\n";
                 }
         }
 
