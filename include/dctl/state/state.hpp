@@ -63,17 +63,17 @@ private:
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(board::mask::squares_v<board_type> == (pieces() | pieces(none_type{})));
+                assert(board::mask::squares_v<board_type> == (pieces(any_type{}) | pieces(none_type{})));
 
-                assert(pieces() == (pieces(black_type{}) | pieces(white_type{})));
-                assert(pieces() == (pieces( pawn_type{}) | pieces( king_type{})));
+                assert(pieces(any_type{}) == (pieces(black_type{}) | pieces(white_type{})));
+                assert(pieces(any_type{}) == (pieces( pawn_type{}) | pieces( king_type{})));
 
                 assert(pieces(black_type{}) == (pieces(black_type{}, pawn_type{}) | pieces(black_type{}, king_type{})));
                 assert(pieces(white_type{}) == (pieces(white_type{}, pawn_type{}) | pieces(white_type{}, king_type{})));
                 assert(pieces( pawn_type{}) == (pieces(black_type{}, pawn_type{}) | pieces(white_type{}, pawn_type{})));
                 assert(pieces( king_type{}) == (pieces(black_type{}, king_type{}) | pieces(white_type{}, king_type{})));
 
-                assert(xstd::disjoint(pieces(), pieces(none_type{})));
+                assert(xstd::disjoint(pieces(any_type{}), pieces(none_type{})));
 
                 assert(xstd::disjoint(pieces(black_type{}), pieces(white_type{})));
                 assert(xstd::disjoint(pieces( pawn_type{}), pieces( king_type{})));
