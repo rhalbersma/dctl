@@ -25,7 +25,7 @@ class Angle
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(0 <= degrees()); assert(degrees() < 360);
+                assert(0 <= degrees_); assert(degrees_ < 360);
         }
 
         int degrees_;
