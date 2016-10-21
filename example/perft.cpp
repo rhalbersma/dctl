@@ -7,70 +7,97 @@ int main(int argc, char* argv[])
 {
         namespace po = boost::program_options;
 
+        bool flag_bulk = false, flag_unique = false, flag_verbose = false;
+
         try {
-                po::options_description man(
-                        "NAME                                                                            \n\t"
-                                "perft, divide - performance test for search tree traversal              \n\n"
-
-                        "SYNOPSIS                                                                        \n\t"
-                                "perft [OPTIONS] <POSITION>                                              \n\n"
-
-                        "DESCRIPTION                                                                     \n\t"
-                                "perft traverses a search tree from a given position to a limited depth. \n\t"
-                                "Only nodes at depth = 0 are counted; positions without legal moves at   \n\t"
-                                "higher depths are ignored. perft also ignores draws by repetition, no   \n\t"
-                                "progress or insufficient material. perft iterates over depth, and by    \n\t"
-                                "recording the time for each iteration, the performance of different     \n\t"
-                                "move generators can be compared.                                        \n\n\t"
-
-                                "In addition, the variant program divide lists all legal moves in a given\n\t"
-                                "position, and, for each move, calls perft with parameter depth - 1      \n\n"
-
-                        "OPTIONS"
-                );
-
-                po::options_description gen("General options");
-                gen.add_options()
-                        ("help", "\nOutput a usage message and exit.")
-                        ("depth,d"   , po::value<int>()        ->value_name("DEPTH")   , "\nThe depth to traverse the tree from the starting position.")
-                        ("position,p", po::value<std::string>()->value_name("[format_options] POSITION"), "\nThe position to traverse.")
-                        ("unique,u"  , po::bool_switch()->default_value(false), "\nOnly keep unique moves during move generation.")
-                        ("verbose,v" , po::bool_switch()->default_value(false), "\nGive debugging information.")
+                std::string const usage =
+                        "Usage: perft [OPTIONS...] [POSITION] <DEPTH>                                    \n"
+                        "Performance test for search graph traversal for draughts and checkers variants. \n\n"
                 ;
 
-                po::options_description opt("Optimization options");
-                opt.add_options()
-                        ("bulk,b", po::bool_switch()->default_value(false), "\nInstead of counting nodes at \"depth 0\", return the number of moves generated at \"depth 1\".")
-                        ("hash,h", po::value<int>()->value_name("SIZE"), "\nUse a hash table of SIZE megabytes to reduce the tree.")
+                std::string const synopsis =
+                        "Traverses a search graph from a given starting position and counts the number of\n"
+                        "successor paths at a limited depth. Only positions at remaining \"depth 0\" are \n"
+                        "counted. Positions without legal moves at higher remaining depths are ignored.  \n"
+                        "Draws by repetition, insufficient material or no progress are also ignored.     \n"
+                        "Iteration is over depth limit. Output per iteration is the number of successor  \n"
+                        "paths at the depth limit and the elapsed time for that iteration. This enables  \n"
+                        "both correctness and efficiency comparisons for different legal move generators.\n\n"
                 ;
 
-                man.add(gen).add(opt);
+                std::string const version =
+                        "perft (DCTL perft) 0.1                                                         \n"
+                        "Copyright (C) 2016 Rein Halbersma.                                             \n"
+                        "License: Boost Software License v1.0 <http://www.boost.org/users/license.html>.\n"
+                        "This is free software: you are free to change and redistribute it.             \n"
+                        "There is NO WARRANTY, to the extent permitted by law.                          \n\n"
 
-                po::positional_options_description p;
-                p.add("position", 1);
+                        "Written by Rein Halbersma, see <https://bitbucket.org/rhalbersma/dctl>."
+                ;
+
+                po::options_description options("Options");
+                options.add_options()
+                        ("bulk,b",    po::bool_switch(&flag_bulk), "Instead of counting nodes at \"depth 0\", return the number of moves generated at \"depth 1\".")
+                        ("hash,h",    po::value<int>()->value_name("SIZE"),    "Use a hash table of SIZE megabytes to reduce the tree.")
+                        ("unique,u",  po::bool_switch(&flag_unique), "Only keep unique moves during move generation.")
+                        ("verbose,v", po::bool_switch(&flag_verbose), "Give debugging information.")
+                ;
+
+                po::options_description operands("Operands");
+                operands.add_options()
+                        ("position,p", po::value<std::string>()->value_name("POSITION"), "The position to traverse.")
+                        ("depth,d"   , po::value<int>()        ->value_name("DEPTH")   , "The depth to traverse the tree from the starting position.")
+                ;
+                po::positional_options_description positional;
+                positional.add("p", 1);
+                positional.add("d", 2);
+
+                po::options_description standard("Standard options");
+                standard.add_options()
+                        ("help",    "Display this help text and exit.")
+                        ("version", "Display version information and exit.")
+                ;
+
+                options.add(operands).add(standard);
 
                 po::variables_map vm;
                 po::store(po::command_line_parser(argc, argv)
-                        .options(man)
-                        .positional(p)
+                        .options(options)
+                        .positional(positional)
                         .run(),
                         vm
                 );
                 po::notify(vm);
 
                 if (vm.count("help")) {
-                        std::cout << man << "\n";
+                        std::cout << usage << options << '\n' << synopsis << '\n';
                         return 0;
+                }
+                if (vm.count("version")) {
+                        std::cout << version << '\n';
+                        return 0;
+                }
+                if (flag_bulk) {
+                        std::cout << "bulk-counting at \"depth 1\"" << '\n';
+                }
+                if (vm.count("hash")) {
+                        std::cout << "using hashing" << '\n';
+                }
+                if (flag_unique) {
+                        std::cout << "unique successors" << '\n';
+                }
+                if (flag_verbose) {
+                        std::cout << "verbose output" << '\n';
                 }
         }
 
         catch(std::exception& e) {
-                std::cerr << "error: " << e.what() << "\n";
+                std::cerr << "error: " << e.what() << '\n';
                 return 1;
         }
         catch(...) {
                 std::cerr << "Exception of unknown type!\n";
         }
 
-        /* call perft code here, supplying parameters from <vm> variable */
+        std::cout << "call perft code here, supplying parameters from <vm> variable\n";
 }
