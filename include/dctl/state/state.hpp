@@ -58,33 +58,33 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        PlayerToMove player_to_move_{};
+        PlayerToMove player_to_move_;
         detail::wma::BaseState<board_type> placement_{};
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(board::mask::squares_v<board_type> == (pieces(any_type{}) | pieces(none_type{})));
+                assert(board::mask::squares_v<board_type> == (pieces(all_c) | pieces(none_c)));
 
-                assert(pieces(any_type{}) == (pieces(black_type{}) | pieces(white_type{})));
-                assert(pieces(any_type{}) == (pieces( pawn_type{}) | pieces( king_type{})));
+                assert(pieces(all_c) == (pieces(black_c) | pieces(white_c)));
+                assert(pieces(all_c) == (pieces( pawn_c) | pieces( king_c)));
 
-                assert(pieces(black_type{}) == (pieces(black_type{}, pawn_type{}) | pieces(black_type{}, king_type{})));
-                assert(pieces(white_type{}) == (pieces(white_type{}, pawn_type{}) | pieces(white_type{}, king_type{})));
-                assert(pieces( pawn_type{}) == (pieces(black_type{}, pawn_type{}) | pieces(white_type{}, pawn_type{})));
-                assert(pieces( king_type{}) == (pieces(black_type{}, king_type{}) | pieces(white_type{}, king_type{})));
+                assert(pieces(black_c) == (pieces(black_c, pawn_c) | pieces(black_c, king_c)));
+                assert(pieces(white_c) == (pieces(white_c, pawn_c) | pieces(white_c, king_c)));
+                assert(pieces( pawn_c) == (pieces(black_c, pawn_c) | pieces(white_c, pawn_c)));
+                assert(pieces( king_c) == (pieces(black_c, king_c) | pieces(white_c, king_c)));
 
-                assert(xstd::disjoint(pieces(any_type{}), pieces(none_type{})));
+                assert(xstd::disjoint(pieces(all_c), pieces(none_c)));
 
-                assert(xstd::disjoint(pieces(black_type{}), pieces(white_type{})));
-                assert(xstd::disjoint(pieces( pawn_type{}), pieces( king_type{})));
+                assert(xstd::disjoint(pieces(black_c), pieces(white_c)));
+                assert(xstd::disjoint(pieces( pawn_c), pieces( king_c)));
 
-                assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), pieces(black_type{}, king_type{})));
-                assert(xstd::disjoint(pieces(white_type{}, pawn_type{}), pieces(white_type{}, king_type{})));
-                assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), pieces(white_type{}, pawn_type{})));
-                assert(xstd::disjoint(pieces(black_type{}, king_type{}), pieces(white_type{}, king_type{})));
+                assert(xstd::disjoint(pieces(black_c, pawn_c), pieces(black_c, king_c)));
+                assert(xstd::disjoint(pieces(white_c, pawn_c), pieces(white_c, king_c)));
+                assert(xstd::disjoint(pieces(black_c, pawn_c), pieces(white_c, pawn_c)));
+                assert(xstd::disjoint(pieces(black_c, king_c), pieces(white_c, king_c)));
 
-                assert(xstd::disjoint(pieces(black_type{}, pawn_type{}), board::mask::promotion_v<board_type, black_type>));
-                assert(xstd::disjoint(pieces(white_type{}, pawn_type{}), board::mask::promotion_v<board_type, white_type>));
+                assert(xstd::disjoint(pieces(black_c, pawn_c), board::mask::promotion_v<board_type, black_>));
+                assert(xstd::disjoint(pieces(white_c, pawn_c), board::mask::promotion_v<board_type, white_>));
         }
 
 public:
@@ -122,30 +122,16 @@ public:
                 return placement_.pieces(std::forward<Args>(args)...);
         }
 
-        auto king_targets(Color const c) const noexcept
-        {
-                return pieces(!c);
-        }
 
-        template<Color Side>
-        auto king_targets(color_constant<Side>) const noexcept
+        template<Color Side, Piece Type>
+        auto targets(color_constant<Side>, piece_constant<Type>) const noexcept
         {
-                return king_targets(Side);
-        }
-
-        auto pawn_targets(Color const c) const noexcept
-        {
-                if constexpr (is_superior_rank_jump_v<rules_type>) {
-                        return pieces(!c, pawn_type{});
+                static constexpr auto not_to_move_c = !color_c<Side>;
+                if constexpr (Type == Piece::pawn && is_superior_rank_jump_v<rules_type>) {
+                        return pieces(not_to_move_c, pawn_c);
                 } else {
-                        return pieces(!c);
+                        return pieces(not_to_move_c);
                 }
-        }
-
-        template<Color Side>
-        auto pawn_targets(color_constant<Side>) const noexcept
-        {
-                return pawn_targets(Side);
         }
 
         template<class... Args>

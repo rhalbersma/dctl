@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/squares.hpp>  // squares
-#include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
+#include <dctl/color_piece.hpp>         // Color, black_, white_, Piece, pawn_, king_
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 
@@ -19,7 +19,7 @@ public:
 private:
         set_type color_[2];
         set_type kings_;
-        set_type none_;
+        set_type empty_;
 
 public:
         BaseState() = default;
@@ -28,7 +28,7 @@ public:
         :
                 color_{b, w},
                 kings_{k},
-                none_{board::mask::squares_v<board_type> ^ (b | w)}
+                empty_{board::mask::squares_v<board_type> ^ (b | w)}
         {}
 
         template<class Action>
@@ -40,7 +40,7 @@ public:
                 if (a.is_jump()) {
                         pieces(!c) ^= a.captured_pieces();
                         kings_ &= ~a.captured_pieces();
-                        none_ ^= a.captured_pieces();
+                        empty_ ^= a.captured_pieces();
                 }
 
                 if (a.with() == Piece::king) {
@@ -50,8 +50,8 @@ public:
                         kings_.set(a.dest());
                 }
 
-                none_.set  (a.from());
-                none_.reset(a.dest());
+                empty_.set  (a.from());
+                empty_.reset(a.dest());
 
                 return *this;
         }
@@ -63,14 +63,14 @@ public:
 
         auto pieces(Piece const p) const noexcept
         {
-                return p == pawn_type{} ? pieces(pawn_type{}) : pieces(king_type{});
+                return p == pawn_c ? pieces(pawn_c) : pieces(king_c);
         }
 
         template<Piece Type>
         auto pieces(piece_constant<Type> const p) const noexcept
         {
-                if constexpr (p == pawn_type{}) { return kings_ ^ pieces(any_type{}); }
-                if constexpr (p == king_type{}) { return kings_;                      }
+                if constexpr (p == pawn_c) { return kings_ ^ pieces(all_c); }
+                if constexpr (p == king_c) { return kings_;                      }
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
@@ -84,14 +84,14 @@ public:
                 return pieces(c) & pieces(p);
         }
 
-        auto pieces(any_type) const noexcept
+        auto pieces(all_) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ none_;
+                return board::mask::squares_v<board_type> ^ empty_;
         }
 
-        auto pieces(none_type) const noexcept
+        auto pieces(none_) const noexcept
         {
-                return none_;
+                return empty_;
         }
 
 private:
