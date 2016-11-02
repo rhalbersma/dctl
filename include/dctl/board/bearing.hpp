@@ -6,7 +6,7 @@ namespace dctl {
 namespace board {
 
 template<class Board, class Color, class Reverse>
-constexpr auto bearing_v = rotate(Board::orientation, ((Color{} == white_c) ^ Reverse{}) ? 0_deg : 180_deg);
+constexpr auto bearing_v = rotate(Board::orientation, ((Color{} == white_type{}) ^ Reverse{}) ? 0_deg : 180_deg);
 
 }       // namespace board
 }       // namespace dctl

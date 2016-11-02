@@ -57,21 +57,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(rowsEquivalencePartitionSquares, T, board::BoardSe
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
-                        return row<T, black_>{}(i) == row<T, white_>{}(T::height - 1 - i);
+                        return row<T, black_type>{}(i) == row<T, white_type>{}(T::height - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
                         return boost::algorithm::all_of(rows, [=](auto j){
-                                return i == j ? true : disjoint(row<T, white_>{}(i), row<T, white_>{}(j));
+                                return i == j ? true : disjoint(row<T, white_type>{}(i), row<T, white_type>{}(j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(rows, set_t<T>{}, [](auto result, auto i){
-                        return result ^ row<T, white_>{}(i);
+                        return result ^ row<T, white_type>{}(i);
                 }) == squares_v<T>
         );
 }

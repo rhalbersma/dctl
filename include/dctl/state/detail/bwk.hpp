@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/color_piece.hpp>         // Color, black_, white_, Piece, pawn_, king_
+#include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 
@@ -61,14 +61,14 @@ public:
 
         auto pieces(Piece const p) const noexcept
         {
-                return p == pawn_c ? pieces(pawn_c) : pieces(king_c);
+                return p == pawn_type{} ? pieces(pawn_type{}) : pieces(king_type{});
         }
 
         template<Piece Type>
         auto pieces(piece_constant<Type> const p) const noexcept
         {
-                if constexpr (p == pawn_c) { return kings_ ^ pieces(all_c); }
-                if constexpr (p == king_c) { return kings_;                      }
+                if constexpr (p == pawn_type{}) { return kings_ ^ pieces(any_type{}); }
+                if constexpr (p == king_type{}) { return kings_;                      }
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
@@ -82,14 +82,14 @@ public:
                 return pieces(c) & pieces(p);
         }
 
-        auto pieces(all_) const noexcept
+        auto pieces(any_type) const noexcept
         {
-                return pieces(black_c) ^ pieces(white_c);
+                return pieces(black_type{}) ^ pieces(white_type{});
         }
 
-        auto pieces(none_) const noexcept
+        auto pieces(none_type) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ pieces(all_c);
+                return board::mask::squares_v<board_type> ^ pieces(any_type{});
         }
 
 private:
