@@ -9,7 +9,7 @@
 #include <dctl/board/mask/jump_sources.hpp>             // jump_sources
 #include <dctl/board/mask/promotion.hpp>                // is_promotion
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_type, king_type
+#include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_, king_
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
@@ -20,11 +20,12 @@ namespace dctl {
 namespace detail {
 
 template<Color Side, class Reverse, class State, class Builder>
-class Generate<color_constant<Side>, pawn_type, select::jump, Reverse, State, Builder>
+class Generate<color_constant<Side>, pawn_, select::jump, Reverse, State, Builder>
 {
-        using  color_type = color_constant<Side>;
-        using  piece_type = pawn_type;
-        using  king_jumps = Generate<color_type, king_type, select::jump, Reverse, State, Builder>;
+        using to_move_ = color_constant<Side>;
+        static constexpr auto to_move_c = color_c<Side>;
+        static constexpr auto piece_c = pawn_c;
+        using  king_jumps = Generate<to_move_, king_, select::jump, Reverse, State, Builder>;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
@@ -32,7 +33,7 @@ class Generate<color_constant<Side>, pawn_type, select::jump, Reverse, State, Bu
         template<int Direction>
         using jump_sources = board::mask::jump_sources<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, color_type, Reverse>.degrees();
+        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.degrees();
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::Angle{orientation}));
@@ -46,7 +47,7 @@ public:
 
         auto operator()() const
         {
-                if (builder.active_pawns().none()) {
+                if (builder.pieces(to_move_c, piece_c).none()) {
                         return;
                 }
                 if constexpr (is_superior_rank_jump_v<rules_type>) {
@@ -83,9 +84,9 @@ private:
         auto sources() const
         {
                 jump_sources<Direction>{}(
-                        builder.active_pawns(),
+                        builder.pieces(to_move_c, piece_c),
                         builder.current_targets(),
-                        builder.pieces(none_type{})
+                        builder.pieces(none_c)
                 ).for_each([this](auto const from_sq){
                         jump(along_ray<Direction>(from_sq));
                 });
@@ -252,7 +253,7 @@ private:
 
         auto is_promotion(std::size_t const sq) const // Throws: Nothing.
         {
-                return board::mask::promotion_v<board_type, color_type>.test(sq);
+                return board::mask::promotion_v<board_type, to_move_>.test(sq);
         }
 };
 

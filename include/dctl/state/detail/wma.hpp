@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/squares.hpp>  // squares
-#include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
+#include <dctl/color_piece.hpp>         // Color, black_, white_, Piece, pawn_, king_
 #include <dctl/utility/type_traits.hpp> // set_t
 
 namespace dctl {
@@ -18,7 +18,7 @@ public:
 private:
         set_type white_;
         set_type pawns_;
-        set_type any_;
+        set_type occupied_;
 
 public:
         BaseState() = default;
@@ -27,7 +27,7 @@ public:
         :
                 white_{w},
                 pawns_{m},
-                any_{a}
+                occupied_{a}
         {}
 
         BaseState(set_type const b, set_type const w, set_type const p, set_type const /* k */) noexcept
@@ -38,10 +38,10 @@ public:
         template<class Action>
         auto& make(Color const c, Action const& a)
         {
-                any_.reset(a.from());
-                any_.set  (a.dest());
+                occupied_.reset(a.from());
+                occupied_.set  (a.dest());
 
-                if (c == white_type{}) {
+                if (c == white_c) {
                         white_.reset(a.from());
                         white_.set  (a.dest());
                 }
@@ -55,7 +55,7 @@ public:
                 if (a.is_jump()) {
                         white_ &= ~a.captured_pieces();
                         pawns_ &= ~a.captured_pieces();
-                        any_   ^=  a.captured_pieces();
+                        occupied_   ^=  a.captured_pieces();
                 }
 
                 return *this;
@@ -64,64 +64,64 @@ public:
         template<Color Side>
         auto pieces(color_constant<Side>) const noexcept
         {
-                if constexpr (Side == Color::black) { return white_ ^ any_; }
-                if constexpr (Side == Color::white) { return white_;        }
+                if constexpr (Side == Color::black) { return white_ ^ occupied_; }
+                if constexpr (Side == Color::white) { return white_;             }
         }
 
         auto pieces(Color const c) const noexcept
         {
-                return c == Color::black ? pieces(black_type{}) : pieces(white_type{});
+                return c == Color::black ? pieces(black_c) : pieces(white_c);
         }
 
         template<Piece Type>
         auto pieces(piece_constant<Type>) const noexcept
         {
-                if constexpr (Type == Piece::pawn) { return pawns_;        }
-                if constexpr (Type == Piece::king) { return pawns_ ^ any_; }
+                if constexpr (Type == Piece::pawn) { return pawns_;             }
+                if constexpr (Type == Piece::king) { return pawns_ ^ occupied_; }
         }
 
         auto pieces(Piece const p) const noexcept
         {
-                return p == Piece::pawn ? pieces(pawn_type{}) : pieces(king_type{});
+                return p == Piece::pawn ? pieces(pawn_c) : pieces(king_c);
         }
 
         template<Color Side, Piece Type>
         auto pieces(color_constant<Side>, piece_constant<Type>) const noexcept
         {
-                if constexpr (Side == Color::black && Type == Piece::pawn) { return ~white_ &  pawns_;         }
-                if constexpr (Side == Color::black && Type == Piece::king) { return (white_ |  pawns_) ^ any_; }
-                if constexpr (Side == Color::white && Type == Piece::pawn) { return  white_ &  pawns_;         }
-                if constexpr (Side == Color::white && Type == Piece::king) { return  white_ & ~pawns_;         }
+                if constexpr (Side == Color::black && Type == Piece::pawn) { return ~white_ &  pawns_;              }
+                if constexpr (Side == Color::black && Type == Piece::king) { return (white_ |  pawns_) ^ occupied_; }
+                if constexpr (Side == Color::white && Type == Piece::pawn) { return  white_ &  pawns_;              }
+                if constexpr (Side == Color::white && Type == Piece::king) { return  white_ & ~pawns_;              }
         }
 
         template<Piece Type>
         auto pieces(Color const c, piece_constant<Type> const p) const noexcept
         {
-                return c == Color::black ? pieces(black_type{}, p) : pieces(white_type{}, p);
+                return c == Color::black ? pieces(black_c, p) : pieces(white_c, p);
         }
 
         template<Color Side>
         auto pieces(color_constant<Side> const c, Piece const p) const noexcept
         {
-                return p == Piece::pawn ? pieces(c, pawn_type{}) : pieces(c, king_type{});
+                return p == Piece::pawn ? pieces(c, pawn_c) : pieces(c, king_c);
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
         {
                 return pieces(
-                        c == Color::black ? black_type{} : white_type{},
-                        p == Piece::pawn  ?  pawn_type{} :  king_type{}
+                        c == Color::black ? black_c : white_c,
+                        p == Piece::pawn  ?  pawn_c :  king_c
                 );
         }
 
-        auto pieces(any_type) const noexcept
+        auto pieces(all_) const noexcept
         {
-                return any_;
+                return occupied_;
         }
 
-        auto pieces(none_type) const noexcept
+        auto pieces(none_) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ any_;
+                return board::mask::squares_v<board_type> ^ occupied_;
         }
 };
 

@@ -6,7 +6,7 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
-#include <dctl/color_piece.hpp>                         // Color, color_constant, king_type
+#include <dctl/color_piece.hpp>                         // Color, color_constant, king_
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                         // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
@@ -18,15 +18,16 @@ namespace dctl {
 namespace detail {
 
 template<Color Side, class Reverse, class State, class Builder>
-class Generate<color_constant<Side>, king_type, select::jump, Reverse, State, Builder>
+class Generate<color_constant<Side>, king_, select::jump, Reverse, State, Builder>
 {
-        using  color_type = color_constant<Side>;
-        using  piece_type = king_type;
+        using to_move_ = color_constant<Side>;
+        static constexpr auto to_move_c = color_c<Side>;
+        static constexpr auto piece_c = king_c;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, color_type, Reverse>.degrees();
+        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.degrees();
 
         template<class Iterator>
         static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::Angle{orientation}));
@@ -54,7 +55,7 @@ public:
 private:
         auto sources() const
         {
-                builder.active_kings().for_each([this](auto const from_sq) {
+                builder.pieces(to_move_c, piece_c).for_each([this](auto const from_sq) {
                         raii::launch<Builder> guard{builder, from_sq};
                         if constexpr (is_orthogonal_jump_v<rules_type>) {
                                 directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left, board::left_down, board::down, board::right_down>(from_sq);
