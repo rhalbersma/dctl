@@ -27,7 +27,7 @@ class column
                         constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 assert(column_ < Board::width);
-                                return board::detail::to_llo(sq, Board::inner_grid).x == (Color{} == white_c ? column_ : Board::width - 1 - column_);
+                                return board::detail::to_llo(sq, Board::inner_grid).x == (Color{} == white_type{} ? column_ : Board::width - 1 - column_);
                         }
                 };
 
@@ -42,8 +42,8 @@ class column
 
         static constexpr value_type value[] =
         {
-                fill_array<Board::width>(init<black_>{}),
-                fill_array<Board::width>(init<white_>{})
+                fill_array<Board::width>(init<black_type>{}),
+                fill_array<Board::width>(init<white_type>{})
         };
 
 public:

@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
         try {
                 std::string const usage =
                         "Usage:                                                                          \n"
-                        "       perft [-buv] <depth> [<position>]                                        \n"
+                        "       perft [-buv] <depth> [<position>]                                  \n"
                         "       perft --help                                                             \n"
                         "       perft --version                                                          \n"
                         "Performance test for search graph traversal for draughts and checkers variants. \n\n"

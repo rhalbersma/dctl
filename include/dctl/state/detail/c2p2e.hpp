@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/squares.hpp>  // squares
-#include <dctl/color_piece.hpp>         // Color, black_, white_, Piece, pawn_, king_
+#include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 
@@ -19,7 +19,7 @@ public:
 private:
         set_type color_[2];
         set_type piece_[2];
-        set_type empty_;
+        set_type none_;
 
 public:
         BaseState() = default;
@@ -28,7 +28,7 @@ public:
         :
                 color_{b, w},
                 piece_{p, k},
-                empty_{board::mask::squares_v<board_type> ^ (b | w)}
+                none_{board::mask::squares_v<board_type> ^ (b | w)}
         {}
 
         template<class Action>
@@ -41,11 +41,11 @@ public:
 
                 if (a.is_jump()) {
                         pieces(!c) ^= a.captured_pieces();
-                        pieces(pawn_c) &= ~a.captured_pieces();
-                        pieces(king_c) &= ~a.captured_pieces();
+                        pieces(pawn_type{}) &= ~a.captured_pieces();
+                        pieces(king_type{}) &= ~a.captured_pieces();
                 }
 
-                empty_ = board::mask::squares_v<board_type> ^ (pieces(black_c) | pieces(white_c));
+                none_ = board::mask::squares_v<board_type> ^ (pieces(black_type{}) | pieces(white_type{}));
 
                 return *this;
         }
@@ -65,14 +65,14 @@ public:
                 return pieces(c) & pieces(p);
         }
 
-        auto pieces(all_) const noexcept
+        auto pieces(any_type) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ empty_;
+                return board::mask::squares_v<board_type> ^ none_;
         }
 
-        auto pieces(none_) const noexcept
+        auto pieces(none_type) const noexcept
         {
-                return empty_;
+                return none_;
         }
 
 private:

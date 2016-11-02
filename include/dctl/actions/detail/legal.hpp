@@ -13,9 +13,9 @@ namespace detail {
 template<Color Side, class DuplicatesPolicy, class Reverse>
 class Actions<color_constant<Side>, select::legal, DuplicatesPolicy, Reverse>
 {
-        using to_move_ = color_constant<Side>;
-        using Jump = Actions<to_move_, select::jump, DuplicatesPolicy, Reverse>;
-        using Push = Actions<to_move_, select::push, DuplicatesPolicy, Reverse>;
+        using color_type = color_constant<Side>;
+        using Jump = Actions<color_type, select::jump, DuplicatesPolicy, Reverse>;
+        using Push = Actions<color_type, select::push, DuplicatesPolicy, Reverse>;
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const
