@@ -52,17 +52,17 @@ private:
         template<template<int> class... Directions>
         auto ray_directions_lfold(std::size_t const from, set_type const destinations) const
         {
-                (... , ray_targets(along_ray<Directions<orientation>{}>(from), destinations));
+                (... , serialize(along_ray<Directions<orientation>{}>(from), destinations));
         }
 
         template<template<int> class... Directions>
         auto wave_directions_lfold(set_type const sources, set_type const destinations) const
         {
-                (... , wave_targets<Directions<orientation>{}>(sources, destinations));
+                (... , serialize<Directions<orientation>{}>(sources, destinations));
         }
 
         template<class Iterator>
-        auto ray_targets(Iterator const from, set_type const destinations) const
+        auto serialize(Iterator const from, set_type const destinations) const
         {
                 board::ray::classical(
                         from,
@@ -76,7 +76,7 @@ private:
         }
 
         template<int Direction>
-        auto wave_targets(set_type const sources, set_type const destinations) const
+        auto serialize(set_type const sources, set_type const destinations) const
         {
                 push_targets<Direction>{}(
                         sources,

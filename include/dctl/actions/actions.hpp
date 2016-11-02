@@ -29,7 +29,7 @@ public:
         auto generate(State const& state, SequenceContainer& actions) const
         {
                 return
-                        state.is_to_move(Color::black) ?
+                        state.to_move() == Color::black ?
                         generate<black_>(state, actions) :
                         generate<white_>(state, actions)
                 ;
@@ -49,7 +49,7 @@ public:
         auto count(State const& state) const
         {
                 return
-                        state.is_to_move(Color::black) ?
+                        state.to_move() == Color::black ?
                         count<black_>(state) :
                         count<white_>(state)
                 ;
@@ -65,7 +65,7 @@ public:
         auto detect(State const& state) const
         {
                 return
-                        state.is_to_move(Color::black) ?
+                        state.to_move() == Color::black ?
                         detect<black_>(state) :
                         detect<white_>(state)
                 ;

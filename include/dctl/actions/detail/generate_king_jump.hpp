@@ -75,7 +75,7 @@ private:
         auto first_target(Iterator jumper) const
         {
                 slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
-                if (is_onboard(jumper) && builder.current_targets(jumper)) {
+                if (is_onboard(jumper) && builder.is_target(jumper)) {
                         assert(is_onboard(std::next(jumper)));
                         capture(jumper);
                 }
@@ -180,7 +180,7 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && builder.current_targets(jumper)))
+                if (!(is_onboard(jumper) && builder.is_target(jumper)))
                         return false;
 
                 assert(is_onboard(std::next(jumper)));

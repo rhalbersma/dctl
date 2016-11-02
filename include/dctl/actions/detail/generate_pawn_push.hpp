@@ -44,11 +44,11 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const sources, set_type const destinations) const
         {
-                (... , targets<Directions<orientation>{}>(sources, destinations));
+                (... , serialize<Directions<orientation>{}>(sources, destinations));
         }
 
         template<int Direction>
-        auto targets(set_type const sources, set_type const destinations) const
+        auto serialize(set_type const sources, set_type const destinations) const
         {
                 push_targets<Direction>{}(
                         sources,
