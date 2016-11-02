@@ -35,8 +35,8 @@ class initial
 
         static constexpr value_type value[] =
         {
-                fill_array<N>(init<black_type>{}),
-                fill_array<N>(init<white_type>{})
+                fill_array<N>(init<black_>{}),
+                fill_array<N>(init<white_>{})
         };
 
 public:

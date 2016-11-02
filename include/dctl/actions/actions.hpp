@@ -30,8 +30,8 @@ public:
         {
                 return
                         state.is_to_move(Color::black) ?
-                        generate<black_type>(state, actions) :
-                        generate<white_type>(state, actions)
+                        generate<black_>(state, actions) :
+                        generate<white_>(state, actions)
                 ;
         }
 
@@ -50,8 +50,8 @@ public:
         {
                 return
                         state.is_to_move(Color::black) ?
-                        count<black_type>(state) :
-                        count<white_type>(state)
+                        count<black_>(state) :
+                        count<white_>(state)
                 ;
         }
 
@@ -66,8 +66,8 @@ public:
         {
                 return
                         state.is_to_move(Color::black) ?
-                        detect<black_type>(state) :
-                        detect<white_type>(state)
+                        detect<black_>(state) :
+                        detect<white_>(state)
                 ;
         }
 

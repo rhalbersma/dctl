@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/squares.hpp>  // squares
-#include <dctl/color_piece.hpp>         // Color, black_type, white_type, Piece, pawn_type, king_type
+#include <dctl/color_piece.hpp>         // Color, black_, white_, Piece, pawn_, king_
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 
@@ -18,7 +18,7 @@ public:
 
 private:
         set_type color_piece_[2][2];
-        set_type none_;
+        set_type empty_;
 
 public:
         BaseState() = default;
@@ -26,7 +26,7 @@ public:
         BaseState(set_type const b, set_type const w, set_type const p, set_type const k)
         :
                 color_piece_{{b & p, b & k}, {w & p, w & k}},
-                none_{board::mask::squares_v<board_type> ^ (b | w)}
+                empty_{board::mask::squares_v<board_type> ^ (b | w)}
         {}
 
         template<class Action>
@@ -36,25 +36,25 @@ public:
                 pieces(c, a.into()).set  (a.dest());
 
                 if (a.is_jump()) {
-                        pieces(!c, pawn_type{}) &= ~a.captured_pieces();
-                        pieces(!c, king_type{}) &= ~a.captured_pieces();
-                        none_ ^= a.captured_pieces();
+                        pieces(!c, pawn_c) &= ~a.captured_pieces();
+                        pieces(!c, king_c) &= ~a.captured_pieces();
+                        empty_ ^= a.captured_pieces();
                 }
 
-                none_.set  (a.from());
-                none_.reset(a.dest());
+                empty_.set  (a.from());
+                empty_.reset(a.dest());
 
                 return *this;
         }
 
         auto pieces(Color const c) const noexcept
         {
-                return pieces(c, pawn_type{}) ^ pieces(c, king_type{});
+                return pieces(c, pawn_c) ^ pieces(c, king_c);
         }
 
         auto pieces(Piece const p) const noexcept
         {
-                return pieces(black_type{}, p) ^ pieces(white_type{}, p);
+                return pieces(black_c, p) ^ pieces(white_c, p);
         }
 
         auto pieces(Color const c, Piece const p) const noexcept
@@ -62,14 +62,14 @@ public:
                 return color_piece_[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
         }
 
-        auto pieces(any_type) const noexcept
+        auto pieces(all_) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ none_;
+                return board::mask::squares_v<board_type> ^ empty_;
         }
 
-        auto pieces(none_type) const noexcept
+        auto pieces(none_) const noexcept
         {
-                return none_;
+                return empty_;
         }
 
 private:
