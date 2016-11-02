@@ -85,7 +85,7 @@ private:
         {
                 jump_sources<Direction>{}(
                         builder.pieces(to_move_c, piece_c),
-                        builder.current_targets(),
+                        builder.targets(),
                         builder.pieces(none_c)
                 ).for_each([this](auto const from_sq){
                         jump(along_ray<Direction>(from_sq));
@@ -232,7 +232,7 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && builder.current_targets(jumper)))
+                if (!(is_onboard(jumper) && builder.is_target(jumper)))
                         return false;
 
                 assert(is_onboard(std::next(jumper)));

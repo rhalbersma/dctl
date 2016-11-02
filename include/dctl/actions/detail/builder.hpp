@@ -41,7 +41,7 @@ private:
         using push_sources = board::mask::push_sources<board_type, Direction, short_ranged_tag>;
 
 public:
-        explicit Builder(State const& s, SequenceContainer& a)
+        Builder(State const& s, SequenceContainer& a)
         :
                 state_{s},
                 initial_targets_(state_.pieces(!to_move_c)),
@@ -110,21 +110,21 @@ public:
                 return empty_;
         }
 
-        auto current_targets() const noexcept
+        auto targets() const noexcept
         {
                 return initial_targets_ & ~candidate_action_.captured_pieces();
         }
 
-        template<class Iterator>
-        auto current_targets(Iterator it) const
+        template<int Direction>
+        auto targets() const
         {
-                return current_targets<board::ray::direction_v<Iterator>.degrees()>().test(*it);
+                return push_sources<Direction>{}(targets(), pieces(none_c));
         }
 
-        template<int Direction>
-        auto current_targets() const
+        template<class Iterator>
+        auto is_target(Iterator it) const
         {
-                return push_sources<Direction>{}(current_targets(), pieces(none_c));
+                return targets<board::ray::direction_v<Iterator>.degrees()>().test(*it);
         }
 
         auto not_occupied(square_type const sq) const
@@ -178,11 +178,6 @@ public:
         auto to_move() const noexcept
         {
                 return state_.to_move();
-        }
-
-        auto is_to_move(Color const c) const noexcept
-        {
-                return to_move() == c;
         }
 
         auto num_captured_pieces() const noexcept

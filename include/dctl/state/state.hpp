@@ -122,7 +122,6 @@ public:
                 return placement_.pieces(std::forward<Args>(args)...);
         }
 
-
         template<Color Side, Piece Type>
         auto targets(color_constant<Side>, piece_constant<Type>) const noexcept
         {
@@ -144,11 +143,6 @@ public:
         auto to_move() const noexcept
         {
                 return player_to_move_;
-        }
-
-        auto is_to_move(Color const c) const noexcept
-        {
-                return to_move() == c;
         }
 
         auto hash() const
