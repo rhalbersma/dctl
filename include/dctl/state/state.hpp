@@ -88,7 +88,7 @@ private:
         }
 
 public:
-        state(Color const c, set_type const black, set_type const white, set_type const pawns, set_type const kings)
+        state(color const c, set_type const black, set_type const white, set_type const pawns, set_type const kings)
         :
                 most_recently_pushed_kings_t{},
                 player_to_move_{c},
@@ -99,9 +99,9 @@ public:
 
         static state initial(std::size_t const separation = initial_position_gap_v<Rules> + Board::height % 2)
         {
-                auto const bp = board::mask::initial<board_type>{}(Color::black, separation);
-                auto const wp = board::mask::initial<board_type>{}(Color::white, separation);
-                return { Color::white, bp, wp, bp | wp, {} };
+                auto const bp = board::mask::initial<board_type>{}(color::black, separation);
+                auto const wp = board::mask::initial<board_type>{}(color::white, separation);
+                return { color::white, bp, wp, bp | wp, {} };
         }
 
         template<class Action>
@@ -122,11 +122,11 @@ public:
                 return placement_.pieces(std::forward<Args>(args)...);
         }
 
-        template<Color Side, Piece Type>
-        auto targets(color_constant<Side>, piece_constant<Type>) const noexcept
+        template<color Side, piece Type>
+        auto targets(color_<Side>, piece_<Type>) const noexcept
         {
                 static constexpr auto not_to_move_c = !color_c<Side>;
-                if constexpr (Type == Piece::pawn && is_superior_rank_jump_v<rules_type>) {
+                if constexpr (Type == piece::pawn && is_superior_rank_jump_v<rules_type>) {
                         return pieces(not_to_move_c, pawn_c);
                 } else {
                         return pieces(not_to_move_c);

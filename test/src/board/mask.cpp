@@ -31,21 +31,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(columnsEquivalencePartitionSquares, T, board::Boar
 
         BOOST_CHECK(
                 boost::algorithm::all_of(columns, [=](auto i){
-                        return column<T>{}(Color::black, i) == column<T>{}(Color::white, T::width - 1 - i);
+                        return column<T>{}(color::black, i) == column<T>{}(color::white, T::width - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 boost::algorithm::all_of(columns, [=](auto i){
                         return boost::algorithm::all_of(columns, [=](auto j){
-                                return i == j ? true : disjoint(column<T>{}(Color::white, i), column<T>{}(Color::white, j));
+                                return i == j ? true : disjoint(column<T>{}(color::white, i), column<T>{}(color::white, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(columns, set_t<T>{}, [](auto result, auto i){
-                        return result ^ column<T>{}(Color::white, i);
+                        return result ^ column<T>{}(color::white, i);
                 }) == squares_v<T>
         );
 }

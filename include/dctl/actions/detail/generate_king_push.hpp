@@ -5,7 +5,7 @@
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/board/mask/push_targets.hpp>             // push_targets
-#include <dctl/color_piece.hpp>                         // Color, color_constant, king_
+#include <dctl/color_piece.hpp>                         // color, color_, king_
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t, value_t
 #include <cstddef>                                      // size_t
@@ -14,10 +14,10 @@
 namespace dctl {
 namespace detail {
 
-template<Color Side, class Reverse, class State, class SequenceContainer>
-class Generate<color_constant<Side>, king_, select::push, Reverse, State, SequenceContainer>
+template<color Side, class Reverse, class State, class SequenceContainer>
+class Generate<color_<Side>, king_, select::push, Reverse, State, SequenceContainer>
 {
-        using to_move_ = color_constant<Side>;
+        using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
         static constexpr auto piece_c = king_c;
         using  board_type = board_t<State>;
@@ -27,12 +27,12 @@ class Generate<color_constant<Side>, king_, select::push, Reverse, State, Sequen
         template<int Direction>
         using push_targets = board::mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.degrees();
-        SequenceContainer& actions;
+        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
+        SequenceContainer& m_actions;
 public:
         explicit Generate(SequenceContainer& a) noexcept
         :
-                actions{a}
+                m_actions{a}
         {}
 
         auto operator()(State const& state) const
@@ -68,7 +68,7 @@ private:
                         from,
                         destinations
                 ).for_each([this, from](auto const dest_sq){
-                        actions.emplace_back(
+                        m_actions.emplace_back(
                                 *from,
                                 dest_sq
                         );
@@ -82,7 +82,7 @@ private:
                         sources,
                         destinations
                 ).for_each([this](auto const dest_sq){
-                        actions.emplace_back(
+                        m_actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq
                         );

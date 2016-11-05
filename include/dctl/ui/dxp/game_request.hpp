@@ -29,7 +29,7 @@ public:
         explicit GameRequest(std::string const& message)
         :
                 name_initiator_{message.substr(2, 32)},
-                Color_follower_ {*(std::begin(message.substr(34, 1)))},
+                color_follower_ {*(std::begin(message.substr(34, 1)))},
                 minutes_ {std::stoi(message.substr(35, 3).c_str())},
                 moves_{std::stoi(message.substr(38, 3).c_str())},
                 setup_code_{static_cast<SetupCode>(*(std::begin(message.substr(41, 1))))}
@@ -45,9 +45,9 @@ public:
                 return name_initiator_;
         }
 
-        char Color_follower() const
+        char color_follower() const
         {
-                return Color_follower_;
+                return color_follower_;
         }
 
         int minutes() const
@@ -87,7 +87,7 @@ private:
 
         std::string do_body() const override
         {
-                return body(name_initiator(), Color_follower(), minutes(), moves(), setup_code(), position());
+                return body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position());
         }
 
         static std::string body(std::string const& n, char c, int min, int mov, SetupCode s, std::string const& p)
@@ -107,7 +107,7 @@ private:
         // representation
 
         std::string name_initiator_;
-        char Color_follower_;
+        char color_follower_;
         int minutes_;
         int moves_;
         SetupCode setup_code_;

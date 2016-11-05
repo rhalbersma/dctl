@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(IsLandBehindPieceOr)
+BOOST_AUTO_TEST_SUITE(IsLandBehindpieceOr)
 
         using VariantsFalse = boost::mpl::vector
         <

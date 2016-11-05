@@ -8,7 +8,7 @@
 #include <dctl/actions/detail/generate_king_jump.hpp>   // Generate (king jump specialization)
 #include <dctl/actions/detail/generate_pawn_jump.hpp>   // Generate (pawn jump specialization)
 #include <dctl/actions/select/jump.hpp>                 // jump
-#include <dctl/color_piece.hpp>                         // Color, color_constant, king_, pawn_
+#include <dctl/color_piece.hpp>                         // color, color_, king_, pawn_
 #include <dctl/utility/static_vector.hpp>               // static_vector
 #include <dctl/utility/type_traits.hpp>                 // rules_t, board_t
 #include <cassert>                                      // assert
@@ -33,10 +33,10 @@ public:
         }
 };
 
-template<Color Side, class DuplicatesPolicy, class Reverse>
-class Actions<color_constant<Side>, select::jump, DuplicatesPolicy, Reverse>
+template<color Side, class DuplicatesPolicy, class Reverse>
+class Actions<color_<Side>, select::jump, DuplicatesPolicy, Reverse>
 {
-        using to_move_ = color_constant<Side>;
+        using to_move_ = color_<Side>;
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const

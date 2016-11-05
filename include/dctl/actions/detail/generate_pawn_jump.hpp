@@ -9,7 +9,7 @@
 #include <dctl/board/mask/jump_sources.hpp>             // jump_sources
 #include <dctl/board/mask/promotion.hpp>                // is_promotion
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_, king_
+#include <dctl/color_piece.hpp>                         // color, color_, pawn_, king_
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
@@ -19,10 +19,10 @@
 namespace dctl {
 namespace detail {
 
-template<Color Side, class Reverse, class State, class Builder>
-class Generate<color_constant<Side>, pawn_, select::jump, Reverse, State, Builder>
+template<color Side, class Reverse, class State, class Builder>
+class Generate<color_<Side>, pawn_, select::jump, Reverse, State, Builder>
 {
-        using to_move_ = color_constant<Side>;
+        using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
         static constexpr auto piece_c = pawn_c;
         using  king_jumps = Generate<to_move_, king_, select::jump, Reverse, State, Builder>;
@@ -33,25 +33,25 @@ class Generate<color_constant<Side>, pawn_, select::jump, Reverse, State, Builde
         template<int Direction>
         using jump_sources = board::mask::jump_sources<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.degrees();
+        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::Angle{orientation}));
+        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::angle{orientation}));
 
-        Builder& builder;
+        Builder& m_builder;
 public:
         explicit Generate(Builder& b) noexcept
         :
-                builder{b}
+                m_builder{b}
         {}
 
         auto operator()() const
         {
-                if (builder.pieces(to_move_c, piece_c).none()) {
+                if (m_builder.pieces(to_move_c, piece_c).none()) {
                         return;
                 }
                 if constexpr (is_superior_rank_jump_v<rules_type>) {
-                        raii::toggle_king_targets<Builder> guard{builder};
+                        raii::toggle_king_targets<Builder> guard{m_builder};
                         directions();
                 } else {
                         directions();
@@ -84,9 +84,9 @@ private:
         auto sources() const
         {
                 jump_sources<Direction>{}(
-                        builder.pieces(to_move_c, piece_c),
-                        builder.targets(),
-                        builder.pieces(none_c)
+                        m_builder.pieces(to_move_c, piece_c),
+                        m_builder.targets(),
+                        m_builder.pieces(none_c)
                 ).for_each([this](auto const from_sq){
                         jump(along_ray<Direction>(from_sq));
                 });
@@ -96,7 +96,7 @@ private:
         auto jump(Iterator const jumper) const
         {
                 assert(is_onboard(jumper));
-                raii::launch<Builder> guard{builder, *jumper};
+                raii::launch<Builder> guard{m_builder, *jumper};
                 capture(std::next(jumper));
         }
 
@@ -105,7 +105,7 @@ private:
                 -> void
         {
                 assert(is_onboard(jumper));
-                raii::capture<Builder> guard{builder, *jumper};
+                raii::capture<Builder> guard{m_builder, *jumper};
                 land(std::next(jumper));
         }
 
@@ -135,7 +135,7 @@ private:
         template<class Iterator>
         auto on_promotion(Iterator jumper) const
         {
-                raii::promotion<Builder> guard{builder};
+                raii::promotion<Builder> guard{m_builder};
                 if constexpr (is_passing_promotion_v<rules_type>) {
                         return on_king_jump(jumper);
                 } else {
@@ -148,7 +148,7 @@ private:
         {
                 static_assert(is_passing_promotion_v<rules_type>);
                 if constexpr (is_superior_rank_jump_v<rules_type>) {
-                        raii::toggle_king_targets<Builder> guard{builder};
+                        raii::toggle_king_targets<Builder> guard{m_builder};
                         king_jumps_try_next(jumper);
                 } else {
                         king_jumps_try_next(jumper);
@@ -159,7 +159,7 @@ private:
         auto king_jumps_try_next(Iterator jumper) const
         {
                 static_assert(is_passing_promotion_v<rules_type>);
-                king_jumps{builder}.try_next(jumper, passing_promotion_tag{});
+                king_jumps{m_builder}.try_next(jumper, passing_promotion_tag{});
         }
 
         template<class Iterator>
@@ -232,7 +232,7 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && builder.is_target(jumper)))
+                if (!(is_onboard(jumper) && m_builder.is_target(jumper)))
                         return false;
 
                 assert(is_onboard(std::next(jumper)));
@@ -242,7 +242,7 @@ private:
 
         auto add_jump(std::size_t const dest_sq) const
         {
-                builder.finalize(dest_sq);
+                m_builder.finalize(dest_sq);
         }
 
         template<int Direction>

@@ -13,68 +13,68 @@ namespace dctl {
 template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
 class Actions
 {
-        template<class Color>
-        using Impl = detail::Actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
+        template<class color>
+        using Impl = detail::Actions<color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
 
-        template<class Color, class State, class SequenceContainer>
-        auto assert_invariants([[maybe_unused]] State const& state, [[maybe_unused]] SequenceContainer const& actions) const
+        template<class color, class State, class SequenceContainer>
+        auto assert_invariants([[maybe_unused]] State const& s, [[maybe_unused]] SequenceContainer const& actions) const
         {
                 [[maybe_unused]] auto const n = actions.size();
-                assert( count<Color>(state) ==  n     );
-                assert(detect<Color>(state) == (n > 0));
+                assert( count<color>(s) ==  n     );
+                assert(detect<color>(s) == (n > 0));
         }
 
 public:
         template<class State, class SequenceContainer>
-        auto generate(State const& state, SequenceContainer& actions) const
+        auto generate(State const& s, SequenceContainer& actions) const
         {
                 return
-                        state.to_move() == Color::black ?
-                        generate<black_>(state, actions) :
-                        generate<white_>(state, actions)
+                        s.to_move() == color::black ?
+                        generate<black_>(s, actions) :
+                        generate<white_>(s, actions)
                 ;
         }
 
-        template<class Color, class State, class SequenceContainer>
-        auto generate(State const& state, SequenceContainer& actions) const
+        template<class color, class State, class SequenceContainer>
+        auto generate(State const& s, SequenceContainer& actions) const
         {
                 using action_type = value_t<SequenceContainer>;
                 static_assert(std::is_same<rules_t<State>, rules_t<action_type>>{});
                 static_assert(std::is_same<board_t<State>, board_t<action_type>>{});
-                Impl<Color>{}.generate(state, actions);
-                assert_invariants<Color>(state, actions);
+                Impl<color>{}.generate(s, actions);
+                assert_invariants<color>(s, actions);
         }
 
         template<class State>
-        auto count(State const& state) const
+        auto count(State const& s) const
         {
                 return
-                        state.to_move() == Color::black ?
-                        count<black_>(state) :
-                        count<white_>(state)
+                        s.to_move() == color::black ?
+                        count<black_>(s) :
+                        count<white_>(s)
                 ;
         }
 
-        template<class Color, class State>
-        auto count(State const& state) const
+        template<class color, class State>
+        auto count(State const& s) const
         {
-                return Impl<Color>{}.count(state);
+                return Impl<color>{}.count(s);
         }
 
         template<class State>
-        auto detect(State const& state) const
+        auto detect(State const& s) const
         {
                 return
-                        state.to_move() == Color::black ?
-                        detect<black_>(state) :
-                        detect<white_>(state)
+                        s.to_move() == color::black ?
+                        detect<black_>(s) :
+                        detect<white_>(s)
                 ;
         }
 
-        template<class Color, class State>
-        auto detect(State const& state) const
+        template<class color, class State>
+        auto detect(State const& s) const
         {
-                return Impl<Color>{}.detect(state);
+                return Impl<color>{}.detect(s);
         }
 };
 

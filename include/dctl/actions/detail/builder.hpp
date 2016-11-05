@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // Angle, is_orthogonal
+#include <dctl/board/angle.hpp>                 // angle, is_orthogonal
 #include <dctl/board/mask/push_sources.hpp>
 #include <dctl/board/mask/jump_start.hpp>       // jump_start
 #include <dctl/board/ray.hpp>
@@ -15,14 +15,14 @@
 namespace dctl {
 namespace detail {
 
-template<class Color, class DuplicatesPolicy, class State, class SequenceContainer>
+template<class color, class DuplicatesPolicy, class State, class SequenceContainer>
 class Builder;
 
-template<Color Side, class DuplicatesPolicy, class State, class SequenceContainer>
-class Builder<color_constant<Side>, DuplicatesPolicy, State, SequenceContainer>
+template<color Side, class DuplicatesPolicy, class State, class SequenceContainer>
+class Builder<color_<Side>, DuplicatesPolicy, State, SequenceContainer>
 {
 public:
-        using to_move_ = color_constant<Side>;
+        using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
         using action_type = value_t<SequenceContainer>;
         using  board_type =       board_t<State>;
@@ -31,11 +31,11 @@ public:
         using square_type =   std::size_t;
 
 private:
-        State const& state_;
-        set_type initial_targets_;
-        set_type empty_;
-        SequenceContainer& actions_;
-        action_type candidate_action_{};
+        State const& m_state;
+        set_type m_initial_targets;
+        set_type m_empty;
+        SequenceContainer& m_actions;
+        action_type m_candidate_action{};
 
         template<int Direction>
         using push_sources = board::mask::push_sources<board_type, Direction, short_ranged_tag>;
@@ -43,58 +43,58 @@ private:
 public:
         Builder(State const& s, SequenceContainer& a)
         :
-                state_{s},
-                initial_targets_(state_.pieces(!to_move_c)),
-                empty_(state_.pieces(none_c)),
-                actions_{a}
+                m_state{s},
+                m_initial_targets(m_state.pieces(!to_move_c)),
+                m_empty(m_state.pieces(none_c)),
+                m_actions{a}
         {}
 
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_v<rules_type>);
-                initial_targets_ ^= state_.pieces(!to_move_c, king_c);
+                m_initial_targets ^= m_state.pieces(!to_move_c, king_c);
         }
 
         auto make_launch(std::size_t const sq)
         {
-                candidate_action_.from(sq);
-                empty_.set(sq);
+                m_candidate_action.from(sq);
+                m_empty.set(sq);
         }
 
         auto undo_launch(std::size_t const sq)
         {
-                empty_.reset(sq);
+                m_empty.reset(sq);
         }
 
         auto capture(std::size_t const sq)
         {
-                candidate_action_.capture(sq, is_king(sq));
+                m_candidate_action.capture(sq, is_king(sq));
                 if constexpr (is_passing_capture_v<rules_type>) {
-                        empty_.set(sq);
+                        m_empty.set(sq);
                 }
         }
 
         auto release(std::size_t const sq)
         {
                 if constexpr (is_passing_capture_v<rules_type>) {
-                        empty_.reset(sq);
+                        m_empty.reset(sq);
                 }
-                candidate_action_.release(sq, is_king(sq));
+                m_candidate_action.release(sq, is_king(sq));
         }
 
-        auto with(Piece const p) noexcept
+        auto with(piece const p) noexcept
         {
-                candidate_action_.with(p);
+                m_candidate_action.with(p);
         }
 
-        auto into(Piece const p) noexcept
+        auto into(piece const p) noexcept
         {
-                candidate_action_.into(p);
+                m_candidate_action.into(p);
         }
 
         auto finalize(std::size_t const sq)
         {
-                candidate_action_.dest(sq);
+                m_candidate_action.dest(sq);
                 precedence_duplicates();
         }
 
@@ -102,17 +102,17 @@ public:
         auto pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
-                return state_.pieces(std::forward<Args>(args)...);
+                return m_state.pieces(std::forward<Args>(args)...);
         }
 
         auto pieces(none_) const noexcept
         {
-                return empty_;
+                return m_empty;
         }
 
         auto targets() const noexcept
         {
-                return initial_targets_ & ~candidate_action_.captured_pieces();
+                return m_initial_targets & ~m_candidate_action.captured_pieces();
         }
 
         template<int Direction>
@@ -124,18 +124,18 @@ public:
         template<class Iterator>
         auto is_target(Iterator it) const
         {
-                return targets<board::ray::direction_v<Iterator>.degrees()>().test(*it);
+                return targets<board::ray::direction_v<Iterator>.value()>().test(*it);
         }
 
         auto not_occupied(square_type const sq) const
         {
-                return empty_.test(sq);
+                return m_empty.test(sq);
         }
 
         template<int Direction>
         auto path() const
         {
-                auto constexpr jump_start = board::mask::jump_start<board_type>{}(board::Angle{Direction});
+                auto constexpr jump_start = board::mask::jump_start<board_type>{}(board::angle{Direction});
                 return pieces(none_c) & jump_start;
         }
 
@@ -147,37 +147,37 @@ public:
 
         auto is_last_jumped_king(square_type const sq) const
         {
-                return state_.pieces(king_c).test(sq);
+                return m_state.pieces(king_c).test(sq);
         }
 
         auto with() const noexcept
         {
-                return candidate_action_.with();
+                return m_candidate_action.with();
         }
 
-        auto is_with(Piece const p) const noexcept
+        auto is_with(piece const p) const noexcept
         {
                 return with() == p;
         }
 
         auto into() const noexcept
         {
-                return candidate_action_.into();
+                return m_candidate_action.into();
         }
 
-        auto is_into(Piece const p) const noexcept
+        auto is_into(piece const p) const noexcept
         {
                 return into() == p;
         }
 
         constexpr auto is_promotion() const noexcept
         {
-                return is_with(Piece::pawn) && !is_into(Piece::pawn);
+                return is_with(piece::pawn) && !is_into(piece::pawn);
         }
 
         auto to_move() const noexcept
         {
-                return state_.to_move();
+                return m_state.to_move();
         }
 
         auto num_captured_pieces() const noexcept
@@ -188,7 +188,7 @@ public:
 private:
         auto is_king(square_type sq) const
         {
-                return state_.pieces(king_c).test(sq);
+                return m_state.pieces(king_c).test(sq);
         }
 
         auto precedence_duplicates() const
@@ -197,59 +197,59 @@ private:
                         !is_nontrivial_precedence_v<rules_type> &&
                         std::is_same<DuplicatesPolicy, keep_duplicates_tag>{}
                 ){
-                        assert(actions_.empty() || precedence::equal_to{}(candidate_action_, actions_.back()));
-                        actions_.push_back(candidate_action_);
+                        assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
+                        m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         !is_nontrivial_precedence_v<rules_type> &&
                         std::is_same<DuplicatesPolicy, drop_duplicates_tag>{}
                 ){
-                        assert(actions_.empty() || precedence::equal_to{}(candidate_action_, actions_.back()));
-                        if (actions_.empty() || is_small() || is_unique())
-                                actions_.push_back(candidate_action_);
+                        assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
+                        if (m_actions.empty() || is_small() || is_unique())
+                                m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         is_nontrivial_precedence_v<rules_type> &&
                         std::is_same<DuplicatesPolicy, keep_duplicates_tag>{}
                 ){
-                        if (actions_.empty() || precedence::equal_to{}(candidate_action_, actions_.back()))
-                                return actions_.push_back(candidate_action_);
-                        if (precedence::less{}(candidate_action_, actions_.back()))
+                        if (m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()))
+                                return m_actions.push_back(m_candidate_action);
+                        if (precedence::less{}(m_candidate_action, m_actions.back()))
                                 return;
-                        assert(precedence::greater{}(candidate_action_, actions_.back()));
-                        actions_.clear();
-                        actions_.push_back(candidate_action_);
+                        assert(precedence::greater{}(m_candidate_action, m_actions.back()));
+                        m_actions.clear();
+                        m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         is_nontrivial_precedence_v<rules_type> &&
                         std::is_same<DuplicatesPolicy, drop_duplicates_tag>{}
                 ){
-                        if (actions_.empty())
-                                return actions_.push_back(candidate_action_);/*
-                        if (precedence::equal_to{}(candidate_action_, actions_.back())) {
+                        if (m_actions.empty())
+                                return m_actions.push_back(m_candidate_action);/*
+                        if (precedence::equal_to{}(m_candidate_action, m_actions.back())) {
                                 if (is_small() || is_unique())
-                                        actions_.push_back(candidate_action_);
+                                        m_actions.push_back(m_candidate_action);
                                 return;
                         }
-                        if (precedence::less{}(candidate_action_, actions_.back()))
+                        if (precedence::less{}(m_candidate_action, m_actions.back()))
                                 return;
-                        assert(precedence::greater{}(candidate_action_, actions_.back()));
-                        actions_.clear();
-                        actions_.push_back(candidate_action_);*/
+                        assert(precedence::greater{}(m_candidate_action, m_actions.back()));
+                        m_actions.clear();
+                        m_actions.push_back(m_candidate_action);*/
 
-                        switch(precedence::compare{}(candidate_action_, actions_.back())) {
+                        switch(precedence::compare{}(m_candidate_action, m_actions.back())) {
                         case -1 :
-                                assert(precedence::less{}(candidate_action_, actions_.back()));
+                                assert(precedence::less{}(m_candidate_action, m_actions.back()));
                                 return;
                         case  0 :
-                                assert(precedence::equal_to{}(candidate_action_, actions_.back()));
+                                assert(precedence::equal_to{}(m_candidate_action, m_actions.back()));
                                 if (is_small() || is_unique())
-                                        actions_.push_back(candidate_action_);
+                                        m_actions.push_back(m_candidate_action);
                                 return;
                         case +1 :
-                                assert(precedence::greater{}(candidate_action_, actions_.back()));
-                                actions_.clear();
-                                actions_.push_back(candidate_action_);
+                                assert(precedence::greater{}(m_candidate_action, m_actions.back()));
+                                m_actions.clear();
+                                m_actions.push_back(m_candidate_action);
                                 return;
                         default:
                                 assert(false);
@@ -259,15 +259,15 @@ private:
 
         auto is_small() const noexcept
         {
-                return candidate_action_.num_captured_pieces() < large_jump_v<rules_type>;
+                return m_candidate_action.num_captured_pieces() < large_jump_v<rules_type>;
         }
 
         auto is_unique() const // Throws: Nothing.
         {
                 static_assert(std::is_same<DuplicatesPolicy, drop_duplicates_tag>{});
-                assert(!actions_.empty());
-                assert(precedence::equal_to{}(candidate_action_, actions_.back()));
-                return boost::algorithm::none_of(actions_, [&](auto const& a) { return a == candidate_action_; });
+                assert(!m_actions.empty());
+                assert(precedence::equal_to{}(m_candidate_action, m_actions.back()));
+                return boost::algorithm::none_of(m_actions, [&](auto const& a) { return a == m_candidate_action; });
         }
 };
 

@@ -9,15 +9,15 @@
 #include <dctl/actions/detail/generate_king_push.hpp>   // Generate (king push specialization)
 #include <dctl/actions/detail/generate_pawn_push.hpp>   // Generate (pawn push specialization)
 #include <dctl/actions/select/push.hpp>                 // push
-#include <dctl/color_piece.hpp>                         // Color, color_constant, king_, pawn_
+#include <dctl/color_piece.hpp>                         // color, color_, king_, pawn_
 
 namespace dctl {
 namespace detail {
 
-template<Color Side, class DuplicatesPolicy, class Reverse>
-class Actions<color_constant<Side>, select::push, DuplicatesPolicy, Reverse>
+template<color Side, class DuplicatesPolicy, class Reverse>
+class Actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>
 {
-        using to_move_ = color_constant<Side>;
+        using to_move_ = color_<Side>;
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& state, SequenceContainer& actions) const

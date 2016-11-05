@@ -23,13 +23,13 @@ class cursor
 
         using square_type = std::size_t;
 
-        int cursor_{};
+        int m_cursor{};
 public:
         cursor() = default;
 
         explicit cursor(square_type const sq) noexcept
         :
-                cursor_{static_cast<int>(sq)}
+                m_cursor{static_cast<int>(sq)}
         {}
 
         template<class, int>
@@ -38,46 +38,46 @@ public:
         template<int M>
         /* implicit */ cursor(cursor<Board, M> const& other) noexcept
         :
-                cursor_{other.cursor_}
+                m_cursor{other.m_cursor}
         {}
 
         /* implicit */ operator auto() const noexcept
         {
-                return static_cast<square_type>(cursor_);
+                return static_cast<square_type>(m_cursor);
         }
 
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
         {
-                cursor_ += stride;
+                m_cursor += stride;
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
         auto& operator--() noexcept
         {
-                cursor_ -= stride;
+                m_cursor -= stride;
                 return *this;
         }
 
         // operator+(cursor, int) provided by boost::additive
         auto& operator+=(std::size_t const n) noexcept
         {
-                cursor_ += static_cast<int>(n) * stride;
+                m_cursor += static_cast<int>(n) * stride;
                 return *this;
         }
 
         // operator-(cursor, int) provided by boost::additive
         auto& operator-=(std::size_t const n) noexcept
         {
-                cursor_ -= static_cast<int>(n) * stride;
+                m_cursor -= static_cast<int>(n) * stride;
                 return *this;
         }
 
         // number of increments / decrements between lhs and rhs
         friend auto operator-(cursor const& lhs, cursor const& rhs) noexcept
         {
-                return (lhs.cursor_ - rhs.cursor_) / stride;
+                return (lhs.m_cursor - rhs.m_cursor) / stride;
         }
 };
 

@@ -16,7 +16,7 @@ namespace mask {
 template<class Board>
 class column
 {
-        template<class Color>
+        template<class color>
         struct init
         {
                 struct is_column
@@ -27,7 +27,7 @@ class column
                         constexpr auto operator()(std::size_t const sq) const noexcept
                         {
                                 assert(column_ < Board::width);
-                                return board::detail::to_llo(sq, Board::inner_grid).x == (Color{} == white_c ? column_ : Board::width - 1 - column_);
+                                return board::detail::to_llo(sq, Board::inner_grid).x == (color{} == white_c ? column_ : Board::width - 1 - column_);
                         }
                 };
 
@@ -47,7 +47,7 @@ class column
         };
 
 public:
-        constexpr auto operator()(Color const to_move, std::size_t const column) const noexcept
+        constexpr auto operator()(color const to_move, std::size_t const column) const noexcept
         {
                 assert(column < Board::width);
                 return value[xstd::to_underlying_type(to_move)][column];

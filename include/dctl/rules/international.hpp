@@ -13,7 +13,7 @@ struct International
         static constexpr auto is_inverted               = false;        // 2.4
         static constexpr auto initial_position_gap      = 2;            // 2.8
 
-        // 3. The movement of the Piece
+        // 3. The movement of the piece
         static constexpr auto is_long_ranged_king       = true;         // 3.9
 
         // 4. The capture

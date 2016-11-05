@@ -10,7 +10,7 @@
 namespace dctl {
 namespace evaluate {
 
-template<class Color>
+template<class color>
 class Feature
 {
 public:
@@ -32,8 +32,8 @@ public:
                 using rules_type = rules_t<State>;
                 using board_type = board_t<State>;
                 return
-                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(Color{}, pawn_c)) +
-                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(Color{}, king_c))
+                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(color{}, pawn_c)) +
+                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(color{}, king_c))
                 ;
         }
 
@@ -45,7 +45,7 @@ public:
                 using namespace xstd::support_literals;
                 auto score = 0;
                 for (auto i = 1_zu; i < board_type::height; ++i)
-                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(Color{}) & board::mask::row<board_type, Color>{}(i)).count());
+                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(color{}) & board::mask::row<board_type, color>{}(i)).count());
                 return score;
         }
 
@@ -59,8 +59,8 @@ public:
                 for (auto i = 1_zu; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::center[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & board::mask::column<board_type>{}(         Color {}, i)).count()) +
-                                static_cast<int>((s.pieces(Color{}) & board::mask::column<board_type>{}(opposite<Color>{}, i)).count())
+                                static_cast<int>((s.pieces(color{}) & board::mask::column<board_type>{}(         color {}, i)).count()) +
+                                static_cast<int>((s.pieces(color{}) & board::mask::column<board_type>{}(opposite<color>{}, i)).count())
                         );
                 }
                 return score;
@@ -76,8 +76,8 @@ public:
                 for (auto i = 0_zu; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::balance[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & board::mask::column<board_type>{}(         Color {}, i)).count()) -
-                                static_cast<int>((s.pieces(Color{}) & board::mask::column<board_type>{}(opposite<Color>{}, i)).count())
+                                static_cast<int>((s.pieces(color{}) & board::mask::column<board_type>{}(         color {}, i)).count()) -
+                                static_cast<int>((s.pieces(color{}) & board::mask::column<board_type>{}(opposite<color>{}, i)).count())
                         );
                 }
                 return -abs(score);
@@ -88,7 +88,7 @@ public:
         {
                 using rules_type = rules_t<State>;
                 using board_type = board_t<State>;
-                return Weight<rules_type, board_type>::mobility * static_cast<int>(Actions<select::push>{}.template count<Color>(s));
+                return Weight<rules_type, board_type>::mobility * static_cast<int>(Actions<select::push>{}.template count<color>(s));
         }
 };
 

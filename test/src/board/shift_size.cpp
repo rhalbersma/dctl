@@ -1,6 +1,6 @@
 #include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsiretti, International, Frisian, Ktar<10, 11>,
                                                 // Ktar<10, 12>, Compact_10_12, Compact_12_10, Rectangular<12, 10>, Canadian, SriLankan, Dumm
-#include <dctl/board/angle.hpp>                 // Angle, reverse
+#include <dctl/board/angle.hpp>                 // angle, reverse
 #include <dctl/board/shift.hpp>                 // shift_size
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -12,9 +12,9 @@ namespace board {
 
 BOOST_AUTO_TEST_SUITE(GridShiftSize)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseAngleSymmetryForAllDirections, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseangleSymmetryForAllDirections, T, BoardSequence)
 {
-        auto const directions = std::vector<Angle>
+        auto const directions = std::vector<angle>
         {
                    0_deg,  45_deg,  90_deg, 135_deg,
                  180_deg, 225_deg, 270_deg, 315_deg

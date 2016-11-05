@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/mask/squares.hpp>  // squares
-#include <dctl/color_piece.hpp>         // Color, black_, white_, Piece, pawn_, king_
+#include <dctl/color_piece.hpp>         // color, black_, white_, piece, pawn_, king_
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 
@@ -17,87 +17,87 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        set_type color_[2];
-        set_type kings_;
-        set_type empty_;
+        set_type m_color[2];
+        set_type m_kings;
+        set_type m_empty;
 
 public:
         BaseState() = default;
 
         BaseState(set_type const b, set_type const w, set_type const /* p */, set_type const k)
         :
-                color_{b, w},
-                kings_{k},
-                empty_{board::mask::squares_v<board_type> ^ (b | w)}
+                m_color{b, w},
+                m_kings{k},
+                m_empty{board::mask::squares_v<board_type> ^ (b | w)}
         {}
 
         template<class Action>
-        auto& make(Color const c, Action const& a)
+        auto& make(color const c, Action const& a)
         {
                 pieces(c).reset(a.from());
                 pieces(c).set  (a.dest());
 
                 if (a.is_jump()) {
                         pieces(!c) ^= a.captured_pieces();
-                        kings_ &= ~a.captured_pieces();
-                        empty_ ^= a.captured_pieces();
+                        m_kings &= ~a.captured_pieces();
+                        m_empty ^= a.captured_pieces();
                 }
 
-                if (a.with() == Piece::king) {
-                        kings_.reset(a.from());
-                        kings_.set(a.dest());
-                } else if (a.into() == Piece::king) {
-                        kings_.set(a.dest());
+                if (a.with() == piece::king) {
+                        m_kings.reset(a.from());
+                        m_kings.set(a.dest());
+                } else if (a.into() == piece::king) {
+                        m_kings.set(a.dest());
                 }
 
-                empty_.set  (a.from());
-                empty_.reset(a.dest());
+                m_empty.set  (a.from());
+                m_empty.reset(a.dest());
 
                 return *this;
         }
 
-        auto pieces(Color const c) const noexcept
+        auto pieces(color const c) const noexcept
         {
-                return color_[xstd::to_underlying_type(c)];
+                return m_color[xstd::to_underlying_type(c)];
         }
 
-        auto pieces(Piece const p) const noexcept
+        template<piece Type>
+        auto pieces(piece_<Type> const p) const noexcept
+        {
+                if constexpr (p == pawn_c) { return m_kings ^ pieces(all_c); }
+                if constexpr (p == king_c) { return m_kings;                 }
+        }
+
+        auto pieces(piece const p) const noexcept
         {
                 return p == pawn_c ? pieces(pawn_c) : pieces(king_c);
         }
 
-        template<Piece Type>
-        auto pieces(piece_constant<Type> const p) const noexcept
-        {
-                if constexpr (p == pawn_c) { return kings_ ^ pieces(all_c); }
-                if constexpr (p == king_c) { return kings_;                      }
-        }
-
-        auto pieces(Color const c, Piece const p) const noexcept
+        auto pieces(color const c, piece const p) const noexcept
         {
                 return pieces(c) & pieces(p);
         }
 
-        template<Piece Type>
-        auto pieces(Color const c, piece_constant<Type> const p) const noexcept
+        template<piece Type>
+        auto pieces(color const c, piece_<Type> const p) const noexcept
         {
                 return pieces(c) & pieces(p);
         }
 
         auto pieces(all_) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ empty_;
+                return board::mask::squares_v<board_type> ^ m_empty;
         }
 
         auto pieces(none_) const noexcept
         {
-                return empty_;
+                return m_empty;
         }
 
 private:
-        auto& pieces(Color const c) noexcept
+        auto& pieces(color const c) noexcept
         {
-                return color_[xstd::to_underlying_type(c)];
+                return m_color[xstd::to_underlying_type(c)];
         }
 };
 

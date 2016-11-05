@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>         // Angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
+#include <dctl/board/angle.hpp>         // angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
 #include <dctl/board/mask/squares.hpp>  // squares
 #include <dctl/board/ray/fill.hpp>      // fill
 #include <dctl/board/ray/iterator.hpp>  // iterator
@@ -33,7 +33,7 @@ class king_targets
         static value_type const value[];
 
 public:
-        auto operator()(std::size_t const sq, Angle const alpha) const noexcept
+        auto operator()(std::size_t const sq, angle const alpha) const noexcept
         {
                 auto const segment = (alpha - beta) / theta;
                 return value[segment][sq];
@@ -41,11 +41,11 @@ public:
 };
 
 template<class Board>
-constexpr Angle
+constexpr angle
 king_targets<Board>::theta;
 
 template<class Board>
-constexpr Angle
+constexpr angle
 king_targets<Board>::beta;
 
 template<class Board>

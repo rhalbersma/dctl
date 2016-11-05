@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // Angle, reverse
+#include <dctl/board/angle.hpp>                 // angle, reverse
 #include <dctl/board/shift.hpp>                 // shift_assign, shift_sign, shift_size
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
@@ -18,19 +18,19 @@ class cursor
 > >
 {
         static constexpr auto sign_incr = board::shift_sign_v<Direction>;
-        static constexpr auto sign_decr = board::shift_sign_v<reverse(Angle{Direction}).degrees()>;
+        static constexpr auto sign_decr = board::shift_sign_v<reverse(angle{Direction}).value()>;
         static constexpr auto stride    = board::shift_size_v<Board, Direction>;
         static_assert(stride != 0, "Cursors need a non-zero stride.");
 
         using set_type = set_t<Board>;
 
-        set_type cursor_{};
+        set_type m_cursor{};
 public:
         cursor() = default;
 
         explicit cursor(set_type const c) noexcept
         :
-                cursor_{c}
+                m_cursor{c}
         {}
 
         template<class, int>
@@ -39,25 +39,25 @@ public:
         template<int M>
         /* implicit */ cursor(cursor<Board, M> const& other) noexcept
         :
-                cursor_{other.cursor_}
+                m_cursor{other.m_cursor}
         {}
 
         /* implicit */ operator auto() const noexcept
         {
-                return cursor_;
+                return m_cursor;
         }
 
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
         {
-                board::shift_assign<sign_incr, stride>{}(cursor_);
+                board::shift_assign<sign_incr, stride>{}(m_cursor);
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
         auto& operator--() noexcept
         {
-                board::shift_assign<sign_decr, stride>{}(cursor_);
+                board::shift_assign<sign_decr, stride>{}(m_cursor);
                 return *this;
         }
 };
