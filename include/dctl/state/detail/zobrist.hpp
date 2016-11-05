@@ -14,12 +14,12 @@ class BaseState
         static std::array<std::size_t, N> const by_color[2];
         static std::array<std::size_t, N> const by_piece[2];
 public:
-        static auto const& pieces(Color c)
+        static auto const& pieces(color c)
         {
                 return by_color[xstd::to_underlying_type(c)];
         }
 
-        static auto const& pieces(Piece p)
+        static auto const& pieces(piece p)
         {
                 return by_piece[xstd::to_underlying_type(p)];
         }

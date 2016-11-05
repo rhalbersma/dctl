@@ -82,14 +82,14 @@ struct shift_assign<direction::right, N>
 
 struct shift_sign
 {
-        constexpr auto operator()(Angle const a) const noexcept
+        constexpr auto operator()(angle const a) const noexcept
         {
                 return (a == 0_deg || 180_deg < a) ? direction::left : direction::right;
         }
 };
 
 template<int Direction>
-constexpr auto shift_sign_v = shift_sign{}(Angle{Direction});
+constexpr auto shift_sign_v = shift_sign{}(angle{Direction});
 
 template<class Board>
 class shift_size
@@ -103,9 +103,9 @@ class shift_size
         constexpr auto left      () const noexcept { return right();                    }
         constexpr auto up        () const noexcept { return down();                     }
 public:
-        constexpr auto operator()(Angle const a) const
+        constexpr auto operator()(angle const a) const
         {
-                switch (a.degrees()) {
+                switch (a.value()) {
                 case   0 : return right()     ;
                 case  45 : return right_up()  ;
                 case  90 : return up()        ;
@@ -120,7 +120,7 @@ public:
 };
 
 template<class Board, int Direction>
-constexpr auto shift_size_v = shift_size<Board>{}(Angle{Direction});
+constexpr auto shift_size_v = shift_size<Board>{}(angle{Direction});
 
 }       // namespace board
 }       // namespace dctl

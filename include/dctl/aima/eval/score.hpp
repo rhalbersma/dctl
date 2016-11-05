@@ -12,7 +12,7 @@ namespace evaluate {
 template<class State>
 static int score (State const& s)
 {
-        return (s.to_move() == Color::black) ?
+        return (s.to_move() == color::black) ?
                 Delta<black_>::value(s) :
                 Delta<white_>::value(s)
         ;

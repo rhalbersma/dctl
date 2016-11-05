@@ -25,14 +25,14 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         struct Action
         {
                 using rules_type = Czech;
-                Piece with;
-                constexpr auto is_with_king() const noexcept { return with == Piece::king; }
+                piece with;
+                constexpr auto is_with_king() const noexcept { return with == piece::king; }
         };
 
         auto const moves = std::vector<Action>
         {
-                { Piece::pawn },
-                { Piece::king }
+                { piece::pawn },
+                { piece::king }
         };
 
         BOOST_CHECK(precedence::is_consistent(moves));

@@ -4,47 +4,47 @@
 
 namespace dctl {
 
-enum class Color : unsigned char { black, white };
+enum class color : unsigned char { black, white };
 
-constexpr auto operator!(Color const c) noexcept
+constexpr auto operator!(color const c) noexcept
 {
-        return static_cast<Color>(!xstd::to_underlying_type(c));
+        return static_cast<color>(!xstd::to_underlying_type(c));
 }
 
-template<Color Side>
-using color_constant = std::integral_constant<Color, Side>;
+template<color Side>
+using color_ = std::integral_constant<color, Side>;
 
-template<class Color>
-using opposite = color_constant<!Color::value>;
+template<class color>
+using opposite = color_<!color::value>;
 
-using black_ = color_constant<Color::black>;
-using white_ = color_constant<Color::white>;
+using black_ = color_<color::black>;
+using white_ = color_<color::white>;
 
-template<Color Side>
-constexpr auto color_c = color_constant<Side>{};
+template<color Side>
+constexpr auto color_c = color_<Side>{};
 
-template<Color Side>
-constexpr auto operator!(color_constant<Side>) noexcept
+template<color Side>
+constexpr auto operator!(color_<Side>) noexcept
 {
         return color_c<!Side>;
 }
 
-inline constexpr auto black_c = color_c<Color::black>;
-inline constexpr auto white_c = color_c<Color::white>;
+inline constexpr auto black_c = color_c<color::black>;
+inline constexpr auto white_c = color_c<color::white>;
 
-enum class Piece : unsigned char { pawn, king };
+enum class piece : unsigned char { pawn, king };
 
-template<Piece Type>
-using piece_constant = std::integral_constant<Piece, Type>;
+template<piece Type>
+using piece_ = std::integral_constant<piece, Type>;
 
-using pawn_ = piece_constant<Piece::pawn>;
-using king_ = piece_constant<Piece::king>;
+using pawn_ = piece_<piece::pawn>;
+using king_ = piece_<piece::king>;
 
-template<Piece Type>
-constexpr auto piece_c = piece_constant<Type>{};
+template<piece Type>
+constexpr auto piece_c = piece_<Type>{};
 
-inline constexpr auto pawn_c = piece_c<Piece::pawn>;
-inline constexpr auto king_c = piece_c<Piece::king>;
+inline constexpr auto pawn_c = piece_c<piece::pawn>;
+inline constexpr auto king_c = piece_c<piece::king>;
 
 struct  all_ {};
 struct none_ {};

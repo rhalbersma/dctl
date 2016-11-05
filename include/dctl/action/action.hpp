@@ -15,7 +15,7 @@ namespace block_adl {
 template<class Board>
 struct BaseQualityPrecedence
 {
-        set_t<Board> captured_kings_;
+        set_t<Board> m_captured_kings;
 };
 
 template<class Rules, class Board>
@@ -28,7 +28,7 @@ using quality_precedence_t = std::conditional_t<
 template<class Board>
 struct BaseOrderingPrecedence
 {
-        set_t<Board> piece_order_;
+        set_t<Board> m_piece_order;
 };
 
 template<class Rules, class Board>
@@ -59,11 +59,11 @@ public:
         using    set_type =    set_t<Board>;
         using square_type = square_t<Board>;
 private:
-        set_type captured_pieces_;
-        square_type from_;
-        square_type dest_;
-        Piece with_;
-        Piece into_;
+        set_type m_captured_pieces;
+        square_type m_from;
+        square_type m_dest;
+        piece m_with;
+        piece m_into;
 
         constexpr auto assert_invariants() const noexcept
         {
@@ -77,11 +77,11 @@ public:
         :
                 ordering_precedence_t{},
                 quality_precedence_t{},
-                captured_pieces_{},
-                from_{static_cast<square_type>(src)},
-                dest_{static_cast<square_type>(dst)},
-                with_{Piece::pawn},
-                into_{promotion ? Piece::king : Piece::pawn}
+                m_captured_pieces{},
+                m_from{static_cast<square_type>(src)},
+                m_dest{static_cast<square_type>(dst)},
+                m_with{piece::pawn},
+                m_into{promotion ? piece::king : piece::pawn}
         {
                 assert_invariants();
         }
@@ -90,11 +90,11 @@ public:
         :
                 ordering_precedence_t{},
                 quality_precedence_t{},
-                captured_pieces_{},
-                from_{static_cast<square_type>(src)},
-                dest_{static_cast<square_type>(dst)},
-                with_{Piece::king},
-                into_{Piece::king}
+                m_captured_pieces{},
+                m_from{static_cast<square_type>(src)},
+                m_dest{static_cast<square_type>(dst)},
+                m_with{piece::king},
+                m_into{piece::king}
         {
                 assert_invariants();
         }
@@ -105,13 +105,13 @@ public:
                 if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         capture_quality_ordering(sq, is_king);
                 }
-                captured_pieces_.set(sq);
+                m_captured_pieces.set(sq);
         }
 
         constexpr auto release(std::size_t const sq, bool const is_king) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
-                captured_pieces_.reset(sq);
+                m_captured_pieces.reset(sq);
                 if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         release_quality_ordering(sq, is_king);
                 }
@@ -120,48 +120,48 @@ public:
         constexpr auto from(std::size_t const sq) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
-                from_ = static_cast<square_type>(sq);
+                m_from = static_cast<square_type>(sq);
         }
 
         constexpr auto from() const noexcept
         {
-                return from_;
+                return m_from;
         }
 
         constexpr auto dest(std::size_t const sq) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
-                dest_ = static_cast<square_type>(sq);
+                m_dest = static_cast<square_type>(sq);
         }
 
         constexpr auto dest() const noexcept
         {
-                return dest_;
+                return m_dest;
         }
 
-        constexpr auto with(Piece const p) noexcept
+        constexpr auto with(piece const p) noexcept
         {
-                with_ = p;
+                m_with = p;
         }
 
         constexpr auto with() const noexcept
         {
-                return with_;
+                return m_with;
         }
 
-        constexpr auto into(Piece const p) noexcept
+        constexpr auto into(piece const p) noexcept
         {
-                into_ = p;
+                m_into = p;
         }
 
         constexpr auto into() const noexcept
         {
-                return into_;
+                return m_into;
         }
 
         constexpr auto captured_pieces() const noexcept
         {
-                return captured_pieces_;
+                return m_captured_pieces;
         }
 
         constexpr auto num_captured_pieces() const noexcept
@@ -171,7 +171,7 @@ public:
 
         constexpr auto is_with_king() const noexcept
         {
-                return with() == Piece::king;
+                return with() == piece::king;
         }
 
         constexpr auto is_jump() const noexcept
@@ -181,7 +181,7 @@ public:
 
         constexpr auto is_promotion() const noexcept
         {
-                return with() == Piece::pawn && into() != Piece::pawn;
+                return with() == piece::pawn && into() != piece::pawn;
         }
 
         constexpr auto is_reversible() const noexcept
@@ -195,7 +195,7 @@ public:
         >...>
         constexpr auto captured_kings() const noexcept
         {
-                return this->captured_kings_;
+                return this->m_captured_kings;
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
@@ -213,7 +213,7 @@ public:
         >...>
         constexpr auto piece_order() const noexcept
         {
-                return this->piece_order_;
+                return this->m_piece_order;
         }
 private:
         constexpr auto capture_quality_ordering(std::size_t const sq, bool const is_king)
@@ -221,10 +221,10 @@ private:
                 static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
                         if constexpr (is_quality_precedence_v<rules_type>) {
-                                this->captured_kings_.set(sq);
+                                this->m_captured_kings.set(sq);
                         }
                         if constexpr (is_ordering_precedence_v<rules_type>) {
-                                this->piece_order_.set(reverse_index());
+                                this->m_piece_order.set(reverse_index());
                         }
                 }
         }
@@ -234,10 +234,10 @@ private:
                 static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
                         if constexpr (is_ordering_precedence_v<rules_type>) {
-                                this->piece_order_.reset(reverse_index());
+                                this->m_piece_order.reset(reverse_index());
                         }
                         if constexpr (is_quality_precedence_v<rules_type>) {
-                                this->captured_kings_.reset(sq);
+                                this->m_captured_kings.reset(sq);
                         }
                 }
         }
@@ -249,7 +249,7 @@ private:
 
         constexpr auto is_demotion() const noexcept
         {
-                return with() != Piece::pawn && into() == Piece::pawn;
+                return with() != piece::pawn && into() == piece::pawn;
         }
 
         constexpr auto reverse_index() const noexcept

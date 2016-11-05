@@ -5,12 +5,12 @@
 namespace dctl {
 namespace evaluate {
 
-template<class Color>
+template<class color>
 class Delta
 {
 private:
-        using Active  = Feature<         Color >;
-        using Passive = Feature<opposite<Color>>;
+        using Active  = Feature<         color >;
+        using Passive = Feature<opposite<color>>;
 
 public:
         template<class State>

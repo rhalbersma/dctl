@@ -6,7 +6,7 @@
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror
-#include <dctl/color_piece.hpp>                         // Color, color_constant, king_
+#include <dctl/color_piece.hpp>                         // color, color_, king_
 #include <dctl/rule_traits.hpp>                         // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                         // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
@@ -17,20 +17,20 @@
 namespace dctl {
 namespace detail {
 
-template<Color Side, class Reverse, class State, class Builder>
-class Generate<color_constant<Side>, king_, select::jump, Reverse, State, Builder>
+template<color Side, class Reverse, class State, class Builder>
+class Generate<color_<Side>, king_, select::jump, Reverse, State, Builder>
 {
-        using to_move_ = color_constant<Side>;
+        using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
         static constexpr auto piece_c = king_c;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.degrees();
+        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::Angle{orientation}));
+        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::angle{orientation}));
 
         Builder& builder;
 public:
@@ -49,7 +49,7 @@ public:
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
                 static_assert(is_passing_promotion_v<rules_type>);
-                assert(builder.is_with(Piece::pawn) && builder.is_into(Piece::king));
+                assert(builder.is_with(piece::pawn) && builder.is_into(piece::king));
                 try_next(jumper);
         }
 private:
@@ -74,7 +74,7 @@ private:
         template<class Iterator>
         auto first_target(Iterator jumper) const
         {
-                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
+                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.value()>());
                 if (is_onboard(jumper) && builder.is_target(jumper)) {
                         assert(is_onboard(std::next(jumper)));
                         capture(jumper);
@@ -162,7 +162,7 @@ private:
         template<class Iterator>
         auto scan(Iterator jumper) const
         {
-                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.degrees()>());
+                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.value()>());
                 return is_en_prise(jumper);
         }
 

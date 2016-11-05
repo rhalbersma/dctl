@@ -6,8 +6,8 @@ namespace dctl {
 namespace board {
 namespace mask {
 
-template<class Board, class Color>
-constexpr auto promotion_v = row<Board, opposite<Color>>{}(0);
+template<class Board, class color>
+constexpr auto promotion_v = row<Board, opposite<color>>{}(0);
 
 }       // namespace mask
 }       // namespace board

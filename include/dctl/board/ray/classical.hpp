@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>                 // Angle
+#include <dctl/board/angle.hpp>                 // angle
 #include <dctl/board/mask/king_targets.hpp>     // king_targets
 #include <dctl/board/shift.hpp>                 // first, shift_sign
 #include <dctl/board/ray/iterator.hpp>          // iterator
@@ -12,7 +12,7 @@ namespace ray {
 template<class Board, int Direction, class Set = set_t<Board>>
 auto classical(iterator<Board, Direction> from, Set const propagator)
 {
-        constexpr auto theta = Angle{Direction};
+        constexpr auto theta = angle{Direction};
         auto targets = mask::king_targets<Board>{}(*from, theta);
         auto const blockers = targets & ~propagator;
         if (blockers.any()) {

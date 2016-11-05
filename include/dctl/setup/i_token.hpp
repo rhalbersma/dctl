@@ -20,13 +20,13 @@ struct TokenInterface
         static const auto white = W;
         static const auto empty = E;
 
-        static char const Color[];
+        static char const color[];
         static char const lower[];
         static char const upper[];
 };
 
 template<char B, char W, char E>
-char const TokenInterface<B, W, E>::Color[] = {
+char const TokenInterface<B, W, E>::color[] = {
         black,
         white
 };

@@ -1,5 +1,5 @@
 #include <board/group.hpp>              // action::is_realized, make
-#include <dctl/board/angle.hpp>         // Angle, _deg, inverse, rotate
+#include <dctl/board/angle.hpp>         // angle, _deg, inverse, rotate
 #include <boost/algorithm/cxx11/all_of.hpp>
 #include <boost/range/irange.hpp>       // irange
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
@@ -8,9 +8,9 @@
 
 using namespace dctl::board;
 
-BOOST_AUTO_TEST_SUITE(AngleAngle)
+BOOST_AUTO_TEST_SUITE(angleangle)
 
-BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllAngles)
+BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllangles)
 {
         auto const op = [](auto i, auto j){ return rotate(i, j); };
         auto const inv = [](auto i){ return inverse(i); };
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllAngles)
         BOOST_CHECK(
                 boost::algorithm::all_of(C_N, [=](auto const& g){
                         return boost::algorithm::all_of(angles, [&](auto const a){
-                                return group::action::is_realized(Angle{a}, g);
+                                return group::action::is_realized(angle{a}, g);
                         });
                 })
         );

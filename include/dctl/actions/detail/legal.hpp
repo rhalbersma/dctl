@@ -5,15 +5,15 @@
 #include <dctl/actions/select/legal.hpp>        // legal
 #include <dctl/actions/select/jump.hpp>         // jump
 #include <dctl/actions/select/push.hpp>         // push
-#include <dctl/color_piece.hpp>                 // Color, color_constant
+#include <dctl/color_piece.hpp>                 // color, color_
 
 namespace dctl {
 namespace detail {
 
-template<Color Side, class DuplicatesPolicy, class Reverse>
-class Actions<color_constant<Side>, select::legal, DuplicatesPolicy, Reverse>
+template<color Side, class DuplicatesPolicy, class Reverse>
+class Actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>
 {
-        using to_move_ = color_constant<Side>;
+        using to_move_ = color_<Side>;
         using Jump = Actions<to_move_, select::jump, DuplicatesPolicy, Reverse>;
         using Push = Actions<to_move_, select::push, DuplicatesPolicy, Reverse>;
 public:

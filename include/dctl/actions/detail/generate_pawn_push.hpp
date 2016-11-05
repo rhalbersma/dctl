@@ -6,7 +6,7 @@
 #include <dctl/board/mask/promotion.hpp>                // is_promotion
 #include <dctl/board/mask/push_targets.hpp>             // push_targets
 #include <dctl/board/ray.hpp>                           // make_iterator
-#include <dctl/color_piece.hpp>                         // Color, color_constant, pawn_
+#include <dctl/color_piece.hpp>                         // color, color_, pawn_
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t, value_t
 #include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
@@ -14,10 +14,10 @@
 namespace dctl {
 namespace detail {
 
-template<Color Side, class Reverse, class State, class SequenceContainer>
-class Generate<color_constant<Side>, pawn_, select::push, Reverse, State, SequenceContainer>
+template<color Side, class Reverse, class State, class SequenceContainer>
+class Generate<color_<Side>, pawn_, select::push, Reverse, State, SequenceContainer>
 {
-        using to_move_ = color_constant<Side>;
+        using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
         static constexpr auto piece_c = pawn_c;
         using  board_type = board_t<State>;
@@ -26,12 +26,12 @@ class Generate<color_constant<Side>, pawn_, select::push, Reverse, State, Sequen
         template<int Direction>
         using push_targets = board::mask::push_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.degrees();
-        SequenceContainer& actions;
+        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
+        SequenceContainer& m_actions;
 public:
         explicit Generate(SequenceContainer& a) noexcept
         :
-                actions{a}
+                m_actions{a}
         {}
 
         auto operator()(State const& state) const
@@ -54,7 +54,7 @@ private:
                         sources,
                         destinations
                 ).for_each([this](auto const dest_sq){
-                        actions.emplace_back(
+                        m_actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq,
                                 is_promotion(dest_sq)

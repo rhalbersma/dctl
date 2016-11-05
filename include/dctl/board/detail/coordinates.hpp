@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/angle.hpp>         // Angle
+#include <dctl/board/angle.hpp>         // angle
 #include <dctl/utility/type_traits.hpp> // value_t
 #include <cassert>                      // assert
 #include <cstddef>                      // size_t
@@ -40,10 +40,10 @@ constexpr auto operator!=(coordinates<Origin> const lhs, coordinates<Origin> con
         return !(lhs == rhs);
 }
 
-constexpr auto rotate(coordinates<screen_centered> const coord, Angle const a)
+constexpr auto rotate(coordinates<screen_centered> const coord, angle const a)
         -> coordinates<screen_centered>
 {
-        switch (a.degrees()) {
+        switch (a.value()) {
         case   0 : return coord;
         case  90 : return { -coord.y,  coord.x };
         case 180 : return { -coord.x, -coord.y };
@@ -170,7 +170,7 @@ constexpr auto to_sco(std::size_t const sq, Grid const grid)
 }
 
 template<class FromGrid, class DestGrid>
-constexpr auto transform(std::size_t const sq, FromGrid const from, DestGrid const dest, Angle const a)
+constexpr auto transform(std::size_t const sq, FromGrid const from, DestGrid const dest, angle const a)
 {
         // sq.to_sco(from).rotate(a).to_square(dest)
         return to_square(rotate(to_sco(sq, from), a), dest);
