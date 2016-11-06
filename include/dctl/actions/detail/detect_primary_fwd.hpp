@@ -4,7 +4,7 @@ namespace dctl {
 namespace detail {
 
 template<class...>
-class Detect;
+class detect;
 
 }       // namespace detail
 }       // namespace dctl

@@ -4,7 +4,7 @@ namespace dctl {
 namespace rules {
 namespace block_adl {
 
-struct Thai
+struct thai
 {
         static constexpr auto is_long_ranged_king = true;
         static constexpr auto is_backward_pawn_jump = false;
@@ -17,7 +17,7 @@ struct Thai
 
 }       // namespace block_adl
 
-using block_adl::Thai;
+using block_adl::thai;
 
 }       // namespace rules
 }       // namespace dctl

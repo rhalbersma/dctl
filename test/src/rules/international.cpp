@@ -1,4 +1,4 @@
-#include <dctl/rules/international.hpp> // International
+#include <dctl/rules/international.hpp> // international
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
@@ -8,9 +8,9 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(RulesInternational)
+BOOST_AUTO_TEST_SUITE(Rulesinternational)
 
-using T = International;
+using T = international;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = International;
+                using rules_type = international;
                 std::size_t num_captured_;
                 constexpr auto num_captured_pieces() const noexcept { return num_captured_; }
         };

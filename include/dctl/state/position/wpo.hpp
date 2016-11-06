@@ -4,12 +4,11 @@
 #include <dctl/utility/type_traits.hpp> // set_t
 
 namespace dctl {
-namespace detail {
-namespace wma {
+namespace wpo {
 namespace block_adl {
 
 template<class Board>
-class BaseState
+class position
 {
 public:
         using board_type = Board;
@@ -18,28 +17,28 @@ public:
 private:
         set_type m_white;
         set_type m_pawns;
-        set_type m_occupied;
+        set_type m_occup;
 
 public:
-        BaseState() = default;
+        position() = default;
 
-        BaseState(set_type const w, set_type const m, set_type const a) noexcept
+        position(set_type const w, set_type const p, set_type const o) noexcept
         :
                 m_white{w},
-                m_pawns{m},
-                m_occupied{a}
+                m_pawns{p},
+                m_occup{o}
         {}
 
-        BaseState(set_type const b, set_type const w, set_type const p, set_type const /* k */) noexcept
+        position(set_type const b, set_type const w, set_type const p, set_type const /* k */) noexcept
         :
-                BaseState{w, p, b | w}
+                position{w, p, b | w}
         {}
 
         template<class Action>
-        auto& make(color const c, Action const& a)
+        auto make(color const c, Action const& a)
         {
-                m_occupied.reset(a.from());
-                m_occupied.set  (a.dest());
+                m_occup.reset(a.from());
+                m_occup.set  (a.dest());
 
                 if (c == white_c) {
                         m_white.reset(a.from());
@@ -53,19 +52,17 @@ public:
                         m_pawns.set(a.dest());
 
                 if (a.is_jump()) {
-                        m_white    &= ~a.captured_pieces();
-                        m_pawns    &= ~a.captured_pieces();
-                        m_occupied ^=  a.captured_pieces();
+                        m_white &= ~a.captured_pieces();
+                        m_pawns &= ~a.captured_pieces();
+                        m_occup ^=  a.captured_pieces();
                 }
-
-                return *this;
         }
 
         template<color Side>
         auto pieces(color_<Side>) const noexcept
         {
-                if constexpr (Side == color::black) { return m_white ^ m_occupied; }
-                if constexpr (Side == color::white) { return m_white;              }
+                if constexpr (Side == color::black) { return m_white ^ m_occup; }
+                if constexpr (Side == color::white) { return m_white;           }
         }
 
         auto pieces(color const c) const noexcept
@@ -76,22 +73,22 @@ public:
         template<piece Type>
         auto pieces(piece_<Type>) const noexcept
         {
-                if constexpr (Type == piece::pawn) { return m_pawns;              }
-                if constexpr (Type == piece::king) { return m_pawns ^ m_occupied; }
+                if constexpr (Type == piece::pawn) { return m_pawns;           }
+                if constexpr (Type == piece::king) { return m_pawns ^ m_occup; }
         }
 
         auto pieces(piece const p) const noexcept
         {
-                return p == piece::pawn ? pieces(pawn_c) : pieces(king_c);
+                return p == piece::pawn ? pieces(pawns_c) : pieces(kings_c);
         }
 
         template<color Side, piece Type>
         auto pieces(color_<Side>, piece_<Type>) const noexcept
         {
-                if constexpr (Side == color::black && Type == piece::pawn) { return ~m_white &  m_pawns;               }
-                if constexpr (Side == color::black && Type == piece::king) { return (m_white |  m_pawns) ^ m_occupied; }
-                if constexpr (Side == color::white && Type == piece::pawn) { return  m_white &  m_pawns;               }
-                if constexpr (Side == color::white && Type == piece::king) { return  m_white & ~m_pawns;               }
+                if constexpr (Side == color::black && Type == piece::pawn) { return ~m_white &  m_pawns;            }
+                if constexpr (Side == color::black && Type == piece::king) { return (m_white |  m_pawns) ^ m_occup; }
+                if constexpr (Side == color::white && Type == piece::pawn) { return  m_white &  m_pawns;            }
+                if constexpr (Side == color::white && Type == piece::king) { return  m_white & ~m_pawns;            }
         }
 
         template<piece Type>
@@ -103,32 +100,31 @@ public:
         template<color Side>
         auto pieces(color_<Side> const c, piece const p) const noexcept
         {
-                return p == piece::pawn ? pieces(c, pawn_c) : pieces(c, king_c);
+                return p == piece::pawn ? pieces(c, pawns_c) : pieces(c, kings_c);
         }
 
         auto pieces(color const c, piece const p) const noexcept
         {
                 return pieces(
                         c == color::black ? black_c : white_c,
-                        p == piece::pawn  ?  pawn_c :  king_c
+                        p == piece::pawn  ? pawns_c : kings_c
                 );
         }
 
-        auto pieces(all_) const noexcept
+        auto pieces(occup_) const noexcept
         {
-                return m_occupied;
+                return m_occup;
         }
 
-        auto pieces(none_) const noexcept
+        auto pieces(empty_) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ m_occupied;
+                return board::mask::squares_v<board_type> ^ m_occup;
         }
 };
 
 }       // namespace block_adl
 
-using block_adl::BaseState;
+using block_adl::position;
 
-}       // namespace wma
-}       // namespace detail
+}       // namespace wpo
 }       // namespace dctl

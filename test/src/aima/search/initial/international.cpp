@@ -6,8 +6,8 @@
 
 using namespace dctl;
 
-using Rules = rules::International;
-using Board = board::International;
+using Rules = rules::international;
+using Board = board::international;
 using F = aima::search::Fixture< state<Rules, Board>, aima::search::DefaultObjective >;
 
 BOOST_AUTO_TEST_SUITE(Searchinitial)

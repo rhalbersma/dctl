@@ -1,4 +1,4 @@
-#include <dctl/rules/frisian.hpp>       // Frisian
+#include <dctl/rules/frisian.hpp>       // frisian
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/color_piece.hpp>         // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_orthogonal_jump, equal_to, less
@@ -9,9 +9,9 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(RulesFrisian)
+BOOST_AUTO_TEST_SUITE(Rulesfrisian)
 
-using T = Frisian;
+using T = frisian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = Frisian;
+                using rules_type = frisian;
                 std::size_t num_captured_;
                 std::size_t num_captured_kings_;
                 piece with_;
@@ -62,5 +62,5 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-}       // namespace Frisian
+}       // namespace frisian
 }       // namespace dctl

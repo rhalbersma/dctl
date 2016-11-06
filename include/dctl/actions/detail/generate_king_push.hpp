@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/detail/generate_primary_fwd.hpp> // generate (primary template)
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down
 #include <dctl/board/bearing.hpp>                       // bearing
@@ -15,11 +15,11 @@ namespace dctl {
 namespace detail {
 
 template<color Side, class Reverse, class State, class SequenceContainer>
-class Generate<color_<Side>, king_, select::push, Reverse, State, SequenceContainer>
+class generate<color_<Side>, king_, select::push, Reverse, State, SequenceContainer>
 {
         using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
-        static constexpr auto piece_c = king_c;
+        static constexpr auto piece_c = kings_c;
         using  board_type = board_t<State>;
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
@@ -30,21 +30,21 @@ class Generate<color_<Side>, king_, select::push, Reverse, State, SequenceContai
         static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
         SequenceContainer& m_actions;
 public:
-        explicit Generate(SequenceContainer& a) noexcept
+        explicit generate(SequenceContainer& a) noexcept
         :
                 m_actions{a}
         {}
 
-        auto operator()(State const& state) const
+        auto operator()(State const& s) const
         {
-                auto const sources = state.pieces(to_move_c, piece_c);
+                auto const sources = s.pieces(to_move_c, piece_c);
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         sources.for_each([&, this](auto const& from_sq){
-                                ray_directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(from_sq, state.pieces(none_c));
+                                ray_directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(from_sq, s.pieces(empty_c));
                         });
                 } else {
                         if (sources.any()) {
-                                wave_directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(sources, state.pieces(none_c));
+                                wave_directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(sources, s.pieces(empty_c));
                         }
                 }
         }

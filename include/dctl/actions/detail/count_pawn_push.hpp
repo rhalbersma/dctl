@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/detail/count_primary_fwd.hpp>    // Count (primary template)
+#include <dctl/actions/detail/count_primary_fwd.hpp>    // count (primary template)
 #include <dctl/actions/select/push.hpp>                 // push
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
@@ -12,11 +12,11 @@ namespace dctl {
 namespace detail {
 
 template<color Side, class Reverse, class State>
-class Count<color_<Side>, pawn_, select::push, Reverse, State>
+class count<color_<Side>, pawn_, select::push, Reverse, State>
 {
         using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
-        static constexpr auto piece_c = pawn_c;
+        static constexpr auto piece_c = pawns_c;
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
 
@@ -30,7 +30,7 @@ public:
                 -> std::size_t
         {
                 if (auto const sources = s.pieces(to_move_c, piece_c); sources.any()) {
-                        return directions_lfold<board::right_up, board::left_up>(sources, s.pieces(none_c));
+                        return directions_lfold<board::right_up, board::left_up>(sources, s.pieces(empty_c));
                 }
                 return 0;
         }

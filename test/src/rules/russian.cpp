@@ -1,13 +1,13 @@
-#include <dctl/rules/russian.hpp>       // Russian
+#include <dctl/rules/russian.hpp>       // russian
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, is_long_ranged_king, jumpsep, is_passing_promotion
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(RulesRussian)
+BOOST_AUTO_TEST_SUITE(Rulesrussian)
 
-using T = Russian;
+using T = russian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {

@@ -5,12 +5,11 @@
 #include <xstd/type_traits.hpp>         // to_underlying_type
 
 namespace dctl {
-namespace detail {
-namespace bwke {
+namespace c2p2e {
 namespace block_adl {
 
 template<class Board>
-class BaseState
+class position
 {
 public:
         using board_type = Board;
@@ -18,42 +17,34 @@ public:
 
 private:
         set_type m_color[2];
-        set_type m_kings;
+        set_type m_piece[2];
         set_type m_empty;
 
 public:
-        BaseState() = default;
+        position() = default;
 
-        BaseState(set_type const b, set_type const w, set_type const /* p */, set_type const k)
+        position(set_type const b, set_type const w, set_type const p, set_type const k)
         :
                 m_color{b, w},
-                m_kings{k},
+                m_piece{p, k},
                 m_empty{board::mask::squares_v<board_type> ^ (b | w)}
         {}
 
         template<class Action>
-        auto& make(color const c, Action const& a)
+        auto make(color const c, Action const& a)
         {
                 pieces(c).reset(a.from());
                 pieces(c).set  (a.dest());
+                pieces(a.with()).reset(a.from());
+                pieces(a.into()).set  (a.dest());
 
                 if (a.is_jump()) {
                         pieces(!c) ^= a.captured_pieces();
-                        m_kings &= ~a.captured_pieces();
-                        m_empty ^= a.captured_pieces();
+                        pieces(pawns_c) &= ~a.captured_pieces();
+                        pieces(kings_c) &= ~a.captured_pieces();
                 }
 
-                if (a.with() == piece::king) {
-                        m_kings.reset(a.from());
-                        m_kings.set(a.dest());
-                } else if (a.into() == piece::king) {
-                        m_kings.set(a.dest());
-                }
-
-                m_empty.set  (a.from());
-                m_empty.reset(a.dest());
-
-                return *this;
+                m_empty = board::mask::squares_v<board_type> ^ (pieces(black_c) | pieces(white_c));
         }
 
         auto pieces(color const c) const noexcept
@@ -61,16 +52,9 @@ public:
                 return m_color[xstd::to_underlying_type(c)];
         }
 
-        template<piece Type>
-        auto pieces(piece_<Type> const p) const noexcept
-        {
-                if constexpr (p == pawn_c) { return m_kings ^ pieces(all_c); }
-                if constexpr (p == king_c) { return m_kings;                 }
-        }
-
         auto pieces(piece const p) const noexcept
         {
-                return p == pawn_c ? pieces(pawn_c) : pieces(king_c);
+                return m_piece[xstd::to_underlying_type(p)];
         }
 
         auto pieces(color const c, piece const p) const noexcept
@@ -78,18 +62,12 @@ public:
                 return pieces(c) & pieces(p);
         }
 
-        template<piece Type>
-        auto pieces(color const c, piece_<Type> const p) const noexcept
-        {
-                return pieces(c) & pieces(p);
-        }
-
-        auto pieces(all_) const noexcept
+        auto pieces(occup_) const noexcept
         {
                 return board::mask::squares_v<board_type> ^ m_empty;
         }
 
-        auto pieces(none_) const noexcept
+        auto pieces(empty_) const noexcept
         {
                 return m_empty;
         }
@@ -99,12 +77,16 @@ private:
         {
                 return m_color[xstd::to_underlying_type(c)];
         }
+
+        auto& pieces(piece const p) noexcept
+        {
+                return m_piece[xstd::to_underlying_type(p)];
+        }
 };
 
 }       // namespace block_adl
 
-using block_adl::BaseState;
+using block_adl::position;
 
-}       // namespace bwke
-}       // namespace detail
+}       // namespace c2p2e
 }       // namespace dctl

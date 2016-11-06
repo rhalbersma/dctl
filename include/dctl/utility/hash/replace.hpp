@@ -28,7 +28,7 @@ struct EmptyOldMin
                         }
                 }
 
-                // 2) replace the Minimal entry with respect to the Predicate
+                // 2) replace the minimal entry with respect to the Predicate
                 auto it = std::min_element(first, last, Predicate());
                 *it = value;
                 return false;

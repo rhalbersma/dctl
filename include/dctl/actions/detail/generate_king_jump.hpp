@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, Setking_jump
 #include <dctl/actions/detail/builder.hpp>              // Builder
-#include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/detail/generate_primary_fwd.hpp> // generate (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/board/angle.hpp>                         // left_up, right_up, left_down, right_down, rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
@@ -18,11 +18,11 @@ namespace dctl {
 namespace detail {
 
 template<color Side, class Reverse, class State, class Builder>
-class Generate<color_<Side>, king_, select::jump, Reverse, State, Builder>
+class generate<color_<Side>, king_, select::jump, Reverse, State, Builder>
 {
         using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
-        static constexpr auto piece_c = king_c;
+        static constexpr auto piece_c = kings_c;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
@@ -32,16 +32,16 @@ class Generate<color_<Side>, king_, select::jump, Reverse, State, Builder>
         template<class Iterator>
         static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::angle{orientation}));
 
-        Builder& builder;
+        Builder& m_builder;
 public:
-        explicit Generate(Builder& b) noexcept
+        explicit generate(Builder& b) noexcept
         :
-                builder{b}
+                m_builder{b}
         {}
 
         auto operator()() const
         {
-                raii::Setking_jump<Builder> guard{builder};
+                raii::Setking_jump<Builder> guard{m_builder};
                 sources();
         }
 
@@ -49,14 +49,15 @@ public:
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
                 static_assert(is_passing_promotion_v<rules_type>);
-                assert(builder.is_with(piece::pawn) && builder.is_into(piece::king));
+                assert(m_builder.is_with(piece::pawn));
+                assert(m_builder.is_into(piece::king));
                 try_next(jumper);
         }
 private:
         auto sources() const
         {
-                builder.pieces(to_move_c, piece_c).for_each([this](auto const from_sq) {
-                        raii::launch<Builder> guard{builder, from_sq};
+                m_builder.pieces(to_move_c, piece_c).for_each([this](auto const from_sq) {
+                        raii::launch<Builder> guard{m_builder, from_sq};
                         if constexpr (is_orthogonal_jump_v<rules_type>) {
                                 directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left, board::left_down, board::down, board::right_down>(from_sq);
                         } else {
@@ -74,8 +75,8 @@ private:
         template<class Iterator>
         auto first_target(Iterator jumper) const
         {
-                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.value()>());
-                if (is_onboard(jumper) && builder.is_target(jumper)) {
+                slide(jumper, m_builder.template path<board::ray::direction_v<Iterator>.value()>());
+                if (is_onboard(jumper) && m_builder.is_target(jumper)) {
                         assert(is_onboard(std::next(jumper)));
                         capture(jumper);
                 }
@@ -86,7 +87,7 @@ private:
                 -> void
         {
                 assert(is_onboard(jumper));
-                raii::capture<Builder> guard{builder, *jumper};
+                raii::capture<Builder> guard{m_builder, *jumper};
                 land(std::next(jumper));
         }
 
@@ -107,7 +108,7 @@ private:
         template<class Iterator>
         auto next_target(Iterator jumper) const
         {
-                //raii::Visit<Builder> guard{builder, *jumper};
+                //raii::Visit<Builder> guard{m_builder, *jumper};
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
                         return scan_turn(jumper) | reverse(jumper);
                 } else {
@@ -130,10 +131,10 @@ private:
                 } else {
                         // builder.template path<Direction>() would be an ERROR here
                         // because we need all landing squares rather than the directional launching squares subset
-                        assert(is_onboard(jumper) && builder.not_occupied(*jumper));
+                        assert(is_onboard(jumper) && m_builder.not_occupied(*jumper));
                         auto found_next = turn(jumper);
                         auto slider = std::next(jumper);
-                        while (is_onboard(slider) && builder.not_occupied(*slider)) {
+                        while (is_onboard(slider) && m_builder.not_occupied(*slider)) {
                                 found_next |= turn(slider);
                                 ++slider;
                         }
@@ -162,7 +163,7 @@ private:
         template<class Iterator>
         auto scan(Iterator jumper) const
         {
-                slide(jumper, builder.template path<board::ray::direction_v<Iterator>.value()>());
+                slide(jumper, m_builder.template path<board::ray::direction_v<Iterator>.value()>());
                 return is_en_prise(jumper);
         }
 
@@ -180,7 +181,7 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && builder.is_target(jumper)))
+                if (!(is_onboard(jumper) && m_builder.is_target(jumper)))
                         return false;
 
                 assert(is_onboard(std::next(jumper)));
@@ -192,7 +193,7 @@ private:
         auto halt(Iterator dest_sq) const
         {
                 if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
-                        if (builder.is_last_jumped_king(*std::prev(dest_sq))) {
+                        if (m_builder.is_last_jumped_king(*std::prev(dest_sq))) {
                                 return add_halting_jump(*dest_sq);
                         } else {
                                 return add_sliding_jumps(dest_sq);
@@ -211,13 +212,13 @@ private:
         {
                 // builder.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
-                assert(is_onboard(dest_sq) && builder.not_occupied(*dest_sq));
-                do add_halting_jump(*dest_sq++); while (is_onboard(dest_sq) && builder.not_occupied(*dest_sq));
+                assert(is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
+                do add_halting_jump(*dest_sq++); while (is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
         }
 
         auto add_halting_jump(std::size_t const dest_sq) const
         {
-                builder.finalize(dest_sq);
+                m_builder.finalize(dest_sq);
         }
 
         template<int Direction>

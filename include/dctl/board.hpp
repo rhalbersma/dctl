@@ -6,32 +6,32 @@
 namespace dctl {
 namespace board {
 
-using Checkers      = Rectangular< 8,  8>;
-using Czech         = Rectangular< 8,  8>;
-using Frisian       = add_orthogonal_captures_t<Rectangular<10, 10>>;
+using checkers      = rectangular< 8,  8>;
+using czech         = rectangular< 8,  8>;
+using frisian       = add_orthogonal_captures_t<rectangular<10, 10>>;
 
-using Brazilian     = Rectangular< 8,  8>;
-using International = Rectangular<10, 10>;
-using Canadian      = Rectangular<12, 12>;
-using SriLankan     = invert_t<Rectangular<12, 12>>;
-using Dumm          = Rectangular<14, 14>;
+using brazilian     = rectangular< 8,  8>;
+using international = rectangular<10, 10>;
+using canadian      = rectangular<12, 12>;
+using srilankan     = invert_t<rectangular<12, 12>>;
+using dumm          = rectangular<14, 14>;
 
-using Italian       = invert_t<Rectangular< 8,  8>>;
-using Pool          = Rectangular< 8,  8>;
+using italian       = invert_t<rectangular< 8,  8>>;
+using pool          = rectangular< 8,  8>;
 
-using Russian       = Rectangular< 8,  8>;
-using Shashki       = Russian;
+using russian       = rectangular< 8,  8>;
+using shashki       = russian;
 
-using Spanish       = invert_t<Rectangular< 8,  8>>;
-using Thai          = Rectangular< 8,  8>;
+using spanish       = invert_t<rectangular< 8,  8>>;
+using thai          = rectangular< 8,  8>;
 
-using Micro         = Rectangular< 4,  4>;
-using Mini          = Rectangular< 6,  6>;
+using micro         = rectangular< 4,  4>;
+using mini          = rectangular< 6,  6>;
 
-using Spantsiretti  = Rectangular<10,  8>;
+using spantsiretti  = rectangular<10,  8>;
 
 template<std::size_t Width, std::size_t Height>
-using Ktar          = invert_t<Rectangular<Width, Height>>;
+using ktar          = invert_t<rectangular<Width, Height>>;
 
 }       // namespace board
 }       // namespace dctl

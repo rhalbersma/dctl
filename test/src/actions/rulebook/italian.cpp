@@ -1,18 +1,18 @@
 #include <actions/fixture.hpp>          // run
 #include <dctl/board.hpp>               // Roman
-#include <dctl/rules.hpp>               // Italian
+#include <dctl/rules.hpp>               // italian
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string
 #include <vector>                       // vector
 
 namespace dctl {
 
-// States from the official Italian rules:
+// States from the official italian rules:
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 
-BOOST_AUTO_TEST_SUITE(ActionsRulebookItalian)
+BOOST_AUTO_TEST_SUITE(ActionsRulebookitalian)
 
-using F = Fixture<rules::Italian, board::Italian>;
+using F = Fixture<rules::italian, board::italian>;
 
 BOOST_FIXTURE_TEST_CASE(pawn_jumpDirections, F)          // Art. 5.6
 {

@@ -1,15 +1,15 @@
 #pragma once
+#include <dctl/board/mask/squares.hpp>  // squares
 #include <dctl/color_piece.hpp>         // color, black_, white_, piece, pawn_, king_
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 
 namespace dctl {
-namespace detail {
 namespace bwk {
 namespace block_adl {
 
 template<class Board>
-class BaseState
+class position
 {
 public:
         using board_type = Board;
@@ -20,21 +20,21 @@ private:
         set_type m_kings;
 
 public:
-        BaseState() = default;
+        position() = default;
 
-        BaseState(set_type const b, set_type const w, set_type const k)
+        position(set_type const b, set_type const w, set_type const k)
         :
                 m_color{b, w},
                 m_kings{k}
         {}
 
-        BaseState(set_type const b, set_type const w, set_type const /* p */, set_type const k)
+        position(set_type const b, set_type const w, set_type const /* p */, set_type const k)
         :
-                BaseState(b, w, k)
+                position(b, w, k)
         {}
 
         template<class Action>
-        auto& make(color const c, Action const& a)
+        auto make(color const c, Action const& a)
         {
                 pieces(c).reset(a.from());
                 pieces(c).set  (a.dest());
@@ -50,8 +50,6 @@ public:
                 } else if (a.into() == piece::king) {
                         m_kings.set(a.dest());
                 }
-
-                return *this;
         }
 
         auto pieces(color const c) const noexcept
@@ -62,18 +60,13 @@ public:
         template<piece Type>
         auto pieces(piece_<Type> const p) const noexcept
         {
-                if constexpr (p == pawn_c) { return m_kings ^ pieces(all_c); }
-                if constexpr (p == king_c) { return m_kings;                 }
+                if constexpr (p == pawns_c) { return m_kings ^ pieces(occup_c); }
+                if constexpr (p == kings_c) { return m_kings;                   }
         }
 
         auto pieces(piece const p) const noexcept
         {
-                return p == pawn_c ? pieces(pawn_c) : pieces(king_c);
-        }
-
-        auto pieces(color const c, piece const p) const noexcept
-        {
-                return pieces(c) & pieces(p);
+                return p == pawns_c ? pieces(pawns_c) : pieces(kings_c);
         }
 
         template<piece Type>
@@ -82,14 +75,19 @@ public:
                 return pieces(c) & pieces(p);
         }
 
-        auto pieces(all_) const noexcept
+        auto pieces(color const c, piece const p) const noexcept
+        {
+                return pieces(c) & pieces(p);
+        }
+
+        auto pieces(occup_) const noexcept
         {
                 return pieces(black_c) ^ pieces(white_c);
         }
 
-        auto pieces(none_) const noexcept
+        auto pieces(empty_) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ pieces(all_c);
+                return board::mask::squares_v<board_type> ^ pieces(occup_c);
         }
 
 private:
@@ -101,8 +99,7 @@ private:
 
 }       // namespace block_adl
 
-using block_adl::BaseState;
+using block_adl::position;
 
 }       // namespace bwk
-}       // namespace detail
 }       // namespace dctl

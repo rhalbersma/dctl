@@ -18,27 +18,27 @@ class Actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>
         using Push = Actions<to_move_, select::push, DuplicatesPolicy, Reverse>;
 public:
         template<class State, class SequenceContainer>
-        auto generate(State const& state, SequenceContainer& actions) const
+        auto generate(State const& s, SequenceContainer& a) const
         {
-                if (Jump{}.generate(state, actions); actions.empty()) {
-                        Push{}.generate(state, actions);
+                if (Jump{}.generate(s, a); a.empty()) {
+                        Push{}.generate(s, a);
                 }
         }
 
         template<class State>
-        auto count(State const& state) const
+        auto count(State const& s) const
         {
-                if (auto const num_actions = Jump{}.count(state); !num_actions) {
-                        return Push{}.count(state);
+                if (auto const num_jumps = Jump{}.count(s); !num_jumps) {
+                        return Push{}.count(s);
                 } else {
-                        return num_actions;
+                        return num_jumps;
                 }
         }
 
         template<class State>
-        auto detect(State const& state) const noexcept
+        auto detect(State const& s) const noexcept
         {
-                return Push{}.detect(state) || Jump{}.detect(state);
+                return Push{}.detect(s) || Jump{}.detect(s);
         }
 };
 

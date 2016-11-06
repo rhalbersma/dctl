@@ -4,7 +4,7 @@ namespace dctl {
 namespace detail {
 
 template<class...>
-class Generate;
+class generate;
 
 }       // namespace detail
 }       // namespace dctl

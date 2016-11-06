@@ -1,4 +1,4 @@
-#include <dctl/rules/czech.hpp>         // Czech
+#include <dctl/rules/czech.hpp>         // czech
 #include <rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/color_piece.hpp>         // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, jumpsep, is_absolute_modality, equal_to, less
@@ -8,9 +8,9 @@
 namespace dctl {
 namespace rules {
 
-BOOST_AUTO_TEST_SUITE(RulesCzech)
+BOOST_AUTO_TEST_SUITE(Rulesczech)
 
-using T = Czech;
+using T = czech;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = Czech;
+                using rules_type = czech;
                 piece with;
                 constexpr auto is_with_king() const noexcept { return with == piece::king; }
         };

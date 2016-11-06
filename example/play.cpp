@@ -16,10 +16,10 @@ using namespace dctl;
 
 int main()
 {
-        using Rules = rules::International;
+        using Rules = rules::international;
         using State = state<Rules>;
 
-        auto initial = setup::read<Rules, board::International, pdn::protocol>()
+        auto initial = setup::read<Rules, board::international, pdn::protocol>()
         ("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46");
 
         std::stack<State> game;
