@@ -6,7 +6,7 @@ namespace rules {
 namespace block_adl {
 
 // http://www.fpdamas.pt/downloads/Regras%20Damas%20Cl%C3%A1ssicas%20-%20atualizado.pdf
-struct Spanish
+struct spanish
 {
         // 2.1 NOMENCLATURA DO TABULEIRO
         static constexpr auto width = 8;                        // 2.1.2
@@ -34,7 +34,7 @@ struct Spanish
 
 }       // namespace block_adl
 
-using block_adl::Spanish;
+using block_adl::spanish;
 
 }       // namespace rules
 }       // namespace dctl

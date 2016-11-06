@@ -1,5 +1,5 @@
-#include <board/sequence.hpp>                   // Micro, Mini, Checkers, Roman, Spantsiretti, International, Frisian, Ktar<10, 11>,
-                                                // Ktar<10, 12>, Compact_10_12, Compact_12_10, Rectangular<12, 10>, Canadian, SriLankan, Dumm
+#include <board/sequence.hpp>                   // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
+                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/board/angle.hpp>                 // angle, reverse
 #include <dctl/board/shift.hpp>                 // shift_size
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of

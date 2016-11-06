@@ -43,13 +43,16 @@ using king_ = piece_<piece::king>;
 template<piece Type>
 constexpr auto piece_c = piece_<Type>{};
 
-inline constexpr auto pawn_c = piece_c<piece::pawn>;
-inline constexpr auto king_c = piece_c<piece::king>;
+inline constexpr auto pawns_c = piece_c<piece::pawn>;
+inline constexpr auto kings_c = piece_c<piece::king>;
 
-struct  all_ {};
-struct none_ {};
+struct occup_ {};
+struct empty_ {};
 
-inline constexpr auto  all_c =  all_{};
-inline constexpr auto none_c = none_{};
+inline constexpr auto occup_c = occup_{};
+inline constexpr auto empty_c = empty_{};
+
+struct nullmove_t {};
+inline constexpr auto nullmove = nullmove_t{};
 
 }       // namespace dctl

@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/rectangular.hpp>   // Rectangular
+#include <dctl/board/rectangular.hpp>   // rectangular
 #include <algorithm>                    // min, max
 #include <cstddef>                      // size_t
 
@@ -22,9 +22,9 @@ template<class Board>
 using invert_t = typename invert<Board>::type;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalJump>
-struct invert<Rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
+struct invert<rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
 :
-        Rectangular<Width, Height, !IsInverted, IsOrthogonalJump>
+        rectangular<Width, Height, !IsInverted, IsOrthogonalJump>
 {};
 
 template<class Board>
@@ -34,9 +34,9 @@ template<class Board>
 using remove_orthogonal_captures_t = typename remove_orthogonal_captures<Board>::type;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalJump>
-struct remove_orthogonal_captures<Rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
+struct remove_orthogonal_captures<rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
 :
-        Rectangular<Width, Height, IsInverted, false>
+        rectangular<Width, Height, IsInverted, false>
 {};
 
 template<class Board>
@@ -46,9 +46,9 @@ template<class Board>
 using add_orthogonal_captures_t = typename add_orthogonal_captures<Board>::type;
 
 template<std::size_t Width, std::size_t Height, bool IsInverted, bool IsOrthogonalJump>
-struct add_orthogonal_captures<Rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
+struct add_orthogonal_captures<rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
 :
-        Rectangular<Width, Height, IsInverted, true>
+        rectangular<Width, Height, IsInverted, true>
 {};
 
 }       // namespace board

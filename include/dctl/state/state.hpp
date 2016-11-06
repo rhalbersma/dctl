@@ -7,8 +7,7 @@
 #include <dctl/rule_traits.hpp>
 #include <dctl/state/mrp_kings/mrp_kings.hpp>
 #include <dctl/state/mrp_kings/zobrist.hpp>
-#include <dctl/state/base_state.hpp>
-#include <dctl/state/player_to_move.hpp>
+#include <dctl/state/position.hpp>
 #include <dctl/state/to_move/to_move.hpp>
 #include <dctl/state/to_move/zobrist.hpp>
 #include <dctl/state/reversible_actions.hpp>
@@ -58,41 +57,41 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        PlayerToMove player_to_move_;
-        detail::wma::BaseState<board_type> placement_{};
+        color m_to_move;
+        wpo::position<board_type> m_position{};
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(board::mask::squares_v<board_type> == (pieces(all_c) | pieces(none_c)));
+                assert(board::mask::squares_v<board_type> == (pieces(occup_c) | pieces(empty_c)));
 
-                assert(pieces(all_c) == (pieces(black_c) | pieces(white_c)));
-                assert(pieces(all_c) == (pieces( pawn_c) | pieces( king_c)));
+                assert(pieces(occup_c) == (pieces(black_c) | pieces(white_c)));
+                assert(pieces(occup_c) == (pieces(pawns_c) | pieces(kings_c)));
 
-                assert(pieces(black_c) == (pieces(black_c, pawn_c) | pieces(black_c, king_c)));
-                assert(pieces(white_c) == (pieces(white_c, pawn_c) | pieces(white_c, king_c)));
-                assert(pieces( pawn_c) == (pieces(black_c, pawn_c) | pieces(white_c, pawn_c)));
-                assert(pieces( king_c) == (pieces(black_c, king_c) | pieces(white_c, king_c)));
+                assert(pieces(black_c) == (pieces(black_c, pawns_c) | pieces(black_c, kings_c)));
+                assert(pieces(white_c) == (pieces(white_c, pawns_c) | pieces(white_c, kings_c)));
+                assert(pieces(pawns_c) == (pieces(black_c, pawns_c) | pieces(white_c, pawns_c)));
+                assert(pieces(kings_c) == (pieces(black_c, kings_c) | pieces(white_c, kings_c)));
 
-                assert(xstd::disjoint(pieces(all_c), pieces(none_c)));
+                assert(xstd::disjoint(pieces(occup_c), pieces(empty_c)));
 
                 assert(xstd::disjoint(pieces(black_c), pieces(white_c)));
-                assert(xstd::disjoint(pieces( pawn_c), pieces( king_c)));
+                assert(xstd::disjoint(pieces(pawns_c), pieces(kings_c)));
 
-                assert(xstd::disjoint(pieces(black_c, pawn_c), pieces(black_c, king_c)));
-                assert(xstd::disjoint(pieces(white_c, pawn_c), pieces(white_c, king_c)));
-                assert(xstd::disjoint(pieces(black_c, pawn_c), pieces(white_c, pawn_c)));
-                assert(xstd::disjoint(pieces(black_c, king_c), pieces(white_c, king_c)));
+                assert(xstd::disjoint(pieces(black_c, pawns_c), pieces(black_c, kings_c)));
+                assert(xstd::disjoint(pieces(white_c, pawns_c), pieces(white_c, kings_c)));
+                assert(xstd::disjoint(pieces(black_c, pawns_c), pieces(white_c, pawns_c)));
+                assert(xstd::disjoint(pieces(black_c, kings_c), pieces(white_c, kings_c)));
 
-                assert(xstd::disjoint(pieces(black_c, pawn_c), board::mask::promotion_v<board_type, black_>));
-                assert(xstd::disjoint(pieces(white_c, pawn_c), board::mask::promotion_v<board_type, white_>));
+                assert(xstd::disjoint(pieces(black_c, pawns_c), board::mask::promotion_v<board_type, black_>));
+                assert(xstd::disjoint(pieces(white_c, pawns_c), board::mask::promotion_v<board_type, white_>));
         }
 
 public:
-        state(color const c, set_type const black, set_type const white, set_type const pawns, set_type const kings)
+        state(color const to_move, set_type const black, set_type const white, set_type const pawns, set_type const kings)
         :
                 most_recently_pushed_kings_t{},
-                player_to_move_{c},
-                placement_{black, white, pawns, kings}
+                m_to_move{to_move},
+                m_position{black, white, pawns, kings}
         {
                 assert_invariants();
         }
@@ -105,21 +104,26 @@ public:
         }
 
         template<class Action>
-        auto& make(Action const& a)
+        auto make(Action const& a)
         {
                 static_assert(std::is_same<rules_type, rules_t<Action>>{});
                 static_assert(std::is_same<board_type, board_t<Action>>{});
-                placement_.make(player_to_move_, a);
-                player_to_move_.make(a);
+                m_position.make(to_move(), a);
+                pass_turn();
                 assert_invariants();
-                return *this;
+        }
+
+        auto make(nullmove_t)
+        {
+                pass_turn();
+                assert_invariants();
         }
 
         template<class... Args>
         auto pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
-                return placement_.pieces(std::forward<Args>(args)...);
+                return m_position.pieces(std::forward<Args>(args)...);
         }
 
         template<color Side, piece Type>
@@ -127,7 +131,7 @@ public:
         {
                 static constexpr auto not_to_move_c = !color_c<Side>;
                 if constexpr (Type == piece::pawn && is_superior_rank_jump_v<rules_type>) {
-                        return pieces(not_to_move_c, pawn_c);
+                        return pieces(not_to_move_c, pawns_c);
                 } else {
                         return pieces(not_to_move_c);
                 }
@@ -142,12 +146,18 @@ public:
 
         auto to_move() const noexcept
         {
-                return player_to_move_;
+                return m_to_move;
         }
 
         auto hash() const
         {
                 return std::size_t{0};
+        }
+
+private:
+        constexpr auto pass_turn() noexcept
+        {
+                m_to_move = !m_to_move;
         }
 };
 

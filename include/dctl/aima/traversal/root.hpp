@@ -194,15 +194,15 @@ std::size_t walk(State const& s, int depth, int ply, Actions successor, Enhancem
 }
 
 template<bool IsBulk, class Actions, class State>
-auto perft_state(Actions successor, State const& state, int depth)
+auto perft_state(Actions successor, State const& s, int depth)
 {
-        if constexpr( IsBulk) { if (depth == 1) return successor.count(state); }
+        if constexpr( IsBulk) { if (depth == 1) return successor.count(s); }
         if constexpr(!IsBulk) { if (depth == 0) return std::size_t{1};         }
 
         static_vector<action<rules_t<State>, board_t<State>>> moves;
-        successor.generate(state, moves);
+        successor.generate(s, moves);
         return boost::accumulate(moves, std::size_t{0}, [&](auto n, auto const& a){
-                return n + perft_state<IsBulk>(successor, result(state, a), depth - 1);
+                return n + perft_state<IsBulk>(successor, result(s, a), depth - 1);
         });
 }
 

@@ -15,7 +15,7 @@ DCTL_PP_TTI_CONSTANT(is_inverted, false)
 DCTL_PP_TTI_CONSTANT(is_orthogonal_jump, false)
 
 template<class Rules>
-using rectangular_t = board::Rectangular<
+using rectangular_t = board::rectangular<
         width_v<Rules>,
         height_v<Rules>,
         is_inverted_v<Rules>,

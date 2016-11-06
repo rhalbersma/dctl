@@ -1,5 +1,5 @@
-#include <dctl/board.hpp>                       // Micro, Mini, Checkers, Roman, Spantsiretti, International, Frisian, Ktar<10, 11>,
-                                                // Ktar<10, 12>, Compact_10_12, Compact_12_10, Rectangular<12, 10>, Canadian, SriLankan, Dumm
+#include <dctl/board.hpp>                       // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
+                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/board_traits.hpp>                // add_orthogonal_captures, remove_orthogonal_captures
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <boost/mpl/vector.hpp>                 // vector
@@ -13,14 +13,14 @@ BOOST_AUTO_TEST_SUITE(TestBoard)
 
 using SmallBoardSequence = boost::mpl::vector
 <
-        Micro,
-        Mini,
-        Checkers,
-        Italian,
-        Spantsiretti,
-        International,
-        Frisian,
-        Ktar<10, 11>
+        micro,
+        mini,
+        checkers,
+        italian,
+        spantsiretti,
+        international,
+        frisian,
+        ktar<10, 11>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
@@ -31,8 +31,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
 
 using IntermediateBoardSequence = boost::mpl::vector
 <
-               Ktar<10, 12>,
-        Rectangular<12, 10>
+               ktar<10, 12>,
+        rectangular<12, 10>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)
@@ -43,9 +43,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSeque
 
 using LargeBoardSequence = boost::mpl::vector
 <
-        Canadian,
-        Dumm,
-        SriLankan
+        canadian,
+        dumm,
+        srilankan
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs128, T, LargeBoardSequence)

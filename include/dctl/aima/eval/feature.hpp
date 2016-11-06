@@ -32,8 +32,8 @@ public:
                 using rules_type = rules_t<State>;
                 using board_type = board_t<State>;
                 return
-                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(color{}, pawn_c)) +
-                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(color{}, king_c))
+                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(color{}, pawns_c)) +
+                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(color{}, kings_c))
                 ;
         }
 

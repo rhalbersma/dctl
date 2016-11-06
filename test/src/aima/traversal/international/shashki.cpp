@@ -10,14 +10,14 @@
 
 namespace dctl::aima::traversal {
 
-BOOST_AUTO_TEST_SUITE(WalkInternationalShashki)
+BOOST_AUTO_TEST_SUITE(Walkinternationalshashki)
 
-// The "Standard validation generator moves" thread on the Shashki forum
-// http://Shashki.com/PNphpBB2-viewtopic-t-627-start-58.html
+// The "Standard validation generator moves" thread on the shashki forum
+// http://shashki.com/PNphpBB2-viewtopic-t-627-start-58.html
 
 BOOST_AUTO_TEST_CASE(Frontrows)
 {
-        auto const p = setup::read<rules::International, board::International, pdn::protocol>()(
+        auto const p = setup::read<rules::international, board::international, pdn::protocol>()(
                 "W:B16,17,18,19,20:W31,32,33,34,35"
         );
         auto const leafs = std::vector<std::size_t>

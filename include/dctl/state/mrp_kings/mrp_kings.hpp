@@ -20,8 +20,8 @@ private:
         std::size_t color_piece_[2][2];
 
 public:
-        template<class BaseState>
-        constexpr MostRecentlyPushedKings(BaseState const& p)
+        template<class position>
+        constexpr MostRecentlyPushedKings(position const& p)
         :
                 color_piece_
                 {

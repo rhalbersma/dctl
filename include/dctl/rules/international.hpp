@@ -4,8 +4,8 @@ namespace dctl {
 namespace rules {
 namespace block_adl {
 
-// http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20International%20draughts.doc
-struct International
+// http://www.fmjd.org/docs/Annex%201%20official%20FMJD%20rules%20of%20international%20draughts.doc
+struct international
 {
         // 2. The material
         static constexpr auto width                     = 10;           // 2.1
@@ -47,12 +47,12 @@ struct International
 
 }       // namespace block_adl
 
-using block_adl::International;
+using block_adl::international;
 
-using Brazilian  = International;
-using Philippine = International;
-using Canadian   = International;
-using SriLankan  = International;
+using brazilian  = international;
+using Philippine = international;
+using canadian   = international;
+using srilankan  = international;
 
 }       // namespace rules
 }       // namespace dctl

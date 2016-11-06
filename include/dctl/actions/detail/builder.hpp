@@ -16,10 +16,10 @@ namespace dctl {
 namespace detail {
 
 template<class color, class DuplicatesPolicy, class State, class SequenceContainer>
-class Builder;
+class builder;
 
 template<color Side, class DuplicatesPolicy, class State, class SequenceContainer>
-class Builder<color_<Side>, DuplicatesPolicy, State, SequenceContainer>
+class builder<color_<Side>, DuplicatesPolicy, State, SequenceContainer>
 {
 public:
         using to_move_ = color_<Side>;
@@ -41,18 +41,18 @@ private:
         using push_sources = board::mask::push_sources<board_type, Direction, short_ranged_tag>;
 
 public:
-        Builder(State const& s, SequenceContainer& a)
+        builder(State const& s, SequenceContainer& a)
         :
                 m_state{s},
                 m_initial_targets(m_state.pieces(!to_move_c)),
-                m_empty(m_state.pieces(none_c)),
+                m_empty(m_state.pieces(empty_c)),
                 m_actions{a}
         {}
 
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_v<rules_type>);
-                m_initial_targets ^= m_state.pieces(!to_move_c, king_c);
+                m_initial_targets ^= m_state.pieces(!to_move_c, kings_c);
         }
 
         auto make_launch(std::size_t const sq)
@@ -105,7 +105,7 @@ public:
                 return m_state.pieces(std::forward<Args>(args)...);
         }
 
-        auto pieces(none_) const noexcept
+        auto pieces(empty_) const noexcept
         {
                 return m_empty;
         }
@@ -118,7 +118,7 @@ public:
         template<int Direction>
         auto targets() const
         {
-                return push_sources<Direction>{}(targets(), pieces(none_c));
+                return push_sources<Direction>{}(targets(), pieces(empty_c));
         }
 
         template<class Iterator>
@@ -136,7 +136,7 @@ public:
         auto path() const
         {
                 auto constexpr jump_start = board::mask::jump_start<board_type>{}(board::angle{Direction});
-                return pieces(none_c) & jump_start;
+                return pieces(empty_c) & jump_start;
         }
 
         template<int Direction>
@@ -147,7 +147,7 @@ public:
 
         auto is_last_jumped_king(square_type const sq) const
         {
-                return m_state.pieces(king_c).test(sq);
+                return m_state.pieces(kings_c).test(sq);
         }
 
         auto with() const noexcept
@@ -188,7 +188,7 @@ public:
 private:
         auto is_king(square_type sq) const
         {
-                return m_state.pieces(king_c).test(sq);
+                return m_state.pieces(kings_c).test(sq);
         }
 
         auto precedence_duplicates() const

@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/actions/detail/specializations.hpp>      // Generate
+#include <dctl/actions/detail/specializations.hpp>      // generate
 #include <dctl/actions/select/legal.hpp>                // legal
-#include <dctl/color_piece.hpp>                               // black, white
+#include <dctl/color_piece.hpp>                         // black, white
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/type_traits.hpp>                 // value_t
 #include <cassert>                                      // assert
@@ -26,23 +26,23 @@ class Actions
 
 public:
         template<class State, class SequenceContainer>
-        auto generate(State const& s, SequenceContainer& actions) const
+        auto generate(State const& s, SequenceContainer& a) const
         {
                 return
                         s.to_move() == color::black ?
-                        generate<black_>(s, actions) :
-                        generate<white_>(s, actions)
+                        generate<black_>(s, a) :
+                        generate<white_>(s, a)
                 ;
         }
 
-        template<class color, class State, class SequenceContainer>
-        auto generate(State const& s, SequenceContainer& actions) const
+        template<class Color, class State, class SequenceContainer>
+        auto generate(State const& s, SequenceContainer& a) const
         {
                 using action_type = value_t<SequenceContainer>;
                 static_assert(std::is_same<rules_t<State>, rules_t<action_type>>{});
                 static_assert(std::is_same<board_t<State>, board_t<action_type>>{});
-                Impl<color>{}.generate(s, actions);
-                assert_invariants<color>(s, actions);
+                Impl<Color>{}.generate(s, a);
+                assert_invariants<Color>(s, a);
         }
 
         template<class State>
@@ -55,10 +55,10 @@ public:
                 ;
         }
 
-        template<class color, class State>
+        template<class Color, class State>
         auto count(State const& s) const
         {
-                return Impl<color>{}.count(s);
+                return Impl<Color>{}.count(s);
         }
 
         template<class State>
@@ -71,10 +71,10 @@ public:
                 ;
         }
 
-        template<class color, class State>
+        template<class Color, class State>
         auto detect(State const& s) const
         {
-                return Impl<color>{}.detect(s);
+                return Impl<Color>{}.detect(s);
         }
 };
 

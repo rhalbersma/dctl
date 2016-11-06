@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, Toggleking_targets, Setpromotion
 #include <dctl/actions/detail/builder.hpp>              // Builder
-#include <dctl/actions/detail/generate_primary_fwd.hpp> // Generate (primary template)
+#include <dctl/actions/detail/generate_primary_fwd.hpp> // generate (primary template)
 #include <dctl/actions/detail/generate_king_jump.hpp>   // promote_en_passant
 #include <dctl/actions/select/jump.hpp>                 // jumps
 #include <dctl/board/angle.hpp>                         // rotate, inverse
@@ -20,12 +20,12 @@ namespace dctl {
 namespace detail {
 
 template<color Side, class Reverse, class State, class Builder>
-class Generate<color_<Side>, pawn_, select::jump, Reverse, State, Builder>
+class generate<color_<Side>, pawn_, select::jump, Reverse, State, Builder>
 {
         using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
-        static constexpr auto piece_c = pawn_c;
-        using  king_jumps = Generate<to_move_, king_, select::jump, Reverse, State, Builder>;
+        static constexpr auto piece_c = pawns_c;
+        using  king_jumps = generate<to_move_, king_, select::jump, Reverse, State, Builder>;
         using  board_type =  board_t<Builder>;
         using  rules_type =  rules_t<Builder>;
         using    set_type =    set_t<Builder>;
@@ -40,7 +40,7 @@ class Generate<color_<Side>, pawn_, select::jump, Reverse, State, Builder>
 
         Builder& m_builder;
 public:
-        explicit Generate(Builder& b) noexcept
+        explicit generate(Builder& b) noexcept
         :
                 m_builder{b}
         {}
@@ -86,7 +86,7 @@ private:
                 jump_sources<Direction>{}(
                         m_builder.pieces(to_move_c, piece_c),
                         m_builder.targets(),
-                        m_builder.pieces(none_c)
+                        m_builder.pieces(empty_c)
                 ).for_each([this](auto const from_sq){
                         jump(along_ray<Direction>(from_sq));
                 });
