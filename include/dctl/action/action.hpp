@@ -1,11 +1,11 @@
 #pragma once
 #include <dctl/color_piece.hpp>                 // pawn, king
 #include <dctl/rule_traits.hpp>                 // rectangular, is_quality_precedence, is_ordering_precedence
-#include <dctl/utility/tagged_empty_base.hpp>   // tagged_empty_base
+#include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t, square_t
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
-#include <tuple>                                // make_tuple
+#include <tuple>                                // tie
 #include <type_traits>                          // conditional, enable_if, is_same
 
 namespace dctl {
@@ -13,57 +13,71 @@ namespace detail {
 namespace block_adl {
 
 template<class Board>
-struct BaseQualityPrecedence
+struct base_action
+{
+        set_t<Board> m_captured_pieces;
+        square_t<Board> m_from;
+        square_t<Board> m_dest;
+        piece m_with;
+        piece m_into;
+};
+
+template<class Board>
+struct base_quality_precedence
 {
         set_t<Board> m_captured_kings;
 };
 
 template<class Rules, class Board>
-using quality_precedence_t = std::conditional_t<
+using conditional_base_quality_precedence = util::conditional_base<
         is_quality_precedence_v<Rules>,
-        BaseQualityPrecedence<Board>,
-        util::tagged_empty_base<0>
+        base_quality_precedence<Board>
 >;
 
 template<class Board>
-struct BaseOrderingPrecedence
+struct base_ordering_precedence
 {
         set_t<Board> m_piece_order;
 };
 
 template<class Rules, class Board>
-using ordering_precedence_t = std::conditional_t<
+using conditional_base_ordering_precedence = util::conditional_base<
         is_ordering_precedence_v<Rules>,
-        BaseOrderingPrecedence<Board>,
-        util::tagged_empty_base<1>
+        base_ordering_precedence<Board>
 >;
 
 }       // namespace block_adl
 
-using block_adl::quality_precedence_t;
-using block_adl::ordering_precedence_t;
+using block_adl::base_action;
+using block_adl::conditional_base_quality_precedence;
+using block_adl::conditional_base_ordering_precedence;
 
 }       // namespace detail
 
 template<class Rules, class Board = rectangular_t<Rules>>
 class action
 :
-        detail::ordering_precedence_t<Rules, Board>,
-        detail:: quality_precedence_t<Rules, Board>
+        detail::conditional_base_ordering_precedence<Rules, Board>,
+        detail::conditional_base_quality_precedence<Rules, Board>,
+        detail::base_action<Board>
 {
-        using ordering_precedence_t = detail::ordering_precedence_t<Rules, Board>;
-        using  quality_precedence_t = detail:: quality_precedence_t<Rules, Board>;
-public:
-        using  rules_type = Rules;
-        using  board_type = Board;
-        using    set_type =    set_t<Board>;
-        using square_type = square_t<Board>;
-private:
-        set_type m_captured_pieces;
-        square_type m_from;
-        square_type m_dest;
-        piece m_with;
-        piece m_into;
+        using conditional_base_ordering_precedence = detail::conditional_base_ordering_precedence<Rules, Board>;
+        using conditional_base_quality_precedence = detail::conditional_base_quality_precedence<Rules, Board>;
+        using base_action = detail::base_action<Board>;
+
+        static constexpr auto static_assert_type_traits() noexcept
+        {
+                using T = action<Rules, Board>;
+
+                static_assert(std::is_trivially_destructible<T>{});
+                static_assert(std::is_trivially_default_constructible<T>{});
+                static_assert(std::is_trivially_copy_constructible<T>{});
+                static_assert(std::is_trivially_copy_assignable<T>{});
+                static_assert(std::is_trivially_move_constructible<T>{});
+                static_assert(std::is_trivially_move_assignable<T>{});
+
+                static_assert(std::is_pod<T>{});
+        }
 
         constexpr auto assert_invariants() const noexcept
         {
@@ -71,30 +85,27 @@ private:
                 assert(!is_demotion());
         }
 public:
+        using  rules_type = Rules;
+        using  board_type = Board;
+        using    set_type =    set_t<Board>;
+        using square_type = square_t<Board>;
+
         action() = default;
 
         constexpr action(std::size_t const src, std::size_t const dst, bool const promotion) noexcept
         :
-                ordering_precedence_t{},
-                quality_precedence_t{},
-                m_captured_pieces{},
-                m_from{static_cast<square_type>(src)},
-                m_dest{static_cast<square_type>(dst)},
-                m_with{piece::pawn},
-                m_into{promotion ? piece::king : piece::pawn}
+                conditional_base_ordering_precedence{},
+                conditional_base_quality_precedence{},
+                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::pawn, promotion ? piece::king : piece::pawn}
         {
                 assert_invariants();
         }
 
         constexpr action(std::size_t const src, std::size_t const dst) noexcept
         :
-                ordering_precedence_t{},
-                quality_precedence_t{},
-                m_captured_pieces{},
-                m_from{static_cast<square_type>(src)},
-                m_dest{static_cast<square_type>(dst)},
-                m_with{piece::king},
-                m_into{piece::king}
+                conditional_base_ordering_precedence{},
+                conditional_base_quality_precedence{},
+                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::king, piece::king}
         {
                 assert_invariants();
         }
@@ -105,68 +116,68 @@ public:
                 if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         capture_quality_ordering(sq, is_king);
                 }
-                m_captured_pieces.set(sq);
+                this->m_captured_pieces.set(sq);
         }
 
         constexpr auto release(std::size_t const sq, bool const is_king) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
-                m_captured_pieces.reset(sq);
+                this->m_captured_pieces.reset(sq);
                 if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         release_quality_ordering(sq, is_king);
                 }
         }
 
-        constexpr auto from(std::size_t const sq) // Throws: Nothing.
-        {
-                assert(is_onboard(sq));
-                m_from = static_cast<square_type>(sq);
-        }
-
-        constexpr auto from() const noexcept
-        {
-                return m_from;
-        }
-
-        constexpr auto dest(std::size_t const sq) // Throws: Nothing.
-        {
-                assert(is_onboard(sq));
-                m_dest = static_cast<square_type>(sq);
-        }
-
-        constexpr auto dest() const noexcept
-        {
-                return m_dest;
-        }
-
-        constexpr auto with(piece const p) noexcept
-        {
-                m_with = p;
-        }
-
-        constexpr auto with() const noexcept
-        {
-                return m_with;
-        }
-
-        constexpr auto into(piece const p) noexcept
-        {
-                m_into = p;
-        }
-
-        constexpr auto into() const noexcept
-        {
-                return m_into;
-        }
-
         constexpr auto captured_pieces() const noexcept
         {
-                return m_captured_pieces;
+                return this->m_captured_pieces;
         }
 
         constexpr auto num_captured_pieces() const noexcept
         {
                 return captured_pieces().count();
+        }
+
+        constexpr auto from(std::size_t const sq) // Throws: Nothing.
+        {
+                assert(is_onboard(sq));
+                this->m_from = static_cast<square_type>(sq);
+        }
+
+        constexpr auto from() const noexcept
+        {
+                return this->m_from;
+        }
+
+        constexpr auto dest(std::size_t const sq) // Throws: Nothing.
+        {
+                assert(is_onboard(sq));
+                this->m_dest = static_cast<square_type>(sq);
+        }
+
+        constexpr auto dest() const noexcept
+        {
+                return this->m_dest;
+        }
+
+        constexpr auto with(piece const p) noexcept
+        {
+                this->m_with = p;
+        }
+
+        constexpr auto with() const noexcept
+        {
+                return this->m_with;
+        }
+
+        constexpr auto into(piece const p) noexcept
+        {
+                this->m_into = p;
+        }
+
+        constexpr auto into() const noexcept
+        {
+                return this->m_into;
         }
 
         constexpr auto is_with_king() const noexcept
@@ -215,6 +226,16 @@ public:
         {
                 return this->m_piece_order;
         }
+
+        constexpr auto tied() const noexcept
+        {
+                if constexpr (is_ordering_precedence_v<Rules>) {
+                        return std::tie(this->m_from, this->m_dest, this->m_captured_pieces, this->m_piece_order);
+                } else {
+                        return std::tie(this->m_from, this->m_dest, this->m_captured_pieces);
+                }
+        }
+
 private:
         constexpr auto capture_quality_ordering(std::size_t const sq, bool const is_king)
         {
@@ -258,32 +279,16 @@ private:
         }
 };
 
-template<class Rules, class Board, std::enable_if_t<
-        !is_ordering_precedence_v<Rules>
->...>
-constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
-{
-        return std::make_tuple(a.from(), a.dest(), a.captured_pieces());
-}
-
-template<class Rules, class Board, std::enable_if_t<
-	is_ordering_precedence_v<Rules>
->...>
-constexpr auto as_tuple(action<Rules, Board> const& a) noexcept
-{
-        return std::make_tuple(a.from(), a.dest(), a.captured_pieces(), a.piece_order());
-}
-
 template<class Rules, class Board>
 constexpr auto operator==(action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
 {
-        return as_tuple(lhs) == as_tuple(rhs);
+        return lhs.tied() == rhs.tied();
 }
 
 template<class Rules, class Board>
 constexpr auto operator< (action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
 {
-        return as_tuple(lhs) < as_tuple(rhs);
+        return lhs.tied() < rhs.tied();
 }
 
 template<class Rules, class Board>

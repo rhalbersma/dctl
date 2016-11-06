@@ -11,7 +11,7 @@
 #include <dctl/state/to_move/to_move.hpp>
 #include <dctl/state/to_move/zobrist.hpp>
 #include <dctl/state/reversible_actions.hpp>
-#include <dctl/utility/tagged_empty_base.hpp>
+#include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <dctl/utility/zobrist/accumulate.hpp>
 #include <xstd/bitset.hpp>
@@ -33,10 +33,9 @@ struct most_recently_pushed_kings
 };
 
 template<class Rules, class Board>
-using most_recently_pushed_kings_t = std::conditional_t<
+using most_recently_pushed_kings_t = util::conditional_base<
         is_restricted_king_push_v<Rules>,
-        most_recently_pushed_kings<Board>,
-        util::tagged_empty_base<0>
+        most_recently_pushed_kings<Board>
 >;
 
 }       // namespace block_adl
@@ -57,8 +56,19 @@ public:
         using   set_type = set_t<Board>;
 
 private:
-        color m_to_move;
-        wpo::position<board_type> m_position{};
+        static constexpr auto static_assert_type_traits() noexcept
+        {
+                using T = state<Rules, Board>;
+
+                static_assert(std::is_trivially_destructible<T>{});
+                static_assert(std::is_trivially_default_constructible<T>{});
+                static_assert(std::is_trivially_copy_constructible<T>{});
+                static_assert(std::is_trivially_copy_assignable<T>{});
+                static_assert(std::is_trivially_move_constructible<T>{});
+                static_assert(std::is_trivially_move_assignable<T>{});
+
+                static_assert(std::is_pod<T>{});
+        }
 
         constexpr auto assert_invariants() const noexcept
         {
@@ -86,6 +96,8 @@ private:
                 assert(xstd::disjoint(pieces(white_c, pawns_c), board::mask::promotion_v<board_type, white_>));
         }
 
+        color m_to_move;
+        wpo::position<board_type> m_position{};
 public:
         state(color const to_move, set_type const black, set_type const white, set_type const pawns, set_type const kings)
         :
@@ -131,7 +143,7 @@ public:
         {
                 static constexpr auto not_to_move_c = !color_c<Side>;
                 if constexpr (Type == piece::pawn && is_superior_rank_jump_v<rules_type>) {
-                        return pieces(not_to_move_c, pawns_c);
+                        return pieces(color_c<!Side>, pawns_c);
                 } else {
                         return pieces(not_to_move_c);
                 }
