@@ -1,7 +1,8 @@
 #pragma once
-#include <xstd/cstdlib.hpp>     // euclidean_div
-#include <cassert>              // assert
-#include <type_traits>          // integral_constant
+#include <dctl/utility/concepts.hpp>    // is_trivial_special_members
+#include <xstd/cstdlib.hpp>             // euclidean_div
+#include <cassert>                      // assert
+#include <type_traits>                  // integral_constant, is_pod
 
 namespace dctl {
 namespace board {
@@ -11,16 +12,9 @@ class angle
         static constexpr auto static_assert_type_traits() noexcept
         {
                 using T = angle;
-
-                static_assert(std::is_trivially_destructible<T>{});
-                static_assert(std::is_trivially_default_constructible<T>{});
-                static_assert(std::is_nothrow_constructible<T, int>{});
-                static_assert(std::is_trivially_copy_constructible<T>{});
-                static_assert(std::is_trivially_copy_assignable<T>{});
-                static_assert(std::is_trivially_move_constructible<T>{});
-                static_assert(std::is_trivially_move_assignable<T>{});
-
+                static_assert(util::is_trivial_special_members_v<T>);
                 static_assert(std::is_pod<T>{});
+                static_assert(std::is_nothrow_constructible<T, int>{});
         }
 
         constexpr auto assert_invariants() const noexcept

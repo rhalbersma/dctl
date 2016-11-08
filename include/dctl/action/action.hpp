@@ -1,6 +1,7 @@
 #pragma once
 #include <dctl/color_piece.hpp>                 // pawn, king
 #include <dctl/rule_traits.hpp>                 // rectangular, is_quality_precedence, is_ordering_precedence
+#include <dctl/utility/concepts.hpp>            // is_trivial_special_members
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t, square_t
 #include <cassert>                              // assert
@@ -68,14 +69,7 @@ class action
         static constexpr auto static_assert_type_traits() noexcept
         {
                 using T = action<Rules, Board>;
-
-                static_assert(std::is_trivially_destructible<T>{});
-                static_assert(std::is_trivially_default_constructible<T>{});
-                static_assert(std::is_trivially_copy_constructible<T>{});
-                static_assert(std::is_trivially_copy_assignable<T>{});
-                static_assert(std::is_trivially_move_constructible<T>{});
-                static_assert(std::is_trivially_move_assignable<T>{});
-
+                static_assert(util::is_trivial_special_members_v<T>);
                 static_assert(std::is_pod<T>{});
         }
 
