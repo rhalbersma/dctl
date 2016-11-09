@@ -27,6 +27,17 @@ namespace detail {
 namespace block_adl {
 
 template<class Board>
+struct base_position
+{
+        wpo::position<Board> m_position;
+};
+
+struct base_color
+{
+        color m_to_move;
+};
+
+template<class Board>
 struct most_recently_pushed_kings
 {
         std::experimental::optional<square_t<Board>> kings_[2];
@@ -34,23 +45,29 @@ struct most_recently_pushed_kings
 };
 
 template<class Rules, class Board>
-using most_recently_pushed_kings_t = util::conditional_base<
+using conditional_base_mrpk = util::conditional_base<
         is_restricted_king_push_v<Rules>,
         most_recently_pushed_kings<Board>
 >;
 
 }       // namespace block_adl
 
-using block_adl::most_recently_pushed_kings_t;
+using block_adl::base_position;
+using block_adl::base_color;
+using block_adl::conditional_base_mrpk;
 
 }       // namespace detail
 
 template<class Rules, class Board = rectangular_t<Rules>>
 class state
 :
-        detail::most_recently_pushed_kings_t<Rules, Board>
+        detail::base_position<Board>,
+        detail::conditional_base_mrpk<Rules, Board>,
+        detail::base_color
 {
-        using most_recently_pushed_kings_t = detail::most_recently_pushed_kings_t<Rules, Board>;
+        using base_position = detail::base_position<Board>;
+        using conditional_base_mrpk = detail::conditional_base_mrpk<Rules, Board>;
+        using base_color = detail::base_color;
 public:
         using rules_type = Rules;
         using board_type = Board;
@@ -90,14 +107,12 @@ private:
                 assert(xstd::disjoint(pieces(white_c, pawns_c), board::mask::promotion_v<board_type, white_>));
         }
 
-        color m_to_move;
-        wpo::position<board_type> m_position{};
 public:
         state(color const to_move, set_type const black, set_type const white, set_type const pawns, set_type const kings)
         :
-                most_recently_pushed_kings_t{},
-                m_to_move{to_move},
-                m_position{black, white, pawns, kings}
+                base_position{{black, white, pawns, kings}},
+                conditional_base_mrpk{},
+                base_color{to_move}
         {
                 assert_invariants();
         }
@@ -114,7 +129,7 @@ public:
         {
                 static_assert(std::is_same<rules_type, rules_t<Action>>{});
                 static_assert(std::is_same<board_type, board_t<Action>>{});
-                m_position.make(to_move(), a);
+                this->m_position.make(to_move(), a);
                 pass_turn();
                 assert_invariants();
         }
@@ -129,7 +144,7 @@ public:
         auto pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
-                return m_position.pieces(std::forward<Args>(args)...);
+                return this->m_position.pieces(std::forward<Args>(args)...);
         }
 
         template<color Side, piece Type>
