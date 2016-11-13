@@ -35,10 +35,10 @@ auto getjumpsep(std::ios_base& str)
 }
 
 template<class Action>
-auto separator(std::ostream& ostr, Action const& m)
+auto separator(std::ostream& ostr, Action const& a)
 {
         using rules_type = rules_t<Action>;
-        return (m.is_jump() ? getjumpsep<rules_type>(ostr) : getpushsep<rules_type>(ostr));
+        return (a.is_jump() ? getjumpsep<rules_type>(ostr) : getpushsep<rules_type>(ostr));
 }
 
 template<class Action>
@@ -52,39 +52,39 @@ auto& print_algebraic(std::ostream& ostr, Action const& m)
 }
 
 template<class Action>
-auto& print_numeric(std::ostream& ostr, Action const& m)
+auto& print_numeric(std::ostream& ostr, Action const& a)
 {
         using board_type = board_t<Action>;
-        ostr << board_type::numeric_from_bit(m.from());
-        ostr << separator(ostr, m);
-        ostr << board_type::numeric_from_bit(m.dest());
+        ostr << board_type::numeric_from_bit(a.from());
+        ostr << separator(ostr, a);
+        ostr << board_type::numeric_from_bit(a.dest());
         return ostr;
 }
 
 template<class Action>
-auto str_algebraic(Action const& m)
+auto str_algebraic(Action const& a)
 {
         std::stringstream sstr;
-        print_algebraic(sstr, m);
+        print_algebraic(sstr, a);
         return sstr.str();
 }
 
 template<class Action>
-auto str_numeric(Action const& m)
+auto str_numeric(Action const& a)
 {
         std::stringstream sstr;
-        print_numeric(sstr, m);
+        print_numeric(sstr, a);
         return sstr.str();
 }
 
 }       // namespace move
 
 template<class CharT, class Traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> const& m)
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> const& a)
 {
         switch(move::getnotation<Rules, Board>(ostr)) {
-        case Notation::algebraic : return move::print_algebraic(ostr, m);
-        case Notation::numeric   : return move::print_numeric(ostr, m);
+        case Notation::algebraic : return move::print_algebraic(ostr, a);
+        case Notation::numeric   : return move::print_numeric(ostr, a);
         }
 }
 
