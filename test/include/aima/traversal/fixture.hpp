@@ -1,6 +1,6 @@
 #pragma once
+#include <dctl/aima/traversal/root.hpp> // Root
 #include <dctl/utility/units.hpp>
-#include <dctl/aima/traversal/root.hpp>   // Root
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
 #include <cstddef>                      // size_t
 

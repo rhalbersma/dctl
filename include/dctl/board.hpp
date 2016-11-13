@@ -1,7 +1,6 @@
 #pragma once
-#include <dctl/board_traits.hpp>        // invert, add_orthogonal_captures, remove_orthogonal_captures
 #include <dctl/board/rectangular.hpp>   // rectangular
-#include <cstddef>                      // size_t
+#include <dctl/board_traits.hpp>        // invert, add_orthogonal_captures
 
 namespace dctl {
 namespace board {
@@ -30,7 +29,7 @@ using mini          = rectangular< 6,  6>;
 
 using spantsiretti  = rectangular<10,  8>;
 
-template<std::size_t Width, std::size_t Height>
+template<int Width, int Height>
 using ktar          = invert_t<rectangular<Width, Height>>;
 
 }       // namespace board
