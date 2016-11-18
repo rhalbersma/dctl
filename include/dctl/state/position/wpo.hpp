@@ -2,10 +2,10 @@
 #include <dctl/board/mask/squares.hpp>  // squares
 #include <dctl/color_piece.hpp>         // color, black_, white_, piece, pawn_, king_
 #include <dctl/utility/type_traits.hpp> // set_t
+#include <tuple>                        // tie
 
 namespace dctl {
 namespace wpo {
-namespace block_adl {
 
 template<class Board>
 class position
@@ -22,16 +22,11 @@ private:
 public:
         position() = default;
 
-        position(set_type const w, set_type const p, set_type const o) noexcept
+        position(set_type const black_pawns, set_type const black_kings, set_type const white_pawns, set_type const white_kings) noexcept
         :
-                m_white{w},
-                m_pawns{p},
-                m_occup{o}
-        {}
-
-        position(set_type const b, set_type const w, set_type const p, set_type const /* k */) noexcept
-        :
-                position{w, p, b | w}
+                m_white{white_pawns | white_kings},
+                m_pawns{black_pawns | white_pawns},
+                m_occup{black_pawns | black_kings | white_pawns | white_kings}
         {}
 
         template<class Action>
@@ -120,11 +115,48 @@ public:
         {
                 return board::mask::squares_v<board_type> ^ m_occup;
         }
+
+        auto tied() const noexcept
+        {
+                return std::tie(m_white, m_pawns, m_occup);
+        }
 };
 
-}       // namespace block_adl
+template<class Board>
+constexpr auto operator==(position<Board> const& lhs, position<Board> const& rhs) noexcept
+{
+        return lhs.tied() == rhs.tied();
+}
 
-using block_adl::position;
+template<class Board>
+constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs) noexcept
+{
+        return lhs.tied() < rhs.tied();
+}
+
+template<class Board>
+constexpr auto operator!=(position<Board> const& lhs, position<Board> const& rhs) noexcept
+{
+        return !(lhs == rhs);
+}
+
+template<class Board>
+constexpr auto operator> (position<Board> const& lhs, position<Board> const& rhs) noexcept
+{
+        return rhs < lhs;
+}
+
+template<class Board>
+constexpr auto operator>=(position<Board> const& lhs, position<Board> const& rhs) noexcept
+{
+        return !(lhs < rhs);
+}
+
+template<class Board>
+constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs) noexcept
+{
+        return !(rhs < lhs);
+}
 
 }       // namespace wpo
 }       // namespace dctl

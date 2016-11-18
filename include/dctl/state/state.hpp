@@ -29,12 +29,13 @@ namespace block_adl {
 template<class Board>
 struct base_position
 {
-        wpo::position<Board> m_position;
+        using position_type = cp22e::position<Board>;
+        position_type m_position;
 };
 
 struct base_color
 {
-        color m_to_move;
+        color m_color;
 };
 
 template<class Board>
@@ -69,9 +70,10 @@ class state
         using conditional_base_mrpk = detail::conditional_base_mrpk<Rules, Board>;
         using base_color = detail::base_color;
 public:
-        using rules_type = Rules;
-        using board_type = Board;
-        using   set_type = set_t<Board>;
+        using    rules_type = Rules;
+        using    board_type = Board;
+        using      set_type = set_t<Board>;
+        using position_type = position_t<base_position>;
 
 private:
         static constexpr auto static_assert_type_traits() noexcept
@@ -108,20 +110,21 @@ private:
         }
 
 public:
-        state(color const to_move, set_type const black, set_type const white, set_type const pawns, set_type const kings)
+        state(position_type const& position, color const to_move)
         :
-                base_position{{black, white, pawns, kings}},
+                base_position{position},
                 conditional_base_mrpk{},
                 base_color{to_move}
         {
                 assert_invariants();
         }
 
-        static state initial(std::size_t const separation = initial_position_gap_v<Rules> + Board::height % 2)
+        static auto initial(std::size_t const separation = initial_position_gap_v<Rules> + Board::height % 2)
+                -> state
         {
-                auto const bp = board::mask::initial<board_type>{}(color::black, separation);
-                auto const wp = board::mask::initial<board_type>{}(color::white, separation);
-                return { color::white, bp, wp, bp | wp, {} };
+                auto const black_pawns = board::mask::initial<board_type>{}(color::black, separation);
+                auto const white_pawns = board::mask::initial<board_type>{}(color::white, separation);
+                return {{black_pawns, {}, white_pawns, {}}, color::white};
         }
 
         template<class Action>
@@ -167,7 +170,12 @@ public:
 
         auto to_move() const noexcept
         {
-                return m_to_move;
+                return m_color;
+        }
+
+        auto tied() const
+        {
+                return std::tie(this->m_position, m_color);
         }
 
         auto hash() const
@@ -178,8 +186,44 @@ public:
 private:
         constexpr auto pass_turn() noexcept
         {
-                m_to_move = !m_to_move;
+                m_color = !m_color;
         }
 };
+
+template<class Rules, class Board>
+constexpr auto operator==(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+{
+        return lhs.tied() == rhs.tied();
+}
+
+template<class Rules, class Board>
+constexpr auto operator< (state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+{
+        return lhs.tied() < rhs.tied();
+}
+
+template<class Rules, class Board>
+constexpr auto operator!=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+{
+        return !(lhs == rhs);
+}
+
+template<class Rules, class Board>
+constexpr auto operator> (state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+{
+        return rhs < lhs;
+}
+
+template<class Rules, class Board>
+constexpr auto operator>=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+{
+        return !(lhs < rhs);
+}
+
+template<class Rules, class Board>
+constexpr auto operator<=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+{
+        return !(rhs < lhs);
+}
 
 }       // namespace dctl
