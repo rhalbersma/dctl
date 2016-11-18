@@ -52,18 +52,17 @@ struct read<Rules, Board, pdn::protocol, Token>
         state<Rules, Board> operator()(std::string const& s) const
         {
                 using set_type = set_t<Board>;
-                set_type by_color[2]{};
-                set_type by_piece[2]{};
+                set_type by_color_piece[2][2]{};
                 auto p_side = color::black;
 
-                assert(by_color[0].none());
-                assert(by_color[1].none());
-                assert(by_piece[0].none());
-                assert(by_piece[1].none());
+                assert(by_color_piece[0][0].none());
+                assert(by_color_piece[0][1].none());
+                assert(by_color_piece[1][0].none());
+                assert(by_color_piece[1][1].none());
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
+                        return {{by_color_piece[0][0], by_color_piece[0][1], by_color_piece[1][0], by_color_piece[1][1]}, p_side };
 
                 auto setup_color = p_side;
                 auto setup_piece = piece::pawn;
@@ -91,14 +90,13 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
-                                        by_color[xstd::to_underlying_type(setup_color)].set(b);
-                                        by_piece[xstd::to_underlying_type(setup_piece)].set(b);
+                                        by_color_piece[xstd::to_underlying_type(setup_color)][xstd::to_underlying_type(setup_piece)].set(b);
                                 }
                                 setup_piece = piece::pawn;
                                 break;
                         }
                 }
-                return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
+                return {{by_color_piece[0][0], by_color_piece[0][1], by_color_piece[1][0], by_color_piece[1][1]}, p_side };
         }
 };
 
@@ -143,18 +141,17 @@ struct read<Rules, Board, dxp::protocol, Token>
         state<Rules, Board> operator()(std::string const& s) const
         {
                 using set_type = set_t<Board>;
-                set_type by_color[2]{};
-                set_type by_piece[2]{};
+                set_type by_color_piece[2][2]{};
                 auto p_side = color::black;
 
-                assert(by_color[0].none());
-                assert(by_color[1].none());
-                assert(by_piece[0].none());
-                assert(by_piece[1].none());
+                assert(by_color_piece[0][0].none());
+                assert(by_color_piece[0][1].none());
+                assert(by_color_piece[1][0].none());
+                assert(by_color_piece[1][1].none());
 
                 // do not attempt to parse empty strings
                 if (s.empty())
-                        return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
+                        return {{by_color_piece[0][0], by_color_piece[0][1], by_color_piece[1][0], by_color_piece[1][1]}, p_side };
 
                 std::stringstream sstr(s);
                 char ch;
@@ -165,15 +162,13 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : by_color[xstd::to_underlying_type(color::black)].set(b); break;
-                        case Token::white : by_color[xstd::to_underlying_type(color::white)].set(b); break;
+                        case Token::black : by_color_piece[xstd::to_underlying_type(color::black)][isupper(ch)].set(b); break;
+                        case Token::white : by_color_piece[xstd::to_underlying_type(color::white)][isupper(ch)].set(b); break;
                         case Token::empty : break;
                         default           : assert(false);
                         }
-                        if (toupper(ch) != Token::empty)
-                                by_piece[isupper(ch)].set(b);   // king or pawn
                 }
-                return { p_side, by_color[0], by_color[1], by_piece[0], by_piece[1] };
+                return {{by_color_piece[0][0], by_color_piece[0][1], by_color_piece[1][0], by_color_piece[1][1]}, p_side };
         }
 };
 
