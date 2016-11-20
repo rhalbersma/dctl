@@ -2,7 +2,6 @@
 #include <dctl/aima/traversal/root.hpp> // Root
 #include <dctl/utility/units.hpp>
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
-#include <cstddef>                      // size_t
 
 namespace dctl {
 namespace aima {

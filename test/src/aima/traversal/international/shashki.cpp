@@ -5,7 +5,7 @@
 #include <dctl/setup/setup.hpp>
 #include <dctl/aima/traversal/root.hpp>
 #include <boost/test/unit_test.hpp>
-#include <cstddef>                      // size_t
+#include <cstdint>                      // int64_t
 #include <vector>
 
 namespace dctl::aima::traversal {
@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(Frontrows)
         auto const p = setup::read<rules::international, board::international, pdn::protocol>()(
                 "W:B16,17,18,19,20:W31,32,33,34,35"
         );
-        auto const leafs = std::vector<std::size_t>
+        auto const leafs = std::vector<int64_t>
                 { 9, 81, 534, 2'538, 9'052, 29'999, 98'971, 310'315, 1'008'317, 3'174'159, 10'369'533, 34'907'917, 123'162'301, 462'333'827, 1'824'763'597 };
         test(p, keep_duplicates_gen, leafs);
 }

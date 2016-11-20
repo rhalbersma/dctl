@@ -28,7 +28,6 @@ class count<color_<Side>, king_, select::push, Reverse, State>
 
 public:
         auto operator()(State const& s) const noexcept
-                -> std::size_t
         {
                 if (auto const sources = s.pieces(to_move_c, piece_c); sources.any()) {
                         return directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(sources, s.pieces(empty_c));

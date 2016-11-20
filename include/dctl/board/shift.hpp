@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/angle.hpp>
-#include <cstddef>
+#include <cassert>
 
 namespace dctl {
 namespace board {
@@ -34,10 +34,10 @@ struct first<direction::right>
         }
 };
 
-template<direction, std::size_t N>
+template<direction, int N>
 struct shift;
 
-template<std::size_t N>
+template<int N>
 struct shift<direction::left, N>
 {
         template<class T>
@@ -47,7 +47,7 @@ struct shift<direction::left, N>
         }
 };
 
-template<std::size_t N>
+template<int N>
 struct shift<direction::right, N>
 {
         template<class T>
@@ -57,10 +57,10 @@ struct shift<direction::right, N>
         }
 };
 
-template<direction, std::size_t N>
+template<direction, int N>
 struct shift_assign;
 
-template<std::size_t N>
+template<int N>
 struct shift_assign<direction::left, N>
 {
         template<class T>
@@ -70,7 +70,7 @@ struct shift_assign<direction::left, N>
         }
 };
 
-template<std::size_t N>
+template<int N>
 struct shift_assign<direction::right, N>
 {
         template<class T>
@@ -114,7 +114,7 @@ public:
                 case 225 : return left_down() ;
                 case 270 : return down()      ;
                 case 315 : return right_down();
-                default  : return static_cast<void>(throw std::invalid_argument("Not a multiple of 45 degrees")), std::size_t{0};
+                default  : assert(false); return 0;
                 }
         }
 };

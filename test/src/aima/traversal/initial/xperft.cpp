@@ -3,6 +3,7 @@
 #include <dctl/rules.hpp>
 #include <dctl/setup/setup.hpp>
 #include <dctl/aima/traversal/root.hpp>
+#include <cstddef>
 
 using namespace dctl;
 

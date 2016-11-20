@@ -69,7 +69,7 @@ struct read<Rules, Board, pdn::protocol, Token>
 
                 std::stringstream sstr(s);
                 char ch;
-                std::size_t sq;
+                int sq;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
                         switch (ch) {
@@ -119,7 +119,7 @@ struct write<pdn::protocol, Token>
                                 sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
                         }
                         auto const bs = s.pieces(c);
-                        std::size_t n = 0;
+                        auto n = 0;
                         for (auto sq : bs) {
                                 if (s.pieces(piece::king).test(sq))
                                         sstr << Token::king;            // king tag

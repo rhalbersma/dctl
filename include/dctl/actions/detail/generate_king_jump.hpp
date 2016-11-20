@@ -67,7 +67,7 @@ private:
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold(std::size_t from_sq) const
+        auto directions_lfold(int from_sq) const
         {
                 (... , first_target(along_ray<Directions<orientation>{}>(from_sq)));
         }
@@ -216,13 +216,13 @@ private:
                 do add_halting_jump(*dest_sq++); while (is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
         }
 
-        auto add_halting_jump(std::size_t const dest_sq) const
+        auto add_halting_jump(int const dest_sq) const
         {
                 m_builder.finalize(dest_sq);
         }
 
         template<int Direction>
-        auto along_ray(std::size_t const sq) const
+        auto along_ray(int const sq) const
         {
                 return board::ray::make_iterator<board_type, Direction>(sq);
         }

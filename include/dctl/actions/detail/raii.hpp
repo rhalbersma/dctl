@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/color_piece.hpp> // pawn, king
 #include <cassert>              // assert
-#include <cstddef>              // size_t
 
 namespace dctl {
 namespace raii {
@@ -28,14 +27,14 @@ template<class Builder>
 class launch
 {
         Builder& builder;
-        std::size_t const square;
+        int const square;
 public:
         ~launch()
         {
                 builder.undo_launch(square);
         }
 
-        launch(Builder& b, std::size_t const sq)
+        launch(Builder& b, int const sq)
         :
                 builder{b},
                 square{sq}
@@ -48,14 +47,14 @@ template<class Builder>
 class capture
 {
         Builder& builder;
-        std::size_t const square;
+        int const square;
 public:
         ~capture()
         {
                 builder.release(square);
         }
 
-        capture(Builder& b, std::size_t const sq)
+        capture(Builder& b, int const sq)
         :
                 builder{b},
                 square{sq}
@@ -77,7 +76,7 @@ public:
         Visit(Visit const&) = delete;
         Visit& operator=(Visit const&) = delete;
 
-        Visit(Builder& b, std::size_t sq)
+        Visit(Builder& b, int sq)
         :
                 builder{b}
         {

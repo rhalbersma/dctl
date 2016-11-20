@@ -17,14 +17,14 @@ public:
         constexpr auto height()      const noexcept { return dim.height; }
         constexpr auto is_inverted() const noexcept { return dim.is_inverted; }
 
-        constexpr auto edge()        const noexcept { return std::size_t{0}; }
+        constexpr auto edge()        const noexcept { return 0; }
 
         constexpr bool lower_left_is_square() const noexcept { return detail::lower_left_is_square(dim); }
         constexpr bool upper_left_is_square() const noexcept { return detail::upper_left_is_square(dim); }
 
         constexpr auto modulo() const noexcept { return width(); }
 
-        constexpr auto edge_le() const noexcept { return std::size_t{0};                                            }
+        constexpr auto edge_le() const noexcept { return 0;                                            }
         constexpr auto edge_re() const noexcept { return edge_le() + ((width() +  upper_left_is_square()) / 2 - 1); }
         constexpr auto edge_lo() const noexcept { return edge_re() + 1;                                             }
         constexpr auto edge_ro() const noexcept { return edge_lo() + ((width() + !upper_left_is_square()) / 2 - 1); }
@@ -40,9 +40,9 @@ public:
 class OuterGrid
 {
         InnerGrid const inner_;
-        std::size_t const edge_;
+        int const edge_;
 public:
-        constexpr OuterGrid(InnerGrid const i, std::size_t const e) noexcept : inner_{i}, edge_{e} {}
+        constexpr OuterGrid(InnerGrid const i, int const e) noexcept : inner_{i}, edge_{e} {}
 
         constexpr auto width()       const noexcept { return inner_.width(); }
         constexpr auto height()      const noexcept { return inner_.height(); }

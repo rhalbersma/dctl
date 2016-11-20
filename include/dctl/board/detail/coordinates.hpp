@@ -2,24 +2,21 @@
 #include <dctl/board/angle.hpp>         // angle
 #include <dctl/utility/type_traits.hpp> // value_t
 #include <cassert>                      // assert
-#include <cstddef>                      // size_t
-#include <stdexcept>                    // invalid_argument
 #include <tuple>                        // make_tuple
 
 namespace dctl {
 namespace board {
 namespace detail {
 
-struct upper_left      { using value_type = std::size_t; };
-struct lower_left      { using value_type = std::size_t; };
-struct screen_centered { using value_type = int;         };
+struct upper_left      {};
+struct lower_left      {};
+struct screen_centered {};
 
 template<class Origin>
 struct coordinates
 {
-        using value_type = value_t<Origin>;
-        value_type const x;
-        value_type const y;
+        int const x;
+        int const y;
 };
 
 template<class Origin>
@@ -40,7 +37,7 @@ constexpr auto operator!=(coordinates<Origin> const lhs, coordinates<Origin> con
         return !(lhs == rhs);
 }
 
-constexpr auto rotate(coordinates<screen_centered> const coord, angle const a)
+constexpr auto rotate(coordinates<screen_centered> const coord, angle const a) noexcept
         -> coordinates<screen_centered>
 {
         switch (a.value()) {
@@ -48,24 +45,24 @@ constexpr auto rotate(coordinates<screen_centered> const coord, angle const a)
         case  90 : return { -coord.y,  coord.x };
         case 180 : return { -coord.x, -coord.y };
         case 270 : return {  coord.y, -coord.x };
-        default  : return static_cast<void>(throw std::invalid_argument("Not a multiple of 90 degrees.")), coord;
+        default  : assert(false); return coord;
         }
 }
 
-constexpr auto swap_llo_ulo(std::size_t const value, std::size_t const bound) noexcept
+constexpr auto swap_llo_ulo(int const value, int const bound) noexcept
 {
         assert(value < bound);
         return (bound - 1) - value;
 }
 
-constexpr auto sco_from_ulo(std::size_t const value, std::size_t const bound) noexcept
+constexpr auto sco_from_ulo(int const value, int const bound) noexcept
 {
-        return static_cast<int>(2 * value - (bound - 1));
+        return 2 * value - (bound - 1);
 }
 
-constexpr auto ulo_from_sco(int const value, std::size_t const bound) noexcept
+constexpr auto ulo_from_sco(int const value, int const bound) noexcept
 {
-        return (static_cast<std::size_t>(value) + (bound - 1)) / 2;
+        return (value + (bound - 1)) / 2;
 }
 
 template<class Grid>
@@ -140,14 +137,14 @@ constexpr auto to_square(coordinates<screen_centered> const coord, Grid const gr
 }
 
 template<class Grid>
-constexpr auto to_ulo(std::size_t const sq, Grid const grid)
+constexpr auto to_ulo(int const sq, Grid const grid)
         -> coordinates<upper_left>
 {
         auto const row_div   = sq / grid.modulo();
         auto const sq_offset = sq % grid.modulo();
         assert(row_div * grid.modulo() + sq_offset == sq);
 
-        auto const row_mod = static_cast<std::size_t>(sq_offset >= grid.edge_lo());
+        auto const row_mod = sq_offset >= grid.edge_lo();
         auto const col_mod = row_mod ^ !grid.upper_left_is_square();
         assert((row_mod ^ col_mod) == !grid.upper_left_is_square());
 
@@ -158,19 +155,19 @@ constexpr auto to_ulo(std::size_t const sq, Grid const grid)
 }
 
 template<class Grid>
-constexpr auto to_llo(std::size_t const sq, Grid const grid)
+constexpr auto to_llo(int const sq, Grid const grid)
 {
         return to_llo(to_ulo(sq, grid), grid);
 }
 
 template<class Grid>
-constexpr auto to_sco(std::size_t const sq, Grid const grid)
+constexpr auto to_sco(int const sq, Grid const grid)
 {
         return to_sco(to_ulo(sq, grid), grid);
 }
 
 template<class FromGrid, class DestGrid>
-constexpr auto transform(std::size_t const sq, FromGrid const from, DestGrid const dest, angle const a)
+constexpr auto transform(int const sq, FromGrid const from, DestGrid const dest, angle const a)
 {
         // sq.to_sco(from).rotate(a).to_square(dest)
         return to_square(rotate(to_sco(sq, from), a), dest);

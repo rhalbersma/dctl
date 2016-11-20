@@ -1,7 +1,6 @@
 #pragma once
 #include <dctl/aima/search/score.hpp>
 #include <dctl/actions.hpp>
-#include <xstd/cstddef.hpp>
 #include <type_traits>                  // false_type, true_type
 
 namespace dctl {
@@ -71,7 +70,6 @@ struct terminal<Misere>
 template<class State>
 bool is_cycle(State const& /*p*/)
 {/*
-        using namespace xstd::support_literals;
 
         // a cycle needs at least 4 reversible moves
         if (p.reversible_actions() < 4) return false;
@@ -80,7 +78,7 @@ bool is_cycle(State const& /*p*/)
         auto q = grand_parent(*grand_parent(p));
 
         // compare the ancestor hash indices with the current hash index
-        for (auto i = 4_zu; i <= p.reversible_actions(); i += 2) {
+        for (auto i = 4; i <= p.reversible_actions(); i += 2) {
                 if (q->hash() == p.hash())
                         return true;
                 q = grand_parent(*q);

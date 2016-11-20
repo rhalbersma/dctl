@@ -21,10 +21,10 @@ class column
         {
                 struct is_column
                 {
-                        std::size_t const column_;
+                        int const column_;
 
                         // simulate a constexpr lambda (allowed in C++17)
-                        constexpr auto operator()(std::size_t const sq) const noexcept
+                        constexpr auto operator()(int const sq) const noexcept
                         {
                                 assert(column_ < Board::width);
                                 return board::detail::to_llo(sq, Board::inner_grid).x == (color{} == white_c ? column_ : Board::width - 1 - column_);
@@ -32,7 +32,7 @@ class column
                 };
 
                 // simulate a constexpr lambda (allowed in C++17)
-                constexpr auto operator()(std::size_t const column) const noexcept
+                constexpr auto operator()(int const column) const noexcept
                 {
                         return detail::copy_if<Board>(is_column{column});
                 }
@@ -47,10 +47,10 @@ class column
         };
 
 public:
-        constexpr auto operator()(color const to_move, std::size_t const column) const noexcept
+        constexpr auto operator()(color const to_move, int const column) const noexcept
         {
                 assert(column < Board::width);
-                return value[xstd::to_underlying_type(to_move)][column];
+                return value[xstd::to_underlying_type(to_move)][static_cast<std::size_t>(column)];
         }
 };
 

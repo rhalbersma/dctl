@@ -8,7 +8,6 @@
 #include <dctl/utility/type_traits.hpp>         // board_t, rules_t, set_t, value_t
 #include <boost/algorithm/cxx11/none_of.hpp>    // none_of
 #include <cassert>                              // assert
-#include <cstddef>                              // size_t
 #include <iterator>                             // begin, end, prev
 #include <type_traits>                          // is_same
 
@@ -28,7 +27,6 @@ public:
         using  board_type =       board_t<State>;
         using  rules_type =       rules_t<State>;
         using    set_type =         set_t<State>;
-        using square_type =   std::size_t;
 
 private:
         State const& m_state;
@@ -55,18 +53,18 @@ public:
                 m_initial_targets ^= m_state.pieces(!to_move_c, kings_c);
         }
 
-        auto make_launch(std::size_t const sq)
+        auto make_launch(int const sq)
         {
                 m_candidate_action.from(sq);
                 m_empty.set(sq);
         }
 
-        auto undo_launch(std::size_t const sq)
+        auto undo_launch(int const sq)
         {
                 m_empty.reset(sq);
         }
 
-        auto capture(std::size_t const sq)
+        auto capture(int const sq)
         {
                 m_candidate_action.capture(sq, is_king(sq));
                 if constexpr (is_passing_capture_v<rules_type>) {
@@ -74,7 +72,7 @@ public:
                 }
         }
 
-        auto release(std::size_t const sq)
+        auto release(int const sq)
         {
                 if constexpr (is_passing_capture_v<rules_type>) {
                         m_empty.reset(sq);
@@ -92,7 +90,7 @@ public:
                 m_candidate_action.into(p);
         }
 
-        auto finalize(std::size_t const sq)
+        auto finalize(int const sq)
         {
                 m_candidate_action.dest(sq);
                 precedence_duplicates();
@@ -127,7 +125,7 @@ public:
                 return targets<board::ray::direction_v<Iterator>.value()>().test(*it);
         }
 
-        auto not_occupied(square_type const sq) const
+        auto not_occupied(int const sq) const
         {
                 return m_empty.test(sq);
         }
@@ -140,12 +138,12 @@ public:
         }
 
         template<int Direction>
-        auto path(square_type const sq) const
+        auto path(int const sq) const
         {
                 return path<Direction>().test(sq);
         }
 
-        auto is_last_jumped_king(square_type const sq) const
+        auto is_last_jumped_king(int const sq) const
         {
                 return m_state.pieces(kings_c).test(sq);
         }
@@ -186,7 +184,7 @@ public:
         }
 
 private:
-        auto is_king(square_type sq) const
+        auto is_king(int sq) const
         {
                 return m_state.pieces(kings_c).test(sq);
         }
