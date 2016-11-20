@@ -1,5 +1,4 @@
 #pragma once
-#include <cstddef>      // size_t
 #include <type_traits>  // is_same
 
 namespace dctl {
@@ -7,16 +6,16 @@ namespace board {
 namespace traits {
 namespace detail {
 
-template<template<class> class UnaryMetaFunction, class Arg, std::size_t N>
+template<template<class> class UnaryMetaFunction, class Arg, int N>
 struct iterate;
 
-template<template<class> class UnaryMetaFunction, class Arg, std::size_t N>
+template<template<class> class UnaryMetaFunction, class Arg, int N>
 using iterate_t = typename iterate<UnaryMetaFunction, Arg, N>::type;
 
 template<template<class> class UnaryMetaFunction, class Arg>
 struct iterate<UnaryMetaFunction, Arg, 0> : Arg {};
 
-template<template<class> class UnaryMetaFunction, class Arg, std::size_t N>
+template<template<class> class UnaryMetaFunction, class Arg, int N>
 struct iterate : UnaryMetaFunction<iterate_t<UnaryMetaFunction, Arg, N - 1>> {};
 
 }       // namespace detail

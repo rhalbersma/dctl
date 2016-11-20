@@ -9,10 +9,10 @@
 #include <dctl/actions/detail/generate_pawn_jump.hpp>   // generate (pawn jump specialization)
 #include <dctl/actions/select/jump.hpp>                 // jump
 #include <dctl/color_piece.hpp>                         // color, color_, king_, pawn_
+#include <dctl/rule_traits.hpp>
 #include <dctl/utility/static_vector.hpp>               // static_vector
 #include <dctl/utility/type_traits.hpp>                 // rules_t, board_t
 #include <cassert>                                      // assert
-#include <dctl/rule_traits.hpp>
 #include <type_traits>
 
 namespace dctl {
@@ -20,7 +20,7 @@ namespace detail {
 
 class MoveCounter
 {
-        std::size_t n{};
+        int n{};
 public:
         auto& operator++()
         {
@@ -66,7 +66,7 @@ public:
 
                 counter_container a;
                 generate(s, a);
-                return a.size();
+                return static_cast<int>(a.size());
         }
 
         template<class State>

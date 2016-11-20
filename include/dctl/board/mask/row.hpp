@@ -20,10 +20,10 @@ class row
         {
                 struct is_row
                 {
-                        std::size_t const row_;
+                        int const row_;
 
                         // simulate a constexpr lambda (allowed in C++17)
-                        constexpr auto operator()(std::size_t const sq) const noexcept
+                        constexpr auto operator()(int const sq) const noexcept
                         {
                                 assert(row_ < Board::height);
                                 return board::detail::to_llo(sq, Board::inner_grid).y == (color{} == white_c ? row_ : Board::height - 1 - row_);
@@ -31,7 +31,7 @@ class row
                 };
 
                 // simulate a constexpr lambda (allowed in C++17)
-                constexpr auto operator()(std::size_t const row) const noexcept
+                constexpr auto operator()(int const row) const noexcept
                 {
                         return detail::copy_if<Board>(is_row{row});
                 }
@@ -42,10 +42,10 @@ class row
         static constexpr value_type value = fill_array<Board::height>(init{});
 
 public:
-        constexpr auto operator()(std::size_t const row) const noexcept
+        constexpr auto operator()(int const row) const noexcept
         {
                 assert(row < Board::height);
-                return value[row];
+                return value[static_cast<std::size_t>(row)];
         }
 };
 

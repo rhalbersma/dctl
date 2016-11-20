@@ -8,7 +8,6 @@
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/color_piece.hpp>                         // color, color_, pawn_
 #include <dctl/utility/type_traits.hpp>                 // board_t, set_t, value_t
-#include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
 namespace dctl {
@@ -63,12 +62,12 @@ private:
         }
 
         template<int Direction>
-        auto along_ray(std::size_t const sq) const noexcept
+        auto along_ray(int const sq) const noexcept
         {
                 return board::ray::make_iterator<board_type, Direction>(sq);
         }
 
-        auto is_promotion(std::size_t const sq) const // Throws: Nothing.
+        auto is_promotion(int const sq) const // Throws: Nothing.
         {
                 return board::mask::promotion_v<board_type, to_move_>.test(sq);
         }

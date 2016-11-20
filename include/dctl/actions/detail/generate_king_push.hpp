@@ -8,7 +8,6 @@
 #include <dctl/color_piece.hpp>                         // color, color_, king_
 #include <dctl/rule_traits.hpp>                         // is_long_ranged_king_t
 #include <dctl/utility/type_traits.hpp>                 // board_t, rules_t, set_t, value_t
-#include <cstddef>                                      // size_t
 #include <iterator>                                     // prev
 
 namespace dctl {
@@ -50,7 +49,7 @@ public:
         }
 private:
         template<template<int> class... Directions>
-        auto ray_directions_lfold(std::size_t const from, set_type const destinations) const
+        auto ray_directions_lfold(int const from, set_type const destinations) const
         {
                 (... , serialize(along_ray<Directions<orientation>{}>(from), destinations));
         }
@@ -90,7 +89,7 @@ private:
         }
 
         template<int Direction>
-        auto along_ray(std::size_t const sq) const
+        auto along_ray(int const sq) const
         {
                 return board::ray::make_iterator<board_type, Direction>(sq);
         }

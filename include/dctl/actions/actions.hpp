@@ -5,7 +5,6 @@
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/type_traits.hpp>                 // value_t
 #include <cassert>                                      // assert
-#include <cstddef>                                      // size_t
 #include <type_traits>                                  // bool_constant, is_same
 
 namespace dctl {
@@ -19,7 +18,7 @@ class Actions
         template<class color, class State, class SequenceContainer>
         auto assert_invariants([[maybe_unused]] State const& s, [[maybe_unused]] SequenceContainer const& actions) const
         {
-                [[maybe_unused]] auto const n = actions.size();
+                [[maybe_unused]] auto const n = static_cast<int>(actions.size());
                 assert( count<color>(s) ==  n     );
                 assert(detect<color>(s) == (n > 0));
         }

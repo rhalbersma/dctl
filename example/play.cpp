@@ -16,10 +16,11 @@ using namespace dctl;
 
 int main()
 {
-        using Rules = rules::frisian;
-        using State = state<Rules>;
+        using Rules = rules::international;
+        using Board = board::mini;
+        using State = state<Rules, Board>;
 
-        auto initial = setup::read<Rules, board::frisian, pdn::protocol>()("W:WK46,28:BK43");
+        auto initial = setup::read<Rules, Board, pdn::protocol>()("W:B1,5,6,9,10:W11,12,14,15,16");
         //("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46");
 
         std::stack<State> game;
@@ -31,7 +32,7 @@ int main()
                 std::cout << fen << state;
                 //std::cout << "[" << p.reversible_actions() << "]\n";
 
-                std::vector<action<Rules>> actions;
+                std::vector<action<Rules, Board>> actions;
                 Actions<>{}.generate(state, actions);
                 boost::sort(actions, [](auto const& lhs, auto const& rhs) {
                         return move::str_numeric(lhs) < move::str_numeric(rhs);

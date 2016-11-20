@@ -4,7 +4,6 @@
 #include <dctl/utility/type_traits.hpp>         // set_t, value_t
 #include <xstd/cstdlib.hpp>                     // euclidean_div
 #include <cassert>                              // assert
-#include <cstddef>                              // size_t
 
 namespace dctl {
 namespace board {
@@ -13,13 +12,13 @@ namespace mask {
 template<class Board>
 class jump_group
 {
-        template<std::size_t FromSquare>
+        template<int FromSquare>
         struct init
         {
                 struct is_jump_group
                 {
                         // simulate a constexpr lambda (allowed in C++17)
-                        constexpr auto operator()(std::size_t const dest_sq) const noexcept
+                        constexpr auto operator()(int const dest_sq) const noexcept
                         {
                                 auto const from_coord = board::detail::to_llo(FromSquare, Board::inner_grid);
                                 auto const dest_coord = board::detail::to_llo(dest_sq   , Board::inner_grid);
@@ -50,7 +49,7 @@ class jump_group
         };
 
 public:
-        constexpr auto operator()(std::size_t const n) const noexcept
+        constexpr auto operator()(int const n) const noexcept
         {
                 assert(n < 4);
                 return value[n];

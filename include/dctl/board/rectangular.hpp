@@ -4,10 +4,9 @@
 #include <dctl/board/detail/dimensions.hpp>             // dimensions
 #include <dctl/board/detail/grid.hpp>                   // InnerGrid, OuterGrid
 #include <dctl/board/detail/optimal_orientation.hpp>    // size_minimizing_orientation
-#include <dctl/color_piece.hpp>                               // black, white
+#include <dctl/color_piece.hpp>                         // black, white
 #include <dctl/utility/fill_array.hpp>                  // fill_array
 #include <xstd/bitset.hpp>                              // bitset
-#include <xstd/cstddef.hpp>                             // _zu
 #include <xstd/cstdint.hpp>                             // uint_fast
 #include <xstd/limits.hpp>                              // align_on
 #include <boost/range/irange.hpp>                       // irange
@@ -23,8 +22,8 @@ namespace block_adl {
 
 template
 <
-        std::size_t Width,
-        std::size_t Height,
+        int Width,
+        int Height,
         bool IsInverted = false,
         bool IsOrthogonalJump = false
 >
@@ -68,17 +67,15 @@ public:
 
         static auto squares() noexcept
         {
-                using namespace xstd::support_literals;
-                return boost::irange(0_zu, size());
+                return boost::irange(0, size());
         }
 
         static auto bitnrs() noexcept
         {
-                using namespace xstd::support_literals;
-                return boost::irange(0_zu, bits());
+                return boost::irange(0, bits());
         }
 
-        static auto numeric_from_bit(std::size_t const n)
+        static auto numeric_from_bit(int const n)
         {
                 assert(n < NumBits);
                 std::stringstream sstr;
@@ -86,7 +83,7 @@ public:
                 return sstr.str();
         }
 
-        static auto algebraic_from_bit(std::size_t const n)
+        static auto algebraic_from_bit(int const n)
         {
                 assert(n < NumBits);
                 std::stringstream sstr;
@@ -95,46 +92,46 @@ public:
                 return sstr.str();
         }
 private:
-        static constexpr auto init_bit_from_square(std::size_t const sq) noexcept
+        static constexpr auto init_bit_from_square(int const sq) noexcept
         {
                 assert(sq < NumSquares);
                 return detail::transform(sq, inner_grid, outer_grid, inverse(orientation));
         }
 
-        static constexpr auto init_square_from_bit(std::size_t const n) noexcept
+        static constexpr auto init_square_from_bit(int const n) noexcept
         {
                 assert(n < NumBits);
                 return detail::transform(n, outer_grid, inner_grid, orientation);
         }
 
-        static constexpr auto column_label(std::size_t const n) noexcept
+        static constexpr auto column_label(int const n) noexcept
         {
                 assert(n < width);
                 return static_cast<char>('a' + n);
         }
 
-        static constexpr auto row_label(std::size_t const n) noexcept
+        static constexpr auto row_label(int const n) noexcept
         {
                 assert(n < height);
                 return 1 + n;
         }
 
-        static constexpr std::array<std::size_t, NumSquares>
+        static constexpr std::array<int, NumSquares>
         table_bit_from_square = fill_array<NumSquares>(init_bit_from_square);
 
-        static constexpr std::array<std::size_t, NumBits>
+        static constexpr std::array<int, NumBits>
         table_square_from_bit = fill_array<NumBits>(init_square_from_bit);
 public:
-        static constexpr auto bit_from_square(std::size_t const sq)
+        static constexpr auto bit_from_square(int const sq)
         {
                 assert(sq < NumSquares);
-                return table_bit_from_square[sq];
+                return table_bit_from_square[static_cast<std::size_t>(sq)];
         }
 
-        static constexpr auto square_from_bit(std::size_t const n)
+        static constexpr auto square_from_bit(int const n)
         {
                 assert(n < NumBits);
-                return table_square_from_bit[n];
+                return table_square_from_bit[static_cast<std::size_t>(n)];
         }
 
         static constexpr auto is_square(detail::coordinates<detail::upper_left> const& coord) noexcept
@@ -148,24 +145,24 @@ public:
         }
 };
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr angle
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation;
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr detail::InnerGrid
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 constexpr detail::OuterGrid
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<std::size_t, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+constexpr std::array<int, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
 
-template<std::size_t Width, std::size_t Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<std::size_t, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
+template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
+constexpr std::array<int, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
 rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
 
 }       // namespace block_adl

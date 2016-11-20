@@ -2,7 +2,6 @@
 #include <dctl/board/shift.hpp>                 // shift_sign, shift_size
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable, additive
-#include <cstddef>                              // size_t
 #include <iterator>                             // random_access_iterator_tag
 
 namespace dctl {
@@ -21,15 +20,13 @@ class cursor
         static constexpr auto stride = (sign == board::direction::right) ? -N : N;
         static_assert(stride != 0, "Cursors need a non-zero stride.");
 
-        using square_type = std::size_t;
-
         int m_cursor{};
 public:
         cursor() = default;
 
-        explicit cursor(square_type const sq) noexcept
+        explicit cursor(int const sq) noexcept
         :
-                m_cursor{static_cast<int>(sq)}
+                m_cursor{sq}
         {}
 
         template<class, int>
@@ -43,7 +40,7 @@ public:
 
         /* implicit */ operator auto() const noexcept
         {
-                return static_cast<square_type>(m_cursor);
+                return m_cursor;
         }
 
         // operator++(int) provided by boost::unit_steppable
@@ -61,16 +58,16 @@ public:
         }
 
         // operator+(cursor, int) provided by boost::additive
-        auto& operator+=(std::size_t const n) noexcept
+        auto& operator+=(int const n) noexcept
         {
-                m_cursor += static_cast<int>(n) * stride;
+                m_cursor += n * stride;
                 return *this;
         }
 
         // operator-(cursor, int) provided by boost::additive
-        auto& operator-=(std::size_t const n) noexcept
+        auto& operator-=(int const n) noexcept
         {
-                m_cursor -= static_cast<int>(n) * stride;
+                m_cursor -= n * stride;
                 return *this;
         }
 
@@ -90,7 +87,7 @@ using iterator = boost::counting_iterator
 >;
 
 template<class Board, int Direction>
-auto make_iterator(std::size_t const sq)
+auto make_iterator(int const sq)
         -> iterator<Board, Direction>
 {
         return { cursor<Board, Direction>{sq} };

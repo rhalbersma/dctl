@@ -3,7 +3,6 @@
 #include <dctl/color_piece.hpp>         // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
-#include <cstddef>                      // size_t
 #include <vector>                       // vector
 
 namespace dctl {
@@ -28,13 +27,13 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         struct Action
         {
                 using rules_type = frisian;
-                std::size_t num_captured_;
-                std::size_t num_captured_kings_;
+                int num_captured_;
+                int num_captured_kings_;
                 piece with_;
 
-                constexpr auto num_captured_pieces()       const noexcept { return num_captured_;        }
-                constexpr auto num_captured_kings() const noexcept { return num_captured_kings_;  }
-                constexpr auto is_with_king()       const noexcept { return with_ == piece::king; }
+                constexpr auto num_captured_pieces() const noexcept { return num_captured_;        }
+                constexpr auto num_captured_kings()  const noexcept { return num_captured_kings_;  }
+                constexpr auto is_with_king()        const noexcept { return with_ == piece::king; }
         };
 
         auto const moves = std::vector<Action>

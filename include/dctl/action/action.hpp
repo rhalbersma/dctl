@@ -5,7 +5,6 @@
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t, square_t
 #include <cassert>                              // assert
-#include <cstddef>                              // size_t
 #include <tuple>                                // tie
 #include <type_traits>                          // conditional, enable_if, is_same
 
@@ -86,7 +85,7 @@ public:
 
         action() = default;
 
-        constexpr action(std::size_t const src, std::size_t const dst, bool const promotion) noexcept
+        constexpr action(int const src, int const dst, bool const promotion) noexcept
         :
                 conditional_base_ordering_precedence{},
                 conditional_base_quality_precedence{},
@@ -95,7 +94,7 @@ public:
                 assert_invariants();
         }
 
-        constexpr action(std::size_t const src, std::size_t const dst) noexcept
+        constexpr action(int const src, int const dst) noexcept
         :
                 conditional_base_ordering_precedence{},
                 conditional_base_quality_precedence{},
@@ -104,7 +103,7 @@ public:
                 assert_invariants();
         }
 
-        constexpr auto capture(std::size_t const sq, bool const is_king) // Throws: Nothing.
+        constexpr auto capture(int const sq, bool const is_king) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
                 if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
@@ -113,7 +112,7 @@ public:
                 this->m_captured_pieces.set(sq);
         }
 
-        constexpr auto release(std::size_t const sq, bool const is_king) // Throws: Nothing.
+        constexpr auto release(int const sq, bool const is_king) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
                 this->m_captured_pieces.reset(sq);
@@ -132,7 +131,7 @@ public:
                 return captured_pieces().count();
         }
 
-        constexpr auto from(std::size_t const sq) // Throws: Nothing.
+        constexpr auto from(int const sq) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
                 this->m_from = static_cast<square_type>(sq);
@@ -143,7 +142,7 @@ public:
                 return this->m_from;
         }
 
-        constexpr auto dest(std::size_t const sq) // Throws: Nothing.
+        constexpr auto dest(int const sq) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
                 this->m_dest = static_cast<square_type>(sq);
@@ -231,7 +230,7 @@ public:
         }
 
 private:
-        constexpr auto capture_quality_ordering(std::size_t const sq, bool const is_king)
+        constexpr auto capture_quality_ordering(int const sq, bool const is_king)
         {
                 static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
@@ -244,7 +243,7 @@ private:
                 }
         }
 
-        constexpr auto release_quality_ordering(std::size_t const sq, bool const is_king)
+        constexpr auto release_quality_ordering(int const sq, bool const is_king)
         {
                 static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
@@ -257,7 +256,7 @@ private:
                 }
         }
 
-        constexpr auto is_onboard(std::size_t const sq) const noexcept
+        constexpr auto is_onboard(int const sq) const noexcept
         {
                 return sq < set_type::size();
         }

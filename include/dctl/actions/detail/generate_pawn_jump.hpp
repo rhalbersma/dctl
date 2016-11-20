@@ -240,18 +240,18 @@ private:
                 return true;
         }
 
-        auto add_jump(std::size_t const dest_sq) const
+        auto add_jump(int const dest_sq) const
         {
                 m_builder.finalize(dest_sq);
         }
 
         template<int Direction>
-        auto along_ray(std::size_t const sq) const noexcept
+        auto along_ray(int const sq) const noexcept
         {
                 return board::ray::make_iterator<board_type, Direction>(sq);
         }
 
-        auto is_promotion(std::size_t const sq) const // Throws: Nothing.
+        auto is_promotion(int const sq) const // Throws: Nothing.
         {
                 return board::mask::promotion_v<board_type, to_move_>.test(sq);
         }

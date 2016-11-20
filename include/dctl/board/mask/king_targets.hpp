@@ -18,7 +18,7 @@ class king_targets
         template<int Direction>
         struct init
         {
-                auto operator()(std::size_t const sq) const noexcept
+                auto operator()(int const sq) const noexcept
                 {
                         constexpr auto squares = squares_v<Board>;
                         return squares.test(sq) ? board::ray::fill(board::ray::make_iterator<Board, Direction>(sq), squares) : set_t<Board>{};
@@ -33,10 +33,10 @@ class king_targets
         static value_type const value[];
 
 public:
-        auto operator()(std::size_t const sq, angle const alpha) const noexcept
+        auto operator()(int const sq, angle const alpha) const noexcept
         {
                 auto const segment = (alpha - beta) / theta;
-                return value[segment][sq];
+                return value[segment][static_cast<std::size_t>(sq)];
         }
 };
 

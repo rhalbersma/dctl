@@ -21,7 +21,6 @@
 #include <dctl/setup/string.hpp>
 #include <dctl/action/ostream.hpp>
 
-#include <xstd/cstddef.hpp>
 #include <boost/algorithm/cxx11/iota.hpp>
 #include <cassert>                      // assert
 #include <cstddef>
@@ -109,7 +108,6 @@ private:
         template<int NodeType, class Actions>
         int pvs(State const& s, Actions successor, int alpha, int beta, int depth, int ply, Variation& refutation)
         {
-                using namespace xstd::support_literals;
                 statistics_.collect(ply);
 
                 if (is_interrupted())

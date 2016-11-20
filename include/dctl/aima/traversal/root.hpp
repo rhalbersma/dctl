@@ -161,7 +161,7 @@ struct Enhancements<hash_tag, State>
 };
 
 template<class State, class Actions, class Enhancements>
-std::size_t walk(State const& s, int depth, int ply, Actions successor, Enhancements e)
+int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements e)
 {
         // (0)
         e.collect_statistics(ply);
@@ -171,7 +171,7 @@ std::size_t walk(State const& s, int depth, int ply, Actions successor, Enhancem
         if (found.first)
                 return found.second;
 
-        std::size_t nodes = 0;
+        int64_t nodes = 0;
 
         // (2)
         auto const terminal = e.terminal(s, successor, depth);
@@ -196,12 +196,12 @@ std::size_t walk(State const& s, int depth, int ply, Actions successor, Enhancem
 template<bool IsBulk, class Actions, class State>
 auto perft_state(Actions successor, State const& s, int depth)
 {
-        if constexpr( IsBulk) { if (depth == 1) return successor.count(s); }
-        if constexpr(!IsBulk) { if (depth == 0) return std::size_t{1};         }
+        if constexpr( IsBulk) { if (depth == 1) return static_cast<int64_t>(successor.count(s)); }
+        if constexpr(!IsBulk) { if (depth == 0) return int64_t{1};         }
 
         static_vector<action<rules_t<State>, board_t<State>>> moves;
         successor.generate(s, moves);
-        return boost::accumulate(moves, std::size_t{0}, [&](auto n, auto const& a){
+        return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
                 return n + perft_state<IsBulk>(successor, result(s, a), depth - 1);
         });
 }
@@ -209,13 +209,13 @@ auto perft_state(Actions successor, State const& s, int depth)
 template<bool IsBulk, class Actions, class Node>
 auto perft_node(Actions const& successor, Node const& node, int depth)
 {
-        if constexpr( IsBulk) { if (depth == 1) return successor.count(node.state); }
-        if constexpr(!IsBulk) { if (depth == 0) return std::size_t{1};              }
+        if constexpr( IsBulk) { if (depth == 1) return static_cast<int64_t>(successor.count(node.state)); }
+        if constexpr(!IsBulk) { if (depth == 0) return int64_t{1};              }
 
         using state_type = decltype(node.state);
         static_vector<action<rules_t<state_type>, board_t<state_type>>> moves;
         successor.generate(node.state, moves);
-        return boost::accumulate(moves, std::size_t{0}, [&](auto n, auto const& a){
+        return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
                 return n + perft_node<IsBulk>(successor, child(node, a), depth - 1);
         });
 }
@@ -224,11 +224,11 @@ template<class Actions, class State>
 auto iperft_bulk_counting(Actions const& successor, State& state, int depth)
 {
         if (depth == 1)
-                return successor.count(state);
+                return static_cast<int64_t>(successor.count(state));
 
         static_vector<action<rules_t<State>, board_t<State>>> moves;
         successor.generate(state, moves);
-        return boost::accumulate(moves, std::size_t{0}, [&](auto n, auto const& a){
+        return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
                 state.make(a);
                 auto const res = n + iperft_bulk_counting(successor, state, depth - 1);
                 state.undo(a);
@@ -259,7 +259,7 @@ void print_move(Action const& move, int i)
 }
 
 template<class Stopwatch, class Enhancements>
-void report(int depth, std::size_t leafs, Stopwatch const& stopwatch, Enhancements e)
+void report(int depth, int64_t leafs, Stopwatch const& stopwatch, Enhancements e)
 {
         std::cout << "info";
 
@@ -290,7 +290,7 @@ void report(int depth, std::size_t leafs, Stopwatch const& stopwatch, Enhancemen
 }
 
 template<class Stopwatch>
-void xreport(int depth, std::size_t leafs, Stopwatch const& stopwatch)
+void xreport(int depth, int64_t leafs, Stopwatch const& stopwatch)
 {
         std::cout << "info";
 
@@ -313,16 +313,16 @@ void xreport(int depth, std::size_t leafs, Stopwatch const& stopwatch)
 }
 
 inline
-void summary(std::size_t leafs)
+void summary(int64_t leafs)
 {
         std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
 template<class State, class Actions, class Enhancements>
-std::size_t perft(State const& s, int depth, Actions successor, Enhancements e)
+auto perft(State const& s, int depth, Actions successor, Enhancements e)
 {
 
-        std::size_t nodes = 0;
+        int64_t nodes = 0;
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
@@ -381,9 +381,9 @@ auto nperft(State const& s, int depth, Actions successor)
 }
 
 template<class State, class Actions, class Enhancements>
-std::size_t divide(State const& s, int depth, Actions successor, Enhancements e)
+auto divide(State const& s, int depth, Actions successor, Enhancements e)
 {
-        std::size_t leaf_nodes = 0;
+        int64_t leaf_nodes = 0;
 
         std::vector<action<rules_t<State>, board_t<State>>> moves;
         successor.generate(s, moves);

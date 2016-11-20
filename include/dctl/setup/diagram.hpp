@@ -24,11 +24,10 @@ public:
         {
                 using Board = board_t<State>;
                 using Coord = board::detail::coordinates<board::detail::upper_left>;
-                using namespace xstd::support_literals;
 
                 std::stringstream ostr;
-                for (auto y : boost::irange(0_zu, Board::height)) {
-                        for (auto x : boost::irange(0_zu, Board::width)) {
+                for (auto y : boost::irange(0, Board::height)) {
+                        for (auto x : boost::irange(0, Board::width)) {
                                 auto const coord = Coord{x, y};
                                 if (Board::is_square(coord)) {
                                         ostr << std::setw(2) << content<Content>(s, Board::bit_from_square(Board::to_square(coord)));

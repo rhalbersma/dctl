@@ -5,7 +5,6 @@
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <board/sequence.hpp>                   // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
-#include <xstd/cstddef.hpp>                     // _z
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/range/numeric.hpp>              // accumulate
 #include <boost/range/irange.hpp>               // irange
@@ -26,8 +25,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, board::BoardSequenc
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(columnsEquivalencePartitionSquares, T, board::BoardSequence)
 {
-        using namespace xstd::support_literals;
-        auto const columns = boost::irange(0_zu, T::width);
+        auto const columns = boost::irange(0, T::width);
 
         BOOST_CHECK(
                 boost::algorithm::all_of(columns, [=](auto i){
@@ -52,8 +50,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(columnsEquivalencePartitionSquares, T, board::Boar
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(rowsEquivalencePartitionSquares, T, board::BoardSequence)
 {
-        using namespace xstd::support_literals;
-        auto const rows = boost::irange(0_zu, T::height);
+        auto const rows = boost::irange(0, T::height);
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
@@ -78,7 +75,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(rowsEquivalencePartitionSquares, T, board::BoardSe
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(jump_groupsEquivalencePartitionSquares, T, board::BoardSequence)
 {
-        auto const jump_groups = std::vector<std::size_t>{ 0, 1, 2, 3 };
+        auto const jump_groups = std::vector<int>{ 0, 1, 2, 3 };
 
         BOOST_CHECK(
                 boost::algorithm::all_of(jump_groups, [=](auto i){

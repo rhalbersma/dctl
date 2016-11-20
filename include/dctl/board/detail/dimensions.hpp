@@ -1,8 +1,7 @@
 #pragma once
 #include <dctl/board/angle.hpp> // angle
-#include <cstddef>              // size_t
-#include <stdexcept>            // invalid_argument
-#include <tuple>                // make_tuple
+#include <cassert>              // assert
+#include <tuple>                // tie
 
 namespace dctl {
 namespace board {
@@ -10,19 +9,19 @@ namespace detail {
 
 struct dimensions
 {
-        std::size_t const width;
-        std::size_t const height;
+        int const width;
+        int const height;
         bool const is_inverted;
 };
 
-constexpr auto as_tuple(dimensions const dim) noexcept
+constexpr auto tied(dimensions const dim) noexcept
 {
         return std::make_tuple(dim.width, dim.height, dim.is_inverted);
 }
 
 constexpr auto operator==(dimensions const lhs, dimensions const rhs) noexcept
 {
-        return as_tuple(lhs) == as_tuple(rhs);
+        return tied(lhs) == tied(rhs);
 }
 
 constexpr auto operator!=(dimensions const lhs, dimensions const rhs) noexcept
@@ -60,7 +59,7 @@ constexpr auto lower_right_is_square(dimensions const dim) noexcept
         return width_parity(dim) ^ !lower_left_is_square(dim);
 }
 
-constexpr auto rotate(dimensions const dim, angle const a)
+constexpr auto rotate(dimensions const dim, angle const a) noexcept
         -> dimensions
 {
         switch (a.value()) {
@@ -68,7 +67,7 @@ constexpr auto rotate(dimensions const dim, angle const a)
         case  90 : return { dim.height, dim.width , !upper_left_is_square(dim) };
         case 180 : return { dim.width , dim.height, !upper_right_is_square(dim) };
         case 270 : return { dim.height, dim.width , !lower_right_is_square(dim) };
-        default  : return static_cast<void>(throw std::invalid_argument("Not a multiple of 90 degrees.")), dim;
+        default  : assert(false); return dim;
         }
 }
 

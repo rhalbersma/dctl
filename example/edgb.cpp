@@ -107,7 +107,7 @@ public:
                 ;
         }
 };
-
+/*
 class state_range
 {
         Slice m_slice;
@@ -195,7 +195,7 @@ public:
                 return m_pieces == m_sentinel;
         }
 };
-
+*/
 template<int = 0>
 class database
 {
@@ -333,7 +333,7 @@ int main()
         db.print_edges();
         db.sort();
 
-        auto rng = state_range{Slice{{2,2,2,2}}};
-        auto s = State{rng.back(), color::black};
-        std::cout << setup::write<pdn::protocol>()(s) << "\n";
+        //auto rng = state_range{Slice{{2,2,2,2}}};
+        //auto s = State{rng.back(), color::black};
+        //std::cout << setup::write<pdn::protocol>()(s) << "\n";
 }

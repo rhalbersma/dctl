@@ -20,11 +20,10 @@ class initial
         struct init
         {
                 // simulate a constexpr lambda (allowed in C++17)
-                constexpr auto operator()(std::size_t const rows) const noexcept
+                constexpr auto operator()(int const rows) const noexcept
                 {
-                        using namespace xstd::support_literals;
                         set_t<Board> result {};
-                        for (auto r = 0_zu; r < rows; ++r)
+                        for (auto r = 0; r < rows; ++r)
                                 result ^= row<Board, color>{}(r);
                         return result;
                 }
@@ -40,13 +39,13 @@ class initial
         };
 
 public:
-        constexpr auto operator()(color const to_move, std::size_t const separation) const noexcept
+        constexpr auto operator()(color const to_move, int const separation) const noexcept
         {
                 assert((Board::height - separation) % 2 == 0);
                 assert(Board::height % 2 <= separation); assert(separation <= Board::height);
                 auto const rows = (Board::height - separation) / 2;
                 assert(rows <= Board::height / 2);
-                return value[xstd::to_underlying_type(to_move)][rows];
+                return value[xstd::to_underlying_type(to_move)][static_cast<std::size_t>(rows)];
         }
 };
 

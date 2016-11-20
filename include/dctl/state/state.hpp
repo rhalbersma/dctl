@@ -18,6 +18,7 @@
 #include <xstd/bitset.hpp>
 #include <experimental/optional>
 #include <cassert>                              // assert
+#include <cstdint>                              // uint64_t
 #include <type_traits>                          // is_same
 #include <tuple>
 #include <utility>                              // forward
@@ -119,7 +120,7 @@ public:
                 assert_invariants();
         }
 
-        static auto initial(std::size_t const separation = initial_position_gap_v<Rules> + Board::height % 2)
+        static auto initial(int const separation = initial_position_gap_v<Rules> + Board::height % 2)
                 -> state
         {
                 auto const black_pawns = board::mask::initial<board_type>{}(color::black, separation);
@@ -180,7 +181,7 @@ public:
 
         auto hash() const
         {
-                return std::size_t{0};
+                return uint64_t{0};
         }
 
 private:

@@ -4,7 +4,6 @@
 #include <dctl/board/mask/detail/copy_if.hpp>   // copy_if
 #include <dctl/utility/fill_array.hpp>          // fill_array
 #include <dctl/utility/type_traits.hpp>         // set_t
-#include <xstd/cstddef.hpp>                     // _zu
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -23,11 +22,10 @@ class jump_start
                         int const segment_;
 
                         // simulate a constexpr lambda (allowed in C++17)
-                        constexpr auto operator()(std::size_t const sq) const noexcept
+                        constexpr auto operator()(int const sq) const noexcept
                         {
-                                using namespace xstd::support_literals;
                                 auto const alpha = rotate(segment_ * theta + beta, inverse(Board::orientation));
-                                auto const offset = is_diagonal(alpha) ? 2_zu : 4_zu;
+                                auto const offset = is_diagonal(alpha) ? 2 : 4;
                                 auto const min_x = is_left(alpha) ? offset : 0;
                                 auto const max_x = Board::width - (is_right(alpha) ? offset : 0);
                                 auto const min_y = is_up(alpha) ? offset : 0;
@@ -57,9 +55,9 @@ class jump_start
 public:
         constexpr auto operator()(angle const alpha) const noexcept
         {
-                auto const segment = static_cast<std::size_t>((alpha - beta) / theta);
+                auto const segment = (alpha - beta) / theta;
                 assert(segment < N);
-                return value[segment];
+                return value[static_cast<std::size_t>(segment)];
         }
 };
 

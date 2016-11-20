@@ -9,7 +9,7 @@ namespace loop {
 
 // Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
-template<board::direction Direction, std::size_t N, class Set>
+template<board::direction Direction, int N, class Set>
 constexpr auto fill(Set generator, Set const propagator)
 {
         Set flood {};
