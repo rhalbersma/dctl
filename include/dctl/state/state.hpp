@@ -1,8 +1,7 @@
 #pragma once
 #include <dctl/action/action.hpp>
 #include <dctl/board/mask/initial.hpp>
-#include <dctl/board/mask/promotion.hpp>
-#include <dctl/board/mask/squares.hpp>
+#include <dctl/board_traits.hpp>
 #include <dctl/color_piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/state/mrp_kings/mrp_kings.hpp>
@@ -15,7 +14,6 @@
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <dctl/utility/zobrist/accumulate.hpp>
-#include <xstd/bitset.hpp>
 #include <experimental/optional>
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
@@ -86,7 +84,7 @@ private:
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(board::mask::squares_v<board_type> == (pieces(occup_c) | pieces(empty_c)));
+                assert(squares_v<board_type> == (pieces(occup_c) | pieces(empty_c)));
 
                 assert(pieces(occup_c) == (pieces(black_c) | pieces(white_c)));
                 assert(pieces(occup_c) == (pieces(pawns_c) | pieces(kings_c)));
@@ -96,18 +94,18 @@ private:
                 assert(pieces(pawns_c) == (pieces(black_c, pawns_c) | pieces(white_c, pawns_c)));
                 assert(pieces(kings_c) == (pieces(black_c, kings_c) | pieces(white_c, kings_c)));
 
-                assert(xstd::disjoint(pieces(occup_c), pieces(empty_c)));
+                assert(disjoint(pieces(occup_c), pieces(empty_c)));
 
-                assert(xstd::disjoint(pieces(black_c), pieces(white_c)));
-                assert(xstd::disjoint(pieces(pawns_c), pieces(kings_c)));
+                assert(disjoint(pieces(black_c), pieces(white_c)));
+                assert(disjoint(pieces(pawns_c), pieces(kings_c)));
 
-                assert(xstd::disjoint(pieces(black_c, pawns_c), pieces(black_c, kings_c)));
-                assert(xstd::disjoint(pieces(white_c, pawns_c), pieces(white_c, kings_c)));
-                assert(xstd::disjoint(pieces(black_c, pawns_c), pieces(white_c, pawns_c)));
-                assert(xstd::disjoint(pieces(black_c, kings_c), pieces(white_c, kings_c)));
+                assert(disjoint(pieces(black_c, pawns_c), pieces(black_c, kings_c)));
+                assert(disjoint(pieces(white_c, pawns_c), pieces(white_c, kings_c)));
+                assert(disjoint(pieces(black_c, pawns_c), pieces(white_c, pawns_c)));
+                assert(disjoint(pieces(black_c, kings_c), pieces(white_c, kings_c)));
 
-                assert(xstd::disjoint(pieces(black_c, pawns_c), board::mask::promotion_v<board_type, black_>));
-                assert(xstd::disjoint(pieces(white_c, pawns_c), board::mask::promotion_v<board_type, white_>));
+                assert(disjoint(pieces(black_c, pawns_c), promotion_v<board_type, black_>));
+                assert(disjoint(pieces(white_c, pawns_c), promotion_v<board_type, white_>));
         }
 
 public:
