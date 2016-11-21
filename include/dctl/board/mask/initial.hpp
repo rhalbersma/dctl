@@ -1,5 +1,4 @@
 #pragma once
-#include <dctl/board/detail/coordinates.hpp>    // to_llo
 #include <dctl/board/mask/row.hpp>              // row
 #include <dctl/color_piece.hpp>                 // black, white
 #include <dctl/utility/fill_array.hpp>          // fill_array

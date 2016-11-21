@@ -1,7 +1,7 @@
 #include <dctl/action.hpp>
 #include <dctl/actions.hpp>
 #include <dctl/aima/node.hpp>
-#include <dctl/board/mask/promotion.hpp>
+#include <dctl/board_traits.hpp>
 #include <dctl/board/mask/squares.hpp>
 #include <dctl/color_piece.hpp>
 #include <dctl/setup/string.hpp>
@@ -118,9 +118,9 @@ public:
         :
                 m_slice(s)
         {
-                auto const king_squares = board::mask::squares_v<Board>;
-                auto const bp_squares = king_squares ^ board::mask::promotion_v<Board, black_>;
-                auto const wp_squares = king_squares ^ board::mask::promotion_v<Board, white_>;
+                auto const king_squares = squares_v<Board>;
+                auto const bp_squares = king_squares ^ promotion_v<Board, black_>;
+                auto const wp_squares = king_squares ^ promotion_v<Board, white_>;
 
                 auto const bp_first = Board::square_from_bit(*bp_squares. begin());
                 auto const bp_last  = Board::square_from_bit(*bp_squares.rbegin());

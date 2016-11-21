@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/board/mask/squares.hpp>  // squares
+#include <dctl/board_traits.hpp>        // squares
 #include <dctl/color_piece.hpp>         // color, black_, white_, piece, pawn_, king_
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <tuple>                        // tie
@@ -113,7 +113,7 @@ public:
 
         auto pieces(empty_) const noexcept
         {
-                return board::mask::squares_v<board_type> ^ m_occup;
+                return squares_v<board_type> ^ m_occup;
         }
 
         auto tied() const noexcept

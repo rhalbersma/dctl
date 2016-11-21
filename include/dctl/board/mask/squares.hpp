@@ -27,9 +27,6 @@ public:
         }
 };
 
-template<class Board>
-constexpr auto squares_v = squares<Board>{}();
-
 }       // namespace mask
 }       // namespace board
 }       // namespace dctl

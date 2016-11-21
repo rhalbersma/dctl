@@ -3,7 +3,7 @@
 #include <dctl/actions/select/push.hpp>                 // select
 #include <dctl/board/angle.hpp>                         // left_up, right_up
 #include <dctl/board/bearing.hpp>                       // bearing
-#include <dctl/board/mask/promotion.hpp>                // is_promotion
+#include <dctl/board_traits.hpp>                        // promotion
 #include <dctl/board/mask/push_targets.hpp>             // push_targets
 #include <dctl/board/ray.hpp>                           // make_iterator
 #include <dctl/color_piece.hpp>                         // color, color_, pawn_
@@ -69,7 +69,7 @@ private:
 
         auto is_promotion(int const sq) const // Throws: Nothing.
         {
-                return board::mask::promotion_v<board_type, to_move_>.test(sq);
+                return promotion_v<board_type, to_move_>.test(sq);
         }
 };
 

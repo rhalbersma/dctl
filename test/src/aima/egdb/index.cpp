@@ -1,6 +1,6 @@
 #include <dctl/aima/egdb/index.hpp>
 #include <dctl/board.hpp>
-#include <dctl/board/mask/squares.hpp>
+#include <dctl/board_traits.hpp>
 #include <xstd/bitset.hpp>                      // bitset
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END

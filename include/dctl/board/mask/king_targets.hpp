@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/angle.hpp>         // angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
-#include <dctl/board/mask/squares.hpp>  // squares
+#include <dctl/board_traits.hpp>        // squares
 #include <dctl/board/ray/fill.hpp>      // fill
 #include <dctl/board/ray/iterator.hpp>  // iterator
 #include <dctl/utility/fill_array.hpp>  // fill_array

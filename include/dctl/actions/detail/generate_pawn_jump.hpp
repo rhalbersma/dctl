@@ -7,7 +7,7 @@
 #include <dctl/board/angle.hpp>                         // rotate, inverse
 #include <dctl/board/bearing.hpp>                       // bearing
 #include <dctl/board/mask/jump_sources.hpp>             // jump_sources
-#include <dctl/board/mask/promotion.hpp>                // is_promotion
+#include <dctl/board_traits.hpp>                        // promotion
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
 #include <dctl/color_piece.hpp>                         // color, color_, pawn_, king_
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
@@ -253,7 +253,7 @@ private:
 
         auto is_promotion(int const sq) const // Throws: Nothing.
         {
-                return board::mask::promotion_v<board_type, to_move_>.test(sq);
+                return promotion_v<board_type, to_move_>.test(sq);
         }
 };
 

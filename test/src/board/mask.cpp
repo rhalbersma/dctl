@@ -1,7 +1,7 @@
 #include <dctl/board/mask/column.hpp>           // column
 #include <dctl/board/mask/jump_group.hpp>       // jump_group
 #include <dctl/board/mask/row.hpp>              // row
-#include <dctl/board/mask/squares.hpp>          // squares
+#include <dctl/board_traits.hpp>                // squares
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <board/sequence.hpp>                   // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
