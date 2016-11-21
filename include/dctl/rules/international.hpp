@@ -50,7 +50,7 @@ struct international
 using block_adl::international;
 
 using brazilian  = international;
-using Philippine = international;
+using philippine = international;
 using canadian   = international;
 using srilankan  = international;
 
