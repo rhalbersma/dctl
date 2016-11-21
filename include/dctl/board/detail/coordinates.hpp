@@ -108,15 +108,15 @@ constexpr auto to_sco(coordinates<lower_left> const coord, Grid const grid) noex
 template<class Grid>
 constexpr auto to_square(coordinates<upper_left> const coord, Grid const grid)
 {
-        //auto const col_mod = coord.x() % 2;
+        [[maybe_unused]] auto const col_mod = coord.x % 2;
         auto const row_mod = coord.y % 2;
-        //assert(row_mod ^ col_mod == !grid.upper_left_is_square());
+        assert(row_mod ^ col_mod == !grid.upper_left_is_square());
 
         auto const col_div = coord.x / 2;
-        //assert(2 * col_div + col_mod == coord.x());
+        assert(2 * col_div + col_mod == coord.x);
 
         auto const row_div = coord.y / 2;
-        //assert(2 * row_div + row_mod == coord.y());
+        assert(2 * row_div + row_mod == coord.y);
 
         auto const sq_base = row_mod ? grid.edge_lo() : grid.edge_le();
         auto const sq_offset = sq_base + col_div;
