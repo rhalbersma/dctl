@@ -14,8 +14,8 @@ constexpr auto operator!(color const c) noexcept
 template<color Side>
 using color_ = std::integral_constant<color, Side>;
 
-template<class color>
-using opposite = color_<!color::value>;
+template<class Color>
+using opposite = color_<!Color::value>;
 
 using black_ = color_<color::black>;
 using white_ = color_<color::white>;

@@ -1,16 +1,16 @@
 #pragma once
 #include <dctl/aima/eval/feature.hpp>   // Feature
-#include <dctl/color_piece.hpp>               // flip
+#include <dctl/color_piece.hpp>         // flip
 
 namespace dctl {
 namespace evaluate {
 
-template<class color>
+template<class Color>
 class Delta
 {
 private:
-        using Active  = Feature<         color >;
-        using Passive = Feature<opposite<color>>;
+        using Active  = Feature<         Color >;
+        using Passive = Feature<opposite<Color>>;
 
 public:
         template<class State>

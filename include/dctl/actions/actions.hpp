@@ -12,15 +12,15 @@ namespace dctl {
 template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
 class Actions
 {
-        template<class color>
-        using Impl = detail::Actions<color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
+        template<class Color>
+        using Impl = detail::Actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
 
-        template<class color, class State, class SequenceContainer>
+        template<class Color, class State, class SequenceContainer>
         auto assert_invariants([[maybe_unused]] State const& s, [[maybe_unused]] SequenceContainer const& actions) const
         {
                 [[maybe_unused]] auto const n = static_cast<int>(actions.size());
-                assert( count<color>(s) ==  n     );
-                assert(detect<color>(s) == (n > 0));
+                assert( count<Color>(s) ==  n     );
+                assert(detect<Color>(s) == (n > 0));
         }
 
 public:

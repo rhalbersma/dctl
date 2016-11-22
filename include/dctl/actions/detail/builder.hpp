@@ -14,7 +14,7 @@
 namespace dctl {
 namespace detail {
 
-template<class color, class DuplicatesPolicy, class State, class SequenceContainer>
+template<class Color, class DuplicatesPolicy, class State, class SequenceContainer>
 class builder;
 
 template<color Side, class DuplicatesPolicy, class State, class SequenceContainer>
