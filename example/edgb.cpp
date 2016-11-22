@@ -2,7 +2,6 @@
 #include <dctl/actions.hpp>
 #include <dctl/aima/node.hpp>
 #include <dctl/board_traits.hpp>
-#include <dctl/board/mask/squares.hpp>
 #include <dctl/color_piece.hpp>
 #include <dctl/setup/string.hpp>
 #include <dctl/state.hpp>

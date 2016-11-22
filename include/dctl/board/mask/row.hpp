@@ -13,7 +13,7 @@ namespace dctl {
 namespace board {
 namespace mask {
 
-template<class Board, class color>
+template<class Board, class Color>
 class row
 {
         struct init
@@ -26,7 +26,7 @@ class row
                         constexpr auto operator()(int const sq) const noexcept
                         {
                                 assert(row_ < Board::height);
-                                return board::detail::to_llo(sq, Board::inner_grid).y == (color{} == white_c ? row_ : Board::height - 1 - row_);
+                                return board::detail::to_llo(sq, Board::inner_grid).y == (Color{} == white_c ? row_ : Board::height - 1 - row_);
                         }
                 };
 
@@ -49,9 +49,9 @@ public:
         }
 };
 
-template<class Board, class color>
-constexpr value_t<row<Board, color>>
-row<Board, color>::value;
+template<class Board, class Color>
+constexpr value_t<row<Board, Color>>
+row<Board, Color>::value;
 
 }       // namespace mask
 }       // namespace board

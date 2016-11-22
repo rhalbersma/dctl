@@ -1,4 +1,6 @@
 #pragma once
+#include <dctl/board/mask/column.hpp>   // column
+#include <dctl/board/mask/initial.hpp>  // initial
 #include <dctl/board/mask/row.hpp>      // row
 #include <dctl/board/mask/squares.hpp>  // squares
 #include <dctl/board/rectangular.hpp>   // rectangular
@@ -52,10 +54,19 @@ struct add_orthogonal_captures<board::rectangular<Width, Height, IsInverted, IsO
 template<class Board>
 using add_orthogonal_captures_t = typename add_orthogonal_captures<Board>::type;
 
+template<class Board, class Color>
+constexpr auto column_v = board::mask::column<Board, Color>{};
+
+template<class Board, class Color>
+constexpr auto row_v = board::mask::row<Board, Color>{};
+
+template<class Board, class Color>
+constexpr auto promotion_v = row_v<Board, opposite<Color>>(0);
+
 template<class Board>
 constexpr auto squares_v = board::mask::squares<Board>{}();
 
-template<class Board, class color>
-constexpr auto promotion_v = board::mask::row<Board, opposite<color>>{}(0);
+template<class Board, class Color>
+constexpr auto initial_v = board::mask::initial<Board, Color>{};
 
 }       // namespace dctl

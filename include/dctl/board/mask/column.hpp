@@ -13,10 +13,9 @@ namespace dctl {
 namespace board {
 namespace mask {
 
-template<class Board>
+template<class Board, class Color>
 class column
 {
-        template<class color>
         struct init
         {
                 struct is_column
@@ -27,7 +26,7 @@ class column
                         constexpr auto operator()(int const sq) const noexcept
                         {
                                 assert(column_ < Board::width);
-                                return board::detail::to_llo(sq, Board::inner_grid).x == (color{} == white_c ? column_ : Board::width - 1 - column_);
+                                return board::detail::to_llo(sq, Board::inner_grid).x == (Color{} == white_c ? column_ : Board::width - 1 - column_);
                         }
                 };
 
@@ -40,23 +39,19 @@ class column
 
         using value_type = std::array<set_t<Board>, Board::width>;
 
-        static constexpr value_type value[] =
-        {
-                fill_array<Board::width>(init<black_>{}),
-                fill_array<Board::width>(init<white_>{})
-        };
+        static constexpr value_type value = fill_array<Board::width>(init{});
 
 public:
-        constexpr auto operator()(color const to_move, int const column) const noexcept
+        constexpr auto operator()(int const column) const noexcept
         {
                 assert(column < Board::width);
-                return value[xstd::to_underlying_type(to_move)][static_cast<std::size_t>(column)];
+                return value[static_cast<std::size_t>(column)];
         }
 };
 
-template<class Board>
-constexpr value_t<column<Board>>
-column<Board>::value[];
+template<class Board, class Color>
+constexpr value_t<column<Board, Color>>
+column<Board, Color>::value;
 
 }       // namespace mask
 }       // namespace board
