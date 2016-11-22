@@ -135,13 +135,11 @@ The DCTL is header-only, which means that you do not have to link your applicati
 
 Any feature requests, ideas and contributions are much appreciated! The recommended way to contribute code is through BitBucket [pull requests](https://confluence.atlassian.com/display/BITBUCKET/Working+with+pull+requests).    
 
-Acknowledgments
-----------------
+### Acknowledgments
 
 Special thanks to Aart Bik, Ed Gilbert, Walter Thoen and Wieger Wesselink for encouragement, testing, and exchange of ideas.
 
-License
--------
+### License
 
 Copyright Rein Halbersma 2010 - 2016.   
 Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).   
