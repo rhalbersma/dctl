@@ -7,7 +7,7 @@ namespace block_adl {
 
 // http://www.mindsports.nl/index.php/arena/draughts/382-killer-draughts-rules
 template<class Parent = international>
-struct Killer
+struct killer
 :
         Parent
 {
@@ -16,7 +16,7 @@ struct Killer
 
 }       // namespace block_adl
 
-using block_adl::Killer;
+using block_adl::killer;
 
 }       // namespace rules
 }       // namespace dctl

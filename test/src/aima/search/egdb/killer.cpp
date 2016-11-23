@@ -10,7 +10,7 @@ namespace search {
 
 BOOST_AUTO_TEST_SUITE(SearchEGDBKiller)
 
-using F = Fixture< state<rules::Killer<>, board::international>, DefaultObjective >;
+using F = Fixture< state<rules::killer<>, board::international>, DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {
@@ -22,7 +22,7 @@ BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
         run(tests);
 }
 
-// Michel Grimminkc's statistics on longest wins in the Killer endgame databases
+// Michel Grimminkc's statistics on longest wins in the killer endgame databases
 // http://www.xs4all.nl/~mdgsoft/draughts/stats/kill-index.html
 
 BOOST_FIXTURE_TEST_CASE(Longest11, F)
