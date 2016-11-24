@@ -4,10 +4,7 @@
 #include <dctl/color_piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/state/mrp_kings/mrp_kings.hpp>
-#include <dctl/state/mrp_kings/zobrist.hpp>
 #include <dctl/state/position.hpp>
-#include <dctl/state/to_move/to_move.hpp>
-#include <dctl/state/to_move/zobrist.hpp>
 #include <dctl/state/reversible_actions.hpp>
 #include <dctl/utility/concepts.hpp>            // is_trivial_special_members
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
