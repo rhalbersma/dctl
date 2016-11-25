@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         static_assert(is_nontrivial_precedence_v<T>);
         static_assert(is_quantity_precedence_v<T>);
-        static_assert(is_quality_precedence_v<T>);
+        static_assert(is_contents_precedence_v<T>);
 
         struct Action
         {

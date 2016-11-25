@@ -21,7 +21,7 @@ struct international
         static constexpr auto is_superior_rank_jump     = false;        // 4.2 (implied by 3.1)
         static constexpr auto is_passing_capture        = false;        // 4.11
         static constexpr auto is_quantity_precedence    = true;         // 4.13
-        static constexpr auto is_quality_precedence     = false;        // 4.13
+        static constexpr auto is_contents_precedence    = false;        // 4.13
         static constexpr auto is_modality_precedence    = false;        // 4.14
 
         struct tuple_type

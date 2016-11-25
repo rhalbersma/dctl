@@ -14,7 +14,7 @@ namespace dctl {
 namespace detail {
 
 template<color Side, class Reverse, class State, class SequenceContainer>
-class generate<color_<Side>, pawn_, select::push, Reverse, State, SequenceContainer>
+class generate<color_<Side>, pawns_, select::push, Reverse, State, SequenceContainer>
 {
         using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;

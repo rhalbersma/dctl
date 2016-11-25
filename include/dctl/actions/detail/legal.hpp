@@ -10,19 +10,30 @@
 namespace dctl {
 namespace detail {
 
+#define cj
+
 template<color Side, class DuplicatesPolicy, class Reverse>
 class Actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>
 {
         using to_move_ = color_<Side>;
         using Jump = Actions<to_move_, select::jump, DuplicatesPolicy, Reverse>;
         using Push = Actions<to_move_, select::push, DuplicatesPolicy, Reverse>;
+
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& s, SequenceContainer& a) const
         {
+#ifndef cj
                 if (Jump{}.generate(s, a); a.empty()) {
                         Push{}.generate(s, a);
                 }
+#else
+                if (Jump{}.detect(s)) {
+                        Jump{}.generate(s, a);
+                } else {
+                        Push{}.generate(s, a);
+                }
+#endif
         }
 
         template<class State>

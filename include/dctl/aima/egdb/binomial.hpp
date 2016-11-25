@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/utility/fill_array.hpp>  // fill_array
-#include <xstd/bitset.hpp>              // bitset
+#include <xstd/int_set.hpp>              // int_set
 #include <array>                        // array
 #include <cassert>                      // assert
 #include <cstddef>                      // ptrdiff_t, size_t
@@ -13,7 +13,7 @@ template
 <
         int BoardSize = 64,
         int Maxpieces = 32,
-        class Range = xstd::bitset<BoardSize>,
+        class Range = xstd::int_set<BoardSize>,
         class Index = std::ptrdiff_t
 >
 class BinomialTable

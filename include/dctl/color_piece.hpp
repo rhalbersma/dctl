@@ -32,19 +32,19 @@ constexpr auto operator!(color_<Side>) noexcept
 inline constexpr auto black_c = color_c<color::black>;
 inline constexpr auto white_c = color_c<color::white>;
 
-enum class piece : unsigned char { pawn, king };
+enum class piece : unsigned char { pawns, kings };
 
 template<piece Type>
 using piece_ = std::integral_constant<piece, Type>;
 
-using pawn_ = piece_<piece::pawn>;
-using king_ = piece_<piece::king>;
+using pawns_ = piece_<piece::pawns>;
+using kings_ = piece_<piece::kings>;
 
 template<piece Type>
 constexpr auto piece_c = piece_<Type>{};
 
-inline constexpr auto pawns_c = piece_c<piece::pawn>;
-inline constexpr auto kings_c = piece_c<piece::king>;
+inline constexpr auto pawns_c = piece_c<piece::pawns>;
+inline constexpr auto kings_c = piece_c<piece::kings>;
 
 struct occup_ {};
 struct empty_ {};

@@ -303,6 +303,7 @@ void xreport(int depth, int64_t leafs, Stopwatch const& stopwatch)
         auto const lap = stopwatch.lap_time();
         std::cout << " time ";
         std::cout << std::setw( 6) << lap.count();
+        std::cout << " " << static_cast<double>(leafs) / lap.count() << " knps";
 
 /*
         double const hashfull = 1000 * (static_cast<double>(e.handle_->TT_.size()) / static_cast<double>(e.handle_->TT_.capacity()));

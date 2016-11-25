@@ -25,8 +25,8 @@ public:
         :
                 color_piece_
                 {
-                        {p.num_pieces(color::black, piece::pawn), p.num_pieces(color::black, piece::king)},
-                        {p.num_pieces(color::white, piece::pawn), p.num_pieces(color::white, piece::king)}
+                        {p.num_pieces(color::black, piece::pawns), p.num_pieces(color::black, piece::kings)},
+                        {p.num_pieces(color::white, piece::pawns), p.num_pieces(color::white, piece::kings)}
                 }
         {}
 
@@ -50,7 +50,7 @@ public:
 
         constexpr auto is_tracked(color c) const noexcept
         {
-                return 0 < num_pieces(c, piece::pawn) && 0 < num_pieces(c, piece::king);
+                return 0 < num_pieces(c, piece::pawns) && 0 < num_pieces(c, piece::kings);
         }
 
         constexpr auto is_counted(color c) const noexcept
@@ -96,8 +96,8 @@ private:
                 if (!m.is_promotion())
                         return;
 
-                --num_pieces(m.to_move(), piece::pawn);
-                ++num_pieces(m.to_move(), piece::king);
+                --num_pieces(m.to_move(), piece::pawns);
+                ++num_pieces(m.to_move(), piece::kings);
         }
 
         template<class Action>
@@ -108,15 +108,15 @@ private:
 
                 if (
                         is_tracked(!m.to_move()) && (
-                                num_pieces(!m.to_move(), piece::pawn) == m.num_captured(piece::pawn) ||
-                                num_pieces(!m.to_move(), piece::king) == m.num_captured(piece::king) ||
-                                (0 < m.num_captured(piece::king) && m.captured(piece::king).test(index(!m.to_move())))
+                                num_pieces(!m.to_move(), piece::pawns) == m.num_captured(piece::pawns) ||
+                                num_pieces(!m.to_move(), piece::kings) == m.num_captured(piece::kings) ||
+                                (0 < m.num_captured(piece::kings) && m.captured(piece::kings).test(index(!m.to_move())))
                         )
                 )
                         reset(!m.to_move());
 
-                num_pieces(!m.to_move(), piece::pawn) -= m.num_captured(piece::pawn);
-                num_pieces(!m.to_move(), piece::king) -= m.num_captured(piece::king);
+                num_pieces(!m.to_move(), piece::pawns) -= m.num_captured(piece::pawns);
+                num_pieces(!m.to_move(), piece::kings) -= m.num_captured(piece::kings);
         }
 
         constexpr void reset(color c)

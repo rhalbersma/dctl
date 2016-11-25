@@ -6,8 +6,8 @@
 #include <dctl/board/detail/optimal_orientation.hpp>    // size_minimizing_orientation
 #include <dctl/color_piece.hpp>                         // black, white
 #include <dctl/utility/fill_array.hpp>                  // fill_array
-#include <xstd/bitset.hpp>                              // bitset
 #include <xstd/cstdint.hpp>                             // uint_fast
+#include <xstd/int_set.hpp>                             // int_set
 #include <xstd/limits.hpp>                              // align_on
 #include <boost/range/irange.hpp>                       // irange
 #include <array>                                        // array
@@ -62,7 +62,7 @@ public:
                 return NumBits;
         }
 
-        using    set_type = xstd::bitset<xstd::align_on(NumBits, 64)>;
+        using    set_type = xstd::int_set<xstd::align_on(NumBits, 64)>;
         using square_type = xstd::uint_fast_t<set_type::size()>;
 
         static auto squares() noexcept

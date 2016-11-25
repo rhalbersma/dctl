@@ -1,7 +1,7 @@
 #include <dctl/aima/egdb/index.hpp>
 #include <dctl/board.hpp>
 #include <dctl/board_traits.hpp>
-#include <xstd/bitset.hpp>                      // bitset
+#include <xstd/int_set.hpp>                      // int_set
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -24,7 +24,7 @@ using U = int;
 
 using SetTypes = boost::mpl::vector
 <
-        xstd::bitset<64>
+        xstd::int_set<64>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColexSubsetRank, T, SetTypes)

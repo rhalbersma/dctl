@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, Setking_jump
+#include <dctl/actions/detail/raii.hpp>                 // Launch, Capture, Visit, set_king_jump
 #include <dctl/actions/detail/builder.hpp>              // Builder
 #include <dctl/actions/detail/generate_primary_fwd.hpp> // generate (primary template)
 #include <dctl/actions/select/jump.hpp>                 // jump
@@ -18,14 +18,14 @@ namespace dctl {
 namespace detail {
 
 template<color Side, class Reverse, class State, class Builder>
-class generate<color_<Side>, king_, select::jump, Reverse, State, Builder>
+class generate<color_<Side>, kings_, select::jump, Reverse, State, Builder>
 {
         using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
         static constexpr auto piece_c = kings_c;
-        using  board_type =  board_t<Builder>;
-        using  rules_type =  rules_t<Builder>;
-        using    set_type =    set_t<Builder>;
+        using  board_type = board_t<Builder>;
+        using  rules_type = rules_t<Builder>;
+        using    set_type =   set_t<Builder>;
 
         static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
 
@@ -41,7 +41,7 @@ public:
 
         auto operator()() const
         {
-                raii::Setking_jump<Builder> guard{m_builder};
+                raii::set_king_jump<Builder> guard{m_builder};
                 sources();
         }
 
@@ -49,8 +49,8 @@ public:
         auto try_next(Iterator jumper, passing_promotion_tag) const
         {
                 static_assert(is_passing_promotion_v<rules_type>);
-                assert(m_builder.is_with(piece::pawn));
-                assert(m_builder.is_into(piece::king));
+                assert(m_builder.with() == piece::pawns);
+                assert(m_builder.into() == piece::kings);
                 try_next(jumper);
         }
 private:

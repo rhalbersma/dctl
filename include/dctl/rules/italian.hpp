@@ -23,7 +23,7 @@ struct italian
         // Art. 6 - Le regole di presa
         static constexpr auto is_quantity_precedence    = true;         // 6.6
         static constexpr auto is_modality_precedence    = true;         // 6.7
-        static constexpr auto is_quality_precedence     = true;         // 6.8
+        static constexpr auto is_contents_precedence    = true;         // 6.8
         static constexpr auto is_ordering_precedence    = true;         // 6.9
 
         struct tuple_type

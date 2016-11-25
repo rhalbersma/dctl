@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(is_nontrivial_precedence_v<T>);
         static_assert(is_quantity_precedence_v<T>);
         static_assert(is_modality_precedence_v<T>);
-        static_assert(is_quality_precedence_v<T>);
+        static_assert(is_contents_precedence_v<T>);
         static_assert(is_ordering_precedence_v<T>);
 
         struct Action
@@ -35,28 +35,28 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
                 auto num_captured_pieces() const noexcept { return num_captured_;        }
                 auto num_captured_kings()  const noexcept { return num_captured_kings_;  }
-                auto is_with_king()        const noexcept { return with_ == piece::king; }
+                auto is_with_king()        const noexcept { return with_ == piece::kings; }
                 auto const& piece_order()  const noexcept { return piece_order_;         }
         };
 
         auto const moves = std::vector<Action>
         {
-                { 1, 0, piece::pawn, {      } },
-                { 1, 0, piece::king, {      } },
-                { 1, 1, piece::king, { 0    } },
-                { 2, 0, piece::pawn, {      } },
-                { 2, 0, piece::king, {      } },
-                { 2, 1, piece::king, { 0    } },
-                { 2, 1, piece::king, { 1    } },
-                { 2, 2, piece::king, { 0, 1 } },
-                { 3, 0, piece::pawn, {      } },
-                { 3, 0, piece::king, {      } },
-                { 3, 1, piece::king, { 0    } },
-                { 3, 1, piece::king, { 1    } },
-                { 3, 1, piece::king, { 2    } },
-                { 3, 2, piece::king, { 0, 1 } },
-                { 3, 2, piece::king, { 0, 2 } },
-                { 3, 2, piece::king, { 1, 2 } }
+                { 1, 0, piece::pawns, {      } },
+                { 1, 0, piece::kings, {      } },
+                { 1, 1, piece::kings, { 0    } },
+                { 2, 0, piece::pawns, {      } },
+                { 2, 0, piece::kings, {      } },
+                { 2, 1, piece::kings, { 0    } },
+                { 2, 1, piece::kings, { 1    } },
+                { 2, 2, piece::kings, { 0, 1 } },
+                { 3, 0, piece::pawns, {      } },
+                { 3, 0, piece::kings, {      } },
+                { 3, 1, piece::kings, { 0    } },
+                { 3, 1, piece::kings, { 1    } },
+                { 3, 1, piece::kings, { 2    } },
+                { 3, 2, piece::kings, { 0, 1 } },
+                { 3, 2, piece::kings, { 0, 2 } },
+                { 3, 2, piece::kings, { 1, 2 } }
         };
 
         BOOST_CHECK(precedence::is_consistent(moves));

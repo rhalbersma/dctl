@@ -1,20 +1,15 @@
 #pragma once
-#include <dctl/action/action.hpp>
 #include <dctl/board_traits.hpp>
 #include <dctl/color_piece.hpp>
 #include <dctl/rule_traits.hpp>
-#include <dctl/state/mrp_kings/mrp_kings.hpp>
 #include <dctl/state/position.hpp>
-#include <dctl/state/reversible_actions.hpp>
 #include <dctl/utility/concepts.hpp>            // is_trivial_special_members
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t
-#include <dctl/utility/zobrist/accumulate.hpp>
-#include <experimental/optional>
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
 #include <type_traits>                          // is_same
-#include <tuple>
+#include <tuple>                                // tie
 #include <utility>                              // forward
 
 namespace dctl {
@@ -34,11 +29,7 @@ struct base_color
 };
 
 template<class Board>
-struct most_recently_pushed_kings
-{
-        std::experimental::optional<square_t<Board>> kings_[2];
-        square_t<Board> moves_[2];
-};
+struct most_recently_pushed_kings {};
 
 template<class Rules, class Board>
 using conditional_base_mrpk = util::conditional_base<
@@ -158,7 +149,7 @@ public:
         auto targets(color_<Side>, piece_<Type>) const noexcept
         {
                 static constexpr auto not_to_move_c = !color_c<Side>;
-                if constexpr (Type == piece::pawn && is_superior_rank_jump_v<rules_type>) {
+                if constexpr (Type == piece::pawns && is_superior_rank_jump_v<rules_type>) {
                         return pieces(color_c<!Side>, pawns_c);
                 } else {
                         return pieces(not_to_move_c);

@@ -1,9 +1,11 @@
 #pragma once
 #include <dctl/board_traits.hpp>        // squares
-#include <dctl/color_piece.hpp>         // color, black_, white_, piece, pawn_, king_
+#include <dctl/color_piece.hpp>         // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/utility/concepts.hpp>    // is_trivial_special_members
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <tuple>                        // tie
+#include <type_traits>                  // is_pod
 
 namespace dctl {
 namespace c2p2e {
@@ -11,19 +13,23 @@ namespace c2p2e {
 template<class Board>
 class position
 {
+        static constexpr auto static_assert_type_traits() noexcept
+        {
+                using T = position<Board>;
+                static_assert(util::is_trivial_special_members_v<T>);
+                static_assert(std::is_pod<T>{});
+        }
+
+        set_t<Board> m_color[2];
+        set_t<Board> m_piece[2];
+        set_t<Board> m_empty;
 public:
         using board_type = Board;
         using   set_type = set_t<Board>;
 
-private:
-        set_type m_color[2];
-        set_type m_piece[2];
-        set_type m_empty;
-
-public:
         position() = default;
 
-        position(set_type const black_pawns, set_type const black_kings, set_type const white_pawns, set_type const white_kings)
+        constexpr position(set_type const black_pawns, set_type const black_kings, set_type const white_pawns, set_type const white_kings) noexcept
         :
                 m_color{black_pawns | black_kings, white_pawns | white_kings},
                 m_piece{black_pawns | white_pawns, black_kings | white_kings},
@@ -31,7 +37,7 @@ public:
         {}
 
         template<class Action>
-        auto make(color const c, Action const& a)
+        constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
                 pieces(c).reset(a.from());
                 pieces(c).set  (a.dest());
@@ -47,43 +53,43 @@ public:
                 m_empty = squares_v<board_type> ^ (pieces(black_c) | pieces(white_c));
         }
 
-        auto pieces(color const c) const noexcept
+        constexpr auto pieces(color const c) const noexcept
         {
                 return m_color[xstd::to_underlying_type(c)];
         }
 
-        auto pieces(piece const p) const noexcept
+        constexpr auto pieces(piece const p) const noexcept
         {
                 return m_piece[xstd::to_underlying_type(p)];
         }
 
-        auto pieces(color const c, piece const p) const noexcept
+        constexpr auto pieces(color const c, piece const p) const noexcept
         {
                 return pieces(c) & pieces(p);
         }
 
-        auto pieces(occup_) const noexcept
+        constexpr auto pieces(occup_) const noexcept
         {
                 return squares_v<board_type> ^ m_empty;
         }
 
-        auto pieces(empty_) const noexcept
+        constexpr auto pieces(empty_) const noexcept
         {
                 return m_empty;
         }
 
-        auto tied() const noexcept
+        constexpr auto tied() const noexcept
         {
                 return std::tie(m_color[0], m_color[1], m_piece[0], m_piece[1]);
         }
 
 private:
-        auto& pieces(color const c) noexcept
+        constexpr auto& pieces(color const c) noexcept
         {
                 return m_color[xstd::to_underlying_type(c)];
         }
 
-        auto& pieces(piece const p) noexcept
+        constexpr auto& pieces(piece const p) noexcept
         {
                 return m_piece[xstd::to_underlying_type(p)];
         }

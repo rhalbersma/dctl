@@ -1,12 +1,12 @@
 #pragma once
 #include <dctl/color_piece.hpp>                 // pawn, king
-#include <dctl/rule_traits.hpp>                 // rectangular, is_quality_precedence, is_ordering_precedence
+#include <dctl/rule_traits.hpp>                 // rectangular, is_contents_precedence, is_ordering_precedence
 #include <dctl/utility/concepts.hpp>            // is_trivial_special_members
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t, square_t
 #include <cassert>                              // assert
 #include <tuple>                                // tie
-#include <type_traits>                          // conditional, enable_if, is_same
+#include <type_traits>                          // conditional, enable_if, is_pod, is_same
 
 namespace dctl {
 namespace detail {
@@ -23,15 +23,15 @@ struct base_action
 };
 
 template<class Board>
-struct base_quality_precedence
+struct base_contents_precedence
 {
         set_t<Board> m_captured_kings;
 };
 
 template<class Rules, class Board>
-using conditional_base_quality_precedence = util::conditional_base<
-        is_quality_precedence_v<Rules>,
-        base_quality_precedence<Board>
+using conditional_base_contents_precedence = util::conditional_base<
+        is_contents_precedence_v<Rules>,
+        base_contents_precedence<Board>
 >;
 
 template<class Board>
@@ -49,7 +49,7 @@ using conditional_base_ordering_precedence = util::conditional_base<
 }       // namespace block_adl
 
 using block_adl::base_action;
-using block_adl::conditional_base_quality_precedence;
+using block_adl::conditional_base_contents_precedence;
 using block_adl::conditional_base_ordering_precedence;
 
 }       // namespace detail
@@ -58,11 +58,11 @@ template<class Rules, class Board = rectangular_t<Rules>>
 class action
 :
         detail::conditional_base_ordering_precedence<Rules, Board>,
-        detail::conditional_base_quality_precedence<Rules, Board>,
+        detail::conditional_base_contents_precedence<Rules, Board>,
         detail::base_action<Board>
 {
         using conditional_base_ordering_precedence = detail::conditional_base_ordering_precedence<Rules, Board>;
-        using conditional_base_quality_precedence = detail::conditional_base_quality_precedence<Rules, Board>;
+        using conditional_base_contents_precedence = detail::conditional_base_contents_precedence<Rules, Board>;
         using base_action = detail::base_action<Board>;
 
         static constexpr auto static_assert_type_traits() noexcept
@@ -88,8 +88,8 @@ public:
         constexpr action(int const src, int const dst, bool const promotion) noexcept
         :
                 conditional_base_ordering_precedence{},
-                conditional_base_quality_precedence{},
-                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::pawn, promotion ? piece::king : piece::pawn}
+                conditional_base_contents_precedence{},
+                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::pawns, promotion ? piece::kings : piece::pawns}
         {
                 assert_invariants();
         }
@@ -97,8 +97,8 @@ public:
         constexpr action(int const src, int const dst) noexcept
         :
                 conditional_base_ordering_precedence{},
-                conditional_base_quality_precedence{},
-                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::king, piece::king}
+                conditional_base_contents_precedence{},
+                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::kings, piece::kings}
         {
                 assert_invariants();
         }
@@ -106,8 +106,8 @@ public:
         constexpr auto capture(int const sq, bool const is_king) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
-                if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
-                        capture_quality_ordering(sq, is_king);
+                if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
+                        capture_contents_ordering(sq, is_king);
                 }
                 this->m_captured_pieces.set(sq);
         }
@@ -116,8 +116,8 @@ public:
         {
                 assert(is_onboard(sq));
                 this->m_captured_pieces.reset(sq);
-                if constexpr (is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
-                        release_quality_ordering(sq, is_king);
+                if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
+                        release_contents_ordering(sq, is_king);
                 }
         }
 
@@ -175,7 +175,7 @@ public:
 
         constexpr auto is_with_king() const noexcept
         {
-                return with() == piece::king;
+                return with() == piece::kings;
         }
 
         constexpr auto is_jump() const noexcept
@@ -185,7 +185,7 @@ public:
 
         constexpr auto is_promotion() const noexcept
         {
-                return with() == piece::pawn && into() != piece::pawn;
+                return with() == piece::pawns && into() != piece::pawns;
         }
 
         constexpr auto is_reversible() const noexcept
@@ -195,7 +195,7 @@ public:
 
         template<class RulesType = rules_type, std::enable_if_t<
                 std::is_same<RulesType, rules_type>{} &&
-                is_quality_precedence_v<RulesType>
+                is_contents_precedence_v<RulesType>
         >...>
         constexpr auto captured_kings() const noexcept
         {
@@ -204,7 +204,7 @@ public:
 
         template<class RulesType = rules_type, std::enable_if_t<
 		std::is_same<RulesType, rules_type>{} &&
-        	is_quality_precedence_v<RulesType>
+        	is_contents_precedence_v<RulesType>
         >...>
         constexpr auto num_captured_kings() const noexcept
         {
@@ -230,11 +230,11 @@ public:
         }
 
 private:
-        constexpr auto capture_quality_ordering(int const sq, bool const is_king)
+        constexpr auto capture_contents_ordering(int const sq, bool const is_king)
         {
-                static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
+                static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
-                        if constexpr (is_quality_precedence_v<rules_type>) {
+                        if constexpr (is_contents_precedence_v<rules_type>) {
                                 this->m_captured_kings.set(sq);
                         }
                         if constexpr (is_ordering_precedence_v<rules_type>) {
@@ -243,14 +243,14 @@ private:
                 }
         }
 
-        constexpr auto release_quality_ordering(int const sq, bool const is_king)
+        constexpr auto release_contents_ordering(int const sq, bool const is_king)
         {
-                static_assert(is_quality_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
+                static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
                         if constexpr (is_ordering_precedence_v<rules_type>) {
                                 this->m_piece_order.reset(reverse_index());
                         }
-                        if constexpr (is_quality_precedence_v<rules_type>) {
+                        if constexpr (is_contents_precedence_v<rules_type>) {
                                 this->m_captured_kings.reset(sq);
                         }
                 }
@@ -263,7 +263,7 @@ private:
 
         constexpr auto is_demotion() const noexcept
         {
-                return with() != piece::pawn && into() == piece::pawn;
+                return with() != piece::pawns && into() == piece::pawns;
         }
 
         constexpr auto reverse_index() const noexcept

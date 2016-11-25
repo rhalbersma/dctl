@@ -8,7 +8,7 @@
 #include <dctl/actions/detail/generate_king_jump.hpp>   // generate (king jump specialization)
 #include <dctl/actions/detail/generate_pawn_jump.hpp>   // generate (pawn jump specialization)
 #include <dctl/actions/select/jump.hpp>                 // jump
-#include <dctl/color_piece.hpp>                         // color, color_, king_, pawn_
+#include <dctl/color_piece.hpp>                         // color, color_, kings_, pawn_
 #include <dctl/rule_traits.hpp>
 #include <dctl/utility/static_vector.hpp>               // static_vector
 #include <dctl/utility/type_traits.hpp>                 // rules_t, board_t
@@ -47,8 +47,8 @@ public:
                         builder<to_move_, DuplicatesPolicy, State, SequenceContainer>;
                 //>;
 
-                using king_jump = detail::generate<to_move_, king_, select::jump, Reverse, State, builder_type>;
-                using pawn_jump = detail::generate<to_move_, pawn_, select::jump, Reverse, State, builder_type>;
+                using king_jump = detail::generate<to_move_, kings_, select::jump, Reverse, State, builder_type>;
+                using pawn_jump = detail::generate<to_move_, pawns_, select::jump, Reverse, State, builder_type>;
 
                 auto b = builder_type{s, a};
                 king_jump{b}();
@@ -72,8 +72,8 @@ public:
         template<class State>
         auto detect(State const& s) const noexcept
         {
-                using pawn_jump = detail::detect<to_move_, pawn_, select::jump, Reverse, State>;
-                using king_jump = detail::detect<to_move_, king_, select::jump, Reverse, State>;
+                using pawn_jump = detail::detect<to_move_, pawns_, select::jump, Reverse, State>;
+                using king_jump = detail::detect<to_move_, kings_, select::jump, Reverse, State>;
 
                 return pawn_jump{}(s) || king_jump{}(s);
         }

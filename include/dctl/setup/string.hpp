@@ -65,7 +65,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                         return {{by_color_piece[0][0], by_color_piece[0][1], by_color_piece[1][0], by_color_piece[1][1]}, p_side };
 
                 auto setup_color = p_side;
-                auto setup_piece = piece::pawn;
+                auto setup_piece = piece::pawns;
 
                 std::stringstream sstr(s);
                 char ch;
@@ -82,7 +82,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                 setup_color = read_color<Token>(ch);
                                 break;
                         case Token::king :                                      // setup kings
-                                setup_piece = piece::king;
+                                setup_piece = piece::kings;
                                 break;
                         default:
                                 if (isdigit(ch)) {
@@ -92,7 +92,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
                                         by_color_piece[xstd::to_underlying_type(setup_color)][xstd::to_underlying_type(setup_piece)].set(b);
                                 }
-                                setup_piece = piece::pawn;
+                                setup_piece = piece::pawns;
                                 break;
                         }
                 }
@@ -121,7 +121,7 @@ struct write<pdn::protocol, Token>
                         auto const bs = s.pieces(c);
                         auto n = 0;
                         for (auto sq : bs) {
-                                if (s.pieces(piece::king).test(sq))
+                                if (s.pieces(piece::kings).test(sq))
                                         sstr << Token::king;            // king tag
                                 sstr << Board::square_from_bit(sq) + 1; // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)

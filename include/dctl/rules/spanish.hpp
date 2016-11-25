@@ -17,7 +17,7 @@ struct spanish
         static constexpr auto is_backward_pawn_jump = false;
 
         static constexpr auto is_quantity_precedence = true;
-        static constexpr auto is_quality_precedence = true;
+        static constexpr auto is_contents_precedence = true;
 
         struct tuple_type
         {

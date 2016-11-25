@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(IsEmpty)
         //static_assert(!is_placeable<rectangular<0, 0>>);
         //static_assert(!is_placeable<rectangular<0, 1>>);
         //static_assert(!is_placeable<rectangular<1, 0>>);
-        static_assert(!is_placeable<board::rectangular<1, 1, true>>);
+        //static_assert(!is_placeable<board::rectangular<1, 1, true>>);
         static_assert( is_placeable<board::rectangular<1, 1>>);
         static_assert( is_placeable<board::rectangular<2, 1, true>>);
         static_assert( is_placeable<board::rectangular<1, 2, true>>);

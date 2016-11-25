@@ -1,4 +1,4 @@
-#include <dctl/color_piece.hpp>         //
+#include <dctl/color_piece.hpp>         // color, black, white, opposite, piece, pawns, kings
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE
 #include <type_traits>                  // is_same
 
@@ -32,11 +32,11 @@ BOOST_AUTO_TEST_CASE(ColorsAreNegativelyRelated)
 
 BOOST_AUTO_TEST_CASE(PiecesAreDifferent)
 {
-        static_assert(piece::pawn != piece::king);
-        static_assert(piece::king != piece::pawn);
+        static_assert(piece::pawns != piece::kings);
+        static_assert(piece::kings != piece::pawns);
 
-        static_assert(!std::is_same<pawn_, king_>{});
-        static_assert(!std::is_same<king_, pawn_>{});
+        static_assert(!std::is_same<pawns_, kings_>{});
+        static_assert(!std::is_same<kings_, pawns_>{});
 
         static_assert(pawns_c != kings_c);
         static_assert(kings_c != pawns_c);

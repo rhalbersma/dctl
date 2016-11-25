@@ -73,7 +73,7 @@ using is_unambiguous_pawn_jump = std::bool_constant<
 >;
 
 DCTL_PP_TTI_CONSTANT(is_quantity_precedence, false)
-DCTL_PP_TTI_CONSTANT(is_quality_precedence, false)
+DCTL_PP_TTI_CONSTANT(is_contents_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_modality_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_ordering_precedence, false)
 

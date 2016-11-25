@@ -9,7 +9,7 @@
 #include <dctl/board/mask/jump_sources.hpp>             // jump_sources
 #include <dctl/board_traits.hpp>                        // promotion
 #include <dctl/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/color_piece.hpp>                         // color, color_, pawn_, king_
+#include <dctl/color_piece.hpp>                         // color, color_, pawns_, king_
 #include <dctl/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/utility/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
@@ -20,15 +20,15 @@ namespace dctl {
 namespace detail {
 
 template<color Side, class Reverse, class State, class Builder>
-class generate<color_<Side>, pawn_, select::jump, Reverse, State, Builder>
+class generate<color_<Side>, pawns_, select::jump, Reverse, State, Builder>
 {
         using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;
         static constexpr auto piece_c = pawns_c;
-        using  king_jumps = generate<to_move_, king_, select::jump, Reverse, State, Builder>;
-        using  board_type =  board_t<Builder>;
-        using  rules_type =  rules_t<Builder>;
-        using    set_type =    set_t<Builder>;
+        using  king_jumps = generate<to_move_, kings_, select::jump, Reverse, State, Builder>;
+        using  board_type = board_t<Builder>;
+        using  rules_type = rules_t<Builder>;
+        using    set_type =   set_t<Builder>;
 
         template<int Direction>
         using jump_sources = board::mask::jump_sources<board_type, Direction, short_ranged_tag>;

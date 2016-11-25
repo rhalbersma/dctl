@@ -85,27 +85,27 @@ public:
 };
 
 template<class Builder>
-class Setking_jump
+class set_king_jump
 {
         Builder& builder;
 public:
-        ~Setking_jump()
+        ~set_king_jump()
         {
-                assert(builder.is_with(piece::king) && builder.is_into(piece::king));
-                builder.with(piece::pawn);
-                builder.into(piece::pawn);
+                assert(builder.with() == piece::kings && builder.into() == piece::kings);
+                builder.with(piece::pawns);
+                builder.into(piece::pawns);
         }
 
-        Setking_jump(Setking_jump const&) = delete;
-        Setking_jump& operator=(Setking_jump const&) = delete;
+        set_king_jump(set_king_jump const&) = delete;
+        set_king_jump& operator=(set_king_jump const&) = delete;
 
-        Setking_jump(Builder& b)
+        set_king_jump(Builder& b)
         :
                 builder{b}
         {
-                assert(builder.is_with(piece::pawn) && builder.is_into(piece::pawn));
-                builder.with(piece::king);
-                builder.into(piece::king);
+                assert(builder.with() == piece::pawns && builder.into() == piece::pawns);
+                builder.with(piece::kings);
+                builder.into(piece::kings);
         }
 };
 
@@ -116,16 +116,16 @@ class promotion
 public:
         ~promotion()
         {
-                assert(builder.is_with(piece::pawn) && builder.is_into(piece::king));
-                builder.into(piece::pawn);
+                assert(builder.with() == piece::pawns && builder.into() == piece::kings);
+                builder.into(piece::pawns);
         }
 
         promotion(Builder& b)
         :
                 builder{b}
         {
-                assert(builder.is_with(piece::pawn) && builder.is_into(piece::pawn));
-                builder.into(piece::king);
+                assert(builder.with() == piece::pawns && builder.into() == piece::pawns);
+                builder.into(piece::kings);
         }
 };
 

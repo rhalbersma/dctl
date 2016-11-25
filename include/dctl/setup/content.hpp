@@ -14,12 +14,12 @@ auto content(State const& s, int const n)
 
         std::stringstream sstr;
         if (s.pieces(color::black).test(n)) {
-                if (s.pieces(piece::king).test(n))
+                if (s.pieces(piece::kings).test(n))
                         sstr << Token::upper[xstd::to_underlying_type(color::black)];   // black king
                 else
                         sstr << Token::lower[xstd::to_underlying_type(color::black)];   // black pawn
         } else if (s.pieces(color::white).test(n)) {
-                if (s.pieces(piece::king).test(n))
+                if (s.pieces(piece::kings).test(n))
                         sstr << Token::upper[xstd::to_underlying_type(color::white)];   // white king
                 else
                         sstr << Token::lower[xstd::to_underlying_type(color::white)];   // white pawn

@@ -13,7 +13,7 @@ namespace dctl {
 namespace detail {
 
 template<color Side, class Reverse, class State>
-class detect<color_<Side>, king_, select::jump, Reverse, State>
+class detect<color_<Side>, kings_, select::jump, Reverse, State>
 {
         using to_move_ = color_<Side>;
         static constexpr auto to_move_c = color_c<Side>;

@@ -153,24 +153,14 @@ public:
                 return m_candidate_action.with();
         }
 
-        auto is_with(piece const p) const noexcept
-        {
-                return with() == p;
-        }
-
         auto into() const noexcept
         {
                 return m_candidate_action.into();
         }
 
-        auto is_into(piece const p) const noexcept
-        {
-                return into() == p;
-        }
-
         constexpr auto is_promotion() const noexcept
         {
-                return is_with(piece::pawn) && !is_into(piece::pawn);
+                return with() == piece::pawns && into() != piece::pawns;
         }
 
         auto to_move() const noexcept

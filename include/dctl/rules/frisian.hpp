@@ -19,7 +19,7 @@ struct frisian
         static constexpr auto max_same_king_push        = 3;
 
         static constexpr auto is_quantity_precedence    = true;
-        static constexpr auto is_quality_precedence     = true;
+        static constexpr auto is_contents_precedence    = true;
         static constexpr auto is_modality_precedence    = true;
 
         struct tuple_type

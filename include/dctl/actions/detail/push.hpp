@@ -9,7 +9,7 @@
 #include <dctl/actions/detail/generate_king_push.hpp>   // generate (king push specialization)
 #include <dctl/actions/detail/generate_pawn_push.hpp>   // generate (pawn push specialization)
 #include <dctl/actions/select/push.hpp>                 // push
-#include <dctl/color_piece.hpp>                         // color, color_, king_, pawn_
+#include <dctl/color_piece.hpp>                         // color, color_, kings_, pawn_
 
 namespace dctl {
 namespace detail {
@@ -22,8 +22,8 @@ public:
         template<class State, class SequenceContainer>
         auto generate(State const& s, SequenceContainer& a) const
         {
-                using king_push = detail::generate<to_move_, king_, select::push, Reverse, State, SequenceContainer>;
-                using pawn_push = detail::generate<to_move_, pawn_, select::push, Reverse, State, SequenceContainer>;
+                using king_push = detail::generate<to_move_, kings_, select::push, Reverse, State, SequenceContainer>;
+                using pawn_push = detail::generate<to_move_, pawns_, select::push, Reverse, State, SequenceContainer>;
 
                 king_push{a}(s);
                 pawn_push{a}(s);
@@ -32,8 +32,8 @@ public:
         template<class State>
         auto count(State const& s) const noexcept
         {
-                using king_push = detail::count<to_move_, king_, select::push, Reverse, State>;
-                using pawn_push = detail::count<to_move_, pawn_, select::push, Reverse, State>;
+                using king_push = detail::count<to_move_, kings_, select::push, Reverse, State>;
+                using pawn_push = detail::count<to_move_, pawns_, select::push, Reverse, State>;
 
                 return king_push{}(s) + pawn_push{}(s);
         }
@@ -41,8 +41,8 @@ public:
         template<class State>
         auto detect(State const& s) const noexcept
         {
-                using pawn_push = detail::detect<to_move_, pawn_, select::push, Reverse, State>;
-                using king_push = detail::detect<to_move_, king_, select::push, Reverse, State>;
+                using pawn_push = detail::detect<to_move_, pawns_, select::push, Reverse, State>;
+                using king_push = detail::detect<to_move_, kings_, select::push, Reverse, State>;
 
                 return pawn_push{}(s) || king_push{}(s);
         }
