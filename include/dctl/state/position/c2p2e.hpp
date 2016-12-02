@@ -39,15 +39,17 @@ public:
         template<class Action>
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
-                pieces(c).reset(a.from());
-                pieces(c).set  (a.dest());
-                pieces(a.with()).reset(a.from());
-                pieces(a.into()).set  (a.dest());
+                pieces(c)
+                        .erase(a.from())
+                        .insert(a.dest())
+                ;
+                pieces(a.with()).erase(a.from());
+                pieces(a.into()).insert(a.dest());
 
                 if (a.is_jump()) {
                         pieces(!c) ^= a.captured_pieces();
-                        pieces(pawns_c) &= ~a.captured_pieces();
-                        pieces(kings_c) &= ~a.captured_pieces();
+                        pieces(pawns_c) -= a.captured_pieces();
+                        pieces(kings_c) -= a.captured_pieces();
                 }
 
                 m_empty = squares_v<board_type> ^ (pieces(black_c) | pieces(white_c));

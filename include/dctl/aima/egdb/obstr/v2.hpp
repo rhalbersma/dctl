@@ -23,7 +23,7 @@ auto front_inserted(Range const& src, Range const& pat)
                         ++first;
                         ++skipped;
                 }
-                dst.set(sq_i + skipped);
+                dst.insert(sq_i + skipped);
         }
         return dst;
 }
@@ -40,7 +40,7 @@ auto back_inserted(Range const& src, Range const& pat)
                         ++first;
                         ++skipped;
                 }
-                dst.set(sq_i - skipped);
+                dst.insert(sq_i - skipped);
         }
         return dst;
 }
@@ -57,7 +57,7 @@ auto front_erased(Range const& src, Range const& pat)
                         ++first;
                         ++skipped;
                 }
-                dst.set(sq_i - skipped);
+                dst.insert(sq_i - skipped);
         }
         return dst;
 }
@@ -73,7 +73,7 @@ auto back_erased(Range const& src, Range const& pat)
                         ++first;
                         ++skipped;
                 }
-                dst.set(mirror(*psq + skipped));
+                dst.insert(mirror(*psq + skipped));
         }
         return dst;
 }

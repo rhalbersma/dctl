@@ -37,17 +37,19 @@ public:
         template<class Action>
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
-                pieces(c, a.with()).reset(a.from());
-                pieces(c, a.into()).set  (a.dest());
+                pieces(c, a.with()).erase(a.from());
+                pieces(c, a.into()).insert(a.dest());
 
                 if (a.is_jump()) {
-                        pieces(!c, pawns_c) &= ~a.captured_pieces();
-                        pieces(!c, kings_c) &= ~a.captured_pieces();
+                        pieces(!c, pawns_c) -= a.captured_pieces();
+                        pieces(!c, kings_c) -= a.captured_pieces();
                         m_empty ^= a.captured_pieces();
                 }
 
-                m_empty.set  (a.from());
-                m_empty.reset(a.dest());
+                m_empty
+                        .insert(a.from())
+                        .erase(a.dest())
+                ;
         }
 
         constexpr auto pieces(color const c) const noexcept

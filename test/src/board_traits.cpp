@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, board
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, board::BoardSequence)
 {
-        BOOST_CHECK_EQUAL(squares_v<T>.count(), T::size());
+        BOOST_CHECK_EQUAL(squares_v<T>.size(), T::size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, board::BoardSequence)

@@ -28,7 +28,7 @@ class count<color_<Side>, pawns_, select::push, Reverse, State>
 public:
         auto operator()(State const& s) const noexcept
         {
-                if (auto const sources = s.pieces(to_move_c, piece_c); sources.any()) {
+                if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
                         return directions_lfold<board::right_up, board::left_up>(sources, s.pieces(empty_c));
                 }
                 return 0;
@@ -38,7 +38,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const sources, set_type const destinations) const noexcept
         {
-                return (... + pawn_push_targets<Directions<orientation>{}>{}(sources, destinations).count());
+                return (... + pawn_push_targets<Directions<orientation>{}>{}(sources, destinations).size());
         }
 };
 

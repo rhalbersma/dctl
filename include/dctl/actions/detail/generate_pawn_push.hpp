@@ -35,7 +35,7 @@ public:
 
         auto operator()(State const& s) const
         {
-                if (auto const sources = s.pieces(to_move_c, piece_c); sources.any()) {
+                if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
                         directions_lfold<board::right_up, board::left_up>(sources, s.pieces(empty_c));
                 }
         }

@@ -10,7 +10,7 @@ namespace setup {
 template<class Token, class State>
 auto content(State const& s, int const n)
 {
-        assert(n < set_t<State>::size());
+        assert(n < set_t<State>::max_size());
 
         std::stringstream sstr;
         if (s.pieces(color::black).test(n)) {

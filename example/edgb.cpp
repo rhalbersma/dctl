@@ -172,7 +172,7 @@ public:
                 std::array<set_t<Board>, 4> bb{};
                 for (auto i = 0u; i < 4; ++i) {
                         for (auto const& sq : m_pieces[i]) {
-                                bb[i].set(Board::bit_from_square(sq));
+                                bb[i].insert(Board::bit_from_square(sq));
                         }
                 }
                 return position_t<State>{bb[0], bb[1], bb[2], bb[3]};
@@ -183,7 +183,7 @@ public:
                 std::array<set_t<Board>, 4> bb{};
                 for (auto i = 0u; i < 4; ++i) {
                         for (auto const& sq : m_finish[i]) {
-                                bb[i].set(Board::bit_from_square(sq));
+                                bb[i].insert(Board::bit_from_square(sq));
                         }
                 }
                 return position_t<State>{bb[0], bb[1], bb[2], bb[3]};

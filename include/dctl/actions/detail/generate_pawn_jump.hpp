@@ -47,7 +47,7 @@ public:
 
         auto operator()() const
         {
-                if (m_builder.pieces(to_move_c, piece_c).none()) {
+                if (m_builder.pieces(to_move_c, piece_c).empty()) {
                         return;
                 }
                 if constexpr (is_superior_rank_jump_v<rules_type>) {

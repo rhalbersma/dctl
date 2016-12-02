@@ -55,10 +55,10 @@ struct read<Rules, Board, pdn::protocol, Token>
                 set_type by_color_piece[2][2]{};
                 auto p_side = color::black;
 
-                assert(by_color_piece[0][0].none());
-                assert(by_color_piece[0][1].none());
-                assert(by_color_piece[1][0].none());
-                assert(by_color_piece[1][1].none());
+                assert(by_color_piece[0][0].empty());
+                assert(by_color_piece[0][1].empty());
+                assert(by_color_piece[1][0].empty());
+                assert(by_color_piece[1][1].empty());
 
                 // do not attempt to parse empty strings
                 if (s.empty())
@@ -90,7 +90,7 @@ struct read<Rules, Board, pdn::protocol, Token>
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
-                                        by_color_piece[xstd::to_underlying_type(setup_color)][xstd::to_underlying_type(setup_piece)].set(b);
+                                        by_color_piece[xstd::to_underlying_type(setup_color)][xstd::to_underlying_type(setup_piece)].insert(b);
                                 }
                                 setup_piece = piece::pawns;
                                 break;
@@ -114,7 +114,7 @@ struct write<pdn::protocol, Token>
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i ? color::white : color::black;
-                        if (s.pieces(c).any()) {
+                        if (!s.pieces(c).empty()) {
                                 sstr << Token::colon;                   // colon
                                 sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
                         }
@@ -126,7 +126,7 @@ struct write<pdn::protocol, Token>
                                 sstr << Board::square_from_bit(sq) + 1; // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
                                 //        sstr << "^" << p.count(c);
-                                if (++n != bs.count())                  // still pieces remaining
+                                if (++n != bs.size())                  // still pieces remaining
                                         sstr << Token::comma;           // comma separator
                         }
                 }
@@ -144,10 +144,10 @@ struct read<Rules, Board, dxp::protocol, Token>
                 set_type by_color_piece[2][2]{};
                 auto p_side = color::black;
 
-                assert(by_color_piece[0][0].none());
-                assert(by_color_piece[0][1].none());
-                assert(by_color_piece[1][0].none());
-                assert(by_color_piece[1][1].none());
+                assert(by_color_piece[0][0].empty());
+                assert(by_color_piece[0][1].empty());
+                assert(by_color_piece[1][0].empty());
+                assert(by_color_piece[1][1].empty());
 
                 // do not attempt to parse empty strings
                 if (s.empty())
@@ -162,8 +162,8 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : by_color_piece[xstd::to_underlying_type(color::black)][isupper(ch)].set(b); break;
-                        case Token::white : by_color_piece[xstd::to_underlying_type(color::white)][isupper(ch)].set(b); break;
+                        case Token::black : by_color_piece[xstd::to_underlying_type(color::black)][isupper(ch)].insert(b); break;
+                        case Token::white : by_color_piece[xstd::to_underlying_type(color::white)][isupper(ch)].insert(b); break;
                         case Token::empty : break;
                         default           : assert(false);
                         }

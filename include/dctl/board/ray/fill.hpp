@@ -11,7 +11,7 @@ auto fill(iterator<Board, Direction> from, Set const propagator)
 {
         Set targets {};
         for (++from; is_onboard(from) && propagator.test(*from); ++from)
-                targets.set(*from);
+                targets.insert(*from);
         return targets;
 }
 

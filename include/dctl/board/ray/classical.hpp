@@ -15,10 +15,10 @@ auto classical(iterator<Board, Direction> from, Set const propagator)
         constexpr auto theta = angle{Direction};
         auto targets = mask::king_targets<Board>{}(*from, theta);
         auto const blockers = targets & ~propagator;
-        if (blockers.any()) {
+        if (!blockers.empty()) {
                 auto const first = board::first<board::shift_sign_v<Direction>>{}(blockers);
                 targets ^= mask::king_targets<Board>{}(first, theta);
-                targets.reset(first);
+                targets.erase(first);
         }
         return targets;
 }

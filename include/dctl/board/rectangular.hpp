@@ -62,8 +62,8 @@ public:
                 return NumBits;
         }
 
-        using    set_type = xstd::int_set<xstd::align_on(NumBits, 64)>;
-        using square_type = xstd::uint_fast_t<set_type::size()>;
+        using    set_type = xstd::int_set<xstd::align_on(NumBits, xstd::int_set<NumBits>::capacity())>;
+        using square_type = xstd::uint_fast_t<set_type::max_size()>;
 
         static auto squares() noexcept
         {

@@ -13,7 +13,7 @@ constexpr auto copy_if(UnaryPredicate pred) noexcept
         Set result{};
         for (auto sq = 0; sq != Board::size(); ++sq)
                 if (pred(sq))
-                        result.set(Board::bit_from_square(sq));
+                        result.insert(Board::bit_from_square(sq));
         return result;
 }
 

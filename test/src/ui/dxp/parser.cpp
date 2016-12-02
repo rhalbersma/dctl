@@ -43,7 +43,8 @@ BOOST_AUTO_TEST_CASE(MesanderMessageExamples)
         };
 
         std::vector<std::string> parsed;
-        boost::push_back(parsed, messages | boost::adaptors::transformed([&](auto const& m) {
+        using boost::adaptors::transformed;
+        boost::push_back(parsed, messages | transformed([&](auto const& m) {
                 auto const p = f.create(m);
                 return p->str();
         }));

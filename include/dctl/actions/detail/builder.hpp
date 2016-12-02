@@ -56,26 +56,26 @@ public:
         auto make_launch(int const sq)
         {
                 m_candidate_action.from(sq);
-                m_empty.set(sq);
+                m_empty.insert(sq);
         }
 
         auto undo_launch(int const sq)
         {
-                m_empty.reset(sq);
+                m_empty.erase(sq);
         }
 
         auto capture(int const sq)
         {
                 m_candidate_action.capture(sq, is_king(sq));
                 if constexpr (is_passing_capture_v<rules_type>) {
-                        m_empty.set(sq);
+                        m_empty.insert(sq);
                 }
         }
 
         auto release(int const sq)
         {
                 if constexpr (is_passing_capture_v<rules_type>) {
-                        m_empty.reset(sq);
+                        m_empty.erase(sq);
                 }
                 m_candidate_action.release(sq, is_king(sq));
         }

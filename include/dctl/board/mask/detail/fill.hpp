@@ -13,7 +13,7 @@ template<board::direction Direction, int N, class Set>
 constexpr auto fill(Set generator, Set const propagator)
 {
         Set flood {};
-        while (generator.any()) {
+        while (!generator.empty()) {
                 flood |= generator;
                 generator = board::shift<Direction, N>{}(generator) & propagator;
         }

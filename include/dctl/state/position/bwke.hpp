@@ -39,24 +39,30 @@ public:
         template<class Action>
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
-                pieces(c).reset(a.from());
-                pieces(c).set  (a.dest());
+                pieces(c)
+                        .erase(a.from())
+                        .insert(a.dest())
+                ;
 
                 if (a.is_jump()) {
                         pieces(!c) ^= a.captured_pieces();
-                        m_kings &= ~a.captured_pieces();
+                        m_kings -= a.captured_pieces();
                         m_empty ^= a.captured_pieces();
                 }
 
                 if (a.with() == piece::kings) {
-                        m_kings.reset(a.from());
-                        m_kings.set(a.dest());
+                        m_kings
+                                .erase(a.from())
+                                .insert(a.dest())
+                        ;
                 } else if (a.into() == piece::kings) {
-                        m_kings.set(a.dest());
+                        m_kings.insert(a.dest());
                 }
 
-                m_empty.set  (a.from());
-                m_empty.reset(a.dest());
+                m_empty
+                        .insert(a.from())
+                        .erase(a.dest())
+                ;
         }
 
         constexpr auto pieces(color const c) const noexcept

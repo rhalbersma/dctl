@@ -109,13 +109,13 @@ public:
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         capture_contents_ordering(sq, is_king);
                 }
-                this->m_captured_pieces.set(sq);
+                this->m_captured_pieces.insert(sq);
         }
 
         constexpr auto release(int const sq, bool const is_king) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
-                this->m_captured_pieces.reset(sq);
+                this->m_captured_pieces.erase(sq);
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         release_contents_ordering(sq, is_king);
                 }
@@ -128,7 +128,7 @@ public:
 
         constexpr auto num_captured_pieces() const noexcept
         {
-                return captured_pieces().count();
+                return captured_pieces().size();
         }
 
         constexpr auto from(int const sq) // Throws: Nothing.
@@ -180,7 +180,7 @@ public:
 
         constexpr auto is_jump() const noexcept
         {
-                return captured_pieces().any();
+                return !captured_pieces().empty();
         }
 
         constexpr auto is_promotion() const noexcept
@@ -208,7 +208,7 @@ public:
         >...>
         constexpr auto num_captured_kings() const noexcept
         {
-                return captured_kings().count();
+                return captured_kings().size();
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
@@ -235,10 +235,10 @@ private:
                 static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
                         if constexpr (is_contents_precedence_v<rules_type>) {
-                                this->m_captured_kings.set(sq);
+                                this->m_captured_kings.insert(sq);
                         }
                         if constexpr (is_ordering_precedence_v<rules_type>) {
-                                this->m_piece_order.set(reverse_index());
+                                this->m_piece_order.insert(reverse_index());
                         }
                 }
         }
@@ -248,17 +248,17 @@ private:
                 static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
                         if constexpr (is_ordering_precedence_v<rules_type>) {
-                                this->m_piece_order.reset(reverse_index());
+                                this->m_piece_order.erase(reverse_index());
                         }
                         if constexpr (is_contents_precedence_v<rules_type>) {
-                                this->m_captured_kings.reset(sq);
+                                this->m_captured_kings.erase(sq);
                         }
                 }
         }
 
         constexpr auto is_onboard(int const sq) const noexcept
         {
-                return 0 <= sq && sq < set_type::size();
+                return 0 <= sq && sq < set_type::max_size();
         }
 
         constexpr auto is_demotion() const noexcept
@@ -268,7 +268,7 @@ private:
 
         constexpr auto reverse_index() const noexcept
         {
-                return set_type::size() - 1 - num_captured_pieces();
+                return set_type::max_size() - 1 - num_captured_pieces();
         }
 };
 

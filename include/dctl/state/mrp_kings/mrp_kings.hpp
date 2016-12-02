@@ -12,7 +12,7 @@ class MostRecentlyPushedKings
 {
 public:
         enum { M = max_same_king_push_v<Rules> };
-        enum { N = set_t<Board>::size() };
+        enum { N = set_t<Board>::max_size() };
 
 private:
         std::size_t index_[2]{ N, N };

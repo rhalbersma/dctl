@@ -37,8 +37,10 @@ public:
         template<class Action>
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
-                pieces(c).reset(a.from());
-                pieces(c).set  (a.dest());
+                pieces(c)
+                        .erase(a.from())
+                        .insert(a.dest())
+                ;
 
                 if (a.is_jump()) {
                         pieces(!c) ^= a.captured_pieces();
@@ -46,10 +48,12 @@ public:
                 }
 
                 if (a.with() == piece::kings) {
-                        m_kings.reset(a.from());
-                        m_kings.set(a.dest());
+                        m_kings
+                                .erase(a.from())
+                                .insert(a.dest())
+                        ;
                 } else if (a.into() == piece::kings) {
-                        m_kings.set(a.dest());
+                        m_kings.insert(a.dest());
                 }
         }
 

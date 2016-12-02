@@ -53,7 +53,7 @@ auto combination_rank(Range const& src, Binomial const& = Binomial{})
                 src, Index{0}, [k = 1](auto result, auto sq_k) mutable {
                 return result + Binomial::coefficient(static_cast<int>(sq_k), k++);
         });
-        assert(0 <= index && index < Binomial::coefficient(static_cast<int>(*rbegin(src)) + 1, static_cast<int>(src.count())));
+        assert(0 <= index && index < Binomial::coefficient(static_cast<int>(*rbegin(src)) + 1, static_cast<int>(src.size())));
         return index;
 }
 

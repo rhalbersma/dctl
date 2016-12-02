@@ -38,24 +38,30 @@ public:
         template<class Action>
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
-                m_occup.reset(a.from());
-                m_occup.set  (a.dest());
+                m_occup
+                        .erase(a.from())
+                        .insert(a.dest())
+                ;
 
                 if (c == white_c) {
-                        m_white.reset(a.from());
-                        m_white.set  (a.dest());
+                        m_white
+                                .erase(a.from())
+                                .insert(a.dest())
+                        ;
                 }
 
-                if (a.with() == piece::pawns)
-                        m_pawns.reset(a.from());
+                if (a.with() == piece::pawns) {
+                        m_pawns.erase(a.from());
+                }
 
-                if (a.into() == piece::pawns)
-                        m_pawns.set(a.dest());
+                if (a.into() == piece::pawns) {
+                        m_pawns.insert(a.dest());
+                }
 
                 if (a.is_jump()) {
-                        m_white &= ~a.captured_pieces();
-                        m_pawns &= ~a.captured_pieces();
-                        m_occup ^=  a.captured_pieces();
+                        m_white -= a.captured_pieces();
+                        m_pawns -= a.captured_pieces();
+                        m_occup ^= a.captured_pieces();
                 }
         }
 
