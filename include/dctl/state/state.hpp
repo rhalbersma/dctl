@@ -3,9 +3,9 @@
 #include <dctl/color_piece.hpp>
 #include <dctl/rule_traits.hpp>
 #include <dctl/state/position.hpp>
-#include <dctl/utility/concepts.hpp>            // is_trivial_special_members
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t
+#include <xstd/type_traits.hpp>                 // is_trivial_special_members
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
 #include <type_traits>                          // is_same
@@ -64,8 +64,8 @@ public:
 private:
         static constexpr auto static_assert_type_traits() noexcept
         {
-                using T = state<Rules, Board>;
-                static_assert(util::is_trivial_special_members_v<T>);
+                using T = state;
+                static_assert(xstd::is_trivial_special_members_v<T>);
                 static_assert(std::is_pod<T>{});
         }
 

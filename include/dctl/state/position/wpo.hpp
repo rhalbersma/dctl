@@ -1,8 +1,8 @@
 #pragma once
 #include <dctl/board_traits.hpp>        // squares
 #include <dctl/color_piece.hpp>         // color, black, white, piece, pawns, kings, occup, empty
-#include <dctl/utility/concepts.hpp>    // is_trivial_special_members
 #include <dctl/utility/type_traits.hpp> // set_t
+#include <xstd/type_traits.hpp>         // is_trivial_special_members
 #include <tuple>                        // tie
 #include <type_traits>                  // is_pod
 
@@ -14,8 +14,8 @@ class position
 {
         static constexpr auto static_assert_type_traits() noexcept
         {
-                using T = position<Board>;
-                static_assert(util::is_trivial_special_members_v<T>);
+                using T = position;
+                static_assert(xstd::is_trivial_special_members_v<T>);
                 static_assert(std::is_pod<T>{});
         }
 
