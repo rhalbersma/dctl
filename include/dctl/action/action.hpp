@@ -258,7 +258,7 @@ private:
 
         constexpr auto is_onboard(int const sq) const noexcept
         {
-                return sq < set_type::size();
+                return 0 <= sq && sq < set_type::size();
         }
 
         constexpr auto is_demotion() const noexcept
