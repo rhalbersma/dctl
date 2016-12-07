@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <stack>
+#include <vector>
 
 // customize rules and board from these headers
 #include <dctl/rules.hpp>

@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(Frontrows)
         );
         auto const leafs = std::vector<int64_t>
                 { 9, 81, 534, 2'538, 9'052, 29'999, 98'971, 310'315, 1'008'317, 3'174'159, 10'369'533, 34'907'917, 123'162'301, 462'333'827, 1'824'763'597 };
-        test(p, keep_duplicates_gen, leafs);
+        test(keep_duplicates_gen, p, leafs);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

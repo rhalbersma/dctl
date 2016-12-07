@@ -17,14 +17,14 @@ BOOST_AUTO_TEST_CASE(spantsiretti)
 {
         auto const p = state<rules::international, board::spantsiretti>::initial();
         auto const leafs = std::vector<int64_t>{ 9, 81, 658, 4'265, 27'117, 167'140, 1'029'319, 6'127'190, 36'751'086, 218'398'167, 1'306'818'894 };
-        test(p, drop_duplicates_gen, leafs);
+        test(drop_duplicates_gen, p, leafs);
 }
 
 BOOST_AUTO_TEST_CASE(ktar10x11)
 {
         auto const p = state<rules::international, board::ktar<10,11>>::initial();
         auto const leafs = std::vector<int64_t>{ 9, 81, 810, 7'583, 74'602, 688'835, 6'555'302, 59'796'721, 558'094'366, 5'058'805'542 };
-        test(p, drop_duplicates_gen, leafs);
+        test(drop_duplicates_gen, p, leafs);
 }
 
 // The "Perft on rectangular boards" thread on the FMJD forum (results until depth=9)
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(ktar10x12)
 
         // board with international initial moves and orthogonal capture support: does not fit into 64 bits
         auto const q = state<rules::international, board::ktar<10,12>>::initial();
-        test(q, drop_duplicates_gen, leafs);
+        test(drop_duplicates_gen, q, leafs);
 }
 
 // The "Perft on large boards" thread on the FMJD forum (results until depth=10)
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(Board12x10)
 
         // board with canadian initial moves and orthogonal capture support: does not fit into 64 bits
         auto const q = state<rules::international, board::rectangular<12,10>>::initial();
-        test(q, drop_duplicates_gen, leafs);
+        test(drop_duplicates_gen, q, leafs);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

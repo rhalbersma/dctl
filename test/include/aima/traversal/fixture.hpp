@@ -10,8 +10,8 @@ namespace traversal {
 auto const keep_duplicates_gen = Actions<select::legal, keep_duplicates_tag>{};
 auto const drop_duplicates_gen = Actions<select::legal, drop_duplicates_tag>{};
 
-template<class State, class Actions, class Range>
-void test(State const& s, Actions successor, Range const& leafs)
+template<class Actions, class State, class Range>
+void test(Actions const& successor, State const& s, Range const& leafs)
 {
         auto depth = 0;
         for (auto const& node_count : leafs) {

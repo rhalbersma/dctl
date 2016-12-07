@@ -19,7 +19,7 @@ namespace block_adl {
 template<class Board>
 struct base_position
 {
-        using position_type = cp22e::position<Board>;
+        using position_type = wpo::position<Board>;
         position_type m_position;
 };
 
@@ -133,6 +133,22 @@ public:
         }
 
         auto make(nullmove_t)
+        {
+                pass_turn();
+                assert_invariants();
+        }
+
+        template<class Action>
+        auto undo(Action const& a)
+        {
+                static_assert(std::is_same<rules_type, rules_t<Action>>{});
+                static_assert(std::is_same<board_type, board_t<Action>>{});
+                pass_turn();
+                this->m_position.undo(to_move(), a);
+                assert_invariants();
+        }
+
+        auto undo(nullmove_t)
         {
                 pass_turn();
                 assert_invariants();

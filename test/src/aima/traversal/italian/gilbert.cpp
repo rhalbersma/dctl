@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(Gilbert1)
                   212'130'912,
                 1'021'757'399
         };
-        test(p, keep_duplicates_gen, leafs);
+        test(keep_duplicates_gen, p, leafs);
 }
 
 BOOST_AUTO_TEST_CASE(Gilbert2)
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(Gilbert2)
                   396'940'628,
                 2'365'222'285
         };
-        test(p, keep_duplicates_gen, leafs);
+        test(keep_duplicates_gen, p, leafs);
 }
 
 BOOST_AUTO_TEST_CASE(Gilbert3)
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(Gilbert3)
                 1'056'217'651,
                 6'894'949'061
         };
-        test(p, keep_duplicates_gen, leafs);
+        test(keep_duplicates_gen, p, leafs);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

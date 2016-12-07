@@ -1,8 +1,5 @@
 #pragma once
-#include <experimental/optional>        // nullopt_t, optional
-#include <algorithm>                    // reverse, transform
-#include <cassert>                      // assert
-#include <vector>                       // vector
+#include <cassert>      // assert
 
 namespace dctl {
 namespace aima {
@@ -14,38 +11,49 @@ constexpr auto result(State const& s, Action const& a) noexcept
 }
 
 template<class State, class Action>
-struct node
+class node
 {
-        State state;
-        node const* parent = nullptr;
-        Action const* action = nullptr;
-
         constexpr auto is_root() const noexcept
         {
-                return !parent && !action;
+                return
+                        !m_parent &&
+                        !m_action
+                ;
         }
 
         constexpr auto is_child() const noexcept
         {
-                return parent && action && result(parent->state, *action) == state;
+                return
+                        m_parent &&
+                        m_action &&
+                        m_state == result(m_parent->m_state, *m_action)
+                ;
         }
 
+        State m_state;
+        node const* m_parent = nullptr;
+        Action const* m_action = nullptr;
 public:
-        constexpr node(State const& s) noexcept
+        using state_type = State;
+        using action_type = Action;
+
+        explicit constexpr node(State const& s) noexcept
         :
-                state{s}
+                m_state{s}
         {
                 assert(is_root());
         }
 
         constexpr node(node const& n, Action const& a) noexcept
         :
-                state{result(n.state, a)},
-                parent{&n},
-                action{&a}
+                m_state{result(n.m_state, a)},
+                m_parent{&n},
+                m_action{&a}
         {
                 assert(is_child());
         }
+
+        constexpr auto const& state() const noexcept { return m_state; }
 };
 
 template<class Node, class State>

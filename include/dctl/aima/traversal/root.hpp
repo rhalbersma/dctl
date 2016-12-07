@@ -194,10 +194,34 @@ int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements
 }
 
 template<bool IsBulk, class Actions, class State>
-auto perft_state(Actions successor, State const& s, int depth)
+auto perft_inplace(Actions const& successor, State& s, int depth)
+        -> int64_t
 {
-        if constexpr( IsBulk) { if (depth == 1) return static_cast<int64_t>(successor.count(s)); }
-        if constexpr(!IsBulk) { if (depth == 0) return int64_t{1};         }
+        if constexpr(IsBulk) {
+                if (depth == 1) return successor.count(s);
+        } else {
+                if (depth == 0) return 1;
+        }
+
+        static_vector<action<rules_t<State>, board_t<State>>> moves;
+        successor.generate(s, moves);
+        return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
+                s.make(a);
+                auto const res = n + perft_inplace(successor, s, depth - 1);
+                s.undo(a);
+                return res;
+        });
+}
+
+template<bool IsBulk, class Actions, class State>
+auto perft_state(Actions const& successor, State const& s, int depth)
+        -> int64_t
+{
+        if constexpr(IsBulk) {
+                if (depth == 1) return successor.count(s);
+        } else {
+                if (depth == 0) return 1;
+        }
 
         static_vector<action<rules_t<State>, board_t<State>>> moves;
         successor.generate(s, moves);
@@ -207,32 +231,19 @@ auto perft_state(Actions successor, State const& s, int depth)
 }
 
 template<bool IsBulk, class Actions, class Node>
-auto perft_node(Actions const& successor, Node const& node, int depth)
+auto perft_node(Actions const& successor, Node const& n, int depth)
+        -> int64_t
 {
-        if constexpr( IsBulk) { if (depth == 1) return static_cast<int64_t>(successor.count(node.state)); }
-        if constexpr(!IsBulk) { if (depth == 0) return int64_t{1};              }
+        if constexpr(IsBulk) {
+                if (depth == 1) return successor.count(n.state());
+        } else {
+                if (depth == 0) return 1;
+        }
 
-        using state_type = decltype(node.state);
-        static_vector<action<rules_t<state_type>, board_t<state_type>>> moves;
-        successor.generate(node.state, moves);
+        static_vector<action<rules_t<state_t<Node>>, board_t<state_t<Node>>>> moves;
+        successor.generate(n.state(), moves);
         return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
-                return n + perft_node<IsBulk>(successor, child(node, a), depth - 1);
-        });
-}
-
-template<class Actions, class State>
-auto iperft_bulk_counting(Actions const& successor, State& state, int depth)
-{
-        if (depth == 1)
-                return static_cast<int64_t>(successor.count(state));
-
-        static_vector<action<rules_t<State>, board_t<State>>> moves;
-        successor.generate(state, moves);
-        return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
-                state.make(a);
-                auto const res = n + iperft_bulk_counting(successor, state, depth - 1);
-                state.undo(a);
-                return res;
+                return n + perft_node<IsBulk>(successor, child(n, a), depth - 1);
         });
 }
 
@@ -335,24 +346,24 @@ auto perft(State const& s, int depth, Actions successor, Enhancements e)
         }
         return nodes;
 }
-/*
-template<class State, class Actions>
-auto iperft(State const& s_in, int depth, Actions successor)
+
+template<class Actions, class State>
+auto iperft(Actions successor, State const& s, int depth)
 {
-        auto s{s_in};
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
+        auto c{s};
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
-                auto const nodes = iperft_bulk_counting(successor, s, d);
+                auto const nodes = perft_inplace<true>(successor, c, d);
                 stopwatch.split_reset();
                 xreport(d, nodes, stopwatch);
         }
 }
-*/
-template<class State, class Actions>
-auto sperft(State const& s, int depth, Actions successor)
+
+template<class Actions, class State>
+auto sperft(Actions successor, State const& s, int depth)
 {
         announce(s, depth);
         util::Stopwatch stopwatch;
@@ -365,8 +376,8 @@ auto sperft(State const& s, int depth, Actions successor)
         }
 }
 
-template<class State, class Actions>
-auto nperft(State const& s, int depth, Actions successor)
+template<class Actions, class State>
+auto nperft(Actions successor, State const& s, int depth)
 {
         announce(s, depth);
         util::Stopwatch stopwatch;
