@@ -258,7 +258,8 @@ private:
 
         constexpr auto is_onboard(int const sq) const noexcept
         {
-                return 0 <= sq && sq < set_type::max_size();
+                assert(0 <= sq);
+                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type::max_size());
         }
 
         constexpr auto is_demotion() const noexcept
