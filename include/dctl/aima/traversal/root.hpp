@@ -205,9 +205,9 @@ auto perft_inplace(Actions const& successor, State& s, int depth)
 
         static_vector<action<rules_t<State>, board_t<State>>> moves;
         successor.generate(s, moves);
-        return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
+        return boost::accumulate(moves, int64_t{0}, [&](auto sum, auto const& a){
                 s.make(a);
-                auto const res = n + perft_inplace(successor, s, depth - 1);
+                auto const res = sum + perft_inplace(successor, s, depth - 1);
                 s.undo(a);
                 return res;
         });
@@ -225,8 +225,8 @@ auto perft_state(Actions const& successor, State const& s, int depth)
 
         static_vector<action<rules_t<State>, board_t<State>>> moves;
         successor.generate(s, moves);
-        return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
-                return n + perft_state<IsBulk>(successor, result(s, a), depth - 1);
+        return boost::accumulate(moves, int64_t{0}, [&](auto sum, auto const& a){
+                return sum + perft_state<IsBulk>(successor, result(s, a), depth - 1);
         });
 }
 
@@ -242,8 +242,8 @@ auto perft_node(Actions const& successor, Node const& n, int depth)
 
         static_vector<action<rules_t<state_t<Node>>, board_t<state_t<Node>>>> moves;
         successor.generate(n.state(), moves);
-        return boost::accumulate(moves, int64_t{0}, [&](auto n, auto const& a){
-                return n + perft_node<IsBulk>(successor, child(n, a), depth - 1);
+        return boost::accumulate(moves, int64_t{0}, [&](auto sum, auto const& a){
+                return sum + perft_node<IsBulk>(successor, child(n, a), depth - 1);
         });
 }
 

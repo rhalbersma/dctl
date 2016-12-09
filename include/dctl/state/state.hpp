@@ -6,6 +6,7 @@
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // is_trivial_special_members
+#include <hash_append/hash_append.h>            // hash_append
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
 #include <type_traits>                          // is_same
@@ -189,9 +190,11 @@ public:
                 return std::tie(this->m_position, m_color);
         }
 
-        auto hash() const
+        template<class HashAlgorithm>
+        friend auto hash_append(HashAlgorithm& h, state const& s)
         {
-                return uint64_t{0};
+                using xstd::hash_append;
+                hash_append(h, s.m_position, s.m_color);
         }
 
 private:

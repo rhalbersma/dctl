@@ -1,5 +1,10 @@
 #pragma once
-#include <cassert>      // assert
+#include <hash_append/fnv1a.h>          // fnv1a
+#include <hash_append/jenkins1.h>       // jenkins1
+
+#include <hash_append/hash_append.h>    // uhash
+#include <cassert>                      // assert
+#include <cstdint>                      // uint64_t
 
 namespace dctl {
 namespace aima {
@@ -30,16 +35,20 @@ class node
                 ;
         }
 
+        using hash_algorithm = acme::fnv1a;
+
         State m_state;
         node const* m_parent = nullptr;
         Action const* m_action = nullptr;
+        uint64_t m_hash{};
 public:
         using state_type = State;
         using action_type = Action;
 
         explicit constexpr node(State const& s) noexcept
         :
-                m_state{s}
+                m_state{s},
+                m_hash{xstd::uhash<hash_algorithm>{}(m_state)}
         {
                 assert(is_root());
         }
@@ -48,12 +57,14 @@ public:
         :
                 m_state{result(n.m_state, a)},
                 m_parent{&n},
-                m_action{&a}
+                m_action{&a},
+                m_hash{xstd::uhash<hash_algorithm>{}(m_state)}
         {
                 assert(is_child());
         }
 
         constexpr auto const& state() const noexcept { return m_state; }
+        constexpr auto hash() const noexcept { return m_hash; }
 };
 
 template<class Node, class State>

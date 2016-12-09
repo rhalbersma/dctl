@@ -3,6 +3,7 @@
 #include <dctl/color_piece.hpp>         // color, black, white, piece, pawns, kings, occup, empty
 #include <dctl/utility/type_traits.hpp> // set_t
 #include <xstd/type_traits.hpp>         // is_trivial_special_members
+#include <hash_append/hash_append.h>    // hash_append
 #include <tuple>                        // tie
 #include <type_traits>                  // is_pod
 
@@ -131,6 +132,13 @@ public:
         constexpr auto tied() const noexcept
         {
                 return std::tie(m_white, m_pawns, m_occup);
+        }
+
+        template<class HashAlgorithm>
+        friend auto hash_append(HashAlgorithm& h, position const& p)
+        {
+                using xstd::hash_append;
+                hash_append(h, p.m_white, p.m_pawns, p.m_occup);
         }
 };
 

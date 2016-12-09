@@ -54,6 +54,9 @@ include_directories(${project_include_dirs})
 set(XSTD_include_dirs ${PROJECT_SOURCE_DIR}/../xstd/include)
 include_directories(${XSTD_include_dirs})
 
+set(EXT_include_dirs ${PROJECT_SOURCE_DIR}/../ext)
+include_directories(${EXT_include_dirs})
+
 #----------------
 # Boost libraries
 #----------------

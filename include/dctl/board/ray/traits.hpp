@@ -18,7 +18,6 @@ constexpr auto direction_v<iterator<Board, Direction>> = angle{Direction};
 template<class Board, int Direction>
 constexpr auto is_onboard(iterator<Board, Direction> it)
 {
-        assert(0 <= *it);
         return static_cast<unsigned>(*it) < static_cast<unsigned>(set_t<Board>::max_size());
 }
 
