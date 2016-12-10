@@ -1,10 +1,12 @@
 #pragma once
-#include <hash_append/fnv1a.h>          // fnv1a
-#include <hash_append/jenkins1.h>       // jenkins1
-
-#include <hash_append/hash_append.h>    // uhash
-#include <cassert>                      // assert
-#include <cstdint>                      // uint64_t
+#include <dctl/utility/hash/identity.hpp>       // identity
+#include <hash_append/fnv1a.h>                  // fnv1a
+#include <hash_append/jenkins1.h>               // jenkins1
+#include <hash_append/hash_append.h>            // uhash
+#include <cassert>                              // assert
+#include <cstdint>                              // uint64_t
+#include <tuple>                                // tie
+#include <type_traits>                          // is_same
 
 namespace dctl {
 namespace aima {
@@ -35,7 +37,7 @@ class node
                 ;
         }
 
-        using hash_algorithm = acme::fnv1a;
+        using state_hasher = acme::fnv1a;
 
         State m_state;
         node const* m_parent = nullptr;
@@ -48,7 +50,7 @@ public:
         explicit constexpr node(State const& s) noexcept
         :
                 m_state{s},
-                m_hash{xstd::uhash<hash_algorithm>{}(m_state)}
+                m_hash{xstd::uhash<state_hasher>{}(m_state)}
         {
                 assert(is_root());
         }
@@ -58,13 +60,26 @@ public:
                 m_state{result(n.m_state, a)},
                 m_parent{&n},
                 m_action{&a},
-                m_hash{xstd::uhash<hash_algorithm>{}(m_state)}
+                m_hash{xstd::uhash<state_hasher>{}(m_state)}
         {
                 assert(is_child());
         }
 
         constexpr auto const& state() const noexcept { return m_state; }
-        constexpr auto hash() const noexcept { return m_hash; }
+        auto hash() const { return m_hash; }
+
+        constexpr auto tied() const
+        {
+                return std::tie(m_state);
+        }
+
+        template<class HashAlgorithm>
+        friend auto hash_append(HashAlgorithm& h, node const& n)
+        {
+                static_assert(std::is_same<HashAlgorithm, hash::identity>{});
+                using xstd::hash_append;
+                hash_append(h, n.m_hash);
+        }
 };
 
 template<class Node, class State>
@@ -77,6 +92,42 @@ template<class Node, class Action>
 constexpr auto child(Node const& n, Action const& a) noexcept
 {
         return Node{n, a};
+}
+
+template<class State, class Action>
+constexpr auto operator==(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
+{
+        return lhs.tied() == rhs.tied();
+}
+
+template<class State, class Action>
+constexpr auto operator< (node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
+{
+        return lhs.tied() < rhs.tied();
+}
+
+template<class State, class Action>
+constexpr auto operator!=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
+{
+        return !(lhs == rhs);
+}
+
+template<class State, class Action>
+constexpr auto operator> (node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
+{
+        return rhs < lhs;
+}
+
+template<class State, class Action>
+constexpr auto operator>=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
+{
+        return !(lhs < rhs);
+}
+
+template<class State, class Action>
+constexpr auto operator<=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
+{
+        return !(rhs < lhs);
 }
 
 /*
