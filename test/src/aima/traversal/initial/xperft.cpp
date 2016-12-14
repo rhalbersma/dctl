@@ -31,5 +31,5 @@ int main()
 
         auto const drop_duplicates_gen = Actions<select::legal>{};
         for (auto i = std::size_t{0}; i < states.size(); ++i)
-                aima::traversal::nperft(drop_duplicates_gen, states[i], depths[i]);
+                aima::traversal::sperft(drop_duplicates_gen, states[i], depths[i]);
 }

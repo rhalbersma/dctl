@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/utility/hash/identity.hpp>       // identity
 #include <hash_append/fnv1a.h>                  // fnv1a
 #include <hash_append/jenkins1.h>               // jenkins1
 #include <hash_append/hash_append.h>            // uhash
+#include <hash_append/identity_hash.h>          // identity_hash
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
 #include <tuple>                                // tie
@@ -37,36 +37,37 @@ class node
                 ;
         }
 
-        using state_hasher = acme::fnv1a;
+        using state_hasher = acme::jenkins1;
 
         State m_state;
         node const* m_parent = nullptr;
         Action const* m_action = nullptr;
+        int m_cost {};
         uint64_t m_hash{};
 public:
         using state_type = State;
         using action_type = Action;
 
         explicit constexpr node(State const& s) noexcept
-        :
-                m_state{s},
-                m_hash{xstd::uhash<state_hasher>{}(m_state)}
+        :       m_state{s}
+        ,       m_hash{xstd::uhash<state_hasher>{}(m_state)}
         {
                 assert(is_root());
         }
 
         constexpr node(node const& n, Action const& a) noexcept
-        :
-                m_state{result(n.m_state, a)},
-                m_parent{&n},
-                m_action{&a},
-                m_hash{xstd::uhash<state_hasher>{}(m_state)}
+        :       m_state{result(n.m_state, a)}
+        ,       m_parent{&n}
+        ,       m_action{&a}
+        ,       m_cost{n.m_cost + 1}
+        ,       m_hash{xstd::uhash<state_hasher>{}(m_state)}
         {
                 assert(is_child());
         }
 
         constexpr auto const& state() const noexcept { return m_state; }
-        auto hash() const { return m_hash; }
+        auto cost() const { return m_cost; }
+        auto hash() const { return 0ull; }// m_hash; }
 
         constexpr auto tied() const
         {
@@ -76,7 +77,7 @@ public:
         template<class HashAlgorithm>
         friend auto hash_append(HashAlgorithm& h, node const& n)
         {
-                static_assert(std::is_same<HashAlgorithm, hash::identity>{});
+                static_assert(std::is_same<HashAlgorithm, acme::identity_hash>{});
                 using xstd::hash_append;
                 hash_append(h, n.m_hash);
         }
@@ -185,6 +186,30 @@ public:
                 return p;
         }
 };
+
+
+
+template<class T, class InternalHash = acme::fnv1a>
+class wrap
+{
+        T m_value;
+        typename InternalHash::result_type m_hash;
+public:
+        explicit wrap(T const& u) noexcept
+        :       m_value{u}
+        ,       m_hash{xstd::uhash<InternalHash>{}(m_value)}
+        {}
+
+        template<class ExternalHash>
+        friend void hash_append(ExternalHash& h, wrap const& w)
+        {
+                static_assert(std::is_same<ExternalHash, acme::identity_hash>{});
+                using xstd::hash_append;
+                hash_append(h, w.m_hash);
+        }
+};
+
+std::unordered_set<wrap, acme::identity_hash>;
 */
 }       // namespace aima
 }       // namespace dctl

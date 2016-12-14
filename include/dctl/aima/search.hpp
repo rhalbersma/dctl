@@ -8,6 +8,22 @@
 namespace dctl {
 namespace aima {
 
+template<class ImplicitGraph, class Vertex, class Visitor, class Terminator>
+auto depth_first_visit(ImplicitGraph const& g, Vertex const& v, Visitor& vis, Terminator pred)
+{
+
+}
+
+auto depth_limited_search()
+{
+        return depth_first_visit();
+}
+
+auto perft()
+{
+        return depth_limited_search();
+}
+
 template<class Problem>
 using node_t = node<state_t<Problem>, action_t<Problem>>;
 

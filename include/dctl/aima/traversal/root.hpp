@@ -19,6 +19,10 @@
 #include <iterator>                     // distance
 #include <memory>
 #include <utility>
+#include <map>
+#include <unordered_map>
+#include <hash_append/hash_append.h>
+#include <hash_append/identity_hash.h>
 
 namespace dctl {
 namespace aima {
@@ -193,6 +197,14 @@ int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements
         return nodes;
 }
 
+template<class Actions, class State>
+auto legal_actions(Actions const& successor, State const& s)
+{
+        static_vector<action<rules_t<State>, board_t<State>>> moves;
+        successor.generate(s, moves);
+        return moves;
+}
+
 template<bool IsBulk, class Actions, class State>
 auto perft_inplace(Actions const& successor, State& s, int depth)
         -> int64_t
@@ -203,9 +215,7 @@ auto perft_inplace(Actions const& successor, State& s, int depth)
                 if (depth == 0) return 1;
         }
 
-        static_vector<action<rules_t<State>, board_t<State>>> moves;
-        successor.generate(s, moves);
-        return boost::accumulate(moves, int64_t{0}, [&](auto sum, auto const& a){
+        return boost::accumulate(legal_actions(successor, s), int64_t{0}, [&](auto sum, auto const& a){
                 s.make(a);
                 auto const res = sum + perft_inplace(successor, s, depth - 1);
                 s.undo(a);
@@ -230,6 +240,14 @@ auto perft_state(Actions const& successor, State const& s, int depth)
         });
 }
 
+template<class Vertex, class ImplicitGraph>
+auto out_edges(Vertex const& u, ImplicitGraph const& g)
+{
+        static_vector<action<rules_t<state_t<Vertex>>, board_t<state_t<Vertex>>>> edges;
+        g.generate(u.state(), edges);
+        return edges;
+}
+
 template<bool IsBulk, class Actions, class Node>
 auto perft_node(Actions const& successor, Node const& n, int depth)
         -> int64_t
@@ -240,11 +258,73 @@ auto perft_node(Actions const& successor, Node const& n, int depth)
                 if (depth == 0) return 1;
         }
 
-        static_vector<action<rules_t<state_t<Node>>, board_t<state_t<Node>>>> moves;
-        successor.generate(n.state(), moves);
-        return boost::accumulate(moves, int64_t{0}, [&](auto sum, auto const& a){
+        return boost::accumulate(out_edges(n, successor), int64_t{0}, [&](auto sum, auto const& a){
                 return sum + perft_node<IsBulk>(successor, child(n, a), depth - 1);
         });
+}
+
+template<bool IsBulk, class Vertex>
+class dls_visitor
+{
+        //std::map<Vertex, std::pair<int, int64_t>> m_color_map;
+        std::unordered_map<Vertex, std::pair<int, int64_t>, xstd::uhash<acme::identity_hash>> m_color_map;
+        int m_limit {};
+public:
+        auto is_frontier(Vertex const& u) const noexcept
+        {
+                return m_limit == u.cost();
+        }
+
+        template<class ImplicitGraph>
+        auto frontier_vertex(Vertex const& u, ImplicitGraph const& g)
+        {
+                if constexpr (IsBulk) {
+                        return g.count(u.state());
+                } else {
+                        return 1;
+                }
+        }
+
+        auto find(Vertex const& u)
+                -> std::pair<bool, int64_t>
+        {
+                auto const it = m_color_map.find(u);
+                if (it != m_color_map.end() && it->second.first == u.cost()) {
+                        return { true, it->second.second };
+                } else {
+                        return { false, 0 };
+                }
+        }
+
+        template<class... Args>
+        auto emplace(Args&&... args)
+        {
+                m_color_map.emplace(std::forward<Args>(args)...);
+        }
+
+        auto depth(int d) { m_limit = d - (IsBulk ? 1 : 0); }
+        auto clear() { m_color_map.clear(); }
+};
+
+template<class ImplicitGraph, class Vertex, class Visitor>
+auto dfs_visit(ImplicitGraph const& g, Vertex const& u, Visitor& vis)
+        -> int64_t
+{
+        if (auto const lookup = vis.find(u); lookup.first) {
+                return lookup.second;
+        }
+
+        if (vis.is_frontier(u)) {
+                return vis.frontier_vertex(u, g);
+        }
+
+        auto const res = boost::accumulate(out_edges(u, g), int64_t{0}, [&](auto sum, auto const& e){
+                return sum + dfs_visit(g, child(u, e), vis);
+        });
+
+        vis.emplace(u, std::make_pair(u.cost(), res));
+
+        return res;
 }
 
 template<class State>
@@ -389,6 +469,25 @@ auto nperft(Actions successor, State const& s, int depth)
                 auto const nodes = perft_node<true>(successor, n, d);
                 stopwatch.split_reset();
                 xreport(d, nodes, stopwatch);
+        }
+}
+
+template<class Actions, class State>
+auto dperft(Actions successor, State const& s, int depth)
+{
+        announce(s, depth);
+        util::Stopwatch stopwatch;
+        stopwatch.start_stop();
+        using Node = node<State, action<rules_t<State>, board_t<State>>>;
+        auto const n = root<Node>(s);
+        dls_visitor<true, Node> vis;
+        for (auto d = 1; d <= depth; ++d) {
+                stopwatch.split_reset();
+                vis.depth(d);
+                auto const cnt = dfs_visit(successor, n, vis);
+                vis.clear();
+                stopwatch.split_reset();
+                xreport(d, cnt, stopwatch);
         }
 }
 
