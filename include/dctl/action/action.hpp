@@ -3,7 +3,6 @@
 #include <dctl/rule_traits.hpp>                 // rectangular, is_contents_precedence, is_ordering_precedence
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t, square_t
-#include <xstd/type_traits.hpp>                 // is_trivial_special_members
 #include <cassert>                              // assert
 #include <tuple>                                // tie
 #include <type_traits>                          // conditional, enable_if, is_pod, is_same
@@ -67,9 +66,7 @@ class action
 
         static constexpr auto static_assert_type_traits() noexcept
         {
-                using T = action;
-                static_assert(xstd::is_trivial_special_members_v<T>);
-                static_assert(std::is_pod<T>{});
+                static_assert(std::is_pod<action>{});
         }
 
         constexpr auto assert_invariants() const noexcept

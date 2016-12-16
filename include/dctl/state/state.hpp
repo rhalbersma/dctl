@@ -5,11 +5,10 @@
 #include <dctl/state/position.hpp>
 #include <dctl/utility/conditional_base.hpp>    // conditional_base
 #include <dctl/utility/type_traits.hpp>         // set_t
-#include <xstd/type_traits.hpp>                 // is_trivial_special_members
 #include <hash_append/hash_append.h>            // hash_append
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
-#include <type_traits>                          // is_same
+#include <type_traits>                          // is_pod, is_same
 #include <tuple>                                // tie
 #include <utility>                              // forward
 
@@ -65,9 +64,7 @@ public:
 private:
         static constexpr auto static_assert_type_traits() noexcept
         {
-                using T = state;
-                static_assert(xstd::is_trivial_special_members_v<T>);
-                static_assert(std::is_pod<T>{});
+                static_assert(std::is_pod<state>{});
         }
 
         constexpr auto assert_invariants() const noexcept
