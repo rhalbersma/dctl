@@ -37,7 +37,7 @@ public:
         template<class State, class Action>
         auto result(State const& s, Action const& a) const noexcept
         {
-                State nrv{s}; nrv.make(a); return nrv;
+                auto nrv{s}; nrv.make(a); return nrv;
         }
 
         template<class State>

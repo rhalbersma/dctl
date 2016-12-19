@@ -109,7 +109,7 @@ public:
                 constexpr auto separation = initial_position_gap_v<Rules> + Board::height % 2;
                 constexpr auto black_pawns = initial_v<board_type, black_>(separation);
                 constexpr auto white_pawns = initial_v<board_type, white_>(separation);
-                return {{black_pawns, {}, white_pawns, {}}, color::white};
+                return {{black_pawns, white_pawns}, color::white};
         }
 
         static constexpr auto initial(int const separation)
@@ -117,7 +117,7 @@ public:
         {
                 auto const black_pawns = initial_v<board_type, black_>(separation);
                 auto const white_pawns = initial_v<board_type, white_>(separation);
-                return {{black_pawns, {}, white_pawns, {}}, color::white};
+                return {{black_pawns, white_pawns}, color::white};
         }
 
         template<class Action>

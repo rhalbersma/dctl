@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/aima/egdb/binomial.hpp>               // Binomial
 #include <dctl/utility/make_const_callable.hpp> // make_const_callable
-#include <xstd/bit/primitive.hpp>
+#include <xstd/int_set/bit.hpp>
 #include <boost/range/adaptor/reversed.hpp>     // reversed
 #include <boost/range/adaptor/transformed.hpp>  // transformed
 #include <boost/range/algorithm/find_if.hpp>    // find_if

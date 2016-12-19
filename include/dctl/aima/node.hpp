@@ -14,7 +14,7 @@ namespace aima {
 template<class State, class Action>
 constexpr auto result(State const& s, Action const& a) noexcept
 {
-        State nrv{s}; nrv.make(a); return nrv;
+        auto nrv{s}; nrv.make(a); return nrv;
 }
 
 template<class State, class Action>

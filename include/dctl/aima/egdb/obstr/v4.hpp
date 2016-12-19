@@ -1,5 +1,5 @@
 #pragma once
-#include <xstd/bit/primitive.hpp>
+#include <xstd/int_set/bit.hpp>
 #include <cstdint>
 #include <iterator>
 

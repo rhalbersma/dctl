@@ -25,10 +25,16 @@ public:
 
         position() = default;
 
-        constexpr position(set_type const black_pawns, set_type const black_kings, set_type const white_pawns, set_type const white_kings) noexcept
+        constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) noexcept
         :
                 m_color_piece{{black_pawns, black_kings}, {white_pawns, white_kings}},
                 m_empty{squares_v<board_type> ^ (black_pawns | black_kings | white_pawns | white_kings)}
+        {}
+
+        constexpr position(set_type const black_pawns, set_type const white_pawns) noexcept
+        :
+                m_color_piece{{black_pawns, {}}, {white_pawns, {}}},
+                m_empty{squares_v<board_type> ^ (black_pawns | white_pawns)}
         {}
 
         template<class Action>
