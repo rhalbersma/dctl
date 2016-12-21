@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/aima/egdb/binomial.hpp>
 #include <dctl/aima/egdb/colex.hpp>
 #include <dctl/aima/egdb/obstr.hpp>
 #include <dctl/board_traits.hpp>
@@ -14,14 +15,14 @@
 namespace dctl {
 namespace egdb {
 
-// TODO: optimize to compile-time table
 inline
 auto choose(int n, int k)
 {
-        if (n < k) {
-                return int64_t{0};
-        }
-        return static_cast<int64_t>(boost::math::binomial_coefficient<double>(static_cast<unsigned>(n), static_cast<unsigned>(k)));
+        //if (n < k) {
+        //        return int64_t{0};
+        //}
+        //return static_cast<int64_t>(boost::math::binomial_coefficient<double>(static_cast<unsigned>(n), static_cast<unsigned>(k)));
+        return static_cast<int64_t>(BinomialTable<60,8>::coefficient(n, k));
 }
 
 template<class IntSet>
