@@ -19,7 +19,7 @@ namespace block_adl {
 template<class Board>
 struct base_position
 {
-        using position_type = wpo::position<Board>;
+        using position_type = cp22e::position<Board>;
         position_type m_position;
 };
 
@@ -69,28 +69,7 @@ private:
 
         constexpr auto assert_invariants() const noexcept
         {
-                assert(squares_v<board_type> == (pieces(occup_c) | pieces(empty_c)));
-
-                assert(pieces(occup_c) == (pieces(black_c) | pieces(white_c)));
-                assert(pieces(occup_c) == (pieces(pawns_c) | pieces(kings_c)));
-
-                assert(pieces(black_c) == (pieces(black_c, pawns_c) | pieces(black_c, kings_c)));
-                assert(pieces(white_c) == (pieces(white_c, pawns_c) | pieces(white_c, kings_c)));
-                assert(pieces(pawns_c) == (pieces(black_c, pawns_c) | pieces(white_c, pawns_c)));
-                assert(pieces(kings_c) == (pieces(black_c, kings_c) | pieces(white_c, kings_c)));
-
-                assert(disjoint(pieces(occup_c), pieces(empty_c)));
-
-                assert(disjoint(pieces(black_c), pieces(white_c)));
-                assert(disjoint(pieces(pawns_c), pieces(kings_c)));
-
-                assert(disjoint(pieces(black_c, pawns_c), pieces(black_c, kings_c)));
-                assert(disjoint(pieces(white_c, pawns_c), pieces(white_c, kings_c)));
-                assert(disjoint(pieces(black_c, pawns_c), pieces(white_c, pawns_c)));
-                assert(disjoint(pieces(black_c, kings_c), pieces(white_c, kings_c)));
-
-                assert(disjoint(pieces(black_c, pawns_c), promotion_v<board_type, black_>));
-                assert(disjoint(pieces(white_c, pawns_c), promotion_v<board_type, white_>));
+                assert(true);
         }
 
 public:
@@ -174,7 +153,7 @@ public:
         auto num_pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
-                return pieces(std::forward<Args>(args)...).size();
+                return this->m_position.num_pieces(std::forward<Args>(args)...);
         }
 
         auto to_move() const noexcept

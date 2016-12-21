@@ -1,10 +1,11 @@
 #pragma once
-#include <dctl/board_traits.hpp>        // squares
-#include <dctl/color_piece.hpp>         // color, black, white, piece, pawns, kings, occup, empty
-#include <dctl/utility/type_traits.hpp> // set_t
-#include <xstd/type_traits.hpp>         // to_underlying_type
-#include <tuple>                        // tie
-#include <type_traits>                  // is_pod
+#include <dctl/board_traits.hpp>                // squares
+#include <dctl/color_piece.hpp>                 // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/state/position/legal.hpp>        // is_legal
+#include <dctl/utility/type_traits.hpp>         // set_t
+#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <tuple>                                // tie
+#include <type_traits>                          // is_pod
 
 namespace dctl {
 namespace c2p2e {
@@ -26,34 +27,38 @@ public:
 
         position() = default;
 
-        constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) noexcept
+        constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) // Throws: Nothing.
         :
                 m_color{black_pawns | black_kings, white_pawns | white_kings},
                 m_piece{black_pawns | white_pawns, black_kings | white_kings},
                 m_empty{squares_v<board_type> ^ (m_color[0] | m_color[1])}
-        {}
+        {
+                assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
+        }
 
-        constexpr position(set_type const black_pawns, set_type const white_pawns) noexcept
+        constexpr position(set_type const black_pawns, set_type const white_pawns) // Throws: Nothing.
         :
                 m_color{black_pawns, white_pawns},
                 m_piece{black_pawns | white_pawns, {}},
                 m_empty{squares_v<board_type> ^ (m_color[0] | m_color[1])}
-        {}
+        {
+                assert(is_legal<board_type>(black_pawns, white_pawns));
+        }
 
         template<class Action>
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
-                pieces(c)
+                set_pieces(c)
                         .erase(a.from())
                         .insert(a.dest())
                 ;
-                pieces(a.with()).erase(a.from());
-                pieces(a.into()).insert(a.dest());
+                set_pieces(a.with()).erase(a.from());
+                set_pieces(a.into()).insert(a.dest());
 
                 if (a.is_jump()) {
-                        pieces(!c) ^= a.captured_pieces();
-                        pieces(pawns_c) -= a.captured_pieces();
-                        pieces(kings_c) -= a.captured_pieces();
+                        set_pieces(!c) ^= a.captured_pieces();
+                        set_pieces(pawns_c) -= a.captured_pieces();
+                        set_pieces(kings_c) -= a.captured_pieces();
                 }
 
                 m_empty = squares_v<board_type> ^ (pieces(black_c) | pieces(white_c));
@@ -84,18 +89,32 @@ public:
                 return m_empty;
         }
 
+        template<class... Args>
+        auto num_pieces(Args&&... args) const noexcept
+        {
+                static_assert(sizeof...(Args) <= 2);
+                return pieces(std::forward<Args>(args)...).size();
+        }
+
         constexpr auto tied() const noexcept
         {
                 return std::tie(m_color[0], m_color[1], m_piece[0], m_piece[1]);
         }
 
+        template<class HashAlgorithm>
+        friend auto hash_append(HashAlgorithm& h, position const& p)
+        {
+                using xstd::hash_append;
+                hash_append(h, p.m_color, p.m_piece);
+        }
+
 private:
-        constexpr auto& pieces(color const c) noexcept
+        constexpr auto& set_pieces(color const c) noexcept
         {
                 return m_color[xstd::to_underlying_type(c)];
         }
 
-        constexpr auto& pieces(piece const p) noexcept
+        constexpr auto& set_pieces(piece const p) noexcept
         {
                 return m_piece[xstd::to_underlying_type(p)];
         }

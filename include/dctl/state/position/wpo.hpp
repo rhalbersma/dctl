@@ -1,10 +1,11 @@
 #pragma once
-#include <dctl/board_traits.hpp>        // squares
-#include <dctl/color_piece.hpp>         // color, black, white, piece, pawns, kings, occup, empty
-#include <dctl/utility/type_traits.hpp> // set_t
-#include <hash_append/hash_append.h>    // hash_append
-#include <tuple>                        // tie
-#include <type_traits>                  // is_pod
+#include <dctl/board_traits.hpp>                // squares
+#include <dctl/color_piece.hpp>                 // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/state/position/legal.hpp>        // is_legal
+#include <dctl/utility/type_traits.hpp>         // set_t
+#include <hash_append/hash_append.h>            // hash_append
+#include <tuple>                                // tie
+#include <type_traits>                          // is_pod
 
 namespace dctl {
 namespace wpo {
@@ -26,19 +27,23 @@ public:
 
         position() = default;
 
-        constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) noexcept
+        constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) // Throws: Nothing.
         :
                 m_white{white_pawns | white_kings},
                 m_pawns{black_pawns | white_pawns},
-                m_occup{black_pawns | black_kings | white_pawns | white_kings}
-        {}
+                m_occup{black_pawns | white_pawns | black_kings | white_kings}
+        {
+                assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
+        }
 
-        constexpr position(set_type const black_pawns, set_type const white_pawns) noexcept
+        constexpr position(set_type const black_pawns, set_type const white_pawns) // Throws: Nothing.
         :
                 m_white{white_pawns},
                 m_pawns{black_pawns | white_pawns},
                 m_occup{m_pawns}
-        {}
+        {
+                assert(is_legal<board_type>(black_pawns, white_pawns));
+        }
 
         template<class Action>
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
@@ -131,6 +136,13 @@ public:
         constexpr auto pieces(empty_) const noexcept
         {
                 return squares_v<board_type> ^ m_occup;
+        }
+
+        template<class... Args>
+        auto num_pieces(Args&&... args) const noexcept
+        {
+                static_assert(sizeof...(Args) <= 2);
+                return pieces(std::forward<Args>(args)...).size();
         }
 
         constexpr auto tied() const noexcept

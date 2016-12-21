@@ -1,10 +1,11 @@
 #pragma once
-#include <dctl/board_traits.hpp>        // squares
-#include <dctl/color_piece.hpp>         // color, black, white, piece, pawns, kings, occup, empty
-#include <dctl/utility/type_traits.hpp> // set_t
-#include <xstd/type_traits.hpp>         // to_underlying_type
-#include <tuple>                        // tie
-#include <type_traits>                  // is_pod
+#include <dctl/board_traits.hpp>                // squares
+#include <dctl/color_piece.hpp>                 // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/state/position/legal.hpp>        // is_legal
+#include <dctl/utility/type_traits.hpp>         // set_t
+#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <tuple>                                // tie
+#include <type_traits>                          // is_pod
 
 namespace dctl {
 namespace bwke {
@@ -26,19 +27,23 @@ public:
 
         position() = default;
 
-        constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) noexcept
+        constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) // Throws: Nothing.
         :
                 m_color{black_pawns | black_kings, white_pawns | white_kings},
                 m_kings{black_kings | white_kings},
                 m_empty{squares_v<board_type> ^ (m_color[0] | m_color[1])}
-        {}
+        {
+                assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
+        }
 
-        constexpr position(set_type const black_pawns, set_type const white_pawns) noexcept
+        constexpr position(set_type const black_pawns, set_type const white_pawns) // Throws: Nothing.
         :
                 m_color{black_pawns, white_pawns},
                 m_kings{},
                 m_empty{squares_v<board_type> ^ (m_color[0] | m_color[1])}
-        {}
+        {
+                assert(is_legal<board_type>(black_pawns, white_pawns));
+        }
 
         template<class Action>
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
@@ -107,9 +112,23 @@ public:
                 return m_empty;
         }
 
+        template<class... Args>
+        auto num_pieces(Args&&... args) const noexcept
+        {
+                static_assert(sizeof...(Args) <= 2);
+                return pieces(std::forward<Args>(args)...).size();
+        }
+
         constexpr auto tied() const noexcept
         {
                 return std::tie(m_color[0], m_color[1], m_kings);
+        }
+
+        template<class HashAlgorithm>
+        friend auto hash_append(HashAlgorithm& h, position const& p)
+        {
+                using xstd::hash_append;
+                hash_append(h, p.m_color, p.m_kings);
         }
 
 private:
