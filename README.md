@@ -36,75 +36,42 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 Requirements
 ------------
 
-### Platforms
+##### Platforms
 
-The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian). The following commands get all the requirements:
+The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian). Ubuntu-based distributions 16.04 LTS and higher are actively supported.
 
-	# Add Ubuntu toolchain test PPA
-	# https://launchpad.net/~ubuntu-toolchain-r/+archive/ubuntu/test 
-	sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+##### Compilers
 
-	# Add LLVM repositories and GPG key 
-	# http://llvm.org/apt/ 
-	sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main"
-	sudo add-apt-repository "deb-src http://llvm.org/apt/trusty/ llvm-toolchain-trusty main"
-	sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.6 main"
-	sudo add-apt-repository "deb-src http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.6 main"
-	sudo add-apt-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main"
-	sudo add-apt-repository "deb-src http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main" 
-	wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
-	sudo apt-get update
+The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4567.pdf). This currently restricts usage of the DCTL to [Clang](http://clang.llvm.org/cxx_status.html) version 3.9 or higher, combined with either the accompanying libc++ Standard Library or libstdc++ version 6.2 or higher. Neither g++ 6.3 nor Visual C++ 2017RC are supported at the  moment because of incomplete C++17 support. Stay tuned for further developments.
 
-	# Install dependencies
-	sudo apt-get install git git-flow mercurial subversion cmake make
-	sudo apt-get install g++-5 libc++abi-dev libboost1.55-all-dev
-	sudo apt-get install clang-3.6 lldb-3.6 
-	sudo apt-get install clang-3.7 lldb-3.7
-	sudo apt-get install clang-3.8 lldb-3.8
-	sudo sh ./install_libcxx.sh
+##### Boost headers
 
-	# Configure compiler to Clang 3.8
-	sudo update-alternatives --remove-all c++
-	sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 10
+The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.62.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_62_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
 
-### Compilers
+##### Boost libraries
 
-The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4567.pdf). This currently restricts usage of the DCTL to [Clang](http://clang.llvm.org/cxx_status.html) version 3.8 SVN including the latest libc++ Standard Library. Note that g++-5.3.0 and libstdc++ currently have several bugs related to relaxed `constexpr`, all of which have been submitted and fixed, but the fixes will appear in g++ 6 (Spring of 2016). Microsoft Visual C++ 2015 is not C++14 feature-complete (it is missing relaxed `constexpr` and variable templates) and is not supported.  
-
-### Boost headers
-
-The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.55.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_55_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
-
-### Boost libraries
-
-The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_55_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_55_0/more/getting_started/index.html) on how to do this on your system.
+The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_62_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_62_0/more/getting_started/index.html) on how to do this on your system.
 
 * **NOTE:** compilation of the Boost libraries is **ONLY** a requirement for running the test-suite, and **NOT** for using the DCTL headers with your application.  
 
-### CMake
+##### CMake
 
 The test-suite is built using the [CMake](http://www.cmake.org/) cross-platform build system. Most Linux development environments can directly access the CMake generated Makefiles. This has been tested with [Eclipse-CDT 4.4](http://www.vtk.org/Wiki/CMake:Eclipse_UNIX_Tutorial) and [QtCreator 3.0](http://qt-project.org/doc/qtcreator-3.0/creator-project-cmake.html). Instead of `make`, it is also possible to use the `ninja` build tool through `cmake -GNinja`. To generate native build solutions for your own development environment, consult the [CMake documentation](http://www.cmake.org/cmake/help/runningcmake.html).
 
 * **NOTE:** CMake is **ONLY** a requirement for building the test-suite, and **NOT** for using the DCTL headers with your application. 
 
-### Mercurial
-
-Development is being tracked with the [Mercurial](http://mercurial.selenic.com/) distributed version control system, the [hg flow](https://bitbucket.org/yujiewu/hgflow/wiki/Home) extension, and the [BitBucket](https://bitbucket.org) hosting service. The default branch is the currently stable version and the commits along this branch are tagged with versions. Development takes place on the develop branch, with features being developed in so-called feature branches.
-
-* **NOTE**: Mercurial is **ONLY** a requirement for contributing to the DCTL, and **NOT** for using the DCTL headers with your application. Downloading and unpacking the latest zipped source archive works equally well.
-
 Installation
 ------------
 
-### Download
+##### Download
 
 Clone the `dctl` and the accompanying `xstd` repository (containing C++ Standard Library extensions headers) to a directory of your choice 
 
       cd ~/projects/ 
-      hg clone https://bitbucket.org/rhalbersma/dctl/
-      hg clone https://bitbucket.org/rhalbersma/xstd/
+      git clone https://github.com/rhalbersma/dctl.git
+      git clone https://github.com/rhalbersma/xstd.git
 
-### Test-suite
+##### Test-suite
 
 To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost), and type
 
@@ -113,7 +80,7 @@ To make sure that your build environment is compatible with the DCTL requirement
       cd build
       cmake ..
       make -j10
-      ctest -j10 -E "walk|search|game|index"
+      ctest -j10 -E "aima"
 
 The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
 
@@ -121,25 +88,26 @@ To completely regenerate the test-suite's build solution, simply delete the cont
 
       make clean
       make -j10
-      ctest -j10 -E "walk|search|index" 
+      ctest -j10 -E "aima" 
 
 If you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
 * **NOTE**: your application is completely independent of the test-suite. Building and running the test-suite is a sufficient but not a necessary step in order to use the DCTL headers with your own application. 
 
-### Build your application
+##### Build your application
 
 The DCTL is header-only, which means that you do not have to link your application against a separately compiled library. Furthermore, even though the DCTL is dependent on Boost, you do not have to separately compile Boost yourself, or even `#include` any Boost headers. Simply point your compiler to the location of both the DCTL and the Boost headers, `#include` the appropriate DCTL header files into your application, and then continue to use your regular build process. 
 
-### Contribute
+##### Contribute
 
-Any feature requests, ideas and contributions are much appreciated! The recommended way to contribute code is through BitBucket [pull requests](https://confluence.atlassian.com/display/BITBUCKET/Working+with+pull+requests).    
+Any feature requests, ideas and contributions are much appreciated! The recommended way to contribute code is through GitHub pull requests.
 
-### Acknowledgments
+##### Acknowledgments
 
 Special thanks to Aart Bik, Ed Gilbert, Walter Thoen and Wieger Wesselink for encouragement, testing, and exchange of ideas.
 
-### License
+License
+-------
 
 Copyright Rein Halbersma 2010 - 2016.   
 Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).   
