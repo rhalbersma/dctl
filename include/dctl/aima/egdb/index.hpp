@@ -25,26 +25,26 @@ auto choose(int n, int k)
         return static_cast<int64_t>(BinomialTable<60,8>::coefficient(n, k));
 }
 
-template<class IntSet>
+template<class Board, class IntSet>
 auto comb_rank(IntSet const& is)
 {
         assert(std::is_sorted(is.begin(), is.end()));
         auto index = int64_t{0};
         auto i = 0;
         is.for_each([&](auto sq){
-                index += choose(sq, ++i);
+                index += choose(Board::square_from_bit(sq), ++i);
         });
         return index;
 }
 
-template<class IntSet>
+template<class Board, class IntSet>
 auto comb_unrank(int64_t index, int N, int K)
 {
         IntSet is{};
         for (auto sq = N, i = K; i > 0; --sq, --i) {
                 while (choose(sq, i) > index)
                         --sq;
-                is.insert(sq);
+                is.insert(Board::bit_from_square(sq));
                 index -= choose(sq, i);
         }
         assert(is.size() == K);
@@ -55,7 +55,7 @@ auto comb_unrank(int64_t index, int N, int K)
 template<class Board>
 struct dbtuple
 {
-        static constexpr auto nsq = Board::bits();
+        static constexpr auto nsq = Board::size();
         int nbp, nwp, nbk, nwk;
 
         auto range() const
@@ -89,10 +89,11 @@ auto make_dbtuple(Position const& p)
 template<class Position>
 auto position2index(Position const& p)
 {
-        auto const bp_idx = comb_rank(p.pieces(black_c, pawns_c));
-        auto const wp_idx = comb_rank(p.pieces(white_c, pawns_c));
-        auto const bk_idx = comb_rank(p.pieces(black_c, kings_c));
-        auto const wk_idx = comb_rank(p.pieces(white_c, kings_c));
+        using board_type = board_t<Position>;
+        auto const bp_idx = comb_rank<board_type>(p.pieces(black_c, pawns_c));
+        auto const wp_idx = comb_rank<board_type>(p.pieces(white_c, pawns_c));
+        auto const bk_idx = comb_rank<board_type>(p.pieces(black_c, kings_c));
+        auto const wk_idx = comb_rank<board_type>(p.pieces(white_c, kings_c));
 
         auto const t = make_dbtuple(p);
         auto const index = ((bp_idx * t.wp_range() + wp_idx) * t.bk_range() + bk_idx) * t.wk_range() + wk_idx;
@@ -115,11 +116,12 @@ auto index2position(int64_t index, dbtuple<board_t<Position>> const& t)
         auto const bk_idx = index / mult; index %= mult; assert(mult / wk_range == 1);
         auto const wk_idx = index;
 
-        using set_type = set_t<Position>;
-        auto const bp = comb_unrank<set_type>(bp_idx, t.nsq, t.nbp);
-        auto const wp = comb_unrank<set_type>(wp_idx, t.nsq, t.nwp);
-        auto const bk = comb_unrank<set_type>(bk_idx, t.nsq, t.nbk);
-        auto const wk = comb_unrank<set_type>(wk_idx, t.nsq, t.nwk);
+        using board_type = board_t<Position>;
+        using   set_type =   set_t<Position>;
+        auto const bp = comb_unrank<board_type, set_type>(bp_idx, t.nsq, t.nbp);
+        auto const wp = comb_unrank<board_type, set_type>(wp_idx, t.nsq, t.nwp);
+        auto const bk = comb_unrank<board_type, set_type>(bk_idx, t.nsq, t.nbk);
+        auto const wk = comb_unrank<board_type, set_type>(wk_idx, t.nsq, t.nwk);
 
         return make_position<Position>(bp, wp, bk, wk);
 }

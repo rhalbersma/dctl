@@ -28,7 +28,7 @@
 using namespace dctl;
 
 using Rules = rules::international;
-using Board = board::international;
+using Board = board::mini;
 using State = state<Rules, Board>;
 
 using Slice = std::array<int, 4>;
@@ -339,7 +339,7 @@ int main()
         //std::cout << setup::write<pdn::protocol>()(s) << "\n";
 
         using Position = wpo::position<Board>;
-        auto const t = egdb::dbtuple<Board>{ 0, 0, 3, 3 };
+        auto const t = egdb::dbtuple<Board>{ 0, 0, 6, 6 };
 
         std::cout << "Range = " << t.range() << "\n";
         std::cout << t.bp_range() << " " << t.wp_range() << " " << t.bk_range() << " " << t.wk_range() << "\n";

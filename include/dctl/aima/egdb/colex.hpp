@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/aima/egdb/binomial.hpp>               // Binomial
 #include <dctl/utility/make_const_callable.hpp> // make_const_callable
-#include <xstd/int_set/bit.hpp>
+#include <xstd/builtin.hpp>
 #include <boost/range/adaptor/reversed.hpp>     // reversed
 #include <boost/range/adaptor/transformed.hpp>  // transformed
 #include <boost/range/algorithm/find_if.hpp>    // find_if
@@ -79,7 +79,7 @@ auto combination_rank0(Range src, Binomial const& = Binomial{})
         Index index{0};
         auto k = 1;
         while (src) {
-                auto sq_k = static_cast<int>(xstd::bit::bsfnz(src));
+                auto sq_k = static_cast<int>(xstd::builtin::bsfnz(src));
                 index += Binomial::coefficient(sq_k, k++);
                 src ^= 1ULL << sq_k;
         }
@@ -90,11 +90,11 @@ template<class BB>
 BB free_square_bitmap(int logical_square, BB const& occupied)
 {
         BB const behind = (1ULL << logical_square) - 1;
-        int skipped = xstd::bit::popcount(occupied & behind);
+        int skipped = xstd::builtin::popcount(occupied & behind);
         BB empty_ahead = ~(occupied | behind);
         while (skipped--)
                 empty_ahead &= empty_ahead - 1;
-        return 1ULL << xstd::bit::bsfnz(empty_ahead);
+        return 1ULL << xstd::builtin::bsfnz(empty_ahead);
 }
 
 template<class Index, class Range, class Binomial = BinomialTable<>>
@@ -119,9 +119,9 @@ auto combination_rank1(Range src, Range const& pat, Binomial const& = Binomial{}
         Index index{0};
         auto k = 1;
         while (src) {
-                auto const sq_k = xstd::bit::bsfnz(src);
+                auto const sq_k = xstd::builtin::bsfnz(src);
                 src ^= 1ULL << sq_k;
-                auto const skipped = xstd::bit::popcount(pat & ((1ULL << sq_k) - 1));
+                auto const skipped = xstd::builtin::popcount(pat & ((1ULL << sq_k) - 1));
                 index += Binomial::coefficient(sq_k - skipped, k++);
         }
         return index;

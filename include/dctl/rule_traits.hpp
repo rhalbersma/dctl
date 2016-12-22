@@ -2,7 +2,6 @@
 #include <dctl/board/rectangular.hpp>   // rectangular
 #include <dctl/utility/tti.hpp>         // DCTL_PP_TTI_CONSTANT, DCTL_PP_TTI_TYPENAME
 #include <dctl/utility/type_traits.hpp> // rules_t
-#include <xstd/tuple.hpp>               // compare
 #include <tuple>                        // make_tuple
 #include <type_traits>                  // bool_constant, conditional, decay, is_same, false_type, true_type
 #include <utility>                      // forward
@@ -95,21 +94,6 @@ struct keep_duplicates_tag : std::false_type {};
 struct drop_duplicates_tag : std:: true_type {};
 
 namespace precedence {
-
-struct compare
-{
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
-        {
-                using rules_type1 = rules_t<std::decay_t<Action1>>;
-                using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::is_same<rules_type1, rules_type2>{});
-                return xstd::compare(
-                        tuple_t<rules_type1>{}(std::forward<Action1>(a1)),
-                        tuple_t<rules_type2>{}(std::forward<Action2>(a2))
-                );
-        }
-};
 
 struct equal_to
 {

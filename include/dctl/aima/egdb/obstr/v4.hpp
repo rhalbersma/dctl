@@ -1,5 +1,5 @@
 #pragma once
-#include <xstd/int_set/bit.hpp>
+#include <xstd/builtin.hpp>
 #include <cstdint>
 #include <iterator>
 
@@ -19,13 +19,13 @@ int mirror(int sq)
 inline
 int LSB(BB x)
 {
-        return static_cast<int>(xstd::bit::bsfnz(x));
+        return static_cast<int>(xstd::builtin::bsfnz(x));
 }
 
 inline
 int MSB(BB x)
 {
-        return static_cast<int>(xstd::bit::bsrnz(x));
+        return static_cast<int>(xstd::builtin::bsrnz(x));
 }
 
 inline
