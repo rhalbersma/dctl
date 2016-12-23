@@ -339,24 +339,7 @@ int main()
         //std::cout << setup::write<pdn::protocol>()(s) << "\n";
 
         using Position = wpo::position<Board>;
-        auto const t = egdb::dbtuple<Board>{ 0, 0, 6, 6 };
-
-        std::cout << "Range = " << t.range() << "\n";
-        std::cout << t.bp_range() << " " << t.wp_range() << " " << t.bk_range() << " " << t.wk_range() << "\n";
-
-        auto const t0 = std::chrono::system_clock::now();
-        int64_t num_pos = 0;
-        for (int64_t idx = 0; idx < t.range(); ++idx) {
-                auto const p = egdb::index2position<Position>(idx, t);
-                if (!p) {
-                        continue;
-                }
-                assert(egdb::position2index(p.value()) == idx);
-                num_pos++;
-
-                //if (num_pos >= (1LL << 27)) break;
-        }
-        auto const t1 = std::chrono::system_clock::now();
-        auto const secs = std::chrono::duration_cast<std::chrono::seconds>(t1-t0).count();
-        std::cout << "Legal = " << num_pos << " nodes, " << secs << "s, " << static_cast<double>(num_pos)/secs << "nps" << "\n";
+        auto subdb = egdb::subdatabase<Position>{ 2, 2, 2, 2 };
+        subdb.init();
+        subdb.pass();
 }
