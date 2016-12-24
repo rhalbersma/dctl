@@ -5,15 +5,9 @@
 namespace dctl {
 
 template<class Board, class Set>
-constexpr auto is_onboard_pieces(Set const black_pawns, Set const white_pawns, Set const black_kings, Set const white_kings) noexcept
+constexpr auto is_onboard_pieces(Set const occupied) noexcept
 {
-        return is_subset_of(black_pawns | white_pawns | black_kings | white_kings, squares_v<Board>);
-}
-
-template<class Board, class Set>
-constexpr auto is_onboard_pieces(Set const black_pawns, Set const white_pawns) noexcept
-{
-        return is_subset_of(black_pawns | white_pawns, squares_v<Board>);
+        return is_subset_of(occupied, squares_v<Board>);
 }
 
 template<class Board, class Set>
@@ -26,7 +20,7 @@ constexpr auto is_promoted_pawns(Set const black_pawns, Set const white_pawns) n
 }
 
 template<class Set>
-constexpr auto is_interfering_pieces(Set const black_pawns, Set const white_pawns, Set const black_kings, Set const white_kings) noexcept
+constexpr auto is_overlapping_pieces(Set const black_pawns, Set const white_pawns, Set const black_kings, Set const white_kings) noexcept
 {
         return
                 intersects(black_pawns | black_kings, white_pawns | white_kings) ||
@@ -35,7 +29,7 @@ constexpr auto is_interfering_pieces(Set const black_pawns, Set const white_pawn
 }
 
 template<class Set>
-constexpr auto is_interfering_pieces(Set const black_pawns, Set const white_pawns) noexcept
+constexpr auto is_overlapping_pieces(Set const black_pawns, Set const white_pawns) noexcept
 {
         return intersects(black_pawns, white_pawns);
 }
@@ -44,9 +38,9 @@ template<class Board, class Set>
 constexpr auto is_legal(Set const black_pawns, Set const white_pawns, Set const black_kings, Set const white_kings) noexcept
 {
         return
-                is_onboard_pieces<Board>(black_pawns, white_pawns, black_kings, white_kings) &&
+                is_onboard_pieces<Board>(black_pawns | white_pawns | black_kings | white_kings) &&
                 !is_promoted_pawns<Board>(black_pawns, white_pawns) &&
-                !is_interfering_pieces(black_pawns, white_pawns,  black_kings, white_kings)
+                !is_overlapping_pieces(black_pawns, white_pawns,  black_kings, white_kings)
         ;
 }
 
@@ -54,7 +48,7 @@ template<class Board, class Set>
 constexpr auto is_legal(Set const black_pawns, Set const white_pawns) noexcept
 {
         return
-                is_onboard_pieces<Board>(black_pawns, white_pawns) &&
+                is_onboard_pieces<Board>(black_pawns | white_pawns) &&
                 !is_promoted_pawns<Board>(black_pawns, white_pawns) &&
                 !is_interfering_pieces(black_pawns, white_pawns)
         ;

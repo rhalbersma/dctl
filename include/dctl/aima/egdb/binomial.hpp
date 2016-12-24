@@ -110,5 +110,15 @@ template<int N, int K, class R, class T>
 constexpr typename BinomialTable<N, K, R, T>::table_type
 BinomialTable<N, K, R, T>::table;
 
+inline
+auto choose(int n, int k)
+{
+        //if (n < k) {
+        //        return int64_t{0};
+        //}
+        //return static_cast<int64_t>(boost::math::binomial_coefficient<double>(static_cast<unsigned>(n), static_cast<unsigned>(k)));
+        return static_cast<int64_t>(BinomialTable<60,8>::coefficient(n, k));
+}
+
 }       // namespace egdb
 }       // namespace dctl

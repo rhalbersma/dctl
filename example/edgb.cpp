@@ -23,12 +23,13 @@
 
 #include <dctl/rules.hpp>
 #include <dctl/board.hpp>
+#include <dctl/aima/egdb/build.hpp>
 #include <dctl/aima/egdb/index.hpp>
 
 using namespace dctl;
 
 using Rules = rules::international;
-using Board = board::mini;
+using Board = board::international;
 using State = state<Rules, Board>;
 
 using Slice = std::array<int, 4>;
@@ -338,8 +339,8 @@ int main()
         //auto s = State{rng.back(), color::black};
         //std::cout << setup::write<pdn::protocol>()(s) << "\n";
 
-        using Position = wpo::position<Board>;
-        auto subdb = egdb::subdatabase<Position>{ 2, 2, 2, 2 };
-        subdb.init();
-        subdb.pass();
+        auto subdb = egdb::subdatabase<position_t<State>>{ 0, 0, 1, 1 };
+        auto builder = egdb::build<State>(subdb);
+        builder.init();
+        builder.conversion();
 }
