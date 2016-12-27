@@ -50,7 +50,7 @@ constexpr auto is_legal(Set const black_pawns, Set const white_pawns) noexcept
         return
                 is_onboard_pieces<Board>(black_pawns | white_pawns) &&
                 !is_promoted_pawns<Board>(black_pawns, white_pawns) &&
-                !is_interfering_pieces(black_pawns, white_pawns)
+                !is_overlapping_pieces(black_pawns, white_pawns)
         ;
 }
 

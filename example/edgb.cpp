@@ -226,13 +226,13 @@ public:
                 all_edges();
         }
 
-        auto solve(int bp, int bk, int wp, int wk)
+        auto solve(int bp, int wp, int bk, int wk)
         {
                 for (auto ibp = 0; ibp <= bp; ++ibp) {
-                        for (auto ibk = std::max(0, 1 - ibp); ibk <= bk + bp - ibp; ++ibk) {
-                                for (auto iwp = 0; iwp <= wp; ++iwp) {
+                        for (auto iwp = 0; iwp <= wp; ++iwp) {
+                                for (auto ibk = std::max(0, 1 - ibp); ibk <= bk + bp - ibp; ++ibk) {
                                         for (auto iwk = std::max(0, 1 - iwp); iwk <= wk + wp - iwp; ++iwk) {
-                                                divide(ibp, ibk, iwp, iwk);
+                                                divide(ibp, iwp, ibk, iwk);
                                         }
                                 }
                         }
@@ -287,11 +287,11 @@ public:
         }
 
 private:
-        auto divide(int i)
+        auto divide(int n)
         {
-                assert(2 <= i);
-                for (auto b = 1; b < i; ++b) {
-                        divide(b, i - b);
+                assert(2 <= n);
+                for (auto b = 1; b < n; ++b) {
+                        divide(b, n - b);
                 }
         }
 
@@ -300,15 +300,15 @@ private:
                 assert(1 <= b); assert(1 <= w);
                 for (auto bp = 0; bp <= b; ++bp) {
                         for (auto wp = 0; wp <= w; ++wp) {
-                                divide(bp, b - bp, wp, w - wp);
+                                divide(bp, wp, b - bp, w - wp);
                         }
                 }
         }
 
-        auto divide(int bp, int bk, int wp, int wk)
+        auto divide(int bp, int wp, int bk, int wk)
         {
                 assert(1 <= bp + bk); assert(1 <= wp + wk);
-                m_slices.push_back(Slice{{bp, bk, wp, wk}});
+                m_slices.push_back(Slice{{bp, wp, bk, wk}});
         }
 
         auto all_edges()
@@ -323,23 +323,22 @@ private:
                 }
                 m_index = boost::get(boost::vertex_index, m_graph);
         }
-
 };
 
 int main()
 {
-        //database<> db;
-        //db.solve(2,0,2,0);
-        //db.print_slices();
-        //db.print_vertices();
-        //db.print_edges();
-        //db.sort();
+        database<> db;
+        db.solve(2,2,0,0);
+        db.print_slices();
+        db.print_vertices();
+        db.print_edges();
+        db.sort();
 
         //auto rng = state_range{Slice{{2,2,2,2}}};
         //auto s = State{rng.back(), color::black};
         //std::cout << setup::write<pdn::protocol>()(s) << "\n";
 
-        auto subdb = egdb::subdatabase<position_t<State>>{ 0, 0, 1, 1 };
+        auto subdb = egdb::subdatabase<position_t<State>>{ 1, 1, 1, 1 };
         auto builder = egdb::build<State>(subdb);
         builder.init();
         builder.conversion();

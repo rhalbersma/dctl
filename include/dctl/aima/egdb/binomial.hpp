@@ -1,123 +1,48 @@
 #pragma once
-#include <dctl/utility/fill_array.hpp>  // fill_array
-#include <xstd/int_set.hpp>              // int_set
-#include <array>                        // array
-#include <cassert>                      // assert
-#include <cstddef>                      // ptrdiff_t, size_t
-#include <cstdint>                      // uint64_t
+#include <dctl/utility/fill_array.hpp>                  // fill_array
+#include <boost/math/special_functions/binomial.hpp>    // binomial_coefficient
+#include <algorithm>                                    // min
+#include <array>                                        // array
+#include <cassert>                                      // assert
+#include <cstddef>                                      // size_t
+#include <cstdint>                                      // int64_t
 
 namespace dctl {
 namespace egdb {
 
-template
-<
-        int BoardSize = 64,
-        int Maxpieces = 32,
-        class Range = xstd::int_set<BoardSize>,
-        class Index = std::ptrdiff_t
->
-class BinomialTable
+template<int N, int K>
+class binomial
 {
+        using table_type = std::array<std::array<int64_t, K+1>, N+1>;
+        static const table_type table;
 public:
-        using range_type = Range;
-        using index_type = Index;
-
-private:
-        static constexpr auto MaxN = 384;
-        static constexpr auto N = (BoardSize < MaxN) ? BoardSize : MaxN;
-
-        static constexpr auto MaxK = (N + 1) / 2;
-        static constexpr auto K = (Maxpieces < MaxK) ? Maxpieces : MaxK;
-
-        using row_type = std::array<index_type, 1 + K>;
-        using table_type = std::array<row_type, 1 + N>;
-
-        static constexpr index_type choose(int n, int k) noexcept
+        static int64_t coefficient(int n, int k)
         {
-                if (n - k < k)  k = n - k;      // choose the smallest
-                if (k < 0)      return 0;       // by symmetry, covers n < k
-                if (k == 0)     return 1;       // by symmetry, covers n == k
-
-                // We need choose(n, k) with k in [0, (n + 1) / 2].
-                // The 12x10 board has 60 squares, and the central coefficient
-                // choose(60, 30) just fits into 64-bit signed integers.
-                // For even larger boards, we need to limit the range of k:
-                if (
-                        // the 12x12 board has 72 squares
-                        // choose(72, 20) just fits
-                        (61 <= n && n < 73 && 20 < k) ||
-
-                        // the 10x19 board has 95 squares
-                        // choose(95, 16) just fits
-                        (73 <= n && n < 96 && 16 < k) ||
-
-                        // the 14x14 board has 98 squares
-                        // choose(98, 15) just fits
-                        (96 <= n && n < 99 && 15 < k) ||
-
-                        // choose(128, 13) just fits
-                        (99 <= n && n < 129 && 13 < k) ||
-
-                        // choose(256, 10) just fits
-                        (129 <= n && n < 257 && 10 < k) ||
-
-                        // choose(384, 9) just fits
-                        (257 <= n && n <= MaxN && 9 < k) ||
-
-                        // beyond this, we reach compiler limits for constexpr
-                        // and overriding those would blow up compilation time
-                        (MaxN < n)
-                )
-                        return -1;
-
-                // O(K) complexity, with O(N*K) for Pascal's Triangle method
-                // slight drawback: we loose a factor of K for 64-bit overflow
-                return (n * choose(n - 1, k - 1)) / k;
-        }
-
-        // simulate a constexpr lambda (allowed in C++17)
-        struct lambda
-        {
-                int n;
-
-                constexpr auto operator()(int k) noexcept
-                {
-                        return choose(n, k);
+                k = std::min(k, n - k);
+                if (k < 0 || n < 0) {
+                        return 0;
                 }
-        };
-
-        static constexpr auto init(int n)
-        {
-                return fill_array<1 + K>(lambda{n});
-        }
-
-        static constexpr table_type table = fill_array<1 + N>(init);
-
-public:
-        static index_type coefficient(int n, int k)
-        {
-                assert(0 <= n);
-
-                if (n - k < k)          k = n - k;
-                if (k < 0)              return 0;
-                if (N < n || K < k)     return -1;
-
+                assert(0 <= n); assert(n <= N);
+                assert(0 <= k); assert(k <= K);
+                assert(k <= n / 2);
                 return table[static_cast<std::size_t>(n)][static_cast<std::size_t>(k)];
         }
 };
 
-template<int N, int K, class R, class T>
-constexpr typename BinomialTable<N, K, R, T>::table_type
-BinomialTable<N, K, R, T>::table;
+template<int N, int K>
+const typename binomial<N, K>::table_type
+binomial<N, K>::table = fill_array<N+1>([](auto n){
+        return fill_array<K+1>([&](auto k) {
+                return k > n ? 0 : static_cast<int64_t>(boost::math::binomial_coefficient<double>(
+                        static_cast<unsigned>(n), static_cast<unsigned>(k)
+                ));
+        });
+});
 
 inline
 auto choose(int n, int k)
 {
-        //if (n < k) {
-        //        return int64_t{0};
-        //}
-        //return static_cast<int64_t>(boost::math::binomial_coefficient<double>(static_cast<unsigned>(n), static_cast<unsigned>(k)));
-        return static_cast<int64_t>(BinomialTable<60,8>::coefficient(n, k));
+        return binomial<50, 12>::coefficient(n, k);
 }
 
 }       // namespace egdb

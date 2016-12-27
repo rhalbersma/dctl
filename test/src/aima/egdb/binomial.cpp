@@ -1,70 +1,61 @@
-#include <dctl/aima/egdb/binomial.hpp>    // Binomial
-#include <boost/range/irange.hpp>       // irange
-#include <boost/range/numeric.hpp>      // accumulate
-#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_LE, BOOST_AUTO_TEST_SUITE_END
-#include <cstddef>                      // ptrdiff_t
-#include <limits>                       // max
+#include <dctl/aima/egdb/binomial.hpp>  // binomial
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 
-namespace dctl {
-namespace egdb {
+BOOST_AUTO_TEST_SUITE(Binomial)
 
-BOOST_AUTO_TEST_SUITE(EndgameDatabaseBinomial)
+constexpr auto N = 50;
+constexpr auto K = N / 2;
+using binomial = dctl::egdb::binomial<N, K>;
+
+BOOST_AUTO_TEST_CASE(SmallCoefficientsAreTrivial)
+{
+        for (auto n = 0; n <= N; ++n) {
+                BOOST_CHECK_EQUAL(binomial::coefficient(n, -1    ), 0);
+                BOOST_CHECK_EQUAL(binomial::coefficient(n,  0    ), 1);
+                BOOST_CHECK_EQUAL(binomial::coefficient(n,  1    ), n);
+                BOOST_CHECK_EQUAL(binomial::coefficient(n,  n - 1), n);
+                BOOST_CHECK_EQUAL(binomial::coefficient(n,  n    ), 1);
+                BOOST_CHECK_EQUAL(binomial::coefficient(n,  n + 1), 0);
+        }
+}
 
 BOOST_AUTO_TEST_CASE(CoefficientsAreSymmetric)
 {
-        auto constexpr N = 60;
-        auto constexpr K = (N + 1) / 2;
-        using Binomial = BinomialTable<N, K>;
-
-        for (auto n = 1; n <= N; ++n)
-                for (auto k = 0; k <= (n + 1) / 2; ++k)
-                        BOOST_CHECK_EQUAL(Binomial::coefficient(n, k), Binomial::coefficient(n, n - k));
+        for (auto n = 0; n <= N; ++n) {
+                for (auto k = 0; k <= n / 2; ++k) {
+                        BOOST_CHECK_EQUAL(binomial::coefficient(n, k), binomial::coefficient(n, n - k));
+                }
+        }
 }
 
 BOOST_AUTO_TEST_CASE(CoefficientsSatisfyPascalTriangle)
 {
-        auto constexpr N = 60;
-        auto constexpr K = (N + 1) / 2;
-        using Binomial = BinomialTable<N, K>;
-
-        for (auto n = 1; n <= N; ++n)
-                for (auto k = 0; k <= (n + 1) / 2; ++k)
-                        BOOST_CHECK_EQUAL(Binomial::coefficient(n, k), Binomial::coefficient(n - 1, k - 1) + Binomial::coefficient(n - 1, k));
+        for (auto n = 2; n <= N; ++n) {
+                for (auto k = 1; k <= n / 2; ++k) {
+                        BOOST_CHECK_EQUAL(binomial::coefficient(n, k), binomial::coefficient(n - 1, k - 1) + binomial::coefficient(n - 1, k));
+                }
+        }
 }
 
 BOOST_AUTO_TEST_CASE(CoefficientsSatisfyNewtonTheorem)
 {
-        auto constexpr N = 60;
-        auto constexpr K = (N + 1) / 2;
-        using Binomial = BinomialTable<N, K>;
-
-        for (auto n = 1; n <= N; ++n) {
-                auto const lhs = boost::accumulate(
-                        boost::irange(0, n + 1),
-                        std::ptrdiff_t{0},
-                        [=](auto sum, auto k) {
-                        return sum + Binomial::coefficient(n, k);
-                });
-                auto const rhs = std::ptrdiff_t{1} << n;
-                BOOST_CHECK_EQUAL(lhs, rhs);
+        for (auto n = 0; n <= N; ++n) {
+                auto sum = 0LL;
+                for (auto k = 0; k <=n; ++k) {
+                        sum += binomial::coefficient(n, k);
+                }
+                BOOST_CHECK_EQUAL(sum, 1LL << n);
         }
 }
 
-BOOST_AUTO_TEST_CASE(CoefficientsFitIntoPtrDiffT)
+BOOST_AUTO_TEST_CASE(LargeCoefficientsMatchWolframAlpha)
 {
-        using Binomial = BinomialTable<384, 30>;
-        auto const N = std::numeric_limits<std::ptrdiff_t>::max();
-
-        BOOST_CHECK_LE(Binomial::coefficient( 60, 30), N);
-        BOOST_CHECK_LE(Binomial::coefficient( 72, 20), N);
-        BOOST_CHECK_LE(Binomial::coefficient( 95, 16), N);
-        BOOST_CHECK_LE(Binomial::coefficient( 98, 15), N);
-        BOOST_CHECK_LE(Binomial::coefficient(128, 13), N);
-        BOOST_CHECK_LE(Binomial::coefficient(256, 10), N);
-        BOOST_CHECK_LE(Binomial::coefficient(384,  9), N);
+        namespace lib = dctl::egdb;
+        using b050 = lib::binomial< 50, 25>; BOOST_CHECK_EQUAL(b050::coefficient( 50, 25), 126'410'606'437'752LL);
+        using b064 = lib::binomial< 64, 14>; BOOST_CHECK_EQUAL(b064::coefficient( 64, 14),  47'855'699'958'816LL);
+        using b072 = lib::binomial< 72, 13>; BOOST_CHECK_EQUAL(b072::coefficient( 72, 13),  70'907'466'006'720LL);
+        using b081 = lib::binomial< 81, 12>; BOOST_CHECK_EQUAL(b081::coefficient( 81, 12),  70'724'320'184'700LL);
+        using b090 = lib::binomial< 90, 11>; BOOST_CHECK_EQUAL(b090::coefficient( 90, 11),  41'604'694'413'840LL);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace egdb
-}       // namespace dctl

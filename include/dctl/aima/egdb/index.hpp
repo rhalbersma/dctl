@@ -14,7 +14,7 @@ namespace egdb {
 template<class IntSet, class UnaryFunction>
 auto reverse_colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
-        auto index = int64_t{0};
+        auto index = 0LL;
         auto i = 0;
         is.reverse_for_each([&](auto const sq){
                 index += choose(fun(sq), ++i);
@@ -25,7 +25,7 @@ auto reverse_colex_rank_combination(IntSet const& is, UnaryFunction fun)
 template<class IntSet, class UnaryFunction>
 auto colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
-        auto index = int64_t{0};
+        auto index = 0LL;
         auto i = 0;
         is.for_each([&](auto const sq){
                 index += choose(fun(sq), ++i);
@@ -58,7 +58,8 @@ class subdatabase
         static constexpr auto bk_squares =  squares_v<board_type>.size();
         static constexpr auto wk_squares =  squares_v<board_type>.size();
             int bp_count, wp_count, bk_count, wk_count;
-        int64_t wk_power, bk_power, wp_power, bp_power, m_size;
+        int64_t wk_range, bk_range, wp_range, bp_range;
+        int64_t wk_value, bk_value, wp_value, bp_value, m_size;
 public:
         using position_type = Position;
         using index_type = int64_t;
@@ -69,11 +70,15 @@ public:
                 wp_count{nwp},
                 bk_count{nbk},
                 wk_count{nwk},
-                wk_power{1LL},
-                bk_power{wk_power * choose(wk_squares, wk_count)},
-                wp_power{bk_power * choose(bk_squares, bk_count)},
-                bp_power{wp_power * choose(wp_squares, wp_count)},
-                  m_size{bp_power * choose(bp_squares, bp_count)}
+                wk_range{choose(wk_squares, wk_count)},
+                bk_range{choose(bk_squares, bk_count)},
+                wp_range{choose(wp_squares, wp_count)},
+                bp_range{choose(bp_squares, bp_count)},
+                wk_value{1LL},
+                bk_value{wk_value * wk_range},
+                wp_value{bk_value * bk_range},
+                bp_value{wp_value * wp_range},
+                  m_size{bp_value * bp_range}
         {}
 
         auto size() const noexcept
@@ -89,7 +94,12 @@ public:
                 auto const bk_index = reverse_colex_rank_combination(p.pieces(black_c, kings_c), bk_ext);
                 auto const wk_index =         colex_rank_combination(p.pieces(white_c, kings_c), wk_ext);
 
-                auto index = bp_index * bp_power + wp_index * wp_power + bk_index * bk_power + wk_index;
+                assert(0 <= bp_index); assert(bp_index < bp_range);
+                assert(0 <= wp_index); assert(wp_index < wp_range);
+                assert(0 <= bk_index); assert(bk_index < bk_range);
+                assert(0 <= wk_index); assert(wk_index < wk_range);
+
+                auto index = bp_index * bp_value + wp_index * wp_value + bk_index * bk_value + wk_index;
                 assert(0 <= index); assert(index < size());
                 return index;
         }
@@ -97,12 +107,17 @@ public:
         auto unrank_position(index_type index) const
                 -> std::experimental::optional<position_type>
         {
-                assert(0 <= n); assert(n < size());
+                assert(0 <= index); assert(index < size());
 
-                auto const bp_index = index / bp_power; index %= bp_power;
-                auto const wp_index = index / wp_power; index %= wp_power;
-                auto const bk_index = index / bk_power; index %= bk_power;
-                auto const wk_index = index;
+                auto const bp_index = index / bp_value; index %= bp_value;
+                auto const wp_index = index / wp_value; index %= wp_value;
+                auto const bk_index = index / bk_value; index %= bk_value;
+                auto const wk_index = index; assert(wk_value == 1);
+
+                assert(0 <= bp_index); assert(bp_index < bp_range);
+                assert(0 <= wp_index); assert(wp_index < wp_range);
+                assert(0 <= bk_index); assert(bk_index < bk_range);
+                assert(0 <= wk_index); assert(wk_index < wk_range);
 
                 auto const bp = colex_unrank_combination<set_type>(bp_index, bp_squares, bp_count, bp_dep);
                 auto const wp = colex_unrank_combination<set_type>(wp_index, wp_squares, wp_count, wp_dep);
