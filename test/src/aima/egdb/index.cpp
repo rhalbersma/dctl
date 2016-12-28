@@ -10,7 +10,7 @@ using namespace dctl;
 
 BOOST_AUTO_TEST_SUITE(Index)
 
-BOOST_AUTO_TEST_CASE(RankIsInverseOfUnrank)
+BOOST_AUTO_TEST_CASE(NumeralIsInverseOfPosition)
 {
         using rules_type = rules::international;
         using board_type = board::rectangular<6, 6>;
@@ -34,8 +34,8 @@ BOOST_AUTO_TEST_CASE(RankIsInverseOfUnrank)
 
         for (auto const& index : indices) {
                 for (auto n = 0LL; n < index.size(); ++n) {
-                        if (auto const p = index.unrank_position(n)) {
-                                BOOST_CHECK_EQUAL(index.rank_position(p.value()), n);
+                        if (auto const p = index.position(n)) {
+                                BOOST_CHECK_EQUAL(index.numeral(p.value()), n);
                         }
                 }
         }

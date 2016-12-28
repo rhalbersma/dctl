@@ -11,6 +11,8 @@
 namespace dctl {
 namespace egdb {
 
+// https://en.wikipedia.org/wiki/Combinatorial_number_system
+// https://en.wikipedia.org/wiki/Lexicographical_order#Colexicographic_order
 // https://en.wikipedia.org/wiki/Lexicographical_order#Finite_subsets
 
 template<class IntSet, class UnaryFunction>
@@ -91,7 +93,7 @@ public:
                 return m_size;
         }
 
-        auto rank_position(position_type const& p) const
+        auto numeral(position_type const& p) const
         {
                 auto const bp_digit = reverse_colex_rank_combination(p.pieces(black_c, pawns_c), bp_ext);
                 auto const wp_digit =         colex_rank_combination(p.pieces(white_c, pawns_c), wp_ext);
@@ -114,7 +116,7 @@ public:
                 return n;
         }
 
-        auto unrank_position(numeral_type n) const
+        auto position(numeral_type n) const
                 -> std::experimental::optional<position_type>
         {
                 assert(0 <= n); assert(n < size());
