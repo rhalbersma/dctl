@@ -73,7 +73,7 @@ auto choose(int const n, int const k) // Throws: Nothing.
         // choose(n, k) shall not overflow using signed 64-integers.
         // For n <= 64: all k <= n/2 (e.g. Western chess board).
         // For n <= 90: all k <= 18  (e.g. Chinese chess board).
-        static_assert(N <= 64 || (N <= 90 && K <= 18));
+        static_assert((N <= 64 && K <= N / 2) || (N <= 90 && K <= 18));
 
         return detail::binomial<N, K>::coefficient(n, k);
 }
