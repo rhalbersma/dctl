@@ -49,7 +49,7 @@ auto colex_unrank_combination(int64_t index, int const N, int const K, UnaryFunc
         return is;
 }
 
-// https://en.wikipedia.org/wiki/Positional_notation
+// https://en.wikipedia.org/wiki/Mixed_radix
 
 template<class Position>
 class index
@@ -63,7 +63,7 @@ class index
         static constexpr auto wk_squares =  squares_v<board_type>.size();
 
             int bp_count, wp_count, bk_count, wk_count;
-        int64_t wk_range, bk_range, wp_range, bp_range;
+        int64_t wk_radix, bk_radix, wp_radix, bp_radix;
         int64_t wk_value, bk_value, wp_value, bp_value, m_size;
 public:
         using position_type = Position;
@@ -75,15 +75,15 @@ public:
                 wp_count{nwp},
                 bk_count{nbk},
                 wk_count{nwk},
-                wk_range{choose(wk_squares, wk_count)},
-                bk_range{choose(bk_squares, bk_count)},
-                wp_range{choose(wp_squares, wp_count)},
-                bp_range{choose(bp_squares, bp_count)},
+                wk_radix{choose(wk_squares, wk_count)},
+                bk_radix{choose(bk_squares, bk_count)},
+                wp_radix{choose(wp_squares, wp_count)},
+                bp_radix{choose(bp_squares, bp_count)},
                 wk_value{1LL},
-                bk_value{wk_range * wk_value},
-                wp_value{bk_range * bk_value},
-                bp_value{wp_range * wp_value},
-                  m_size{bp_range * bp_value}
+                bk_value{wk_radix * wk_value},
+                wp_value{bk_radix * bk_value},
+                bp_value{wp_radix * wp_value},
+                  m_size{bp_radix * bp_value}
         {}
 
         auto size() const noexcept
@@ -98,30 +98,36 @@ public:
                 auto const bk_digit = reverse_colex_rank_combination(p.pieces(black_c, kings_c), bk_ext);
                 auto const wk_digit =         colex_rank_combination(p.pieces(white_c, kings_c), wk_ext);
 
-                assert(0 <= bp_digit); assert(bp_digit < bp_range);
-                assert(0 <= wp_digit); assert(wp_digit < wp_range);
-                assert(0 <= bk_digit); assert(bk_digit < bk_range);
-                assert(0 <= wk_digit); assert(wk_digit < wk_range);
+                assert(0 <= bp_digit); assert(bp_digit < bp_radix);
+                assert(0 <= wp_digit); assert(wp_digit < wp_radix);
+                assert(0 <= bk_digit); assert(bk_digit < bk_radix);
+                assert(0 <= wk_digit); assert(wk_digit < wk_radix);
 
-                auto numeral = bp_digit * bp_value + wp_digit * wp_value + bk_digit * bk_value + wk_digit;
-                assert(0 <= numeral); assert(numeral < size());
-                return numeral;
+                auto const n =
+                        bp_digit * bp_value +
+                        wp_digit * wp_value +
+                        bk_digit * bk_value +
+                        wk_digit * wk_value
+                ;
+                assert(wk_value == 1);
+                assert(0 <= n); assert(n < size());
+                return n;
         }
 
-        auto unrank_position(numeral_type numeral) const
+        auto unrank_position(numeral_type n) const
                 -> std::experimental::optional<position_type>
         {
-                assert(0 <= numeral); assert(numeral < size());
+                assert(0 <= n); assert(n < size());
 
-                auto const bp_digit = numeral / bp_value; numeral %= bp_value;
-                auto const wp_digit = numeral / wp_value; numeral %= wp_value;
-                auto const bk_digit = numeral / bk_value; numeral %= bk_value;
-                auto const wk_digit = numeral; assert(wk_value == 1);
+                auto const bp_digit = n / bp_value; n %= bp_value;
+                auto const wp_digit = n / wp_value; n %= wp_value;
+                auto const bk_digit = n / bk_value; n %= bk_value;
+                auto const wk_digit = n / wk_value; assert(wk_value == 1);
 
-                assert(0 <= bp_digit); assert(bp_digit < bp_range);
-                assert(0 <= wp_digit); assert(wp_digit < wp_range);
-                assert(0 <= bk_digit); assert(bk_digit < bk_range);
-                assert(0 <= wk_digit); assert(wk_digit < wk_range);
+                assert(0 <= bp_digit); assert(bp_digit < bp_radix);
+                assert(0 <= wp_digit); assert(wp_digit < wp_radix);
+                assert(0 <= bk_digit); assert(bk_digit < bk_radix);
+                assert(0 <= wk_digit); assert(wk_digit < wk_radix);
 
                 auto const bp = colex_unrank_combination<set_type>(bp_digit, bp_squares, bp_count, bp_dep);
                 auto const wp = colex_unrank_combination<set_type>(wp_digit, wp_squares, wp_count, wp_dep);
