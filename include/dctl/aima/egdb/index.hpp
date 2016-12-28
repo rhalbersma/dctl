@@ -61,6 +61,7 @@ class subdatabase
         static constexpr auto wp_squares = (squares_v<board_type> ^ promotion_v<board_type, white_>).size();
         static constexpr auto bk_squares =  squares_v<board_type>.size();
         static constexpr auto wk_squares =  squares_v<board_type>.size();
+
             int bp_count, wp_count, bk_count, wk_count;
         int64_t wk_range, bk_range, wp_range, bp_range;
         int64_t wk_value, bk_value, wp_value, bp_value, m_size;
