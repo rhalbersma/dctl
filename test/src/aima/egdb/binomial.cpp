@@ -28,6 +28,8 @@ BOOST_AUTO_TEST_CASE(CoefficientsSatisfyPascalTriangle)
 
 BOOST_AUTO_TEST_CASE(CoefficientsSatisfyNewtonTheorem)
 {
+        // Type int64_t values lie within the half-open interval [-2^63, 2^63).
+        // Hence, we can test Newton's Theorem for at most n = 62.
         for (auto n = 0; n < N - 1; ++n) {
                 auto sum = 0LL;
                 for (auto k = 0; k < n + 1; ++k) {
@@ -53,6 +55,9 @@ BOOST_AUTO_TEST_CASE(LargeCoefficientsMatchWolframAlpha)
 {
         // https://www.wolframalpha.com/input/?i=binomial%5B64,+32%5D
         BOOST_CHECK_EQUAL(choose(64, 32), 1'832'624'140'942'590'534LL);
+
+        // https://www.wolframalpha.com/input/?i=binomial%5B90,+18%5D
+        BOOST_CHECK_EQUAL((choose<90, 18>)(90, 18), 3'789'648'142'708'598'775LL);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

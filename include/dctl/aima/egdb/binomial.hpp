@@ -6,43 +6,46 @@
 
 namespace dctl {
 namespace egdb {
+namespace detail {
 
-template<int N = 64, int K = N / 2>
+// https://en.wikipedia.org/wiki/Binomial_coefficient
+template<int N, int K>
 class binomial
 {
         using table_type = std::array<std::array<int64_t, K + 1>, N + 1>;
         static const table_type table;
 
-        static auto fill_table() noexcept
+        // https://en.wikipedia.org/wiki/Pascal's_triangle
+        static auto pascal_triangle() noexcept
         {
-                table_type triangle;
+                table_type choose;
 
                 for (std::size_t n = 0; n < K; ++n) {
                         for (std::size_t k = n + 1; k < K + 1; ++k) {
-                                triangle[n][k] = 0LL;
+                                choose[n][k] = 0LL;
                         }
                 }
-                triangle[0][0] = 1LL;
+                choose[0][0] = 1LL;
                 for (std::size_t n = 1; n < N + 1; ++n) {
-                        triangle[n][0] = 1LL;
+                        choose[n][0] = 1LL;
                 }
                 for (std::size_t n = 1; n < K + 1; ++n) {
-                        triangle[n][n] = 1ULL;
+                        choose[n][n] = 1ULL;
                 }
                 for (std::size_t n = 1; n < K + 1; ++n) {
                         for (std::size_t k = 1; k < n; ++k) {
-                                triangle[n][k] = triangle[n - 1][k - 1] + triangle[n - 1][k];
+                                choose[n][k] = choose[n - 1][k - 1] + choose[n - 1][k];
                         }
                 }
                 for (std::size_t n = K + 1; n < N + 1; ++n) {
                         for (std::size_t k = 1; k < K + 1; ++k) {
-                                triangle[n][k] = triangle[n - 1][k - 1] + triangle[n - 1][k];
+                                choose[n][k] = choose[n - 1][k - 1] + choose[n - 1][k];
                         }
                 }
-                return triangle;
+                return choose;
         }
 public:
-        static auto coefficient(int n, int k)
+        static auto coefficient(int n, int k) // Throws: Nothing.
                 -> int64_t
         {
                 if (k > n - k) {
@@ -60,12 +63,19 @@ public:
 
 template<int N, int K>
 const typename binomial<N, K>::table_type
-binomial<N, K>::table = binomial<N, K>::fill_table();
+binomial<N, K>::table = binomial<N, K>::pascal_triangle();
 
-inline
-auto choose(int n, int k)
+}       // namespace detail
+
+template<int N = 64, int K = N / 2>
+auto choose(int const n, int const k) // Throws: Nothing.
 {
-        return binomial<>::coefficient(n, k);
+        // choose(n, k) shall not overflow using signed 64-integers.
+        // For n <= 64: all k <= n/2 (e.g. Western chess board).
+        // For n <= 90: all k <= 18  (e.g. Chinese chess board).
+        static_assert(N <= 64 || (N <= 90 && K <= 18));
+
+        return detail::binomial<N, K>::coefficient(n, k);
 }
 
 }       // namespace egdb

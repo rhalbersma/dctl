@@ -11,6 +11,8 @@
 namespace dctl {
 namespace egdb {
 
+// https://en.wikipedia.org/wiki/Lexicographical_order#Finite_subsets
+
 template<class IntSet, class UnaryFunction>
 auto reverse_colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
@@ -47,6 +49,8 @@ auto colex_unrank_combination(int64_t index, int const N, int const K, UnaryFunc
         return is;
 }
 
+// https://en.wikipedia.org/wiki/Positional_notation
+
 template<class Position>
 class subdatabase
 {
@@ -75,10 +79,10 @@ public:
                 wp_range{choose(wp_squares, wp_count)},
                 bp_range{choose(bp_squares, bp_count)},
                 wk_value{1LL},
-                bk_value{wk_value * wk_range},
-                wp_value{bk_value * bk_range},
-                bp_value{wp_value * wp_range},
-                  m_size{bp_value * bp_range}
+                bk_value{wk_range * wk_value},
+                wp_value{bk_range * bk_value},
+                bp_value{wp_range * wp_value},
+                  m_size{bp_range * bp_value}
         {}
 
         auto size() const noexcept
@@ -87,7 +91,6 @@ public:
         }
 
         auto rank_position(position_type const& p) const
-                -> index_type
         {
                 auto const bp_index = reverse_colex_rank_combination(p.pieces(black_c, pawns_c), bp_ext);
                 auto const wp_index =         colex_rank_combination(p.pieces(white_c, pawns_c), wp_ext);
