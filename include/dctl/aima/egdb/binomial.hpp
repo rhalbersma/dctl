@@ -1,26 +1,55 @@
 #pragma once
-#include <dctl/utility/fill_array.hpp>                  // fill_array
-#include <boost/math/special_functions/binomial.hpp>    // binomial_coefficient
-#include <algorithm>                                    // min
-#include <array>                                        // array
-#include <cassert>                                      // assert
-#include <cstddef>                                      // size_t
-#include <cstdint>                                      // int64_t
+#include <array>        // array
+#include <cassert>      // assert
+#include <cstddef>      // size_t
+#include <cstdint>      // int64_t
 
 namespace dctl {
 namespace egdb {
 
-template<int N, int K>
+template<int N = 64, int K = N / 2>
 class binomial
 {
-        using table_type = std::array<std::array<int64_t, K+1>, N+1>;
+        using table_type = std::array<std::array<int64_t, K + 1>, N + 1>;
         static const table_type table;
-public:
-        static int64_t coefficient(int n, int k)
+
+        static auto fill_table() noexcept
         {
-                k = std::min(k, n - k);
+                table_type triangle;
+
+                for (std::size_t n = 0; n < K; ++n) {
+                        for (std::size_t k = n + 1; k < K + 1; ++k) {
+                                triangle[n][k] = 0LL;
+                        }
+                }
+                triangle[0][0] = 1LL;
+                for (std::size_t n = 1; n < N + 1; ++n) {
+                        triangle[n][0] = 1LL;
+                }
+                for (std::size_t n = 1; n < K + 1; ++n) {
+                        triangle[n][n] = 1ULL;
+                }
+                for (std::size_t n = 1; n < K + 1; ++n) {
+                        for (std::size_t k = 1; k < n; ++k) {
+                                triangle[n][k] = triangle[n - 1][k - 1] + triangle[n - 1][k];
+                        }
+                }
+                for (std::size_t n = K + 1; n < N + 1; ++n) {
+                        for (std::size_t k = 1; k < K + 1; ++k) {
+                                triangle[n][k] = triangle[n - 1][k - 1] + triangle[n - 1][k];
+                        }
+                }
+                return triangle;
+        }
+public:
+        static auto coefficient(int n, int k)
+                -> int64_t
+        {
+                if (k > n - k) {
+                        k = n - k;
+                }
                 if (k < 0 || n < 0) {
-                        return 0;
+                        return 0LL;
                 }
                 assert(0 <= n); assert(n <= N);
                 assert(0 <= k); assert(k <= K);
@@ -31,18 +60,12 @@ public:
 
 template<int N, int K>
 const typename binomial<N, K>::table_type
-binomial<N, K>::table = fill_array<N+1>([](auto n){
-        return fill_array<K+1>([&](auto k) {
-                return k > n ? 0 : static_cast<int64_t>(boost::math::binomial_coefficient<double>(
-                        static_cast<unsigned>(n), static_cast<unsigned>(k)
-                ));
-        });
-});
+binomial<N, K>::table = binomial<N, K>::fill_table();
 
 inline
 auto choose(int n, int k)
 {
-        return binomial<50, 12>::coefficient(n, k);
+        return binomial<>::coefficient(n, k);
 }
 
 }       // namespace egdb
