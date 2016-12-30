@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/action.hpp>
-#include <dctl/aima/egdb/index.hpp>
+#include <dctl/egdb/index.hpp>
 #include <dctl/utility/type_traits.hpp>
 
 namespace dctl {

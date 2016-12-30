@@ -1,4 +1,4 @@
-#include <dctl/aima/egdb/index.hpp>     // subdatabase
+#include <dctl/egdb/index.hpp>          // subdatabase
 #include <dctl/board.hpp>               // rectangular
 #include <dctl/rules.hpp>               // international
 #include <dctl/state.hpp>               // state

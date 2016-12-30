@@ -60,7 +60,7 @@ include_directories(${EXT_include_dirs})
 #----------------
 # Boost libraries
 #----------------
-find_package(Boost 1.61.0 REQUIRED COMPONENTS chrono program_options system timer unit_test_framework)
+find_package(Boost 1.61.0 REQUIRED COMPONENTS chrono filesystem program_options system timer unit_test_framework)
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 add_definitions(-D BOOST_ALL_DYN_LINK)
 add_definitions(-D BOOST_TEST_MAIN)

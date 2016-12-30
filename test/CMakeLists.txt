@@ -19,7 +19,7 @@ foreach(t ${targets})
   string(REGEX REPLACE "^[.]" "" target_id ${target_id})
 
   add_executable(${target_id} src/${t})
-  target_link_libraries(${target_id} ${Boost_LIBRARIES})
+  target_link_libraries(${target_id} ${Boost_LIBRARIES} "-lstdc++fs")
   add_test(${target_id} ${target_id})    
 endforeach()
 

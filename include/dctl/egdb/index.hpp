@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/aima/egdb/binomial.hpp>          // choose
+#include <dctl/egdb/binomial.hpp>               // choose
 #include <dctl/board_traits.hpp>                // promotion_v, squares_v
 #include <dctl/color_piece.hpp>                 // black_c, white_c, pawns_c, kings_c
 #include <dctl/state/position/legal.hpp>        // is_onboard_pieces, is_promoted_pawns, is_overlapping_pieces

@@ -1,4 +1,4 @@
-#include <dctl/aima/egdb/binomial.hpp>  // choose
+#include <dctl/egdb/binomial.hpp>       // choose
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 
 BOOST_AUTO_TEST_SUITE(Binomial)
