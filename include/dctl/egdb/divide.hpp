@@ -24,6 +24,9 @@ auto xprint(std::array<T, N> const& m)
 {
         std::copy(m.begin(), m.end(), std::ostream_iterator<T>(std::cout, ","));
 }
+
+
+
 /*
 template<class State>
 auto get_slice(State const& s)
@@ -95,6 +98,7 @@ public:
         }
 };
 
+template<class Position>
 class dbx
 {
         std::vector<subdivision> m_subdivisions;
@@ -107,7 +111,6 @@ public:
         auto solve(int n)
         {
                 for (auto in = 2; in <= n; ++in) {
-                        std::cout << "level 1: " << in << "\n";
                         divide(in);
                 }
                 all_edges();
@@ -117,11 +120,9 @@ public:
         {
                 auto const n = b + w;
                 for (auto in = 2; in <= n; ++in) {
-                        std::cout << "level 1: " << in << "\n";
                         for (auto ib = std::max(1, in - w); ib <= std::min(b, in - 1); ++ib) {
                                 auto const iw = in - ib;
                                 assert(std::max(1, in - b) <= iw); assert(iw <= std::min(w, in - 1));
-                                std::cout << "level 2: " << ib << ", " << iw << "\n";
                                 divide(ib, iw);
                         }
                 }
@@ -134,11 +135,9 @@ public:
                 auto const b = bp + bk;
                 [[maybe_unused]] auto const w = wp + wk;
                 for (auto in = 2; in <= n; ++in) {
-                        std::cout << "level 1: " << in << "\n";
                         for (auto ib = std::max(1, in - w); ib <= std::min(b, in - 1); ++ib) {
                                 auto const iw = in - ib;
                                 assert(std::max(1, in - b) <= iw); assert(iw <= std::min(w, in - 1));
-                                std::cout << "level 2: " << ib << ", " << iw << "\n";
                                 for (auto ibp = 0; ibp <= std::min(bp, ib); ++ibp) {
                                         auto const ibk = ib - ibp;
                                         for (auto iwp = 0; iwp <= std::min(wp, iw); ++iwp) {
@@ -186,15 +185,8 @@ public:
         {
                 std::vector<unsigned> ordered;
                 boost::topological_sort(m_graph, std::back_inserter(ordered));
-                std::cout << "Topologically sorted vertices = ";
-                for (auto e : ordered)
-                        std::cout << e << ", ";
-                std::cout << "\n";
-                std::cout << "Ordered subdivisions = \n";
-                for (auto e : ordered) {
-                        xprint(m_subdivisions[e]); std::cout << "\n";
-                }
-                std::cout << "\n";
+                std::cout << "Topologically sorted = ";
+                std::cout << std::boolalpha << std::is_sorted(ordered.begin(), ordered.end()) << "\n";
         }
 
         auto print_size()
@@ -203,7 +195,7 @@ public:
                 auto max = 0L;
                 for (auto const& s : m_subdivisions) {
                         xprint(s);
-                        auto const sz = index<position_t<state<rules::international, board::rectangular<6,6>>>>(s[0], s[1], s[2], s[3]).size();
+                        auto const sz = index<Position>(s[0], s[1], s[2], s[3]).size();
                         sum += sz;
                         max = std::max(max, sz);
                         std::cout << ", size = " << static_cast<double>(sz) / static_cast<double>(1ULL<<32) << " GiB\n";
@@ -216,11 +208,10 @@ private:
         void divide(int n)
         {
                 assert(2 <= n);
-                for (auto ib = 1; ib < n; ++ib) {
-                        auto const iw = n - ib;
-                        assert(1 <= iw); assert(iw < n);
-                        std::cout << "level 2: " << ib << ", " << iw << "\n";
-                        divide(ib, iw);
+                for (auto b = 1; b < n; ++b) {
+                        auto const w = n - b;
+                        assert(1 <= w); assert(w < n);
+                        divide(b, w);
                 }
         }
 
@@ -239,7 +230,9 @@ private:
         void divide(int bp, int wp, int bk, int wk)
         {
                 assert(1 <= bp + bk); assert(1 <= wp + wk);
-                std::cout << "Adding : " << bp << wp << bk << wk << "\n";
+                auto const b = bp + bk; auto const w = wp + wk;
+                auto const n = b + w;
+                std::cout << "Adding: db" << n << "-" << b << w << "-" << bp << wp << "\n";
                 m_subdivisions.push_back(subdivision{{bp, wp, bk, wk}});
         }
 

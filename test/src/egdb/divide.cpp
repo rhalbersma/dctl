@@ -13,11 +13,11 @@ using egdb::dbx;
 
 int main()
 {
-        dbx db;
-        db.solve(0,0,6,6);
+        dbx<position_t<state<rules::international, board::rectangular<6,6>>>> db;
+        db.solve(6);
         db.print_size();
         //db.print_slices();
         //db.print_vertices();
         //db.print_edges();
-        //db.sort();
+        db.sort();
 }
