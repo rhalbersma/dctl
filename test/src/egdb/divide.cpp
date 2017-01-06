@@ -6,16 +6,15 @@
 using namespace dctl;
 
 using Rules = rules::international;
-using Board = board::rectangular<6,6>;
+using Board = board::rectangular<10,10>;
 using State = state<Rules, Board>;
 
 using egdb::dbx;
 
 int main()
 {
-        dbx<position_t<state<rules::international, board::rectangular<6,6>>>> db;
-        db.solve(6);
-        db.print_size();
+        dbx<position_t<State>> db;
+        db.solve(3,3);
         //db.print_slices();
         //db.print_vertices();
         //db.print_edges();
