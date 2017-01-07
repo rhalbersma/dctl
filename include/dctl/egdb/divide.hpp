@@ -25,8 +25,6 @@ auto xprint(std::array<T, N> const& m)
         std::copy(m.begin(), m.end(), std::ostream_iterator<T>(std::cout, ","));
 }
 
-
-
 /*
 template<class State>
 auto get_slice(State const& s)
@@ -162,8 +160,9 @@ public:
                 std::cout << "---------\n";
 
                 std::cout << "vertices(g) = " << boost::num_vertices(m_graph) << " = ";
-                for (auto vp = vertices(m_graph); vp.first != vp.second; ++vp.first)
+                for (auto vp = vertices(m_graph); vp.first != vp.second; ++vp.first) {
                         std::cout << m_vertex_map[*vp.first] <<  " ";
+                }
                 std::cout << "\n";
         }
 
@@ -173,9 +172,10 @@ public:
 
                 std::cout << "edges(g) = " << boost::num_edges(m_graph) << " = ";
                 boost::graph_traits<Graph>::edge_iterator ei, ei_end;
-                for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei)
+                for (boost::tie(ei, ei_end) = boost::edges(m_graph); ei != ei_end; ++ei) {
                         std::cout << "(" << m_vertex_map[boost::source(*ei, m_graph)]
                                   << "," << m_vertex_map[boost::target(*ei, m_graph)] << ") ";
+                }
                 std::cout << "\n";
         }
 
@@ -237,6 +237,18 @@ private:
                 auto const max = (*std::max_element(indices.begin(), indices.end(), [](auto const& lhs, auto const& rhs) {
                         return lhs.size() < rhs.size();
                 })).size();
+
+                std::sort(indices.begin(), indices.end(), [](auto const& lhs, auto const& rhs){
+                        return lhs.size() < rhs.size();
+                });
+
+                for (auto const& ind : indices) {
+                        auto const b = ind.bp_count + ind.bk_count;
+                        auto const w = ind.wp_count + ind.wk_count;
+                        auto const n = b + w;
+                        std::cout << "db" << n << "-" << b << w << "-" << ind.bp_count << ind.wp_count << ", size = ";
+                        std::cout << static_cast<double>(ind.size()) / static_cast<double>(1ULL<<32) << " GiB\n";
+                }
 
                 std::cout << "Total files = " << indices.size() << "\n";
                 std::cout << "Total size = " << static_cast<double>(sum) / static_cast<double>(1ULL<<32) << " GiB\n";

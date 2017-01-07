@@ -29,7 +29,9 @@ BOOST_AUTO_TEST_CASE(NumeralIsInverseOfPosition)
                 { 0, 2, 2, 0 },
                 { 0, 2, 0, 2 },
                 { 0, 0, 2, 2 },
-                { 1, 1, 1, 1 }
+                { 1, 1, 1, 1 },
+                { 1, 1, 1, 1,  4,  4,  5 }, // leading row slicing
+                { 1, 1, 1, 1, 14, 14, 15 }  // leading square slicing
         };
 
         for (auto const& index : indices) {

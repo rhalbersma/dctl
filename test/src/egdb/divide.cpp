@@ -14,7 +14,7 @@ using egdb::dbx;
 int main()
 {
         dbx<position_t<State>> db;
-        db.solve(3,3);
+        db.solve(5,5);
         //db.print_slices();
         //db.print_vertices();
         //db.print_edges();
