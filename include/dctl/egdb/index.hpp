@@ -19,10 +19,10 @@ template<class IntSet, class UnaryFunction>
 auto reverse_colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
         auto index = 0LL;
-        auto i = 0;
-        is.reverse_for_each([&](auto const sq){
+        is.reverse_for_each([&, i = 0](auto const sq) mutable {
                 index += choose(fun(sq), ++i);
         });
+        assert(0 <= index); // TODO assert(index < choose(fun(is.first), is.size());
         return index;
 }
 
@@ -30,24 +30,31 @@ template<class IntSet, class UnaryFunction>
 auto colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
         auto index = 0LL;
-        auto i = 0;
-        is.for_each([&](auto const sq){
+        is.for_each([&, i = 0](auto const sq) mutable {
                 index += choose(fun(sq), ++i);
         });
+        assert(0 <= index); // TODO assert(index < choose(fun(is.last), is.size());
         return index;
 }
 
 template<class IntSet, class UnaryFunction>
 auto colex_unrank_combination(int64_t index, int const N, int const K, UnaryFunction fun)
 {
+        assert(0 <= K); assert(K <= N);
+        assert(0 <= index); assert(index < choose(N, K));
         IntSet is{};
-        for (auto sq = N, i = K; i > 0; --sq, --i) {
+        if (K == 0) {
+                return is;
+        }
+        for (auto sq = N - 1, i = K; i > 1; index -= choose(sq--, i--)) {
                 while (choose(sq, i) > index) {
                         --sq;
                 }
                 is.insert(fun(sq));
-                index -= choose(sq, i);
         }
+        assert(0 <= index); assert(index < N);
+        is.insert(fun(static_cast<int>(index)));
+        assert(is.size() == K);
         return is;
 }
 
