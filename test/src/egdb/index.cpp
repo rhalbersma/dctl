@@ -16,26 +16,26 @@ BOOST_AUTO_TEST_CASE(NumeralIsInverseOfPosition)
         using board_type = board::rectangular<6, 6>;
         using state_type = state<rules_type, board_type>;
 
-        using index_type = egdb::index<position_t<state_type>>;
-        auto const indices = std::vector<index_type>
+        using subdivision_type = egdb::subdivision<position_t<state_type>>;
+        auto const subdivisions = std::vector<subdivision_type>
         {
                 { 4, 0, 0, 0 },
+                { 4, 0, 4, 0 },
                 { 0, 4, 0, 0 },
-                { 0, 0, 4, 0 },
-                { 0, 0, 0, 4 },
+                { 0, 4, 0, 4 },
                 { 2, 2, 0, 0 },
-                { 2, 0, 2, 0 },
-                { 2, 0, 0, 2 },
-                { 0, 2, 2, 0 },
-                { 0, 2, 0, 2 },
-                { 0, 0, 2, 2 },
-                { 1, 1, 1, 1 }
+                { 2, 2, 2, 0 },
+                { 2, 2, 0, 2 },
+                { 2, 2, 2, 2 },
+                { 4, 0, 2, 0 },
+                { 0, 4, 0, 2 },
+                { 2, 2, 1, 1 }
         };
 
-        for (auto const& index : indices) {
-                for (auto n = 0LL; n < index.size(); ++n) {
-                        if (auto const p = index.position(n)) {
-                                BOOST_CHECK_EQUAL(index.number(p.value()), n);
+        for (auto const& subdb : subdivisions) {
+                for (auto n = 0LL; n < subdb.size(); ++n) {
+                        if (auto const p = subdb.position(n)) {
+                                BOOST_CHECK_EQUAL(subdb.index(p.value()), n);
                         }
                 }
         }

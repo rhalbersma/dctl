@@ -7,6 +7,7 @@
 #include <experimental/optional>                // nullopt, optional
 #include <cassert>                              // assert
 #include <cstdint>                              // int64_t
+#include <sstream>                              // stringstream
 
 namespace dctl {
 namespace egdb {
@@ -58,7 +59,7 @@ auto colex_unrank_combination(int64_t index, int const N, int const K, UnaryFunc
 
 // TODO: leading rank, leading rank configuration, subleading rank
 template<class Position>
-class index
+class subdivision
 {
 public:
         using board_type = board_t<Position>;
@@ -76,12 +77,12 @@ public:
         using position_type = Position;
         using numeral_type = int64_t;
 
-        index(int const nbp, int const nwp, int const nbk, int const nwk)
+        subdivision(int const b, int const w, int const bp, int const wp)
         :
-                bp_count{nbp},
-                wp_count{nwp},
-                bk_count{nbk},
-                wk_count{nwk},
+                bp_count{bp},
+                wp_count{wp},
+                bk_count{b - bp},
+                wk_count{w - wp},
                 wk_radix{choose(wk_squares, wk_count)},
                 bk_radix{choose(bk_squares, bk_count)},
                 wp_radix{choose(wp_squares, wp_count)},
@@ -98,11 +99,17 @@ public:
                 return m_size;
         }
 
-        using digit_type = int;
-        using numeral_type = std::array<digit, 4>;
+        auto to_string() const
+        {
+                std::stringstream s;
+                auto const b = bp_count + bk_count;
+                auto const w = wp_count + wk_count;
+                auto const n = b + w;
+                s << "db" << n << "-" << b << w << "-" << bp_count << wp_count;
+                return s.str();
+        }
 
-        auto numeral(position_type const& p) const
-                -> numeral_type
+        auto index(position_type const& p) const
         {
                 auto const bp = p.pieces(black_c, pawns_c);
                 auto const wp = p.pieces(white_c, pawns_c);
@@ -119,18 +126,11 @@ public:
                 assert(0 <= bk_digit); assert(bk_digit < bk_radix);
                 assert(0 <= wk_digit); assert(wk_digit < wk_radix);
 
-                return { wk_digit, bk_digit, wp_digit, bp_digit };
-        }
-
-        auto number(position_type const& p) const
-        {
-                auto const digits = numeral(p);
-
                 auto const n =
-                        digits[3] * bp_value +
-                        digits[2] * wp_value +
-                        digits[1] * bk_value +
-                        digits[0] * wk_value
+                        bp_digit * bp_value +
+                        wp_digit * wp_value +
+                        bk_digit * bk_value +
+                        wk_digit * wk_value
                 ;
                 assert(wk_value == 1);
                 assert(0 <= n); assert(n < size());
