@@ -127,7 +127,8 @@ private:
                 m_subdivisions.emplace_back(b, w, bp, wp);
                 auto const& s = m_subdivisions.back();
                 std::cout << "Adding: " << s.to_string() << ", ";
-                std::cout << "size = " << static_cast<double>(s.size()) / static_cast<double>(1ULL<<32) << " GiB\n";
+                std::cout << "size = " << static_cast<double>(s.size()) / static_cast<double>(1ULL<<32) << " GiB, ";
+                std::cout << "legal = " << s.legal() << "\n";
         }
 
         void create_graph()
@@ -135,6 +136,11 @@ private:
                 auto const sum = std::accumulate(m_subdivisions.begin(), m_subdivisions.end(), int64_t{0}, [](auto res, auto const& s) {
                         return res + s.size();
                 });
+
+                auto const leg = std::accumulate(m_subdivisions.begin(), m_subdivisions.end(), int64_t{0}, [](auto res, auto const& s) {
+                        return res + s.legal();
+                });
+
                 auto const max = (*std::max_element(m_subdivisions.begin(), m_subdivisions.end(), [](auto const& lhs, auto const& rhs) {
                         return lhs.size() < rhs.size();
                 })).size();
@@ -145,11 +151,14 @@ private:
 
                 for (auto const& s : m_subdivisions) {
                         std::cout << s.to_string() << ", size = ";
-                        std::cout << static_cast<double>(s.size()) / static_cast<double>(1ULL<<32) << " GiB\n";
+                        std::cout << s.size() << ", ";
+                        std::cout << "legal = " << s.legal() << ", ";
+                        std::cout << "overhead = " << static_cast<double>(s.size()) / static_cast<double>(s.legal()) << "\n";
                 }
 
                 std::cout << "Total files = " << m_subdivisions.size() << "\n";
-                std::cout << "Total size = " << static_cast<double>(sum) / static_cast<double>(1ULL<<32) << " GiB\n";
+                std::cout << "Total size = " << sum << "\n";
+                std::cout << "Total positions = " << leg << "\n";
                 std::cout << "Max size = " << static_cast<double>(max) / static_cast<double>(1ULL<<32) << " GiB\n";
 /*
                 for (auto i = 0u; i < m_subdivisions.size(); ++i) {

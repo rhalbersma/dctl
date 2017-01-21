@@ -70,15 +70,20 @@ public:
         static constexpr auto bk_squares =  squares_v<board_type>.size();
         static constexpr auto wk_squares =  squares_v<board_type>.size();
 
-            int bp_count, wp_count, bk_count, wk_count;
+        int n_count, b_count, w_count;
+        int bp_count, wp_count, bk_count, wk_count;
         int64_t wk_radix, bk_radix, wp_radix, bp_radix;
-        int64_t wk_value, bk_value, wp_value, bp_value, m_size;
+        int64_t wk_value, bk_value, wp_value, bp_value;
+        int64_t m_size, m_legal;
 public:
         using position_type = Position;
-        using numeral_type = int64_t;
+        using index_type = int64_t;
 
         subdivision(int const b, int const w, int const bp, int const wp)
         :
+                n_count{b + w},
+                b_count{b},
+                w_count{w},
                 bp_count{bp},
                 wp_count{wp},
                 bk_count{b - bp},
@@ -91,7 +96,8 @@ public:
                 bk_value{wk_radix * wk_value},
                 wp_value{bk_radix * bk_value},
                 bp_value{wp_radix * wp_value},
-                  m_size{bp_radix * bp_value}
+                m_size{bp_radix * bp_value},
+                m_legal{count_legal()}
         {}
 
         auto size() const noexcept
@@ -99,13 +105,15 @@ public:
                 return m_size;
         }
 
+        auto legal() const noexcept
+        {
+                return m_legal;
+        }
+
         auto to_string() const
         {
                 std::stringstream s;
-                auto const b = bp_count + bk_count;
-                auto const w = wp_count + wk_count;
-                auto const n = b + w;
-                s << "db" << n << "-" << b << w << "-" << bp_count << wp_count;
+                s << "db" << n_count << "-" << b_count << w_count << "-" << bp_count << wp_count;
                 return s.str();
         }
 
@@ -137,7 +145,7 @@ public:
                 return n;
         }
 
-        auto position(numeral_type n) const
+        auto position(index_type n) const
                 -> std::experimental::optional<position_type>
         {
                 assert(0 <= n); assert(n < size());
@@ -167,6 +175,27 @@ public:
         }
 
 private:
+        auto count_legal() const
+        {
+                constexpr auto b0_squares = promotion_v<board_type, white_>.size();
+                constexpr auto w0_squares = promotion_v<board_type, black_>.size();
+                constexpr auto center_squares = board_type::size() - b0_squares - w0_squares;
+                auto n = 0LL;
+                for (auto b0_count  = 0; b0_count <= std::min(b0_squares, bp_count); ++b0_count) {
+                        for (auto w0_count = 0; w0_count <= std::min(w0_squares, wp_count); ++w0_count) {
+                                n +=
+                                        choose(b0_squares, b0_count) *
+                                        choose(w0_squares, w0_count) *
+                                        choose(center_squares                        , bp_count - b0_count) *
+                                        choose(center_squares - (bp_count - b0_count), wp_count - w0_count) *
+                                        choose(bk_squares - bp_count - wp_count           , bk_count) *
+                                        choose(wk_squares - bp_count - wp_count - bk_count, wk_count)
+                                ;
+                        }
+                }
+                return n;
+        }
+
         static auto bp_ext(int n) { return -board_type::square_from_bit(n) + bp_squares - 1;          }
         static auto wp_ext(int n) { return +board_type::square_from_bit(n) - wk_squares + wp_squares; }
         static auto bk_ext(int n) { return -board_type::square_from_bit(n) + bk_squares - 1;          }
