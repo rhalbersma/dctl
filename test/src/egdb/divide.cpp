@@ -8,7 +8,7 @@
 using namespace dctl;
 
 using Rules = rules::international;
-using Board = board::rectangular<8,8>;
+using Board = board::rectangular<6,6>;
 using State = state<Rules, Board>;
 
 using egdb::dependencies;

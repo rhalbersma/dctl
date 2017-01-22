@@ -20,8 +20,8 @@ template<class IntSet, class UnaryFunction>
 auto reverse_colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
         auto index = 0LL;
-        is.reverse_for_each([&, i = 0](auto const sq) mutable {
-                index += choose(fun(sq), ++i);
+        is.reverse_for_each([&, i = 1](auto const sq) mutable {
+                index += choose(fun(sq), i++);
         });
         assert(0 <= index); // TODO assert(index < choose(fun(is.first), is.size());
         return index;
@@ -31,8 +31,8 @@ template<class IntSet, class UnaryFunction>
 auto colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
         auto index = 0LL;
-        is.for_each([&, i = 0](auto const sq) mutable {
-                index += choose(fun(sq), ++i);
+        is.for_each([&, i = 1](auto const sq) mutable {
+                index += choose(fun(sq), i++);
         });
         assert(0 <= index); // TODO assert(index < choose(fun(is.last), is.size());
         return index;
