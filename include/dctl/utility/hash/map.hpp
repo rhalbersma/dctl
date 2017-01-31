@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/utility/units.hpp>
-#include <xstd/limits.hpp>      // is_power_of
+#include <xstd/cstdlib.hpp>      // is_power_of
 #include <algorithm>    // find_if
 #include <array>        // array
 #include <cassert>      // assert

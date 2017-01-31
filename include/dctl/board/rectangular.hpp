@@ -7,8 +7,8 @@
 #include <dctl/color_piece.hpp>                         // black, white
 #include <dctl/utility/fill_array.hpp>                  // fill_array
 #include <xstd/cstdint.hpp>                             // uint_fast
+#include <xstd/cstdlib.hpp>                             // align_on
 #include <xstd/int_set.hpp>                             // int_set
-#include <xstd/limits.hpp>                              // align_on
 #include <boost/range/irange.hpp>                       // irange
 #include <array>                                        // array
 #include <cstddef>                                      // size_t
