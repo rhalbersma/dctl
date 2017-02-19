@@ -13,7 +13,8 @@ project(DCTL CXX)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")# -stdlib=libc++")
 
 # fail hard
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors -Wno-shadow -Wno-missing-variable-declarations")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-shadow -Wno-missing-variable-declarations")
 
 # highest general warning level
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion")
@@ -36,11 +37,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-lambda-capture")
 
 # optimizations
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O3 -march=native -mtune=native")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage -march=native -mtune=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto")
 
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fuse-ld=gold")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage -flto -fuse-ld=gold")
 
 ###############################################################
 # DEPENDENCIES
@@ -61,7 +62,7 @@ include_directories(${EXT_include_dirs})
 #----------------
 # Boost libraries
 #----------------
-find_package(Boost 1.61.0 REQUIRED COMPONENTS chrono filesystem program_options system timer unit_test_framework)
+find_package(Boost 1.58.0 REQUIRED COMPONENTS chrono filesystem program_options system timer unit_test_framework)
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 add_definitions(-D BOOST_ALL_DYN_LINK)
 add_definitions(-D BOOST_TEST_MAIN)

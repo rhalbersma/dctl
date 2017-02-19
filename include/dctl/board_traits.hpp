@@ -1,8 +1,8 @@
 #pragma once
+#include <dctl/board/mask/detail/copy_if.hpp>
 #include <dctl/board/mask/column.hpp>   // column
 #include <dctl/board/mask/initial.hpp>  // initial
 #include <dctl/board/mask/row.hpp>      // row
-#include <dctl/board/mask/squares.hpp>  // squares
 #include <dctl/board/rectangular.hpp>   // rectangular
 #include <dctl/color_piece.hpp>         // opposite
 #include <algorithm>                    // min, max
@@ -64,7 +64,9 @@ template<class Board, class Color>
 constexpr auto promotion_v = row_v<Board, opposite<Color>>(0);
 
 template<class Board>
-constexpr auto squares_v = board::mask::squares<Board>{}();
+constexpr auto squares_v = board::mask::detail::copy_if<Board>([](auto const sq) {
+        return sq < Board::size();
+});
 
 template<class Board, class Color>
 constexpr auto initial_v = board::mask::initial<Board, Color>{};

@@ -1,20 +1,20 @@
 #pragma once
-#include <dctl/board/angle.hpp>                         // angle, inverse
-#include <dctl/board/detail/coordinates.hpp>            // to_llo, transform
-#include <dctl/board/detail/dimensions.hpp>             // dimensions
-#include <dctl/board/detail/grid.hpp>                   // InnerGrid, OuterGrid
-#include <dctl/board/detail/optimal_orientation.hpp>    // size_minimizing_orientation
-#include <dctl/color_piece.hpp>                         // black, white
-#include <dctl/utility/fill_array.hpp>                  // fill_array
-#include <xstd/cstdint.hpp>                             // uint_fast
-#include <xstd/cstdlib.hpp>                             // align_on
-#include <xstd/int_set.hpp>                             // int_set
-#include <boost/range/irange.hpp>                       // irange
-#include <array>                                        // array
-#include <cstddef>                                      // size_t
-#include <iomanip>                                      // setfill
-#include <limits>                                       // digits
-#include <sstream>                                      // stringstream
+#include <dctl/board/angle.hpp>                 // angle, inverse
+#include <dctl/board/detail/coordinates.hpp>    // to_llo, transform
+#include <dctl/board/detail/dimensions.hpp>     // dimensions
+#include <dctl/board/detail/grid.hpp>           // InnerGrid, OuterGrid
+#include <dctl/color_piece.hpp>                 // black, white
+#include <dctl/utility/fill_array.hpp>          // fill_array
+#include <xstd/cstdint.hpp>                     // uint_fast
+#include <xstd/cstdlib.hpp>                     // align_on
+#include <xstd/int_set.hpp>                     // int_set
+#include <boost/range/irange.hpp>               // irange
+#include <algorithm>                            // min
+#include <array>                                // array
+#include <cstddef>                              // size_t
+#include <iomanip>                              // setfill
+#include <limits>                               // digits
+#include <sstream>                              // stringstream
 
 namespace dctl {
 namespace board {
@@ -38,7 +38,13 @@ public:
 
         static constexpr auto edge = is_orthogonal_jump ? 2 : 1;
         static constexpr auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
-        static constexpr auto orientation = detail::optimal_orientation(detail::OuterGrid{inner_grid, edge});
+        static constexpr angle orientation = std::min(
+                { 0_deg, 90_deg, 180_deg, 270_deg },
+                [g = detail::OuterGrid{inner_grid, edge}]
+                (auto const lhs, auto const rhs) {
+                        return rotate(g, lhs).size() < rotate(g, rhs).size();
+                }
+        );
         static constexpr auto outer_grid = detail::OuterGrid{rotate(inner_grid, orientation), edge};
 
 private:

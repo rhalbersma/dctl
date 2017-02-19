@@ -33,7 +33,7 @@ class initial
         static constexpr value_type value = fill_array<N>(init{});
 
 public:
-        constexpr auto operator()(int const separation) const noexcept
+        constexpr auto operator()(int const separation) const
         {
                 assert((Board::height - separation) % 2 == 0);
                 assert(Board::height % 2 <= separation); assert(separation <= Board::height);
