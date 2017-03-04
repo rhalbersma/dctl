@@ -76,12 +76,17 @@ DCTL_PP_TTI_CONSTANT(is_contents_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_modality_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_ordering_precedence, false)
 
-inline constexpr auto trivial_precedence = [](auto&&) { return std::make_tuple(); };
+inline constexpr auto trivial_precedence = [](auto&&) {
+        return std::make_tuple();
+};
 
 DCTL_PP_TTI_CONSTANT(precedence, trivial_precedence)
 
 template<class Rules>
-constexpr auto is_trivial_precedence_v = std::is_same<decltype(precedence_v<Rules>), decltype(trivial_precedence)>::value;
+constexpr auto is_trivial_precedence_v = std::is_same<
+        decltype(precedence_v<Rules>),
+        decltype(trivial_precedence)
+>::value;
 
 struct keep_duplicates_tag : std::false_type {};
 struct drop_duplicates_tag : std:: true_type {};
