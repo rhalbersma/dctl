@@ -1,6 +1,5 @@
 #pragma once
-#include <experimental/type_traits>     // void_t
-#include <type_traits>                  // conditional
+#include <type_traits>  // conditional, void_t
 
 #define DCTL_PP_TTI_CONSTANT(NAME, DEFAULT)             \
                                                         \
@@ -19,5 +18,5 @@ struct default_ ## NAME                                 \
                                                         \
 template<class T>                                       \
 constexpr auto NAME ## _v = std::conditional_t<         \
-    has_ ## NAME ## _v<T>, T, default_ ## NAME          \
+        has_ ## NAME ## _v<T>, T, default_ ## NAME      \
 >::NAME;                                                \
