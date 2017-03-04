@@ -22,19 +22,12 @@ struct frisian
         static constexpr auto is_contents_precedence    = true;
         static constexpr auto is_modality_precedence    = true;
 
-        struct tuple_type
-        {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
-                {
-                        auto const k = a.num_captured_kings();
-                        auto const n = a.num_captured_pieces();
-                        constexpr auto N = 65;
-                        auto const v = N * (n + k) - k;
-                        return std::make_tuple(
-                                v, a.is_with_king()
-                        );
-                }
+        static constexpr auto precedence = [](auto const& a) {
+                auto const k = a.num_captured_kings();
+                auto const n = a.num_captured_pieces();
+                constexpr auto N = 65;
+                auto const v = N * (n + k) - k;
+                return std::make_tuple(v, a.is_with_king());
         };
 };
 

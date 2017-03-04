@@ -59,7 +59,7 @@ public:
         auto count(State const& s) const
         {
                 using counter_container = /* std::conditional_t<
-                        !is_nontrivial_precedence_v<rules_t<State>> && !DuplicatesPolicy{},
+                        is_trivial_precedence_v<rules_t<State>> && !DuplicatesPolicy{},
                         MoveCounter,*/
                         static_vector<action<rules_t<State>, board_t<State>>>;
                 //>;

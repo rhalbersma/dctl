@@ -19,16 +19,11 @@ struct spanish
         static constexpr auto is_quantity_precedence = true;
         static constexpr auto is_contents_precedence = true;
 
-        struct tuple_type
-        {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
-                {
-                        return std::make_tuple(
-                                a.num_captured_pieces(),
-                                a.num_captured_kings()
-                        );
-                }
+        static constexpr auto precedence = [](auto const& a) {
+                return std::make_tuple(
+                        a.num_captured_pieces(),
+                        a.num_captured_kings()
+                );
         };
 };
 

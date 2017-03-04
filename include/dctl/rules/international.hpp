@@ -24,13 +24,8 @@ struct international
         static constexpr auto is_contents_precedence    = false;        // 4.13
         static constexpr auto is_modality_precedence    = false;        // 4.14
 
-        struct tuple_type
-        {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
-                {
-                        return a.num_captured_pieces();
-                }
+        static constexpr auto precedence = [](auto const& a) {
+                return a.num_captured_pieces();
         };
 
         static constexpr auto is_passing_promotion      = false;        // 4.15 (and 3.5)

@@ -1,5 +1,5 @@
 #include <dctl/rules/thai.hpp>          // thai
-#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, is_long_ranged_king, is_trivial, initial_position_gap, is_land_behind_piece, is_passing_capture, jumpsep
+#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, is_long_ranged_king, is_trivial_precedence, initial_position_gap, is_land_behind_piece, is_passing_capture, jumpsep
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
 namespace dctl {
@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(is_passing_capture_v<T>);
         static_assert(jumpsep_v<T> == '-');
 
-        static_assert(!is_nontrivial_precedence_v<T>);
+        static_assert(is_trivial_precedence_v<T>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -182,14 +182,14 @@ private:
         auto precedence_duplicates() const
         {
                 if constexpr (
-                        !is_nontrivial_precedence_v<rules_type> &&
+                        is_trivial_precedence_v<rules_type> &&
                         std::is_same<DuplicatesPolicy, keep_duplicates_tag>{}
                 ){
                         assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
-                        !is_nontrivial_precedence_v<rules_type> &&
+                        is_trivial_precedence_v<rules_type> &&
                         std::is_same<DuplicatesPolicy, drop_duplicates_tag>{}
                 ){
                         assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
@@ -198,7 +198,7 @@ private:
                         }
                 }
                 if constexpr (
-                        is_nontrivial_precedence_v<rules_type> &&
+                        !is_trivial_precedence_v<rules_type> &&
                         std::is_same<DuplicatesPolicy, keep_duplicates_tag>{}
                 ){
                         if (m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back())) {
@@ -212,7 +212,7 @@ private:
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
-                        is_nontrivial_precedence_v<rules_type> &&
+                        !is_trivial_precedence_v<rules_type> &&
                         std::is_same<DuplicatesPolicy, drop_duplicates_tag>{}
                 ){
                         if (m_actions.empty()) {

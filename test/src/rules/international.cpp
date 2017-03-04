@@ -1,6 +1,6 @@
 #include <dctl/rules/international.hpp> // international
 #include <rules/precedence.hpp>         // precedence::is_consistent
-#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial, equal_to, less
+#include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <vector>                       // vector
 
@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(is_backward_pawn_jump_v<T>);
         static_assert(is_long_ranged_king_v<T>);
 
-        static_assert(is_nontrivial_precedence_v<T>);
+        static_assert(!is_trivial_precedence_v<T>);
         static_assert(is_quantity_precedence_v<T>);
 
         struct Action

@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/board/rectangular.hpp>   // rectangular
-#include <dctl/utility/tti.hpp>         // DCTL_PP_TTI_CONSTANT, DCTL_PP_TTI_TYPENAME
+#include <dctl/utility/tti.hpp>         // DCTL_PP_TTI_CONSTANT
 #include <dctl/utility/type_traits.hpp> // rules_t
 #include <tuple>                        // make_tuple
 #include <type_traits>                  // bool_constant, conditional, decay, is_same, false_type, true_type
@@ -76,19 +76,12 @@ DCTL_PP_TTI_CONSTANT(is_contents_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_modality_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_ordering_precedence, false)
 
-struct empty_tuple
-{
-        template<class Action>
-        constexpr auto operator()(Action&&) const noexcept
-        {
-                return std::make_tuple();
-        }
-};
+inline constexpr auto trivial_precedence = [](auto&&) { return std::make_tuple(); };
 
-DCTL_PP_TTI_TYPENAME(tuple, empty_tuple)
+DCTL_PP_TTI_CONSTANT(precedence, trivial_precedence)
 
 template<class Rules>
-constexpr auto is_nontrivial_precedence_v = !std::is_same<tuple_t<Rules>, empty_tuple>::value;
+constexpr auto is_trivial_precedence_v = std::is_same<decltype(precedence_v<Rules>), decltype(trivial_precedence)>::value;
 
 struct keep_duplicates_tag : std::false_type {};
 struct drop_duplicates_tag : std:: true_type {};
@@ -104,8 +97,8 @@ struct equal_to
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
                 static_assert(std::is_same<rules_type1, rules_type2>{});
                 return
-                        tuple_t<rules_type1>{}(std::forward<Action1>(a1)) ==
-                        tuple_t<rules_type2>{}(std::forward<Action2>(a2))
+                		precedence_v<rules_type1>(std::forward<Action1>(a1)) ==
+						precedence_v<rules_type2>(std::forward<Action2>(a2))
                 ;
         }
 };
@@ -119,8 +112,8 @@ struct less
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
                 static_assert(std::is_same<rules_type1, rules_type2>{});
                 return
-                        tuple_t<rules_type1>{}(std::forward<Action1>(a1)) <
-                        tuple_t<rules_type2>{}(std::forward<Action2>(a2))
+                		precedence_v<rules_type1>(std::forward<Action1>(a1)) <
+						precedence_v<rules_type2>(std::forward<Action2>(a2))
                 ;
         }
 };

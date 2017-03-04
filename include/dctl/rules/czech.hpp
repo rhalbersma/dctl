@@ -17,13 +17,8 @@ struct czech
         static constexpr auto is_backward_pawn_jump     = false;        // 4.1
         static constexpr auto is_modality_precedence    = true;         // 4.14
 
-        struct tuple_type
-        {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
-                {
-                        return a.is_with_king();
-                }
+        static constexpr auto precedence = [](auto const& a) {
+                return a.is_with_king();
         };
 };
 

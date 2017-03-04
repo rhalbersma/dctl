@@ -26,18 +26,13 @@ struct italian
         static constexpr auto is_contents_precedence    = true;         // 6.8
         static constexpr auto is_ordering_precedence    = true;         // 6.9
 
-        struct tuple_type
-        {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
-                {
-                        return std::make_tuple(
-                                a.num_captured_pieces(),
-                                a.is_with_king(),
-                                a.num_captured_kings(),
-                                a.piece_order()
-                        );
-                }
+        static constexpr auto precedence = [](auto const& a) {
+                return std::make_tuple(
+                        a.num_captured_pieces(),
+                        a.is_with_king(),
+                        a.num_captured_kings(),
+                        a.piece_order()
+                );
         };
 
         static constexpr auto max_repetitions           = 4;            // 9.3(b1)
