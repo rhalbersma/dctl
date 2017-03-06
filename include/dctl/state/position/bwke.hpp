@@ -80,10 +80,10 @@ public:
         }
 
         template<piece Type>
-        constexpr auto pieces(piece_<Type> const p) const noexcept
+        constexpr auto pieces(piece_<Type>) const noexcept
         {
-                if constexpr (p == pawns_c) { return m_kings ^ pieces(occup_c); }
-                if constexpr (p == kings_c) { return m_kings;                   }
+                if constexpr (Type == piece::pawns) { return m_kings ^ pieces(occup_c); }
+                if constexpr (Type == piece::kings) { return m_kings;                   }
         }
 
         constexpr auto pieces(piece const p) const noexcept
