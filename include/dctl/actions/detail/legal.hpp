@@ -10,7 +10,7 @@
 namespace dctl {
 namespace detail {
 
-#define cj
+//#define cj
 
 template<color Side, class DuplicatesPolicy, class Reverse>
 class Actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>

@@ -53,7 +53,7 @@ public:
                         .insert(a.dest())
                 ;
 
-                if (c == white_c) {
+                if (c == color::white) {
                         m_white
                                 .erase(a.from())
                                 .insert(a.dest())

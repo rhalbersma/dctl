@@ -24,7 +24,7 @@ struct base_action
 template<class Board>
 struct base_contents_precedence
 {
-        set_t<Board> m_captured_kings;
+        square_t<Board> m_num_captured_kings;
 };
 
 template<class Rules, class Board>
@@ -104,7 +104,7 @@ public:
         {
                 assert(is_onboard(sq));
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
-                        capture_contents_ordering(sq, is_king);
+                        capture_contents_ordering(is_king);
                 }
                 this->m_captured_pieces.insert(sq);
         }
@@ -114,7 +114,7 @@ public:
                 assert(is_onboard(sq));
                 this->m_captured_pieces.erase(sq);
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
-                        release_contents_ordering(sq, is_king);
+                        release_contents_ordering(is_king);
                 }
         }
 
@@ -191,21 +191,12 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-                std::is_same<RulesType, rules_type>{} &&
-                is_contents_precedence_v<RulesType>
-        >...>
-        constexpr auto captured_kings() const noexcept
-        {
-                return this->m_captured_kings;
-        }
-
-        template<class RulesType = rules_type, std::enable_if_t<
 		std::is_same<RulesType, rules_type>{} &&
         	is_contents_precedence_v<RulesType>
         >...>
         constexpr auto num_captured_kings() const noexcept
         {
-                return captured_kings().size();
+                return this->m_num_captured_kings;
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
@@ -227,12 +218,12 @@ public:
         }
 
 private:
-        constexpr auto capture_contents_ordering(int const sq, bool const is_king)
+        constexpr auto capture_contents_ordering(bool const is_king)
         {
                 static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
                         if constexpr (is_contents_precedence_v<rules_type>) {
-                                this->m_captured_kings.insert(sq);
+                                ++this->m_num_captured_kings;
                         }
                         if constexpr (is_ordering_precedence_v<rules_type>) {
                                 this->m_piece_order.insert(reverse_index());
@@ -240,7 +231,7 @@ private:
                 }
         }
 
-        constexpr auto release_contents_ordering(int const sq, bool const is_king)
+        constexpr auto release_contents_ordering(bool const is_king)
         {
                 static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
@@ -248,7 +239,7 @@ private:
                                 this->m_piece_order.erase(reverse_index());
                         }
                         if constexpr (is_contents_precedence_v<rules_type>) {
-                                this->m_captured_kings.erase(sq);
+                                --this->m_num_captured_kings;
                         }
                 }
         }
