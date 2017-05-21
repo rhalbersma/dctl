@@ -122,10 +122,10 @@ public:
 
         constexpr auto pieces(color const c, piece const p) const noexcept
         {
-                return pieces(
-                        c == color::black ? black_c : white_c,
-                        p == piece::pawns ? pawns_c : kings_c
-                );
+                return c == color::black ? 
+			(p == piece::pawns ? pieces(black_c, pawns_c) : pieces(black_c, kings_c)) :
+			(p == piece::pawns ? pieces(white_c, pawns_c) : pieces(white_c, kings_c))
+		;
         }
 
         constexpr auto pieces(occup_) const noexcept

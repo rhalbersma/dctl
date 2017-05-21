@@ -110,7 +110,7 @@ constexpr auto to_square(coordinates<upper_left> const coord, Grid const grid)
 {
         [[maybe_unused]] auto const col_mod = coord.x % 2;
         auto const row_mod = coord.y % 2;
-        assert(row_mod ^ col_mod == !grid.upper_left_is_square());
+        assert((row_mod ^ col_mod) == !grid.upper_left_is_square());
 
         auto const col_div = coord.x / 2;
         assert(2 * col_div + col_mod == coord.x);

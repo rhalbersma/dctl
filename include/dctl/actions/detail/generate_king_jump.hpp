@@ -168,7 +168,7 @@ private:
         }
 
         template<class Iterator>
-        auto slide(Iterator& jumper, set_type const path) const
+        auto slide(Iterator& jumper, [[maybe_unused]] set_type const path) const
         {
                 assert(is_onboard(jumper));
                 if constexpr (is_long_ranged_king_v<rules_type>) {

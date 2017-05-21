@@ -141,11 +141,10 @@ public:
         template<color Side, piece Type>
         auto targets(color_<Side>, piece_<Type>) const noexcept
         {
-                static constexpr auto not_to_move_c = !color_c<Side>;
                 if constexpr (Type == piece::pawns && is_superior_rank_jump_v<rules_type>) {
                         return pieces(color_c<!Side>, pawns_c);
                 } else {
-                        return pieces(not_to_move_c);
+                        return pieces(!color_c<Side>);
                 }
         }
 

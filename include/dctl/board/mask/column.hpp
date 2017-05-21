@@ -13,17 +13,17 @@ namespace mask {
 template<class Board, class Color>
 class column
 {
-        static constexpr auto value = fill_array<Board::width>([](int const column){
+        static constexpr auto value = fill_array<Board::width>([](int const c){
                 return detail::copy_if<Board>([=](auto const sq){
-                        assert(column < Board::width);
-                        return board::detail::to_llo(sq, Board::inner_grid).x == (Color{} == white_c ? column : Board::width - 1 - column);
+                        assert(c < Board::width);
+                        return board::detail::to_llo(sq, Board::inner_grid).x == (Color{} == white_c ? c : Board::width - 1 - c);
                 });
         });
 public:
-        constexpr auto operator()(int const column) const noexcept
+        constexpr auto operator()(int const c) const noexcept
         {
-                assert(column < Board::width);
-                return value[static_cast<std::size_t>(column)];
+                assert(c < Board::width);
+                return value[static_cast<std::size_t>(c)];
         }
 };
 

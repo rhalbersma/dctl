@@ -20,14 +20,14 @@ BOOST_AUTO_TEST_CASE(ColorsAreDifferent)
 
 BOOST_AUTO_TEST_CASE(ColorsAreNegativelyRelated)
 {
-        static_assert(!color::black == color::white);
-        static_assert(!color::white == color::black);
+        static_assert((!color::black) == color::white);
+        static_assert((!color::white) == color::black);
 
         static_assert(std::is_same<opposite<black_>, white_>{});
         static_assert(std::is_same<opposite<white_>, black_>{});
 
-        static_assert(!black_c == white_c);
-        static_assert(!white_c == black_c);
+        static_assert((!black_c) == white_c);
+        static_assert((!white_c) == black_c);
 }
 
 BOOST_AUTO_TEST_CASE(PiecesAreDifferent)

@@ -151,26 +151,6 @@ public:
         }
 };
 
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr angle
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::orientation;
-
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr detail::InnerGrid
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::inner_grid;
-
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr detail::OuterGrid
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::outer_grid;
-
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<int, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumSquares>
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_bit_from_square;
-
-template<int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-constexpr std::array<int, rectangular<Width, Height, Inverted, OrthogonalCaptures>::NumBits>
-rectangular<Width, Height, Inverted, OrthogonalCaptures>::table_square_from_bit;
-
 }       // namespace block_adl
 
 using block_adl::rectangular;

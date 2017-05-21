@@ -24,6 +24,7 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, state<Rules, Board> co
         switch (getpositionformat(ostr)) {
         case manip::StateFormat::diag : return ostr << setup::diagram<pdn::protocol>()(s);
         case manip::StateFormat::fen  : return ostr << setup::write<pdn::protocol>()(s);
+	default: assert(false); return ostr;
         }
 }
 

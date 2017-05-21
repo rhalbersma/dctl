@@ -30,7 +30,17 @@ class king_targets
 
         using value_type = std::array<set_t<Board>, Board::bits()>;
 
-        static value_type const value[];
+        static inline value_type const value[]=
+	{
+		fill_array<Board::bits()>(init<  0>{}),
+		fill_array<Board::bits()>(init< 45>{}),
+		fill_array<Board::bits()>(init< 90>{}),
+		fill_array<Board::bits()>(init<135>{}),
+		fill_array<Board::bits()>(init<180>{}),
+		fill_array<Board::bits()>(init<225>{}),
+		fill_array<Board::bits()>(init<270>{}),
+		fill_array<Board::bits()>(init<315>{})
+	};
 
 public:
         auto operator()(int const sq, angle const alpha) const noexcept
@@ -38,28 +48,6 @@ public:
                 auto const segment = (alpha - beta) / theta;
                 return value[segment][static_cast<std::size_t>(sq)];
         }
-};
-
-template<class Board>
-constexpr angle
-king_targets<Board>::theta;
-
-template<class Board>
-constexpr angle
-king_targets<Board>::beta;
-
-template<class Board>
-value_t<king_targets<Board>> const
-king_targets<Board>::value[] =
-{
-        fill_array<Board::bits()>(init<  0>{}),
-        fill_array<Board::bits()>(init< 45>{}),
-        fill_array<Board::bits()>(init< 90>{}),
-        fill_array<Board::bits()>(init<135>{}),
-        fill_array<Board::bits()>(init<180>{}),
-        fill_array<Board::bits()>(init<225>{}),
-        fill_array<Board::bits()>(init<270>{}),
-        fill_array<Board::bits()>(init<315>{})
 };
 
 }       // namespace mask

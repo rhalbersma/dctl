@@ -55,10 +55,10 @@ template<class Board>
 using add_orthogonal_captures_t = typename add_orthogonal_captures<Board>::type;
 
 template<class Board, class Color>
-constexpr auto column_v = board::mask::column<Board, Color>{};
+constexpr board::mask::column<Board, Color> column_v{};
 
 template<class Board, class Color>
-constexpr auto row_v = board::mask::row<Board, Color>{};
+constexpr board::mask::row<Board, Color> row_v{};
 
 template<class Board, class Color>
 constexpr auto promotion_v = row_v<Board, opposite<Color>>(0);

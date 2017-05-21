@@ -20,3 +20,4 @@ template<class T>                                       \
 constexpr auto NAME ## _v = std::conditional_t<         \
         has_ ## NAME ## _v<T>, T, default_ ## NAME      \
 >::NAME;                                                \
+
