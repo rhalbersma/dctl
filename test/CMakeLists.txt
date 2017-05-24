@@ -77,7 +77,6 @@ foreach(t ${targets})
 
         target_link_libraries(${target_id} PRIVATE
                 dctl 
-		"-lstdc++fs"
                 ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
                 ${cxx_linker_optimization_flags}
         )
