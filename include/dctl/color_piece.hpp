@@ -15,8 +15,8 @@ using white_ = color_<color::white>;
 template<color Side>
 constexpr auto color_c = color_<Side>{};
 
-inline constexpr auto black_c = color_c<color::black>;
-inline constexpr auto white_c = color_c<color::white>;
+constexpr auto black_c = color_c<color::black>;
+constexpr auto white_c = color_c<color::white>;
 
 constexpr auto operator!(color const c) noexcept
 {
@@ -43,16 +43,16 @@ using kings_ = piece_<piece::kings>;
 template<piece Type>
 constexpr auto piece_c = piece_<Type>{};
 
-inline constexpr auto pawns_c = piece_c<piece::pawns>;
-inline constexpr auto kings_c = piece_c<piece::kings>;
+constexpr auto pawns_c = piece_c<piece::pawns>;
+constexpr auto kings_c = piece_c<piece::kings>;
 
 struct occup_ {};
 struct empty_ {};
 
-inline constexpr auto occup_c = occup_{};
-inline constexpr auto empty_c = empty_{};
+constexpr auto occup_c = occup_{};
+constexpr auto empty_c = empty_{};
 
 struct nullmove_t {};
-inline constexpr auto nullmove = nullmove_t{};
+constexpr auto nullmove = nullmove_t{};
 
 }       // namespace dctl

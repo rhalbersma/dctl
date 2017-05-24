@@ -47,7 +47,7 @@ public:
                                 std::copy(m_files.begin(), m_files.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
                                 auto const s = static_cast<double>(std::accumulate(m_files.begin(), m_files.end(), 0ULL, [](auto sum, auto const& f) {
                                         return sum + fs::file_size(f);
-                                }) / static_cast<double>(1ULL << 30));
+                                })) / static_cast<double>(1ULL << 30);
                                 std::cout << "Total disk usage = " << s << " GiB\n";
                         } else {
                                 std::cout << m_dir_path << " is not a valid path\n";

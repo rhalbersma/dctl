@@ -1,76 +1,59 @@
 ###############################################################
-# Project settings
+# project settings
 ###############################################################
 
-cmake_minimum_required(VERSION 2.8)
-project(DCTL CXX)
+cmake_minimum_required(VERSION 3.5)
+project(dctl CXX)
+
+set(project_include_dir
+	$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>
+)
 
 ###############################################################
-# Compiler settings
+# dependencies
 ###############################################################
-
-# use C++17 features
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++1z")# -stdlib=libc++")
-
-# fail hard
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -pedantic-errors")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-shadow -Wno-missing-variable-declarations")
-
-# highest general warning level
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")# -Wconversion -Wsign-conversion")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")# -Wno-sign-compare -Wno-sign-conversion -Wno-shorten-64-to-32")
-
-# NOT A DEFECT: no C++98 compatibility
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++98-compat -Wno-c++98-compat-pedantic")
-
-# NOT A DEFECT: padding is a diagnostic only (useful to turn on during optimizations)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-padded")
-
-# KNOWN ISSUE: Boost.Test does some macro magic that requires static initialization
-# http://hadesmem.googlecode.com/svn-history/r1861/trunk/tests/injector.cpp
-# http://stackoverflow.com/a/15708829/819272 for a rationale for this warning by Howard Hinnant
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-global-constructors")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-disabled-macro-expansion")
-
-# TODO: DXP message classes with virtual functions should not be header-only
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-weak-vtables")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-lambda-capture")
-
-# optimizations
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native -mtune=native")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto")
-
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fuse-ld=gold")
-
-###############################################################
-# DEPENDENCIES
-###############################################################
-
-set(project_include_dirs ${PROJECT_SOURCE_DIR}/include)
-include_directories(${project_include_dirs})
 
 #-----------------------------------------------
 # modified and extended Standard Library headers
 #-----------------------------------------------
-set(XSTD_include_dirs ${PROJECT_SOURCE_DIR}/../xstd/include)
-include_directories(${XSTD_include_dirs})
+set(xstd_include_dir ${PROJECT_SOURCE_DIR}/../xstd/include)
 
-set(EXT_include_dirs ${PROJECT_SOURCE_DIR}/../ext)
-include_directories(${EXT_include_dirs})
+#-----------------------------------------------
+# Howard Hinnant's hash_append
+#-----------------------------------------------
+set(ext_include_dir ${PROJECT_SOURCE_DIR}/../ext)
 
 #----------------
 # Boost libraries
 #----------------
-find_package(Boost 1.58.0 REQUIRED COMPONENTS chrono filesystem program_options system timer unit_test_framework)
-include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
-add_definitions(-D BOOST_ALL_DYN_LINK)
-add_definitions(-D BOOST_TEST_MAIN)
+find_package(Boost 1.64.0 REQUIRED COMPONENTS 
+	chrono 
+	program_options 
+	system 
+	timer 
+	unit_test_framework
+)
 
 ###############################################################
-# COMPONENTS
+
+add_library(dctl INTERFACE)
+target_include_directories(dctl INTERFACE 
+	${project_include_dir}
+	${xstd_include_dir}
+	${ext_include_dir}
+)
+target_link_libraries(dctl INTERFACE ${Boost_LIBRARIES})
+target_compile_features(dctl INTERFACE cxx_std_17)
+
 ###############################################################
 
-add_subdirectory(example)
-include(CTest)          # calls enable_testing()
-add_subdirectory(test)  # see CMakeLists.txt in test/ subdirectory
+#TODO: install()
+
+###############################################################
+# enable unit testing
+###############################################################
+
+#add_subdirectory(example)
+include(CTest)
+add_subdirectory(test)

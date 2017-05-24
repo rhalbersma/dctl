@@ -368,7 +368,7 @@ void report(int depth, int64_t leafs, Stopwatch const& stopwatch, Enhancements e
         std::cout << " time ";
         std::cout << std::setw( 6) << lap.count();
 
-        auto const nps = static_cast<double>(node_count) / std::chrono::duration_cast<std::chrono::seconds>(lap).count();
+        auto const nps = static_cast<double>(node_count) / static_cast<double>(std::chrono::duration_cast<std::chrono::seconds>(lap).count());
         std::cout << " nps ";
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
         std::cout << std::setw( 7) << nps;
@@ -394,7 +394,9 @@ void xreport(int depth, int64_t leafs, Stopwatch const& stopwatch)
         auto const lap = stopwatch.lap_time();
         std::cout << " time ";
         std::cout << std::setw( 6) << lap.count();
-        std::cout << " " << static_cast<double>(leafs) / lap.count() << " knps";
+
+	auto const knps = static_cast<double>(leafs) / static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(lap).count());
+        std::cout << " " << knps << " knps";
 
 /*
         double const hashfull = 1000 * (static_cast<double>(e.handle_->TT_.size()) / static_cast<double>(e.handle_->TT_.capacity()));

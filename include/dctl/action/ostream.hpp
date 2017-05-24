@@ -85,8 +85,8 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> c
         switch(move::getnotation<Rules, Board>(ostr)) {
         case Notation::algebraic : return move::print_algebraic(ostr, a);
         case Notation::numeric   : return move::print_numeric(ostr, a);
-	default: assert(false); return ostr;
         }
+	return ostr;
 }
 
 }       // namespace dctl

@@ -1,25 +1,97 @@
 ###############################################################
-# include and source directories
+# use the Boost.Test unit test framework
 ###############################################################
 
-set(test_include_dirs ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(test_source_dirs ${CMAKE_CURRENT_SOURCE_DIR}/src)
-include_directories(${test_include_dirs})
+list(APPEND cxx_compile_definitions_boost_test 
+        BOOST_TEST_DYN_LINK 
+        BOOST_TEST_MAIN
+)
+
+list(APPEND cxx_compile_options_warnings_boost_test 
+        $<$<CXX_COMPILER_ID:Clang>:
+                -Wno-disabled-macro-expansion 
+                -Wno-global-constructors 
+        >
+)
 
 ###############################################################
-# executables and tests
+# common compiler and linker flags
 ###############################################################
 
-file(GLOB_RECURSE targets RELATIVE ${test_source_dirs} *.cpp)
+list(APPEND cxx_compile_options_warnings_general
+        $<$<CXX_COMPILER_ID:Clang>:
+                -Weverything 
+                -Wno-c++98-compat 
+                -Wno-c++98-compat-pedantic      
+                -Wno-padded
+		-Wno-error=unused-lambda-capture
+		-Wno-error=unused-template
+		-Wno-error=weak-vtables
+        >
+        $<$<CXX_COMPILER_ID:GNU>:
+                -Wall
+                -Wextra
+                -Wpedantic
+                -Wconversion                
+                -Wshadow
+                -Wsign-compare 
+                -Wsign-promo
+                -Wno-error=sign-conversion 
+                -Wno-error=unused-local-typedefs
+        >
+        -Werror 
+        -pedantic-errors
+)  
+
+list(APPEND cxx_compile_options_optimization 
+        -g
+        -O3
+        -flto 
+        -march=native 
+        -mtune=native
+)
+
+list(APPEND cxx_linker_optimization_flags
+        -flto 
+        -fuse-ld=gold
+)
+
+###############################################################
+# define test executables
+###############################################################
+
+set(test_include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(test_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/src)
+file(GLOB_RECURSE targets RELATIVE ${test_source_dir} *.cpp)
 
 foreach(t ${targets})
-  get_filename_component(target_path ${t} PATH)
-  get_filename_component(target_name_we ${t} NAME_WE)
-  string(REPLACE "/" "." target_id ${target_path}/${target_name_we})
-  string(REGEX REPLACE "^[.]" "" target_id ${target_id})
+	get_filename_component(target_path ${t} PATH)
+	get_filename_component(target_name_we ${t} NAME_WE)
+	string(REPLACE "/" "." target_id ${target_path}/${target_name_we})
+	string(REGEX REPLACE "^[.]" "" target_id ${target_id})
 
-  add_executable(${target_id} src/${t})
-  target_link_libraries(${target_id} ${Boost_LIBRARIES} "-lstdc++fs")
-  add_test(${target_id} ${target_id})    
+	add_executable(${target_id} src/${t})
+        target_include_directories(${target_id} PRIVATE
+                ${test_include_dir}
+        )
+
+        target_link_libraries(${target_id} PRIVATE
+                dctl 
+		"-lstdc++fs"
+                ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+                ${cxx_linker_optimization_flags}
+        )
+
+        target_compile_definitions(${target_id} PRIVATE 
+                ${cxx_compile_definitions_boost_test}
+        )
+
+        target_compile_options(${target_id} PRIVATE 
+                ${cxx_compile_options_warnings_general}
+                ${cxx_compile_options_warnings_boost_test}
+                ${cxx_compile_options_optimization}     
+        )
+
+        add_test(${target_id} ${target_id})    
 endforeach()
 
