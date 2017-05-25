@@ -44,15 +44,15 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
 
 ##### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4567.pdf). This currently restricts usage of the DCTL to [Clang](http://clang.llvm.org/cxx_status.html) version 3.9 or higher, combined with either the accompanying libc++ Standard Library or libstdc++ version 6.2 or higher. Neither g++ 6.3 nor Visual C++ 2017RC are supported at the  moment because of incomplete C++17 support. Stay tuned for further developments.
+The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf). This currently restricts usage of the DCTL to either [gcc](https://gcc.gnu.org/projects/cxx-status.html), version 7.1 or higher, or [Clang](http://clang.llvm.org/cxx_status.html) version 5.0 or higher. Visual C++ is not yet supported because of its currently incomplete C++17 support. Stay tuned for further developments.
 
 ##### Boost headers
 
-The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.62.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_62_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
+The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.64.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_64_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
 
 ##### Boost libraries
 
-The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_62_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_62_0/more/getting_started/index.html) on how to do this on your system.
+The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_64_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_64_0/more/getting_started/index.html) on how to do this on your system.
 
 * **NOTE:** compilation of the Boost libraries is **ONLY** a requirement for running the test-suite, and **NOT** for using the DCTL headers with your application.  
 
@@ -82,15 +82,15 @@ To make sure that your build environment is compatible with the DCTL requirement
       cd build
       cmake ..
       make -j10
-      ctest -j10 -E "aima"
+      ctest -j10 -E "search|traversal"
 
-The build will take about half a minute on a 3.2 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a second to run. Note that the `ctest` command excludes all unit tests that do a tree walk or tree search (these tests will take several minutes to hours to run, respectively).
+The build will take less than a minute on a 3.5 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a second to run. Note that the `ctest` command excludes all unit tests that do a tree search or traversal (these tests will take several minutes to hours to run, respectively).
 
 To completely regenerate the test-suite's build solution, simply delete the contents of the entire `build/` directory and rerun the above commands. To skip the `cmake` configuration step, and only rebuild and rerun the test-suite, simply type 
 
       make clean
       make -j10
-      ctest -j10 -E "aima" 
+      ctest -j10 -E "search|traversal" 
 
 If you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
