@@ -37,9 +37,9 @@ list(APPEND cxx_compile_options_warnings_general
                 -Wsign-compare 
                 -Wsign-promo
                 -Wno-error=sign-conversion 
-                -Wno-error=unused-local-typedefs
         >
-        -Werror 
+        -Wno-error=unused-local-typedefs
+ 	-Werror 
         -pedantic-errors
 )  
 

@@ -1,16 +1,16 @@
 #include <dctl/rules/frisian.hpp>       // frisian
 #include <rules/precedence.hpp>         // precedence::is_consistent
+#include <dctl/board.hpp>
 #include <dctl/color_piece.hpp>         // king, pawn
 #include <dctl/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <vector>                       // vector
 
-namespace dctl {
-namespace rules {
+using namespace dctl;
 
 BOOST_AUTO_TEST_SUITE(Rulesfrisian)
 
-using T = frisian;
+using T = rules::frisian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
@@ -24,9 +24,10 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(is_contents_precedence_v<T>);
         static_assert(is_modality_precedence_v<T>);
 
-        struct Action
+        struct action
         {
-                using rules_type = frisian;
+                using rules_type = rules::frisian;
+		using board_type = board::frisian;
                 int num_captured_;
                 int num_captured_kings_;
                 piece with_;
@@ -36,7 +37,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 constexpr auto is_with_king()        const noexcept { return with_ == piece::kings; }
         };
 
-        auto const moves = std::vector<Action>
+        auto const moves = std::vector<action>
         {
                 { 1, 0, piece::pawns },
                 { 1, 0, piece::kings },
@@ -60,6 +61,3 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace frisian
-}       // namespace dctl

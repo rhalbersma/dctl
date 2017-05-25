@@ -1,5 +1,7 @@
 #pragma once
-#include <tuple>        // make_tuple
+#include <dctl/utility/type_traits.hpp>	// board_t, set_t
+#include <tuple>        		// make_tuple
+#include <type_traits>			// decay
 
 namespace dctl {
 namespace rules {
@@ -22,12 +24,13 @@ struct frisian
         static constexpr auto is_contents_precedence    = true;
         static constexpr auto is_modality_precedence    = true;
 
-        static constexpr auto precedence = [](auto const& a) {
-                auto const k = a.num_captured_kings();
-                auto const n = a.num_captured_pieces();
-                constexpr auto N = 65;
-                auto const v = N * (n + k) - k;
-                return std::make_tuple(v, a.is_with_king());
+        static constexpr auto precedence = [](auto const& a) {		
+                constexpr auto max_captured_pieces = set_t<board_t<std::decay_t<decltype(a)>>>::capacity();
+                auto const num_captured_kings = a.num_captured_kings();
+                return std::make_tuple(
+			max_captured_pieces * (a.num_captured_pieces() + num_captured_kings) - num_captured_kings, 
+			a.is_with_king()
+		);
         };
 };
 
