@@ -10,6 +10,10 @@ set(project_include_dir
 	$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>
 )
 
+if (NOT DEFINED CXX_STDLIB)
+	set(CXX_STDLIB "GNU")
+endif()
+
 ###############################################################
 # dependencies
 ###############################################################
@@ -28,10 +32,6 @@ set(ext_include_dir ${PROJECT_SOURCE_DIR}/../ext)
 # Boost libraries
 #----------------
 find_package(Boost 1.64.0 REQUIRED COMPONENTS 
-#	chrono 
-#	program_options 
-#	system 
-#	timer 
 	unit_test_framework
 )
 
@@ -43,10 +43,7 @@ target_include_directories(dctl INTERFACE
 	${xstd_include_dir}
 	${ext_include_dir}
 )
-target_link_libraries(dctl INTERFACE 		
-	"-lstdc++fs"
-	${Boost_LIBRARIES}
-)
+target_link_libraries(dctl INTERFACE -lstdc++fs)
 target_compile_features(dctl INTERFACE cxx_std_17)
 
 ###############################################################
