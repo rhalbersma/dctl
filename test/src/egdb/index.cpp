@@ -1,8 +1,8 @@
 #include <dctl/egdb/index.hpp>          // subdatabase
-#include <dctl/board.hpp>               // rectangular
-#include <dctl/rules.hpp>               // international
-#include <dctl/state.hpp>               // state
-#include <dctl/utility/type_traits.hpp> // position_t
+#include <dctl/core/board.hpp>               // rectangular
+#include <dctl/core/rules.hpp>               // international
+#include <dctl/core/state.hpp>               // state
+#include <dctl/util/type_traits.hpp> // position_t
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <vector>                       // vector
 

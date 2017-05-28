@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/action.hpp>
+#include <dctl/core/action.hpp>
 #include <dctl/egdb/index.hpp>
-#include <dctl/utility/type_traits.hpp>
+#include <dctl/util/type_traits.hpp>
 
 namespace dctl {
 namespace egdb {

@@ -47,8 +47,9 @@ list(APPEND cxx_compile_options_optimization
         -g
         -O3
         -flto 
-        -march=native 
+        -march=native
         -mtune=native
+	-mbmi2
 )
 
 list(APPEND cxx_linker_optimization_flags
