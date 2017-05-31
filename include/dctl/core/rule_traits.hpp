@@ -1,10 +1,10 @@
 #pragma once
-#include <dctl/core/board/rectangular.hpp>   // rectangular
-#include <dctl/util/tti.hpp>         // DCTL_PP_TTI_CONSTANT
-#include <dctl/util/type_traits.hpp> // rules_t
-#include <tuple>                        // make_tuple
-#include <type_traits>                  // bool_constant, conditional, decay, is_same, false_type, true_type
-#include <utility>                      // forward
+#include <dctl/core/board/rectangular.hpp>      // rectangular
+#include <dctl/util/tti.hpp>                    // DCTL_PP_TTI_CONSTANT
+#include <dctl/util/type_traits.hpp>            // rules_t
+#include <tuple>                                // make_tuple
+#include <type_traits>                          // conditional, decay, is_same, false_type, true_type
+#include <utility>                              // forward
 
 namespace dctl {
 
@@ -58,35 +58,27 @@ constexpr auto large_jump_v =
 ;
 
 template<class Rules>
-using large_jump = std::integral_constant<int, large_jump_v<Rules>>;
-
-template<class Rules>
 constexpr auto is_unambiguous_pawn_jump_v =
         !(is_backward_pawn_jump_v<Rules> || is_passing_promotion_v<Rules> ||
         (is_orthogonal_jump_v<Rules> && is_reverse_king_jump_v<Rules>))
 ;
-
-template<class Rules>
-using is_unambiguous_pawn_jump = std::bool_constant<
-        is_unambiguous_pawn_jump_v<Rules>
->;
 
 DCTL_PP_TTI_CONSTANT(is_quantity_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_contents_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_modality_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_ordering_precedence, false)
 
-inline constexpr auto trivial_precedence_c = [](auto&&) {
+constexpr auto trivial_precedence_c = [](auto&&) {
         return std::make_tuple();
 };
 
 DCTL_PP_TTI_CONSTANT(precedence, trivial_precedence_c)
 
 template<class Rules>
-constexpr auto is_trivial_precedence_v = std::is_same<
+constexpr auto is_trivial_precedence_v = std::is_same_v<
         decltype(precedence_v<Rules>),
         decltype(trivial_precedence_c)
->::value;
+>;
 
 namespace precedence {
 
@@ -184,20 +176,10 @@ DCTL_PP_TTI_CONSTANT(max_same_king_push, 0)
 template<class Rules>
 constexpr auto is_restricted_king_push_v = max_same_king_push_v<Rules> != 0;
 
-template<class Rules>
-using is_restricted_king_push = std::bool_constant<
-        is_restricted_king_push_v<Rules>
->;
-
 DCTL_PP_TTI_CONSTANT(max_reversible_moves, 0)
 
 template<class Rules>
 constexpr auto is_restricted_reversible_moves_v = max_reversible_moves_v<Rules> != 0;
-
-template<class Rules>
-using is_restricted_reversible_moves = std::bool_constant<
-        is_restricted_reversible_moves_v<Rules>
->;
 
 DCTL_PP_TTI_CONSTANT(is_algebraic_notation, false)
 DCTL_PP_TTI_CONSTANT(pushsep, '-')
