@@ -82,16 +82,16 @@ public:
                 is_color_v<ColorT> &&
                 is_piece_v<PieceT>
         >...>
-        constexpr auto pieces([[maybe_unused]] ColorT const c, [[maybe_unused]] PieceT const p) const noexcept
+        constexpr auto pieces(ColorT const c, PieceT const p) const noexcept
         {
                 if constexpr (std::is_same_v<ColorT, color> && std::is_same_v<PieceT, piece>) {
                         return m_color_piece[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
                 } else if constexpr (std::is_same_v<ColorT, color>) {
-                        return std::get<xstd::to_underlying_type(PieceT::value)>(m_color_piece[xstd::to_underlying_type(c)]);
+                        return std::get<xstd::to_underlying_type(p)>(m_color_piece[xstd::to_underlying_type(c)]);
                 } else if constexpr (std::is_same_v<PieceT, piece>) {
-                        return std::get<xstd::to_underlying_type(ColorT::value)>(m_color_piece)[xstd::to_underlying_type(p)];
+                        return std::get<xstd::to_underlying_type(c)>(m_color_piece)[xstd::to_underlying_type(p)];
                 } else {
-                        return std::get<xstd::to_underlying_type(PieceT::value)>(std::get<xstd::to_underlying_type(ColorT::value)>(m_color_piece));
+                        return std::get<xstd::to_underlying_type(p)>(std::get<xstd::to_underlying_type(c)>(m_color_piece));
                 }
         }
 
@@ -129,16 +129,16 @@ private:
                 is_color_v<ColorT> &&
                 is_piece_v<PieceT>
         >...>
-        constexpr auto& set_pieces([[maybe_unused]] ColorT const c, [[maybe_unused]] PieceT const p) noexcept
+        constexpr auto& set_pieces(ColorT const c, PieceT const p) noexcept
         {
                 if constexpr (std::is_same_v<ColorT, color> && std::is_same_v<PieceT, piece>) {
                         return m_color_piece[xstd::to_underlying_type(c)][xstd::to_underlying_type(p)];
                 } else if constexpr (std::is_same_v<ColorT, color>) {
-                        return std::get<xstd::to_underlying_type(PieceT::value)>(m_color_piece[xstd::to_underlying_type(c)]);
+                        return std::get<xstd::to_underlying_type(p)>(m_color_piece[xstd::to_underlying_type(c)]);
                 } else if constexpr (std::is_same_v<PieceT, piece>) {
-                        return std::get<xstd::to_underlying_type(ColorT::value)>(m_color_piece)[xstd::to_underlying_type(p)];
+                        return std::get<xstd::to_underlying_type(c)>(m_color_piece)[xstd::to_underlying_type(p)];
                 } else {
-                        return std::get<xstd::to_underlying_type(PieceT::value)>(std::get<xstd::to_underlying_type(ColorT::value)>(m_color_piece));
+                        return std::get<xstd::to_underlying_type(p)>(std::get<xstd::to_underlying_type(c)>(m_color_piece));
                 }
         }
 };

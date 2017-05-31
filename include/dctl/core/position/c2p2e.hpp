@@ -70,24 +70,24 @@ public:
         template<class ColorT, std::enable_if_t<
                 is_color_v<ColorT>
         >...>
-        constexpr auto pieces([[maybe_unused]] ColorT const c) const noexcept
+        constexpr auto pieces(ColorT const c) const noexcept
         {
                 if constexpr (std::is_same_v<ColorT, color>) {
                         return m_color[xstd::to_underlying_type(c)];
                 } else {
-                        return std::get<xstd::to_underlying_type(ColorT::value)>(m_color);
+                        return std::get<xstd::to_underlying_type(c)>(m_color);
                 }
         }
 
         template<class PieceT, std::enable_if_t<
                 is_piece_v<PieceT>
         >...>
-        constexpr auto pieces([[maybe_unused]] PieceT const p) const noexcept
+        constexpr auto pieces(PieceT const p) const noexcept
         {
                 if constexpr (std::is_same_v<PieceT, piece>) {
                         return m_piece[xstd::to_underlying_type(p)];
                 } else {
-                        return std::get<xstd::to_underlying_type(PieceT::value)>(m_piece);
+                        return std::get<xstd::to_underlying_type(p)>(m_piece);
                 }
         }
 
@@ -133,24 +133,24 @@ private:
         template<class ColorT, std::enable_if_t<
                 is_color_v<ColorT>
         >...>
-        constexpr auto& set_pieces([[maybe_unused]] ColorT const c) noexcept
+        constexpr auto& set_pieces(ColorT const c) noexcept
         {
                 if constexpr (std::is_same_v<ColorT, color>) {
                         return m_color[xstd::to_underlying_type(c)];
                 } else {
-                        return std::get<xstd::to_underlying_type(ColorT::value)>(m_color);
+                        return std::get<xstd::to_underlying_type(c)>(m_color);
                 }
         }
 
         template<class PieceT, std::enable_if_t<
                 is_piece_v<PieceT>
         >...>
-        constexpr auto& set_pieces([[maybe_unused]] PieceT const p) noexcept
+        constexpr auto& set_pieces(PieceT const p) noexcept
         {
                 if constexpr (std::is_same_v<PieceT, piece>) {
                         return m_piece[xstd::to_underlying_type(p)];
                 } else {
-                        return std::get<xstd::to_underlying_type(PieceT::value)>(m_piece);
+                        return std::get<xstd::to_underlying_type(p)>(m_piece);
                 }
         }
 };
