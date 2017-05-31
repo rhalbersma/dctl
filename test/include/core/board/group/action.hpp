@@ -1,5 +1,5 @@
 #pragma once
-#include <core/board/group/primitives.hpp>           // set, op, id
+#include <core/board/group/primitives.hpp>      // set, op, id
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 
 namespace dctl {
