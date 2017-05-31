@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/core/action/traits/notation.hpp>      // Notation
+#include <dctl/core/action/traits/notation.hpp> // notation
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <ios>                                  // ios_base, iword, xalloc
 
@@ -18,21 +18,21 @@ public:
 inline
 auto& algebraic(std::ios_base& str)
 {
-        str.iword(setnotation::index()) = xstd::to_underlying_type(Notation::algebraic);
+        str.iword(setnotation::index()) = xstd::to_underlying_type(notation::algebraic);
         return str;
 }
 
 inline
 auto& numeric(std::ios_base& str)
 {
-        str.iword(setnotation::index()) = xstd::to_underlying_type(Notation::numeric);
+        str.iword(setnotation::index()) = xstd::to_underlying_type(notation::numeric);
         return str;
 }
 
 inline
 auto gnotation(std::ios_base& str)
 {
-        return static_cast<Notation>(str.iword(setnotation::index()));
+        return static_cast<notation>(str.iword(setnotation::index()));
 }
 
 }       // namespace dctl

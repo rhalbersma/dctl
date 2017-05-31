@@ -1,9 +1,8 @@
 #pragma once
-#include <type_traits>  // conditional, integral_constant
 
 namespace dctl {
 
-enum class Notation
+enum class notation
 {
         /* zero is reserved */
         algebraic = 1,
@@ -13,18 +12,12 @@ enum class Notation
 namespace move {
 namespace traits {
 
-template<Notation N>
-using notation_constant = std::integral_constant<Notation, N>;
-
 template<class Rules, class Board>
-struct xnotation
-:
-        std::conditional_t<
-                (Board::width == 10),
-                notation_constant<Notation::numeric>,
-                notation_constant<Notation::algebraic>
-        >
-{};
+constexpr auto notation_v =
+        Board::width == 10 ?
+        notation::numeric :
+        notation::algebraic
+;
 
 }       // namespace traits
 }       // namespace move

@@ -1,9 +1,9 @@
 #pragma once
-#include <dctl/core/action/action.hpp>       // action
-#include <dctl/core/action/manip.hpp>        // notation, pushsep, jumpsep
-#include <dctl/core/action/traits.hpp>       // notation, pushsep, jumpsep
-#include <dctl/core/rule_traits.hpp>         // jumpsep, pushsep
-#include <dctl/util/type_traits.hpp> // board_t, rules_t
+#include <dctl/core/action/action.hpp>  // action
+#include <dctl/core/action/manip.hpp>   // notation, pushsep, jumpsep
+#include <dctl/core/action/traits.hpp>  // notation, pushsep, jumpsep
+#include <dctl/core/rule_traits.hpp>    // jumpsep, pushsep
+#include <dctl/util/type_traits.hpp>    // board_t, rules_t
 #include <cassert>                      // assert
 #include <iosfwd>                       // ostream
 #include <sstream>                      // stringstream
@@ -15,7 +15,7 @@ template<class Rules, class Board>
 auto getnotation(std::ios_base& str)
 {
         auto const iword = gnotation(str);
-        return xstd::to_underlying_type(iword) ? iword : traits::xnotation<Rules, Board>::value;
+        return xstd::to_underlying_type(iword) ? iword : traits::notation_v<Rules, Board>;
 }
 
 template<class Rules>
@@ -83,8 +83,8 @@ template<class CharT, class Traits, class Rules, class Board>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> const& a)
 {
         switch(move::getnotation<Rules, Board>(ostr)) {
-        case Notation::algebraic : return move::print_algebraic(ostr, a);
-        case Notation::numeric   : return move::print_numeric(ostr, a);
+        case notation::algebraic : return move::print_algebraic(ostr, a);
+        case notation::numeric   : return move::print_numeric(ostr, a);
         }
 	return ostr;
 }
