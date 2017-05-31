@@ -19,7 +19,7 @@ namespace block_adl {
 template<class Board>
 struct base_position
 {
-        using position_type = c2p2e::position<Board>;
+        using position_type = wpo::position<Board>;
         position_type m_position;
 };
 

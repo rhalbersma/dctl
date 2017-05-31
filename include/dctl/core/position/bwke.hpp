@@ -87,13 +87,13 @@ public:
         template<class PieceT, std::enable_if_t<
                 is_piece_v<PieceT>
         >...>
-        constexpr auto pieces([[maybe_unused]] PieceT const p) const noexcept
+        constexpr auto pieces(PieceT const p) const noexcept
         {
                 if constexpr (std::is_same_v<PieceT, piece>) {
                         return p == piece::pawns ? pieces(pawns_c) : pieces(kings_c);
                 } else {
-                        if constexpr (PieceT::value == piece::pawns) { return m_kings ^ pieces(occup_c); }
-                        if constexpr (PieceT::value == piece::kings) { return m_kings;                   }
+                        if constexpr (p == piece::pawns) { return m_kings ^ pieces(occup_c); }
+                        if constexpr (p == piece::kings) { return m_kings;                   }
                 }
         }
 
@@ -101,13 +101,13 @@ public:
                 is_color_v<ColorT> &&
                 is_piece_v<PieceT>
         >...>
-        constexpr auto pieces(ColorT const c, [[maybe_unused]] PieceT const p) const noexcept
+        constexpr auto pieces(ColorT const c, PieceT const p) const noexcept
         {
                 if constexpr (std::is_same_v<PieceT, piece>) {
                         return p == piece::pawns ? pieces(c, pawns_c) : pieces(c, kings_c);
                 } else {
-                        if constexpr (PieceT::value == piece::pawns) { return pieces(c) & ~m_kings; }
-                        if constexpr (PieceT::value == piece::kings) { return pieces(c) &  m_kings; }
+                        if constexpr (p == piece::pawns) { return pieces(c) & ~m_kings; }
+                        if constexpr (p == piece::kings) { return pieces(c) &  m_kings; }
                 }
         }
 
