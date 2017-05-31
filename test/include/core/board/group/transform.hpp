@@ -9,7 +9,7 @@ template<class UnaryFunction, class Arg>
 constexpr auto iterate(UnaryFunction fun, Arg const& arg, int const n) noexcept
         -> Arg
 {
-        return (n == 0) ? arg : fun(iterate(fun, arg, n - 1));
+        return n == 0 ? arg : fun(iterate(fun, arg, n - 1));
 }
 
 }       // namespace detail

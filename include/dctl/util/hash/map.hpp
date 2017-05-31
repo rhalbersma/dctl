@@ -118,7 +118,7 @@ public:
                 auto const it = std::find_if(first, last, [&](auto const& block) {
                         return tag_equal{}(block.first, tagger{}(key, address));
                 });
-                return (it != last) ? &(it->second) : nullptr;
+                return it != last ? &(it->second) : nullptr;
         }
 
 private:

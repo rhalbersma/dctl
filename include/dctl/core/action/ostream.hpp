@@ -21,16 +21,18 @@ auto getnotation(std::ios_base& str)
 template<class Rules>
 auto getpushsep(std::ios_base& str)
 {
-        if (auto const iword = pushsep(str))
+        if (auto const iword = pushsep(str)) {
                 return iword;
+        }
         return pushsep_v<Rules>;
 }
 
 template<class Rules>
 auto getjumpsep(std::ios_base& str)
 {
-        if (auto const iword = jumpsep(str))
+        if (auto const iword = jumpsep(str)) {
                 return iword;
+        }
         return jumpsep_v<Rules>;
 }
 
@@ -38,7 +40,7 @@ template<class Action>
 auto separator(std::ostream& ostr, Action const& a)
 {
         using rules_type = rules_t<Action>;
-        return (a.is_jump() ? getjumpsep<rules_type>(ostr) : getpushsep<rules_type>(ostr));
+        return a.is_jump() ? getjumpsep<rules_type>(ostr) : getpushsep<rules_type>(ostr);
 }
 
 template<class Action>

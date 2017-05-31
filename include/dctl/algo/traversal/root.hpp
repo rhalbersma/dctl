@@ -140,7 +140,7 @@ struct Enhancements<hash_tag, State>
         std::pair<bool, std::size_t> find(State const& s, int depth) const
         {
                 auto const TT_entry = handle_->TT_.find(s);
-                return (TT_entry && TT_entry->depth() == depth) ?
+                return TT_entry && TT_entry->depth() == depth ?
                         std::make_pair(true, std::size_t(TT_entry->nodes())) :
                         std::make_pair(false, std::size_t{0})
                 ;
@@ -149,7 +149,7 @@ struct Enhancements<hash_tag, State>
         template<class Actions>
         std::pair<bool, std::size_t> terminal(State const& s, Actions successor, int depth) const
         {
-                return (depth == 1) ?
+                return depth == 1 ?
                         std::make_pair(true, std::size_t(successor.count(s))) :
                         std::make_pair(false, std::size_t{0})
                 ;

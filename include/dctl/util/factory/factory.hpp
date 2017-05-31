@@ -34,7 +34,7 @@ public:
         auto create(Arg const& input) const
         {
                 auto const it = registry.find(Base::header(input));
-                return (it != std::end(registry)) ? (it->second)(Base::body(input)) : nullptr;
+                return it != std::end(registry) ? (it->second)(Base::body(input)) : nullptr;
         }
 };
 
