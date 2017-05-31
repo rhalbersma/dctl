@@ -68,23 +68,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(StateSize, T, RSequence)
         std::cout << "sizeof(State) = " << sizeof(S) << "(" << sizeof(square_t<board::international>) << ")" << "\n";
 }
 
-#define TEST_CPU_SUPPORT(m) std::cout << "This machine has support for " << #m << ": " << __builtin_cpu_supports(#m) << '\n';
-
 BOOST_AUTO_TEST_CASE(Grid)
 {
-	__builtin_cpu_init();
-	TEST_CPU_SUPPORT(cmov)
-	TEST_CPU_SUPPORT(mmx)
-	TEST_CPU_SUPPORT(popcnt)
-	TEST_CPU_SUPPORT(sse)
-	TEST_CPU_SUPPORT(sse2)
-	TEST_CPU_SUPPORT(sse3)
-	TEST_CPU_SUPPORT(ssse3)
-	TEST_CPU_SUPPORT(sse4.1)
-	TEST_CPU_SUPPORT(sse4.2)
-	TEST_CPU_SUPPORT(avx)
-	TEST_CPU_SUPPORT(avx2)
-	TEST_CPU_SUPPORT(avx512f)
         auto const d = board::detail::dimensions{1,1,true};
         auto const i = board::detail::InnerGrid{d};
         auto const o = board::detail::OuterGrid{i, 2};

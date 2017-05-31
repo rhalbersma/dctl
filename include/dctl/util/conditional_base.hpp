@@ -11,8 +11,8 @@ struct tagged_empty
         static constexpr auto static_assert_type_traits() noexcept
         {
                 using T = tagged_empty<Tag>;
-                static_assert(std::is_empty<T>{});
-                static_assert(std::is_pod<T>{});
+                static_assert(std::is_empty_v<T>);
+                static_assert(std::is_pod_v<T>);
         }
 
         tagged_empty() = default;
@@ -28,7 +28,7 @@ struct conditional_base
 {
         static constexpr auto static_assert_type_traits() noexcept
         {
-                static_assert(!Condition || std::is_pod<Base>{});
+                static_assert(!Condition || std::is_pod_v<Base>);
         }
 };
 

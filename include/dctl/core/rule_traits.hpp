@@ -97,7 +97,7 @@ struct equal_to
         {
                 using rules_type1 = rules_t<std::decay_t<Action1>>;
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::is_same<rules_type1, rules_type2>{});
+                static_assert(std::is_same_v<rules_type1, rules_type2>);
                 return
                         precedence_v<rules_type1>(std::forward<Action1>(a1)) ==
                         precedence_v<rules_type2>(std::forward<Action2>(a2))
@@ -112,7 +112,7 @@ struct less
         {
                 using rules_type1 = rules_t<std::decay_t<Action1>>;
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::is_same<rules_type1, rules_type2>{});
+                static_assert(std::is_same_v<rules_type1, rules_type2>);
                 return
                         precedence_v<rules_type1>(std::forward<Action1>(a1)) <
                         precedence_v<rules_type2>(std::forward<Action2>(a2))

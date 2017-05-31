@@ -4,6 +4,9 @@
 
 namespace dctl {
 
+template <class T, class... Args>
+constexpr auto is_any_of_v = (std::is_same_v<T, Args> || ...);
+
 enum class color : unsigned char { black, white };
 
 template<color Side>
@@ -11,6 +14,9 @@ using color_ = std::integral_constant<color, Side>;
 
 using black_ = color_<color::black>;
 using white_ = color_<color::white>;
+
+template<class ColorT>
+constexpr auto is_color_v = is_any_of_v<ColorT, color, black_, white_>;
 
 template<color Side>
 constexpr auto color_c = color_<Side>{};
@@ -39,6 +45,9 @@ using piece_ = std::integral_constant<piece, Type>;
 
 using pawns_ = piece_<piece::pawns>;
 using kings_ = piece_<piece::kings>;
+
+template<class PieceT>
+constexpr auto is_piece_v = is_any_of_v<PieceT, piece, pawns_, kings_>;
 
 template<piece Type>
 constexpr auto piece_c = piece_<Type>{};

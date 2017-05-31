@@ -77,7 +77,7 @@ public:
         template<class HashAlgorithm>
         friend auto hash_append(HashAlgorithm& h, node const& n)
         {
-                static_assert(std::is_same<HashAlgorithm, acme::identity_hash>{});
+                static_assert(std::is_same_v<HashAlgorithm, acme::identity_hash>);
                 using xstd::hash_append;
                 hash_append(h, n.m_hash);
         }
@@ -203,7 +203,7 @@ public:
         template<class ExternalHash>
         friend void hash_append(ExternalHash& h, wrap const& w)
         {
-                static_assert(std::is_same<ExternalHash, acme::identity_hash>{});
+                static_assert(std::is_same_v<ExternalHash, acme::identity_hash>);
                 using xstd::hash_append;
                 hash_append(h, w.m_hash);
         }

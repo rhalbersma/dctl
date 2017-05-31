@@ -42,7 +42,7 @@ public:
         auto generate(State const& s, SequenceContainer& a) const
         {
                 using builder_type = /*std::conditional_t<
-                        std::is_same<Sequence, MoveCounter> && !DuplicatesPolicy{},
+                        std::is_same_v<Sequence, MoveCounter> && !DuplicatesPolicy,
                         Counter<to_move_, DuplicatesPolicy, State>,*/
                         builder<to_move_, DuplicatesPolicy, State, SequenceContainer>;
                 //>;

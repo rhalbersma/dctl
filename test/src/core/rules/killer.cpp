@@ -17,7 +17,7 @@ using Variants = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RuleTraits, T, Variants)
 {
-        static_assert(std::is_base_of<T, killer<T>>{});
+        static_assert(std::is_base_of_v<T, killer<T>>);
         static_assert(is_halt_behind_king_v<killer<T>>);
 }
 

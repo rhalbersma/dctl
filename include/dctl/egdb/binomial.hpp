@@ -16,7 +16,7 @@ class binomial
         static constexpr auto static_assert_type_traits() noexcept
         {
                 static_assert(0 <= K); static_assert(K <= N);
-                static_assert(std::is_integral<IntegralType>{});
+                static_assert(std::is_integral_v<IntegralType>);
         }
 
         using table_type = std::array<std::array<IntegralType, K + 1>, N + 1>;

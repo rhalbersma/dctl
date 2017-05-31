@@ -119,30 +119,16 @@ struct cycle<SecondPlayerWin>
         }
 };
 
-namespace detail {
-
 template<class State>
-bool is_no_progress(State const& /* s */, std::false_type)
-{
-        return false;
-}
-
-template<class State>
-bool is_no_progress(State const& /* s */, std::true_type)
-{
-        //using rules_type = rules_t<State>;
-
-        return false;//s.reversible_actions() >= max_reversible_moves_v<rules_type>;
-}
-
-}       // namespace detail
-
-template<class State>
-bool is_no_progress(State const& s)
+bool is_no_progress([[maybe_unused]] State const& s)
 {
         using rules_type = rules_t<State>;
 
-        return detail::is_no_progress(s, is_restricted_reversible_moves<rules_type>{});
+        if constexpr (is_restricted_reversible_moves_v<rules_type>) {
+                return false;
+        } else {
+                return false;//s.reversible_actions() >= max_reversible_moves_v<rules_t<State>>;
+        }
 }
 
 template<class State>

@@ -66,7 +66,7 @@ class action
 
         static constexpr auto static_assert_type_traits() noexcept
         {
-                static_assert(std::is_pod<action>{});
+                static_assert(std::is_pod_v<action>);
         }
 
         constexpr auto assert_invariants() const noexcept
@@ -191,7 +191,7 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-		std::is_same<RulesType, rules_type>{} &&
+		std::is_same_v<RulesType, rules_type> &&
         	is_contents_precedence_v<RulesType>
         >...>
         constexpr auto num_captured_kings() const noexcept
@@ -200,7 +200,7 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-		std::is_same<RulesType, rules_type>{} &&
+		std::is_same_v<RulesType, rules_type> &&
 		is_ordering_precedence_v<RulesType>
         >...>
         constexpr auto piece_order() const noexcept

@@ -3,8 +3,8 @@
 #include <dctl/core/color_piece.hpp>
 #include <dctl/core/rule_traits.hpp>
 #include <dctl/core/position.hpp>
-#include <dctl/util/conditional_base.hpp>    // conditional_base
-#include <dctl/util/type_traits.hpp>         // set_t
+#include <dctl/util/conditional_base.hpp>       // conditional_base
+#include <dctl/util/type_traits.hpp>            // set_t
 #include <hash_append/hash_append.h>            // hash_append
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
@@ -19,7 +19,7 @@ namespace block_adl {
 template<class Board>
 struct base_position
 {
-        using position_type = wpo::position<Board>;
+        using position_type = bwk::position<Board>;
         position_type m_position;
 };
 
@@ -64,7 +64,7 @@ public:
 private:
         static constexpr auto static_assert_type_traits() noexcept
         {
-                static_assert(std::is_pod<state>{});
+                static_assert(std::is_pod_v<state>);
         }
 
         constexpr auto assert_invariants() const noexcept
@@ -102,8 +102,8 @@ public:
         template<class Action>
         auto make(Action const& a)
         {
-                static_assert(std::is_same<rules_type, rules_t<Action>>{});
-                static_assert(std::is_same<board_type, board_t<Action>>{});
+                static_assert(std::is_same_v<rules_type, rules_t<Action>>);
+                static_assert(std::is_same_v<board_type, board_t<Action>>);
                 this->m_position.make(to_move(), a);
                 pass_turn();
                 assert_invariants();
@@ -118,8 +118,8 @@ public:
         template<class Action>
         auto undo(Action const& a)
         {
-                static_assert(std::is_same<rules_type, rules_t<Action>>{});
-                static_assert(std::is_same<board_type, board_t<Action>>{});
+                static_assert(std::is_same_v<rules_type, rules_t<Action>>);
+                static_assert(std::is_same_v<board_type, board_t<Action>>);
                 pass_turn();
                 this->m_position.undo(to_move(), a);
                 assert_invariants();

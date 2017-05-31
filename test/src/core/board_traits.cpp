@@ -53,11 +53,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, board::BoardSequence)
 
 BOOST_AUTO_TEST_CASE(Invert)
 {
-        static_assert(std::is_same<invert_t<board::checkers>, board::italian >{});
-        static_assert(std::is_same<invert_t<board::italian >, board::checkers>{});
+        static_assert(std::is_same_v<invert_t<board::checkers>, board::italian >);
+        static_assert(std::is_same_v<invert_t<board::italian >, board::checkers>);
 
-        static_assert(std::is_same<invert_t<board::canadian >, board::srilankan>{});
-        static_assert(std::is_same<invert_t<board::srilankan>, board::canadian >{});
+        static_assert(std::is_same_v<invert_t<board::canadian >, board::srilankan>);
+        static_assert(std::is_same_v<invert_t<board::srilankan>, board::canadian >);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(InvertIsInvolution, T, board::BoardSequence)

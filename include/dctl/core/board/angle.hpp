@@ -10,8 +10,8 @@ class angle
 {
         static constexpr auto static_assert_type_traits() noexcept
         {
-                static_assert(std::is_pod<angle>{});
-                static_assert(std::is_nothrow_constructible<angle, int>{});
+                static_assert(std::is_pod_v<angle>);
+                static_assert(std::is_nothrow_constructible_v<angle, int>);
         }
 
         constexpr auto assert_invariants() const noexcept

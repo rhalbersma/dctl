@@ -1,21 +1,21 @@
 #pragma once
-#include <dctl/core/board_traits.hpp>                // squares
-#include <dctl/core/color_piece.hpp>                 // color, black, white, piece, pawns, kings, occup, empty
-#include <dctl/core/position/legal.hpp>        // is_legal
-#include <dctl/util/type_traits.hpp>         // set_t
-#include <hash_append/hash_append.h>            // hash_append
-#include <tuple>                                // tie
-#include <type_traits>                          // is_pod
+#include <dctl/core/board_traits.hpp>   // squares
+#include <dctl/core/color_piece.hpp>    // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/core/position/legal.hpp> // is_legal
+#include <dctl/util/type_traits.hpp>    // set_t
+#include <hash_append/hash_append.h>    // hash_append
+#include <tuple>                        // tie
+#include <type_traits>                  // is_pod
 
 namespace dctl {
-namespace wpo {
+namespace wko {
 
 template<class Board>
 class position
 {
         static constexpr auto static_assert_type_traits() noexcept
         {
-                static_assert(std::is_pod<position>{});
+                static_assert(std::is_pod_v<position>);
         }
 
         set_t<Board> m_white;
@@ -45,58 +45,66 @@ public:
                 assert(is_legal<board_type>(black_pawns, white_pawns));
         }
 
-        template<class Action>
-        constexpr auto make(color const c, Action const& a) // Throws: Nothing.
+        template<class ColorT, class Action, std::enable_if_t<
+                is_color_v<ColorT>
+        >...>
+        constexpr auto make(ColorT const c, Action const& a) // Throws: Nothing.
         {
-                m_occup
-                        .erase(a.from())
-                        .insert(a.dest())
-                ;
-
-                if (c == color::white) {
-                        m_white
-                                .erase(a.from())
-                                .insert(a.dest())
-                        ;
-                }
-
-                if (a.with() == piece::pawns) {
-                        m_pawns.erase(a.from());
-                }
-
-                if (a.into() == piece::pawns) {
-                        m_pawns.insert(a.dest());
-                }
-
                 if (a.is_jump()) {
                         m_white -= a.captured_pieces();
                         m_pawns -= a.captured_pieces();
                         m_occup ^= a.captured_pieces();
                 }
+
+                m_occup
+                        .erase(a.from())
+                        .insert(a.dest())
+                ;
+                if constexpr (std::is_same_v<ColorT, color>) {
+                        if (c == color::white) {
+                                m_white
+                                        .erase(a.from())
+                                        .insert(a.dest())
+                                ;
+                        }
+                } else if constexpr (std::is_same_v<ColorT, white_>) {
+                        m_white
+                                .erase(a.from())
+                                .insert(a.dest())
+                        ;
+                }
+                if (a.with() == piece::pawns) {
+                        m_pawns.erase(a.from());
+                }
+                if (a.into() == piece::pawns) {
+                        m_pawns.insert(a.dest());
+                }
         }
 
-        template<color Side>
-        constexpr auto pieces(color_<Side>) const noexcept
+        template<class ColorT, std::enable_if_t<
+                is_color_v<ColorT>
+        >...>
+        constexpr auto pieces([[maybe_unused]] ColorT const c) const noexcept
         {
-                if constexpr (Side == color::black) { return m_white ^ m_occup; }
-                if constexpr (Side == color::white) { return m_white;           }
+                if constexpr (std::is_same_v<ColorT, color>) {
+                        return c == color::black ? pieces(black_c) : pieces(white_c);
+                } else {
+                        if constexpr (ColorT::value == color::black) { return m_white ^ m_occup; }
+                        if constexpr (ColorT::value == color::white) { return m_white;           }
+                }
         }
 
-        constexpr auto pieces(color const c) const noexcept
+        template<class PieceT, std::enable_if_t<
+                is_piece_v<PieceT>
+        >...>
+        constexpr auto pieces([[maybe_unused]] PieceT const p) const noexcept
         {
-                return c == color::black ? pieces(black_c) : pieces(white_c);
-        }
-
-        template<piece Type>
-        constexpr auto pieces(piece_<Type>) const noexcept
-        {
-                if constexpr (Type == piece::pawns) { return m_pawns;           }
-                if constexpr (Type == piece::kings) { return m_pawns ^ m_occup; }
-        }
-
-        constexpr auto pieces(piece const p) const noexcept
-        {
-                return p == piece::pawns ? pieces(pawns_c) : pieces(kings_c);
+                if constexpr (std::is_same_v<PieceT, piece>) {
+                        return p == piece::pawns ? pieces(pawns_c) : pieces(kings_c);
+                } else {
+                        if constexpr (PieceT::value == piece::pawns) { return m_pawns;           }
+                        if constexpr (PieceT::value == piece::kings) { return m_pawns ^ m_occup; }
+                }
         }
 
         template<color Side, piece Type>
@@ -194,5 +202,5 @@ constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs
         return !(rhs < lhs);
 }
 
-}       // namespace wpo
+}       // namespace wko
 }       // namespace dctl

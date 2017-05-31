@@ -183,14 +183,14 @@ private:
         {
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
-                        std::is_same<DuplicatesPolicy, keep_duplicates_tag>{}
+                        std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
                 ){
                         assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
-                        std::is_same<DuplicatesPolicy, drop_duplicates_tag>{}
+                        std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
                 ){
                         assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         if (m_actions.empty() || is_small() || is_unique()) {
@@ -199,7 +199,7 @@ private:
                 }
                 if constexpr (
                         !is_trivial_precedence_v<rules_type> &&
-                        std::is_same<DuplicatesPolicy, keep_duplicates_tag>{}
+                        std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
                 ){
                         if (m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back())) {
                                 return m_actions.push_back(m_candidate_action);
@@ -213,7 +213,7 @@ private:
                 }
                 if constexpr (
                         !is_trivial_precedence_v<rules_type> &&
-                        std::is_same<DuplicatesPolicy, drop_duplicates_tag>{}
+                        std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
                 ){
                         if (m_actions.empty()) {
                                 return m_actions.push_back(m_candidate_action);
@@ -240,7 +240,7 @@ private:
 
         auto is_unique() const // Throws: Nothing.
         {
-                static_assert(std::is_same<DuplicatesPolicy, drop_duplicates_tag>{});
+                static_assert(std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!m_actions.empty());
                 assert(precedence::equal_to{}(m_candidate_action, m_actions.back()));
                 return boost::algorithm::none_of(m_actions, [&](auto const& a) { return a == m_candidate_action; });
