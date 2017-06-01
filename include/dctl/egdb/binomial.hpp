@@ -19,30 +19,9 @@ class binomial
                 static_assert(std::is_integral_v<IntegralType>);
         }
 
-        using table_type = std::array<std::array<IntegralType, K + 1>, N + 1>;
-        static table_type const table;
-
-public:
-        static auto coefficient(int n, int k) // Throws: Nothing.
-                -> IntegralType
-        {
-                if (k > n - k) {
-                        k = n - k;
-                }
-                if (k < 0 || n < 0) {
-                        return 0;
-                }
-                assert(0 <= n); assert(n <= N);
-                assert(0 <= k); assert(k <= K);
-                assert(k <= n / 2);
-                return table[static_cast<std::size_t>(n)][static_cast<std::size_t>(k)];
-        }
-
-private:
         // https://en.wikipedia.org/wiki/Pascal's_triangle
-        static auto pascal_triangle() noexcept
-        {
-                table_type choose;
+        static constexpr auto pascal_triangle = []() {
+                std::array<std::array<IntegralType, K + 1>, N + 1> choose{};
 
                 /*
 
@@ -90,17 +69,29 @@ private:
                 }
 
                 return choose;
+        }();
+
+public:
+        static constexpr auto coefficient(int n, int k) // Throws: Nothing.
+                -> IntegralType
+        {
+                if (k > n - k) {
+                        k = n - k;
+                }
+                if (k < 0 || n < 0) {
+                        return 0;
+                }
+                assert(0 <= n); assert(n <= N);
+                assert(0 <= k); assert(k <= K);
+                assert(k <= n / 2);
+                return pascal_triangle[static_cast<std::size_t>(n)][static_cast<std::size_t>(k)];
         }
 };
-
-template<int N, int K, class IntegralType>
-typename binomial<N, K, IntegralType>::table_type const
-binomial<N, K, IntegralType>::table = binomial<N, K, IntegralType>::pascal_triangle();
 
 }       // namespace detail
 
 template<int N = 64, int K = N / 2>
-auto choose(int const n, int const k) // Throws: Nothing.
+constexpr auto choose(int const n, int const k) // Throws: Nothing.
 {
         // choose(n, k) shall not overflow using signed 64-integers.
         // For n <= 64: all k <= n/2 (e.g. Western chess board).
