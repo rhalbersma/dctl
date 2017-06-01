@@ -25,8 +25,8 @@ public:
         :
                 color_piece_
                 {
-                        {p.num_pieces(color::black, piece::pawns), p.num_pieces(color::black, piece::kings)},
-                        {p.num_pieces(color::white, piece::pawns), p.num_pieces(color::white, piece::kings)}
+                        {p.num_pieces(black_c, pawns_c), p.num_pieces(black_c, kings_c)},
+                        {p.num_pieces(white_c, pawns_c), p.num_pieces(white_c, kings_c)}
                 }
         {}
 
@@ -50,7 +50,7 @@ public:
 
         constexpr auto is_tracked(color c) const noexcept
         {
-                return 0 < num_pieces(c, piece::pawns) && 0 < num_pieces(c, piece::kings);
+                return 0 < num_pieces(c, pawns_c) && 0 < num_pieces(c, kings_c);
         }
 
         constexpr auto is_counted(color c) const noexcept
@@ -67,10 +67,10 @@ public:
         friend auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyPushedKings const& mrp_kings)
         {
                 return
-                        h.index(color::black)[mrp_kings.index(color::black)] ^
-                        h.index(color::white)[mrp_kings.index(color::white)] ^
-                        h.count(color::black)[mrp_kings.count(color::black)] ^
-                        h.count(color::white)[mrp_kings.count(color::white)]
+                        h.index(black_c)[mrp_kings.index(black_c)] ^
+                        h.index(white_c)[mrp_kings.index(white_c)] ^
+                        h.count(black_c)[mrp_kings.count(black_c)] ^
+                        h.count(white_c)[mrp_kings.count(white_c)]
                 ;
         }
 
@@ -96,8 +96,8 @@ private:
                 if (!m.is_promotion())
                         return;
 
-                --num_pieces(m.to_move(), piece::pawns);
-                ++num_pieces(m.to_move(), piece::kings);
+                --num_pieces(m.to_move(), pawns_c);
+                ++num_pieces(m.to_move(), kings_c);
         }
 
         template<class Action>
@@ -108,15 +108,15 @@ private:
 
                 if (
                         is_tracked(!m.to_move()) && (
-                                num_pieces(!m.to_move(), piece::pawns) == m.num_captured(piece::pawns) ||
-                                num_pieces(!m.to_move(), piece::kings) == m.num_captured(piece::kings) ||
-                                (0 < m.num_captured(piece::kings) && m.captured(piece::kings).test(index(!m.to_move())))
+                                num_pieces(!m.to_move(), pawns_c) == m.num_captured(pawns_c) ||
+                                num_pieces(!m.to_move(), kings_c) == m.num_captured(kings_c) ||
+                                (0 < m.num_captured(kings_c) && m.captured(kings_c).test(index(!m.to_move())))
                         )
                 )
                         reset(!m.to_move());
 
-                num_pieces(!m.to_move(), piece::pawns) -= m.num_captured(piece::pawns);
-                num_pieces(!m.to_move(), piece::kings) -= m.num_captured(piece::kings);
+                num_pieces(!m.to_move(), pawns_c) -= m.num_captured(pawns_c);
+                num_pieces(!m.to_move(), kings_c) -= m.num_captured(kings_c);
         }
 
         constexpr void reset(color c)

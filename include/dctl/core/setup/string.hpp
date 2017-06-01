@@ -121,7 +121,7 @@ struct write<pdn::protocol, Token>
                         auto const bs = s.pieces(c);
                         auto n = 0;
                         for (auto sq : bs) {
-                                if (s.pieces(piece::kings).test(sq))
+                                if (s.pieces(kings_c).test(sq))
                                         sstr << Token::king;            // king tag
                                 sstr << Board::square_from_bit(sq) + 1; // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
