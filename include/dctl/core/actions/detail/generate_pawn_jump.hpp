@@ -159,7 +159,7 @@ private:
         auto king_jumps_try_next(Iterator jumper) const
         {
                 static_assert(is_passing_promotion_v<rules_type>);
-                king_jumps{m_builder}.try_next(jumper, passing_promotion_tag{});
+                king_jumps{m_builder}.try_next_passing_promotion(jumper);
         }
 
         template<class Iterator>

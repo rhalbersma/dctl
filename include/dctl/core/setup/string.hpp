@@ -4,7 +4,7 @@
 #include <dctl/core/setup/protocols.hpp>
 #include <dctl/core/setup/i_token.hpp>
 #include <dctl/core/state/state.hpp>
-#include <dctl/util/type_traits.hpp> // set_t
+#include <dctl/util/type_traits.hpp>    // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
 #include <cctype>                       // isdigit
@@ -158,7 +158,7 @@ struct read<Rules, Board, dxp::protocol, Token>
                 sstr >> ch;
                 p_side = read_color<Token>(ch);
 
-                 for (auto sq : Board::squares()) {
+                 for (auto sq = 0; sq < Board::size(); ++sq) {
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
@@ -180,7 +180,7 @@ struct write<dxp::protocol, Token>
         {
                 std::stringstream sstr;
                 sstr << write_color<Token>(p.to_move());    // side to move
-                for (auto sq : Board::squares()) {
+                for (auto sq = 0; sq < Board::size(); ++sq) {
                         auto b = Board::bit_from_square(sq);    // convert square to bit
                         sstr << content<Token>(p, b);           // bit content
                 }

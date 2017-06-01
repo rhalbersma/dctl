@@ -1,15 +1,15 @@
 #pragma once
-#include <dctl/core/board/angle.hpp>                 // angle, is_orthogonal
+#include <dctl/core/board/angle.hpp>                    // angle, is_orthogonal
+#include <dctl/core/board/mask/jump_start.hpp>          // jump_start
 #include <dctl/core/board/mask/push_sources.hpp>
-#include <dctl/core/board/mask/jump_start.hpp>       // jump_start
 #include <dctl/core/board/ray.hpp>
 #include <dctl/core/color_piece.hpp>
 #include <dctl/core/rule_traits.hpp>
-#include <dctl/util/type_traits.hpp>         // board_t, rules_t, set_t, value_t
-#include <boost/algorithm/cxx11/none_of.hpp>    // none_of
-#include <cassert>                              // assert
-#include <iterator>                             // begin, end, prev
-#include <type_traits>                          // is_same
+#include <dctl/util/type_traits.hpp>                    // board_t, rules_t, set_t, value_t
+#include <algorithm>                                    // none_of
+#include <cassert>                                      // assert
+#include <iterator>                                     // begin, end, prev
+#include <type_traits>                                  // is_same
 
 namespace dctl {
 namespace detail {
@@ -243,7 +243,7 @@ private:
                 static_assert(std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!m_actions.empty());
                 assert(precedence::equal_to{}(m_candidate_action, m_actions.back()));
-                return boost::algorithm::none_of(m_actions, [&](auto const& a) { return a == m_candidate_action; });
+                return std::none_of(m_actions.cbegin(), m_actions.cend(), [&](auto const& a) { return a == m_candidate_action; });
         }
 };
 

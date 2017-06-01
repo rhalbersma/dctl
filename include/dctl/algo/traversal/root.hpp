@@ -12,13 +12,12 @@
 #include <dctl/util/stopwatch.hpp>
 #include <hash_append/hash_append.h>
 #include <hash_append/identity_hash.h>
-#include <boost/container/static_vector.hpp>
-#include <boost/range/numeric.hpp>
 #include <cstddef>
 #include <iomanip>
 #include <iostream>
 #include <iterator>                     // distance
 #include <memory>
+#include <numeric>
 #include <utility>
 #include <map>
 #include <unordered_map>
@@ -214,7 +213,8 @@ auto perft_inplace(Actions const& successor, State& s, int depth)
                 if (depth == 0) return 1;
         }
 
-        return boost::accumulate(legal_actions(successor, s), int64_t{0}, [&](auto sum, auto const& a){
+        auto const moves = legal_actions(successor, s);
+        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a){
                 s.make(a);
                 auto const res = sum + perft_inplace(successor, s, depth - 1);
                 s.undo(a);
@@ -234,7 +234,7 @@ auto perft_state(Actions const& successor, State const& s, int depth)
 
         static_vector<action<rules_t<State>, board_t<State>>> moves;
         successor.generate(s, moves);
-        return boost::accumulate(moves, int64_t{0}, [&](auto sum, auto const& a){
+        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a){
                 return sum + perft_state<IsBulk>(successor, result(s, a), depth - 1);
         });
 }
@@ -257,7 +257,8 @@ auto perft_node(Actions const& successor, Node const& n, int depth)
                 if (depth == 0) return 1;
         }
 
-        return boost::accumulate(out_edges(n, successor), int64_t{0}, [&](auto sum, auto const& a){
+        auto const moves = out_edges(n, successor);
+        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a){
                 return sum + perft_node<IsBulk>(successor, child(n, a), depth - 1);
         });
 }
@@ -317,7 +318,8 @@ auto dfs_visit(ImplicitGraph const& g, Vertex const& u, Visitor& vis)
                 return vis.frontier_vertex(u, g);
         }
 
-        auto const res = boost::accumulate(out_edges(u, g), int64_t{0}, [&](auto sum, auto const& e){
+        auto const moves = out_edges(u, g);
+        auto const res = std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& e){
                 return sum + dfs_visit(g, child(u, e), vis);
         });
 

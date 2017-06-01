@@ -2,7 +2,6 @@
 #include <dctl/core/setup/content.hpp>
 #include <dctl/core/setup/i_token.hpp>
 #include <dctl/util/type_traits.hpp>
-#include <boost/range/irange.hpp>
 #include <iomanip>                      // setw
 #include <sstream>                      // stringstream
 #include <string>                       // string
@@ -26,8 +25,8 @@ public:
                 using Coord = board::detail::coordinates<board::detail::upper_left>;
 
                 std::stringstream ostr;
-                for (auto y : boost::irange(0, Board::height)) {
-                        for (auto x : boost::irange(0, Board::width)) {
+                for (auto y = 0; y < Board::height; ++y) {
+                        for (auto x = 0; x < Board::width; ++x) {
                                 auto const coord = Coord{x, y};
                                 if (Board::is_square(coord)) {
                                         ostr << std::setw(2) << content<Content>(s, Board::bit_from_square(Board::to_square(coord)));

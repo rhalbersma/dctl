@@ -1,20 +1,19 @@
 #pragma once
-#include <dctl/core/board/angle.hpp>                 // angle, inverse
-#include <dctl/core/board/detail/coordinates.hpp>    // to_llo, transform
-#include <dctl/core/board/detail/dimensions.hpp>     // dimensions
-#include <dctl/core/board/detail/grid.hpp>           // InnerGrid, OuterGrid
-#include <dctl/core/color_piece.hpp>                 // black, white
-#include <dctl/util/fill_array.hpp>          // fill_array
-#include <xstd/cstdint.hpp>                     // uint_fast
-#include <xstd/cstdlib.hpp>                     // align_on
-#include <xstd/int_set.hpp>                     // int_set
-#include <boost/range/irange.hpp>               // irange
-#include <algorithm>                            // min
-#include <array>                                // array
-#include <cstddef>                              // size_t
-#include <iomanip>                              // setfill
-#include <limits>                               // digits
-#include <sstream>                              // stringstream
+#include <dctl/core/board/angle.hpp>                    // angle, inverse
+#include <dctl/core/board/detail/coordinates.hpp>       // to_llo, transform
+#include <dctl/core/board/detail/dimensions.hpp>        // dimensions
+#include <dctl/core/board/detail/grid.hpp>              // InnerGrid, OuterGrid
+#include <dctl/core/color_piece.hpp>                    // black, white
+#include <dctl/util/fill_array.hpp>                     // fill_array
+#include <xstd/cstdint.hpp>                             // uint_fast
+#include <xstd/cstdlib.hpp>                             // align_on
+#include <xstd/int_set.hpp>                             // int_set
+#include <algorithm>                                    // min
+#include <array>                                        // array
+#include <cstddef>                                      // size_t
+#include <iomanip>                                      // setfill
+#include <limits>                                       // digits
+#include <sstream>                                      // stringstream
 
 namespace dctl {
 namespace board {
@@ -70,16 +69,6 @@ public:
 
         using    set_type = xstd::int_set<xstd::align_on(NumBits, xstd::int_set<NumBits>::capacity())>;
         using square_type = xstd::uint_fast_t<set_type::max_size()>;
-
-        static auto squares() noexcept
-        {
-                return boost::irange(0, size());
-        }
-
-        static auto bitnrs() noexcept
-        {
-                return boost::irange(0, bits());
-        }
 
         static auto numeric_from_bit(int const n)
         {

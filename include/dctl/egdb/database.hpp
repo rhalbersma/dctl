@@ -36,7 +36,7 @@ public:
 
         auto scan_directory()
         {
-                namespace fs = std::experimental::filesystem;   // or boost::filesystem
+                namespace fs = std::experimental::filesystem;
                 try {
                         if (fs::exists(m_dir_path) && fs::is_directory(m_dir_path))
                         {

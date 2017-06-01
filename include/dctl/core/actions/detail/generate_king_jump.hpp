@@ -46,7 +46,7 @@ public:
         }
 
         template<class Iterator>
-        auto try_next(Iterator jumper, passing_promotion_tag) const
+        auto try_next_passing_promotion(Iterator jumper) const
         {
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(m_builder.with() == piece::pawns);

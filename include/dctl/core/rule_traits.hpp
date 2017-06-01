@@ -37,14 +37,9 @@ using king_range_category_t = std::conditional_t<
 
 DCTL_PP_TTI_CONSTANT(is_land_behind_piece, false)
 DCTL_PP_TTI_CONSTANT(is_halt_behind_king, false)
-
 DCTL_PP_TTI_CONSTANT(is_backward_pawn_jump, false)
-
 DCTL_PP_TTI_CONSTANT(is_superior_rank_jump, false)
-
 DCTL_PP_TTI_CONSTANT(is_passing_promotion, false)
-struct passing_promotion_tag {};
-
 DCTL_PP_TTI_CONSTANT(is_passing_capture, false)
 
 template<class Rules>
