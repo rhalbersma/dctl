@@ -66,4 +66,4 @@ before_script:
 script: 
 - |
   make -j2
-  ctest -E "search|traversal"
+  ctest -E "action|setup|ui|divide|search|traversal"
