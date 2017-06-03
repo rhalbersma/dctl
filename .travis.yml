@@ -23,11 +23,20 @@ addons:
 install:
   
 ################################################################################
-# All the dependencies are installed in ${TRAVIS_BUILD_DIR}/deps/
+# All the dependencies are installed in ${TRAVIS_BUILD_DIR}/..
 ################################################################################
 - |
-  DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  DEPS_DIR="${TRAVIS_BUILD_DIR}/.."
   mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
+  
+################################################################################
+# Install the dependent GitHub repositories xstd and hash_append
+################################################################################
+- |  
+  git clone https://github.com/rhalbersma/xstd.git
+  mkdir -p ext && cd ext
+  git clone https://github.com/rhalbersma/hash_append.git
+  cd ..  
   
 ################################################################################
 # Install the latest CMake
