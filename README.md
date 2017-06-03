@@ -8,7 +8,8 @@ DCTL: Draughts and Checkers Template Library
 
 A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting almost all known rules variations, board sizes and game objectives.
 
-* **DISCLAIMER:** This library is currently in a [pre-alpha](https://en.wikipedia.org/wiki/Software_release_life_cycle#Pre-alpha) stage. All code is subject to change without prior notice. 
+> #### Disclaimer 
+> This library is currently in a [pre-alpha](https://en.wikipedia.org/wiki/Software_release_life_cycle#Pre-alpha) stage. All code is subject to change without prior notice. 
 
 Introduction
 ------------
@@ -25,7 +26,8 @@ Usage
 
 The DCTL provides a series of [C++ templates](http://en.wikipedia.org/wiki/Template_(C%2B%2B)) to define the board geometry and game rules of draughts variants. With these templates, one can read and write draughts positions from so-called FEN strings using [Portable Draughts Notation](http://www.10x10.dse.nl/pdn/introduction.html). Once a position variable has been initialized with such a FEN string, the DCTL provides further templates to analyze them using a search algorithm, which is supported by a typical board game [engine infrastructure](http://chessprogramming.wikispaces.com/) of e.g. a move generator, evaluation function and hash table.
 
-* **TIP**: Consult the test-suite sources (under the `dctl/test` directory) for concrete usage examples.
+> #### Tip 
+> Consult the test-suite sources (under the `dctl/test` directory) for concrete usage examples.
 
 Road-map
 -------
@@ -57,13 +59,15 @@ The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org)
 
 The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_64_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_64_0/more/getting_started/index.html) on how to do this on your system.
 
-* **NOTE:** compilation of the Boost libraries is **ONLY** a requirement for running the test-suite, and **NOT** for using the DCTL headers with your application.  
+> #### Note 
+> Compilation of the Boost libraries is **ONLY** a requirement for running the test-suite, and **NOT** for using the DCTL headers with your application.  
 
 ##### CMake
 
 The test-suite is built using the [CMake](http://www.cmake.org/) cross-platform build system. Most Linux development environments can directly access the CMake generated Makefiles. This has been tested with [Eclipse-CDT 4.4](http://www.vtk.org/Wiki/CMake:Eclipse_UNIX_Tutorial) and [QtCreator 3.0](http://qt-project.org/doc/qtcreator-3.0/creator-project-cmake.html). Instead of `make`, it is also possible to use the `ninja` build tool through `cmake -GNinja`. To generate native build solutions for your own development environment, consult the [CMake documentation](http://www.cmake.org/cmake/help/runningcmake.html).
 
-* **NOTE:** CMake is **ONLY** a requirement for building the test-suite, and **NOT** for using the DCTL headers with your application. 
+> #### Note 
+> CMake is **ONLY** a requirement for building the test-suite, and **NOT** for using the DCTL headers with your application. 
 
 Installation
 ------------
@@ -97,7 +101,8 @@ To completely regenerate the test-suite's build solution, simply delete the cont
 
 If you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
-* **NOTE**: your application is completely independent of the test-suite. Building and running the test-suite is a sufficient but not a necessary step in order to use the DCTL headers with your own application. 
+> #### Note 
+> Your application is completely independent of the test-suite. Building and running the test-suite is a sufficient but not a necessary step in order to use the DCTL headers with your own application. 
 
 ##### Build your application
 

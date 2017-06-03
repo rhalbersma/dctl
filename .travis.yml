@@ -55,5 +55,5 @@ before_script:
  
 script: 
 - |
-  make -j2 VERBOSE=1
-  ctest -E "search|traversal" -VV
+  make -j2
+  ctest -E "search|traversal"
