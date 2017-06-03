@@ -11,7 +11,7 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - kzemek/boost
+    - kzemek-boost
     - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main'
       key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'   
     packages:
