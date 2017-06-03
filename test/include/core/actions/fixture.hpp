@@ -2,14 +2,14 @@
 #include <dctl/core/action/ostream.hpp>
 #include <dctl/core/state/state.hpp>
 #include <dctl/core/setup/setup.hpp>
-#include <dctl/core/actions.hpp>                             // generate
-#include <boost/algorithm/cxx11/is_permutation.hpp>     // is_permutation
-#include <boost/algorithm/string.hpp>                   // trim_copy
-#include <boost/range/adaptor/transformed.hpp>          // transformed
-#include <boost/test/unit_test.hpp>                     // BOOST_CHECK, BOOST_CHECK_EQUAL
-#include <functional>                                   // cref
-#include <string>                                       // string
-#include <vector>                                       // vector
+#include <dctl/core/actions.hpp>                // generate
+#include <boost/algorithm/string.hpp>           // trim_copy
+#include <boost/range/adaptor/transformed.hpp>  // transformed
+#include <boost/test/unit_test.hpp>             // BOOST_CHECK, BOOST_CHECK_EQUAL
+#include <algorithm>
+#include <functional>                           // cref
+#include <string>                               // string
+#include <vector>                               // vector
 
 namespace dctl {
 
@@ -29,8 +29,8 @@ struct Fixture
                 auto const notations = moves | boost::adaptors::transformed(std::cref(move_str));
 
                 BOOST_CHECK(
-                        boost::algorithm::is_permutation(
-                                rng, notations.begin(), [](auto const& lhs, auto const& rhs) {
+                        std::is_permutation(
+                                rng.begin(), rng.end(), notations.begin(), [](auto const& lhs, auto const& rhs) {
                                 return
                                         boost::algorithm::trim_copy(lhs) ==
                                         boost::algorithm::trim_copy(rhs)
