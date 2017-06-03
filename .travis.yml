@@ -2,8 +2,8 @@ os: linux
 dist: trusty
 language: cpp
 env:
-- CXX_COMPILER=g++-7       BUILD_TYPE=Debug
-- CXX_COMPILER=g++-7       BUILD_TYPE=Release
+#- CXX_COMPILER=g++-7       BUILD_TYPE=Debug
+#- CXX_COMPILER=g++-7       BUILD_TYPE=Release
 - CXX_COMPILER=clang++-5.0 BUILD_TYPE=Debug    
 - CXX_COMPILER=clang++-5.0 BUILD_TYPE=Release   
 
@@ -66,4 +66,4 @@ before_script:
 script: 
 - |
   make -j2
-  ctest -E "action|setup|ui|divide|search|traversal"
+  ctest -E "search|traversal"
