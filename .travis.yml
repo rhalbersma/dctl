@@ -11,7 +11,6 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - kzemek-boost
     - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main'
       key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'   
     packages:
@@ -19,12 +18,22 @@ addons:
     - clang-5.0 
     - lldb-5.0 
     - lld-5.0
-    - libboost-test1.58-dev
 
+before_install:
+- |
+  sudo add-apt-repository ppa:kzemek/boost
+  sudo apt-get update
+    
 install:
   
 ################################################################################
-# All the dependencies are installed in ${TRAVIS_BUILD_DIR}/..
+# Install a recent Boost
+################################################################################
+- |
+  sudo apt-get install libboost-test1.58-dev
+  
+################################################################################
+# All manual dependencies are installed in ${TRAVIS_BUILD_DIR}/..
 ################################################################################
 - |
   DEPS_DIR="${TRAVIS_BUILD_DIR}/.."
@@ -47,7 +56,7 @@ install:
   mkdir cmake && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
   export PATH=${DEPS_DIR}/cmake/bin:${PATH}
   cmake --version
-  
+
 before_script:
 - |
   cd ${TRAVIS_BUILD_DIR}
