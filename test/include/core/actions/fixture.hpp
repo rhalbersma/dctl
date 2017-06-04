@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/core/action/ostream.hpp>
 #include <dctl/core/state/state.hpp>
-#include <dctl/core/setup/setup.hpp>
+#include <dctl/core/state/setup/setup.hpp>
 #include <dctl/core/actions.hpp>                // generate
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/range/adaptor/transformed.hpp>  // transformed
@@ -12,6 +12,7 @@
 #include <vector>                               // vector
 
 namespace dctl {
+namespace core {
 
 template<class Rules, class Board>
 struct Fixture
@@ -40,4 +41,5 @@ struct Fixture
         }
 };
 
+}       // namespace core
 }       // namespace dctl

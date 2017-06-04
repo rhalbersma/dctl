@@ -3,8 +3,8 @@
 #include <dctl/algo/traversal/transposition.hpp>
 #include <dctl/core/action/ostream.hpp>
 #include <dctl/core/actions.hpp>
-#include <dctl/core/setup/diagram.hpp>
-#include <dctl/core/setup/string.hpp>
+#include <dctl/core/state/setup/diagram.hpp>
+#include <dctl/core/state/setup/string.hpp>
 #include <dctl/util/hash/dual_map.hpp>
 #include <dctl/util/hash/extract.hpp>
 #include <dctl/util/static_vector.hpp>
@@ -180,10 +180,10 @@ int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements
         if (terminal.first) {
                 nodes = terminal.second;
         } else {
-                using R = rules_t<State>;
-                using B = board_t<State>;
+                using R = core::rules_t<State>;
+                using B = core::board_t<State>;
 
-                static_vector<action<R,B>> moves;
+                static_vector<core::action<R,B>> moves;
                 successor.generate(s, moves);
                 for (auto const& m : moves)
                         nodes += walk(result(s, m), depth - 1, ply + 1, successor, e);
@@ -198,7 +198,7 @@ int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements
 template<class Actions, class State>
 auto legal_actions(Actions const& successor, State const& s)
 {
-        static_vector<action<rules_t<State>, board_t<State>>> moves;
+        static_vector<core::action<core::rules_t<State>, core::board_t<State>>> moves;
         successor.generate(s, moves);
         return moves;
 }
@@ -232,7 +232,7 @@ auto perft_state(Actions const& successor, State const& s, int depth)
                 if (depth == 0) return 1;
         }
 
-        static_vector<action<rules_t<State>, board_t<State>>> moves;
+        static_vector<core::action<core::rules_t<State>, core::board_t<State>>> moves;
         successor.generate(s, moves);
         return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a){
                 return sum + perft_state<IsBulk>(successor, result(s, a), depth - 1);
@@ -242,7 +242,7 @@ auto perft_state(Actions const& successor, State const& s, int depth)
 template<class Vertex, class ImplicitGraph>
 auto out_edges(Vertex const& u, ImplicitGraph const& g)
 {
-        static_vector<action<rules_t<state_t<Vertex>>, board_t<state_t<Vertex>>>> edges;
+        static_vector<core::action<core::rules_t<core::state_t<Vertex>>, core::board_t<core::state_t<Vertex>>>> edges;
         g.generate(u.state(), edges);
         return edges;
 }
@@ -331,8 +331,8 @@ auto dfs_visit(ImplicitGraph const& g, Vertex const& u, Visitor& vis)
 template<class State>
 void announce(State const& s, int depth)
 {
-        std::cout << setup::diagram<pdn::protocol>()(s);
-        std::cout << setup::write<pdn::protocol>()(s) << '\n';
+        std::cout << core::setup::diagram<core::pdn::protocol>()(s);
+        std::cout << core::setup::write<core::pdn::protocol>()(s) << '\n';
         std::cout << "Searching to nominal depth=" << depth << "\n\n";
 }
 
@@ -465,7 +465,7 @@ auto nperft(Actions successor, State const& s, int depth)
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
-        using Node = node<State, action<rules_t<State>, board_t<State>>>;
+        using Node = node<State, core::action<core::rules_t<State>, core::board_t<State>>>;
         auto const n = root<Node>(s);
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
@@ -481,7 +481,7 @@ auto dperft(Actions successor, State const& s, int depth)
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
-        using Node = node<State, action<rules_t<State>, board_t<State>>>;
+        using Node = node<State, core::action<core::rules_t<State>, core::board_t<State>>>;
         auto const n = root<Node>(s);
         dls_visitor<true, Node> vis;
         for (auto d = 1; d <= depth; ++d) {
@@ -499,7 +499,7 @@ auto divide(State const& s, int depth, Actions successor, Enhancements e)
 {
         int64_t leaf_nodes = 0;
 
-        std::vector<action<rules_t<State>, board_t<State>>> moves;
+        std::vector<core::action<core::rules_t<State>, core::board_t<State>>> moves;
         successor.generate(s, moves);
 
         announce(s, depth, moves.size());

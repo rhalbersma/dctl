@@ -2,6 +2,7 @@
 #include <ios>  // ios_base, iword, xalloc
 
 namespace dctl {
+namespace core {
 
 class setjumpsep
 {
@@ -37,4 +38,5 @@ auto jumpsep(std::ios_base& str)
         return static_cast<char>(str.iword(setjumpsep::index()));
 }
 
+}       // namespace core
 }       // namespace dctl

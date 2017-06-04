@@ -1,6 +1,7 @@
 #pragma once
 
 namespace dctl {
+namespace core {
 
 enum class notation
 {
@@ -21,4 +22,5 @@ constexpr auto notation_v =
 
 }       // namespace traits
 }       // namespace move
+}       // namespace core
 }       // namespace dctl

@@ -4,9 +4,9 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_FIXTURE_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string
 
-namespace dctl {
+using namespace dctl::core;
 
-using F = Fixture<rules::italian, board::italian>;
+using F = Fixture<italian, board::italian>;
 
 BOOST_AUTO_TEST_SUITE(ActionsRegressionsitalian)
 
@@ -42,5 +42,3 @@ BOOST_AUTO_TEST_SUITE(ActionsRegressionsitalian)
         BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace dctl

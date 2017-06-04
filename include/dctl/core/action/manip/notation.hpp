@@ -4,6 +4,7 @@
 #include <ios>                                  // ios_base, iword, xalloc
 
 namespace dctl {
+namespace core {
 
 class setnotation
 {
@@ -35,4 +36,5 @@ auto gnotation(std::ios_base& str)
         return static_cast<notation>(str.iword(setnotation::index()));
 }
 
+}       // namespace core
 }       // namespace dctl

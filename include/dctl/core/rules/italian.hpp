@@ -2,7 +2,7 @@
 #include <tuple>        // make_tuple
 
 namespace dctl {
-namespace rules {
+namespace core {
 namespace block_adl {
 
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
@@ -43,5 +43,5 @@ struct italian
 
 using block_adl::italian;
 
-}       // namespace rules
+}       // namespace core
 }       // namespace dctl

@@ -1,16 +1,15 @@
 #include <algo/search/fixture.hpp>
 #include <dctl/core/board.hpp>
-#include <dctl/core/rules/killer.hpp>
+#include <dctl/core/rules.hpp>
 #include <boost/test/unit_test.hpp>
 #include <vector>
 
-namespace dctl {
-namespace aima {
-namespace search {
+using namespace dctl::aima;
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(SearchEGDBKiller)
 
-using F = Fixture< state<rules::killer<>, board::international>, DefaultObjective >;
+using F = search::Fixture< state<killer<international>, board::international>, search::DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {
@@ -99,7 +98,3 @@ BOOST_FIXTURE_TEST_CASE(Longest31, F)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace search
-}       // namespace aima
-}       // namespace dctl

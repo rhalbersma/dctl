@@ -122,12 +122,12 @@ struct cycle<SecondPlayerWin>
 template<class State>
 bool is_no_progress([[maybe_unused]] State const& s)
 {
-        using rules_type = rules_t<State>;
+        using rules_type = core::rules_t<State>;
 
-        if constexpr (is_restricted_reversible_moves_v<rules_type>) {
+        if constexpr (core::is_restricted_reversible_moves_v<rules_type>) {
                 return false;
         } else {
-                return false;//s.reversible_actions() >= max_reversible_moves_v<rules_t<State>>;
+                return false;//s.reversible_actions() >= core::max_reversible_moves_v<core::rules_t<State>>;
         }
 }
 

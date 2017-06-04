@@ -11,11 +11,11 @@
 #include <dctl/util/hash/map.hpp>
 #include <dctl/util/hash/replace.hpp>
 #include <dctl/core/actions.hpp>
-#include <dctl/core/setup/diagram.hpp>
-#include <dctl/core/setup/string.hpp>
+#include <dctl/core/state/setup/diagram.hpp>
+#include <dctl/core/state/setup/string.hpp>
 #include <dctl/core/action/ostream.hpp>
 #include <dctl/util/algorithm.hpp>
-#include <dctl/util/ply.hpp>         // PlyCount
+#include <dctl/algo/search/ply.hpp>         // PlyCount
 #include <dctl/util/statistics.hpp>
 #include <dctl/util/stopwatch.hpp>
 #include <boost/algorithm/cxx11/iota.hpp>
@@ -37,7 +37,7 @@ template
 >
 class Root
 {
-        using node_type = node<State, action<rules_t<State>, board_t<State>>>;
+        using node_type = node<State, core::action<core::rules_t<State>, core::board_t<State>>>;
 public:
         // typdefs
         enum EntryType { ZW, PV };
@@ -143,7 +143,7 @@ private:
 
                 // return evaluation in leaf nodes with valid moves
                 if (depth <= 0 || ply >= MAX_PLY)
-                        return evaluate::score(n.state());
+                        return eval::score(n.state());
 
                 // TT cut-off for exact win/loss scores or for deep enough heuristic scores
                 auto TT_entry = TT.find(n);
@@ -151,10 +151,10 @@ private:
                         return TT_entry->value();
 
                 // generate moves
-                using R = rules_t<State>;
-                using B = board_t<State>;
+                using R = core::rules_t<State>;
+                using B = core::board_t<State>;
 
-                static_vector<action<R,B>> moves;
+                static_vector<core::action<R,B>> moves;
                 successor.generate(n.state(), moves);
                 assert(!moves.empty());
 
@@ -226,8 +226,8 @@ private:
 
         void announce(State const& s, int depth)
         {
-                std::cout << setup::diagram<pdn::protocol>()(s);
-                std::cout << setup::write<pdn::protocol>()(s) << '\n';
+                std::cout << core::setup::diagram<core::pdn::protocol>()(s);
+                std::cout << core::setup::write<core::pdn::protocol>()(s) << '\n';
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
@@ -273,7 +273,7 @@ private:
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         assert(
-                                (value == evaluate::score(n.state())) ||
+                                (value == eval::score(n.state())) ||
                                 (value == draw_value() && is_draw(n.state())) ||
                                 (value == loss_min() && !successor.detect(n.state()))
                                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
@@ -282,9 +282,9 @@ private:
                         return;
                 }
 
-                using R = rules_t<State>;
-                using B = board_t<State>;
-                std::vector<action<R,B>> moves;
+                using R = core::rules_t<State>;
+                using B = core::board_t<State>;
+                std::vector<core::action<R,B>> moves;
                 successor.generate(n.state(), moves);
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
@@ -299,13 +299,13 @@ private:
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         std::cout << std::endl /*'\n'*/;
-                        std::cout << setup::diagram<pdn::protocol>()(n.state());
+                        std::cout << core::setup::diagram<core::pdn::protocol>()(n.state());
                         return;
                 }
 
-                using R = rules_t<State>;
-                using B = board_t<State>;
-                std::vector<action<R,B>> moves;
+                using R = core::rules_t<State>;
+                using B = core::board_t<State>;
+                std::vector<core::action<R,B>> moves;
                 successor.generate(n.state(), moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 

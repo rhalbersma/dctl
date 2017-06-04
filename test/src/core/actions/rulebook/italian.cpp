@@ -5,14 +5,14 @@
 #include <string>                       // string
 #include <vector>                       // vector
 
-namespace dctl {
+using namespace dctl::core;
 
 // States from the official italian rules:
 // http://www.fid.it/regolamenti/2008/RegTec_CAPO_I.pdf
 
 BOOST_AUTO_TEST_SUITE(ActionsRulebookitalian)
 
-using F = Fixture<rules::italian, board::italian>;
+using F = Fixture<italian, board::italian>;
 
 BOOST_FIXTURE_TEST_CASE(pawn_jumpDirections, F)          // Art. 5.6
 {
@@ -78,5 +78,3 @@ BOOST_FIXTURE_TEST_CASE(Equivalent, F)                  // Art. 6.10
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace dctl

@@ -1,10 +1,8 @@
 #include <dctl/algo/search/score.hpp>
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_LT, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/util/ply.hpp>
+#include <dctl/algo/search/ply.hpp>
 
-namespace dctl {
-namespace aima {
-namespace search {
+using namespace dctl::aima::search;
 
 BOOST_AUTO_TEST_SUITE(SearchScore)
 
@@ -127,7 +125,3 @@ BOOST_AUTO_TEST_CASE(Squeeze)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace search
-}       // namespace aima
-}       // namespace dctl

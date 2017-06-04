@@ -5,12 +5,11 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 
-namespace dctl {
-namespace board {
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, board::BoardSequence)
 {
         BOOST_CHECK(
                 boost::algorithm::all_of(boost::irange(0, T::size()), [](auto const sq) {
@@ -20,6 +19,3 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace board
-}       // namespace dctl

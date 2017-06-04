@@ -5,14 +5,12 @@
 
 #include <locale>
 
-using namespace dctl;
+using namespace dctl::core;
+using namespace dctl::egdb;
 
-using Rules = rules::international;
+using Rules = international;
 using Board = board::rectangular<6,6>;
 using State = state<Rules, Board>;
-
-using egdb::dependencies;
-
 
 int main()
 {

@@ -4,6 +4,7 @@
 #include <tuple>                // tie
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace detail {
 
@@ -73,4 +74,5 @@ constexpr auto rotate(dimensions const dim, angle const a) noexcept
 
 }       // namespace detail
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

@@ -1,8 +1,9 @@
 #pragma once
-#include <dctl/core/color_piece.hpp> // pawn, king
+#include <dctl/core/state/color_piece.hpp> // pawn, king
 #include <cassert>              // assert
 
 namespace dctl {
+namespace core {
 namespace raii {
 
 template<class Builder>
@@ -130,4 +131,5 @@ public:
 };
 
 }       // namespace raii
+}       // namespace core
 }       // namespace dctl

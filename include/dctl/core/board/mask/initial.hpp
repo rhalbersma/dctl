@@ -1,11 +1,12 @@
 #pragma once
 #include <dctl/core/board/mask/row.hpp>      // row
-#include <dctl/core/color_piece.hpp>         // black, white
+#include <dctl/core/state/color_piece.hpp>         // black, white
 #include <dctl/util/fill_array.hpp>  // fill_array
 #include <cassert>                      // assert
 #include <cstddef>                      // size_t
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace mask {
 
@@ -32,4 +33,5 @@ public:
 
 }       // namespace mask
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

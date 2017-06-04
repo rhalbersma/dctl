@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace rules {
+namespace core {
 namespace block_adl {
 
 // http://www.shashist.ru/kodeks/kodeks2004.doc
@@ -22,5 +22,5 @@ using block_adl::russian;
 
 using shashki = russian;
 
-}       // namespace rules
+}       // namespace core
 }       // namespace dctl

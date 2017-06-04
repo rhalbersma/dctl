@@ -4,6 +4,7 @@
 #include <type_traits>  // is_base_of
 
 namespace dctl {
+namespace core {
 namespace factory {
 
 template
@@ -50,4 +51,5 @@ struct is_creatable
 {};
 
 }       // namespace factory
+}       // namespace core
 }       // namespace dctl

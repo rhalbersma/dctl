@@ -6,6 +6,7 @@
 #include <string>                                       // string
 
 namespace dctl {
+namespace core {
 
 template
 <
@@ -38,4 +39,5 @@ public:
         }
 };
 
+}       // namespace core
 }       // namespace dctl

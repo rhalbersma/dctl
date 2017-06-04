@@ -7,16 +7,17 @@
 #include <dctl/core/board/angle.hpp>                         // rotate, inverse
 #include <dctl/core/board/bearing.hpp>                       // bearing
 #include <dctl/core/board/mask/jump_sources.hpp>             // jump_sources
-#include <dctl/core/board_traits.hpp>                        // promotion
+#include <dctl/core/board/traits.hpp>                        // promotion
 #include <dctl/core/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
-#include <dctl/core/color_piece.hpp>                         // color, color_, pawns_, king_
-#include <dctl/core/rule_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
+#include <dctl/core/state/color_piece.hpp>                         // color, color_, pawns_, king_
+#include <dctl/core/rules/traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/util/type_traits.hpp>                 // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // is_same
 
 namespace dctl {
+namespace core {
 namespace detail {
 
 template<color Side, class Reverse, class State, class Builder>
@@ -258,4 +259,5 @@ private:
 };
 
 }       // namespace detail
+}       // namespace core
 }       // namespace dctl

@@ -3,6 +3,7 @@
 #include <dctl/core/board/ray/iterator.hpp>  // Iterator
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace ray {
 
@@ -30,4 +31,5 @@ auto turn(iterator<Board, Direction> it)
 
 }       // namespace ray
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

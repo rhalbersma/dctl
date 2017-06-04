@@ -1,13 +1,14 @@
 #pragma once
 #include <dctl/core/actions/detail/specializations.hpp>      // generate
 #include <dctl/core/actions/select/legal.hpp>                // legal
-#include <dctl/core/color_piece.hpp>                         // black, white
-#include <dctl/core/rule_traits.hpp>
+#include <dctl/core/state/color_piece.hpp>                         // black, white
+#include <dctl/core/rules/traits.hpp>
 #include <dctl/util/type_traits.hpp>                 // value_t
 #include <cassert>                                      // assert
 #include <type_traits>                                  // bool_constant, is_same
 
 namespace dctl {
+namespace core {
 
 template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
 class Actions
@@ -65,4 +66,8 @@ public:
         }
 };
 
+constexpr auto keep_duplicates_gen = Actions<select::legal, keep_duplicates_tag>{};
+constexpr auto drop_duplicates_gen = Actions<select::legal, drop_duplicates_tag>{};
+
+}       // namespace core
 }       // namespace dctl

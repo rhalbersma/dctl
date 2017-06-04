@@ -9,28 +9,27 @@
 #include <type_traits>                          // common_type
 #include <vector>                               // vector
 
-namespace dctl {
-namespace board {
-namespace detail {
+using namespace dctl::core;
+using namespace board::literals;
 
 BOOST_AUTO_TEST_SUITE(Griddimensions)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimensions, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimensions, T, board::BoardSequence)
 {
         auto const op = [](auto i, auto j){ return rotate(i, j); };
         auto const inv = [](auto i){ return inverse(i); };
 
-        auto const C1 = make_group(
+        auto const C1 = board::make_group(
                 { 0_deg },
                 op, inv
         );
 
-        auto const C2 = make_group(
+        auto const C2 = board::make_group(
                 { 0_deg, 180_deg },
                 op, inv
         );
 
-        auto const C4 = make_group(
+        auto const C4 = board::make_group(
                 { 0_deg,  90_deg, 180_deg, 270_deg },
                 op, inv
         );
@@ -42,17 +41,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimens
                 C1, C2, C4
         };
 
-        auto const dim = dimensions{ T::width, T::height, T::is_inverted };
+        auto const dim = board::detail::dimensions{ T::width, T::height, T::is_inverted };
 
         BOOST_CHECK(
                 boost::algorithm::all_of(C_N, [&](auto const& g) {
-                        return group::action::is_realized(dim, g);
+                        return board::group::action::is_realized(dim, g);
                 })
         );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace detail
-}       // namespace board
-}       // namespace dctl

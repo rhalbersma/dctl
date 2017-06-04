@@ -2,6 +2,7 @@
 #include <dctl/core/board/shift.hpp> // shift, shift_sign, shift_size
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace mask {
 namespace detail {
@@ -38,4 +39,5 @@ struct fill
 }       // namespace detail
 }       // namespace mask
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

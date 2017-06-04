@@ -1,7 +1,7 @@
 #include <dctl/core/action.hpp>
 #include <dctl/core/actions.hpp>
 #include <dctl/algo/node.hpp>
-#include <dctl/core/setup/string.hpp>
+#include <dctl/core/state/setup/string.hpp>
 #include <dctl/core/state.hpp>
 #include <boost/range/algorithm.hpp>    // sort, transform
 #include <iomanip>
@@ -13,11 +13,11 @@
 #include <dctl/core/rules.hpp>
 #include <dctl/core/board.hpp>
 
-using namespace dctl;
+using namespace dctl::core;
 
 int main()
 {
-        using Rules = rules::international;
+        using Rules = international;
         using Board = board::mini;
         using State = state<Rules, Board>;
 

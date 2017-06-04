@@ -2,7 +2,7 @@
 #include <tuple>        // make_tuple
 
 namespace dctl {
-namespace rules {
+namespace core {
 namespace block_adl {
 
 // http://www.fpdamas.pt/downloads/Regras%20Damas%20Cl%C3%A1ssicas%20-%20atualizado.pdf
@@ -31,5 +31,5 @@ struct spanish
 
 using block_adl::spanish;
 
-}       // namespace rules
+}       // namespace core
 }       // namespace dctl

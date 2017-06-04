@@ -1,11 +1,10 @@
 #include <core/rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/core/rules/spanish.hpp>       // spanish
-#include <dctl/core/rule_traits.hpp>         // is_backward_pawn_jump, is_long_ranged_king, is_trivial_precedence, equal_to, less
+#include <dctl/core/rules/traits.hpp>         // is_backward_pawn_jump, is_long_ranged_king, is_trivial_precedence, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <vector>                       // vector
 
-namespace dctl {
-namespace rules {
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(Rulesspanish)
 
@@ -42,6 +41,3 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace rules
-}       // namespace dctl

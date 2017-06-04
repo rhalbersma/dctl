@@ -3,6 +3,7 @@
 #include <cassert>
 
 namespace dctl {
+namespace core {
 namespace board {
 
 enum class direction
@@ -123,4 +124,5 @@ template<class Board, int Direction>
 constexpr auto shift_size_v = shift_size<Board>{}(angle{Direction});
 
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

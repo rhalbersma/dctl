@@ -1,11 +1,12 @@
 #pragma once
-#include <dctl/core/color_piece.hpp>
-#include <dctl/core/rule_traits.hpp>
+#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/rules/traits.hpp>
 #include <dctl/util/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cstddef>
 
 namespace dctl {
+namespace core {
 
 template<class Rules, class Board>
 class MostRecentlyPushedKings
@@ -169,4 +170,5 @@ private:
         }
 };
 
+}       // namespace core
 }       // namespace dctl

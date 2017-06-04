@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/core/board_traits.hpp>
-#include <dctl/core/color_piece.hpp>
-#include <dctl/core/rule_traits.hpp>
-#include <dctl/core/position.hpp>
+#include <dctl/core/board/traits.hpp>
+#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/rules/traits.hpp>
+#include <dctl/core/state/position.hpp>
 #include <dctl/util/conditional_base.hpp>       // conditional_base
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <hash_append/hash_append.h>            // hash_append
@@ -13,6 +13,7 @@
 #include <utility>                              // forward
 
 namespace dctl {
+namespace core {
 namespace detail {
 namespace block_adl {
 
@@ -215,4 +216,5 @@ constexpr auto operator<=(state<Rules, Board> const& lhs, state<Rules, Board> co
         return !(rhs < lhs);
 }
 
+}       // namespace core
 }       // namespace dctl

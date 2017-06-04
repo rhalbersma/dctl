@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace rules {
+namespace core {
 namespace block_adl {
 
 // http://www.damweb.cz/pravidla/cdfull.html
@@ -26,5 +26,5 @@ struct czech
 
 using block_adl::czech;
 
-}       // namespace rules
+}       // namespace core
 }       // namespace dctl

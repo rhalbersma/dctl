@@ -7,14 +7,14 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK_EQUAL
 #include <vector>                               // vector
 
-namespace dctl {
-namespace board {
+using namespace dctl::core;
+using namespace board::literals;
 
 BOOST_AUTO_TEST_SUITE(GridShiftSize)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseangleSymmetryForAllDirections, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseangleSymmetryForAllDirections, T, board::BoardSequence)
 {
-        auto const directions = std::vector<angle>
+        auto const directions = std::vector<board::angle>
         {
                    0_deg,  45_deg,  90_deg, 135_deg,
                  180_deg, 225_deg, 270_deg, 315_deg
@@ -22,12 +22,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseangleSymmetryForAllDirections, T, BoardSequ
 
         BOOST_CHECK(
                 boost::algorithm::all_of(directions, [](auto dir) {
-                        return shift_size<T>{}(dir) == shift_size<T>{}(reverse(dir));
+                        return board::shift_size<T>{}(dir) == board::shift_size<T>{}(board::reverse(dir));
                 })
         );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace board
-}       // namespace dctl

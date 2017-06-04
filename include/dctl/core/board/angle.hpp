@@ -4,6 +4,7 @@
 #include <type_traits>          // integral_constant, is_pod, is_nothrow_constructible
 
 namespace dctl {
+namespace core {
 namespace board {
 
 class angle
@@ -208,4 +209,5 @@ constexpr auto is_right(angle const a) noexcept
 }
 
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

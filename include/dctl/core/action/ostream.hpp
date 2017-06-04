@@ -2,13 +2,14 @@
 #include <dctl/core/action/action.hpp>  // action
 #include <dctl/core/action/manip.hpp>   // notation, pushsep, jumpsep
 #include <dctl/core/action/traits.hpp>  // notation, pushsep, jumpsep
-#include <dctl/core/rule_traits.hpp>    // jumpsep, pushsep
+#include <dctl/core/rules/traits.hpp>    // jumpsep, pushsep
 #include <dctl/util/type_traits.hpp>    // board_t, rules_t
 #include <cassert>                      // assert
 #include <iosfwd>                       // ostream
 #include <sstream>                      // stringstream
 
 namespace dctl {
+namespace core {
 namespace move {
 
 template<class Rules, class Board>
@@ -91,4 +92,5 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> c
 	return ostr;
 }
 
+}       // namespace core
 }       // namespace dctl

@@ -6,17 +6,18 @@
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 #include <vector>                       // vector
 
-using namespace dctl;
+using namespace dctl::egdb;
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(Index)
 
 BOOST_AUTO_TEST_CASE(NumeralIsInverseOfPosition)
 {
-        using rules_type = rules::international;
+        using rules_type = international;
         using board_type = board::rectangular<6, 6>;
         using state_type = state<rules_type, board_type>;
 
-        using subdivision_type = egdb::subdivision<position_t<state_type>>;
+        using subdivision_type = subdivision<position_t<state_type>>;
         auto const subdivisions = std::vector<subdivision_type>
         {
                 { 4, 0, 0, 0 },

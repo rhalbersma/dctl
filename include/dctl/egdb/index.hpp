@@ -1,9 +1,9 @@
 #pragma once
-#include <dctl/core/board_traits.hpp>                // promotion_v, squares_v
-#include <dctl/core/color_piece.hpp>                 // black_c, white_c, pawns_c, kings_c
-#include <dctl/core/position/legal.hpp>        // is_onboard_pieces, is_promoted_pawns, is_overlapping_pieces
+#include <dctl/core/board/traits.hpp>           // promotion_v, squares_v
+#include <dctl/core/state/color_piece.hpp>      // black_c, white_c, pawns_c, kings_c
+#include <dctl/core/state/position/legal.hpp>   // is_onboard_pieces, is_promoted_pawns, is_overlapping_pieces
 #include <dctl/egdb/binomial.hpp>               // choose
-#include <dctl/util/type_traits.hpp>         // board_t, set_t
+#include <dctl/util/type_traits.hpp>            // board_t, set_t
 #include <experimental/optional>                // nullopt, optional
 #include <cassert>                              // assert
 #include <cstdint>                              // int64_t
@@ -62,13 +62,13 @@ template<class Position>
 class subdivision
 {
 public:
-        using board_type = board_t<Position>;
-        using   set_type =   set_t<Position>;
+        using board_type = core::board_t<Position>;
+        using   set_type = core::  set_t<Position>;
 
-        static constexpr auto bp_squares = (squares_v<board_type> ^ promotion_v<board_type, black_>).size();
-        static constexpr auto wp_squares = (squares_v<board_type> ^ promotion_v<board_type, white_>).size();
-        static constexpr auto bk_squares =  squares_v<board_type>.size();
-        static constexpr auto wk_squares =  squares_v<board_type>.size();
+        static constexpr auto bp_squares = (core::squares_v<board_type> ^ core::promotion_v<board_type, core::black_>).size();
+        static constexpr auto wp_squares = (core::squares_v<board_type> ^ core::promotion_v<board_type, core::white_>).size();
+        static constexpr auto bk_squares =  core::squares_v<board_type>.size();
+        static constexpr auto wk_squares =  core::squares_v<board_type>.size();
 
         int n_count, b_count, w_count;
         int bp_count, wp_count, bk_count, wk_count;
@@ -119,10 +119,10 @@ public:
 
         auto index(position_type const& p) const
         {
-                auto const bp = p.pieces(black_c, pawns_c);
-                auto const wp = p.pieces(white_c, pawns_c);
-                auto const bk = p.pieces(black_c, kings_c);
-                auto const wk = p.pieces(white_c, kings_c);
+                auto const bp = p.pieces(core::black_c, core::pawns_c);
+                auto const wp = p.pieces(core::white_c, core::pawns_c);
+                auto const bk = p.pieces(core::black_c, core::kings_c);
+                auto const wk = p.pieces(core::white_c, core::kings_c);
 
                 auto const bp_digit = reverse_colex_rank_combination(bp, bp_ext);
                 auto const wp_digit =         colex_rank_combination(wp, wp_ext);
@@ -165,20 +165,20 @@ public:
                 auto const bk = colex_unrank_combination<set_type>(bk_digit, bk_squares, bk_count, bk_dep);
                 auto const wk = colex_unrank_combination<set_type>(wk_digit, wk_squares, wk_count, wk_dep);
 
-                if (is_overlapping_pieces(bp, wp, bk, wk)) {
+                if (core::is_overlapping_pieces(bp, wp, bk, wk)) {
                         return std::experimental::nullopt;
                 }
 
-                assert( is_onboard_pieces<board_type>(bp | wp | bk | wk));
-                assert(!is_promoted_pawns<board_type>(bp, wp));
+                assert( core::is_onboard_pieces<board_type>(bp | wp | bk | wk));
+                assert(!core::is_promoted_pawns<board_type>(bp, wp));
                 return position_type(bp, wp, bk, wk);
         }
 
 private:
         auto count_legal() const
         {
-                constexpr auto b0_squares = promotion_v<board_type, white_>.size();
-                constexpr auto w0_squares = promotion_v<board_type, black_>.size();
+                constexpr auto b0_squares = core::promotion_v<board_type, core::white_>.size();
+                constexpr auto w0_squares = core::promotion_v<board_type, core::black_>.size();
                 constexpr auto center_squares = board_type::size() - b0_squares - w0_squares;
                 auto n = 0LL;
                 for (auto b0_count  = 0; b0_count <= std::min(b0_squares, bp_count); ++b0_count) {

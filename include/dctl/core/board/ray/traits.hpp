@@ -6,6 +6,7 @@
 #include <type_traits>                  // bool_constant
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace ray {
 
@@ -23,4 +24,5 @@ constexpr auto is_onboard(iterator<Board, Direction> it)
 
 }       // namespace ray
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

@@ -1,16 +1,16 @@
 #pragma once
 #include <dctl/eval/feature.hpp>   // Feature
-#include <dctl/core/color_piece.hpp>         // flip
+#include <dctl/core/state/color_piece.hpp>         // flip
 
 namespace dctl {
-namespace evaluate {
+namespace eval {
 
 template<class Color>
 class Delta
 {
 private:
-        using Active  = Feature<         Color >;
-        using Passive = Feature<opposite<Color>>;
+        using Active  = Feature<               Color >;
+        using Passive = Feature<core::opposite<Color>>;
 
 public:
         template<class State>
@@ -51,5 +51,5 @@ private:
         }
 };
 
-}       // namespace evaluate
+}       // namespace eval
 }       // namespace dctl

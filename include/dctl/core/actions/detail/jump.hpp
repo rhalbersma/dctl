@@ -8,14 +8,15 @@
 #include <dctl/core/actions/detail/generate_king_jump.hpp>   // generate (king jump specialization)
 #include <dctl/core/actions/detail/generate_pawn_jump.hpp>   // generate (pawn jump specialization)
 #include <dctl/core/actions/select/jump.hpp>                 // jump
-#include <dctl/core/color_piece.hpp>                         // color, color_, kings_, pawn_
-#include <dctl/core/rule_traits.hpp>
+#include <dctl/core/state/color_piece.hpp>                         // color, color_, kings_, pawn_
+#include <dctl/core/rules/traits.hpp>
 #include <dctl/util/static_vector.hpp>               // static_vector
 #include <dctl/util/type_traits.hpp>                 // rules_t, board_t
 #include <cassert>                                      // assert
 #include <type_traits>
 
 namespace dctl {
+namespace core {
 namespace detail {
 
 class MoveCounter
@@ -80,4 +81,5 @@ public:
 };
 
 }       // namespace detail
+}       // namespace core
 }       // namespace dctl

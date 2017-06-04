@@ -1,7 +1,7 @@
 #include <dctl/algo/traversal/root.hpp>
 #include <dctl/core/board.hpp>
 #include <dctl/core/rules.hpp>
-#include <dctl/core/setup/setup.hpp>
+#include <dctl/core/state/setup/setup.hpp>
 #include <dctl/core/state.hpp>
 #include <boost/test/unit_test.hpp>
 #include <cstdint>                      // int64_t
@@ -9,9 +9,8 @@
 
 #include <algo/traversal/fixture.hpp>
 
-namespace dctl {
-namespace aima {
-namespace traversal {
+using namespace dctl::aima;
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(TraversalItalianGilbert)
 
@@ -20,7 +19,7 @@ BOOST_AUTO_TEST_SUITE(TraversalItalianGilbert)
 
 BOOST_AUTO_TEST_CASE(Gilbert1)
 {
-        auto const p = setup::read<rules::italian, board::italian, pdn::protocol>()(
+        auto const p = setup::read<italian, board::italian, pdn::protocol>()(
                 "W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3"
         );
         auto const leafs = std::vector<int64_t>
@@ -42,12 +41,12 @@ BOOST_AUTO_TEST_CASE(Gilbert1)
                   212'130'912,
                 1'021'757'399
         };
-        test(keep_duplicates_gen, p, leafs);
+        traversal::test(keep_duplicates_gen, p, leafs);
 }
 
 BOOST_AUTO_TEST_CASE(Gilbert2)
 {
-        auto const p = setup::read<rules::italian, board::italian, pdn::protocol>()(
+        auto const p = setup::read<italian, board::italian, pdn::protocol>()(
                 "B:W30,21,22,17,20,K6:B25,28,9,5,1,3"
         );
         auto const leafs = std::vector<int64_t>
@@ -65,12 +64,12 @@ BOOST_AUTO_TEST_CASE(Gilbert2)
                   396'940'628,
                 2'365'222'285
         };
-        test(keep_duplicates_gen, p, leafs);
+        traversal::test(keep_duplicates_gen, p, leafs);
 }
 
 BOOST_AUTO_TEST_CASE(Gilbert3)
 {
-        auto const p = setup::read<rules::italian, board::italian, pdn::protocol>()(
+        auto const p = setup::read<italian, board::italian, pdn::protocol>()(
                 "W:WK27,K28,17,20,9,K12,8:B21,24,K19,K13,14,K11,4"
         );
         auto const leafs = std::vector<int64_t>
@@ -87,11 +86,7 @@ BOOST_AUTO_TEST_CASE(Gilbert3)
                 1'056'217'651,
                 6'894'949'061
         };
-        test(keep_duplicates_gen, p, leafs);
+        traversal::test(keep_duplicates_gen, p, leafs);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace traversal
-}       // namespace aima
-}       // namespace dctl

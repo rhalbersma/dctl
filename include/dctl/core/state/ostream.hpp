@@ -1,13 +1,14 @@
 #pragma once
-#include <dctl/core/ui/pdn/version.hpp>
+#include <dctl/core/state/ui/pdn/version.hpp>
 #include <dctl/core/state/state.hpp>
 #include <dctl/core/state/manip/position_format.hpp>
-#include <dctl/core/setup/diagram.hpp>
-#include <dctl/core/setup/string.hpp>
+#include <dctl/core/state/setup/diagram.hpp>
+#include <dctl/core/state/setup/string.hpp>
 #include <cassert>
 #include <iosfwd>                       // ostream
 
 namespace dctl {
+namespace core {
 
 inline
 auto getpositionformat(std::ostream& ostr)
@@ -28,4 +29,5 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, state<Rules, Board> co
         }
 }
 
+}       // namespace core
 }       // namespace dctl

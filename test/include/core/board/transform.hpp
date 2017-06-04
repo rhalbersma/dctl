@@ -2,6 +2,7 @@
 #include <type_traits>  // is_same
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace traits {
 namespace detail {
@@ -40,4 +41,5 @@ constexpr auto is_idempotent_v = std::is_same_v<
 
 }       // namespace traits
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

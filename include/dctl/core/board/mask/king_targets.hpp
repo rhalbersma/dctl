@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/core/board/angle.hpp>         // angle, _deg, rotate, is_diagonal, is_up, is_down, is_left, is_right
-#include <dctl/core/board_traits.hpp>        // squares
+#include <dctl/core/board/traits.hpp>        // squares
 #include <dctl/core/board/ray/fill.hpp>      // fill
 #include <dctl/core/board/ray/iterator.hpp>  // iterator
 #include <dctl/util/fill_array.hpp>  // fill_array
@@ -9,6 +9,7 @@
 #include <cstddef>                      // size_t
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace mask {
 
@@ -52,4 +53,5 @@ public:
 
 }       // namespace mask
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

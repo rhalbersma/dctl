@@ -1,6 +1,6 @@
 #pragma once
-#include <dctl/core/color_piece.hpp>                 // pawn, king
-#include <dctl/core/rule_traits.hpp>                 // rectangular, is_contents_precedence, is_ordering_precedence
+#include <dctl/core/state/color_piece.hpp>                 // pawn, king
+#include <dctl/core/rules/traits.hpp>                 // rectangular, is_contents_precedence, is_ordering_precedence
 #include <dctl/util/conditional_base.hpp>    // conditional_base
 #include <dctl/util/type_traits.hpp>         // set_t, square_t
 #include <cassert>                              // assert
@@ -8,6 +8,7 @@
 #include <type_traits>                          // conditional, enable_if, is_pod, is_same
 
 namespace dctl {
+namespace core {
 namespace detail {
 namespace block_adl {
 
@@ -296,4 +297,5 @@ constexpr auto operator<=(action<Rules, Board> const& lhs, action<Rules, Board> 
         return !(rhs < lhs);
 }
 
+}       // namespace core
 }       // namespace dctl

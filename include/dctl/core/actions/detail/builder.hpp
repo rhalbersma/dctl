@@ -3,8 +3,8 @@
 #include <dctl/core/board/mask/jump_start.hpp>          // jump_start
 #include <dctl/core/board/mask/push_sources.hpp>
 #include <dctl/core/board/ray.hpp>
-#include <dctl/core/color_piece.hpp>
-#include <dctl/core/rule_traits.hpp>
+#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/rules/traits.hpp>
 #include <dctl/util/type_traits.hpp>                    // board_t, rules_t, set_t, value_t
 #include <algorithm>                                    // none_of
 #include <cassert>                                      // assert
@@ -12,6 +12,7 @@
 #include <type_traits>                                  // is_same
 
 namespace dctl {
+namespace core {
 namespace detail {
 
 template<class Color, class DuplicatesPolicy, class State, class SequenceContainer>
@@ -248,4 +249,5 @@ private:
 };
 
 }       // namespace detail
+}       // namespace core
 }       // namespace dctl

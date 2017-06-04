@@ -5,9 +5,9 @@
 #include <string>                       // string
 #include <vector>                       // vector
 
-namespace dctl {
+using namespace dctl::core;
 
-using F = Fixture<rules::international, board::international>;
+using F = Fixture<international, board::international>;
 
 BOOST_AUTO_TEST_SUITE(ActionsRulebookinternational)
 
@@ -177,5 +177,3 @@ BOOST_AUTO_TEST_SUITE(ActionsRulebookinternational)
         BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace dctl

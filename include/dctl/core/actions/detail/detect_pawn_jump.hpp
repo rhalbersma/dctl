@@ -4,12 +4,13 @@
 #include <dctl/core/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/core/board/bearing.hpp>                       // bearing
 #include <dctl/core/board/mask/jump_targets.hpp>             // jump_targets
-#include <dctl/core/color_piece.hpp>                         // color, color_, pawn_
-#include <dctl/core/rule_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump
+#include <dctl/core/state/color_piece.hpp>                         // color, color_, pawn_
+#include <dctl/core/rules/traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump
 #include <dctl/util/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <type_traits>                                  // is_same
 
 namespace dctl {
+namespace core {
 namespace detail {
 
 template<color Side, class Reverse, class State>
@@ -67,4 +68,5 @@ private:
 };
 
 }       // namespace detail
+}       // namespace core
 }       // namespace dctl

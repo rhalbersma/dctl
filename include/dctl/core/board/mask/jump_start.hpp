@@ -7,6 +7,7 @@
 #include <cstddef>                              // size_t
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace mask {
 
@@ -42,4 +43,5 @@ public:
 
 }       // namespace mask
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

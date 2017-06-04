@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace rules {
+namespace core {
 namespace block_adl {
 
 struct thai
@@ -19,5 +19,5 @@ struct thai
 
 using block_adl::thai;
 
-}       // namespace rules
+}       // namespace core
 }       // namespace dctl

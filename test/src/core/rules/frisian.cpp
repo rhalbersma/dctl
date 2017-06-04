@@ -1,16 +1,16 @@
 #include <core/rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/core/rules/frisian.hpp>       // frisian
 #include <dctl/core/board.hpp>
-#include <dctl/core/color_piece.hpp>         // king, pawn
-#include <dctl/core/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, is_orthogonal_jump, equal_to, less
+#include <dctl/core/state/color_piece.hpp>         // king, pawn
+#include <dctl/core/rules/traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <vector>                       // vector
 
-using namespace dctl;
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(Rulesfrisian)
 
-using T = rules::frisian;
+using T = frisian;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct action
         {
-                using rules_type = rules::frisian;
+                using rules_type = frisian;
 		using board_type = board::frisian;
                 int num_captured_;
                 int num_captured_kings_;

@@ -1,12 +1,12 @@
 #pragma once
 #include <dctl/core/actions.hpp>             // count, select::push
-#include <dctl/core/board_traits.hpp>        // column, row
-#include <dctl/core/color_piece.hpp>         // opposite
+#include <dctl/core/board/traits.hpp>        // column, row
+#include <dctl/core/state/color_piece.hpp>         // opposite
 #include <dctl/eval/weight.hpp>    // Weight
 #include <cstdlib>                      // abs
 
 namespace dctl {
-namespace evaluate {
+namespace eval {
 
 template<class Color>
 class Feature
@@ -27,36 +27,36 @@ public:
         template<class State>
         static auto material(State const& s)
         {
-                using rules_type = rules_t<State>;
-                using board_type = board_t<State>;
+                using rules_type = core::rules_t<State>;
+                using board_type = core::board_t<State>;
                 return
-                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(Color{}, pawns_c)) +
-                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(Color{}, kings_c))
+                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(Color{}, core::pawns_c)) +
+                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(Color{}, core::kings_c))
                 ;
         }
 
         template<class State>
         static auto tempo(State const& s)
         {
-                using rules_type = rules_t<State>;
-                using board_type = board_t<State>;
+                using rules_type = core::rules_t<State>;
+                using board_type = core::board_t<State>;
                 auto score = 0;
                 for (auto i = 1; i < board_type::height; ++i)
-                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(color{}) & row_v<board_type, Color>(i)).size());
+                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(Color{}) & core::row_v<board_type, Color>(i)).size());
                 return score;
         }
 
         template<class State>
         static auto center(State const& s)
         {
-                using rules_type = rules_t<State>;
-                using board_type = board_t<State>;
+                using rules_type = core::rules_t<State>;
+                using board_type = core::board_t<State>;
                 auto score = 0;
                 for (auto i = 1; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::center[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & column_v<board_type,          Color >(i)).size()) +
-                                static_cast<int>((s.pieces(Color{}) & column_v<board_type, opposite<Color>>(i)).size())
+                                static_cast<int>((s.pieces(Color{}) & core::column_v<board_type,                Color >(i)).size()) +
+                                static_cast<int>((s.pieces(Color{}) & core::column_v<board_type, core::opposite<Color>>(i)).size())
                         );
                 }
                 return score;
@@ -65,14 +65,14 @@ public:
         template<class State>
         static auto balance(State const& s)
         {
-                using rules_type = rules_t<State>;
-                using board_type = board_t<State>;
+                using rules_type = core::rules_t<State>;
+                using board_type = core::board_t<State>;
                 auto score = 0;
                 for (auto i = 0; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::balance[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & column_v<board_type,          Color >(i)).size()) -
-                                static_cast<int>((s.pieces(Color{}) & column_v<board_type, opposite<Color>>(i)).size())
+                                static_cast<int>((s.pieces(Color{}) & core::column_v<board_type,                Color >(i)).size()) -
+                                static_cast<int>((s.pieces(Color{}) & core::column_v<board_type, core::opposite<Color>>(i)).size())
                         );
                 }
                 return -abs(score);
@@ -81,11 +81,11 @@ public:
         template<class State>
         static auto mobility(State const& s)
         {
-                using rules_type = rules_t<State>;
-                using board_type = board_t<State>;
-                return Weight<rules_type, board_type>::mobility * static_cast<int>(Actions<select::push>{}.template count<Color>(s));
+                using rules_type = core::rules_t<State>;
+                using board_type = core::board_t<State>;
+                return Weight<rules_type, board_type>::mobility * static_cast<int>(core::Actions<core::select::push>{}.template count<Color>(s));
         }
 };
 
-}       // namespace evaluate
+}       // namespace eval
 }       // namespace dctl

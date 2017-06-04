@@ -5,9 +5,10 @@
 #include <dctl/core/actions/select/legal.hpp>        // legal
 #include <dctl/core/actions/select/jump.hpp>         // jump
 #include <dctl/core/actions/select/push.hpp>         // push
-#include <dctl/core/color_piece.hpp>                 // color, color_
+#include <dctl/core/state/color_piece.hpp>                 // color, color_
 
 namespace dctl {
+namespace core {
 namespace detail {
 
 //#define cj
@@ -54,4 +55,5 @@ public:
 };
 
 }       // namespace detail
+}       // namespace core
 }       // namespace dctl

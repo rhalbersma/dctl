@@ -4,7 +4,7 @@
 #include <type_traits>			// decay
 
 namespace dctl {
-namespace rules {
+namespace core {
 namespace block_adl {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
@@ -38,5 +38,5 @@ struct frisian
 
 using block_adl::frisian;
 
-}       // namespace rules
+}       // namespace core
 }       // namespace dctl

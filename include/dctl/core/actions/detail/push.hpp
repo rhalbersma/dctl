@@ -9,9 +9,10 @@
 #include <dctl/core/actions/detail/generate_king_push.hpp>   // generate (king push specialization)
 #include <dctl/core/actions/detail/generate_pawn_push.hpp>   // generate (pawn push specialization)
 #include <dctl/core/actions/select/push.hpp>                 // push
-#include <dctl/core/color_piece.hpp>                         // color, color_, kings_, pawn_
+#include <dctl/core/state/color_piece.hpp>                         // color, color_, kings_, pawn_
 
 namespace dctl {
+namespace core {
 namespace detail {
 
 template<color Side, class DuplicatesPolicy, class Reverse>
@@ -49,4 +50,5 @@ public:
 };
 
 }       // namespace detail
+}       // namespace core
 }       // namespace dctl

@@ -1,12 +1,13 @@
 #pragma once
 #include <dctl/core/board/detail/coordinates.hpp>    // to_llo
 #include <dctl/core/board/mask/detail/copy_if.hpp>   // copy_if
-#include <dctl/core/color_piece.hpp>                 // black, white
+#include <dctl/core/state/color_piece.hpp>                 // black, white
 #include <dctl/util/fill_array.hpp>          // fill_array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace mask {
 
@@ -29,4 +30,5 @@ public:
 
 }       // namespace mask
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

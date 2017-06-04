@@ -3,6 +3,7 @@
 #include <ostream>      // iword
 
 namespace dctl {
+namespace core {
 namespace manip {
 
 enum class StateFormat { diag = 1, fen = 2 };
@@ -30,4 +31,5 @@ auto& fen(std::basic_ostream<CharT, Traits>& ostr)
         return ostr;
 }
 
+}       // namespace core
 }       // namespace dctl

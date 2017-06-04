@@ -1,12 +1,11 @@
 #pragma once
-#include <dctl/core/rules/international.hpp> // international
 
 namespace dctl {
-namespace rules {
+namespace core {
 namespace block_adl {
 
 // http://www.mindsports.nl/index.php/arena/draughts/382-killer-draughts-rules
-template<class Parent = international>
+template<class Parent>
 struct killer
 :
         Parent
@@ -18,5 +17,5 @@ struct killer
 
 using block_adl::killer;
 
-}       // namespace rules
+}       // namespace core
 }       // namespace dctl

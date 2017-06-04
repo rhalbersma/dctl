@@ -3,14 +3,15 @@
 #include <dctl/core/actions/select/push.hpp>                 // select
 #include <dctl/core/board/angle.hpp>                         // left_up, right_up
 #include <dctl/core/board/bearing.hpp>                       // bearing
-#include <dctl/core/board_traits.hpp>                        // promotion
+#include <dctl/core/board/traits.hpp>                        // promotion
 #include <dctl/core/board/mask/push_targets.hpp>             // push_targets
 #include <dctl/core/board/ray.hpp>                           // make_iterator
-#include <dctl/core/color_piece.hpp>                         // color, color_, pawn_
+#include <dctl/core/state/color_piece.hpp>                         // color, color_, pawn_
 #include <dctl/util/type_traits.hpp>                 // board_t, set_t, value_t
 #include <iterator>                                     // prev
 
 namespace dctl {
+namespace core {
 namespace detail {
 
 template<color Side, class Reverse, class State, class SequenceContainer>
@@ -74,4 +75,5 @@ private:
 };
 
 }       // namespace detail
+}       // namespace core
 }       // namespace dctl

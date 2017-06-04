@@ -8,9 +8,7 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <vector>
 
-namespace dctl {
-namespace board {
-namespace mask {
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
 
@@ -21,20 +19,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(jump_groupsEquivalencePartitionSquares, T, board::
         BOOST_CHECK(
                 boost::algorithm::all_of(jump_groups, [=](auto i){
                         return boost::algorithm::all_of(jump_groups, [=](auto j){
-                                return i == j ? true : disjoint(jump_group<T>{}(i), jump_group<T>{}(j));
+                                return i == j ? true : disjoint(board::mask::jump_group<T>{}(i), board::mask::jump_group<T>{}(j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(jump_groups, set_t<T>{}, [](auto result, auto i){
-                        return result ^ jump_group<T>{}(i);
+                        return result ^ board::mask::jump_group<T>{}(i);
                 }) == squares_v<T>
         );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace mask
-}       // namespace board
-}       // namespace dctl

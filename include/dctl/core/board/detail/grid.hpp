@@ -4,6 +4,7 @@
 #include <cassert>                              // assert
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace detail {
 
@@ -72,4 +73,5 @@ public:
 
 }       // namespace detail
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

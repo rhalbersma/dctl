@@ -2,7 +2,7 @@
 #include <climits>                      // SHRT_MAX
 #include <sstream>                      // stringstream
 #include <string>                       // string
-#include <dctl/util/ply.hpp>
+#include <dctl/algo/search/ply.hpp>
 
 namespace dctl {
 namespace aima {

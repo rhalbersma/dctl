@@ -3,7 +3,7 @@
 #include <dctl/core/board/detail/coordinates.hpp>       // to_llo, transform
 #include <dctl/core/board/detail/dimensions.hpp>        // dimensions
 #include <dctl/core/board/detail/grid.hpp>              // InnerGrid, OuterGrid
-#include <dctl/core/color_piece.hpp>                    // black, white
+#include <dctl/core/state/color_piece.hpp>                    // black, white
 #include <dctl/util/fill_array.hpp>                     // fill_array
 #include <xstd/cstdint.hpp>                             // uint_fast
 #include <xstd/cstdlib.hpp>                             // align_on
@@ -16,6 +16,7 @@
 #include <sstream>                                      // stringstream
 
 namespace dctl {
+namespace core {
 namespace board {
 namespace block_adl {
 
@@ -145,4 +146,5 @@ public:
 using block_adl::rectangular;
 
 }       // namespace board
+}       // namespace core
 }       // namespace dctl

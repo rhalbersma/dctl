@@ -4,13 +4,12 @@
 #include <boost/test/unit_test.hpp>
 #include <vector>
 
-namespace dctl {
-namespace aima {
-namespace search {
+using namespace dctl::aima;
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(SearchEGDBinternational)
 
-using F = Fixture< state<rules::international, board::international>, DefaultObjective >;
+using F = search::Fixture< state<international, board::international>, search::DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {
@@ -98,7 +97,3 @@ BOOST_FIXTURE_TEST_CASE(Longest31, F)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace search
-}       // namespace aima
-}       // namespace dctl

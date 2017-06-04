@@ -1,14 +1,12 @@
 #pragma once
 #include <dctl/algo/traversal/root.hpp> // Root
+#include <dctl/core/actions.hpp>
 #include <dctl/util/units.hpp>
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
 
 namespace dctl {
 namespace aima {
 namespace traversal {
-
-auto const keep_duplicates_gen = Actions<select::legal, keep_duplicates_tag>{};
-auto const drop_duplicates_gen = Actions<select::legal, drop_duplicates_tag>{};
 
 template<class Actions, class State, class Range>
 void test(Actions const& successor, State const& s, Range const& leafs)

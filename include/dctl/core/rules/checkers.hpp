@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dctl {
-namespace rules {
+namespace core {
 namespace block_adl {
 
 // http://www.usacheckers.com/rulesofcheckers.php
@@ -37,5 +37,5 @@ struct checkers
 
 using block_adl::checkers;
 
-}       // namespace rules
+}       // namespace core
 }       // namespace dctl

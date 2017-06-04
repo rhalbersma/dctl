@@ -2,6 +2,7 @@
 #include <ios>  // ios_base, iword, xalloc
 
 namespace dctl {
+namespace core {
 
 class setpushsep
 {
@@ -37,4 +38,5 @@ auto pushsep(std::ios_base& str)
         return static_cast<char>(str.iword(setpushsep::index()));
 }
 
+}       // namespace core
 }       // namespace dctl

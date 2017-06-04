@@ -1,9 +1,8 @@
 #include <dctl/core/rules/pool.hpp>          // pool
-#include <dctl/core/rule_traits.hpp>         // is_backward_pawn_jump, king_range_category, is_trivial_precedence
+#include <dctl/core/rules/traits.hpp>         // is_backward_pawn_jump, king_range_category, is_trivial_precedence
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
-namespace dctl {
-namespace rules {
+using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(Rulespool)
 
@@ -17,6 +16,3 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-}       // namespace rules
-}       // namespace dctl
