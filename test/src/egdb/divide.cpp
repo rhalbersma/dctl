@@ -1,7 +1,5 @@
 #include <dctl/egdb/divide.hpp>
-#include <dctl/core/board.hpp>
-#include <dctl/core/rules.hpp>
-#include <dctl/core/state.hpp>
+#include <dctl/core.hpp>
 
 #include <locale>
 

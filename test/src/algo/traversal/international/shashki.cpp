@@ -1,8 +1,5 @@
-#include <dctl/core/board.hpp>
-#include <dctl/core/state.hpp>
-#include <dctl/core/rules/international.hpp>
-#include <dctl/core/state/setup/setup.hpp>
 #include <dctl/algo/traversal/root.hpp>
+#include <dctl/core.hpp>
 #include <boost/test/unit_test.hpp>
 #include <cstdint>                      // int64_t
 #include <vector>

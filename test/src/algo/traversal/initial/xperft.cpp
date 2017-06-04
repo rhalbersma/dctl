@@ -1,9 +1,7 @@
-#include <dctl/core/board.hpp>
-#include <dctl/core/state.hpp>
-#include <dctl/core/rules.hpp>
-#include <dctl/core/state/setup/setup.hpp>
 #include <dctl/algo/traversal/root.hpp>
+#include <dctl/core.hpp>
 #include <cstddef>
+#include <vector>
 
 using namespace dctl::aima;
 using namespace dctl::core;

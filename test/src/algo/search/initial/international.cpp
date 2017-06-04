@@ -1,7 +1,5 @@
 #include <algo/search/fixture.hpp>
-#include <dctl/core/board.hpp>
-#include <dctl/core/rules.hpp>
-#include <dctl/core/state/setup/string.hpp>
+#include <dctl/core.hpp>
 #include <boost/test/unit_test.hpp>
 
 using namespace dctl::aima;

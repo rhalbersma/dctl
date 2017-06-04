@@ -1,8 +1,6 @@
 #include <algo/traversal/fixture.hpp>
-#include <dctl/core/board.hpp>
-#include <dctl/core/state.hpp>
-#include <dctl/core/rules.hpp>
 #include <dctl/algo/traversal/root.hpp>
+#include <dctl/core.hpp>
 #include <boost/test/unit_test.hpp>
 #include <cstdint>                      // int64_t
 #include <vector>

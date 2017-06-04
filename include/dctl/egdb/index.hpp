@@ -1,7 +1,5 @@
 #pragma once
-#include <dctl/core/board/traits.hpp>           // promotion_v, squares_v
-#include <dctl/core/state/color_piece.hpp>      // black_c, white_c, pawns_c, kings_c
-#include <dctl/core/state/position/legal.hpp>   // is_onboard_pieces, is_promoted_pawns, is_overlapping_pieces
+#include <dctl/core.hpp>                        // is_onboard_pieces, is_promoted_pawns, is_overlapping_pieces
 #include <dctl/egdb/binomial.hpp>               // choose
 #include <dctl/util/type_traits.hpp>            // board_t, set_t
 #include <experimental/optional>                // nullopt, optional

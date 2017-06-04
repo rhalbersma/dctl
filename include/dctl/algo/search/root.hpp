@@ -1,21 +1,18 @@
 #pragma once
-#include <dctl/eval/score.hpp>
 #include <dctl/algo/node.hpp>
 #include <dctl/algo/search/bound.hpp>
+#include <dctl/algo/search/ply.hpp>         // PlyCount
 #include <dctl/algo/search/objective.hpp>
 #include <dctl/algo/search/score.hpp>
 #include <dctl/algo/search/transposition.hpp>
 #include <dctl/algo/search/variation.hpp>
-#include <dctl/util/static_vector.hpp>
+#include <dctl/core.hpp>
+#include <dctl/eval.hpp>
 #include <dctl/util/hash/extract.hpp>
 #include <dctl/util/hash/map.hpp>
 #include <dctl/util/hash/replace.hpp>
-#include <dctl/core/actions.hpp>
-#include <dctl/core/state/setup/diagram.hpp>
-#include <dctl/core/state/setup/string.hpp>
-#include <dctl/core/action/ostream.hpp>
 #include <dctl/util/algorithm.hpp>
-#include <dctl/algo/search/ply.hpp>         // PlyCount
+#include <dctl/util/static_vector.hpp>
 #include <dctl/util/statistics.hpp>
 #include <dctl/util/stopwatch.hpp>
 #include <boost/algorithm/cxx11/iota.hpp>

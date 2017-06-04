@@ -1,6 +1,5 @@
 #include <algo/search/fixture.hpp>
-#include <dctl/core/board.hpp>
-#include <dctl/core/rules/international.hpp>
+#include <dctl/core.hpp>
 #include <boost/test/unit_test.hpp>
 #include <vector>
 

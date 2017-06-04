@@ -1,17 +1,10 @@
-#include <dctl/core/action.hpp>
-#include <dctl/core/actions.hpp>
 #include <dctl/algo/node.hpp>
-#include <dctl/core/state/setup/string.hpp>
-#include <dctl/core/state.hpp>
+#include <dctl/core.hpp>
 #include <boost/range/algorithm.hpp>    // sort, transform
 #include <iomanip>
 #include <iostream>
 #include <stack>
 #include <vector>
-
-// customize rules and board from these headers
-#include <dctl/core/rules.hpp>
-#include <dctl/core/board.hpp>
 
 using namespace dctl::core;
 

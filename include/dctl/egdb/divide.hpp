@@ -1,8 +1,5 @@
 #pragma once
-#include <dctl/core/board.hpp>
-#include <dctl/core/rules.hpp>
-#include <dctl/core/state.hpp>
-#include <dctl/core/board/traits.hpp>
+#include <dctl/core.hpp>
 #include <dctl/egdb/index.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>

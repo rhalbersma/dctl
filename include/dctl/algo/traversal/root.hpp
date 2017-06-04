@@ -1,10 +1,7 @@
 #pragma once
 #include <dctl/algo/node.hpp>
 #include <dctl/algo/traversal/transposition.hpp>
-#include <dctl/core/action/ostream.hpp>
-#include <dctl/core/actions.hpp>
-#include <dctl/core/state/setup/diagram.hpp>
-#include <dctl/core/state/setup/string.hpp>
+#include <dctl/core.hpp>
 #include <dctl/util/hash/dual_map.hpp>
 #include <dctl/util/hash/extract.hpp>
 #include <dctl/util/static_vector.hpp>
