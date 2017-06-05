@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(frisian)
 {
         auto const p = state<frisian, board::frisian>::initial();
         auto const leafs = std::vector<int64_t>{ 9, 81, 658, 3'874, 21'265, 102'431, 540'126, 2'825'779, 15'605'069, 85'817'725, 491'186'430 };
-        traversal::test(p, drop_duplicates_gen, leafs);
+        traversal::test(drop_duplicates_gen, p, leafs);
 }
 */
 BOOST_AUTO_TEST_SUITE_END()

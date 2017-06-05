@@ -1,32 +1,62 @@
 #pragma once
-#include <dctl/core/state/ui/pdn/version.hpp>
-#include <dctl/core/state/state.hpp>
-#include <dctl/core/state/manip/position_format.hpp>
 #include <dctl/core/state/setup/diagram.hpp>
 #include <dctl/core/state/setup/string.hpp>
+#include <dctl/core/state/state.hpp>
+#include <dctl/core/state/ui/pdn/version.hpp>
 #include <cassert>
 #include <iosfwd>                       // ostream
 
 namespace dctl {
 namespace core {
+namespace detail {
+
+enum class stateformat
+{
+        /* zero is reserved */
+        diag = 1,
+        fen = 2
+};
 
 inline
-auto getpositionformat(std::ostream& ostr)
+auto setstateformat()
 {
-        auto index = ostr.iword(manip::position_format());
-        if (!index)
-                index = static_cast<int>(manip::StateFormat::diag);
-        return static_cast<manip::StateFormat>(index);
+        static auto const i = std::ios_base::xalloc();
+        return i;
 }
 
-template<class CharT, class Traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, state<Rules, Board> const& s)
+inline
+auto getpositionformat(std::ios_base& str)
 {
-        switch (getpositionformat(ostr)) {
-        case manip::StateFormat::diag : return ostr << setup::diagram<pdn::protocol>()(s);
-        case manip::StateFormat::fen  : return ostr << setup::write<pdn::protocol>()(s);
-	default: assert(false); return ostr;
+        if (auto const iword = str.iword(setnotation()); iword) {
+                return static_cast<stateformat>(iword);
         }
+        return stateformat::diag;
+}
+
+}       // namespace manip
+
+template<class Rules, class Board>
+auto& operator<<(std::ostream& ostr, state<Rules, Board> const& s)
+{
+        switch (detail::getpositionformat(ostr)) {
+        case detail::stateformat::diag: return ostr << setup::diagram<pdn::protocol>()(s);
+        case detail::stateformat::fen : return ostr << setup::write<pdn::protocol>()(s);
+        }
+        return ostr;
+}
+
+inline
+auto& diag(std::ios_base& str)
+{
+        str.iword(detail::setstateformat()) = xstd::to_underlying_type(detail::stateformat::diag);
+        return str;
+}
+
+inline
+auto& fen(std::ios_base& str)
+{
+        str.iword(detail::setstateformat()) = xstd::to_underlying_type(detail::stateformat::fen);
+        return str;
 }
 
 }       // namespace core
