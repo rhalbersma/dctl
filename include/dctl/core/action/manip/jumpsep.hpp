@@ -33,7 +33,7 @@ auto& operator<<(std::ios_base& str, setjumpsep const& m)
 }
 
 inline
-auto jumpsep(std::ios_base& str)
+auto getjumpsep(std::ios_base& str)
 {
         return static_cast<char>(str.iword(setjumpsep::index()));
 }

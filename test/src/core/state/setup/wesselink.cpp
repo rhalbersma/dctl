@@ -1,7 +1,7 @@
-#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
-#include <dctl/core/board.hpp>               // international
-#include <dctl/core/rules.hpp>               // international
-#include <dctl/core/state/setup/setup.hpp>         // read, write
+#include <dctl/core/board.hpp>                  // international
+#include <dctl/core/rules.hpp>                  // international
+#include <dctl/core/state/setup/setup.hpp>      // read, write
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 
 using namespace dctl::core;
 

@@ -1,9 +1,9 @@
 #pragma once
-#include <dctl/core/actions/detail/specializations.hpp>      // generate
-#include <dctl/core/actions/select/legal.hpp>                // legal
-#include <dctl/core/state/color_piece.hpp>                         // black, white
+#include <dctl/core/actions/detail/specializations.hpp> // generate
+#include <dctl/core/actions/select/legal.hpp>           // legal
+#include <dctl/core/state/color_piece.hpp>              // black, white
 #include <dctl/core/rules/traits.hpp>
-#include <dctl/util/type_traits.hpp>                 // value_t
+#include <dctl/util/type_traits.hpp>                    // value_t
 #include <cassert>                                      // assert
 #include <type_traits>                                  // bool_constant, is_same
 

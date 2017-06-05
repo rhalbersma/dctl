@@ -29,7 +29,7 @@ int main()
                 std::vector<action<Rules, Board>> actions;
                 Actions<>{}.generate(state, actions);
                 boost::sort(actions, [](auto const& lhs, auto const& rhs) {
-                        return move::str_numeric(lhs) < move::str_numeric(rhs);
+                        return str_numeric(lhs) < str_numeric(rhs);
                 });
 
                 if (actions.empty()) {

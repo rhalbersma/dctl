@@ -1,8 +1,8 @@
 #pragma once
-#include <dctl/core/state/color_piece.hpp>                 // pawn, king
-#include <dctl/core/rules/traits.hpp>                 // rectangular, is_contents_precedence, is_ordering_precedence
-#include <dctl/util/conditional_base.hpp>    // conditional_base
-#include <dctl/util/type_traits.hpp>         // set_t, square_t
+#include <dctl/core/rules/traits.hpp>           // rectangular, is_contents_precedence, is_ordering_precedence
+#include <dctl/core/state/color_piece.hpp>      // pawn, king
+#include <dctl/util/conditional_base.hpp>       // conditional_base
+#include <dctl/util/type_traits.hpp>            // set_t, square_t
 #include <cassert>                              // assert
 #include <tuple>                                // tie
 #include <type_traits>                          // conditional, enable_if, is_pod, is_same

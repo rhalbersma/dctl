@@ -177,9 +177,24 @@ DCTL_PP_TTI_CONSTANT(max_reversible_moves, 0)
 template<class Rules>
 constexpr auto is_restricted_reversible_moves_v = max_reversible_moves_v<Rules> != 0;
 
-DCTL_PP_TTI_CONSTANT(is_algebraic_notation, false)
 DCTL_PP_TTI_CONSTANT(pushsep, '-')
 DCTL_PP_TTI_CONSTANT(jumpsep, 'x')
+
+DCTL_PP_TTI_CONSTANT(is_algebraic_notation, false)
+
+enum class notation
+{
+        /* zero is reserved */
+        algebraic = 1,
+        numeric = 2
+};
+
+template<class Rules>
+constexpr auto notation_v =
+        is_algebraic_notation_v<Rules> ?
+        notation::algebraic :
+        notation::numeric
+;
 
 }       // namespace core
 }       // namespace dctl

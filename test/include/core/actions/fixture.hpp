@@ -26,7 +26,7 @@ struct Fixture
 
                 BOOST_CHECK_EQUAL(moves.size(), rng.size());
 
-                auto const move_str = [](auto const& m) { return move::str_numeric(m); };
+                auto const move_str = [](auto const& m) { return str_numeric(m); };
                 auto const notations = moves | boost::adaptors::transformed(std::cref(move_str));
 
                 BOOST_CHECK(

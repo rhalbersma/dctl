@@ -33,7 +33,7 @@ auto& operator<<(std::ios_base& str, setpushsep const& m)
 }
 
 inline
-auto pushsep(std::ios_base& str)
+auto getpushsep(std::ios_base& str)
 {
         return static_cast<char>(str.iword(setpushsep::index()));
 }

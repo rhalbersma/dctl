@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/core/action/traits/notation.hpp> // notation
-#include <xstd/type_traits.hpp>                 // to_underlying_type
-#include <ios>                                  // ios_base, iword, xalloc
+#include <dctl/core/rules/traits.hpp>   // notation
+#include <xstd/type_traits.hpp>         // to_underlying_type
+#include <ios>                          // ios_base, iword, xalloc
 
 namespace dctl {
 namespace core {
@@ -31,7 +31,7 @@ auto& numeric(std::ios_base& str)
 }
 
 inline
-auto gnotation(std::ios_base& str)
+auto getnotation(std::ios_base& str)
 {
         return static_cast<notation>(str.iword(setnotation::index()));
 }
