@@ -27,13 +27,13 @@ auto setstateformat()
 inline
 auto getstateformat(std::ios_base& str)
 {
-        if (auto const iword = str.iword(setnotation()); iword) {
+        if (auto const iword = str.iword(setstateformat()); iword) {
                 return static_cast<stateformat>(iword);
         }
         return stateformat::diag;
 }
 
-}       // namespace manip
+}       // namespace detail
 
 template<class Rules, class Board>
 auto& operator<<(std::ostream& ostr, state<Rules, Board> const& s)
