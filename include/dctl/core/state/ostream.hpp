@@ -25,7 +25,7 @@ auto setstateformat()
 }
 
 inline
-auto getpositionformat(std::ios_base& str)
+auto getstateformat(std::ios_base& str)
 {
         if (auto const iword = str.iword(setnotation()); iword) {
                 return static_cast<stateformat>(iword);
@@ -38,7 +38,7 @@ auto getpositionformat(std::ios_base& str)
 template<class Rules, class Board>
 auto& operator<<(std::ostream& ostr, state<Rules, Board> const& s)
 {
-        switch (detail::getpositionformat(ostr)) {
+        switch (detail::getstateformat(ostr)) {
         case detail::stateformat::diag: return ostr << setup::diagram<pdn::protocol>()(s);
         case detail::stateformat::fen : return ostr << setup::write<pdn::protocol>()(s);
         }
