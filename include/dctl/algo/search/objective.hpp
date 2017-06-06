@@ -4,7 +4,7 @@
 #include <type_traits>                  // false_type, true_type
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace search {
 
 /* first side to run out of moves, loses */
@@ -159,5 +159,5 @@ struct GameObjective
 };
 
 }       // namespace search
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

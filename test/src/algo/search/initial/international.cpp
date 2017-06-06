@@ -2,7 +2,7 @@
 #include <dctl/core.hpp>
 #include <boost/test/unit_test.hpp>
 
-using namespace dctl::aima;
+using namespace dctl::algo;
 using namespace dctl::core;
 
 using Rules = international;

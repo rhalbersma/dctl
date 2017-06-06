@@ -3,7 +3,7 @@
 #include <boost/test/unit_test.hpp>
 #include <vector>
 
-using namespace dctl::aima;
+using namespace dctl::algo;
 using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(SearchEGDBKiller)

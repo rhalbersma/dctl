@@ -6,7 +6,7 @@
 
 #include <algo/traversal/fixture.hpp>
 
-using namespace dctl::aima;
+using namespace dctl::algo;
 using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(TraversalItalianGilbert)

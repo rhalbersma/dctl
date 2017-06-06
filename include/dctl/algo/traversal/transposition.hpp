@@ -2,7 +2,7 @@
 #include <cstddef>      // size_t
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace traversal {
 
 class Transposition
@@ -35,5 +35,5 @@ public:
 };
 
 }       // namespace traversal
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

@@ -4,7 +4,7 @@
 #include <cassert>                      // assert
 
 namespace dctl {
-namespace aima {
+namespace algo {
 
 template<class State, class Actions, class UnaryPredicate>
 class problem
@@ -48,5 +48,5 @@ public:
         }
 };
 
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

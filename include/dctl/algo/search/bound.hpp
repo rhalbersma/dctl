@@ -4,7 +4,7 @@
 #include <string>                       // string
 
 namespace dctl {
-namespace aima {
+namespace algo {
 
 struct Bound
 {
@@ -36,5 +36,5 @@ struct Bound
         }
 };
 
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

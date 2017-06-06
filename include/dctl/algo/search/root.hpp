@@ -24,7 +24,7 @@
 #include <vector>                       // vector
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace search {
 
 template
@@ -344,5 +344,5 @@ private:
 };
 
 }       // namespace search
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

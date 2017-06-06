@@ -5,7 +5,7 @@
 #include <dctl/algo/search/ply.hpp>
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace search {
 
 // observers
@@ -134,5 +134,5 @@ std::string print(int value)
 }
 
 }       // namespace search
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

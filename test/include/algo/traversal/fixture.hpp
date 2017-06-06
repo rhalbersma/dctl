@@ -5,7 +5,7 @@
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace traversal {
 
 template<class Actions, class State, class Range>
@@ -18,5 +18,5 @@ void test(Actions const& successor, State const& s, Range const& leafs)
 }
 
 }       // namespace traversal
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

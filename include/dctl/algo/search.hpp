@@ -6,7 +6,7 @@
 #include <stack>
 
 namespace dctl {
-namespace aima {
+namespace algo {
 
 template<class ImplicitGraph, class Vertex, class Visitor, class Terminator>
 auto depth_first_visit(ImplicitGraph const& g, Vertex const& v, Visitor& vis, Terminator pred)
@@ -81,5 +81,5 @@ auto best_first_tree_search(Problem const& problem, std::queue<node_t<Problem>>&
         return tree_search(problem, frontier);
 }
 
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

@@ -84,6 +84,6 @@ int main()
                 }
 
                 auto const a = actions[static_cast<std::size_t>(choice)];
-                game.push(aima::result(state, a));
+                game.push(algo::result(state, a));
         }
 }

@@ -2,7 +2,7 @@
 #include <cstdint>                      // uint8_t
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace search {
 
 using PlyCount = uint8_t;
@@ -13,5 +13,5 @@ enum : PlyCount { MAX_PLY = 255 };
 enum : PlyCount { MAX_MATE_MOVES = 255 };
 
 }       // namespace search
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

@@ -3,7 +3,7 @@
 #include <dctl/algo/search/score.hpp>
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace search {
 
 class Transposition
@@ -136,5 +136,5 @@ public:
 };
 
 }       // namespace search
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

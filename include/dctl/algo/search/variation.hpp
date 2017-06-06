@@ -2,7 +2,7 @@
 #include <dctl/util/static_vector.hpp>       // Variation
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace search {
 
 inline void update_variation(Variation& line, int move, Variation const& continuation)
@@ -13,5 +13,5 @@ inline void update_variation(Variation& line, int move, Variation const& continu
 }
 
 }       // namespace search
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

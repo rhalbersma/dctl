@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <vector>
 
-using namespace dctl::aima;
+using namespace dctl::algo;
 using namespace dctl::core;
 
 int main()

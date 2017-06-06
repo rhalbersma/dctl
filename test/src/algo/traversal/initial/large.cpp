@@ -5,7 +5,7 @@
 #include <cstdint>                      // int64_t
 #include <vector>
 
-using namespace dctl::aima;
+using namespace dctl::algo;
 using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(WalkinitialLarge)

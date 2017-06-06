@@ -20,7 +20,7 @@
 #include <unordered_map>
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace traversal {
 
 template<class Tag, class State>
@@ -516,5 +516,5 @@ auto divide(State const& s, int depth, Actions successor, Enhancements e)
 }
 
 }       // namespace traversal
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

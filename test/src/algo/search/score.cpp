@@ -2,7 +2,7 @@
 #include <dctl/algo/search/score.hpp>
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK, BOOST_CHECK_EQUAL, BOOST_CHECK_LT, BOOST_AUTO_TEST_SUITE_END
 
-using namespace dctl::aima::search;
+using namespace dctl::algo::search;
 
 BOOST_AUTO_TEST_SUITE(SearchScore)
 

@@ -9,7 +9,7 @@
 #include <type_traits>                          // is_same
 
 namespace dctl {
-namespace aima {
+namespace algo {
 
 template<class State, class Action>
 constexpr auto result(State const& s, Action const& a) noexcept
@@ -211,5 +211,5 @@ public:
 
 std::unordered_set<wrap, acme::identity_hash>;
 */
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl

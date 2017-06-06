@@ -9,7 +9,7 @@
 #include <utility>                      // pair
 
 namespace dctl {
-namespace aima {
+namespace algo {
 namespace search {
 
 template<class State, class Objective>
@@ -47,5 +47,5 @@ public:
 using DefaultObjective = GameObjective<NoActionsLeft>;
 
 }       // namespace search
-}       // namespace aima
+}       // namespace algo
 }       // namespace dctl
