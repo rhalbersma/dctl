@@ -4,7 +4,8 @@
 #include <dctl/core/state/state.hpp>
 #include <dctl/core/state/ui/pdn/version.hpp>
 #include <cassert>
-#include <iosfwd>                       // ostream
+#include <ios>                                  // ios_base
+#include <ostream>                              // basic_ostream
 
 namespace dctl {
 namespace core {
@@ -35,8 +36,8 @@ auto getpositionformat(std::ios_base& str)
 
 }       // namespace manip
 
-template<class Rules, class Board>
-auto& operator<<(std::ostream& ostr, state<Rules, Board> const& s)
+template<class CharT, class Traits, class Rules, class Board>
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, state<Rules, Board> const& s)
 {
         switch (detail::getpositionformat(ostr)) {
         case detail::stateformat::diag: return ostr << setup::diagram<pdn::protocol>()(s);
