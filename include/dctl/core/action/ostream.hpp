@@ -13,22 +13,22 @@ namespace core {
 
 class setpushsep
 {
-        char word;
+        char m_iword;
 public:
-        explicit setpushsep(char c) noexcept
+        explicit setpushsep(char const c) noexcept
         :
-                word{c}
+                m_iword{c}
         {}
+
+        auto iword() const noexcept
+        {
+                return m_iword;
+        }
 
         static auto index()
         {
                 static auto const i = std::ios_base::xalloc();
                 return i;
-        }
-
-        auto iword() const noexcept
-        {
-                return word;
         }
 };
 
@@ -41,22 +41,22 @@ auto& operator<<(std::ios_base& str, setpushsep const& manip)
 
 class setjumpsep
 {
-        char word;
+        char m_iword;
 public:
-        explicit setjumpsep(char c) noexcept
+        explicit setjumpsep(char const c) noexcept
         :
-                word{c}
+                m_iword{c}
         {}
+
+        auto iword() const noexcept
+        {
+                return m_iword;
+        }
 
         static auto index()
         {
                 static auto const i = std::ios_base::xalloc();
                 return i;
-        }
-
-        auto iword() const noexcept
-        {
-                return word;
         }
 };
 
