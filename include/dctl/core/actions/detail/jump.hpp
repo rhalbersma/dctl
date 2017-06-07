@@ -7,12 +7,12 @@
 #include <dctl/core/actions/detail/generate_primary_fwd.hpp> // generate (primary template)
 #include <dctl/core/actions/detail/generate_king_jump.hpp>   // generate (king jump specialization)
 #include <dctl/core/actions/detail/generate_pawn_jump.hpp>   // generate (pawn jump specialization)
-#include <dctl/core/actions/select/jump.hpp>                 // jump
-#include <dctl/core/state/color_piece.hpp>                         // color, color_, kings_, pawn_
+#include <dctl/core/actions/select/jump.hpp>                    // jump
+#include <dctl/core/state/color_piece.hpp>                      // color, color_, kings_, pawn_
 #include <dctl/core/rules/traits.hpp>
-#include <dctl/util/static_vector.hpp>               // static_vector
-#include <dctl/util/type_traits.hpp>                 // rules_t, board_t
-#include <cassert>                                      // assert
+#include <dctl/util/type_traits.hpp>                            // rules_t, board_t
+#include <boost/container/static_vector.hpp>
+#include <cassert>                                              // assert
 #include <type_traits>
 
 namespace dctl {
@@ -39,19 +39,29 @@ class Actions<color_<Side>, select::jump, DuplicatesPolicy, Reverse>
 {
         using to_move_ = color_<Side>;
 public:
-        template<class State, class SequenceContainer>
-        auto generate(State const& s, SequenceContainer& a) const
+        template<class State, class SequenceContainer = boost::container::static_vector<action<rules_t<State>, board_t<State>>, 128>>
+        auto generate(State const& s) const
         {
-                using builder_type = /*std::conditional_t<
-                        std::is_same_v<Sequence, MoveCounter> && !DuplicatesPolicy,
-                        Counter<to_move_, DuplicatesPolicy, State>,*/
-                        builder<to_move_, DuplicatesPolicy, State, SequenceContainer>;
+                SequenceContainer seq;
+                generate(s, seq);
+                return seq;
+        }
+
+        template<class State, class SequenceContainer>
+        auto generate(State const& s, SequenceContainer& seq) const
+        {
+                using builder_type = builder<to_move_, DuplicatesPolicy, State, SequenceContainer>;
+
+                //                /*std::conditional_t<
+                //        std::is_same_v<Sequence, MoveCounter> && !DuplicatesPolicy,
+                //        Counter<to_move_, DuplicatesPolicy, State>,*/
+                //        ;
                 //>;
 
                 using king_jump = detail::generate<to_move_, kings_, select::jump, Reverse, State, builder_type>;
                 using pawn_jump = detail::generate<to_move_, pawns_, select::jump, Reverse, State, builder_type>;
 
-                auto b = builder_type{s, a};
+                auto b = builder_type{s, seq};
                 king_jump{b}();
                 pawn_jump{b}();
         }
@@ -59,15 +69,7 @@ public:
         template<class State>
         auto count(State const& s) const
         {
-                using counter_container = /* std::conditional_t<
-                        is_trivial_precedence_v<rules_t<State>> && !DuplicatesPolicy{},
-                        MoveCounter,*/
-                        static_vector<action<rules_t<State>, board_t<State>>>;
-                //>;
-
-                counter_container a;
-                generate(s, a);
-                return static_cast<int>(a.size());
+                return static_cast<int>(generate(s).size());
         }
 
         template<class State>

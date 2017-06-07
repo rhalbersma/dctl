@@ -148,11 +148,7 @@ private:
                         return TT_entry->value();
 
                 // generate moves
-                using R = core::rules_t<State>;
-                using B = core::board_t<State>;
-
-                static_vector<core::action<R,B>> moves;
-                successor.generate(n.state(), moves);
+                auto const moves = successor.generate(n.state());
                 assert(!moves.empty());
 
                 Order move_order;

@@ -4,7 +4,6 @@
 #include <dctl/core.hpp>
 #include <dctl/util/hash/dual_map.hpp>
 #include <dctl/util/hash/extract.hpp>
-#include <dctl/util/static_vector.hpp>
 #include <dctl/util/statistics.hpp>
 #include <dctl/util/stopwatch.hpp>
 #include <hash_append/hash_append.h>
@@ -177,13 +176,10 @@ int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements
         if (terminal.first) {
                 nodes = terminal.second;
         } else {
-                using R = core::rules_t<State>;
-                using B = core::board_t<State>;
-
-                static_vector<core::action<R,B>> moves;
-                successor.generate(s, moves);
-                for (auto const& m : moves)
+                auto const moves = successor.generate(s);
+                for (auto const& m : moves) {
                         nodes += walk(result(s, m), depth - 1, ply + 1, successor, e);
+                }
         }
 
         // (3)
@@ -195,9 +191,7 @@ int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements
 template<class Actions, class State>
 auto legal_actions(Actions const& successor, State const& s)
 {
-        static_vector<core::action<core::rules_t<State>, core::board_t<State>>> moves;
-        successor.generate(s, moves);
-        return moves;
+        return successor.generate(s);
 }
 
 template<bool IsBulk, class Actions, class State>
@@ -229,8 +223,7 @@ auto perft_state(Actions const& successor, State const& s, int depth)
                 if (depth == 0) return 1;
         }
 
-        static_vector<core::action<core::rules_t<State>, core::board_t<State>>> moves;
-        successor.generate(s, moves);
+        auto const moves = successor.generate(s);
         return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a){
                 return sum + perft_state<IsBulk>(successor, result(s, a), depth - 1);
         });
@@ -239,9 +232,7 @@ auto perft_state(Actions const& successor, State const& s, int depth)
 template<class Vertex, class ImplicitGraph>
 auto out_edges(Vertex const& u, ImplicitGraph const& g)
 {
-        static_vector<core::action<core::rules_t<core::state_t<Vertex>>, core::board_t<core::state_t<Vertex>>>> edges;
-        g.generate(u.state(), edges);
-        return edges;
+        return g.generate(u.state());
 }
 
 template<bool IsBulk, class Actions, class Node>
