@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = spanish;
+                using rules_type [[maybe_unused]] = spanish;
                 int num_captured_;
                 int num_captured_kings_;
                 constexpr auto num_captured_pieces() const noexcept { return num_captured_;       }

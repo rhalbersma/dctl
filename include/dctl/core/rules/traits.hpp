@@ -1,10 +1,29 @@
 #pragma once
 #include <dctl/core/board/rectangular.hpp>      // rectangular
-#include <dctl/util/tti.hpp>                    // DCTL_PP_TTI_CONSTANT
 #include <dctl/util/type_traits.hpp>            // rules_t
 #include <tuple>                                // make_tuple
-#include <type_traits>                          // conditional, decay, is_same, false_type, true_type
+#include <type_traits>                          // conditional_t, decay_t, is_same_v, false_type, true_type, void_t
 #include <utility>                              // forward
+
+#define DCTL_PP_TTI_CONSTANT(NAME, DEFAULT)             \
+                                                        \
+template<class T, class = void>                         \
+static constexpr auto has_ ## NAME ## _v = false;       \
+                                                        \
+template<class T>                                       \
+static constexpr auto has_ ## NAME ## _v<               \
+        T, std::void_t<decltype(T::NAME)>               \
+> = true;                                               \
+                                                        \
+struct default_ ## NAME                                 \
+{                                                       \
+        static constexpr auto NAME = DEFAULT;           \
+};                                                      \
+                                                        \
+template<class T>                                       \
+constexpr auto NAME ## _v = std::conditional_t<         \
+        has_ ## NAME ## _v<T>, T, default_ ## NAME      \
+>::NAME;                                                \
 
 namespace dctl {
 namespace core {
@@ -198,3 +217,5 @@ constexpr auto notation_v =
 
 }       // namespace core
 }       // namespace dctl
+
+#undef DCTL_PP_TTI_CONSTANT

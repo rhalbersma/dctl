@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = italian;
+                using rules_type [[maybe_unused]] = italian;
                 int num_captured_;
                 int num_captured_kings_;
                 piece with_;

@@ -101,7 +101,7 @@ public:
                 assert_invariants();
         }
 
-        constexpr auto capture(int const sq, [[maybe_unused]] bool const is_king) // Throws: Nothing.
+        constexpr auto capture(int const sq, bool const is_king [[maybe_unused]]) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
@@ -110,7 +110,7 @@ public:
                 this->m_captured_pieces.insert(sq);
         }
 
-        constexpr auto release(int const sq, [[maybe_unused]] bool const is_king) // Throws: Nothing.
+        constexpr auto release(int const sq, bool const is_king [[maybe_unused]]) // Throws: Nothing.
         {
                 assert(is_onboard(sq));
                 this->m_captured_pieces.erase(sq);

@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type = czech;
+                using rules_type [[maybe_unused]] = czech;
                 piece with;
                 constexpr auto is_with_king() const noexcept { return with == piece::kings; }
         };

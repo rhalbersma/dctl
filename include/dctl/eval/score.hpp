@@ -19,7 +19,7 @@ static int score (State const& s)
 }
 
 template<class State>
-static void print_break_down(State const& s)
+[[maybe_unused]] static void print_break_down(State const& s)
 {
         std::cout << "Term    " << " BLACK"                                                                         << " WHITE"                                         << " DELTA"                                                      << '\n';
         for (auto i = 0; i < 26; ++i)

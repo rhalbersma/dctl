@@ -120,7 +120,7 @@ struct cycle<SecondPlayerWin>
 };
 
 template<class State>
-bool is_no_progress([[maybe_unused]] State const& s)
+bool is_no_progress(State const& s [[maybe_unused]])
 {
         using rules_type = core::rules_t<State>;
 

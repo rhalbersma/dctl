@@ -25,7 +25,6 @@ list(APPEND cxx_compile_options_warnings_general
                 -Wno-c++98-compat-pedantic      
                 -Wno-padded
 		-Wno-error=unused-lambda-capture
-		-Wno-error=unused-template
 		-Wno-error=weak-vtables
         >
         $<$<CXX_COMPILER_ID:GNU>:
@@ -38,7 +37,6 @@ list(APPEND cxx_compile_options_warnings_general
                 -Wsign-promo
                 -Wno-error=sign-conversion 
         >
-        -Wno-error=unused-local-typedefs
  	-Werror 
         -pedantic-errors
 )  

@@ -17,9 +17,9 @@ class Actions
         static constexpr auto Impl = detail::Actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>{};
 
         template<class Color, class State, class SequenceContainer>
-        auto assert_invariants([[maybe_unused]] State const& s, [[maybe_unused]] SequenceContainer const& actions) const
+        auto assert_invariants(State const& s [[maybe_unused]], SequenceContainer const& actions [[maybe_unused]]) const
         {
-                [[maybe_unused]] auto const n = static_cast<int>(actions.size());
+                auto const n [[maybe_unused]] = static_cast<int>(actions.size());
                 assert( count<Color>(s) ==  n     );
                 assert(detect<Color>(s) == (n > 0));
         }
