@@ -1,6 +1,199 @@
 #pragma once
-#include <dctl/core/board/ray/classical.hpp> // classical
-#include <dctl/core/board/ray/fill.hpp>      // fill
-#include <dctl/core/board/ray/iterator.hpp>  // iterator, make_iterator
-#include <dctl/core/board/ray/traits.hpp>    // direction
-#include <dctl/core/board/ray/transform.hpp> // mirror, rotate
+#include <dctl/core/board/angle.hpp>            // angle
+#include <dctl/core/board/detail/shift.hpp>            // first, shift_sign, shift_size
+#include <dctl/core/board/traits.hpp>
+#include <dctl/util/fill_array.hpp>             // fill_array
+#include <dctl/util/type_traits.hpp>            // set_t
+#include <boost/iterator/counting_iterator.hpp> // counting_iterator
+#include <boost/operators.hpp>                  // totally_ordered, unit_steppable, additive
+#include <array>
+#include <cassert>                              // assert
+#include <iterator>                             // random_access_iterator_tag
+#include <type_traits>                          // bool_constant
+
+namespace dctl::core {
+namespace ray {
+
+template<class Board, int Direction>
+class cursor
+:       boost::totally_ordered< cursor<Board, Direction>        // != >= > <=
+,       boost::unit_steppable < cursor<Board, Direction>        // ++, --
+,       boost::additive       < cursor<Board, Direction>, int   // +, -
+> > >
+{
+        constexpr static auto sign = detail::shift_sign_v<Direction>;
+        constexpr static auto N = static_cast<int>(detail::shift_size_v<Board, Direction>);
+        constexpr static auto stride = (sign == detail::direction::right) ? -N : N;
+        static_assert(stride != 0, "Cursors need a non-zero stride.");
+
+        int m_cursor{};
+public:
+        cursor() = default;
+
+        explicit cursor(int const sq) noexcept
+        :
+                m_cursor{sq}
+        {}
+
+        template<class, int>
+        friend class cursor;
+
+        template<int M>
+        /* implicit */ cursor(cursor<Board, M> const& other) noexcept
+        :
+                m_cursor{other.m_cursor}
+        {}
+
+        /* implicit */ operator auto() const noexcept
+        {
+                return m_cursor;
+        }
+
+        // operator++(int) provided by boost::unit_steppable
+        auto& operator++() noexcept
+        {
+                m_cursor += stride;
+                return *this;
+        }
+
+        // operator--(int) provided by boost::unit_steppable
+        auto& operator--() noexcept
+        {
+                m_cursor -= stride;
+                return *this;
+        }
+
+        // operator+(cursor, int) provided by boost::additive
+        auto& operator+=(int const n) noexcept
+        {
+                m_cursor += n * stride;
+                return *this;
+        }
+
+        // operator-(cursor, int) provided by boost::additive
+        auto& operator-=(int const n) noexcept
+        {
+                m_cursor -= n * stride;
+                return *this;
+        }
+
+        // number of increments / decrements between lhs and rhs
+        friend auto operator-(cursor const& lhs, cursor const& rhs) noexcept
+        {
+                return (lhs.m_cursor - rhs.m_cursor) / stride;
+        }
+};
+
+template<class Board, int Direction>
+using iterator = boost::counting_iterator
+<
+        cursor<Board, Direction>,               // Incrementable
+        std::random_access_iterator_tag,        // CategoryOrTraversal
+        int                                     // DifferenceType
+>;
+
+template<class Board, int Direction>
+auto make_iterator(int const sq)
+        -> iterator<Board, Direction>
+{
+        return { cursor<Board, Direction>{sq} };
+}
+
+template<int Theta, class Board, int Direction>
+auto rotate(iterator<Board, Direction> it)
+        -> iterator<Board, rotate(angle{Direction}, angle{Theta}).value()>
+{
+        return { it.base() };
+}
+
+template<int Theta, class Board, int Direction>
+auto mirror(iterator<Board, Direction> it)
+        -> iterator<Board, mirror(angle{Direction}, angle{Theta}).value()>
+{
+        return { it.base() };
+}
+
+template<int Theta, class Board, int Direction>
+auto turn(iterator<Board, Direction> it)
+        -> iterator<Board, Theta>
+{
+        static_assert(Theta != Direction);
+        return { it.base() };
+}
+
+template<class T>
+constexpr auto direction_v = angle{};
+
+template<class Board, int Direction>
+constexpr auto direction_v<iterator<Board, Direction>> = angle{Direction};
+
+template<class Board, int Direction>
+constexpr auto is_onboard(iterator<Board, Direction> it)
+{
+        return static_cast<unsigned>(*it) < static_cast<unsigned>(set_t<Board>::max_size());
+}
+
+template<class Board, int Direction, class Set>
+auto fill(iterator<Board, Direction> from, Set const propagator)
+{
+        Set targets {};
+        for (++from; is_onboard(from) && propagator.test(*from); ++from) {
+                targets.insert(*from);
+        }
+        return targets;
+}
+
+template<class Board>
+class king_targets
+{
+        template<int Direction>
+        struct init
+        {
+                auto operator()(int const sq) const noexcept
+                {
+                        constexpr auto squares = squares_v<Board>;
+                        return squares.test(sq) ? fill(make_iterator<Board, Direction>(sq), squares) : set_t<Board>{};
+                }
+        };
+
+        constexpr static auto theta = 45_deg;
+        constexpr static auto beta  =  0_deg;
+
+        using value_type = std::array<set_t<Board>, Board::bits()>;
+
+        static inline value_type const value[]=
+        {
+                fill_array<Board::bits()>(init<  0>{}),
+                fill_array<Board::bits()>(init< 45>{}),
+                fill_array<Board::bits()>(init< 90>{}),
+                fill_array<Board::bits()>(init<135>{}),
+                fill_array<Board::bits()>(init<180>{}),
+                fill_array<Board::bits()>(init<225>{}),
+                fill_array<Board::bits()>(init<270>{}),
+                fill_array<Board::bits()>(init<315>{})
+        };
+
+public:
+        auto operator()(int const sq, angle const alpha) const noexcept
+        {
+                auto const segment = (alpha - beta) / theta;
+                return value[segment][static_cast<std::size_t>(sq)];
+        }
+};
+
+template<class Board, int Direction, class Set = set_t<Board>>
+auto classical(iterator<Board, Direction> from, Set const propagator)
+{
+        constexpr auto theta = angle{Direction};
+        auto targets = king_targets<Board>{}(*from, theta);
+        auto const blockers = targets & ~propagator;
+        if (!blockers.empty()) {
+                auto const f = detail::first<detail::shift_sign_v<Direction>>{}(blockers);
+                targets ^= king_targets<Board>{}(f, theta);
+                targets.erase(f);
+        }
+        return targets;
+}
+
+}       // namespace ray
+}       // namespace dctl::core

@@ -62,7 +62,7 @@ public:
         using position_type = position_t<base_position>;
 
 private:
-        static constexpr auto static_assert_type_traits() noexcept
+        constexpr static auto static_assert_type_traits() noexcept
         {
                 static_assert(std::is_pod_v<state>);
         }
@@ -82,7 +82,7 @@ public:
                 assert_invariants();
         }
 
-        static constexpr auto initial()
+        constexpr static auto initial()
                 -> state
         {
                 constexpr auto separation = initial_position_gap_v<Rules> + Board::height % 2;
@@ -91,7 +91,7 @@ public:
                 return {{black_pawns, white_pawns}, color::white};
         }
 
-        static constexpr auto initial(int const separation)
+        constexpr static auto initial(int const separation)
                 -> state
         {
                 auto const black_pawns = initial_v<board_type, black_>(separation);

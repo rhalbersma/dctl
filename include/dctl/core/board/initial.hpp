@@ -1,19 +1,17 @@
 #pragma once
-#include <dctl/core/board/mask/row.hpp>      // row
-#include <dctl/core/state/color_piece.hpp>         // black, white
-#include <dctl/util/fill_array.hpp>  // fill_array
-#include <cassert>                      // assert
-#include <cstddef>                      // size_t
+#include <dctl/core/board/row.hpp>              // row
+#include <dctl/core/state/color_piece.hpp>      // black, white
+#include <dctl/util/fill_array.hpp>             // fill_array
+#include <cassert>                              // assert
+#include <cstddef>                              // size_t
 
 namespace dctl::core {
-namespace board {
-namespace mask {
 
 template<class Board, class Color>
 class initial
 {
-        static constexpr auto N = Board::height / 2 + 1;
-        static constexpr auto value = fill_array<N>([](int const rows){
+        constexpr static auto N = Board::height / 2 + 1;
+        constexpr static auto value = fill_array<N>([](int const rows){
                 set_t<Board> result {};
                 for (auto r = 0; r < rows; ++r)
                         result ^= row<Board, Color>{}(r);
@@ -30,6 +28,4 @@ public:
         }
 };
 
-}       // namespace mask
-}       // namespace board
 }       // namespace dctl::core

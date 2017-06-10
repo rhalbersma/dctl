@@ -21,16 +21,16 @@ template<color Side, class Reverse, class State, class Builder>
 class generate<color_<Side>, kings_, select::jump, Reverse, State, Builder>
 {
         using to_move_ = color_<Side>;
-        static constexpr auto to_move_c = color_c<Side>;
-        static constexpr auto piece_c = kings_c;
+        constexpr static auto to_move_c = color_c<Side>;
+        constexpr static auto piece_c = kings_c;
         using  board_type = board_t<Builder>;
         using  rules_type = rules_t<Builder>;
         using    set_type =   set_t<Builder>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
+        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>.value();
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::angle{orientation}));
+        constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
 
         Builder& m_builder;
 public:
@@ -59,9 +59,9 @@ private:
                 m_builder.pieces(to_move_c, piece_c).for_each([this](auto const from_sq) {
                         raii::launch<Builder> guard{m_builder, from_sq};
                         if constexpr (is_orthogonal_jump_v<rules_type>) {
-                                directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left, board::left_down, board::down, board::right_down>(from_sq);
+                                directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(from_sq);
                         } else {
-                                directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(from_sq);
+                                directions_lfold<right_up, left_up, left_down, right_down>(from_sq);
                         }
                 });
         }
@@ -75,7 +75,7 @@ private:
         template<class Iterator>
         auto first_target(Iterator jumper) const
         {
-                slide(jumper, m_builder.template path<board::ray::direction_v<Iterator>.value()>());
+                slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
                 if (is_onboard(jumper) && m_builder.is_target(jumper)) {
                         assert(is_onboard(std::next(jumper)));
                         capture(jumper);
@@ -120,7 +120,7 @@ private:
         auto reverse(Iterator jumper) const
         {
                 static_assert(is_reverse_king_jump_v<rules_type>);
-                return scan(board::ray::rotate<180>(jumper));
+                return scan(ray::rotate<180>(jumper));
         }
 
         template<class Iterator>
@@ -157,13 +157,13 @@ private:
         template<int... Directions, class Iterator>
         auto rotate_directions_lfold(Iterator jumper) const
         {
-                return (... | scan(board::ray::rotate<Directions>(jumper)));
+                return (... | scan(ray::rotate<Directions>(jumper)));
         }
 
         template<class Iterator>
         auto scan(Iterator jumper) const
         {
-                slide(jumper, m_builder.template path<board::ray::direction_v<Iterator>.value()>());
+                slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
                 return is_en_prise(jumper);
         }
 
@@ -224,7 +224,7 @@ private:
         template<int Direction>
         auto along_ray(int const sq) const
         {
-                return board::ray::make_iterator<board_type, Direction>(sq);
+                return ray::make_iterator<board_type, Direction>(sq);
         }
 };
 

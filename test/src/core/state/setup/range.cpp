@@ -9,7 +9,7 @@ using B = board::checkers;
 template<class CharT, class Traits, int Width, int Height, bool Inverted, bool OrthogonalCaptures>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::rectangular<Width, Height, Inverted, OrthogonalCaptures> const& b)
 {
-        using Coord = board::detail::coordinates<board::detail::upper_left>;
+        using Coord = coordinates<upper_left>;
         for (auto y : boost::irange(0, b.height)) {
                 for (auto x : boost::irange(0, b.width)) {
                         if (auto const coord = Coord{x, y}; b.is_square(coord)) {

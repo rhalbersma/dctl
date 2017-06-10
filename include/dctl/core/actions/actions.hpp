@@ -6,7 +6,7 @@
 #include <dctl/util/type_traits.hpp>                    // value_t
 #include <boost/container/static_vector.hpp>
 #include <cassert>                                      // assert
-#include <type_traits>                                  // bool_constant, is_same
+#include <type_traits>                                  // bool_constant, is_same_v
 
 namespace dctl::core {
 
@@ -14,7 +14,7 @@ template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_
 class actions
 {
         template<class Color>
-        static constexpr auto impl = detail::actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>{};
+        constexpr static auto impl = detail::actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>{};
 
         template<class Color, class State, class SequenceContainer>
         auto assert_invariants(State const& s [[maybe_unused]], SequenceContainer const& seq [[maybe_unused]]) const

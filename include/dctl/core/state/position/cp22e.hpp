@@ -14,7 +14,7 @@ namespace cp22e {
 template<class Board>
 class position
 {
-        static constexpr auto static_assert_type_traits() noexcept
+        constexpr static auto static_assert_type_traits() noexcept
         {
                 static_assert(std::is_pod_v<position>);
         }

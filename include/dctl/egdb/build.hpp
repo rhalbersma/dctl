@@ -18,11 +18,11 @@ class build
         int num_illegal{};
         int num_legal{};
 
-        static constexpr auto illegal = -2;
-        static constexpr auto unknown = -1;
-        static constexpr auto win = 0;
-        static constexpr auto loss = 1;
-        static constexpr auto draw = 2;
+        constexpr static auto illegal = -2;
+        constexpr static auto unknown = -1;
+        constexpr static auto win = 0;
+        constexpr static auto loss = 1;
+        constexpr static auto draw = 2;
 
 public:
         build(subdb_type const& subdb)

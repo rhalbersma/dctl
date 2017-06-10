@@ -4,11 +4,10 @@
 #include <type_traits>          // integral_constant, is_pod, is_nothrow_constructible
 
 namespace dctl::core {
-namespace board {
 
 class angle
 {
-        static constexpr auto static_assert_type_traits() noexcept
+        constexpr static auto static_assert_type_traits() noexcept
         {
                 static_assert(std::is_pod_v<angle>);
                 static_assert(std::is_nothrow_constructible_v<angle, int>);
@@ -207,5 +206,4 @@ constexpr auto is_right(angle const a) noexcept
         return 270_deg < a || a < 90_deg;
 }
 
-}       // namespace board
 }       // namespace dctl::core

@@ -1,10 +1,9 @@
 #pragma once
-#include <dctl/core/board/angle.hpp>                 // angle
-#include <dctl/core/board/detail/dimensions.hpp>     // dimensions
+#include <dctl/core/board/angle.hpp>            // angle
+#include <dctl/core/board/detail/dimensions.hpp>       // dimensions
 #include <cassert>                              // assert
 
 namespace dctl::core {
-namespace board {
 namespace detail {
 
 class InnerGrid
@@ -71,5 +70,4 @@ public:
 };
 
 }       // namespace detail
-}       // namespace board
 }       // namespace dctl::core

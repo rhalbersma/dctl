@@ -4,7 +4,6 @@
 #include <boost/range/algorithm.hpp>            // find, find_if
 
 namespace dctl::core {
-namespace board {
 namespace group {
 namespace axioms {
 
@@ -87,5 +86,4 @@ auto is_realized(Group const& g) noexcept
 
 }       // namespace axioms
 }       // namespace group
-}       // namespace board
 }       // namespace dctl::core

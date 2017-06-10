@@ -22,7 +22,7 @@ public:
         auto operator()(State const& s) const
         {
                 using Board = board_t<State>;
-                using Coord = board::detail::coordinates<board::detail::upper_left>;
+                using Coord = coordinates<upper_left>;
 
                 std::stringstream ostr;
                 for (auto y = 0; y < Board::height; ++y) {

@@ -9,7 +9,7 @@ struct killer
 :
         Parent
 {
-        static constexpr auto is_halt_behind_king = true;
+        constexpr static auto is_halt_behind_king = true;
 };
 
 }       // namespace block_adl

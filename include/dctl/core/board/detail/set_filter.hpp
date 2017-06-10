@@ -1,13 +1,11 @@
 #pragma once
-#include <dctl/util/type_traits.hpp> // set_t
+#include <dctl/util/type_traits.hpp>    // set_t
 
 namespace dctl::core {
-namespace board {
-namespace mask {
 namespace detail {
 
 template<class Board, class Set = set_t<Board>, class UnaryPredicate>
-constexpr auto copy_if(UnaryPredicate pred) noexcept
+constexpr auto set_filter(UnaryPredicate pred) noexcept
 {
         Set result{};
         for (auto sq = 0; sq < Board::size(); ++sq) {
@@ -19,6 +17,4 @@ constexpr auto copy_if(UnaryPredicate pred) noexcept
 }
 
 }       // namespace detail
-}       // namespace mask
-}       // namespace board
 }       // namespace dctl::core

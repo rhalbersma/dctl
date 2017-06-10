@@ -29,7 +29,7 @@ struct make_creatable
                 return std::make_unique<Derived>(arg);
         }
 
-        static constexpr auto identifier_ = ID;
+        constexpr static auto identifier_ = ID;
 };
 
 template

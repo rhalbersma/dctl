@@ -1,10 +1,9 @@
 #pragma once
-#include <dctl/core/board/angle.hpp> // angle
-#include <cassert>              // assert
-#include <tuple>                // tie
+#include <dctl/core/board/angle.hpp>    // angle
+#include <cassert>                      // assert
+#include <tuple>                        // tie
 
 namespace dctl::core {
-namespace board {
 namespace detail {
 
 struct dimensions
@@ -72,5 +71,4 @@ constexpr auto rotate(dimensions const dim, angle const a) noexcept
 }
 
 }       // namespace detail
-}       // namespace board
 }       // namespace dctl::core

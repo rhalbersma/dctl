@@ -62,19 +62,19 @@ BOOST_AUTO_TEST_CASE(Invert)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(InvertIsInvolution, T, board::BoardSequence)
 {
-        static_assert(board::traits::is_involution_v<invert_t, T>);
+        static_assert(is_involution_v<invert_t, T>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesAreIdemPotent, T, board::BoardSequence)
 {
-        static_assert(board::traits::is_idempotent_v<   add_orthogonal_captures_t, T>);
-        static_assert(board::traits::is_idempotent_v<remove_orthogonal_captures_t, T>);
+        static_assert(is_idempotent_v<   add_orthogonal_captures_t, T>);
+        static_assert(is_idempotent_v<remove_orthogonal_captures_t, T>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, board::BoardSequence)
 {
-        static_assert(!T::is_orthogonal_jump || board::traits::is_identity_v<   add_orthogonal_captures_t, T>);
-        static_assert( T::is_orthogonal_jump || board::traits::is_identity_v<remove_orthogonal_captures_t, T>);
+        static_assert(!T::is_orthogonal_jump || is_identity_v<   add_orthogonal_captures_t, T>);
+        static_assert( T::is_orthogonal_jump || is_identity_v<remove_orthogonal_captures_t, T>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, board::BoardSequence)

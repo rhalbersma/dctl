@@ -6,8 +6,7 @@
 #include <dctl/core/actions/select/jump.hpp>                 // jumps
 #include <dctl/core/board/angle.hpp>                         // rotate, inverse
 #include <dctl/core/board/bearing.hpp>                       // bearing
-#include <dctl/core/board/mask/jump_sources.hpp>             // jump_sources
-#include <dctl/core/board/traits.hpp>                        // promotion
+#include <dctl/core/board/jump_sources.hpp>             // jump_sources
 #include <dctl/core/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
 #include <dctl/core/state/color_piece.hpp>                         // color, color_, pawns_, king_
 #include <dctl/core/rules/traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
@@ -16,6 +15,8 @@
 #include <iterator>                                     // prev
 #include <type_traits>                                  // is_same
 
+#include "../../board/traits.hpp"                        // promotion
+
 namespace dctl::core {
 namespace detail {
 
@@ -23,20 +24,20 @@ template<color Side, class Reverse, class State, class Builder>
 class generate<color_<Side>, pawns_, select::jump, Reverse, State, Builder>
 {
         using to_move_ = color_<Side>;
-        static constexpr auto to_move_c = color_c<Side>;
-        static constexpr auto piece_c = pawns_c;
+        constexpr static auto to_move_c = color_c<Side>;
+        constexpr static auto piece_c = pawns_c;
         using  king_jumps = generate<to_move_, kings_, select::jump, Reverse, State, Builder>;
         using  board_type = board_t<Builder>;
         using  rules_type = rules_t<Builder>;
         using    set_type =   set_t<Builder>;
 
         template<int Direction>
-        using jump_sources = board::mask::jump_sources<board_type, Direction, short_ranged_tag>;
+        using pawn_jump_sources = jump_sources<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
+        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>.value();
 
         template<class Iterator>
-        static constexpr auto direction_v = rotate(board::ray::direction_v<Iterator>, inverse(board::angle{orientation}));
+        constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
 
         Builder& m_builder;
 public:
@@ -61,16 +62,16 @@ private:
         auto directions() const
         {
                 if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<board::right_up, board::left_up>();
+                        return directions_lfold<right_up, left_up>();
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>();
+                        return directions_lfold<right_up, left_up, left_down, right_down>();
                 }
                 if constexpr (!is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left>();
+                        return directions_lfold<right, right_up, up, left_up, left>();
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left, board::left_down, board::down, board::right_down>();
+                        return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>();
                 }
         }
 
@@ -83,7 +84,7 @@ private:
         template<int Direction>
         auto sources() const
         {
-                jump_sources<Direction>{}(
+                pawn_jump_sources<Direction>{}(
                         m_builder.pieces(to_move_c, piece_c),
                         m_builder.targets(),
                         m_builder.pieces(empty_c)
@@ -181,7 +182,7 @@ private:
         {
                 if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
                         static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                        return scan(board::ray::mirror<board::up<orientation>{}>(jumper));
+                        return scan(ray::mirror<up<orientation>{}>(jumper));
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
                         static_assert(is_diagonal(direction_v<Iterator>));
@@ -190,20 +191,20 @@ private:
                 if constexpr (!is_backward_pawn_jump_v<rules_type> &&  is_orthogonal_jump_v<rules_type>) {
                         static_assert(!is_down(direction_v<Iterator>));
 
-                        if constexpr (direction_v<Iterator> == board::right<orientation>{}) {
-                                return turn_directions_lfold<board::right_up, board::up, board::left_up>(jumper);
+                        if constexpr (direction_v<Iterator> == right<orientation>{}) {
+                                return turn_directions_lfold<right_up, up, left_up>(jumper);
                         }
-                        if constexpr (direction_v<Iterator> == board::right_up<orientation>{}) {
-                                return turn_directions_lfold<board::right, board::up, board::left_up, board::left>(jumper);
+                        if constexpr (direction_v<Iterator> == right_up<orientation>{}) {
+                                return turn_directions_lfold<right, up, left_up, left>(jumper);
                         }
-                        if constexpr (direction_v<Iterator> == board::up<orientation>{}) {
-                                return turn_directions_lfold<board::right, board::right_up, board::left_up, board::left>(jumper);
+                        if constexpr (direction_v<Iterator> == up<orientation>{}) {
+                                return turn_directions_lfold<right, right_up, left_up, left>(jumper);
                         }
-                        if constexpr (direction_v<Iterator> == board::left_up<orientation>{}) {
-                                return turn_directions_lfold<board::right, board::right_up, board::up, board::left>(jumper);
+                        if constexpr (direction_v<Iterator> == left_up<orientation>{}) {
+                                return turn_directions_lfold<right, right_up, up, left>(jumper);
                         }
-                        if constexpr (direction_v<Iterator> == board::left<orientation>{}) {
-                                return turn_directions_lfold<board::right_up, board::up, board::left_up>(jumper);
+                        if constexpr (direction_v<Iterator> == left<orientation>{}) {
+                                return turn_directions_lfold<right_up, up, left_up>(jumper);
                         }
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> &&  is_orthogonal_jump_v<rules_type>) {
@@ -214,13 +215,13 @@ private:
         template<template<int> class... Directions, class Iterator>
         auto turn_directions_lfold(Iterator jumper) const
         {
-                return (... | scan(board::ray::turn<Directions<orientation>{}>(jumper)));
+                return (... | scan(ray::turn<Directions<orientation>{}>(jumper)));
         }
 
         template<int... Directions, class Iterator>
         auto rotate_directions_lfold(Iterator jumper) const
         {
-                return (... | scan(board::ray::rotate<Directions>(jumper)));
+                return (... | scan(ray::rotate<Directions>(jumper)));
         }
 
         template<class Iterator>
@@ -248,7 +249,7 @@ private:
         template<int Direction>
         auto along_ray(int const sq) const noexcept
         {
-                return board::ray::make_iterator<board_type, Direction>(sq);
+                return ray::make_iterator<board_type, Direction>(sq);
         }
 
         auto is_promotion(int const sq) const // Throws: Nothing.

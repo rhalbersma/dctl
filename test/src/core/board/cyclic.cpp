@@ -1,37 +1,36 @@
-#include <core/board/group.hpp>              // action::is_realized, make
-#include <dctl/core/board/angle.hpp>         // angle, _deg, inverse, rotate
-#include <boost/algorithm/cxx11/all_of.hpp>
-#include <boost/range/irange.hpp>       // irange
+#include <core/board/group.hpp>              // axioms::is_realized, make
+#include <dctl/core/board/angle.hpp>         // _deg, inverse, rotate
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
+#include <boost/algorithm/cxx11/all_of.hpp>                    // all_of
 #include <type_traits>                  // common_type
 #include <vector>                       // vector
 
 using namespace dctl::core;
-using namespace board::literals;
+using namespace literals;
 
-BOOST_AUTO_TEST_SUITE(angleangle)
+BOOST_AUTO_TEST_SUITE(GroupCyclic)
 
-BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllangles)
+BOOST_AUTO_TEST_CASE(GroupAxiomsAreRealizedOnCyclicGroups)
 {
         auto const op = [](auto i, auto j){ return rotate(i, j); };
         auto const inv = [](auto i){ return inverse(i); };
 
-        auto const C1 = board::make_group(
+        auto const C1 = make_group(
                 { 0_deg },
                 op, inv
         );
 
-        auto const C2 = board::make_group(
+        auto const C2 = make_group(
                 { 0_deg, 180_deg },
                 op, inv
         );
 
-        auto const C4 = board::make_group(
+        auto const C4 = make_group(
                 { 0_deg,  90_deg, 180_deg, 270_deg },
                 op, inv
         );
 
-        auto const C8 = board::make_group(
+        auto const C8 = make_group(
                 {   0_deg,  45_deg,  90_deg, 135_deg,
                   180_deg, 225_deg, 270_deg, 315_deg },
                 op, inv
@@ -44,13 +43,9 @@ BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllangles)
                 C1, C2, C4, C8
         };
 
-        auto const angles = boost::irange(0, 360);
-
         BOOST_CHECK(
-                boost::algorithm::all_of(C_N, [=](auto const& g){
-                        return boost::algorithm::all_of(angles, [&](auto const a){
-                                return board::group::action::is_realized(board::angle{a}, g);
-                        });
+                boost::algorithm::all_of(C_N, [](auto const& g){
+                        return group::axioms::is_realized(g);
                 })
         );
 }

@@ -2,8 +2,6 @@
 #include <type_traits>  // is_same
 
 namespace dctl::core {
-namespace board {
-namespace traits {
 namespace detail {
 
 template<template<class> class UnaryMetaFunction, class Arg, int N>
@@ -38,6 +36,4 @@ constexpr auto is_idempotent_v = std::is_same_v<
         detail::iterate_t<UnaryMetaFunction, Arg, 1>
 >;
 
-}       // namespace traits
-}       // namespace board
 }       // namespace dctl::core

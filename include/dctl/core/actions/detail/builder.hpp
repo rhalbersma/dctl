@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/core/board/angle.hpp>                    // angle, is_orthogonal
-#include <dctl/core/board/mask/jump_start.hpp>          // jump_start
-#include <dctl/core/board/mask/push_sources.hpp>
+#include <dctl/core/board/jump_start.hpp>          // jump_start
+#include <dctl/core/board/push_sources.hpp>
 #include <dctl/core/board/ray.hpp>
 #include <dctl/core/state/color_piece.hpp>
 #include <dctl/core/rules/traits.hpp>
@@ -22,7 +22,7 @@ class builder<color_<Side>, DuplicatesPolicy, State, SequenceContainer>
 {
 public:
         using to_move_ = color_<Side>;
-        static constexpr auto to_move_c = color_c<Side>;
+        constexpr static auto to_move_c = color_c<Side>;
         using action_type = value_t<SequenceContainer>;
         using  board_type =       board_t<State>;
         using  rules_type =       rules_t<State>;
@@ -36,7 +36,7 @@ private:
         action_type m_candidate_action{};
 
         template<int Direction>
-        using push_sources = board::mask::push_sources<board_type, Direction, short_ranged_tag>;
+        using short_push_sources = push_sources<board_type, Direction, short_ranged_tag>;
 
 public:
         builder(State const& s, SequenceContainer& seq)
@@ -116,13 +116,13 @@ public:
         template<int Direction>
         auto targets() const
         {
-                return push_sources<Direction>{}(targets(), pieces(empty_c));
+                return short_push_sources<Direction>{}(targets(), pieces(empty_c));
         }
 
         template<class Iterator>
         auto is_target(Iterator it) const
         {
-                return targets<board::ray::direction_v<Iterator>.value()>().test(*it);
+                return targets<ray::direction_v<Iterator>.value()>().test(*it);
         }
 
         auto not_occupied(int const sq) const
@@ -133,8 +133,8 @@ public:
         template<int Direction>
         auto path() const
         {
-                auto constexpr jump_start = board::mask::jump_start<board_type>{}(board::angle{Direction});
-                return pieces(empty_c) & jump_start;
+                auto constexpr js = jump_start<board_type>{}(angle{Direction});
+                return pieces(empty_c) & js;
         }
 
         template<int Direction>

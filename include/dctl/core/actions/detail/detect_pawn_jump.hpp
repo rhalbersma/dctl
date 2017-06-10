@@ -3,7 +3,7 @@
 #include <dctl/core/actions/select/jump.hpp>                 // jump
 #include <dctl/core/board/angle.hpp>                         // up, left_up, right_up, left, right, left_down, right_down, down
 #include <dctl/core/board/bearing.hpp>                       // bearing
-#include <dctl/core/board/mask/jump_targets.hpp>             // jump_targets
+#include <dctl/core/board/jump_targets.hpp>             // jump_targets
 #include <dctl/core/state/color_piece.hpp>                         // color, color_, pawn_
 #include <dctl/core/rules/traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump
 #include <dctl/util/type_traits.hpp>                 // board_t, rules_t, set_t
@@ -16,16 +16,16 @@ template<color Side, class Reverse, class State>
 class detect<color_<Side>, pawns_, select::jump, Reverse, State>
 {
         using to_move_ = color_<Side>;
-        static constexpr auto to_move_c = color_c<Side>;
-        static constexpr auto piece_c = pawns_c;
+        constexpr static auto to_move_c = color_c<Side>;
+        constexpr static auto piece_c = pawns_c;
         using board_type = board_t<State>;
         using rules_type = rules_t<State>;
         using   set_type =   set_t<State>;
 
         template<int Direction>
-        using jump_targets = board::mask::jump_targets<board_type, Direction, short_ranged_tag>;
+        using pawn_jump_targets = jump_targets<board_type, Direction, short_ranged_tag>;
 
-        static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
+        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>.value();
 public:
         auto operator()(State const& s) const noexcept
         {
@@ -38,22 +38,22 @@ private:
         auto directions(set_type const sources, set_type const targets, set_type const destinations) const noexcept
         {
                 if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<board::right_up, board::left_up>(
+                        return directions_lfold<right_up, left_up>(
                                 sources, targets, destinations
                         );
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<board::right_up, board::left_up, board::left_down, board::right_down>(
+                        return directions_lfold<right_up, left_up, left_down, right_down>(
                                 sources, targets, destinations
                         );
                 }
                 if constexpr (!is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left>(
+                        return directions_lfold<right, right_up, up, left_up, left>(
                                 sources, targets, destinations
                         );
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<board::right, board::right_up, board::up, board::left_up, board::left, board::left_down, board::down, board::right_down>(
+                        return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(
                                 sources, targets, destinations
                         );
                 }
@@ -62,7 +62,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const sources, set_type const targets, set_type const destinations) const noexcept
         {
-                return (... || !jump_targets<Directions<orientation>{}>{}(sources, targets, destinations).empty());
+                return (... || !pawn_jump_targets<Directions<orientation>{}>{}(sources, targets, destinations).empty());
         }
 };
 

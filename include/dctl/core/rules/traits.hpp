@@ -8,16 +8,16 @@
 #define DCTL_PP_TTI_CONSTANT(NAME, DEFAULT)             \
                                                         \
 template<class T, class = void>                         \
-static constexpr auto has_ ## NAME ## _v = false;       \
+constexpr static auto has_ ## NAME ## _v = false;       \
                                                         \
 template<class T>                                       \
-static constexpr auto has_ ## NAME ## _v<               \
+constexpr static auto has_ ## NAME ## _v<               \
         T, std::void_t<decltype(T::NAME)>               \
 > = true;                                               \
                                                         \
 struct default_ ## NAME                                 \
 {                                                       \
-        static constexpr auto NAME = DEFAULT;           \
+        constexpr static auto NAME = DEFAULT;           \
 };                                                      \
                                                         \
 template<class T>                                       \

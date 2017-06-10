@@ -1,13 +1,11 @@
 #pragma once
-#include <dctl/core/board/detail/coordinates.hpp>    // to_llo
-#include <dctl/core/board/mask/detail/copy_if.hpp>   // copy_if
-#include <dctl/util/type_traits.hpp>         // set_t, value_t
+#include <dctl/core/board/coordinates.hpp>      // to_llo
+#include <dctl/core/board/detail/set_filter.hpp>       // set_filter
+#include <dctl/util/type_traits.hpp>            // set_t, value_t
 #include <xstd/cstdlib.hpp>                     // euclidean_div
 #include <cassert>                              // assert
 
 namespace dctl::core {
-namespace board {
-namespace mask {
 
 template<class Board>
 class jump_group
@@ -18,9 +16,9 @@ class jump_group
                 // simulate a constexpr lambda (allowed in C++17)
                 constexpr auto operator()() const noexcept
                 {
-                        return detail::copy_if<Board>([](int const dest_sq){
-                                auto const from_coord = board::detail::to_llo(FromSquare, Board::inner_grid);
-                                auto const dest_coord = board::detail::to_llo(dest_sq   , Board::inner_grid);
+                        return detail::set_filter<Board>([](int const dest_sq){
+                                auto const from_coord = to_llo(FromSquare, Board::inner_grid);
+                                auto const dest_coord = to_llo(dest_sq   , Board::inner_grid);
                                 auto const delta_x = xstd::euclidean_div(static_cast<int>(from_coord.x) - static_cast<int>(dest_coord.x), 4).rem;
                                 auto const delta_y = xstd::euclidean_div(static_cast<int>(from_coord.y) - static_cast<int>(dest_coord.y), 4).rem;
                                 return
@@ -31,7 +29,7 @@ class jump_group
                 }
         };
 
-        static constexpr set_t<Board> value[] =
+        constexpr static set_t<Board> value[] =
         {
                 init<Board::edge_le() + 0>{}(),
                 init<Board::edge_le() + 1>{}(),
@@ -47,6 +45,4 @@ public:
         }
 };
 
-}       // namespace mask
-}       // namespace board
 }       // namespace dctl::core

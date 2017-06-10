@@ -1,12 +1,10 @@
 #pragma once
-#include <dctl/core/board/angle.hpp>         // angle
-#include <dctl/util/type_traits.hpp> // value_t
+#include <dctl/core/board/angle.hpp>    // angle
+#include <dctl/util/type_traits.hpp>    // value_t
 #include <cassert>                      // assert
 #include <tuple>                        // make_tuple
 
 namespace dctl::core {
-namespace board {
-namespace detail {
 
 struct upper_left      {};
 struct lower_left      {};
@@ -173,6 +171,4 @@ constexpr auto transform(int const sq, FromGrid const from, DestGrid const dest,
         return to_square(rotate(to_sco(sq, from), a), dest);
 }
 
-}       // namespace detail
-}       // namespace board
 }       // namespace dctl::core

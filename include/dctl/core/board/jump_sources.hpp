@@ -1,11 +1,9 @@
 #pragma once
-#include <dctl/core/board/mask/detail/iterator.hpp>  // make_iterator
-#include <dctl/core/rules/traits.hpp>                 // short_ranged_tag
+#include <dctl/core/board/mask_iterator.hpp>    // make_iterator
+#include <dctl/core/rules/traits.hpp>           // short_ranged_tag
 #include <iterator>                             // prev
 
 namespace dctl::core {
-namespace board {
-namespace mask {
 
 template<class Board, int Direction, class KingRangeCategory>
 class jump_sources;
@@ -16,7 +14,7 @@ class jump_sources<Board, Direction, short_ranged_tag>
         template<class Set>
         auto prev_set(Set const s) const
         {
-                return Set(*std::prev(detail::make_iterator<Board, Direction>(s)));
+                return Set(*std::prev(mask::make_iterator<Board, Direction>(s)));
         }
 
 public:
@@ -27,6 +25,4 @@ public:
         }
 };
 
-}       // namespace mask
-}       // namespace board
 }       // namespace dctl::core

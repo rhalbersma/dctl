@@ -1,15 +1,13 @@
 #pragma once
-#include <dctl/core/board/angle.hpp>                 // angle, reverse
-#include <dctl/core/board/shift.hpp>                 // shift_assign, shift_sign, shift_size
-#include <dctl/util/type_traits.hpp>         // set_t
+#include <dctl/core/board/angle.hpp>            // angle, reverse
+#include <dctl/core/board/detail/shift.hpp>            // shift_assign, shift_sign, shift_size
+#include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable
 #include <iterator>                             // bidirectional_iterator_tag
 
 namespace dctl::core {
-namespace board {
 namespace mask {
-namespace detail {
 
 template<class Board, int Direction>
 class cursor
@@ -17,9 +15,9 @@ class cursor
 ,       boost::unit_steppable < cursor<Board, Direction>        // ++, --
 > >
 {
-        static constexpr auto sign_incr = board::shift_sign_v<Direction>;
-        static constexpr auto sign_decr = board::shift_sign_v<reverse(angle{Direction}).value()>;
-        static constexpr auto stride    = board::shift_size_v<Board, Direction>;
+        constexpr static auto sign_incr = detail::shift_sign_v<Direction>;
+        constexpr static auto sign_decr = detail::shift_sign_v<reverse(angle{Direction}).value()>;
+        constexpr static auto stride    = detail::shift_size_v<Board, Direction>;
         static_assert(stride != 0, "Cursors need a non-zero stride.");
 
         using set_type = set_t<Board>;
@@ -50,14 +48,14 @@ public:
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
         {
-                board::shift_assign<sign_incr, stride>{}(m_cursor);
+                detail::shift_assign<sign_incr, stride>{}(m_cursor);
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
         auto& operator--() noexcept
         {
-                board::shift_assign<sign_decr, stride>{}(m_cursor);
+                detail::shift_assign<sign_decr, stride>{}(m_cursor);
                 return *this;
         }
 };
@@ -77,7 +75,5 @@ auto make_iterator(Set const s)
         return { cursor<Board, Direction>{s} };
 }
 
-}       // namespace detail
 }       // namespace mask
-}       // namespace board
 }       // namespace dctl::core
