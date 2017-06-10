@@ -9,24 +9,24 @@
 #include <dctl/core/actions/detail/generate_king_push.hpp>   // generate (king push specialization)
 #include <dctl/core/actions/detail/generate_pawn_push.hpp>   // generate (pawn push specialization)
 #include <dctl/core/actions/select/push.hpp>                 // push
-#include <dctl/core/state/color_piece.hpp>                         // color, color_, kings_, pawn_
+#include <dctl/core/state/color_piece.hpp>                   // color, color_, kings_, pawn_
 
 namespace dctl::core {
 namespace detail {
 
 template<color Side, class DuplicatesPolicy, class Reverse>
-class Actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>
+class actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>
 {
         using to_move_ = color_<Side>;
 public:
         template<class State, class SequenceContainer>
-        auto generate(State const& s, SequenceContainer& a) const
+        auto generate(State const& s, SequenceContainer& seq) const
         {
                 using king_push = detail::generate<to_move_, kings_, select::push, Reverse, State, SequenceContainer>;
                 using pawn_push = detail::generate<to_move_, pawns_, select::push, Reverse, State, SequenceContainer>;
 
-                king_push{a}(s);
-                pawn_push{a}(s);
+                king_push{seq}(s);
+                pawn_push{seq}(s);
         }
 
         template<class State>

@@ -7,7 +7,7 @@
 #include <dctl/core/board/mask/push_targets.hpp>             // push_targets
 #include <dctl/core/state/color_piece.hpp>                         // color, color_, king_
 #include <dctl/core/rules/traits.hpp>                         // is_long_ranged_king_t
-#include <dctl/util/type_traits.hpp>                 // board_t, rules_t, set_t, value_t
+#include <dctl/util/type_traits.hpp>                            // board_t, rules_t, set_t, value_t
 #include <iterator>                                     // prev
 
 namespace dctl::core {
@@ -29,9 +29,9 @@ class generate<color_<Side>, kings_, select::push, Reverse, State, SequenceConta
         static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
         SequenceContainer& m_actions;
 public:
-        explicit generate(SequenceContainer& a) noexcept
+        explicit generate(SequenceContainer& seq) noexcept
         :
-                m_actions{a}
+                m_actions{seq}
         {}
 
         auto operator()(State const& s) const

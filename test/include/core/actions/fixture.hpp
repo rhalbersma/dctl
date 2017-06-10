@@ -21,7 +21,7 @@ struct Fixture
         {
                 auto const p = setup::read<Rules, Board, pdn::protocol>{}(fen);
                 std::vector<action<Rules, Board>> moves;
-                Actions<>{}.generate(p, moves);
+                actions<>{}.generate(p, moves);
 
                 BOOST_CHECK_EQUAL(moves.size(), rng.size());
 

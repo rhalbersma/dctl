@@ -1,11 +1,11 @@
 #pragma once
-#include <dctl/core/actions/detail/primary_fwd.hpp>  // Actions (primary template)
-#include <dctl/core/actions/detail/jump.hpp>         // Actions (jump specialization)
-#include <dctl/core/actions/detail/push.hpp>         // Actions (push specialization)
-#include <dctl/core/actions/select/legal.hpp>        // legal
-#include <dctl/core/actions/select/jump.hpp>         // jump
-#include <dctl/core/actions/select/push.hpp>         // push
-#include <dctl/core/state/color_piece.hpp>                 // color, color_
+#include <dctl/core/actions/detail/primary_fwd.hpp>     // actions (primary template)
+#include <dctl/core/actions/detail/jump.hpp>            // actions (jump specialization)
+#include <dctl/core/actions/detail/push.hpp>            // actions (push specialization)
+#include <dctl/core/actions/select/legal.hpp>           // legal
+#include <dctl/core/actions/select/jump.hpp>            // jump
+#include <dctl/core/actions/select/push.hpp>            // push
+#include <dctl/core/state/color_piece.hpp>              // color, color_
 
 namespace dctl::core {
 namespace detail {
@@ -13,25 +13,25 @@ namespace detail {
 //#define cj
 
 template<color Side, class DuplicatesPolicy, class Reverse>
-class Actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>
+class actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>
 {
         using to_move_ = color_<Side>;
-        using Jump = Actions<to_move_, select::jump, DuplicatesPolicy, Reverse>;
-        using Push = Actions<to_move_, select::push, DuplicatesPolicy, Reverse>;
+        using Jump = actions<to_move_, select::jump, DuplicatesPolicy, Reverse>;
+        using Push = actions<to_move_, select::push, DuplicatesPolicy, Reverse>;
 
 public:
         template<class State, class SequenceContainer>
-        auto generate(State const& s, SequenceContainer& a) const
+        auto generate(State const& s, SequenceContainer& seq) const
         {
 #ifndef cj
-                if (Jump{}.generate(s, a); a.empty()) {
-                        Push{}.generate(s, a);
+                if (Jump{}.generate(s, seq); seq.empty()) {
+                        Push{}.generate(s, seq);
                 }
 #else
                 if (Jump{}.detect(s)) {
-                        Jump{}.generate(s, a);
+                        Jump{}.generate(s, seq);
                 } else {
-                        Push{}.generate(s, a);
+                        Push{}.generate(s, seq);
                 }
 #endif
         }

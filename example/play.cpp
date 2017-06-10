@@ -27,7 +27,7 @@ int main()
                 //std::cout << "[" << p.reversible_actions() << "]\n";
 
                 std::vector<action<Rules, Board>> actions;
-                Actions<>{}.generate(state, actions);
+                actions<>{}.generate(state, actions);
                 boost::sort(actions, [](auto const& lhs, auto const& rhs) {
                         return str_numeric(lhs) < str_numeric(rhs);
                 });

@@ -34,7 +34,7 @@ public:
 };
 
 template<color Side, class DuplicatesPolicy, class Reverse>
-class Actions<color_<Side>, select::jump, DuplicatesPolicy, Reverse>
+class actions<color_<Side>, select::jump, DuplicatesPolicy, Reverse>
 {
         using to_move_ = color_<Side>;
 public:

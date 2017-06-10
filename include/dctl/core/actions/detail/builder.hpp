@@ -39,12 +39,12 @@ private:
         using push_sources = board::mask::push_sources<board_type, Direction, short_ranged_tag>;
 
 public:
-        builder(State const& s, SequenceContainer& a)
+        builder(State const& s, SequenceContainer& seq)
         :
                 m_state{s},
                 m_initial_targets(m_state.pieces(!to_move_c)),
                 m_empty(m_state.pieces(empty_c)),
-                m_actions{a}
+                m_actions{seq}
         {}
 
         auto toggle_king_targets() noexcept

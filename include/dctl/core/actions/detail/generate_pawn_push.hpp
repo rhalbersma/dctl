@@ -1,14 +1,14 @@
 #pragma once
-#include <dctl/core/actions/detail/generate_primary_fwd.hpp> // generate (primary template)
-#include <dctl/core/actions/select/push.hpp>                 // select
-#include <dctl/core/board/angle.hpp>                         // left_up, right_up
-#include <dctl/core/board/bearing.hpp>                       // bearing
-#include <dctl/core/board/traits.hpp>                        // promotion
-#include <dctl/core/board/mask/push_targets.hpp>             // push_targets
-#include <dctl/core/board/ray.hpp>                           // make_iterator
-#include <dctl/core/state/color_piece.hpp>                         // color, color_, pawn_
-#include <dctl/util/type_traits.hpp>                 // board_t, set_t, value_t
-#include <iterator>                                     // prev
+#include <dctl/core/actions/detail/generate_primary_fwd.hpp>    // generate (primary template)
+#include <dctl/core/actions/select/push.hpp>                    // select
+#include <dctl/core/board/angle.hpp>                            // left_up, right_up
+#include <dctl/core/board/bearing.hpp>                          // bearing
+#include <dctl/core/board/traits.hpp>                           // promotion
+#include <dctl/core/board/mask/push_targets.hpp>                // push_targets
+#include <dctl/core/board/ray.hpp>                              // make_iterator
+#include <dctl/core/state/color_piece.hpp>                      // color, color_, pawn_
+#include <dctl/util/type_traits.hpp>                            // board_t, set_t, value_t
+#include <iterator>                                             // prev
 
 namespace dctl::core {
 namespace detail {
@@ -28,9 +28,9 @@ class generate<color_<Side>, pawns_, select::push, Reverse, State, SequenceConta
         static constexpr auto orientation = board::bearing_v<board_type, to_move_, Reverse>.value();
         SequenceContainer& m_actions;
 public:
-        explicit generate(SequenceContainer& a) noexcept
+        explicit generate(SequenceContainer& seq) noexcept
         :
-                m_actions{a}
+                m_actions{seq}
         {}
 
         auto operator()(State const& s) const

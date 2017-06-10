@@ -4,7 +4,7 @@ namespace dctl::core {
 namespace detail {
 
 template<class...>
-class Actions;
+class actions;
 
 }       // namespace detail
 }       // namespace dctl::core

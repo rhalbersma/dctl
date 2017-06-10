@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/util/type_traits.hpp>	// board_t, set_t
 #include <tuple>        		// make_tuple
-#include <type_traits>			// decay
+#include <type_traits>			// decay_t
 
 namespace dctl::core {
 namespace block_adl {

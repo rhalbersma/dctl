@@ -5,10 +5,7 @@
 
 namespace dctl::egdb {
 
-template<class Selection>
-using drop_duplicates_gen = Actions<Selection>;
-
-template<class State, template<class> class Successor = drop_duplicates_gen>
+template<class State, class Successor>
 class build
 {
         using position_type = position_t<State>;
@@ -51,11 +48,11 @@ public:
                         }
                         num_legal += (rank_position(p.value()) == index);
 
-                        if (!Successor<select::legal>{}.detect(State{p.value(), color::black})) {
+                        if (!Successor{}.detect(State{p.value(), color::black})) {
                                 btm_dtm[index] = 0;
                                 ++btm_wld[loss];
                         }
-                        if (!Successor<select::legal>{}.detect(State{p.value(), color::white})) {
+                        if (!Successor{}.detect(State{p.value(), color::white})) {
                                 wtm_dtm[index] = 0;
                                 ++wtm_wld[loss];
                         }
