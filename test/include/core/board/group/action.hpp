@@ -2,8 +2,7 @@
 #include <core/board/group/primitives.hpp>      // set, op, id
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace group {
 namespace action {
@@ -42,5 +41,4 @@ auto is_realized(Object const& obj, Group const& g) noexcept
 }       // namespace action
 }       // namespace group
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

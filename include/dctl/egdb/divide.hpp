@@ -11,8 +11,7 @@
 #include <iostream>
 #include <iterator>
 
-namespace dctl {
-namespace egdb {
+namespace dctl::egdb {
 
 template<class Position>
 class dependencies
@@ -171,5 +170,4 @@ private:
 
 };
 
-}       // namespace egdb
-}       // namespace dctl
+}       // namespace dctl::egdb

@@ -4,8 +4,7 @@
 #include <cassert>                      // assert
 #include <tuple>                        // make_tuple
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace detail {
 
@@ -176,5 +175,4 @@ constexpr auto transform(int const sq, FromGrid const from, DestGrid const dest,
 
 }       // namespace detail
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

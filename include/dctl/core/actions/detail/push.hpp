@@ -11,8 +11,7 @@
 #include <dctl/core/actions/select/push.hpp>                 // push
 #include <dctl/core/state/color_piece.hpp>                         // color, color_, kings_, pawn_
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 
 template<color Side, class DuplicatesPolicy, class Reverse>
@@ -50,5 +49,4 @@ public:
 };
 
 }       // namespace detail
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

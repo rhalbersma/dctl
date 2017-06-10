@@ -7,8 +7,7 @@
 #include <ios>                                  // ios_base
 #include <ostream>                              // basic_ostream
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 
 enum class stateformat
@@ -60,5 +59,4 @@ auto& fen(std::ios_base& str)
         return str;
 }
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

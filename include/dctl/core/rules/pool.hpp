@@ -1,7 +1,6 @@
 #pragma once
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace block_adl {
 
 // http://americanpoolcheckers.us/americanpoolcheckers/index.php/history/apca-tournament-rules-of-play
@@ -27,5 +26,4 @@ struct pool
 
 using block_adl::pool;
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

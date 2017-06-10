@@ -8,8 +8,7 @@
 #include <tuple>                        // tie
 #include <type_traits>                  // is_pod
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace bwk {
 
 template<class Board>
@@ -88,8 +87,8 @@ public:
                 if constexpr (std::is_same_v<PieceT, piece>) {
                         return p == piece::pawns ? pieces(pawns_c) : pieces(kings_c);
                 } else {
-                        if constexpr (p == piece::pawns) { return m_kings ^ pieces(occup_c); }
-                        if constexpr (p == piece::kings) { return m_kings;                   }
+                        if constexpr (p == pawns_c) { return m_kings ^ pieces(occup_c); }
+                        if constexpr (p == kings_c) { return m_kings;                   }
                 }
         }
 
@@ -102,8 +101,8 @@ public:
                 if constexpr (std::is_same_v<PieceT, piece>) {
                         return p == piece::pawns ? pieces(c, pawns_c) : pieces(c, kings_c);
                 } else {
-                        if constexpr (p == piece::pawns) { return pieces(c) & ~m_kings; }
-                        if constexpr (p == piece::kings) { return pieces(c) &  m_kings; }
+                        if constexpr (p == pawns_c) { return pieces(c) & ~m_kings; }
+                        if constexpr (p == kings_c) { return pieces(c) &  m_kings; }
                 }
         }
 
@@ -187,5 +186,4 @@ constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs
 }
 
 }       // namespace bwk
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

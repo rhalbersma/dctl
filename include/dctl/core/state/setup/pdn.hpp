@@ -2,8 +2,7 @@
 #include <dctl/core/state/setup/i_token.hpp>
 #include <dctl/core/state/ui/pdn/version.hpp>
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace setup {
 
 template<>
@@ -18,5 +17,4 @@ struct TokenSet<pdn::protocol>
 };
 
 }       // namespace setup
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

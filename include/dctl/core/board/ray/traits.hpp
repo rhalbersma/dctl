@@ -5,8 +5,7 @@
 #include <cassert>                      // assert
 #include <type_traits>                  // bool_constant
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace ray {
 
@@ -24,5 +23,4 @@ constexpr auto is_onboard(iterator<Board, Direction> it)
 
 }       // namespace ray
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

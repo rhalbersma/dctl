@@ -1,11 +1,9 @@
 #pragma once
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace select {
 
 struct jump {};
 
 }       // namespace select
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

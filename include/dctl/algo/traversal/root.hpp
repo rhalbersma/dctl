@@ -18,8 +18,7 @@
 #include <map>
 #include <unordered_map>
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace traversal {
 
 template<class Tag, class State>
@@ -507,5 +506,4 @@ auto divide(State const& s, int depth, Actions successor, Enhancements e)
 }
 
 }       // namespace traversal
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

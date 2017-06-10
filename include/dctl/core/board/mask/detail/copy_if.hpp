@@ -1,8 +1,7 @@
 #pragma once
 #include <dctl/util/type_traits.hpp> // set_t
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace mask {
 namespace detail {
@@ -22,5 +21,4 @@ constexpr auto copy_if(UnaryPredicate pred) noexcept
 }       // namespace detail
 }       // namespace mask
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

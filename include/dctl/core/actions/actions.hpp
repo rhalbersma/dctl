@@ -8,8 +8,7 @@
 #include <cassert>                                      // assert
 #include <type_traits>                                  // bool_constant, is_same
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
 class Actions
@@ -86,5 +85,4 @@ public:
 constexpr auto keep_duplicates_gen = Actions<select::legal, keep_duplicates_tag>{};
 constexpr auto drop_duplicates_gen = Actions<select::legal, drop_duplicates_tag>{};
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

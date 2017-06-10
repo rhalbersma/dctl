@@ -3,8 +3,7 @@
 #include <string>       // string
 #include <type_traits>  // is_base_of
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace factory {
 
 template
@@ -49,5 +48,4 @@ struct has_header_body_terminator
 {};
 
 }       // namespace factory
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace group {
 namespace detail {
@@ -44,5 +43,4 @@ struct is_idempotent
 
 }       // namespace group
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

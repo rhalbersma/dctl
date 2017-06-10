@@ -6,8 +6,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace dctl {
-namespace eval {
+namespace dctl::eval {
 
 template<class State>
 static int score (State const& s)
@@ -37,5 +36,4 @@ template<class State>
         std::cout<< '\n';
 }
 
-}       // namespace eval
-}       // namespace dctl
+}       // namespace dctl::eval

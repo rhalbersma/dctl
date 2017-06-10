@@ -7,8 +7,7 @@
 #include <cstdint>                              // int64_t
 #include <sstream>                              // stringstream
 
-namespace dctl {
-namespace egdb {
+namespace dctl::egdb {
 
 // https://en.wikipedia.org/wiki/Combinatorial_number_system
 // https://en.wikipedia.org/wiki/Lexicographical_order#Colexicographic_order
@@ -205,5 +204,4 @@ private:
         static auto wk_dep(int n) { return board_type::bit_from_square(+n                          ); }
 };
 
-}       // namespace egdb
-}       // namespace dctl
+}       // namespace dctl::egdb

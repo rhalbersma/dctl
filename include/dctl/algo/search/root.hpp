@@ -11,7 +11,6 @@
 #include <dctl/util/hash/extract.hpp>
 #include <dctl/util/hash/map.hpp>
 #include <dctl/util/hash/replace.hpp>
-#include <dctl/util/algorithm.hpp>
 #include <dctl/util/static_vector.hpp>
 #include <dctl/util/statistics.hpp>
 #include <dctl/util/stopwatch.hpp>
@@ -23,8 +22,7 @@
 #include <iterator>                     // back_inserter
 #include <vector>                       // vector
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace search {
 
 template
@@ -340,5 +338,4 @@ private:
 };
 
 }       // namespace search
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

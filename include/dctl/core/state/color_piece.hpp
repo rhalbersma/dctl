@@ -2,8 +2,7 @@
 #include <xstd/type_traits.hpp> // to_underlying_type
 #include <type_traits>          // integral_constant
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 template <class T, class... Args>
 constexpr auto is_any_of_v = (std::is_same_v<T, Args> || ...);
@@ -65,5 +64,4 @@ constexpr auto empty_c = empty_{};
 struct nullmove_t {};
 constexpr auto nullmove = nullmove_t{};
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

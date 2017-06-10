@@ -1,12 +1,10 @@
 #pragma once
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace pdn {
 
 struct v3 {};
 using protocol = v3;
 
 }       // namespace pdn
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

@@ -3,8 +3,7 @@
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/range/algorithm.hpp>            // find, find_if
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace group {
 namespace axioms {
@@ -89,5 +88,4 @@ auto is_realized(Group const& g) noexcept
 }       // namespace axioms
 }       // namespace group
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

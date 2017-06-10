@@ -7,8 +7,7 @@
 #include <tuple>                        // tie
 #include <type_traits>                  // is_pod
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace wpo {
 
 template<class Board>
@@ -90,8 +89,8 @@ public:
                 if constexpr (std::is_same_v<ColorT, color>) {
                         return c == color::black ? pieces(black_c) : pieces(white_c);
                 } else {
-                        if constexpr (c == color::black) { return m_white ^ m_occup; }
-                        if constexpr (c == color::white) { return m_white;           }
+                        if constexpr (c == black_c) { return m_white ^ m_occup; }
+                        if constexpr (c == white_c) { return m_white;           }
                 }
         }
 
@@ -103,8 +102,8 @@ public:
                 if constexpr (std::is_same_v<PieceT, piece>) {
                         return p == piece::pawns ? pieces(pawns_c) : pieces(kings_c);
                 } else {
-                        if constexpr (p == piece::pawns) { return m_pawns;           }
-                        if constexpr (p == piece::kings) { return m_pawns ^ m_occup; }
+                        if constexpr (p == pawns_c) { return m_pawns;           }
+                        if constexpr (p == kings_c) { return m_pawns ^ m_occup; }
                 }
         }
 
@@ -124,10 +123,10 @@ public:
                 } else if constexpr (std::is_same_v<PieceT, piece>) {
                         return p == piece::pawns ? pieces(c, pawns_c) : pieces(c, kings_c);
                 } else {
-                        if constexpr (c == color::black && p == piece::pawns) { return ~m_white &  m_pawns;            }
-                        if constexpr (c == color::black && p == piece::kings) { return (m_white |  m_pawns) ^ m_occup; }
-                        if constexpr (c == color::white && p == piece::pawns) { return  m_white &  m_pawns;            }
-                        if constexpr (c == color::white && p == piece::kings) { return  m_white & ~m_pawns;            }
+                        if constexpr (c == black_c && p == pawns_c) { return ~m_white &  m_pawns;            }
+                        if constexpr (c == black_c && p == kings_c) { return (m_white |  m_pawns) ^ m_occup; }
+                        if constexpr (c == white_c && p == pawns_c) { return  m_white &  m_pawns;            }
+                        if constexpr (c == white_c && p == kings_c) { return  m_white & ~m_pawns;            }
                 }
         }
 
@@ -198,5 +197,4 @@ constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs
 }
 
 }       // namespace wpo
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

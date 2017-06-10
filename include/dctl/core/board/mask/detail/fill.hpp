@@ -1,8 +1,7 @@
 #pragma once
 #include <dctl/core/board/shift.hpp> // shift, shift_sign, shift_size
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace mask {
 namespace detail {
@@ -39,5 +38,4 @@ struct fill
 }       // namespace detail
 }       // namespace mask
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

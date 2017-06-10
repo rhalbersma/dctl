@@ -1,8 +1,7 @@
 #pragma once
 #include <cstdint>                      // uint8_t
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace search {
 
 using PlyCount = uint8_t;
@@ -13,5 +12,4 @@ enum : PlyCount { MAX_PLY = 255 };
 enum : PlyCount { MAX_MATE_MOVES = 255 };
 
 }       // namespace search
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

@@ -2,8 +2,7 @@
 #include <dctl/core/board/rectangular.hpp>   // rectangular
 #include <dctl/core/board/traits.hpp>        // invert, add_orthogonal_captures
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 
 using checkers      = rectangular< 8,  8>;
@@ -34,5 +33,4 @@ template<int Width, int Height>
 using ktar          = invert_t<rectangular<Width, Height>>;
 
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

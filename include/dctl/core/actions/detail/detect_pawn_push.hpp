@@ -7,8 +7,7 @@
 #include <dctl/core/state/color_piece.hpp>                         // color, color_, pawn_
 #include <dctl/util/type_traits.hpp>                 // board_t, set_t
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 
 template<color Side, class Reverse, class State>
@@ -41,5 +40,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

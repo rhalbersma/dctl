@@ -5,8 +5,7 @@
 #include <memory>                                       // unique_ptr
 #include <string>                                       // string
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 template
 <
@@ -39,5 +38,4 @@ public:
         }
 };
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

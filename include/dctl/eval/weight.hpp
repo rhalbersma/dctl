@@ -1,7 +1,6 @@
 #pragma once
 
-namespace dctl {
-namespace eval {
+namespace dctl::eval {
 
 template<class Rules, class Board>
 struct Weight
@@ -44,5 +43,4 @@ int const Weight<Rules, Board>::mobility = 1;
 template<class Rules, class Board>
 int const Weight<Rules, Board>::king_monopoly = 200;
 
-}       // namespace eval
-}       // namespace dctl
+}       // namespace dctl::eval

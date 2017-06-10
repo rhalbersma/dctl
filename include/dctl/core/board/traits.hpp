@@ -7,8 +7,7 @@
 #include <dctl/core/state/color_piece.hpp>                    // opposite
 #include <algorithm>                                    // min, max
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 template<class Board>
 constexpr auto is_placeable = std::min(Board::width, Board::height) >= 1 && (!Board::is_inverted || std::max(Board::width, Board::height) > 1);
@@ -72,5 +71,4 @@ constexpr auto squares_v = board::mask::detail::copy_if<Board>([](auto const sq)
 template<class Board, class Color>
 constexpr auto initial_v = board::mask::initial<Board, Color>{};
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

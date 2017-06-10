@@ -8,8 +8,7 @@
 #include <string>                       // string
 #include <utility>                      // pair
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace search {
 
 template<class State, class Objective>
@@ -47,5 +46,4 @@ public:
 using DefaultObjective = GameObjective<NoActionsLeft>;
 
 }       // namespace search
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

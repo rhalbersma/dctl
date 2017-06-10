@@ -8,8 +8,7 @@
 #include <ostream>                      // basic_ostream
 #include <sstream>                      // stringstream
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 class setpushsep
 {
@@ -165,5 +164,4 @@ auto& numeric(std::ios_base& str)
         return str;
 }
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

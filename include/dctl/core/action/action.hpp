@@ -7,8 +7,7 @@
 #include <tuple>                                // tie
 #include <type_traits>                          // conditional, enable_if, is_pod, is_same
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 namespace block_adl {
 
@@ -297,5 +296,4 @@ constexpr auto operator<=(action<Rules, Board> const& lhs, action<Rules, Board> 
         return !(rhs < lhs);
 }
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

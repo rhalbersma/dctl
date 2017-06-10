@@ -3,8 +3,7 @@
 #include <dctl/egdb/index.hpp>
 #include <dctl/util/type_traits.hpp>
 
-namespace dctl {
-namespace egdb {
+namespace dctl::egdb {
 
 template<class Selection>
 using drop_duplicates_gen = Actions<Selection>;
@@ -145,5 +144,4 @@ public:
 
 };
 
-}       // namespace egdb
-}       // namespace dctl
+}       // namespace dctl::egdb

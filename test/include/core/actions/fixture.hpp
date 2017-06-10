@@ -11,8 +11,7 @@
 #include <string>                               // string
 #include <vector>                               // vector
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 template<class Rules, class Board>
 struct Fixture
@@ -41,5 +40,4 @@ struct Fixture
         }
 };
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

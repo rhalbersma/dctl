@@ -5,8 +5,7 @@
 #include <dctl/eval/weight.hpp>    // Weight
 #include <cstdlib>                      // abs
 
-namespace dctl {
-namespace eval {
+namespace dctl::eval {
 
 template<class Color>
 class Feature
@@ -87,5 +86,4 @@ public:
         }
 };
 
-}       // namespace eval
-}       // namespace dctl
+}       // namespace dctl::eval

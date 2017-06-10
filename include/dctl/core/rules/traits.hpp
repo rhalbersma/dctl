@@ -25,8 +25,7 @@ constexpr auto NAME ## _v = std::conditional_t<         \
         has_ ## NAME ## _v<T>, T, default_ ## NAME      \
 >::NAME;                                                \
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 DCTL_PP_TTI_CONSTANT(width, 8)
 DCTL_PP_TTI_CONSTANT(height, 8)
@@ -215,7 +214,6 @@ constexpr auto notation_v =
         notation::numeric
 ;
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core
 
 #undef DCTL_PP_TTI_CONSTANT

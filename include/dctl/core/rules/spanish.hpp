@@ -1,8 +1,7 @@
 #pragma once
 #include <tuple>        // make_tuple
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace block_adl {
 
 // http://www.fpdamas.pt/downloads/Regras%20Damas%20Cl%C3%A1ssicas%20-%20atualizado.pdf
@@ -31,5 +30,4 @@ struct spanish
 
 using block_adl::spanish;
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

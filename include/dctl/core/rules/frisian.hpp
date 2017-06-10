@@ -3,8 +3,7 @@
 #include <tuple>        		// make_tuple
 #include <type_traits>			// decay
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace block_adl {
 
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
@@ -38,5 +37,4 @@ struct frisian
 
 using block_adl::frisian;
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

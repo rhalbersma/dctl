@@ -2,8 +2,7 @@
 #include <dctl/algo/search/bound.hpp>
 #include <dctl/algo/search/score.hpp>
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace search {
 
 class Transposition
@@ -136,5 +135,4 @@ public:
 };
 
 }       // namespace search
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

@@ -3,8 +3,7 @@
 #include <experimental/optional>        // optional, nullopt_t
 #include <cassert>                      // assert
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 
 template<class State, class Actions, class UnaryPredicate>
 class problem
@@ -48,5 +47,4 @@ public:
         }
 };
 
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

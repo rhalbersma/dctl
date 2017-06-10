@@ -7,8 +7,7 @@
 #include <string>                       // string
 #include <vector>                       // vector
 
-namespace dctl {
-namespace egdb {
+namespace dctl::egdb {
 
 class database
 {
@@ -60,5 +59,4 @@ public:
         }
 };
 
-}       // namespace egdb
-}       // namespace dctl
+}       // namespace dctl::egdb

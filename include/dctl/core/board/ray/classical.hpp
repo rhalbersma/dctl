@@ -5,8 +5,7 @@
 #include <dctl/core/board/ray/iterator.hpp>          // iterator
 #include <dctl/util/type_traits.hpp>         // set_t
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace ray {
 
@@ -26,5 +25,4 @@ auto classical(iterator<Board, Direction> from, Set const propagator)
 
 }       // namespace ray
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

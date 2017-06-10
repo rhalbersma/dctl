@@ -6,8 +6,7 @@
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable
 #include <iterator>                             // bidirectional_iterator_tag
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace mask {
 namespace detail {
@@ -81,5 +80,4 @@ auto make_iterator(Set const s)
 }       // namespace detail
 }       // namespace mask
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

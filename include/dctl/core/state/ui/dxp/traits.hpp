@@ -1,7 +1,6 @@
 #pragma once
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace dxp {
 
 // type traits
@@ -18,5 +17,4 @@ struct terminator
 };
 
 }       // namespace dxp
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

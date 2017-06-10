@@ -3,8 +3,7 @@
 #include <stdexcept>                    // invalid_argument
 #include <string>                       // string
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 
 struct Bound
 {
@@ -36,5 +35,4 @@ struct Bound
         }
 };
 
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

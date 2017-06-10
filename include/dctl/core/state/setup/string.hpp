@@ -11,8 +11,7 @@
 #include <sstream>                      // stringstream
 #include <string>                       // string
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace setup {
 
 template<class Token>
@@ -191,5 +190,4 @@ struct write<dxp::protocol, Token>
 };
 
 }       // namespace setup
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

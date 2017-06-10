@@ -10,8 +10,7 @@
 #include <dctl/util/type_traits.hpp>                 // board_t, rules_t, set_t, value_t
 #include <iterator>                                     // prev
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 
 template<color Side, class Reverse, class State, class SequenceContainer>
@@ -97,5 +96,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

@@ -1,8 +1,7 @@
 #pragma once
 #include <cstddef>      // size_t
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace traversal {
 
 class Transposition
@@ -35,5 +34,4 @@ public:
 };
 
 }       // namespace traversal
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

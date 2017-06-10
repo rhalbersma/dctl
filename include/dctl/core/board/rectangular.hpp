@@ -15,8 +15,7 @@
 #include <limits>                                       // digits
 #include <sstream>                                      // stringstream
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace block_adl {
 
@@ -146,5 +145,4 @@ public:
 using block_adl::rectangular;
 
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

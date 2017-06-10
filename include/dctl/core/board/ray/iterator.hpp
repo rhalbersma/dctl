@@ -4,8 +4,7 @@
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable, additive
 #include <iterator>                             // random_access_iterator_tag
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace ray {
 
@@ -96,5 +95,4 @@ auto make_iterator(int const sq)
 
 }       // namespace ray
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

@@ -8,8 +8,7 @@
 #include <tuple>                        // tie
 #include <type_traits>                  // is_pod
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace c2p2e {
 
 template<class Board>
@@ -193,5 +192,4 @@ constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs
 }
 
 }       // namespace c2p2e
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

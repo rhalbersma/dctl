@@ -5,8 +5,7 @@
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cstddef>
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 template<class Rules, class Board>
 class MostRecentlyPushedKings
@@ -170,5 +169,4 @@ private:
         }
 };
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

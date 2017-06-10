@@ -8,8 +8,7 @@
 #include <dctl/core/rules/traits.hpp>                           // is_orthogonal_jump_t, is_long_ranged_king_t
 #include <dctl/util/type_traits.hpp>                            // board_t, rules_t, set_t
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 
 template<color Side, class Reverse, class State>
@@ -56,5 +55,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

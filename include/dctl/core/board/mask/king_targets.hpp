@@ -8,8 +8,7 @@
 #include <array>                        // array
 #include <cstddef>                      // size_t
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace mask {
 
@@ -53,5 +52,4 @@ public:
 
 }       // namespace mask
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

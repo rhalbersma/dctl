@@ -11,8 +11,7 @@
 #include <iterator>                                     // begin, end, prev
 #include <type_traits>                                  // is_same
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 
 template<class Color, class DuplicatesPolicy, class State, class SequenceContainer>
@@ -249,5 +248,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

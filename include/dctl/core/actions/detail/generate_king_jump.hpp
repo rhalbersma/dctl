@@ -14,8 +14,7 @@
 #include <iterator>                                     // prev
 #include <type_traits>                                  // is_same
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 
 template<color Side, class Reverse, class State, class Builder>
@@ -230,5 +229,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

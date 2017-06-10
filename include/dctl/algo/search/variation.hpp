@@ -1,8 +1,7 @@
 #pragma once
 #include <dctl/util/static_vector.hpp>       // Variation
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace search {
 
 inline void update_variation(Variation& line, int move, Variation const& continuation)
@@ -13,5 +12,4 @@ inline void update_variation(Variation& line, int move, Variation const& continu
 }
 
 }       // namespace search
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

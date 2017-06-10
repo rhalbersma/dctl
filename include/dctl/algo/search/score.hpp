@@ -4,8 +4,7 @@
 #include <string>                       // string
 #include <dctl/algo/search/ply.hpp>
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace search {
 
 // observers
@@ -134,5 +133,4 @@ std::string print(int value)
 }
 
 }       // namespace search
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

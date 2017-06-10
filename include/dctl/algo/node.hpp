@@ -8,8 +8,7 @@
 #include <tuple>                                // tie
 #include <type_traits>                          // is_same
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 
 template<class State, class Action>
 constexpr auto result(State const& s, Action const& a) noexcept
@@ -211,5 +210,4 @@ public:
 
 std::unordered_set<wrap, acme::identity_hash>;
 */
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

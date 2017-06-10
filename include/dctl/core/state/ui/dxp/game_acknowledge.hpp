@@ -5,8 +5,7 @@
 #include <sstream>                      // stringstream
 #include <string>                       // stoi, string
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace dxp {
 
 /*
@@ -77,5 +76,4 @@ private:
 };
 
 }       // namespace dxp
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

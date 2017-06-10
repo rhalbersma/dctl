@@ -3,8 +3,7 @@
 #include <cassert>              // assert
 #include <tuple>                // tie
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace detail {
 
@@ -74,5 +73,4 @@ constexpr auto rotate(dimensions const dim, angle const a) noexcept
 
 }       // namespace detail
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

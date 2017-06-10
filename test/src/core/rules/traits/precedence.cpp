@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceTrivialIsConsistentWithTraits)
                          is_contents_precedence_v<T>  ||
                          is_modality_precedence_v<T> ||
                          is_ordering_precedence_v<T> ) ==
-                        !is_trivial_precedence_v<T>, ""
+                        !is_trivial_precedence_v<T>
                 );
         }
 

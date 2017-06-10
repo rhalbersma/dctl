@@ -2,8 +2,7 @@
 #include <dctl/core/state/setup/i_token.hpp>
 #include <dctl/core/state/ui/dxp/version.hpp>
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace setup {
 
 template<>
@@ -14,5 +13,4 @@ struct TokenSet<dxp::protocol>
 };
 
 }       // namespace setup
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

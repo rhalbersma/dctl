@@ -3,8 +3,7 @@
 #include <dctl/core/rules/traits.hpp>                 // short_ranged_tag
 #include <iterator>                             // prev
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace mask {
 
@@ -30,5 +29,4 @@ public:
 
 }       // namespace mask
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

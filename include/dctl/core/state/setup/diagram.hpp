@@ -6,8 +6,7 @@
 #include <sstream>                      // stringstream
 #include <string>                       // string
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace setup {
 
 // primary template definition
@@ -42,5 +41,4 @@ public:
 };
 
 }       // namespace setup
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

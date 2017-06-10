@@ -12,8 +12,7 @@
 #include <tuple>                                // tie
 #include <utility>                              // forward
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 namespace block_adl {
 
@@ -216,5 +215,4 @@ constexpr auto operator<=(state<Rules, Board> const& lhs, state<Rules, Board> co
         return !(rhs < lhs);
 }
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

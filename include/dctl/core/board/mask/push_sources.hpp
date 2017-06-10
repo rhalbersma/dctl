@@ -3,8 +3,7 @@
 #include <dctl/core/rules/traits.hpp>                 // short_ranged_tag
 #include <iterator>                             // prev
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace mask {
 
@@ -23,5 +22,4 @@ struct push_sources<Board, Direction, short_ranged_tag>
 
 }       // namespace mask
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

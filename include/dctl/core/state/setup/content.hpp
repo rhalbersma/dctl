@@ -4,8 +4,7 @@
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <sstream>                      // stringstream
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace setup {
 
 template<class Token, class State>
@@ -30,5 +29,4 @@ auto content(State const& s, int const n)
 }
 
 }       // namespace setup
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

@@ -2,8 +2,7 @@
 #include <dctl/core/board/ray/iterator.hpp>  // iterator
 #include <dctl/core/board/ray/traits.hpp>    // is_onboard
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace ray {
 
@@ -19,5 +18,4 @@ auto fill(iterator<Board, Direction> from, Set const propagator)
 
 }       // namespace ray
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

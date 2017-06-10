@@ -3,8 +3,7 @@
 #include <dctl/core/actions.hpp>
 #include <type_traits>                  // false_type, true_type
 
-namespace dctl {
-namespace algo {
+namespace dctl::algo {
 namespace search {
 
 /* first side to run out of moves, loses */
@@ -159,5 +158,4 @@ struct GameObjective
 };
 
 }       // namespace search
-}       // namespace algo
-}       // namespace dctl
+}       // namespace dctl::algo

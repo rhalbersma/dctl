@@ -2,8 +2,7 @@
 #include <dctl/core/board.hpp>
 #include <boost/mpl/vector.hpp>
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 
 using BoardSequence = boost::mpl::vector
@@ -24,5 +23,4 @@ using BoardSequence = boost::mpl::vector
 >;
 
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

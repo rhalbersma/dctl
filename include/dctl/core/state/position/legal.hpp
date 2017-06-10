@@ -2,8 +2,7 @@
 #include <dctl/core/board/traits.hpp>        // promotion_v, squares_v
 #include <dctl/util/type_traits.hpp> // board_t
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 
 template<class Board, class Set>
 constexpr auto is_onboard_pieces(Set const occupied) noexcept
@@ -55,5 +54,4 @@ constexpr auto is_legal(Set const black_pawns, Set const white_pawns) noexcept
         ;
 }
 
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

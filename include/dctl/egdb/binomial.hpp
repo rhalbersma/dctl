@@ -5,8 +5,7 @@
 #include <cstdint>      // int64_t
 #include <type_traits>  // is_integral
 
-namespace dctl {
-namespace egdb {
+namespace dctl::egdb {
 namespace detail {
 
 // https://en.wikipedia.org/wiki/Binomial_coefficient
@@ -102,5 +101,4 @@ constexpr auto choose(int const n, int const k) // Throws: Nothing.
         return detail::binomial<N, K, int64_t>::coefficient(n, k);
 }
 
-}       // namespace egdb
-}       // namespace dctl
+}       // namespace dctl::egdb

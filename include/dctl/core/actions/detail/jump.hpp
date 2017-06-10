@@ -15,8 +15,7 @@
 #include <cassert>                                              // assert
 #include <type_traits>
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace detail {
 
 class MoveCounter
@@ -83,5 +82,4 @@ public:
 };
 
 }       // namespace detail
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

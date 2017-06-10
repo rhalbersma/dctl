@@ -1,7 +1,6 @@
 #pragma once
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace block_adl {
 
 // http://www.mindsports.nl/index.php/arena/draughts/382-killer-draughts-rules
@@ -17,5 +16,4 @@ struct killer
 
 using block_adl::killer;
 
-}       // namespace core
-}       // namespace dctl
+}       // dctl::core

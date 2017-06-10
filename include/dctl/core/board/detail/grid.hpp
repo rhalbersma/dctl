@@ -3,8 +3,7 @@
 #include <dctl/core/board/detail/dimensions.hpp>     // dimensions
 #include <cassert>                              // assert
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace detail {
 
@@ -73,5 +72,4 @@ public:
 
 }       // namespace detail
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

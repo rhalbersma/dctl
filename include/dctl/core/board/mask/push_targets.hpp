@@ -4,8 +4,7 @@
 #include <dctl/core/rules/traits.hpp>                 // short_ranged_tag, long_ranged_tag
 #include <iterator>                             // next
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace mask {
 
@@ -34,5 +33,4 @@ struct push_targets<Board, Direction, long_ranged_tag>
 
 }       // namespace mask
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

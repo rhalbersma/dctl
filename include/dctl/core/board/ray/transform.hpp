@@ -2,8 +2,7 @@
 #include <dctl/core/board/angle.hpp>         // angle, rotate, mirror
 #include <dctl/core/board/ray/iterator.hpp>  // Iterator
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace board {
 namespace ray {
 
@@ -31,5 +30,4 @@ auto turn(iterator<Board, Direction> it)
 
 }       // namespace ray
 }       // namespace board
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

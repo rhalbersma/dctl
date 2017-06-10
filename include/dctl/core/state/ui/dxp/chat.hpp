@@ -3,8 +3,7 @@
 #include <dctl/util/factory/creatable.hpp>   // make_creatable
 #include <string>                       // string
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace dxp {
 
 /*
@@ -65,5 +64,4 @@ private:
 };
 
 }       // namespace dxp
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core

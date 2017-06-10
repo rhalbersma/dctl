@@ -2,8 +2,7 @@
 #include <dctl/eval/feature.hpp>   // Feature
 #include <dctl/core/state/color_piece.hpp>         // flip
 
-namespace dctl {
-namespace eval {
+namespace dctl::eval {
 
 template<class Color>
 class Delta
@@ -51,5 +50,4 @@ private:
         }
 };
 
-}       // namespace eval
-}       // namespace dctl
+}       // namespace dctl::eval

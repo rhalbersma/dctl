@@ -1,8 +1,7 @@
 #pragma once
 #include <cctype>       // tolower, toupper
 
-namespace dctl {
-namespace core {
+namespace dctl::core {
 namespace setup {
 
 template<class>
@@ -45,5 +44,4 @@ char const TokenInterface<B, W, E>::upper[] = {
 };
 
 }       // namespace setup
-}       // namespace core
-}       // namespace dctl
+}       // namespace dctl::core
