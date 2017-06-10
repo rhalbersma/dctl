@@ -41,11 +41,11 @@ Road-map
 
 The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. It is currently not possible to play a game against a program based on the DCTL. Functionality being planned includes:   
 
-* a generic engine class template   
-* support for the [Checkerboard GUI](http://www.fierz.ch/cbdeveloper.php)   
-* support for the [GUIDE protocol](http://laatste.info/bb3/download/file.php?id=864)   
-* support for the [DamExchange protocol](http://www.mesander.nl/damexchange/edxpmain.htm)  
-* endgame database generation   
+- [ ] a generic engine class template
+- [ ] support for the [Checkerboard GUI](http://www.fierz.ch/cbdeveloper.php)
+- [ ] support for the [GUIDE protocol](http://laatste.info/bb3/download/file.php?id=864)   
+- [ ] support for the [DamExchange protocol](http://www.mesander.nl/damexchange/edxpmain.htm)
+- [ ] endgame database generation   
 
 Requirements
 ------------
