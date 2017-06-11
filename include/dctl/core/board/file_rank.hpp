@@ -18,8 +18,7 @@ class file
                 {
                         auto result = std::array<set_t<Board>, Board::width>{};
                         for (auto f = 0; f < Board::width; ++f) {
-                                result[static_cast<std::size_t>(f)] = detail::set_filter<Board>([=](auto const sq){
-                                        assert(0 <= f); assert(f < Board::width);
+                                result[static_cast<std::size_t>(f)] = detail::set_filter<Board>([=](auto const sq) {
                                         return to_llo(sq, Board::inner_grid).x == (Side == color::white ? f : Board::width - 1 - f);
                                 });
                         }
@@ -51,7 +50,6 @@ class rank
                         auto result = std::array<set_t<Board>, Board::height>{};
                         for (auto r = 0; r < Board::height; ++r) {
                                 result[static_cast<std::size_t>(r)] = detail::set_filter<Board>([=](auto const sq) {
-                                        assert(0 <= r); assert(r < Board::height);
                                         return to_llo(sq, Board::inner_grid).y == (Side == white_c ? r : Board::height - 1 - r);
                                 });
                         }
