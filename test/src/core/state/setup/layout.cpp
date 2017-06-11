@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(Grid)
 {
         auto const d = detail::dimensions{1,1,true};
         auto const i = detail::InnerGrid{d};
-        auto const o = detail::OuterGrid{i, 2};
+        auto const o = detail::bit_layout{i, 2};
         std::cout << "W = " << i.width() << ", H = " << i.height() << ", P = " << i.is_inverted() << ", bits = " << i.size() << "\n\n";
         std::cout << "W = " << o.width() << ", H = " << o.height() << ", P = " << o.is_inverted() << ", bits = " << o.size() << "\n\n";
 }

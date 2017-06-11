@@ -1,9 +1,10 @@
 #pragma once
-#include <dctl/core/board/coordinates.hpp>      // to_llo
-#include <dctl/core/board/detail/set_filter.hpp>       // set_filter
-#include <dctl/util/type_traits.hpp>            // set_t, value_t
-#include <xstd/cstdlib.hpp>                     // euclidean_div
-#include <cassert>                              // assert
+#include <dctl/core/board/detail/set_filter.hpp>        // set_filter
+#include <dctl/core/board/coordinates.hpp>              // to_llo
+#include <dctl/util/type_traits.hpp>                    // set_t, value_t
+#include <xstd/cstdlib.hpp>                             // euclidean_div
+#include <array>                                        // array
+#include <cassert>                                      // assert
 
 namespace dctl::core {
 
@@ -29,19 +30,19 @@ class jump_group
                 }
         };
 
-        constexpr static set_t<Board> value[] =
-        {
+        constexpr static auto table = std::array<set_t<Board>, 4>
+        {{
                 init<Board::edge_le() + 0>{}(),
                 init<Board::edge_le() + 1>{}(),
                 init<Board::edge_lo() + 0>{}(),
                 init<Board::edge_lo() + 1>{}()
-        };
+        }};
 
 public:
         constexpr auto operator()(int const n) const noexcept
         {
-                assert(n < 4);
-                return value[n];
+                assert(static_cast<std::size_t>(n) < 4);
+                return table[static_cast<std::size_t>(n)];
         }
 };
 

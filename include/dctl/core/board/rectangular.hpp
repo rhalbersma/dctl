@@ -1,8 +1,7 @@
 #pragma once
 #include <dctl/core/board/angle.hpp>                    // angle, inverse
 #include <dctl/core/board/coordinates.hpp>              // to_llo, transform
-#include <dctl/core/board/detail/dimensions.hpp>        // dimensions
-#include <dctl/core/board/detail/grid.hpp>              // InnerGrid, OuterGrid
+#include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
 #include <dctl/core/state/color_piece.hpp>              // black, white
 #include <xstd/cstdint.hpp>                             // uint_fast
 #include <xstd/cstdlib.hpp>                             // align_on
@@ -38,12 +37,12 @@ public:
         constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
         constexpr static angle orientation = std::min(
                 { 0_deg, 90_deg, 180_deg, 270_deg },
-                [g = detail::OuterGrid{inner_grid, edge}]
+                [g = detail::bit_layout{inner_grid, edge}]
                 (auto const lhs, auto const rhs) {
                         return rotate(g, lhs).size() < rotate(g, rhs).size();
                 }
         );
-        constexpr static auto outer_grid = detail::OuterGrid{rotate(inner_grid, orientation), edge};
+        constexpr static auto outer_grid = detail::bit_layout{rotate(inner_grid, orientation), edge};
 
 private:
         constexpr static auto NumBits = outer_grid.size();
