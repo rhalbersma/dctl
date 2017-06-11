@@ -67,7 +67,7 @@ constexpr auto squares_v = detail::set_filter<Board>([](auto const sq) {
         return sq < Board::size();
 });
 
-template<class Board, class Color>
-constexpr auto initial_v = initial<Board, Color>{};
+template<class Board>
+constexpr auto initial_v = initial<Board>{};
 
 }       // namespace dctl::core

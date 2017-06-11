@@ -46,10 +46,8 @@ public:
                 assert(is_legal<board_type>(black_pawns, white_pawns));
         }
 
-        template<class ColorT, class Action, std::enable_if_t<
-                is_color_v<ColorT>
-        >...>
-        constexpr auto make(ColorT const c, Action const& a) // Throws: Nothing.
+        template<class Action>
+        constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
                 if (a.is_jump()) {
                         set_pieces(!c) ^= a.captured_pieces();
@@ -67,35 +65,17 @@ public:
                 m_empty = squares_v<board_type> ^ (pieces(black_c) | pieces(white_c));
         }
 
-        template<class ColorT, std::enable_if_t<
-                is_color_v<ColorT>
-        >...>
-        constexpr auto pieces(ColorT const c) const noexcept
+        constexpr auto pieces(color const c) const noexcept
         {
-                if constexpr (std::is_same_v<ColorT, color>) {
-                        return m_color[xstd::to_underlying_type(c)];
-                } else {
-                        return std::get<xstd::to_underlying_type(c)>(m_color);
-                }
+                return m_color[xstd::to_underlying_type(c)];
         }
 
-        template<class PieceT, std::enable_if_t<
-                is_piece_v<PieceT>
-        >...>
-        constexpr auto pieces(PieceT const p) const noexcept
+        constexpr auto pieces(piece const p) const noexcept
         {
-                if constexpr (std::is_same_v<PieceT, piece>) {
-                        return m_piece[xstd::to_underlying_type(p)];
-                } else {
-                        return std::get<xstd::to_underlying_type(p)>(m_piece);
-                }
+                return m_piece[xstd::to_underlying_type(p)];
         }
 
-        template<class ColorT, class PieceT, std::enable_if_t<
-                is_color_v<ColorT> &&
-                is_piece_v<PieceT>
-        >...>
-        constexpr auto pieces(ColorT const c, PieceT const p) const noexcept
+        constexpr auto pieces(color const c, piece const p) const noexcept
         {
                 return pieces(c) & pieces(p);
         }
@@ -130,28 +110,14 @@ public:
         }
 
 private:
-        template<class ColorT, std::enable_if_t<
-                is_color_v<ColorT>
-        >...>
-        constexpr auto& set_pieces(ColorT const c) noexcept
+        constexpr auto& set_pieces(color const c) noexcept
         {
-                if constexpr (std::is_same_v<ColorT, color>) {
-                        return m_color[xstd::to_underlying_type(c)];
-                } else {
-                        return std::get<xstd::to_underlying_type(c)>(m_color);
-                }
+                return m_color[xstd::to_underlying_type(c)];
         }
 
-        template<class PieceT, std::enable_if_t<
-                is_piece_v<PieceT>
-        >...>
-        constexpr auto& set_pieces(PieceT const p) noexcept
+        constexpr auto& set_pieces(piece const p) noexcept
         {
-                if constexpr (std::is_same_v<PieceT, piece>) {
-                        return m_piece[xstd::to_underlying_type(p)];
-                } else {
-                        return std::get<xstd::to_underlying_type(p)>(m_piece);
-                }
+                return m_piece[xstd::to_underlying_type(p)];
         }
 };
 

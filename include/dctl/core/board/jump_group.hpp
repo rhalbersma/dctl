@@ -14,7 +14,6 @@ class jump_group
         template<int FromSquare>
         struct init
         {
-                // simulate a constexpr lambda (allowed in C++17)
                 constexpr auto operator()() const noexcept
                 {
                         return detail::set_filter<Board>([](int const dest_sq){

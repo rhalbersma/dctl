@@ -14,6 +14,7 @@ class jump_start
         constexpr static auto theta = Board::is_orthogonal_jump ? 45_deg : 90_deg;
         constexpr static auto beta  = Board::is_orthogonal_jump ?  0_deg : 45_deg;
         constexpr static auto N     = Board::is_orthogonal_jump ?      8 :      4;
+
         constexpr static auto table = []() {
                 auto result = std::array<set_t<Board>, N>{};
                 for (auto segment = 0; segment < N; ++segment) {

@@ -86,16 +86,16 @@ public:
                 -> state
         {
                 constexpr auto separation = initial_position_gap_v<Rules> + Board::height % 2;
-                constexpr auto black_pawns = initial_v<board_type, black_>(separation);
-                constexpr auto white_pawns = initial_v<board_type, white_>(separation);
+                constexpr auto black_pawns = initial_v<board_type>(black_c, separation);
+                constexpr auto white_pawns = initial_v<board_type>(white_c, separation);
                 return {{black_pawns, white_pawns}, color::white};
         }
 
         constexpr static auto initial(int const separation)
                 -> state
         {
-                auto const black_pawns = initial_v<board_type, black_>(separation);
-                auto const white_pawns = initial_v<board_type, white_>(separation);
+                auto const black_pawns = initial_v<board_type>(black_c, separation);
+                auto const white_pawns = initial_v<board_type>(white_c, separation);
                 return {{black_pawns, white_pawns}, color::white};
         }
 
