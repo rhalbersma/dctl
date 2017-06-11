@@ -31,7 +31,7 @@ public:
         :
                 m_white{white_pawns | white_kings},
                 m_pawns{black_pawns | white_pawns},
-                m_occup{black_pawns | white_pawns | black_kings | white_kings}
+                m_occup{m_white | m_pawns | black_kings}
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
         }

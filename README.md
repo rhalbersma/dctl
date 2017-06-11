@@ -3,18 +3,25 @@ DCTL: Draughts and Checkers Template Library
 
 [![Language](https://img.shields.io/badge/language-C++-blue.svg)](https://isocpp.org/) 
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) 
-[![License](https://img.shields.io/badge/license-Boost-blue.svg)](https://opensource.org/licenses/BSL-1.0) 
+[![License](https://img.shields.io/badge/license-Boost-blue.svg)](https://opensource.org/licenses/BSL-1.0)
 [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg?branch=master)](https://travis-ci.org/rhalbersma/dctl)
+[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting almost all known rules variations, board sizes and game objectives.
+A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting almost all known rules variations, board sizes and game objectives.
 
-> #### Disclaimer 
+> #### Disclaimer
 > This library is currently in a [pre-alpha](https://en.wikipedia.org/wiki/Software_release_life_cycle#Pre-alpha) stage. All code is subject to change without prior notice. 
 
 Introduction
 ------------
 
-Draughts is a family of related board games played in many [regions](http://alemanni.pagesperso-orange.fr/geography.html) across the world. There are many country-specific game rules such as International/Brazilian/Canadian, American/English, Russian, Italian, Spanish/Portugese, Czech, Thai, and Frisian draughts. Draughts is played on checkered boards of dimensions 8x8, 10x10 and 12x12. The common game objective is "the first player to have no moves left, **loses**". A less common variation is so-called misère play ("first to have no moves left, **wins**"), also known as "suicide", "giveaway", or "qui-perd-gagné". Many draughts variants have an official governing body, such as the [Fédération Mondiale du Jeu de Dames](htpp://fmjd.org) (FMJD, World Draughts Federation).
+Draughts is a family of related board games played in many [regions](http://alemanni.pagesperso-orange.fr/geography.html) across the world:
+
+* There are many country-specific game rules such as International/Brazilian/Canadian, American/English, Russian, Italian, Spanish/Portugese, Czech, Thai, and Frisian draughts. 
+* Draughts is played on checkered boards of dimensions 8x8, 10x10 and 12x12. 
+* The common game objective is "the first player to have no moves left, **loses**". A less common variation is so-called misère play ("first to have no moves left, **wins**"), also known as "suicide", "giveaway", or "qui-perd-gagné". 
+
+Many draughts variants have an official governing body, such as the [Fédération Mondiale du Jeu de Dames](htpp://fmjd.org) (FMJD, World Draughts Federation).
 
 Scope
 -----
@@ -34,11 +41,11 @@ Road-map
 
 The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. It is currently not possible to play a game against a program based on the DCTL. Functionality being planned includes:   
 
-* a generic engine class template   
-* support for the [Checkerboard GUI](http://www.fierz.ch/cbdeveloper.php)   
-* support for the [GUIDE protocol](http://laatste.info/bb3/download/file.php?id=864)   
-* support for the [DamExchange protocol](http://www.mesander.nl/damexchange/edxpmain.htm)  
-* endgame database generation   
+- [ ] a generic engine class template
+- [ ] support for the [Checkerboard GUI](http://www.fierz.ch/cbdeveloper.php)
+- [ ] support for the [GUIDE protocol](http://laatste.info/bb3/download/file.php?id=864)   
+- [ ] support for the [DamExchange protocol](http://www.mesander.nl/damexchange/edxpmain.htm)
+- [ ] endgame database generation   
 
 Requirements
 ------------
