@@ -11,18 +11,18 @@ template<class Board, class Color>
 class initial
 {
         constexpr static auto N = Board::height / 2 + 1;
-        constexpr static auto initial_table = []() {
-                auto table = std::array<set_t<Board>, N>{};
+        constexpr static auto table = []() {
+                auto result = std::array<set_t<Board>, N>{};
                 for (auto d = 0; d < N; ++d) {
-                        table[static_cast<std::size_t>(d)] = [=](){
-                                auto result = set_t<Board>{};
+                        result[static_cast<std::size_t>(d)] = [=](){
+                                auto accum = set_t<Board>{};
                                 for (auto r = 0; r < d; ++r) {
-                                        result ^= rank<Board, Color>{}(r);
+                                        accum ^= rank<Board>{}(Color{}, r);
                                 }
-                                return result;
+                                return accum;
                         }();
                 }
-                return table;
+                return result;
         }();
 public:
         constexpr auto operator()(int const separation) const // Throws: Nothing.
@@ -31,7 +31,7 @@ public:
                 assert(Board::height % 2 <= separation); assert(separation <= Board::height);
                 auto const rows = (Board::height - separation) / 2;
                 assert(rows <= Board::height / 2);
-                return initial_table[static_cast<std::size_t>(rows)];
+                return table[static_cast<std::size_t>(rows)];
         }
 };
 

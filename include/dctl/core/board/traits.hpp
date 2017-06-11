@@ -53,14 +53,14 @@ struct add_orthogonal_captures<board::rectangular<Width, Height, IsInverted, IsO
 template<class Board>
 using add_orthogonal_captures_t = typename add_orthogonal_captures<Board>::type;
 
-template<class Board, class Color>
-constexpr file<Board, Color> file_v{};
+template<class Board>
+constexpr file<Board> file_v{};
+
+template<class Board>
+constexpr rank<Board> rank_v{};
 
 template<class Board, class Color>
-constexpr rank<Board, Color> rank_v{};
-
-template<class Board, class Color>
-constexpr auto promotion_v = rank_v<Board, opposite<Color>>(0);
+constexpr auto promotion_v = rank_v<Board>(!Color{}, 0);
 
 template<class Board>
 constexpr auto squares_v = detail::set_filter<Board>([](auto const sq) {

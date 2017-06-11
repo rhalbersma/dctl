@@ -1,8 +1,9 @@
-#include <core/board/sequence.hpp>                   // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
+#include <core/board/sequence.hpp>              // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
-#include <core/board/transform.hpp>                  // is_involution, is_idempotent
-#include <dctl/core/board/rectangular.hpp>           // rectangular
-#include <dctl/core/board/traits.hpp>                // is_empty, is_pushable, is_jumpable, invert, add_orthogonal_captures, remove_orthogonal_captures
+#include <core/board/transform.hpp>             // is_involution, is_idempotent
+#include <dctl/core/board/rectangular.hpp>      // rectangular
+#include <dctl/core/board/traits.hpp>           // is_empty, is_pushable, is_jumpable, invert, add_orthogonal_captures, remove_orthogonal_captures
+#include <dctl/core/state/color_piece.hpp>
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/range/irange.hpp>               // irange
 #include <boost/range/numeric.hpp>              // accumulate
@@ -88,21 +89,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, board::Boar
 
         BOOST_CHECK(
                 boost::algorithm::all_of(files, [=](auto i){
-                        return file_v<T, black_>(i) == file_v<T, white_>(T::width - 1 - i);
+                        return file_v<T>(black_c, i) == file_v<T>(white_c, T::width - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 boost::algorithm::all_of(files, [=](auto i){
                         return boost::algorithm::all_of(files, [=](auto j){
-                                return i == j ? true : disjoint(file_v<T, white_>(i), file_v<T, white_>(j));
+                                return i == j ? true : disjoint(file_v<T>(white_c, i), file_v<T>(white_c, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(files, set_t<T>{}, [](auto result, auto i){
-                        return result ^ file_v<T, white_>(i);
+                        return result ^ file_v<T>(white_c, i);
                 }) == squares_v<T>
         );
 }
@@ -113,21 +114,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, board::BoardSe
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
-                        return rank_v<T, black_>(i) == rank_v<T, white_>(T::height - 1 - i);
+                        return rank_v<T>(black_c, i) == rank_v<T>(white_c, T::height - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 boost::algorithm::all_of(rows, [=](auto i){
                         return boost::algorithm::all_of(rows, [=](auto j){
-                                return i == j ? true : disjoint(rank_v<T, white_>(i), rank_v<T, white_>(j));
+                                return i == j ? true : disjoint(rank_v<T>(white_c, i), rank_v<T>(white_c, j));
                         });
                 })
         );
 
         BOOST_CHECK(
                 boost::accumulate(rows, set_t<T>{}, [](auto result, auto i){
-                        return result ^ rank_v<T, white_>(i);
+                        return result ^ rank_v<T>(white_c, i);
                 }) == squares_v<T>
         );
 }

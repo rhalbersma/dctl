@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/core/board/angle.hpp>    // angle
 #include <cassert>                      // assert
-#include <tuple>                        // tie
+#include <tuple>                        // make_tuple
 
 namespace dctl::core {
 namespace detail {
@@ -13,14 +13,12 @@ struct dimensions
         bool const is_inverted;
 };
 
-constexpr auto tied(dimensions const dim) noexcept
-{
-        return std::make_tuple(dim.width, dim.height, dim.is_inverted);
-}
-
 constexpr auto operator==(dimensions const lhs, dimensions const rhs) noexcept
 {
-        return tied(lhs) == tied(rhs);
+        constexpr auto as_tuple = [](auto const d) {
+                return std::make_tuple(d.width, d.height, d.is_inverted);
+        };
+        return as_tuple(lhs) == as_tuple(rhs);
 }
 
 constexpr auto operator!=(dimensions const lhs, dimensions const rhs) noexcept
