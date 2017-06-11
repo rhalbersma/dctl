@@ -1,13 +1,13 @@
 #pragma once
 #include <dctl/core/board/angle.hpp>            // angle
-#include <dctl/core/board/detail/shift.hpp>            // first, shift_sign, shift_size
+#include <dctl/core/board/detail/shift.hpp>     // first, shift_sign, shift_size
 #include <dctl/core/board/traits.hpp>
-#include <dctl/util/fill_array.hpp>             // fill_array
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable, additive
-#include <array>
+#include <array>                                // array
 #include <cassert>                              // assert
+#include <cstddef>                              // size_t
 #include <iterator>                             // random_access_iterator_tag
 #include <type_traits>                          // bool_constant
 
@@ -136,7 +136,7 @@ constexpr auto is_onboard(iterator<Board, Direction> it)
 template<class Board, int Direction, class Set>
 auto fill(iterator<Board, Direction> from, Set const propagator)
 {
-        Set targets {};
+        auto targets = Set{};
         for (++from; is_onboard(from) && propagator.test(*from); ++from) {
                 targets.insert(*from);
         }
@@ -146,38 +146,43 @@ auto fill(iterator<Board, Direction> from, Set const propagator)
 template<class Board>
 class king_targets
 {
+        constexpr static auto N = Board::bits();
+
         template<int Direction>
         struct init
         {
-                auto operator()(int const sq) const noexcept
+                auto operator()() const noexcept
                 {
-                        constexpr auto squares = squares_v<Board>;
-                        return squares.test(sq) ? fill(make_iterator<Board, Direction>(sq), squares) : set_t<Board>{};
+                        auto result = std::array<set_t<Board>, N>{};
+                        for (auto n = 0; n < N; ++n) {
+                                result[static_cast<std::size_t>(n)] =
+                                        squares_v<Board>.test(n) ?
+                                        fill(make_iterator<Board, Direction>(n), squares_v<Board>) :
+                                        set_t<Board>{}
+                                ;
+                        }
+                        return result;
                 }
         };
 
-        constexpr static auto theta = 45_deg;
-        constexpr static auto beta  =  0_deg;
-
-        using value_type = std::array<set_t<Board>, Board::bits()>;
-
-        static inline value_type const value[]=
-        {
-                fill_array<Board::bits()>(init<  0>{}),
-                fill_array<Board::bits()>(init< 45>{}),
-                fill_array<Board::bits()>(init< 90>{}),
-                fill_array<Board::bits()>(init<135>{}),
-                fill_array<Board::bits()>(init<180>{}),
-                fill_array<Board::bits()>(init<225>{}),
-                fill_array<Board::bits()>(init<270>{}),
-                fill_array<Board::bits()>(init<315>{})
-        };
-
+        inline static auto const table = std::array<std::array<set_t<Board>, N>, 8>
+        {{
+                init<  0>{}(),
+                init< 45>{}(),
+                init< 90>{}(),
+                init<135>{}(),
+                init<180>{}(),
+                init<225>{}(),
+                init<270>{}(),
+                init<315>{}()
+        }};
 public:
         auto operator()(int const sq, angle const alpha) const noexcept
         {
+                constexpr static auto theta = 45_deg;
+                constexpr static auto beta  =  0_deg;
                 auto const segment = (alpha - beta) / theta;
-                return value[segment][static_cast<std::size_t>(sq)];
+                return table[static_cast<std::size_t>(segment)][static_cast<std::size_t>(sq)];
         }
 };
 

@@ -1,10 +1,9 @@
 #pragma once
 #include <dctl/core/board/angle.hpp>                    // angle, inverse
-#include <dctl/core/board/coordinates.hpp>       // to_llo, transform
+#include <dctl/core/board/coordinates.hpp>              // to_llo, transform
 #include <dctl/core/board/detail/dimensions.hpp>        // dimensions
 #include <dctl/core/board/detail/grid.hpp>              // InnerGrid, OuterGrid
-#include <dctl/core/state/color_piece.hpp>                    // black, white
-#include <dctl/util/fill_array.hpp>                     // fill_array
+#include <dctl/core/state/color_piece.hpp>              // black, white
 #include <xstd/cstdint.hpp>                             // uint_fast
 #include <xstd/cstdlib.hpp>                             // align_on
 #include <xstd/int_set.hpp>                             // int_set
@@ -50,10 +49,10 @@ private:
         constexpr static auto NumBits = outer_grid.size();
         constexpr static auto NumSquares = inner_grid.size();
 
-public:
         constexpr static auto lower_left_is_square() noexcept { return inner_grid.lower_left_is_square(); }
         constexpr static auto upper_left_is_square() noexcept { return inner_grid.upper_left_is_square(); }
 
+public:
         constexpr static auto edge_le() noexcept { return inner_grid.edge_le(); }
         constexpr static auto edge_lo() noexcept { return inner_grid.edge_lo(); }
 
@@ -80,52 +79,44 @@ public:
 
         static auto algebraic_from_bit(int const n)
         {
-                assert(n < NumBits);
+                assert(static_cast<std::size_t>(n) < NumBits);
+                constexpr auto file_label = [](auto const f) { return static_cast<char>('a' + f); };
+                constexpr auto rank_label = [](auto const r) { return 1 + r;                      };
                 std::stringstream sstr;
-                auto coord = to_llo(square_from_bit(n), inner_grid);
-                sstr << column_label(coord.x) << row_label(coord.y);
+                auto const coord = to_llo(square_from_bit(n), inner_grid);
+                sstr << file_label(coord.x) << rank_label(coord.y);
                 return sstr.str();
         }
 private:
-        constexpr static auto init_bit_from_square(int const sq) noexcept
-        {
-                assert(sq < NumSquares);
-                return transform(sq, inner_grid, outer_grid, inverse(orientation));
-        }
+        constexpr static auto table_bit_from_square = []() {
+                auto table = std::array<int, NumSquares>{};
+                for (auto sq = 0; sq < NumSquares; ++sq) {
+                        table[static_cast<std::size_t>(sq)] =
+                                transform(sq, inner_grid, outer_grid, inverse(orientation))
+                        ;
+                }
+                return table;
+        }();
 
-        constexpr static auto init_square_from_bit(int const n) noexcept
-        {
-                assert(n < NumBits);
-                return transform(n, outer_grid, inner_grid, orientation);
-        }
-
-        constexpr static auto column_label(int const n) noexcept
-        {
-                assert(n < width);
-                return static_cast<char>('a' + n);
-        }
-
-        constexpr static auto row_label(int const n) noexcept
-        {
-                assert(n < height);
-                return 1 + n;
-        }
-
-        constexpr static std::array<int, NumSquares>
-        table_bit_from_square = fill_array<NumSquares>(init_bit_from_square);
-
-        constexpr static std::array<int, NumBits>
-        table_square_from_bit = fill_array<NumBits>(init_square_from_bit);
+        constexpr static auto table_square_from_bit = []() {
+                auto table = std::array<int, NumBits>{};
+                for (auto n = 0; n < NumBits; ++n) {
+                        table[static_cast<std::size_t>(n)] =
+                                transform(n, outer_grid, inner_grid, orientation)
+                        ;
+                }
+                return table;
+        }();
 public:
         constexpr static auto bit_from_square(int const sq)
         {
-                assert(sq < NumSquares);
+                assert(static_cast<std::size_t>(sq) < NumSquares);
                 return table_bit_from_square[static_cast<std::size_t>(sq)];
         }
 
         constexpr static auto square_from_bit(int const n)
         {
-                assert(n < NumBits);
+                assert(static_cast<std::size_t>(n) < NumBits);
                 return table_square_from_bit[static_cast<std::size_t>(n)];
         }
 

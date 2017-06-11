@@ -20,7 +20,7 @@ class binomial
 
         // https://en.wikipedia.org/wiki/Pascal's_triangle
         constexpr static auto pascal_triangle = []() {
-                std::array<std::array<IntegralType, K + 1>, N + 1> choose{};
+                auto choose = std::array<std::array<IntegralType, K + 1>, N + 1>{};
 
                 /*
 

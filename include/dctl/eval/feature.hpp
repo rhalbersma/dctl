@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/core/actions.hpp>             // count, select::push
-#include <dctl/core/board/traits.hpp>        // column, row
+#include <dctl/core/board/traits.hpp>        // file, row
 #include <dctl/core/state/color_piece.hpp>         // opposite
 #include <dctl/eval/weight.hpp>    // Weight
 #include <cstdlib>                      // abs
@@ -41,7 +41,7 @@ public:
                 using board_type = core::board_t<State>;
                 auto score = 0;
                 for (auto i = 1; i < board_type::height; ++i)
-                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(Color{}) & core::row_v<board_type, Color>(i)).size());
+                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(Color{}) & core::rank_v<board_type, Color>(i)).size());
                 return score;
         }
 
@@ -54,8 +54,8 @@ public:
                 for (auto i = 1; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::center[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & core::column_v<board_type,                Color >(i)).size()) +
-                                static_cast<int>((s.pieces(Color{}) & core::column_v<board_type, core::opposite<Color>>(i)).size())
+                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type,                Color >(i)).size()) +
+                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type, core::opposite<Color>>(i)).size())
                         );
                 }
                 return score;
@@ -70,8 +70,8 @@ public:
                 for (auto i = 0; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::balance[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & core::column_v<board_type,                Color >(i)).size()) -
-                                static_cast<int>((s.pieces(Color{}) & core::column_v<board_type, core::opposite<Color>>(i)).size())
+                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type,                Color >(i)).size()) -
+                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type, core::opposite<Color>>(i)).size())
                         );
                 }
                 return -abs(score);

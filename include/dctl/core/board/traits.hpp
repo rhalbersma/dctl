@@ -1,11 +1,10 @@
 #pragma once
-#include <dctl/core/board/detail/set_filter.hpp>
-#include <dctl/core/board/column.hpp>           // column
-#include <dctl/core/board/initial.hpp>          // initial
-#include <dctl/core/board/row.hpp>              // row
-#include <dctl/core/board/rectangular.hpp>      // rectangular
-#include <dctl/core/state/color_piece.hpp>      // opposite
-#include <algorithm>                            // min, max
+#include <dctl/core/board/detail/set_filter.hpp>        // set_filter
+#include <dctl/core/board/initial.hpp>                  // initial
+#include <dctl/core/board/file_rank.hpp>                // file, rank
+#include <dctl/core/board/rectangular.hpp>              // rectangular
+#include <dctl/core/state/color_piece.hpp>              // opposite
+#include <algorithm>                                    // min, max
 
 namespace dctl::core {
 
@@ -55,13 +54,13 @@ template<class Board>
 using add_orthogonal_captures_t = typename add_orthogonal_captures<Board>::type;
 
 template<class Board, class Color>
-constexpr column<Board, Color> column_v{};
+constexpr file<Board, Color> file_v{};
 
 template<class Board, class Color>
-constexpr row<Board, Color> row_v{};
+constexpr rank<Board, Color> rank_v{};
 
 template<class Board, class Color>
-constexpr auto promotion_v = row_v<Board, opposite<Color>>(0);
+constexpr auto promotion_v = rank_v<Board, opposite<Color>>(0);
 
 template<class Board>
 constexpr auto squares_v = detail::set_filter<Board>([](auto const sq) {
