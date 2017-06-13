@@ -1,6 +1,5 @@
-#include <dctl/core/state/ui/dxp/message.hpp>                      // Message
-#include <dctl/core/state/ui/dxp/types.hpp>                        // GameRequest, GameAcknowledge, Action, GameEnd, Chat, BackRequest, BackAcknowledge
-#include <dctl/util/factory/factory.hpp>             // Factory
+#include <dctl/core/state/ui/dxp.hpp>                   // GameRequest, GameAcknowledge, Action, GameEnd, Chat, BackRequest, BackAcknowledge, Message
+#include <dctl/util/factory/factory.hpp>                // Factory
 #include <boost/mpl/for_each.hpp>                       // for_each
 #include <boost/mpl/identity.hpp>                       // make_identity
 #include <boost/mpl/vector.hpp>                         // vector

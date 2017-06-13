@@ -1,8 +1,9 @@
 #pragma once
 #include <dctl/algo/search/objective.hpp>
 #include <dctl/algo/search/root.hpp>
-#include <dctl/core/state/setup/setup.hpp>
 #include <dctl/core/actions.hpp>
+#include <dctl/core/state.hpp>
+#include <dctl/util/type_traits.hpp>
 #include <dctl/util/units.hpp>
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
 #include <string>                       // string

@@ -1,8 +1,7 @@
 #pragma once
-#include <dctl/core/action/ostream.hpp>
-#include <dctl/core/state/state.hpp>
-#include <dctl/core/state/setup/setup.hpp>
+#include <dctl/core/action.hpp>
 #include <dctl/core/actions.hpp>                // generate
+#include <dctl/core/state.hpp>
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/range/adaptor/transformed.hpp>  // transformed
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK, BOOST_CHECK_EQUAL

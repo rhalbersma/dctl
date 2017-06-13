@@ -24,8 +24,8 @@ list(APPEND cxx_compile_options_warnings_general
                 -Wno-c++98-compat 
                 -Wno-c++98-compat-pedantic      
                 -Wno-padded
-		-Wno-error=unused-lambda-capture
-		-Wno-error=weak-vtables
+		-Wno-unused-lambda-capture
+		-Wno-weak-vtables
         >
         $<$<CXX_COMPILER_ID:GNU>:
                 -Wall

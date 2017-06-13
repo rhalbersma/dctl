@@ -1,15 +1,16 @@
 #pragma once
+#include <dctl/core/board/string.hpp>
 #include <dctl/core/state/color_piece.hpp>
-#include <dctl/core/state/setup/diagram.hpp>
-#include <dctl/core/state/setup/protocols.hpp>
-#include <dctl/core/state/setup/i_token.hpp>
+#include <dctl/core/state/detail/content.hpp>
+#include <dctl/core/state/detail/token_set.hpp>
 #include <dctl/core/state/state.hpp>
+#include <dctl/core/state/ui/dxp/version.hpp>
+#include <dctl/core/state/ui/pdn/version.hpp>
 #include <dctl/util/type_traits.hpp>    // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert
 #include <cctype>                       // isdigit
 #include <sstream>                      // stringstream
-#include <string>                       // string
 
 namespace dctl::core {
 namespace setup {
@@ -35,21 +36,22 @@ template
         class Rules,
         class Board,
         class Protocol,
-        class Content = typename Token<Protocol>::type
+        class Token = detail::token_set<Protocol>
 >
 struct read;
 
 template
 <
         class Protocol,
-        class Content = typename Token<Protocol>::type
+        class Token = detail::token_set<Protocol>
 >
 struct write;
 
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
-        state<Rules, Board> operator()(std::string const& s) const
+        auto operator()(std::string const& s) const
+                -> state<Rules, Board>
         {
                 using set_type = set_t<Board>;
                 set_type by_color_piece[2][2]{};
@@ -104,7 +106,7 @@ template<class Token>
 struct write<pdn::protocol, Token>
 {
         template<class State>
-        std::string operator()(State const& s) const
+        auto operator()(State const& s) const
         {
                 using Board = board_t<State>;
 
@@ -138,7 +140,8 @@ struct write<pdn::protocol, Token>
 template<class Rules, class Board, class Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
-        state<Rules, Board> operator()(std::string const& s) const
+        auto operator()(std::string const& s) const
+                -> state<Rules, Board>
         {
                 using set_type = set_t<Board>;
                 set_type by_color_piece[2][2]{};
@@ -176,14 +179,11 @@ template<class Token>
 struct write<dxp::protocol, Token>
 {
         template<class Rules, class Board>
-        std::string operator()(state<Rules, Board> const& p) const
+        auto operator()(state<Rules, Board> const& s) const
         {
                 std::stringstream sstr;
-                sstr << write_color<Token>(p.to_move());    // side to move
-                for (auto sq = 0; sq < Board::size(); ++sq) {
-                        auto b = Board::bit_from_square(sq);    // convert square to bit
-                        sstr << content<Token>(p, b);           // bit content
-                }
+                sstr << write_color<Token>(s.to_move());
+                sstr << string<Board>{}([&](auto const n) { return detail::content<Token>(s, n); });
                 sstr << '\n';
                 return sstr.str();
         }

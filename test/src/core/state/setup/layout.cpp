@@ -1,9 +1,7 @@
-#include <dctl/core/board.hpp>                       // international
 #include <dctl/core/action.hpp>
-#include <dctl/core/state/setup/diagram.hpp>               // diagram, bits, squares
+#include <dctl/core/board.hpp>                  // international
 #include <dctl/core/rules.hpp>
-#include <dctl/core/state/setup/string.hpp>
-#include <dctl/core/state/state.hpp>
+#include <dctl/core/state.hpp>
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
@@ -50,8 +48,8 @@ using RSequence = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(initial, T, BSequence)
 {
-        auto const p = state<international, T>::initial();
-        std::cout << setup::diagram<pdn::protocol>()(p);
+        auto const s = state<international, T>::initial();
+        std::cout << diag << s;
         std::cout << "W = " << T::width << ", H = " << T::height << ", P = " << T::is_inverted << ", bits = " << T::bits() << "\n\n";
 }
 

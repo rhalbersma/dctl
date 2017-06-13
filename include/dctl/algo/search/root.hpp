@@ -217,8 +217,8 @@ private:
 
         void announce(State const& s, int depth)
         {
-                std::cout << core::setup::diagram<core::pdn::protocol>()(s);
-                std::cout << core::setup::write<core::pdn::protocol>()(s) << '\n';
+                std::cout << core::diag << s;
+                std::cout << core::fen << s << '\n';
                 std::cout << "Searching to nominal depth=" << depth << "\n\n";
         }
 
@@ -290,7 +290,7 @@ private:
                 auto const depth = static_cast<int>(pv.size()) - ply;
                 if (depth == 0) {
                         std::cout << std::endl /*'\n'*/;
-                        std::cout << core::setup::diagram<core::pdn::protocol>()(n.state());
+                        std::cout << core::diag << n.state();
                         return;
                 }
 
