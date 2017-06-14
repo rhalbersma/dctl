@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/core/rules/traits.hpp>           // rectangular, is_contents_precedence, is_ordering_precedence
+#include <dctl/core/rules/type_traits.hpp>      // rectangular, is_contents_precedence, is_ordering_precedence
 #include <dctl/core/state/color_piece.hpp>      // pawn, king
 #include <dctl/util/conditional_base.hpp>       // conditional_base
 #include <dctl/util/type_traits.hpp>            // set_t, square_t

@@ -1,10 +1,8 @@
 #pragma once
-#include <dctl/core/state/ui/dxp/message.hpp>      // Message
-#include <dctl/util/factory/creatable.hpp>   // make_creatable
-#include <iomanip>                      // setfill, setw
-#include <sstream>                      // stringstream
-#include <string>                       // string
-#include <vector>                       // vector
+#include <iomanip>      // setfill, setw
+#include <sstream>      // stringstream
+#include <string>       // stoi, string
+#include <vector>       // vector
 
 namespace dctl::core {
 namespace dxp {
@@ -16,93 +14,69 @@ namespace dxp {
 
 */
 
-class Move final
-:
-        // Curiously Recurring Template Pattern (CRTP)
-        public factory::make_creatable<Message, Move, 'M'>
+class move
 {
+        inline static auto const s_header = "M";
+        int m_seconds;
+        int m_from_sq;
+        int m_dest_sq;
+        std::vector<int> m_captured_pieces;
 public:
-        // constructors
-
-        explicit Move(std::string const& message)
+        explicit move(std::string const& message)
         :
-                seconds_{std::stoi(message.substr(0, 4).c_str())},
-                from_sq_{std::stoi(message.substr(4, 2).c_str())},
-                dest_sq_{std::stoi(message.substr(6, 2).c_str())},
-                num_captured_{std::stoi(message.substr(8, 2).c_str())}
+                m_seconds{std::stoi(message.substr(0, 4).c_str())},
+                m_from_sq{std::stoi(message.substr(4, 2).c_str())},
+                m_dest_sq{std::stoi(message.substr(6, 2).c_str())}
         {
-                for (auto i = 0; i < num_captured_pieces(); ++i) {
+                for (auto i = 0, n = std::stoi(message.substr(8, 2).c_str()); i < n; ++i) {
                         auto const index = static_cast<std::size_t>(10 + 2 * i);
-                        captured_pieces_.push_back(std::stoi(message.substr(index, 2).c_str()));
+                        m_captured_pieces.push_back(std::stoi(message.substr(index, 2).c_str()));
                 }
         }
 
-        // observers
-
-        int seconds() const
+        static auto header() noexcept
         {
-                return seconds_;
+                return s_header;
         }
 
-        int from_sq() const
+        auto seconds() const noexcept
         {
-                return from_sq_;
+                return m_seconds;
         }
 
-        int dest_sq() const
+        auto from_sq() const noexcept
         {
-                return dest_sq_;
+                return m_from_sq;
         }
 
-        int num_captured_pieces() const
+        auto dest_sq() const noexcept
         {
-                return num_captured_;
+                return m_dest_sq;
         }
 
-        std::vector<int> const& captured_pieces() const
+        auto num_captured_pieces() const noexcept
         {
-                return captured_pieces_;
+                return static_cast<int>(m_captured_pieces.size());
         }
 
-        // output
-
-        static std::string str(int s, int f, int d, int n, std::vector<int> const& c)
+        auto captured_pieces() const
         {
-                return identifier() + body(s, f, d, n, c);
+                return m_captured_pieces;
         }
 
-private:
-        // virtual implementation
-
-        std::string do_header() const override
-        {
-                return identifier();
-        }
-
-        std::string do_body() const override
-        {
-                return body(seconds(), from_sq(), dest_sq(), num_captured_pieces(), captured_pieces());
-        }
-
-        static std::string body(int s, int f, int d, int n, std::vector<int> const& c)
+        auto str() const
         {
                 std::stringstream sstr;
-                sstr << std::setw( 4) << std::setfill('0') << s;
-                sstr << std::setw( 2) << std::setfill('0') << f;
-                sstr << std::setw( 2) << std::setfill('0') << d;
-                sstr << std::setw( 2) << std::setfill('0') << n;
-                for (auto const& x : c)
-                        sstr << std::setw(2) << std::setfill('0') << x;
+                sstr << header();
+                sstr << std::setw(4) << std::setfill('0') << seconds();
+                sstr << std::setw(2) << std::setfill('0') << from_sq();
+                sstr << std::setw(2) << std::setfill('0') << dest_sq();
+                sstr << std::setw(2) << std::setfill('0') << num_captured_pieces();
+                for (auto const c : captured_pieces()) {
+                        sstr << std::setw(2) << std::setfill('0') << c;
+                }
                 return sstr.str();
         }
-
-        // representation
-
-        int seconds_;
-        int from_sq_;
-        int dest_sq_;
-        int num_captured_;
-        std::vector<int> captured_pieces_;
 };
 
 }       // namespace dxp

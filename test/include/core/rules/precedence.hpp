@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/core/rules/traits.hpp>                 // equal_to, less, equivalent_to
+#include <dctl/core/rules/type_traits.hpp>                 // equal_to, less, equivalent_to
 #include <boost/range/algorithm.hpp>            // adjacent_find
 #include <boost/range/algorithm_ext.hpp>        // is_sorted
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/core/board/mask_iterator.hpp>    // make_iterator
-#include <dctl/core/rules/traits.hpp>           // short_ranged_tag
+#include <dctl/core/rules/type_traits.hpp>           // short_ranged_tag
 #include <iterator>                             // prev
 
 namespace dctl::core {

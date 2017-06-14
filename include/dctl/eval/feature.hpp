@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/core/actions.hpp>             // count, select::push
-#include <dctl/core/board/traits.hpp>        // file, row
+#include <dctl/core/board/type_traits.hpp>        // file, row
 #include <dctl/core/state/color_piece.hpp>         // opposite
 #include <dctl/eval/weight.hpp>    // Weight
 #include <cstdlib>                      // abs

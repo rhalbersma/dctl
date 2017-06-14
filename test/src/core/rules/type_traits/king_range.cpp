@@ -1,4 +1,4 @@
-#include <dctl/core/rules/traits.hpp>                 // king_range_category, long_ranged_tag, short_ranged_tag, is_land_behind_piece, is_halt_behind_king
+#include <dctl/core/rules/type_traits.hpp>                 // king_range_category, long_ranged_tag, short_ranged_tag, is_land_behind_piece, is_halt_behind_king
 #include <dctl/core/rules.hpp>                       // checkers, czech, frisian, international, italian, killer, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END

@@ -3,13 +3,13 @@
 #include <dctl/core/actions/select/push.hpp>                    // select
 #include <dctl/core/board/angle.hpp>                            // left_up, right_up
 #include <dctl/core/board/bearing.hpp>                          // bearing
-#include <dctl/core/board/push_targets.hpp>                // push_targets
+#include <dctl/core/board/push_targets.hpp>                     // push_targets
 #include <dctl/core/board/ray.hpp>                              // make_iterator
+#include <dctl/core/board/type_traits.hpp>                      // promotion
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, pawn_
 #include <dctl/util/type_traits.hpp>                            // board_t, set_t, value_t
 #include <iterator>                                             // prev
 
-#include "../../board/traits.hpp"                           // promotion
 
 namespace dctl::core {
 namespace detail {

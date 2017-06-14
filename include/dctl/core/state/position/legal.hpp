@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/core/board/traits.hpp>        // promotion_v, squares_v
+#include <dctl/core/board/type_traits.hpp>        // promotion_v, squares_v
 #include <dctl/util/type_traits.hpp> // board_t
 
 namespace dctl::core {

@@ -1,12 +1,12 @@
 #pragma once
-#include <dctl/core/action/action.hpp>  // action
-#include <dctl/core/rules/traits.hpp>   // pushsep_v, jumpsep_v, notation_v
-#include <dctl/util/type_traits.hpp>    // board_t, rules_t
-#include <xstd/type_traits.hpp>         // to_underlying_type
-#include <cassert>                      // assert
-#include <ios>                          // ios_base
-#include <ostream>                      // basic_ostream
-#include <sstream>                      // stringstream
+#include <dctl/core/action/action.hpp>          // action
+#include <dctl/core/rules/type_traits.hpp>      // pushsep_v, jumpsep_v, notation_v
+#include <dctl/util/type_traits.hpp>            // board_t, rules_t
+#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <cassert>                              // assert
+#include <ios>                                  // ios_base
+#include <ostream>                              // basic_ostream
+#include <sstream>                              // stringstream
 
 namespace dctl::core {
 

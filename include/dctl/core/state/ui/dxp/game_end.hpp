@@ -1,81 +1,75 @@
 #pragma once
-#include <dctl/core/state/ui/dxp/message.hpp>      // Message
-#include <dctl/util/factory/creatable.hpp>   // make_creatable
-#include <iomanip>                      // setw
-#include <sstream>                      // stringstream
-#include <string>                       // string, stoi
+#include <xstd/type_traits.hpp> // to_underlying_type
+#include <iomanip>              // setw
+#include <sstream>              // stringstream
+#include <string>               // stoi, string
 
 namespace dctl::core {
 namespace dxp {
 
 /*
 
-        The format and semantics of GameEnd are defined at:
+        The format and semantics of GAMEEND are defined at:
         http://www.mesander.nl/damexchange/egameend.htm
 
 */
 
-class GameEnd final
-:
-        // Curiously Recurring Template Pattern (CRTP)
-        public factory::make_creatable<Message, GameEnd, 'E'>
+class game_end
 {
 public:
-        enum Reason: int { forfeit = 0, resign = 1, claim_draw = 2, claim_win = 3 };
-        enum StopCode: int { stop_game = 0, stop_always = 1 };
-
-        // constructors
-
-        explicit GameEnd(std::string const& message)
+        enum class reason
         :
-                reason_{static_cast<Reason>(std::stoi(message.substr(0, 1).c_str()))},
-                stop_code_{static_cast<StopCode>(std::stoi(message.substr(1, 1).c_str()))}
-        {}
-
-        // observers
-
-        Reason reason() const
+                int
         {
-                return reason_;
-        }
+                forfeit         = 0,
+                resign          = 1,
+                claim_draw      = 2,
+                claim_win       = 3
+        };
 
-        StopCode stop_code() const
+        enum class stop
+        :
+                int
         {
-                return stop_code_;
-        }
-
-        // output
-
-        static std::string str(Reason r, StopCode s)
-        {
-                return identifier() + body(r, s);
-        }
+                game    = 0,
+                always  = 1
+        };
 
 private:
-        // virtual implementation
+        inline static auto const s_header = "E";
+        reason m_reason_code;
+        stop m_stop_code;
 
-        std::string do_header() const override
+public:
+        explicit game_end(std::string const& message)
+        :
+                m_reason_code{static_cast<reason>(std::stoi(message.substr(0, 1).c_str()))},
+                m_stop_code{static_cast<stop>(std::stoi(message.substr(1, 1).c_str()))}
+        {}
+
+        static auto header() noexcept
         {
-                return identifier();
+                return s_header;
         }
 
-        std::string do_body() const override
+        auto reason_code() const noexcept
         {
-                return body(reason(), stop_code());
+                return m_reason_code;
         }
 
-        static std::string body(Reason r, StopCode s)
+        auto stop_code() const noexcept
+        {
+                return m_stop_code;
+        }
+
+        auto str() const
         {
                 std::stringstream sstr;
-                sstr << std::setw(1) << static_cast<int>(r);
-                sstr << std::setw(1) << static_cast<int>(s);
+                sstr << header();
+                sstr << std::setw(1) << xstd::to_underlying_type(reason_code());
+                sstr << std::setw(1) << xstd::to_underlying_type(stop_code());
                 return sstr.str();
         }
-
-        // representation
-
-        Reason reason_;
-        StopCode stop_code_;
 };
 
 }       // namespace dxp

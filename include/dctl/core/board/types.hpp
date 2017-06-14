@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/core/board/rectangular.hpp>
-#include <dctl/core/board/traits.hpp>
+#include <dctl/core/board/type_traits.hpp>
 
 namespace dctl::core {
 namespace board {

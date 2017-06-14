@@ -1,6 +1,6 @@
 #pragma once
 #include <dctl/core/state/color_piece.hpp>
-#include <dctl/core/rules/traits.hpp>
+#include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cstddef>

@@ -1,4 +1,4 @@
-#include <dctl/core/rules/traits.hpp>                 // max_same_king_push
+#include <dctl/core/rules/type_traits.hpp>                 // max_same_king_push
 #include <dctl/core/rules.hpp>                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

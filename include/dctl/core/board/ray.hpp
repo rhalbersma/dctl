@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/core/board/angle.hpp>            // angle
 #include <dctl/core/board/detail/shift.hpp>     // first, shift_sign, shift_size
-#include <dctl/core/board/traits.hpp>
+#include <dctl/core/board/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable, additive

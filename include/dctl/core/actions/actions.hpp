@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/core/actions/detail/specializations.hpp> // generate
 #include <dctl/core/actions/select/legal.hpp>           // legal
-#include <dctl/core/rules/traits.hpp>
+#include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>              // black, white
 #include <dctl/util/type_traits.hpp>                    // value_t
 #include <boost/container/static_vector.hpp>

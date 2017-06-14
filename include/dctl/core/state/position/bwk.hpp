@@ -1,12 +1,12 @@
 #pragma once
-#include <dctl/core/board/traits.hpp>   // squares
-#include <dctl/core/state/color_piece.hpp>    // color, black, white, piece, pawns, kings, occup, empty
-#include <dctl/core/state/position/legal.hpp> // is_legal
-#include <dctl/util/type_traits.hpp>    // set_t
-#include <xstd/type_traits.hpp>         // to_underlying_type
-#include <array>                        // array
-#include <tuple>                        // tie
-#include <type_traits>                  // is_pod
+#include <dctl/core/board/type_traits.hpp>      // squares
+#include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/core/state/position/legal.hpp>   // is_legal
+#include <dctl/util/type_traits.hpp>            // set_t
+#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <array>                                // array
+#include <tuple>                                // tie
+#include <type_traits>                          // is_pod
 
 namespace dctl::core {
 namespace bwk {

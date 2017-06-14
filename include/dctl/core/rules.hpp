@@ -9,4 +9,4 @@
 #include <dctl/core/rules/russian.hpp>
 #include <dctl/core/rules/spanish.hpp>
 #include <dctl/core/rules/thai.hpp>
-#include <dctl/core/rules/traits.hpp>
+#include <dctl/core/rules/type_traits.hpp>

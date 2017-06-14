@@ -1,78 +1,53 @@
 #pragma once
-#include <dctl/core/state/ui/dxp/message.hpp>      // Message
-#include <dctl/util/factory/creatable.hpp>   // make_creatable
-#include <iomanip>                      // setfill, setw
-#include <sstream>                      // stringstream
-#include <string>                       // string, stoi
+#include <iomanip>      // setfill, setw
+#include <sstream>      // stringstream
+#include <string>       // stoi, string
 
 namespace dctl::core {
 namespace dxp {
 
 /*
 
-        The format and semantics of BackRequest are explained at:
+        The format and semantics of BACKREQ are explained at:
         http://www.mesander.nl/damexchange/ebackreq.htm
 
 */
 
-class BackRequest final
-:
-        // Curiously Recurring Template Pattern (CRTP)
-        public factory::make_creatable<Message, BackRequest, 'B'>
+class back_request
 {
+        inline static auto const s_header = "B";
+        int m_move_number;
+        char m_side_to_move;
 public:
-        // constructors
-
-        explicit BackRequest(std::string const& message)
+        explicit back_request(std::string const& message)
         :
-                move_number_ { std::stoi(message.substr(0, 3).c_str()) },
-                side_to_move_ { *(std::begin(message.substr(3, 1))) }
+                m_move_number{std::stoi(message.substr(0, 3).c_str())},
+                m_side_to_move{*(std::begin(message.substr(3, 1)))}
         {}
 
-        // observers
-
-        int move_number() const
+        static auto header() noexcept
         {
-                return move_number_;
+                return s_header;
         }
 
-        char side_player() const
+        auto move_number() const noexcept
         {
-                return side_to_move_;
+                return m_move_number;
         }
 
-        // output
-
-        static std::string str(int m, char c)
+        auto side_to_move() const noexcept
         {
-                return identifier() + body(m, c);
+                return m_side_to_move;
         }
 
-private:
-        // virtual implementation
-
-        std::string do_header() const override
-        {
-                return identifier();
-        }
-
-        std::string do_body() const override
-        {
-                return body(move_number(), side_player());
-        }
-
-        static std::string body(int m, char c)
+        auto str() const
         {
                 std::stringstream sstr;
-                sstr << std::setw( 3) << std::setfill('0') << m;
-                sstr << std::setw( 1) << c;
+                sstr << header();
+                sstr << std::setw(3) << std::setfill('0') << move_number();
+                sstr << std::setw(1) << side_to_move();
                 return sstr.str();
         }
-
-        // representation
-
-        int move_number_;
-        char side_to_move_;
 };
 
 }       // namespace dxp

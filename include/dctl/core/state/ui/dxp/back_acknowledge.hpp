@@ -1,68 +1,56 @@
 #pragma once
-#include <dctl/core/state/ui/dxp/message.hpp>      // Message
-#include <dctl/util/factory/creatable.hpp>   // make_creatable
-#include <iomanip>                      // setfill, setw
-#include <sstream>                      // stringstream
-#include <string>                       // stoi, string
+#include <xstd/type_traits.hpp> // to_underlying_type
+#include <iomanip>              // setw
+#include <sstream>              // stringstream
+#include <string>               // stoi, string
 
 namespace dctl::core {
 namespace dxp {
 
 /*
 
-        The format and semantics of BackAcknowledge_ are explained at:
+        The format and semantics of BACKACC are explained at:
         http://www.mesander.nl/damexchange/ebackacc.htm
 
 */
 
-class BackAcknowledge final
-:
-        // Curiously Recurring Template Pattern (CRTP)
-        public factory::make_creatable<Message, BackAcknowledge, 'K'>
+class back_acknowledge
 {
 public:
-        enum AcceptanceCode : int { accept = 0, not_supported = 1, decline = 2 };
+        enum class acceptance
+        :
+                int
+        {
+                accept          = 0,
+                not_supported   = 1,
+                decline         = 2
+        };
 
 private:
-        AcceptanceCode acceptance_code_;
-public:
-        // constructors
+        inline static auto const s_header = "K";
+        acceptance m_acceptance_code;
 
-        explicit BackAcknowledge(std::string const& message)
+public:
+        explicit back_acknowledge(std::string const& message)
         :
-                acceptance_code_ { static_cast<AcceptanceCode>(std::stoi(message.substr(0, 1).c_str())) }
+                m_acceptance_code{static_cast<acceptance>(std::stoi(message.substr(0, 1).c_str()))}
         {}
 
-        // observers
-
-        auto acceptance_code() const
+        static auto header() noexcept
         {
-                return acceptance_code_;
+                return s_header;
         }
 
-        // output
-        static std::string str(AcceptanceCode a)
+        auto acceptance_code() const noexcept
         {
-                return identifier() + body(a);
+                return m_acceptance_code;
         }
 
-private:
-        // virtual implementation
-
-        std::string do_header() const override
-        {
-                return identifier();
-        }
-
-        std::string do_body() const override
-        {
-                return body(acceptance_code());
-        }
-
-        static std::string body(AcceptanceCode a)
+        auto str() const
         {
                 std::stringstream sstr;
-                sstr << std::setw(1) << static_cast<int>(a);
+                sstr << header();
+                sstr << std::setw(1) << xstd::to_underlying_type(acceptance_code());
                 return sstr.str();
         }
 };

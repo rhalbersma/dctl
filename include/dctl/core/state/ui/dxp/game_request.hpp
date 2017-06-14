@@ -1,117 +1,109 @@
 #pragma once
-#include <dctl/core/state/ui/dxp/message.hpp>      // Message
-#include <dctl/util/factory/creatable.hpp>   // make_creatable
-#include <iomanip>                      // setfill, setw
-#include <sstream>                      // stringstream
-#include <string>                       // string
+#include <xstd/type_traits.hpp> // to_underlying_type
+#include <iomanip>              // setfill, setw
+#include <sstream>              // stringstream
+#include <string>               // stoi, string
 
 namespace dctl::core {
 namespace dxp {
 
 /*
 
-        The format and semantics of GameRequest are defined at:
+        The format and semantics of GAMEREQ are defined at:
         http://www.mesander.nl/damexchange/egamereq.htm
 
 */
 
-class GameRequest final
-:
-        // Curiously Recurring Template Pattern (CRTP)
-        public factory::make_creatable<Message, GameRequest, 'R'>
+class game_request
 {
 public:
-        static const auto protocol_version = 1;
-        enum SetupCode { initial = 'A', special = 'B' };
-
-        // constructors
-
-        explicit GameRequest(std::string const& message)
+        enum class setup
         :
-                name_initiator_{message.substr(2, 32)},
-                color_follower_ {*(std::begin(message.substr(34, 1)))},
-                minutes_ {std::stoi(message.substr(35, 3).c_str())},
-                moves_{std::stoi(message.substr(38, 3).c_str())},
-                setup_code_{static_cast<SetupCode>(*(std::begin(message.substr(41, 1))))}
+                char
         {
-                if (setup_code() == special)
-                        position_ = message.substr(42);
-        }
-
-        // observers
-
-        std::string const& name_initiator() const
-        {
-                return name_initiator_;
-        }
-
-        char color_follower() const
-        {
-                return color_follower_;
-        }
-
-        int minutes() const
-        {
-                return minutes_;
-        }
-
-        int moves() const
-        {
-                return moves_;
-        }
-
-        SetupCode setup_code() const
-        {
-                return setup_code_;
-        }
-
-        std::string const& position() const
-        {
-                return position_;
-        }
-
-        // output
-
-        static std::string str(std::string const& n, char c, int min, int mov, SetupCode s, std::string const& p)
-        {
-                return identifier() + body(n, c, min, mov, s, p);
-        }
+                initial = 'A',
+                special = 'B'
+        };
 
 private:
-        // virtual implementation
+        inline static auto const s_header = "R";
+        constexpr static auto s_protocol_version = 1;
+        std::string m_name_initiator;
+        char m_color_follower;
+        int m_minutes;
+        int m_moves;
+        setup m_setup_code;
+        std::string m_position;
 
-        std::string do_header() const override
+public:
+        explicit game_request(std::string const& message)
+        :
+                m_name_initiator{message.substr(2, 32)},
+                m_color_follower{*(std::begin(message.substr(34, 1)))},
+                m_minutes{std::stoi(message.substr(35, 3).c_str())},
+                m_moves{std::stoi(message.substr(38, 3).c_str())},
+                m_setup_code{static_cast<setup>(*(std::begin(message.substr(41, 1))))}
         {
-                return identifier();
+                if (m_setup_code == setup::special) {
+                        m_position = message.substr(42);
+                }
         }
 
-        std::string do_body() const override
+        static auto header() noexcept
         {
-                return body(name_initiator(), color_follower(), minutes(), moves(), setup_code(), position());
+                return s_header;
         }
 
-        static std::string body(std::string const& n, char c, int min, int mov, SetupCode s, std::string const& p)
+        constexpr static auto protocol_version() noexcept
+        {
+                return s_protocol_version;
+        }
+
+        auto name_initiator() const
+        {
+                return m_name_initiator;
+        }
+
+        auto color_follower() const noexcept
+        {
+                return m_color_follower;
+        }
+
+        auto minutes() const noexcept
+        {
+                return m_minutes;
+        }
+
+        auto moves() const noexcept
+        {
+                return m_moves;
+        }
+
+        auto setup_code() const noexcept
+        {
+                return m_setup_code;
+        }
+
+        auto position() const
+        {
+                return m_position;
+        }
+
+        auto str() const
         {
                 std::stringstream sstr;
-                sstr << std::setw( 2) << std::setfill('0') << protocol_version;
-                sstr << std::setw(32) << n << std::setfill(' ');
-                sstr << std::setw( 1) << c;
-                sstr << std::setw( 3) << std::setfill('0') << min;
-                sstr << std::setw( 3) << std::setfill('0') << mov;
-                sstr << std::setw( 1) << static_cast<char>(s);
-                if (s == special)
-                        sstr << std::setw(51) << p;
+                sstr << header();
+                sstr << std::setw( 2) << std::setfill('0') << protocol_version();
+                sstr << std::setw(32) << name_initiator() << std::setfill(' ');
+                sstr << std::setw( 1) << color_follower();
+                sstr << std::setw( 3) << std::setfill('0') << minutes();
+                sstr << std::setw( 3) << std::setfill('0') << moves();
+                sstr << std::setw( 1) << xstd::to_underlying_type(setup_code());
+                if (setup_code() == setup::special) {
+                        sstr << std::setw(51) << position();
+                }
                 return sstr.str();
         }
-
-        // representation
-
-        std::string name_initiator_;
-        char color_follower_;
-        int minutes_;
-        int moves_;
-        SetupCode setup_code_;
-        std::string position_;
 };
 
 }       // namespace dxp

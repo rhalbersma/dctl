@@ -5,7 +5,7 @@
 #include <dctl/core/board/bearing.hpp>                       // bearing
 #include <dctl/core/board/jump_targets.hpp>             // jump_targets
 #include <dctl/core/state/color_piece.hpp>                         // color, color_, pawn_
-#include <dctl/core/rules/traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump
+#include <dctl/core/rules/type_traits.hpp>                         // is_backward_pawn_jump, is_orthogonal_jump
 #include <dctl/util/type_traits.hpp>                 // board_t, rules_t, set_t
 #include <type_traits>                                  // is_same
 

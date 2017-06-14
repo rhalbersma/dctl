@@ -1,4 +1,4 @@
-#include <dctl/core/rules/traits.hpp>                 // is_backward_pawn_jump, is_superior_rank_jump, is_orthogonal_jump, is_passing_capture
+#include <dctl/core/rules/type_traits.hpp>                 // is_backward_pawn_jump, is_superior_rank_jump, is_orthogonal_jump, is_passing_capture
 #include <dctl/core/rules.hpp>                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

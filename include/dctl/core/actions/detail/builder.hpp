@@ -3,8 +3,8 @@
 #include <dctl/core/board/jump_start.hpp>          // jump_start
 #include <dctl/core/board/push_sources.hpp>
 #include <dctl/core/board/ray.hpp>
+#include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>
-#include <dctl/core/rules/traits.hpp>
 #include <dctl/util/type_traits.hpp>                    // board_t, rules_t, set_t, value_t
 #include <algorithm>                                    // none_of
 #include <cassert>                                      // assert

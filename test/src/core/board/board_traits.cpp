@@ -2,7 +2,7 @@
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <core/board/transform.hpp>             // is_involution, is_idempotent
 #include <dctl/core/board/rectangular.hpp>      // rectangular
-#include <dctl/core/board/traits.hpp>           // is_empty, is_pushable, is_jumpable, invert, add_orthogonal_captures, remove_orthogonal_captures
+#include <dctl/core/board/type_traits.hpp>           // is_empty, is_pushable, is_jumpable, invert, add_orthogonal_captures, remove_orthogonal_captures
 #include <dctl/core/state/color_piece.hpp>
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/range/irange.hpp>               // irange

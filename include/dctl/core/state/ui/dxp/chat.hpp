@@ -1,66 +1,52 @@
 #pragma once
-#include <dctl/core/state/ui/dxp/message.hpp>      // Message
-#include <dctl/util/factory/creatable.hpp>   // make_creatable
-#include <string>                       // string
+#include <cassert>      // assert
+#include <sstream>      // stringstream
+#include <string>       // string
 
 namespace dctl::core {
 namespace dxp {
 
 /*
 
-        The format and semantics of Chat are defined at:
+        The format and semantics of CHAT are defined at:
         http://www.mesander.nl/damexchange/echat.htm
 
 */
 
-class Chat final
-:
-        // Curiously Recurring Template Pattern (CRTP)
-        public factory::make_creatable<Message, Chat, 'C'>
+class chat
 {
+        inline static auto const s_header = "C";
+        std::string m_text;
+
+        auto assert_invariants() const noexcept
+        {
+                assert(m_text.size() <= 126);
+        }
 public:
-        // constructors
-
-        explicit Chat(std::string const& message)
+        explicit chat(std::string const& message)
         :
-                text_ { message }
-        {}
-
-        // observers
-
-        std::string text() const
+                m_text{message}
         {
-                return text_;
+                assert_invariants();
         }
 
-        // output
-
-        static std::string str(std::string const& message)
+        static auto header() noexcept
         {
-                return identifier() + body(message);
+                return s_header;
         }
 
-private:
-        // virtual implementation
-
-        std::string do_header() const override
+        auto text() const
         {
-                return identifier();
+                return m_text;
         }
 
-        std::string do_body() const override
+        auto str() const
         {
-                return body(text());
+                std::stringstream sstr;
+                sstr << header();
+                sstr << text();
+                return sstr.str();
         }
-
-        static std::string body(std::string const& m)
-        {
-                return m;
-        }
-
-        // representation
-
-        std::string text_;
 };
 
 }       // namespace dxp

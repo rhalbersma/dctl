@@ -5,7 +5,7 @@
 #include <dctl/core/board/bearing.hpp>                          // bearing
 #include <dctl/core/board/jump_targets.hpp>                // jump_targets
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, king_
-#include <dctl/core/rules/traits.hpp>                           // is_orthogonal_jump_t, is_long_ranged_king_t
+#include <dctl/core/rules/type_traits.hpp>                           // is_orthogonal_jump_t, is_long_ranged_king_t
 #include <dctl/util/type_traits.hpp>                            // board_t, rules_t, set_t
 
 namespace dctl::core {

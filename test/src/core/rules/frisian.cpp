@@ -2,7 +2,7 @@
 #include <dctl/core/rules/frisian.hpp>       // frisian
 #include <dctl/core/board.hpp>
 #include <dctl/core/state/color_piece.hpp>         // king, pawn
-#include <dctl/core/rules/traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, is_orthogonal_jump, equal_to, less
+#include <dctl/core/rules/type_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <vector>                       // vector
 

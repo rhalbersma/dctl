@@ -1,12 +1,12 @@
 #pragma once
-#include <dctl/core/actions/detail/count_primary_fwd.hpp>    // count (primary template)
-#include <dctl/core/actions/select/push.hpp>                 // push
-#include <dctl/core/board/angle.hpp>                         // left_up, right_up, left_down, right_down
-#include <dctl/core/board/bearing.hpp>                       // bearing
-#include <dctl/core/board/push_targets.hpp>             // push_targets
-#include <dctl/core/state/color_piece.hpp>                         // color, color_, king_
-#include <dctl/core/rules/traits.hpp>                         // king_range_category
-#include <dctl/util/type_traits.hpp>                 // board_t, rules_t, set_t
+#include <dctl/core/actions/detail/count_primary_fwd.hpp>       // count (primary template)
+#include <dctl/core/actions/select/push.hpp>                    // push
+#include <dctl/core/board/angle.hpp>                            // left_up, right_up, left_down, right_down
+#include <dctl/core/board/bearing.hpp>                          // bearing
+#include <dctl/core/board/push_targets.hpp>                     // push_targets
+#include <dctl/core/rules/type_traits.hpp>                      // king_range_category
+#include <dctl/core/state/color_piece.hpp>                      // color, color_, king_
+#include <dctl/util/type_traits.hpp>                            // board_t, rules_t, set_t
 
 namespace dctl::core {
 namespace detail {

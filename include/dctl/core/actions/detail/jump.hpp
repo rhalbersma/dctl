@@ -9,7 +9,7 @@
 #include <dctl/core/actions/detail/generate_pawn_jump.hpp>   // generate (pawn jump specialization)
 #include <dctl/core/actions/select/jump.hpp>                    // jump
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, kings_, pawn_
-#include <dctl/core/rules/traits.hpp>
+#include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>                            // rules_t, board_t
 #include <boost/container/static_vector.hpp>
 #include <cassert>                                              // assert

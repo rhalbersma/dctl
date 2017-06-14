@@ -1,5 +1,5 @@
 #pragma once
-#include <dctl/core/board/traits.hpp>   // squares
+#include <dctl/core/board/type_traits.hpp>   // squares
 #include <dctl/core/state/color_piece.hpp>    // color, black, white, piece, pawns, kings, occup, empty
 #include <dctl/core/state/position/legal.hpp> // is_legal
 #include <dctl/util/type_traits.hpp>    // set_t

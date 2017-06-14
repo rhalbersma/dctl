@@ -6,7 +6,7 @@
 #include <dctl/core/board/ray.hpp>                           // make_iterator
 #include <dctl/core/board/push_targets.hpp>             // push_targets
 #include <dctl/core/state/color_piece.hpp>                         // color, color_, king_
-#include <dctl/core/rules/traits.hpp>                         // is_long_ranged_king_t
+#include <dctl/core/rules/type_traits.hpp>                         // is_long_ranged_king_t
 #include <dctl/util/type_traits.hpp>                            // board_t, rules_t, set_t, value_t
 #include <iterator>                                     // prev
 
