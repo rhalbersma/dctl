@@ -20,7 +20,6 @@ BOOST_AUTO_TEST_CASE(MesanderMessageExamples)
                 dxp::chat
         > f;
 
-
         // Examples of DXP messages (Layer 2 protocol description)
         // http://www.mesander.nl/damexchange/edxplg2.htm
         std::vector<std::string> messages =
