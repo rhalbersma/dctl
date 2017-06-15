@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(MesanderMessageExamples)
 
         std::vector<std::string> parsed;
         for (auto const& m : messages) {
-                f.process(m, [&](auto const& x){ parsed.push_back(x.str()); });
+                f.visit(f.create(m), [&](auto const& v){ parsed.push_back(v.str()); });
         }
 
         BOOST_CHECK_EQUAL_COLLECTIONS(begin(messages), end(messages), begin(parsed), end(parsed));
