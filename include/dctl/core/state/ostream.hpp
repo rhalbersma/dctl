@@ -1,9 +1,9 @@
 #pragma once
 #include <dctl/core/board/diagram.hpp>
 #include <dctl/core/state/detail/content.hpp>
+#include <dctl/core/state/pdn.hpp>
 #include <dctl/core/state/setup/string.hpp>
 #include <dctl/core/state/state.hpp>
-#include <dctl/core/state/ui/pdn.hpp>
 #include <cassert>
 #include <ios>                                  // ios_base
 #include <ostream>                              // basic_ostream

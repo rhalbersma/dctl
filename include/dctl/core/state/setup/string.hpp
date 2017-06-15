@@ -4,8 +4,8 @@
 #include <dctl/core/state/detail/content.hpp>
 #include <dctl/core/state/detail/token_set.hpp>
 #include <dctl/core/state/state.hpp>
-#include <dctl/core/state/ui/dxp/version.hpp>
-#include <dctl/core/state/ui/pdn/version.hpp>
+#include <dctl/core/state/dxp/version.hpp>
+#include <dctl/core/state/pdn/version.hpp>
 #include <dctl/util/type_traits.hpp>    // set_t
 #include <xstd/type_traits.hpp>         // to_underlying_type
 #include <cassert>                      // assert

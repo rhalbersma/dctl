@@ -1,7 +1,7 @@
 #pragma once
 #include <dctl/core/state/detail/i_token.hpp>   // token_interface
-#include <dctl/core/state/ui/dxp/version.hpp>   // protocol
-#include <dctl/core/state/ui/pdn/version.hpp>   // protocol
+#include <dctl/core/state/dxp/version.hpp>      // protocol
+#include <dctl/core/state/pdn/version.hpp>      // protocol
 
 namespace dctl::core {
 namespace detail {

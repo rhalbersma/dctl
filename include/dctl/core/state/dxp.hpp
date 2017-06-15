@@ -1,0 +1,10 @@
+#pragma once
+#include <dctl/core/state/dxp/back_acknowledge.hpp>
+#include <dctl/core/state/dxp/back_request.hpp>
+#include <dctl/core/state/dxp/chat.hpp>
+#include <dctl/core/state/dxp/game_acknowledge.hpp>
+#include <dctl/core/state/dxp/game_end.hpp>
+#include <dctl/core/state/dxp/game_request.hpp>
+#include <dctl/core/state/dxp/move.hpp>
+#include <dctl/core/state/dxp/factory.hpp>
+#include <dctl/core/state/dxp/version.hpp>
