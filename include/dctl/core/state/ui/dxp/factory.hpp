@@ -7,6 +7,7 @@
 #include <iterator>                     // index
 #include <map>                          // map
 #include <string>                       // string
+#include <utility>                      // pair
 #include <variant>                      // monostate
 
 namespace dctl::core {
@@ -15,53 +16,56 @@ template<class... Types>
 class factory
 {
         using type_list = boost::mpl::vector<Types...>;
-        using value_type = boost::variant<std::monostate, Types...>;    // TODO: file bug report in Clang/GCC against libstdc++ std::variant
-        using creator_fn = std::function<value_type(std::string)>;
-        std::map<std::string, creator_fn> m_registry;
+        using input_type = std::string;
+        using key_type = std::string;        
+        using argument_type = std::string;
+        using result_type = boost::variant<std::monostate, Types...>;    // https://bugs.llvm.org//show_bug.cgi?id=33222
+        using create_type = std::pair<key_type, result_type>;
+        using mapped_type = std::function<result_type(argument_type)>;
+        std::map<key_type, mapped_type> m_registry;
 
 public:
         factory()
         {
                 boost::mpl::for_each<type_list, boost::mpl::make_identity<>>([&](auto Id) {
                         using T = typename decltype(Id)::type;
-                        insert(T::header(), [](auto const& arg) { return T{arg}; });
+                        m_registry.emplace(T::header(), [](argument_type const& arg) { return T{arg}; });
                 });
         }
 
-        template<class UnaryFunction>
-        auto process(std::string const& input, UnaryFunction fun) const
+        auto create(input_type const& in) const
+                -> value_type
         {
-                auto const h = header(input);
+                auto const h = header(in);
+                if (auto const it = m_registry.find(h); it != m_registry.end()) {
+                        return { it->first, (it->second)(body(in)) };
+                } else {
+                        return { h, std::monostate{} };
+                }
+        }
+        
+        template<class UnaryFunction>
+        auto visit(value_type const& v, UnaryFunction fun) const
+        {
                 boost::mpl::for_each<type_list, boost::mpl::make_identity<>>([&](auto Id) {
                         using T = typename decltype(Id)::type;
-                        if (T::header() == h) {
-                                fun(boost::get<T>(create(input)));
+                        if (T::header() == v.first) {
+                                fun(boost::get<T>(v.second));
                         }
                 });
         }
-
+        
 private:
-        auto header(std::string const& a) const
+        auto header(input_type const& in) const
+                -> key_type
         {
-                return a.substr(0, 1);
+                return in.substr(0, 1);
         }
 
-        auto body(std::string const& a) const
+        auto body(input_type const& in) const
+                -> argument_type
         {
-                return a.substr(1);
-        }
-
-        auto create(std::string const& input) const
-                -> value_type
-        {
-                auto const it = m_registry.find(header(input));
-                return it != m_registry.end() ? (it->second)(body(input)) : std::monostate{};
-        }
-
-        template<class UnaryFunction>
-        auto insert(std::string const& id, UnaryFunction fun)
-        {
-                return m_registry.emplace(id, fun).second;
+                return in.substr(1);
         }
 };
 
