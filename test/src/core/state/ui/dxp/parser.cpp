@@ -1,9 +1,27 @@
 #include <dctl/core/state/ui/dxp.hpp>   // game_request, game_acknowledge, move, back_request, back_acknowledge, game_end, chat, factory
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
+#include <boost/variant.hpp>            // apply_visitor
 #include <string>                       // string
+#include <variant>                      // monostate
 #include <vector>                       // vector
 
 using namespace dctl::core;
+
+struct visitor
+{
+        std::vector<std::string>& vec;
+
+        template<class T>
+        auto operator()(T const& value)
+        {
+                vec.push_back(value.str());
+        }
+
+        auto operator()(std::monostate)
+        {
+                // no-op
+        }
+};
 
 BOOST_AUTO_TEST_SUITE(DXPParser)
 
@@ -35,11 +53,14 @@ BOOST_AUTO_TEST_CASE(MesanderMessageExamples)
         };
 
         std::vector<std::string> parsed;
+        auto vis = visitor{parsed};
+
         for (auto const& m : messages) {
-                f.visit(f.create(m), [&](auto const& v){ parsed.push_back(v.str()); });
+                auto v = f.create(m);
+                boost::apply_visitor(vis, v);
         }
 
-        BOOST_CHECK_EQUAL_COLLECTIONS(begin(messages), end(messages), begin(parsed), end(parsed));
+        BOOST_CHECK_EQUAL_COLLECTIONS(messages.begin(), messages.end(), parsed.begin(), parsed.end());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
