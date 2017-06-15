@@ -12,15 +12,9 @@ struct visitor
         std::vector<std::string>& vec;
 
         template<class T>
-        auto operator()(T const& value)
-        {
-                vec.push_back(value.str());
-        }
+        auto operator()(T const& value) { vec.push_back(value.str()); }
 
-        auto operator()(std::monostate)
-        {
-                // no-op
-        }
+        auto operator()(std::monostate) {}
 };
 
 BOOST_AUTO_TEST_SUITE(DXPParser)
