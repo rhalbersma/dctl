@@ -15,6 +15,13 @@ before_install:
   sudo apt-get update -qq
     
 install:
+
+################################################################################
+# Install the latest gcc and clang compilers
+# Boost.Test needs to be built with gcc-7, but Ubuntu 14.04 provides 4.8
+# ./bootstrap.sh needs to find gcc-7 and ./b2 needs to find g++-7
+# gcc-7 needs binutils-2.26 for LTO builds, but Ubuntu 14.04 provides 2.24
+################################################################################
 - |
   sudo apt-get install g++-7 binutils-2.26 clang-5.0 lldb-5.0 lld-5.0
   sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 90
@@ -35,7 +42,7 @@ install:
   cd ${DEPS_DIR}
   BOOST_URL="https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.bz2"
   mkdir boost && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C boost
-  cd boost && ./bootstrap.sh --with-libraries=test && sudo ./b2 install
+  cd boost && ./bootstrap.sh --with-libraries=test && sudo ./b2 -d0 install
 
 ################################################################################
 # Install the latest CMake
