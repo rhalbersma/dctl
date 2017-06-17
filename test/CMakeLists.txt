@@ -23,7 +23,6 @@ list(APPEND cxx_compile_options_warnings_general
                 -Weverything 
                 -Wno-c++98-compat 
                 -Wno-c++98-compat-pedantic
-                -Wno-error=unused-lambda-capture
                 -Wno-padded
         >
         $<$<CXX_COMPILER_ID:GNU>:

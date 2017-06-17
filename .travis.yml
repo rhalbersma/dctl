@@ -2,60 +2,59 @@ os: linux
 dist: trusty
 language: cpp
 env:
-#- CXX_COMPILER=g++-7       BUILD_TYPE=Debug
-#- CXX_COMPILER=g++-7       BUILD_TYPE=Release
+- CXX_COMPILER=g++-7       BUILD_TYPE=Debug
+- CXX_COMPILER=g++-7       BUILD_TYPE=Release
 - CXX_COMPILER=clang++-5.0 BUILD_TYPE=Debug    
 - CXX_COMPILER=clang++-5.0 BUILD_TYPE=Release   
 
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main'
-      key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'   
-    packages:
-    - g++-7
-    - clang-5.0 
-    - lldb-5.0 
-    - lld-5.0
-
 before_install:
 - |
-  sudo add-apt-repository -y ppa:kzemek/boost
-  sudo apt-get update
+  sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main"
+  wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
+  sudo apt-get update -qq
     
 install:
+- |
+  sudo apt-get install g++-7 binutils-2.26 clang-5.0 lldb-5.0 lld-5.0
+  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 90
+  sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+  export PATH=/usr/lib/binutils-2.26/bin:${PATH}
   
 ################################################################################
-# Install a recent Boost
+# All manual dependencies are installed in ${TRAVIS_BUILD_DIR}/../deps
 ################################################################################
 - |
-  sudo apt-get install libboost-test1.58-dev 
+  DEPS_DIR="${TRAVIS_BUILD_DIR}/../deps"
+  mkdir -p ${DEPS_DIR}
   
 ################################################################################
-# All manual dependencies are installed in ${TRAVIS_BUILD_DIR}/..
+# Install the latest Boost
 ################################################################################
 - |
-  DEPS_DIR="${TRAVIS_BUILD_DIR}/.."
-  mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
-  
-################################################################################
-# Install the dependent GitHub repositories xstd and hash_append
-################################################################################
-- |  
-  git clone https://github.com/rhalbersma/xstd.git
-  mkdir -p ext && cd ext
-  git clone https://github.com/rhalbersma/hash_append.git
-  cd ..  
-  
+  cd ${DEPS_DIR}
+  BOOST_URL="https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.bz2"
+  mkdir boost && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C boost
+  cd boost && ./bootstrap.sh --with-libraries=test && sudo ./b2 install
+
 ################################################################################
 # Install the latest CMake
 ################################################################################
 - |
+  cd ${DEPS_DIR}
   CMAKE_URL="http://www.cmake.org/files/v3.8/cmake-3.8.2-Linux-x86_64.tar.gz"
   mkdir cmake && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
   export PATH=${DEPS_DIR}/cmake/bin:${PATH}
   cmake --version
+
+################################################################################
+# Install the dependent GitHub repositories xstd and hash_append
+################################################################################
+- |
+  git clone https://github.com/rhalbersma/xstd.git
+  mkdir -p ext && cd ext
+  git clone https://github.com/rhalbersma/hash_append.git
+  cd ..
 
 before_script:
 - |
