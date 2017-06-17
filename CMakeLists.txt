@@ -10,10 +10,6 @@ set(project_include_dir
 	$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>
 )
 
-if (NOT DEFINED CXX_STDLIB)
-	set(CXX_STDLIB "GNU")
-endif()
-
 ###############################################################
 # dependencies
 ###############################################################
@@ -31,7 +27,7 @@ set(ext_include_dir ${PROJECT_SOURCE_DIR}/../ext)
 #----------------
 # Boost libraries
 #----------------
-find_package(Boost 1.54.0 REQUIRED COMPONENTS 
+find_package(Boost 1.64.0 REQUIRED COMPONENTS 
 	unit_test_framework
 )
 
