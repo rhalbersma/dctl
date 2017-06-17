@@ -52,11 +52,11 @@ Requirements
 
 ##### Platforms
 
-The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (Mint, Ubuntu, Debian). Ubuntu-based distributions 16.04 LTS and higher are actively supported.
+The DCTL aims to be cross-platform in the near future, but is currently only supported on .deb based 64-bit Linux distributions (e.g. Mint, Ubuntu, Debian). Ubuntu-based distributions 14.04 LTS and higher are actively supported. See the [Travis CI config file](.travis.yml) for how to set this up.
 
 ##### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf). This currently restricts usage of the DCTL to either [gcc](https://gcc.gnu.org/projects/cxx-status.html), version 7.1 or higher, or [Clang](http://clang.llvm.org/cxx_status.html) version 5.0 or higher. Visual C++ is not yet supported because of its currently incomplete C++17 support. Stay tuned for further developments.
+The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf). This currently restricts usage of the DCTL to either [gcc](https://gcc.gnu.org/projects/cxx-status.html), version 7.1 or higher, or [Clang](http://clang.llvm.org/cxx_status.html) version 5.0 or higher, both with libstdc++ 7.1. Visual C++ is not yet supported because of its currently incomplete C++17 support. Stay tuned for further developments.
 
 ##### Boost headers
 
@@ -71,7 +71,7 @@ The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_64_0/libs/test/
 
 ##### CMake
 
-The test-suite is built using the [CMake](http://www.cmake.org/) cross-platform build system. Most Linux development environments can directly access the CMake generated Makefiles. This has been tested with [Eclipse-CDT 4.4](http://www.vtk.org/Wiki/CMake:Eclipse_UNIX_Tutorial) and [QtCreator 3.0](http://qt-project.org/doc/qtcreator-3.0/creator-project-cmake.html). Instead of `make`, it is also possible to use the `ninja` build tool through `cmake -GNinja`. To generate native build solutions for your own development environment, consult the [CMake documentation](http://www.cmake.org/cmake/help/runningcmake.html).
+The test-suite is built using the [CMake](http://www.cmake.org/) cross-platform build system and run with the accompanying CTest testing tool. To generate native build solutions for your own development environment, consult the [CMake documentation](http://www.cmake.org/cmake/help/runningcmake.html).
 
 > #### Note 
 > CMake is **ONLY** a requirement for building the test-suite, and **NOT** for using the DCTL headers with your application. 
@@ -81,30 +81,31 @@ Installation
 
 ##### Download
 
-Clone the `dctl` and the accompanying `xstd` repository (containing C++ Standard Library extensions headers) to a directory of your choice 
+Clone the `dctl` and the accompanying `xstd` and `hash_append` repositories (containing C++ Standard Library extensions headers) to a directory of your choice 
 
       cd ~/projects/ 
       git clone https://github.com/rhalbersma/dctl.git
       git clone https://github.com/rhalbersma/xstd.git
+      mkdir ext && cd ext
+      git clone https://github.com/rhalbersma/hash_append.git
 
 ##### Test-suite
 
-To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost), and type
+To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost.Test), and type
 
-      cd ~/projects/dctl/    
-      mkdir build
-      cd build
+      cd ~/projects/dctl/
+      mkdir build && cd build
       cmake ..
-      make -j10
-      ctest -j10 -E "search|traversal"
+      make -j2
+      ctest -E "search|traversal"
 
 The build will take less than a minute on a 3.5 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a second to run. Note that the `ctest` command excludes all unit tests that do a tree search or traversal (these tests will take several minutes to hours to run, respectively).
 
 To completely regenerate the test-suite's build solution, simply delete the contents of the entire `build/` directory and rerun the above commands. To skip the `cmake` configuration step, and only rebuild and rerun the test-suite, simply type 
 
       make clean
-      make -j10
-      ctest -j10 -E "search|traversal" 
+      make -j2
+      ctest -E "search|traversal" 
 
 If you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!
 
