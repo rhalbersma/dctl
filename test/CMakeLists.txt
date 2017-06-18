@@ -2,12 +2,12 @@
 # use the Boost.Test unit test framework
 ###############################################################
 
-list(APPEND cxx_compile_definitions_boost_test 
+set(cxx_compile_definitions_boost_test 
         BOOST_TEST_DYN_LINK 
         BOOST_TEST_MAIN
 )
 
-list(APPEND cxx_compile_options_warnings_boost_test 
+set(cxx_compile_options_warnings_boost_test 
         $<$<CXX_COMPILER_ID:Clang>:
                 -Wno-disabled-macro-expansion 
                 -Wno-global-constructors 
@@ -18,7 +18,7 @@ list(APPEND cxx_compile_options_warnings_boost_test
 # common compiler and linker flags
 ###############################################################
 
-list(APPEND cxx_compile_options_warnings_general
+set(cxx_compile_options_warnings_general
         $<$<CXX_COMPILER_ID:Clang>:
                 -Weverything 
                 -Wno-c++98-compat 
@@ -39,7 +39,7 @@ list(APPEND cxx_compile_options_warnings_general
         -pedantic-errors
 )  
 
-list(APPEND cxx_compile_options_optimization 
+set(cxx_compile_options_optimization 
         -g
         -O3
         -flto 
@@ -47,7 +47,7 @@ list(APPEND cxx_compile_options_optimization
         -mtune=native
 )
 
-list(APPEND cxx_linker_optimization_flags
+set(cxx_linker_optimization_flags
         -flto 
         -fuse-ld=gold
 )
