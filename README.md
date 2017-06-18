@@ -6,7 +6,7 @@ DCTL: Draughts and Checkers Template Library
 [![License](https://img.shields.io/badge/license-Boost-blue.svg)](https://opensource.org/licenses/BSL-1.0)
 [![](https://tokei.rs/b1/github/rhalbersma/dctl)](https://github.com/rhalbersma/dctl)
 [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg?branch=master)](https://travis-ci.org/rhalbersma/dctl)
-[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
+[![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl)
 
 A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting almost all known rules variations, board sizes and game objectives.
 

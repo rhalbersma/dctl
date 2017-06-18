@@ -41,15 +41,17 @@ set(cxx_compile_options_warnings_general
 
 set(cxx_compile_options_optimization 
         -g
-        -O3
-        -flto 
+	--coverage
+#        -O3
+#        -flto 
         -march=native
         -mtune=native
 )
 
 set(cxx_linker_optimization_flags
-        -flto 
-        -fuse-ld=gold
+	--coverage
+#        -flto 
+#        -fuse-ld=gold
 )
 
 ###############################################################
