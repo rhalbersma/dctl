@@ -55,6 +55,9 @@ BOOST_AUTO_TEST_CASE(MesanderMessageExamples)
         }
 
         BOOST_CHECK_EQUAL_COLLECTIONS(messages.begin(), messages.end(), parsed.begin(), parsed.end());
+
+	BOOST_CHECK_EQUAL(f.create("This is an invalid message").which(), 0);
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()
