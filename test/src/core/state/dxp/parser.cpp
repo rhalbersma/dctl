@@ -4,36 +4,14 @@
 #include <string>                       // string
 #include <variant>                      // monostate
 #include <vector>                       // vector
+#include <core/state/dxp/parser.hpp>
 
 using namespace dctl::core;
-
-factory
-<
-        dxp::game_request,
-        dxp::game_acknowledge,
-        dxp::move,
-        dxp::back_request,
-        dxp::back_acknowledge,
-        dxp::game_end,
-        dxp::chat
-> f;
-
-struct visitor
-{
-        std::vector<std::string>& data;
-
-        template<class T>
-        auto operator()(T const& value) { data.push_back(value.str()); }
-
-        auto operator()(std::monostate) {}
-};
-
-std::vector<std::string> parsed;
-auto vis = visitor{parsed};
+using F = dxp::Fixture;
 
 BOOST_AUTO_TEST_SUITE(DXPParser)
 
-	BOOST_AUTO_TEST_CASE(MesanderMessageExamples)
+	BOOST_FIXTURE_TEST_CASE(MesanderMessageExamples, F)
 	{
 		// Examples of DXP messages (Layer 2 protocol description)
 		// http://www.mesander.nl/damexchange/edxplg2.htm
@@ -58,7 +36,7 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
 		BOOST_CHECK_EQUAL_COLLECTIONS(messages.begin(), messages.end(), parsed.begin(), parsed.end());
 	}
 
-	BOOST_AUTO_TEST_CASE(InvalidMessagesAreIgnored)
+	BOOST_FIXTURE_TEST_CASE(InvalidMessagesAreIgnored, F)
 	{
 		auto const n = vis.data.size();
 		auto v = f.create("This is an invalid message");
