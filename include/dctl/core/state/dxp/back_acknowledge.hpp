@@ -33,7 +33,7 @@ private:
 public:
         explicit back_acknowledge(std::string const& message)
         :
-                m_acceptance_code{static_cast<acceptance>(std::stoi(message.substr(0, 1).c_str()))}
+                m_acceptance_code{static_cast<acceptance>(std::stoi(message.substr(0, 1)))}
         {}
 
         static auto header() noexcept

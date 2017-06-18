@@ -36,7 +36,7 @@ public:
         explicit game_acknowledge(std::string const& message)
         :
                 m_name_follower{message.substr(0, 32)},
-                m_acceptance_code{static_cast<acceptance>(std::stoi(message.substr(32, 1).c_str()))}
+                m_acceptance_code{static_cast<acceptance>(std::stoi(message.substr(32, 1)))}
         {}
 
         static auto header() noexcept

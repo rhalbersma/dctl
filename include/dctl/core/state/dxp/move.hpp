@@ -24,13 +24,13 @@ class move
 public:
         explicit move(std::string const& message)
         :
-                m_seconds{std::stoi(message.substr(0, 4).c_str())},
-                m_from_sq{std::stoi(message.substr(4, 2).c_str())},
-                m_dest_sq{std::stoi(message.substr(6, 2).c_str())}
+                m_seconds{std::stoi(message.substr(0, 4))},
+                m_from_sq{std::stoi(message.substr(4, 2))},
+                m_dest_sq{std::stoi(message.substr(6, 2))}
         {
-                for (auto i = 0, n = std::stoi(message.substr(8, 2).c_str()); i < n; ++i) {
+                for (auto i = 0, n = std::stoi(message.substr(8, 2)); i < n; ++i) {
                         auto const index = static_cast<std::size_t>(10 + 2 * i);
-                        m_captured_pieces.push_back(std::stoi(message.substr(index, 2).c_str()));
+                        m_captured_pieces.push_back(std::stoi(message.substr(index, 2)));
                 }
         }
 

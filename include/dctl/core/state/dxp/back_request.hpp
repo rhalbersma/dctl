@@ -21,7 +21,7 @@ class back_request
 public:
         explicit back_request(std::string const& message)
         :
-                m_move_number{std::stoi(message.substr(0, 3).c_str())},
+                m_move_number{std::stoi(message.substr(0, 3))},
                 m_side_to_move{*(std::begin(message.substr(3, 1)))}
         {}
 

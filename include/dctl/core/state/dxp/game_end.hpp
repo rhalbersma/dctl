@@ -43,8 +43,8 @@ private:
 public:
         explicit game_end(std::string const& message)
         :
-                m_reason_code{static_cast<reason>(std::stoi(message.substr(0, 1).c_str()))},
-                m_stop_code{static_cast<stop>(std::stoi(message.substr(1, 1).c_str()))}
+                m_reason_code{static_cast<reason>(std::stoi(message.substr(0, 1)))},
+                m_stop_code{static_cast<stop>(std::stoi(message.substr(1, 1)))}
         {}
 
         static auto header() noexcept

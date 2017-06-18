@@ -18,6 +18,7 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
 		std::vector<std::string> messages =
 		{
 		        "R01Tornado voor Windows 4.0        W060065A",
+		        "R01Tornado voor Windows 4.0        W060065BWzzzzzzzzzzzzzzzzzzzzeeeeeeeeeewwwwwwwwwwwwwwwwwwww",
 		        "ATornado voor Windows 4.0        0",
 		        "M0012061100",
 		        "M001205250422122320",
@@ -26,7 +27,6 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
 		        "E00",
 		        "CWhat do you think about move 35?"
 		};
-
 
 		for (auto const& m : messages) {
 		        auto v = f.create(m);

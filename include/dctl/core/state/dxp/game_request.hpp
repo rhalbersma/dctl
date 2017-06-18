@@ -33,19 +33,19 @@ private:
         int m_minutes;
         int m_moves;
         setup m_setup_code;
-        std::string m_position;
+        std::string m_position = "Wzzzzzzzzzzzzzzzzzzzzeeeeeeeeeewwwwwwwwwwwwwwwwwwww";
 
 public:
         explicit game_request(std::string const& message)
         :
                 m_name_initiator{message.substr(2, 32)},
                 m_color_follower{*(std::begin(message.substr(34, 1)))},
-                m_minutes{std::stoi(message.substr(35, 3).c_str())},
-                m_moves{std::stoi(message.substr(38, 3).c_str())},
+                m_minutes{std::stoi(message.substr(35, 3))},
+                m_moves{std::stoi(message.substr(38, 3))},
                 m_setup_code{static_cast<setup>(*(std::begin(message.substr(41, 1))))}
         {
                 if (m_setup_code == setup::special) {
-                        m_position = message.substr(42);
+                        m_position = message.substr(42, 51);
                 }
         }
 
