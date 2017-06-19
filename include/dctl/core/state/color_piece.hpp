@@ -24,7 +24,7 @@ constexpr auto color_c = color_<Side>{};
 constexpr auto black_c = color_c<color::black>;
 constexpr auto white_c = color_c<color::white>;
 
-constexpr auto operator!(color const c) noexcept
+constexpr auto operator not(color const c) noexcept
 {
         return static_cast<color>(not xstd::to_underlying_type(c));
 }
@@ -33,7 +33,7 @@ template<class Color>
 using opposite = color_<not Color::value>;
 
 template<color Side>
-constexpr auto operator!(color_<Side>) noexcept
+constexpr auto operator not(color_<Side>) noexcept
 {
         return color_c<not Side>;
 }
