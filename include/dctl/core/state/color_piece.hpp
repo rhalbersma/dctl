@@ -26,16 +26,16 @@ constexpr auto white_c = color_c<color::white>;
 
 constexpr auto operator!(color const c) noexcept
 {
-        return static_cast<color>(!xstd::to_underlying_type(c));
+        return static_cast<color>(not xstd::to_underlying_type(c));
 }
 
 template<class Color>
-using opposite = color_<!Color::value>;
+using opposite = color_<not Color::value>;
 
 template<color Side>
 constexpr auto operator!(color_<Side>) noexcept
 {
-        return color_c<!Side>;
+        return color_c<not Side>;
 }
 
 enum class piece : unsigned char { pawns, kings };

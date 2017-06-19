@@ -167,7 +167,7 @@ public:
                 }
 
                 assert( core::is_onboard_pieces<board_type>(bp | wp | bk | wk));
-                assert(!core::is_promoted_pawns<board_type>(bp, wp));
+                assert(not core::is_promoted_pawns<board_type>(bp, wp));
                 return position_type(bp, wp, bk, wk);
         }
 

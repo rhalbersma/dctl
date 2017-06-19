@@ -9,13 +9,13 @@
 namespace dctl::core {
 
 template<class Board>
-constexpr auto is_placeable = std::min(Board::width, Board::height) >= 1 && (!Board::is_inverted || std::max(Board::width, Board::height) > 1);
+constexpr auto is_placeable = std::min(Board::width, Board::height) >= 1 && (not Board::is_inverted || std::max(Board::width, Board::height) > 1);
 
 template<class Board>
 constexpr auto is_pushable = std::min(Board::width, Board::height) >= 2;
 
 template<class Board>
-constexpr auto is_jumpable = std::min(Board::width, Board::height) >= 3 && (!Board::is_inverted || std::max(Board::width, Board::height) > 3);
+constexpr auto is_jumpable = std::min(Board::width, Board::height) >= 3 && (not Board::is_inverted || std::max(Board::width, Board::height) > 3);
 
 template<class Board>
 struct invert;
@@ -23,7 +23,7 @@ struct invert;
 template<int Width, int Height, bool IsInverted, bool IsOrthogonalJump>
 struct invert<board::rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
 :
-        board::rectangular<Width, Height, !IsInverted, IsOrthogonalJump>
+        board::rectangular<Width, Height, not IsInverted, IsOrthogonalJump>
 {};
 
 template<class Board>
@@ -60,7 +60,7 @@ template<class Board>
 constexpr rank<Board> rank_v{};
 
 template<class Board, class Color>
-constexpr auto promotion_v = rank_v<Board>(!Color{}, 0);
+constexpr auto promotion_v = rank_v<Board>(not Color{}, 0);
 
 template<class Board>
 constexpr auto squares_v = detail::set_filter<Board>([](auto const sq) {

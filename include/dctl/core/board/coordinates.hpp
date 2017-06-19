@@ -32,7 +32,7 @@ constexpr auto operator==(coordinates<Origin> const lhs, coordinates<Origin> con
 template<class Origin>
 constexpr auto operator!=(coordinates<Origin> const lhs, coordinates<Origin> const rhs) noexcept
 {
-        return !(lhs == rhs);
+        return not (lhs == rhs);
 }
 
 constexpr auto rotate(coordinates<screen_centered> const coord, angle const a) noexcept
@@ -108,7 +108,7 @@ constexpr auto to_square(coordinates<upper_left> const coord, Grid const grid)
 {
         auto const col_mod [[maybe_unused]] = coord.x % 2;
         auto const row_mod = coord.y % 2;
-        assert((row_mod ^ col_mod) == !grid.upper_left_is_square());
+        assert((row_mod ^ col_mod) == not grid.upper_left_is_square());
 
         auto const col_div = coord.x / 2;
         assert(2 * col_div + col_mod == coord.x);
@@ -143,8 +143,8 @@ constexpr auto to_ulo(int const sq, Grid const grid)
         assert(row_div * grid.modulo() + sq_offset == sq);
 
         auto const row_mod = sq_offset >= grid.edge_lo();
-        auto const col_mod = row_mod ^ !grid.upper_left_is_square();
-        assert((row_mod ^ col_mod) == !grid.upper_left_is_square());
+        auto const col_mod = row_mod ^ not grid.upper_left_is_square();
+        assert((row_mod ^ col_mod) == not grid.upper_left_is_square());
 
         auto const sq_base = row_mod ? grid.edge_lo() : grid.edge_le();
         auto const col_div = sq_offset - sq_base;

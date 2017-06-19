@@ -116,7 +116,7 @@ struct write<pdn::protocol, Token>
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i ? color::white : color::black;
-                        if (!s.pieces(c).empty()) {
+                        if (not s.pieces(c).empty()) {
                                 sstr << Token::colon;                   // colon
                                 sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
                         }

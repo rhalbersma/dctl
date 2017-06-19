@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE(IsTrivialPrecedence)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!is_trivial_precedence_v<T>);
+                static_assert(not is_trivial_precedence_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_SUITE(IsQuantityPrecedence)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!is_quantity_precedence_v<T>);
+                static_assert(not is_quantity_precedence_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_SUITE(IsContentsPrecedence)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!is_contents_precedence_v<T>);
+                static_assert(not is_contents_precedence_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_SUITE(IsModalityPrecedence)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!is_modality_precedence_v<T>);
+                static_assert(not is_modality_precedence_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_SUITE(IsOrderingPrecedence)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!is_ordering_precedence_v<T>);
+                static_assert(not is_ordering_precedence_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_SUITE(PrecedenceTrivialIsConsistentWithTraits)
                          is_contents_precedence_v<T>  ||
                          is_modality_precedence_v<T> ||
                          is_ordering_precedence_v<T> ) ==
-                        !is_trivial_precedence_v<T>
+                        not is_trivial_precedence_v<T>
                 );
         }
 

@@ -11,7 +11,7 @@ template<detail::direction Direction, int N, class Set>
 constexpr auto fill(Set generator, Set const propagator)
 {
         Set flood {};
-        while (!generator.empty()) {
+        while (not generator.empty()) {
                 flood |= generator;
                 generator = detail::shift<Direction, N>{}(generator) & propagator;
         }

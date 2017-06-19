@@ -72,7 +72,7 @@ class action
         constexpr auto assert_invariants() const noexcept
         {
                 assert(from() != dest() || is_jump());
-                assert(!is_demotion());
+                assert(not is_demotion());
         }
 public:
         using  rules_type = Rules;
@@ -177,7 +177,7 @@ public:
 
         constexpr auto is_jump() const noexcept
         {
-                return !captured_pieces().empty();
+                return not captured_pieces().empty();
         }
 
         constexpr auto is_promotion() const noexcept
@@ -187,7 +187,7 @@ public:
 
         constexpr auto is_reversible() const noexcept
         {
-                return is_with_king() && !is_jump();
+                return is_with_king() && not is_jump();
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
@@ -275,7 +275,7 @@ constexpr auto operator< (action<Rules, Board> const& lhs, action<Rules, Board> 
 template<class Rules, class Board>
 constexpr auto operator!=(action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
 {
-        return !(lhs == rhs);
+        return not (lhs == rhs);
 }
 
 template<class Rules, class Board>
@@ -287,13 +287,13 @@ constexpr auto operator> (action<Rules, Board> const& lhs, action<Rules, Board> 
 template<class Rules, class Board>
 constexpr auto operator>=(action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
 {
-        return !(lhs < rhs);
+        return not (lhs < rhs);
 }
 
 template<class Rules, class Board>
 constexpr auto operator<=(action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
 {
-        return !(rhs < lhs);
+        return not (rhs < lhs);
 }
 
 }       // namespace dctl::core

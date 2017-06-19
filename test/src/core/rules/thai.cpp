@@ -10,7 +10,7 @@ using T = thai;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
-        static_assert(!is_backward_pawn_jump_v<T>);
+        static_assert(not is_backward_pawn_jump_v<T>);
         static_assert(is_long_ranged_king_v<T>);
 
         static_assert(initial_position_gap_v<T> == 4);

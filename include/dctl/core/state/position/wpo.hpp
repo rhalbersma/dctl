@@ -175,7 +175,7 @@ constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs
 template<class Board>
 constexpr auto operator!=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return !(lhs == rhs);
+        return not (lhs == rhs);
 }
 
 template<class Board>
@@ -187,13 +187,13 @@ constexpr auto operator> (position<Board> const& lhs, position<Board> const& rhs
 template<class Board>
 constexpr auto operator>=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return !(lhs < rhs);
+        return not (lhs < rhs);
 }
 
 template<class Board>
 constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return !(rhs < lhs);
+        return not (rhs < lhs);
 }
 
 }       // namespace wpo

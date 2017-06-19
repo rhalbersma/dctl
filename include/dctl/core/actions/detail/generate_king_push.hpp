@@ -42,7 +42,7 @@ public:
                                 ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, s.pieces(empty_c));
                         });
                 } else {
-                        if (!sources.empty()) {
+                        if (not sources.empty()) {
                                 wave_directions_lfold<right_up, left_up, left_down, right_down>(sources, s.pieces(empty_c));
                         }
                 }

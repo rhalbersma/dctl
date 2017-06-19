@@ -28,7 +28,7 @@ struct is_terminal<NoActionsLeft>
         template<class State, class Actions>
         bool operator()(State const& s, Actions successor) const
         {
-                return !successor.detect(s);
+                return not successor.detect(s);
         }
 };
 

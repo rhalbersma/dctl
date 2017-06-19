@@ -73,7 +73,7 @@ constexpr auto large_jump_v =
 
 template<class Rules>
 constexpr auto is_unambiguous_pawn_jump_v =
-        !(is_backward_pawn_jump_v<Rules> || is_passing_promotion_v<Rules> ||
+        not (is_backward_pawn_jump_v<Rules> || is_passing_promotion_v<Rules> ||
         (is_orthogonal_jump_v<Rules> && is_reverse_king_jump_v<Rules>))
 ;
 
@@ -131,7 +131,7 @@ struct not_equal_to
         template<class Action1, class Action2>
         constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return !equal_to{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
+                return not equal_to{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
         }
 };
 
@@ -149,7 +149,7 @@ struct greater_equal
         template<class Action1, class Action2>
         constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return !less{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
+                return not less{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
         }
 };
 
@@ -158,7 +158,7 @@ struct less_equal
         template<class Action1, class Action2>
         constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return !less{}(std::forward<Action1>(a2), std::forward<Action1>(a1));
+                return not less{}(std::forward<Action1>(a2), std::forward<Action1>(a1));
         }
 };
 
@@ -167,7 +167,7 @@ struct equivalent_to
         template<class Action1, class Action2>
         constexpr auto operator()(Action1 const& a1, Action2 const& a2) const noexcept
         {
-                return !(less{}(a1, a2) || less{}(a2, a1));
+                return not (less{}(a1, a2) || less{}(a2, a1));
         }
 };
 
@@ -176,7 +176,7 @@ struct not_equivalent_to
         template<class Action1, class Action2>
         constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
         {
-                return !equivalent_to{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
+                return not equivalent_to{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
         }
 };
 

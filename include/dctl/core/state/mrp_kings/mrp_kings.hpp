@@ -78,10 +78,10 @@ private:
         template<class Action>
         void make_advance(Action const& m)
         {
-                if (!is_tracked(m.to_move()))
+                if (not is_tracked(m.to_move()))
                         return;
 
-                if (!m.is_reversible())
+                if (not m.is_reversible())
                         return reset(m.to_move());
 
                 if (m.from() != index(m.to_move()))
@@ -93,7 +93,7 @@ private:
         template<class Action>
         void make_promote(Action const& m)
         {
-                if (!m.is_promotion())
+                if (not m.is_promotion())
                         return;
 
                 --num_pieces(m.to_move(), pawns_c);
@@ -103,20 +103,20 @@ private:
         template<class Action>
         void make_capture(Action const& m)
         {
-                if (!m.is_jump())
+                if (not m.is_jump())
                         return;
 
                 if (
-                        is_tracked(!m.to_move()) && (
-                                num_pieces(!m.to_move(), pawns_c) == m.num_captured(pawns_c) ||
-                                num_pieces(!m.to_move(), kings_c) == m.num_captured(kings_c) ||
-                                (0 < m.num_captured(kings_c) && m.captured(kings_c).test(index(!m.to_move())))
+                        is_tracked(not m.to_move()) && (
+                                num_pieces(not m.to_move(), pawns_c) == m.num_captured(pawns_c) ||
+                                num_pieces(not m.to_move(), kings_c) == m.num_captured(kings_c) ||
+                                (0 < m.num_captured(kings_c) && m.captured(kings_c).test(index(not m.to_move())))
                         )
                 )
-                        reset(!m.to_move());
+                        reset(not m.to_move());
 
-                num_pieces(!m.to_move(), pawns_c) -= m.num_captured(pawns_c);
-                num_pieces(!m.to_move(), kings_c) -= m.num_captured(kings_c);
+                num_pieces(not m.to_move(), pawns_c) -= m.num_captured(pawns_c);
+                num_pieces(not m.to_move(), kings_c) -= m.num_captured(kings_c);
         }
 
         constexpr void reset(color c)

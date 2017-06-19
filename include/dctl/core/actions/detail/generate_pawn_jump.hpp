@@ -61,13 +61,13 @@ public:
 private:
         auto directions() const
         {
-                if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
+                if constexpr (not is_backward_pawn_jump_v<rules_type> && not is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right_up, left_up>();
                 }
-                if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
+                if constexpr (is_backward_pawn_jump_v<rules_type> && not is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right_up, left_up, left_down, right_down>();
                 }
-                if constexpr (!is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
+                if constexpr (not is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right, right_up, up, left_up, left>();
                 }
                 if constexpr (is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
@@ -166,7 +166,7 @@ private:
         template<class Iterator>
         auto try_next(Iterator jumper) const
         {
-                if (!next_target(jumper))
+                if (not next_target(jumper))
                         add_jump(*jumper);
         }
 
@@ -180,16 +180,16 @@ private:
         template<class Iterator>
         auto turn(Iterator jumper) const
         {
-                if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
+                if constexpr (not is_backward_pawn_jump_v<rules_type> && not is_orthogonal_jump_v<rules_type>) {
                         static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
                         return scan(ray::mirror<up<orientation>{}>(jumper));
                 }
-                if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
+                if constexpr (is_backward_pawn_jump_v<rules_type> && not is_orthogonal_jump_v<rules_type>) {
                         static_assert(is_diagonal(direction_v<Iterator>));
                         return rotate_directions_lfold<-90, +90>(jumper);
                 }
-                if constexpr (!is_backward_pawn_jump_v<rules_type> &&  is_orthogonal_jump_v<rules_type>) {
-                        static_assert(!is_down(direction_v<Iterator>));
+                if constexpr (not is_backward_pawn_jump_v<rules_type> &&  is_orthogonal_jump_v<rules_type>) {
+                        static_assert(not is_down(direction_v<Iterator>));
 
                         if constexpr (direction_v<Iterator> == right<orientation>{}) {
                                 return turn_directions_lfold<right_up, up, left_up>(jumper);
@@ -233,7 +233,7 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && m_builder.is_target(jumper)))
+                if (not (is_onboard(jumper) && m_builder.is_target(jumper)))
                         return false;
 
                 assert(is_onboard(std::next(jumper)));

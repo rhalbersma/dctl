@@ -40,7 +40,7 @@ public:
 
                 for (std::size_t index = 0; index < size(); ++index) {
                         auto const p = unrank_position(index);
-                        if (!p) {
+                        if (not p) {
                                 btm_dtm[index] = illegal;
                                 wtm_dtm[index] = illegal;
                                 ++num_illegal;
@@ -48,11 +48,11 @@ public:
                         }
                         num_legal += (rank_position(p.value()) == index);
 
-                        if (!Successor{}.detect(State{p.value(), color::black})) {
+                        if (not Successor{}.detect(State{p.value(), color::black})) {
                                 btm_dtm[index] = 0;
                                 ++btm_wld[loss];
                         }
-                        if (!Successor{}.detect(State{p.value(), color::white})) {
+                        if (not Successor{}.detect(State{p.value(), color::white})) {
                                 wtm_dtm[index] = 0;
                                 ++wtm_wld[loss];
                         }

@@ -58,7 +58,7 @@ constexpr auto operator<(angle const a, angle const b) noexcept
 
 constexpr auto operator!=(angle const a, angle const b) noexcept
 {
-        return !(a == b);
+        return not (a == b);
 }
 
 constexpr auto operator>(angle const a, angle const b) noexcept
@@ -68,12 +68,12 @@ constexpr auto operator>(angle const a, angle const b) noexcept
 
 constexpr auto operator>=(angle const a, angle const b) noexcept
 {
-        return !(a < b);
+        return not (a < b);
 }
 
 constexpr auto operator<=(angle const a, angle const b) noexcept
 {
-        return !(b < a);
+        return not (b < a);
 }
 
 constexpr auto operator+(angle const a) noexcept

@@ -50,7 +50,7 @@ public:
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
                 if (a.is_jump()) {
-                        set_pieces(!c) ^= a.captured_pieces();
+                        set_pieces(not c) ^= a.captured_pieces();
                         set_pieces(pawns_c) -= a.captured_pieces();
                         set_pieces(kings_c) -= a.captured_pieces();
                 }
@@ -136,7 +136,7 @@ constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs
 template<class Board>
 constexpr auto operator!=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return !(lhs == rhs);
+        return not (lhs == rhs);
 }
 
 template<class Board>
@@ -148,13 +148,13 @@ constexpr auto operator> (position<Board> const& lhs, position<Board> const& rhs
 template<class Board>
 constexpr auto operator>=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return !(lhs < rhs);
+        return not (lhs < rhs);
 }
 
 template<class Board>
 constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return !(rhs < lhs);
+        return not (rhs < lhs);
 }
 
 }       // namespace c2p2e

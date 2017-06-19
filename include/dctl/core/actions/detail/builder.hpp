@@ -42,7 +42,7 @@ public:
         builder(State const& s, SequenceContainer& seq)
         :
                 m_state{s},
-                m_initial_targets(m_state.pieces(!to_move_c)),
+                m_initial_targets(m_state.pieces(not to_move_c)),
                 m_empty(m_state.pieces(empty_c)),
                 m_actions{seq}
         {}
@@ -50,7 +50,7 @@ public:
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_v<rules_type>);
-                m_initial_targets ^= m_state.pieces(!to_move_c, kings_c);
+                m_initial_targets ^= m_state.pieces(not to_move_c, kings_c);
         }
 
         auto make_launch(int const sq)
@@ -198,7 +198,7 @@ private:
                         }
                 }
                 if constexpr (
-                        !is_trivial_precedence_v<rules_type> &&
+                        not is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
                 ){
                         if (m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back())) {
@@ -212,7 +212,7 @@ private:
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
-                        !is_trivial_precedence_v<rules_type> &&
+                        not is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
                 ){
                         if (m_actions.empty()) {
@@ -241,7 +241,7 @@ private:
         auto is_unique() const // Throws: Nothing.
         {
                 static_assert(std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
-                assert(!m_actions.empty());
+                assert(not m_actions.empty());
                 assert(precedence::equal_to{}(m_candidate_action, m_actions.back()));
                 return std::none_of(m_actions.cbegin(), m_actions.cend(), [&](auto const& a) { return a == m_candidate_action; });
         }

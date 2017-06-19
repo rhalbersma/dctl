@@ -39,7 +39,7 @@ public:
         template<class State>
         auto count(State const& s) const
         {
-                if (auto const num_jumps = Jump{}.count(s); !num_jumps) {
+                if (auto const num_jumps = Jump{}.count(s); not num_jumps) {
                         return Push{}.count(s);
                 } else {
                         return num_jumps;

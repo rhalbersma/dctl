@@ -29,7 +29,7 @@ class detect<color_<Side>, pawns_, select::jump, Reverse, State>
 public:
         auto operator()(State const& s) const noexcept
         {
-                if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
+                if (auto const sources = s.pieces(to_move_c, piece_c); not sources.empty()) {
                         return directions(sources, s.targets(to_move_c, piece_c), s.pieces(empty_c));
                 }
                 return false;
@@ -37,17 +37,17 @@ public:
 private:
         auto directions(set_type const sources, set_type const targets, set_type const destinations) const noexcept
         {
-                if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
+                if constexpr (not is_backward_pawn_jump_v<rules_type> && not is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right_up, left_up>(
                                 sources, targets, destinations
                         );
                 }
-                if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
+                if constexpr (is_backward_pawn_jump_v<rules_type> && not is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right_up, left_up, left_down, right_down>(
                                 sources, targets, destinations
                         );
                 }
-                if constexpr (!is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
+                if constexpr (not is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
                         return directions_lfold<right, right_up, up, left_up, left>(
                                 sources, targets, destinations
                         );
@@ -62,7 +62,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const sources, set_type const targets, set_type const destinations) const noexcept
         {
-                return (... || !pawn_jump_targets<Directions<orientation>{}>{}(sources, targets, destinations).empty());
+                return (... || not pawn_jump_targets<Directions<orientation>{}>{}(sources, targets, destinations).empty());
         }
 };
 

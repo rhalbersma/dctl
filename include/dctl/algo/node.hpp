@@ -22,8 +22,8 @@ class node
         constexpr auto is_root() const noexcept
         {
                 return
-                        !m_parent &&
-                        !m_action
+                        not m_parent &&
+                        not m_action
                 ;
         }
 
@@ -109,7 +109,7 @@ constexpr auto operator< (node<State, Action> const& lhs, node<State, Action> co
 template<class State, class Action>
 constexpr auto operator!=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
 {
-        return !(lhs == rhs);
+        return not (lhs == rhs);
 }
 
 template<class State, class Action>
@@ -121,13 +121,13 @@ constexpr auto operator> (node<State, Action> const& lhs, node<State, Action> co
 template<class State, class Action>
 constexpr auto operator>=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
 {
-        return !(lhs < rhs);
+        return not (lhs < rhs);
 }
 
 template<class State, class Action>
 constexpr auto operator<=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
 {
-        return !(rhs < lhs);
+        return not (rhs < lhs);
 }
 
 /*

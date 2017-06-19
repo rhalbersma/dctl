@@ -192,7 +192,7 @@ auto classical(iterator<Board, Direction> from, Set const propagator)
         constexpr auto theta = angle{Direction};
         auto targets = king_targets<Board>{}(*from, theta);
         auto const blockers = targets & ~propagator;
-        if (!blockers.empty()) {
+        if (not blockers.empty()) {
                 auto const f = detail::first<detail::shift_sign_v<Direction>>{}(blockers);
                 targets ^= king_targets<Board>{}(f, theta);
                 targets.erase(f);

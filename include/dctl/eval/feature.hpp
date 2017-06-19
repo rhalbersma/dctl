@@ -55,7 +55,7 @@ public:
                         score += Weight<rules_type, board_type>::center[i] *
                         (
                                 static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>( Color{}, i)).size()) +
-                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>(!Color{}, i)).size())
+                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>(not Color{}, i)).size())
                         );
                 }
                 return score;
@@ -71,7 +71,7 @@ public:
                         score += Weight<rules_type, board_type>::balance[i] *
                         (
                                 static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>( Color{}, i)).size()) -
-                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>(!Color{}, i)).size())
+                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>(not Color{}, i)).size())
                         );
                 }
                 return -abs(score);

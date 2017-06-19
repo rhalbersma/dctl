@@ -52,7 +52,7 @@ public:
                 using builder_type = builder<to_move_, DuplicatesPolicy, State, SequenceContainer>;
 
                 //                /*std::conditional_t<
-                //        std::is_same_v<Sequence, MoveCounter> && !DuplicatesPolicy,
+                //        std::is_same_v<Sequence, MoveCounter> && not DuplicatesPolicy,
                 //        Counter<to_move_, DuplicatesPolicy, State>,*/
                 //        ;
                 //>;

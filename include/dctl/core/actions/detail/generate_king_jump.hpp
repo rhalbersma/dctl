@@ -101,7 +101,7 @@ private:
         template<class Iterator>
         auto try_next(Iterator jumper) const
         {
-                if (!next_target(jumper))
+                if (not next_target(jumper))
                         halt(jumper);
         }
 
@@ -126,7 +126,7 @@ private:
         template<class Iterator>
         auto scan_turn(Iterator jumper) const
         {
-                if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
+                if constexpr (not is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
                         return scan(jumper) | turn(jumper);
                 } else {
                         // builder.template path<Direction>() would be an ERROR here
@@ -181,7 +181,7 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && m_builder.is_target(jumper)))
+                if (not (is_onboard(jumper) && m_builder.is_target(jumper)))
                         return false;
 
                 assert(is_onboard(std::next(jumper)));
@@ -192,17 +192,17 @@ private:
         template<class Iterator>
         auto halt(Iterator dest_sq) const
         {
-                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
+                if constexpr (is_long_ranged_king_v<rules_type> && not is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
                         if (m_builder.is_last_jumped_king(*std::prev(dest_sq))) {
                                 return add_halting_jump(*dest_sq);
                         } else {
                                 return add_sliding_jumps(dest_sq);
                         }
                 }
-                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && !is_halt_behind_king_v<rules_type>) {
+                if constexpr (is_long_ranged_king_v<rules_type> && not is_land_behind_piece_v<rules_type> && not is_halt_behind_king_v<rules_type>) {
                         return add_sliding_jumps(dest_sq);
                 }
-                if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
+                if constexpr (not is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
                         return add_halting_jump(*dest_sq);
                 }
         }

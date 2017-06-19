@@ -17,10 +17,10 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_CASE(IsEmpty)
 {
-        //static_assert(!is_placeable<rectangular<0, 0>>);
-        //static_assert(!is_placeable<rectangular<0, 1>>);
-        //static_assert(!is_placeable<rectangular<1, 0>>);
-        //static_assert(!is_placeable<board::rectangular<1, 1, true>>);
+        //static_assert(not is_placeable<rectangular<0, 0>>);
+        //static_assert(not is_placeable<rectangular<0, 1>>);
+        //static_assert(not is_placeable<rectangular<1, 0>>);
+        //static_assert(not is_placeable<board::rectangular<1, 1, true>>);
         static_assert( is_placeable<board::rectangular<1, 1>>);
         static_assert( is_placeable<board::rectangular<2, 1, true>>);
         static_assert( is_placeable<board::rectangular<1, 2, true>>);
@@ -28,18 +28,18 @@ BOOST_AUTO_TEST_CASE(IsEmpty)
 
 BOOST_AUTO_TEST_CASE(IsPushable)
 {
-        static_assert(!is_pushable<board::rectangular<1, 1>>);
-        static_assert(!is_pushable<board::rectangular<2, 1>>);
-        static_assert(!is_pushable<board::rectangular<1, 2>>);
+        static_assert(not is_pushable<board::rectangular<1, 1>>);
+        static_assert(not is_pushable<board::rectangular<2, 1>>);
+        static_assert(not is_pushable<board::rectangular<1, 2>>);
         static_assert( is_pushable<board::rectangular<2, 2>>);
 }
 
 BOOST_AUTO_TEST_CASE(IsJumpable)
 {
-        static_assert(!is_jumpable<board::rectangular<2, 2>>);
-        static_assert(!is_jumpable<board::rectangular<3, 2>>);
-        static_assert(!is_jumpable<board::rectangular<2, 3>>);
-        static_assert(!is_jumpable<board::rectangular<3, 3, true>>);
+        static_assert(not is_jumpable<board::rectangular<2, 2>>);
+        static_assert(not is_jumpable<board::rectangular<3, 2>>);
+        static_assert(not is_jumpable<board::rectangular<2, 3>>);
+        static_assert(not is_jumpable<board::rectangular<3, 3, true>>);
         static_assert( is_jumpable<board::rectangular<3, 3>>);
         static_assert( is_jumpable<board::rectangular<4, 3, true>>);
         static_assert( is_jumpable<board::rectangular<3, 4, true>>);
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesAreIdemPotent, T, board
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, board::BoardSequence)
 {
-        static_assert(!T::is_orthogonal_jump || is_identity_v<   add_orthogonal_captures_t, T>);
+        static_assert(not T::is_orthogonal_jump || is_identity_v<   add_orthogonal_captures_t, T>);
         static_assert( T::is_orthogonal_jump || is_identity_v<remove_orthogonal_captures_t, T>);
 }
 
