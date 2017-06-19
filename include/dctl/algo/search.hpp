@@ -41,11 +41,13 @@ auto tree_search(Problem const& problem, Frontier& frontier)
         while (not frontier.empty()) {
                 auto const node = first_out(frontier);
                 frontier.pop();
-                if (problem.goal_test(node))
+                if (problem.goal_test(node)) {
                         return node;
+                }
                 auto const children = node.expand(problem);
-                for (auto const& child : children)
+                for (auto const& child : children) {
                         frontier.push(child);
+                }
         }
         return std::nullopt_t;
 }

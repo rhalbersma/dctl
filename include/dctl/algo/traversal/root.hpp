@@ -171,8 +171,9 @@ int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements
 
         // (1)
         auto const found = e.find(s, depth);
-        if (found.first)
+        if (found.first) {
                 return found.second;
+        }
 
         int64_t nodes = 0;
 
@@ -205,11 +206,11 @@ auto perft_inplace(Actions const& successor, State& s, int depth)
 {
         if constexpr(IsBulk) {
                 if (depth == 1) {
-                	return successor.count(s);
+                        return successor.count(s);
                 }
         } else {
                 if (depth == 0) {
-                	return 1;
+                        return 1;
                 }
         }
 
@@ -228,11 +229,11 @@ auto perft_state(Actions const& successor, State const& s, int depth)
 {
         if constexpr(IsBulk) {
                 if (depth == 1) {
-                	return successor.count(s);
+                        return successor.count(s);
                 }
         } else {
                 if (depth == 0) {
-                	return 1;
+                        return 1;
                 }
         }
 
@@ -253,9 +254,13 @@ auto perft_node(Actions const& successor, Node const& n, int depth)
         -> int64_t
 {
         if constexpr(IsBulk) {
-                if (depth == 1) return successor.count(n.state());
+                if (depth == 1) {
+                        return successor.count(n.state());
+                }
         } else {
-                if (depth == 0) return 1;
+                if (depth == 0) {
+                        return 1;
+                }
         }
 
         auto const moves = out_edges(n, successor);

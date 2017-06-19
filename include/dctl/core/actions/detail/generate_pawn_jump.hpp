@@ -127,14 +127,17 @@ private:
         auto try_promotion(Iterator jumper) const
         {
                 if constexpr (is_passing_promotion_v<rules_type>) {
-                        if (is_promotion(*jumper))
+                        if (is_promotion(*jumper)) {
                                 return on_promotion(jumper);
+                        }
                         return try_next(jumper);
                 } else {
-                        if (next_target(jumper))
+                        if (next_target(jumper)) {
                                 return;
-                        if (is_promotion(*jumper))
+                        }
+                        if (is_promotion(*jumper)) {
                                 return on_promotion(jumper);
+                        }
                         return add_jump(*jumper);
                 }
         }
@@ -172,8 +175,9 @@ private:
         template<class Iterator>
         auto try_next(Iterator jumper) const
         {
-                if (not next_target(jumper))
+                if (not next_target(jumper)) {
                         add_jump(*jumper);
+                }
         }
 
         template<class Iterator>
@@ -239,8 +243,9 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (not (is_onboard(jumper) && m_builder.is_target(jumper)))
+                if (not (is_onboard(jumper) && m_builder.is_target(jumper))) {
                         return false;
+                }
 
                 assert(is_onboard(std::next(jumper)));
                 capture(jumper);

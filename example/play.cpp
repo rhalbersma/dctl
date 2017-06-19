@@ -41,8 +41,9 @@ int main()
                         std::cout << "\nNo valid moves (Undo or stop [u/s]): ";
                 } else {
                         auto index = 0;
-                        for (auto const& a : actions)
+                        for (auto const& a : actions) {
                                 std::cout << std::setw(2) << index++ << ". " << a << '\n';
+                        }
                         std::cout << "\nEnter move number, undo or stop [0/u/s]): ";
                 }
 

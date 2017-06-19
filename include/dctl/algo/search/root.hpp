@@ -86,7 +86,6 @@ private:
         int iterative_deepening(Actions successor, Node const& n, int depth)
         {
                 auto score = -infinity();
-                int alpha, beta;
 
                 Variation pv;
                 announce(n.state(), depth);
@@ -94,8 +93,8 @@ private:
                 util::Stopwatch stopwatch;
                 stopwatch.start_stop();
                 for (auto i = 1; i <= depth; i += ROOT_ID_INCREMENT) {
-                        alpha = -infinity();
-                        beta = infinity();
+                        auto const alpha = -infinity();
+                        auto const beta = infinity();
                         score = pvs<PV>(successor, n, alpha, beta, i, 0, pv);
                         insert_pv(successor, n, pv, score);
                         stopwatch.split_reset();
@@ -139,8 +138,9 @@ private:
                         if (depth > 0) {
                                 auto const type = Bound::type(terminal_value, alpha, beta);
                                 TT.insert(n, { terminal_value, type, depth, Transposition::no_move() } );
-                                if (type == Bound::exact)
+                                if (type == Bound::exact) {
                                         refutation.clear();
+                                }
                         }
                         return terminal_value;
                 }
@@ -314,7 +314,7 @@ private:
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
                 if (not (ply % 2)) {
-                	std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
+                        std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
                 }
                 std::cout << best_move;
                 std::cout << ((ply % 10 == 9) ? '\n' : ' ');

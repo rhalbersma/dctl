@@ -107,8 +107,9 @@ private:
         template<class Iterator>
         auto try_next(Iterator jumper) const
         {
-                if (not next_target(jumper))
+                if (not next_target(jumper)) {
                         halt(jumper);
+                }
         }
 
         template<class Iterator>
@@ -178,7 +179,9 @@ private:
         {
                 assert(is_onboard(jumper));
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        do ++jumper; while (is_onboard(jumper) && path.test(*jumper));
+                        do {
+                                ++jumper;
+                        } while (is_onboard(jumper) && path.test(*jumper));
                 } else {
                         ++jumper;
                 }
@@ -187,8 +190,9 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (not (is_onboard(jumper) && m_builder.is_target(jumper)))
+                if (not (is_onboard(jumper) && m_builder.is_target(jumper))) {
                         return false;
+                }
 
                 assert(is_onboard(std::next(jumper)));
                 capture(jumper);
@@ -219,7 +223,9 @@ private:
                 // builder.template path<Direction>() would be an ERROR here
                 // because we need all halting squares rather than the directional launching squares subset
                 assert(is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
-                do add_halting_jump(*dest_sq++); while (is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
+                do {
+                        add_halting_jump(*dest_sq++);
+                } while (is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
         }
 
         auto add_halting_jump(int const dest_sq) const

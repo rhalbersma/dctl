@@ -46,8 +46,9 @@ public:
                 using rules_type = core::rules_t<State>;
                 using board_type = core::board_t<State>;
                 auto score = 0;
-                for (auto i = 1; i < board_type::height; ++i)
+                for (auto i = 1; i < board_type::height; ++i) {
                         score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(Color{}) & core::rank_v<board_type>(Color{}, i)).size());
+                }
                 return score;
         }
 

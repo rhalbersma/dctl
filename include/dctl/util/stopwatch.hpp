@@ -24,7 +24,7 @@ class Stopwatch
         {
                 return
                         (not splits.empty()     || not is_running) &&
-                        ( splits.size() != 1 ||  is_running)
+                        (    splits.size() != 1 ||     is_running)
                 ;
         }
 
@@ -36,19 +36,21 @@ public:
 
         void start_stop()
         {
-                if (not is_running)
+                if (not is_running) {
                         start();
-                else
+                } else {
                         stop();
+                }
                 assert(invariant());
         }
 
         void split_reset()
         {
-                if (is_running)
+                if (is_running) {
                         split();
-                else
+                } else {
                         reset();
+                }
                 assert(invariant());
         }
 

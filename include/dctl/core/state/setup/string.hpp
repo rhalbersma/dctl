@@ -69,8 +69,9 @@ struct read<Rules, Board, pdn::protocol, Token>
                 assert(by_color_piece[1][1].empty());
 
                 // do not attempt to parse empty strings
-                if (s.empty())
+                if (s.empty()) {
                         return {{by_color_piece[0][0], by_color_piece[1][0], by_color_piece[0][1], by_color_piece[1][1]}, p_side };
+                }
 
                 auto setup_color = p_side;
                 auto setup_piece = piece::pawns;
@@ -159,8 +160,9 @@ struct read<Rules, Board, dxp::protocol, Token>
                 assert(by_color_piece[1][1].empty());
 
                 // do not attempt to parse empty strings
-                if (s.empty())
+                if (s.empty()) {
                         return {{by_color_piece[0][0], by_color_piece[1][0], by_color_piece[0][1], by_color_piece[1][1]}, p_side };
+                }
 
                 std::stringstream sstr(s);
                 char ch;
