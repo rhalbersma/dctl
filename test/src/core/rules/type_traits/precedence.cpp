@@ -1,3 +1,9 @@
+
+//          Copyright Rein Halbersma 2010-2017.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
 #include <dctl/core/rules/type_traits.hpp>                 // is_trivial, is_ordering, is_absolute_modality
 #include <dctl/core/rules.hpp>                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector

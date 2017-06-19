@@ -1,3 +1,9 @@
+
+//          Copyright Rein Halbersma 2010-2017.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
 #include <core/rules/precedence.hpp>         // precedence::is_consistent
 #include <dctl/core/rules/international.hpp> // international
 #include <dctl/core/rules/type_traits.hpp>         // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, equal_to, less

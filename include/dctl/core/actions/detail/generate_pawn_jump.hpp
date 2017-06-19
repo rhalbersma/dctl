@@ -1,4 +1,10 @@
 #pragma once
+
+//          Copyright Rein Halbersma 2010-2017.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
 #include <dctl/core/actions/detail/raii.hpp>                 // Launch, Capture, Visit, Toggleking_targets, Setpromotion
 #include <dctl/core/actions/detail/builder.hpp>              // Builder
 #include <dctl/core/actions/detail/generate_primary_fwd.hpp> // generate (primary template)

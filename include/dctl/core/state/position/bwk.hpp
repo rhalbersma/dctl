@@ -1,4 +1,10 @@
 #pragma once
+
+//          Copyright Rein Halbersma 2010-2017.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
 #include <dctl/core/board/type_traits.hpp>      // squares
 #include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
