@@ -100,8 +100,9 @@ public:
 
         auto clear()
         {
-                for (auto& b : data_)
+                for (auto& b : data_) {
                         b.fill(value_type{tag_type{0}, mapped_type{}});
+                }
                 size_ = 0;
         }
 

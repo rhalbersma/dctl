@@ -6,7 +6,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/util/type_traits.hpp> // action_t
-#include <experimental/optional>        // optional, nullopt_t
 #include <cassert>                      // assert
 
 namespace dctl::algo {
@@ -21,7 +20,7 @@ class problem
         using  state_type = State;
         using action_type = action_t<Actions>;
 public:
-        problem(State const& root, Actions succ, std::optional<UnaryPredicate> pred = std::nullop_t) noexcept
+        problem(State const& root, Actions succ, UnaryPredicate pred) noexcept
         :
                 initial_{root},
                 actions_{succ},

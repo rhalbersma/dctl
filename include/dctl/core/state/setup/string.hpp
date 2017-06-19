@@ -130,13 +130,15 @@ struct write<pdn::protocol, Token>
                         auto const bs = s.pieces(c);
                         auto n = 0;
                         for (auto sq : bs) {
-                                if (s.pieces(kings_c).test(sq))
+                                if (s.pieces(kings_c).test(sq)) {
                                         sstr << Token::king;            // king tag
+                                }
                                 sstr << Board::square_from_bit(sq) + 1; // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
                                 //        sstr << "^" << p.count(c);
-                                if (++n != bs.size())                  // still pieces remaining
+                                if (++n != bs.size()) {                 // still pieces remaining
                                         sstr << Token::comma;           // comma separator
+                                }
                         }
                 }
                 sstr << Token::quote << '\n';                           // closing quotes
@@ -173,10 +175,10 @@ struct read<Rules, Board, dxp::protocol, Token>
                         auto b = Board::bit_from_square(sq);
                         sstr >> ch;
                         switch (toupper(ch)) {
-                        case Token::black : by_color_piece[xstd::to_underlying_type(color::black)][isupper(ch)].insert(b); break;
-                        case Token::white : by_color_piece[xstd::to_underlying_type(color::white)][isupper(ch)].insert(b); break;
-                        case Token::empty : break;
-                        default           : assert(false);
+                        case Token::black: by_color_piece[xstd::to_underlying_type(color::black)][isupper(ch)].insert(b); break;
+                        case Token::white: by_color_piece[xstd::to_underlying_type(color::white)][isupper(ch)].insert(b); break;
+                        case Token::empty: break;
+                        default: assert(false);
                         }
                 }
                 return {{by_color_piece[0][0], by_color_piece[1][0], by_color_piece[0][1], by_color_piece[1][1]}, p_side };
