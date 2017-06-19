@@ -191,8 +191,8 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-		std::is_same_v<RulesType, rules_type> &&
-        	is_contents_precedence_v<RulesType>
+                std::is_same_v<RulesType, rules_type> &&
+                is_contents_precedence_v<RulesType>
         >...>
         constexpr auto num_captured_kings() const noexcept
         {
@@ -200,8 +200,8 @@ public:
         }
 
         template<class RulesType = rules_type, std::enable_if_t<
-		std::is_same_v<RulesType, rules_type> &&
-		is_ordering_precedence_v<RulesType>
+                std::is_same_v<RulesType, rules_type> &&
+                is_ordering_precedence_v<RulesType>
         >...>
         constexpr auto piece_order() const noexcept
         {

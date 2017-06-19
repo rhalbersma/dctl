@@ -383,7 +383,7 @@ void xreport(int depth, int64_t leafs, Stopwatch const& stopwatch)
         std::cout << " time ";
         std::cout << std::setw( 6) << lap.count();
 
-	auto const knps = static_cast<double>(leafs) / static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(lap).count());
+        auto const knps = static_cast<double>(leafs) / static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(lap).count());
         std::cout << " " << knps << " knps";
 
 /*

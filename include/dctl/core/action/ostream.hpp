@@ -147,7 +147,7 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> c
         case notation::algebraic: return detail::print_algebraic(ostr, a);
         case notation::numeric  : return detail::print_numeric(ostr, a);
         }
-	return ostr;
+        return ostr;
 }
 
 inline

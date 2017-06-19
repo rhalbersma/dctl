@@ -9,30 +9,30 @@ namespace dxp {
 
 struct Fixture
 {
-	factory
-	<
-		dxp::game_request,
-		dxp::game_acknowledge,
-		dxp::move,
-		dxp::back_request,
-		dxp::back_acknowledge,
-		dxp::game_end,
-		dxp::chat
-	> f;
+        factory
+        <
+                dxp::game_request,
+                dxp::game_acknowledge,
+                dxp::move,
+                dxp::back_request,
+                dxp::back_acknowledge,
+                dxp::game_end,
+                dxp::chat
+        > f;
 
-	struct visitor
-	{
-		std::vector<std::string>& data;
+        struct visitor
+        {
+                std::vector<std::string>& data;
 
-		template<class T>
-		auto operator()(T const& value) { data.push_back(value.str()); }
+                template<class T>
+                auto operator()(T const& value) { data.push_back(value.str()); }
 
-		auto operator()(std::monostate) {}
-	};
+                auto operator()(std::monostate) {}
+        };
 
-	std::vector<std::string> parsed;
-	visitor vis{parsed};
+        std::vector<std::string> parsed;
+        visitor vis{parsed};
 };
 
-}	// namespace dxp
-}	// namespace dctl::core
+}        // namespace dxp
+}        // namespace dctl::core

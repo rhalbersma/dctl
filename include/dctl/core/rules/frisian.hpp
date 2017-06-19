@@ -1,7 +1,7 @@
 #pragma once
-#include <dctl/util/type_traits.hpp>	// board_t, set_t
-#include <tuple>        		// make_tuple
-#include <type_traits>			// decay_t
+#include <dctl/util/type_traits.hpp>        // board_t, set_t
+#include <tuple>                        // make_tuple
+#include <type_traits>                        // decay_t
 
 namespace dctl::core {
 namespace block_adl {
@@ -27,9 +27,9 @@ struct frisian
                 constexpr auto max_captured_pieces = set_t<board_t<std::decay_t<decltype(a)>>>::capacity();
                 auto const num_captured_kings = a.num_captured_kings();
                 return std::make_tuple(
-			max_captured_pieces * (a.num_captured_pieces() + num_captured_kings) - num_captured_kings,
-			a.is_with_king()
-		);
+                        max_captured_pieces * (a.num_captured_pieces() + num_captured_kings) - num_captured_kings,
+                        a.is_with_king()
+                );
         };
 };
 
