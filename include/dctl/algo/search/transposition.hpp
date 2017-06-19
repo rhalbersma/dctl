@@ -132,10 +132,11 @@ public:
         auto print_move() const
         {
                 std::stringstream sstr;
-                if (has_move())
+                if (has_move()) {
                         sstr << move();
-                else
+                } else {
                         sstr << "...";
+                }
                 return sstr.str();
         }
 };

@@ -204,9 +204,13 @@ auto perft_inplace(Actions const& successor, State& s, int depth)
         -> int64_t
 {
         if constexpr(IsBulk) {
-                if (depth == 1) return successor.count(s);
+                if (depth == 1) {
+                	return successor.count(s);
+                }
         } else {
-                if (depth == 0) return 1;
+                if (depth == 0) {
+                	return 1;
+                }
         }
 
         auto const moves = legal_actions(successor, s);
@@ -223,9 +227,13 @@ auto perft_state(Actions const& successor, State const& s, int depth)
         -> int64_t
 {
         if constexpr(IsBulk) {
-                if (depth == 1) return successor.count(s);
+                if (depth == 1) {
+                	return successor.count(s);
+                }
         } else {
-                if (depth == 0) return 1;
+                if (depth == 0) {
+                	return 1;
+                }
         }
 
         auto const moves = successor.generate(s);

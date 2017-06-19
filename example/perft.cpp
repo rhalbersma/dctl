@@ -143,11 +143,11 @@ int main(int argc, char* argv[])
                 }
                 std::cout << "calling perft code, supplying parameters from <vm> variable\n";
         }
-        catch(std::exception& e) {
+        catch (std::exception& e) {
                 std::cerr << "error: " << e.what() << '\n';
                 return 1;
         }
-        catch(...) {
+        catch (...) {
                 std::cerr << "Exception of unknown type!\n";
                 return 1;
         }

@@ -28,6 +28,8 @@ class MoveCounter
 {
         int n{};
 public:
+        MoveCounter() = default;
+
         auto& operator++()
         {
                 ++n; return *this;

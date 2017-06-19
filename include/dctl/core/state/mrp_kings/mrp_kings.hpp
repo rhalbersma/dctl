@@ -27,7 +27,7 @@ private:
 
 public:
         template<class position>
-        constexpr MostRecentlyPushedKings(position const& p)
+        explicit constexpr MostRecentlyPushedKings(position const& p)
         :
                 color_piece_
                 {

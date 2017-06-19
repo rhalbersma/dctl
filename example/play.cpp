@@ -52,24 +52,24 @@ int main()
                         boost::transform(input, input.begin(), ::tolower);
 
                         if (actions.empty()) {
-                                if (input.empty() || input == "u")
+                                if (input.empty() || input == "u") {
                                         choice = -2;
-                                else if (input == "s")
+                                } else if (input == "s") {
                                         choice = -1;
-                                else {
+                                } else {
                                         std::cout << "Invalid input\n";
                                         continue;
                                 }
                         } else {
                                 std::stringstream sstr(input);
                                 if (not (sstr >> choice)) {
-                                        if (input.empty())
+                                        if (input.empty()) {
                                                 choice = 0;
-                                        else if (input == "s")
+                                        } else if (input == "s") {
                                                 choice = -1;
-                                        else if (input == "u")
+                                        } else if (input == "u") {
                                                 choice = -2;
-                                        else {
+                                        } else {
                                                 std::cout << "Invalid input\n";
                                                 continue;
                                         }
@@ -78,13 +78,15 @@ int main()
                         break;
                 }
 
-                if (choice == -1)
+                if (choice == -1) {
                         break;
+                }
                 if (choice == -2) {
-                        if (game.size() > 1)
+                        if (game.size() > 1) {
                                 game.pop();
-                        else
+                        } else {
                                 std::cout << "Cannot undo from the initial position!\n";
+                        }
                         continue;
                 }
 

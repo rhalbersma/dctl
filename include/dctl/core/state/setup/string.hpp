@@ -25,9 +25,9 @@ template<class Token>
 auto read_color(char c)
 {
         switch (c) {
-        case Token::black : return color::black;
-        case Token::white : return color::white;
-        default           : assert(false); return color::black;
+        case Token::black: return color::black;
+        case Token::white: return color::white;
+        default: assert(false); return color::black;
         }
 }
 

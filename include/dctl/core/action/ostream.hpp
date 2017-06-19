@@ -149,7 +149,7 @@ auto str_numeric(Action const& a)
 template<class CharT, class Traits, class Rules, class Board>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> const& a)
 {
-        switch(detail::getnotation(ostr, a)) {
+        switch (detail::getnotation(ostr, a)) {
         case notation::algebraic: return detail::print_algebraic(ostr, a);
         case notation::numeric  : return detail::print_numeric(ostr, a);
         }

@@ -67,9 +67,9 @@ public:
                 using namespace std::chrono;
                 auto const N = splits.size();
                 switch (N) {
-                case 0  : return units::zero();
-                case 1  : return duration_cast<units>(clock::now()  - splits.front());
-                default : return duration_cast<units>(splits.back() - splits.front());
+                case 0: return units::zero();
+                case 1: return duration_cast<units>(clock::now()  - splits.front());
+                default: return duration_cast<units>(splits.back() - splits.front());
                 }
         }
 
@@ -78,9 +78,9 @@ public:
                 using namespace std::chrono;
                 auto const N = splits.size();
                 switch (N) {
-                case 0  : return units::zero();
-                case 1  : return duration_cast<units>(clock::now()  - splits[N - 1]);
-                default : return duration_cast<units>(splits[N - 1] - splits[N - 2]);
+                case 0: return units::zero();
+                case 1: return duration_cast<units>(clock::now()  - splits[N - 1]);
+                default: return duration_cast<units>(splits[N - 1] - splits[N - 2]);
                 }
         }
 

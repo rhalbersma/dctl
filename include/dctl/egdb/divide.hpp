@@ -30,7 +30,7 @@ class dependencies
         using vertex_map = boost::property_map<Graph, boost::vertex_index_t>::type ;
         vertex_map m_vertex_map;
 public:
-        dependencies(int n)
+        explicit dependencies(int n)
         {
                 for (auto in = 2; in <= n; ++in) {
                         subdivide(in);

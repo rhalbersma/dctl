@@ -192,8 +192,6 @@ public:
         }
 };
 
-
-
 template<class T, class InternalHash = acme::fnv1a>
 class wrap
 {

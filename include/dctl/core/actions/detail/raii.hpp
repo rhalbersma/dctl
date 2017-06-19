@@ -21,7 +21,7 @@ public:
                 builder.toggle_king_targets();
         }
 
-        toggle_king_targets(Builder& b)
+        explicit toggle_king_targets(Builder& b)
         :
                 builder{b}
         {
@@ -105,7 +105,7 @@ public:
         set_king_jump(set_king_jump const&) = delete;
         set_king_jump& operator=(set_king_jump const&) = delete;
 
-        set_king_jump(Builder& b)
+        explicit set_king_jump(Builder& b)
         :
                 builder{b}
         {
@@ -126,7 +126,7 @@ public:
                 builder.into(piece::pawns);
         }
 
-        promotion(Builder& b)
+        explicit promotion(Builder& b)
         :
                 builder{b}
         {

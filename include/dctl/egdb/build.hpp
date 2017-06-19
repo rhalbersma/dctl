@@ -31,7 +31,7 @@ class build
         constexpr static auto draw = 2;
 
 public:
-        build(subdb_type const& subdb)
+        explicit build(subdb_type const& subdb)
         :
                 m_subdb{subdb},
                 btm_dtm(size(), unknown),

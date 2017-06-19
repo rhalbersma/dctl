@@ -153,11 +153,13 @@ struct GameObjective
         template<class State, class Actions>
         static int value(State const& s, Actions successor)
         {
-                if (is_cycle(s))
+                if (is_cycle(s)) {
                         return cycle<CycleScoring>::value(s);
+                }
 
-                if (is_terminal<TerminalDetection>()(s, successor))
+                if (is_terminal<TerminalDetection>()(s, successor)) {
                         return terminal<TerminalScoring>::value();
+                }
 
                 return -infinity();
         }

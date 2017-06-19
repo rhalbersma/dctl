@@ -110,21 +110,24 @@ private:
         {
                 statistics_.collect(ply);
 
-                if (is_interrupted())
+                if (is_interrupted()) {
                         return alpha;
+                }
 
                 // -INF <= alpha < beta <= +INF
                 assert(-infinity() <= alpha && alpha < beta && beta <= infinity());
 
                 // alpha < beta <= +INF implies alpha <= win_min
                 // with equality, any finite score will fail low
-                if (alpha == win_min())
+                if (alpha == win_min()) {
                         return alpha;
+                }
 
                 // -INF <= alpha < beta implies loss_min <= beta
                 // with equality, any finite score will fail high
-                if (beta == loss_min())
+                if (beta == loss_min()) {
                         return beta;
+                }
 
                 // alpha < beta implies alpha <= beta - 1,
                 // with the strict inequality if and only if is_pv(NodeType)
@@ -143,13 +146,15 @@ private:
                 }
 
                 // return evaluation in leaf nodes with valid moves
-                if (depth <= 0 || ply >= MAX_PLY)
+                if (depth <= 0 || ply >= MAX_PLY) {
                         return eval::score(n.state());
+                }
 
                 // TT cut-off for exact win/loss scores or for deep enough heuristic scores
                 auto TT_entry = TT.find(n);
-                if (TT_entry && (is_mate(TT_entry->value()) || TT_entry->depth() >= depth) && TT_entry->is_cutoff(alpha, beta))
+                if (TT_entry && (is_mate(TT_entry->value()) || TT_entry->depth() >= depth) && TT_entry->is_cutoff(alpha, beta)) {
                         return TT_entry->value();
+                }
 
                 // generate moves
                 auto const moves = successor.generate(n.state());
@@ -189,21 +194,23 @@ private:
 
                         // TODO: futility pruning
 
-                        if (is_pv(NodeType) && (&i == &move_order[0]))
+                        if (is_pv(NodeType) && (&i == &move_order[0])) {
                                 value = -squeeze(pvs<PV>(successor, q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
-                        else {
+                        } else {
                                 // TODO: late move reductions
 
                                 value = -squeeze(pvs<ZW>(successor, q, -stretch(alpha + 1), -stretch(alpha), depth - 1, ply + 1, continuation));
-                                if (is_pv(NodeType) && alpha < value && value < beta)
+                                if (is_pv(NodeType) && alpha < value && value < beta) {
                                         value = -squeeze(pvs<PV>(successor, q, -stretch(beta), -stretch(alpha), depth - 1, ply + 1, continuation));
+                                }
                         }
 
                         if (value > best_value) {
                                 best_value = value;
                                 best_move = i;
-                                if (best_value >= beta)
+                                if (best_value >= beta) {
                                         break;
+                                }
                                 if (best_value > alpha) {
                                         alpha = best_value;
                                         //refutation = make_variation(best_move, continuation);
@@ -306,7 +313,9 @@ private:
                 successor.generate(n.state(), moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
-                if (not (ply % 2)) std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
+                if (not (ply % 2)) {
+                	std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
+                }
                 std::cout << best_move;
                 std::cout << ((ply % 10 == 9) ? '\n' : ' ');
 

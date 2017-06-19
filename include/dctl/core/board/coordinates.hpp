@@ -45,11 +45,11 @@ constexpr auto rotate(coordinates<screen_centered> const coord, angle const a) n
         -> coordinates<screen_centered>
 {
         switch (a.value()) {
-        case   0 : return coord;
-        case  90 : return { -coord.y,  coord.x };
-        case 180 : return { -coord.x, -coord.y };
-        case 270 : return {  coord.y, -coord.x };
-        default  : assert(false); return coord;
+        case   0: return coord;
+        case  90: return { -coord.y,  coord.x };
+        case 180: return { -coord.x, -coord.y };
+        case 270: return {  coord.y, -coord.x };
+        default: assert(false); return coord;
         }
 }
 

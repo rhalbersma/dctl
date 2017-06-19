@@ -20,7 +20,7 @@ class database
         std::string m_dir_path;
         std::vector<std::experimental::filesystem::path> m_files;
 public:
-        database(std::string const& dir_path)
+        explicit database(std::string const& dir_path)
         :
                 m_dir_path{dir_path}
         {}
