@@ -12,7 +12,7 @@ template<class... Types>
 class factory
 {
         using input_type = std::string;
-        using key_type = std::string;        
+        using key_type = std::string;
         using argument_type = std::string;
         using result_type = boost::variant<std::monostate, Types...>;           // TODO: https://bugs.llvm.org//show_bug.cgi?id=33222
         using mapped_type = std::function<result_type(argument_type)>;

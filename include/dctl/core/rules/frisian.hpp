@@ -23,11 +23,11 @@ struct frisian
         constexpr static auto is_contents_precedence    = true;
         constexpr static auto is_modality_precedence    = true;
 
-        constexpr static auto precedence = [](auto const& a) {		
+        constexpr static auto precedence = [](auto const& a) {
                 constexpr auto max_captured_pieces = set_t<board_t<std::decay_t<decltype(a)>>>::capacity();
                 auto const num_captured_kings = a.num_captured_kings();
                 return std::make_tuple(
-			max_captured_pieces * (a.num_captured_pieces() + num_captured_kings) - num_captured_kings, 
+			max_captured_pieces * (a.num_captured_pieces() + num_captured_kings) - num_captured_kings,
 			a.is_with_king()
 		);
         };

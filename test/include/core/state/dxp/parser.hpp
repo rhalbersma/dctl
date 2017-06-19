@@ -7,7 +7,7 @@
 namespace dctl::core {
 namespace dxp {
 
-struct Fixture 
+struct Fixture
 {
 	factory
 	<
