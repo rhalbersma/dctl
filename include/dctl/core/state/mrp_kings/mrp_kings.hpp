@@ -102,8 +102,9 @@ private:
         template<class Action>
         void make_promote(Action const& m)
         {
-                if (not m.is_promotion())
+                if (not m.is_promotion()) {
                         return;
+                }
 
                 --num_pieces(m.to_move(), pawns_c);
                 ++num_pieces(m.to_move(), kings_c);
