@@ -11,6 +11,7 @@
 #include <iterator>                     // back_inserter
 #include <numeric>                      // accumulate
 #include <string>                       // string
+#include <utility>                      // move
 #include <vector>                       // vector
 
 namespace dctl::egdb {
@@ -20,13 +21,13 @@ class database
         std::string m_dir_path;
         std::vector<std::experimental::filesystem::path> m_files;
 public:
-        explicit database(std::string const& dir_path)
+        explicit database(std::string dir_path)
         :
-                m_dir_path{dir_path}
+                m_dir_path{std::move(dir_path)}
         {}
 
         template<class State>
-        auto lookup(State const&)
+        auto lookup(State const& /* s */)
         {
                 // compute slice
                 // look if slice is present

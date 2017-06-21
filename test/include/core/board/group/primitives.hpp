@@ -27,25 +27,25 @@ auto make_group(std::initializer_list<Element> elements, Op op, Inv inv, Element
 namespace group {
 
 template<class Group>
-constexpr auto const& set(Group const& g) noexcept
+constexpr decltype(auto) set(Group const& g) noexcept
 {
         return std::get<0>(g);
 }
 
 template<class Group>
-constexpr auto const& op(Group const& g) noexcept
+constexpr decltype(auto) op(Group const& g) noexcept
 {
         return std::get<1>(g);
 }
 
 template<class Group>
-constexpr auto const& inv(Group const& g) noexcept
+constexpr decltype(auto) inv(Group const& g) noexcept
 {
         return std::get<2>(g);
 }
 
 template<class Group>
-constexpr auto const& id(Group const& g) noexcept
+constexpr decltype(auto) id(Group const& g) noexcept
 {
         return std::get<3>(g);
 }
