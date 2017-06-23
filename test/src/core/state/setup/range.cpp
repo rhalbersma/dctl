@@ -12,7 +12,7 @@ using square = int;
 using B = board::checkers;
 
 template<class CharT, class Traits, int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board::rectangular<Width, Height, Inverted, OrthogonalCaptures> const& b)
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, rectangular<Width, Height, Inverted, OrthogonalCaptures> const& b)
 {
         using Coord = coordinates<upper_left>;
         for (auto y : boost::irange(0, b.height)) {

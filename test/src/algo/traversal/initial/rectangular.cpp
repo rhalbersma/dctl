@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(Board12x10)
         auto const leafs = std::vector<int64_t>{ 11, 121, 1'222, 10'053, 79'049, 584'100, 4'369'366, 31'839'056, 236'364'607, 1'742'748'504 };
 
         // board with canadian initial moves and orthogonal capture support: does not fit into 64 bits
-        auto const q = state<international, board::rectangular<12,10>>::initial();
+        auto const q = state<international, rectangular<12,10>>::initial();
         traversal::test(drop_duplicates_gen, q, leafs);
 }
 

@@ -25,29 +25,29 @@ BOOST_AUTO_TEST_CASE(IsEmpty)
         //static_assert(not is_placeable<rectangular<0, 0>>);
         //static_assert(not is_placeable<rectangular<0, 1>>);
         //static_assert(not is_placeable<rectangular<1, 0>>);
-        //static_assert(not is_placeable<board::rectangular<1, 1, true>>);
-        static_assert( is_placeable<board::rectangular<1, 1>>);
-        static_assert( is_placeable<board::rectangular<2, 1, true>>);
-        static_assert( is_placeable<board::rectangular<1, 2, true>>);
+        //static_assert(not is_placeable<rectangular<1, 1, true>>);
+        static_assert( is_placeable<rectangular<1, 1>>);
+        static_assert( is_placeable<rectangular<2, 1, true>>);
+        static_assert( is_placeable<rectangular<1, 2, true>>);
 }
 
 BOOST_AUTO_TEST_CASE(IsPushable)
 {
-        static_assert(not is_pushable<board::rectangular<1, 1>>);
-        static_assert(not is_pushable<board::rectangular<2, 1>>);
-        static_assert(not is_pushable<board::rectangular<1, 2>>);
-        static_assert( is_pushable<board::rectangular<2, 2>>);
+        static_assert(not is_pushable<rectangular<1, 1>>);
+        static_assert(not is_pushable<rectangular<2, 1>>);
+        static_assert(not is_pushable<rectangular<1, 2>>);
+        static_assert(    is_pushable<rectangular<2, 2>>);
 }
 
 BOOST_AUTO_TEST_CASE(IsJumpable)
 {
-        static_assert(not is_jumpable<board::rectangular<2, 2>>);
-        static_assert(not is_jumpable<board::rectangular<3, 2>>);
-        static_assert(not is_jumpable<board::rectangular<2, 3>>);
-        static_assert(not is_jumpable<board::rectangular<3, 3, true>>);
-        static_assert( is_jumpable<board::rectangular<3, 3>>);
-        static_assert( is_jumpable<board::rectangular<4, 3, true>>);
-        static_assert( is_jumpable<board::rectangular<3, 4, true>>);
+        static_assert(not is_jumpable<rectangular<2, 2>>);
+        static_assert(not is_jumpable<rectangular<3, 2>>);
+        static_assert(not is_jumpable<rectangular<2, 3>>);
+        static_assert(not is_jumpable<rectangular<3, 3, true>>);
+        static_assert(    is_jumpable<rectangular<3, 3>>);
+        static_assert(    is_jumpable<rectangular<4, 3, true>>);
+        static_assert(    is_jumpable<rectangular<3, 4, true>>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, board::BoardSequence)

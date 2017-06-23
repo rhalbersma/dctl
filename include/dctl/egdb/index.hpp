@@ -5,13 +5,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core.hpp>                        // is_onboard_pieces, is_promoted_pawns, is_overlapping_pieces
-#include <dctl/egdb/binomial.hpp>               // choose
-#include <dctl/util/type_traits.hpp>            // board_t, set_t
-#include <experimental/optional>                // nullopt, optional
-#include <cassert>                              // assert
-#include <cstdint>                              // int64_t
-#include <sstream>                              // stringstream
+#include <dctl/core.hpp>                // is_onboard_pieces, is_promoted_pawns, is_overlapping_pieces
+#include <dctl/egdb/binomial.hpp>       // choose
+#include <dctl/util/type_traits.hpp>    // board_t, set_t
+#include <cassert>                      // assert
+#include <cstdint>                      // int64_t
+#include <optional>                     // nullopt, optional
+#include <sstream>                      // stringstream
 
 namespace dctl::egdb {
 
@@ -149,7 +149,7 @@ public:
         }
 
         auto position(index_type n) const
-                -> std::experimental::optional<position_type>
+                -> std::optional<position_type>
         {
                 assert(0 <= n); assert(n < size());
 
@@ -169,7 +169,7 @@ public:
                 auto const wk = colex_unrank_combination<set_type>(wk_digit, wk_squares, wk_count, wk_dep);
 
                 if (core::is_overlapping_pieces(bp, wp, bk, wk)) {
-                        return std::experimental::nullopt;
+                        return std::nullopt;
                 }
 
                 assert( core::is_onboard_pieces<board_type>(bp | wp | bk | wk));

@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(Index)
 BOOST_AUTO_TEST_CASE(NumeralIsInverseOfPosition)
 {
         using rules_type = international;
-        using board_type = board::rectangular<6, 6>;
+        using board_type = rectangular<6, 6>;
         using state_type = state<rules_type, board_type>;
 
         using subdivision_type = subdivision<position_t<state_type>>;

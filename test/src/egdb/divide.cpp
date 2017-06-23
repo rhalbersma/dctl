@@ -11,14 +11,12 @@
 using namespace dctl::core;
 using namespace dctl::egdb;
 
-using Rules = international;
-using Board = board::rectangular<6,6>;
-using State = state<Rules, Board>;
+using state_type = state<international, rectangular<6,6>>;
 
 int main()
 {
         std::cout.imbue( std::locale( "en_US.utf8" ));
-        dependencies<position_t<State>> db(6,6);
+        dependencies<position_t<state_type>> db(6,6);
         //db.print_vertices();
         //db.print_edges();
         //db.sort();

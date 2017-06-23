@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
 using IntermediateBoardSequence = boost::mpl::vector
 <
         board::ktar<10, 12>,
-        board::rectangular<12, 10>
+        rectangular<12, 10>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)

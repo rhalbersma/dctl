@@ -20,7 +20,6 @@
 #include <sstream>                                      // stringstream
 
 namespace dctl::core {
-namespace board {
 namespace block_adl {
 
 template
@@ -140,5 +139,4 @@ public:
 
 using block_adl::rectangular;
 
-}       // namespace board
 }       // namespace dctl::core

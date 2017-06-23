@@ -25,17 +25,17 @@ using BSequence = boost::mpl::vector
         board::checkers,
         board::italian,
         board::spantsiretti,
-        board::rectangular<10, 9>,
-        board::rectangular<11, 9>,
+        rectangular<10, 9>,
+        rectangular<11, 9>,
         board::international,
         board::ktar<10, 11>,
         board::ktar<10, 12>,
-        board::rectangular<12, 10>,
+        rectangular<12, 10>,
         board::canadian,
         board::srilankan,
         board::dumm,
-        board::rectangular<19, 10>,
-        board::rectangular<27, 14>
+        rectangular<19, 10>,
+        rectangular<27, 14>
 >;
 
 using RSequence = boost::mpl::vector
