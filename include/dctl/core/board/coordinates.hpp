@@ -55,7 +55,7 @@ constexpr auto rotate(coordinates<screen_centered> const coord, angle const a) n
 
 constexpr auto swap_llo_ulo(int const value, int const bound) noexcept
 {
-        assert(value < bound);
+        // TODO: assert(value < bound);
         return (bound - 1) - value;
 }
 

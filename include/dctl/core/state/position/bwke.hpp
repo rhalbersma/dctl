@@ -35,7 +35,7 @@ public:
 
         constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) // Throws: Nothing.
         :
-                m_color{black_pawns | black_kings, white_pawns | white_kings},
+                m_color{{ black_pawns | black_kings, white_pawns | white_kings }},
                 m_kings{black_kings | white_kings},
                 m_empty{board_type::squares() ^ (m_color[0] | m_color[1])}
         {
@@ -44,7 +44,7 @@ public:
 
         constexpr position(set_type const black_pawns, set_type const white_pawns) // Throws: Nothing.
         :
-                m_color{black_pawns, white_pawns},
+                m_color{{ black_pawns, white_pawns }},
                 m_kings{},
                 m_empty{board_type::squares() ^ (m_color[0] | m_color[1])}
         {

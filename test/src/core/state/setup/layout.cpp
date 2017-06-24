@@ -34,8 +34,7 @@ using BSequence = boost::mpl::vector
         board::canadian,
         board::srilankan,
         board::dumm,
-        rectangular<19, 10>,
-        rectangular<27, 14>
+        rectangular<19, 10>
 >;
 
 using RSequence = boost::mpl::vector
