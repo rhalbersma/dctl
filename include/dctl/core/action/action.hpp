@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/board.hpp>      // board
+#include <dctl/core/board/board.hpp>            // board
 #include <dctl/core/rules/type_traits.hpp>      // is_contents_precedence, is_ordering_precedence
 #include <dctl/core/state/color_piece.hpp>      // pawn, king
 #include <dctl/util/conditional_base.hpp>       // conditional_base
