@@ -19,7 +19,7 @@
 
 namespace dctl::core {
 
-template<class Rules, class Board = rectangular<Rules>>
+template<class Rules, class Board = board<Rules>>
 struct Fixture
 {
         template<class Range>

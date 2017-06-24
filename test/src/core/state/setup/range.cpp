@@ -11,7 +11,7 @@
 using namespace dctl::core;
 
 template<class CharT, class Traits, class Board>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, rectangular<Board> const& b)
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board<Board> const& b)
 {
         using Coord = coordinates<upper_left>;
         for (auto y : boost::irange(0, b.height)) {
@@ -29,5 +29,5 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, rectangular<Board> con
 
 int main()
 {
-        std::cout << rectangular<checkers>{};
+        std::cout << board<checkers>{};
 }

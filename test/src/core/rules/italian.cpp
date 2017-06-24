@@ -32,15 +32,15 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         struct Action
         {
                 using rules_type [[maybe_unused]] = italian;
-                int num_captured_;
-                int num_captured_kings_;
-                piece with_;
-                std::vector<int> piece_order_;
+                int m_num_captured_pieces;
+                int m_num_captured_kings;
+                piece m_with;
+                std::vector<int> m_piece_order;
 
-                auto num_captured_pieces() const noexcept { return num_captured_;         }
-                auto num_captured_kings()  const noexcept { return num_captured_kings_;   }
-                auto is_with_king()        const noexcept { return with_ == piece::kings; }
-                auto const& piece_order()  const noexcept { return piece_order_;          }
+                auto num_captured_pieces() const noexcept { return m_num_captured_pieces;  }
+                auto num_captured_kings()  const noexcept { return m_num_captured_kings;   }
+                auto is_with_king()        const noexcept { return m_with == piece::kings; }
+                auto const& piece_order()  const noexcept { return m_piece_order;          }
         };
 
         auto const moves = std::vector<Action>

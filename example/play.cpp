@@ -16,7 +16,7 @@ using namespace dctl::core;
 int main()
 {
         using Rules = international;
-        using Board = rectangular<micro>;
+        using Board = board<micro>;
         using State = state<Rules, Board>;
 
         auto initial = State::initial();// setup::read<Rules, Board>()("W:B1,5,6,9,10:W11,12,14,15,16");

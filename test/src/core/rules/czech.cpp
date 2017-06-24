@@ -29,8 +29,8 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         struct Action
         {
                 using rules_type [[maybe_unused]] = czech;
-                piece with;
-                constexpr auto is_with_king() const noexcept { return with == piece::kings; }
+                piece m_with;
+                constexpr auto is_with_king() const noexcept { return m_with == piece::kings; }
         };
 
         auto const moves = std::vector<Action>

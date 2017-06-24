@@ -51,7 +51,7 @@ using block_adl::conditional_base_mrpk;
 
 }       // namespace detail
 
-template<class Rules, class Board = rectangular<Rules>>
+template<class Rules, class Board = board<Rules>>
 class state
 :
         detail::base_position<Board>,

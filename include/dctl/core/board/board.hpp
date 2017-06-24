@@ -24,7 +24,7 @@ namespace dctl::core {
 namespace block_adl {
 
 template<int Width, int Height, bool IsInverted = false, bool IsOrthogonalJump = false>
-struct pack
+struct rectangular
 {
         constexpr static auto width = Width;
         constexpr static auto height = Height;
@@ -32,15 +32,15 @@ struct pack
         constexpr static auto is_orthogonal_jump = IsOrthogonalJump;
 };
 
-template<class Board>
-class rectangular
+template<class Geometry>
+class board
 {
 public:
-        using type = rectangular;
-        constexpr static auto width              = width_v<Board>;
-        constexpr static auto height             = height_v<Board>;
-        constexpr static auto is_inverted        = is_inverted_v<Board>;
-        constexpr static auto is_orthogonal_jump = is_orthogonal_jump_v<Board>;
+        using type = board;
+        constexpr static auto width              = width_v<Geometry>;
+        constexpr static auto height             = height_v<Geometry>;
+        constexpr static auto is_inverted        = is_inverted_v<Geometry>;
+        constexpr static auto is_orthogonal_jump = is_orthogonal_jump_v<Geometry>;
 
         constexpr static auto edge = is_orthogonal_jump ? 2 : 1;
         constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
@@ -296,7 +296,7 @@ public:
 
 }       // namespace block_adl
 
-using block_adl::pack;
 using block_adl::rectangular;
+using block_adl::board;
 
 }       // namespace dctl::core

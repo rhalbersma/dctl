@@ -28,9 +28,9 @@ template<class Board>
 struct invert;
 
 template<int Width, int Height, bool IsInverted, bool IsOrthogonalJump>
-struct invert<rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
+struct invert<board<Width, Height, IsInverted, IsOrthogonalJump>>
 :
-        rectangular<Width, Height, not IsInverted, IsOrthogonalJump>
+        board<Width, Height, not IsInverted, IsOrthogonalJump>
 {};
 
 template<class Board>
@@ -40,9 +40,9 @@ template<class Board>
 struct remove_orthogonal_captures;
 
 template<int Width, int Height, bool IsInverted, bool IsOrthogonalJump>
-struct remove_orthogonal_captures<rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
+struct remove_orthogonal_captures<board<Width, Height, IsInverted, IsOrthogonalJump>>
 :
-        rectangular<Width, Height, IsInverted, false>
+        board<Width, Height, IsInverted, false>
 {};
 
 template<class Board>
@@ -52,9 +52,9 @@ template<class Board>
 struct add_orthogonal_captures;
 
 template<int Width, int Height, bool IsInverted, bool IsOrthogonalJump>
-struct add_orthogonal_captures<rectangular<Width, Height, IsInverted, IsOrthogonalJump>>
+struct add_orthogonal_captures<board<Width, Height, IsInverted, IsOrthogonalJump>>
 :
-        rectangular<Width, Height, IsInverted, true>
+        board<Width, Height, IsInverted, true>
 {};
 
 template<class Board>

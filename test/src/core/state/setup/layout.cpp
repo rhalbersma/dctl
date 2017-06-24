@@ -41,13 +41,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(initial, T, BoardSequence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ActionSize, T, RSequence)
 {
-        using A = action<T, rectangular<international>>;
+        using A = action<T, board<international>>;
         std::cout << "sizeof(Action) = " << sizeof(A) << "\n";
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(StateSize, T, RSequence)
 {
-        using S = state<T, rectangular<international>>;
+        using S = state<T, board<international>>;
         std::cout << "sizeof(State) = " << sizeof(S) << "(" << sizeof(square_t<board_t<S>>) << ")" << "\n";
 }
 

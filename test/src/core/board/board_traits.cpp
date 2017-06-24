@@ -4,9 +4,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <core/board/sequence.hpp>              // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
-                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
+                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, board<12, 10>, canadian, srilankan, dumm
 #include <core/board/transform.hpp>             // is_involution, is_idempotent
-#include <dctl/core/board/rectangular.hpp>      // rectangular
+#include <dctl/core/board/board.hpp>      // board
 #include <dctl/core/board/type_traits.hpp>           // is_empty, is_pushable, is_jumpable, invert, add_orthogonal_captures, remove_orthogonal_captures
 #include <dctl/core/state/color_piece.hpp>
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
@@ -22,28 +22,28 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_CASE(IsEmpty)
 {
-        static_assert( is_placeable_v<rectangular<pack<1, 1>>>);
-        static_assert( is_placeable_v<rectangular<pack<2, 1, true>>>);
-        static_assert( is_placeable_v<rectangular<pack<1, 2, true>>>);
+        static_assert( is_placeable_v<board<rectangular<1, 1>>>);
+        static_assert( is_placeable_v<board<rectangular<2, 1, true>>>);
+        static_assert( is_placeable_v<board<rectangular<1, 2, true>>>);
 }
 
 BOOST_AUTO_TEST_CASE(IsPushable)
 {
-        static_assert(not is_pushable_v<rectangular<pack<1, 1>>>);
-        static_assert(not is_pushable_v<rectangular<pack<2, 1>>>);
-        static_assert(not is_pushable_v<rectangular<pack<1, 2>>>);
-        static_assert(    is_pushable_v<rectangular<pack<2, 2>>>);
+        static_assert(not is_pushable_v<board<rectangular<1, 1>>>);
+        static_assert(not is_pushable_v<board<rectangular<2, 1>>>);
+        static_assert(not is_pushable_v<board<rectangular<1, 2>>>);
+        static_assert(    is_pushable_v<board<rectangular<2, 2>>>);
 }
 
 BOOST_AUTO_TEST_CASE(IsJumpable)
 {
-        static_assert(not is_jumpable_v<rectangular<pack<2, 2>>>);
-        static_assert(not is_jumpable_v<rectangular<pack<3, 2>>>);
-        static_assert(not is_jumpable_v<rectangular<pack<2, 3>>>);
-        static_assert(not is_jumpable_v<rectangular<pack<3, 3, true>>>);
-        static_assert(    is_jumpable_v<rectangular<pack<3, 3>>>);
-        static_assert(    is_jumpable_v<rectangular<pack<4, 3, true>>>);
-        static_assert(    is_jumpable_v<rectangular<pack<3, 4, true>>>);
+        static_assert(not is_jumpable_v<board<rectangular<2, 2>>>);
+        static_assert(not is_jumpable_v<board<rectangular<3, 2>>>);
+        static_assert(not is_jumpable_v<board<rectangular<2, 3>>>);
+        static_assert(not is_jumpable_v<board<rectangular<3, 3, true>>>);
+        static_assert(    is_jumpable_v<board<rectangular<3, 3>>>);
+        static_assert(    is_jumpable_v<board<rectangular<4, 3, true>>>);
+        static_assert(    is_jumpable_v<board<rectangular<3, 4, true>>>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, BoardSequence)

@@ -19,28 +19,28 @@ using Sequence = boost::mpl::vector
         checkers,
         italian,
         spantsiretti,
-        pack<10, 9>,
-        pack<11, 9>,
+        rectangular<10, 9>,
+        rectangular<11, 9>,
         international,
         frisian,
         ktar<10, 11>,
         ktar<10, 12>,
-        pack<12, 10>,
-        pack<12, 12>,
-        pack<12, 12, true>,
-        pack<14, 14>,
-        pack<19, 10>
+        rectangular<12, 10>,
+        rectangular<12, 12>,
+        rectangular<12, 12, true>,
+        rectangular<14, 14>,
+        rectangular<19, 10>
 >;
 
 template<class T>
-struct wrap_rectangular
+struct wrap_board
 {
-    using type = rectangular<T>;
+    using type = board<T>;
 };
 
 using BoardSequence = typename boost::mpl::transform<
         Sequence,
-        wrap_rectangular<boost::mpl::_1>
+        wrap_board<boost::mpl::_1>
 >::type;
 
 }       // namespace dctl::core

@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_SUITE(WalkinitialBoard8x8)
 
 BOOST_AUTO_TEST_CASE(brazilianinitial)
 {
-        auto const p = state<brazilian, rectangular<checkers>>::initial();
+        auto const p = state<brazilian, board<checkers>>::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
                 { 7, 49, 302, 1'469, 7'473, 37'628, 187'302, 907'836, 4'431'847, 21'566'606, 105'534'946, 512'171'742, 2'483'592'238 },
                 { 7, 49, 302, 1'469, 7'473, 37'628, 187'302, 907'830, 4'431'766, 21'560'022, 105'491'257, 511'882'477, 2'481'546'396 }

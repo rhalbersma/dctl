@@ -11,7 +11,7 @@
 using namespace dctl::core;
 using namespace dctl::egdb;
 
-using state_type = state<international, rectangular<pack<6,6>>>;
+using state_type = state<international, board<micro>>;
 
 int main()
 {

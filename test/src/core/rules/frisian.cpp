@@ -32,14 +32,14 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         struct action
         {
                 using rules_type [[maybe_unused]] = frisian;
-                using board_type [[maybe_unused]] = rectangular<frisian>;
-                int num_captured_;
-                int num_captured_kings_;
-                piece with_;
+                using board_type [[maybe_unused]] = board<frisian>;
+                int m_num_captured_pieces;
+                int m_num_captured_kings;
+                piece m_with;
 
-                constexpr auto num_captured_pieces() const noexcept { return num_captured_;        }
-                constexpr auto num_captured_kings()  const noexcept { return num_captured_kings_;  }
-                constexpr auto is_with_king()        const noexcept { return with_ == piece::kings; }
+                constexpr auto num_captured_pieces() const noexcept { return m_num_captured_pieces;  }
+                constexpr auto num_captured_kings()  const noexcept { return m_num_captured_kings;   }
+                constexpr auto is_with_king()        const noexcept { return m_with == piece::kings; }
         };
 
         auto const moves = std::vector<action>
