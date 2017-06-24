@@ -12,7 +12,7 @@
 #include <dctl/core/actions/select/jump.hpp>                 // jumps
 #include <dctl/core/board/angle.hpp>                         // rotate, inverse
 #include <dctl/core/board/bearing.hpp>                       // bearing
-#include <dctl/core/board/jump_sources.hpp>             // jump_sources
+#include <dctl/core/board/jump_sources.hpp>                     // jump_sources
 #include <dctl/core/board/ray.hpp>                           // make_iterator, rotate, mirror, turn
 #include <dctl/core/state/color_piece.hpp>                         // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>                         // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
@@ -20,8 +20,6 @@
 #include <cassert>                                      // assert
 #include <iterator>                                     // prev
 #include <type_traits>                                  // is_same
-
-#include <dctl/core/board/type_traits.hpp>                        // promotion
 
 namespace dctl::core {
 namespace detail {
@@ -94,7 +92,7 @@ private:
                         m_builder.pieces(to_move_c, piece_c),
                         m_builder.targets(),
                         m_builder.pieces(empty_c)
-                ).for_each([this](auto const from_sq){
+                ).for_each([this](auto const from_sq) {
                         jump(along_ray<Direction>(from_sq));
                 });
         }
@@ -265,7 +263,7 @@ private:
 
         auto is_promotion(int const sq) const // Throws: Nothing.
         {
-                return promotion_v<board_type, to_move_>.test(sq);
+                return board_type::promotion(Side).test(sq);
         }
 };
 

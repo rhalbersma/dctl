@@ -5,14 +5,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/type_traits.hpp>   // squares
-#include <dctl/core/state/color_piece.hpp>    // color, black, white, piece, pawns, kings, occup, empty
-#include <dctl/core/state/position/legal.hpp> // is_legal
-#include <dctl/util/type_traits.hpp>    // set_t
-#include <xstd/type_traits.hpp>         // to_underlying_type
-#include <array>                        // array
-#include <tuple>                        // tie
-#include <type_traits>                  // is_pod
+#include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/core/state/position/legal.hpp>   // is_legal
+#include <dctl/util/type_traits.hpp>            // set_t
+#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <array>                                // array
+#include <tuple>                                // tie
+#include <type_traits>                          // is_pod
 
 namespace dctl::core {
 namespace c2p2e {
@@ -38,7 +37,7 @@ public:
         :
                 m_color{black_pawns | black_kings, white_pawns | white_kings},
                 m_piece{black_pawns | white_pawns, black_kings | white_kings},
-                m_empty{squares_v<board_type> ^ (m_color[0] | m_color[1])}
+                m_empty{board_type::squares() ^ (m_color[0] | m_color[1])}
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
         }
@@ -47,7 +46,7 @@ public:
         :
                 m_color{black_pawns, white_pawns},
                 m_piece{black_pawns | white_pawns, {}},
-                m_empty{squares_v<board_type> ^ (m_color[0] | m_color[1])}
+                m_empty{board_type::squares() ^ (m_color[0] | m_color[1])}
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns));
         }
@@ -68,7 +67,7 @@ public:
                 set_pieces(a.with()).erase(a.from());
                 set_pieces(a.into()).insert(a.dest());
 
-                m_empty = squares_v<board_type> ^ (pieces(black_c) | pieces(white_c));
+                m_empty = board_type::squares() ^ (pieces(black_c) | pieces(white_c));
         }
 
         constexpr auto pieces(color const c) const noexcept
@@ -88,7 +87,7 @@ public:
 
         constexpr auto pieces(occup_) const noexcept
         {
-                return squares_v<board_type> ^ m_empty;
+                return board_type::squares() ^ m_empty;
         }
 
         constexpr auto pieces(empty_) const noexcept

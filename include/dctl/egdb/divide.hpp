@@ -147,7 +147,7 @@ private:
                         return lhs.size() < rhs.size();
                 })).size();
 
-                std::sort(m_subdivisions.begin(), m_subdivisions.end(), [](auto const& lhs, auto const& rhs){
+                std::sort(m_subdivisions.begin(), m_subdivisions.end(), [](auto const& lhs, auto const& rhs) {
                         return lhs.size() < rhs.size();
                 });
 

@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, board
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, board::BoardSequence)
 {
-        BOOST_CHECK_EQUAL(squares_v<T>.size(), T::size());
+        BOOST_CHECK_EQUAL(T::squares().size(), T::size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, board::BoardSequence)
@@ -93,23 +93,23 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, board::Boar
         auto const files = boost::irange(0, T::width);
 
         BOOST_CHECK(
-                boost::algorithm::all_of(files, [=](auto i){
-                        return file_v<T>(black_c, i) == file_v<T>(white_c, T::width - 1 - i);
+                boost::algorithm::all_of(files, [=](auto i) {
+                        return T::file(black_c, i) == T::file(white_c, T::width - 1 - i);
                 })
         );
 
         BOOST_CHECK(
-                boost::algorithm::all_of(files, [=](auto i){
-                        return boost::algorithm::all_of(files, [=](auto j){
-                                return i == j ? true : disjoint(file_v<T>(white_c, i), file_v<T>(white_c, j));
+                boost::algorithm::all_of(files, [=](auto i) {
+                        return boost::algorithm::all_of(files, [=](auto j) {
+                                return i == j ? true : disjoint(T::file(white_c, i), T::file(white_c, j));
                         });
                 })
         );
 
         BOOST_CHECK(
-                boost::accumulate(files, set_t<T>{}, [](auto result, auto i){
-                        return result ^ file_v<T>(white_c, i);
-                }) == squares_v<T>
+                boost::accumulate(files, set_t<T>{}, [](auto result, auto i) {
+                        return result ^ T::file(white_c, i);
+                }) == T::squares()
         );
 }
 
@@ -118,23 +118,23 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, board::BoardSe
         auto const rows = boost::irange(0, T::height);
 
         BOOST_CHECK(
-                boost::algorithm::all_of(rows, [=](auto i){
-                        return rank_v<T>(black_c, i) == rank_v<T>(white_c, T::height - 1 - i);
+                boost::algorithm::all_of(rows, [=](auto i) {
+                        return T::rank(black_c, i) == T::rank(white_c, T::height - 1 - i);
                 })
         );
 
         BOOST_CHECK(
-                boost::algorithm::all_of(rows, [=](auto i){
-                        return boost::algorithm::all_of(rows, [=](auto j){
-                                return i == j ? true : disjoint(rank_v<T>(white_c, i), rank_v<T>(white_c, j));
+                boost::algorithm::all_of(rows, [=](auto i) {
+                        return boost::algorithm::all_of(rows, [=](auto j) {
+                                return i == j ? true : disjoint(T::rank(white_c, i), T::rank(white_c, j));
                         });
                 })
         );
 
         BOOST_CHECK(
-                boost::accumulate(rows, set_t<T>{}, [](auto result, auto i){
-                        return result ^ rank_v<T>(white_c, i);
-                }) == squares_v<T>
+                boost::accumulate(rows, set_t<T>{}, [](auto result, auto i) {
+                        return result ^ T::rank(white_c, i);
+                }) == T::squares()
         );
 }
 

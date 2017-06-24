@@ -5,12 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/detail/set_filter.hpp>        // set_filter
-#include <dctl/core/board/initial.hpp>                  // initial
-#include <dctl/core/board/file_rank.hpp>                // file, rank
-#include <dctl/core/board/rectangular.hpp>              // rectangular
-#include <dctl/core/state/color_piece.hpp>              // opposite
-#include <algorithm>                                    // min, max
+#include <dctl/core/board/rectangular.hpp>      // rectangular
+#include <dctl/core/state/color_piece.hpp>      // opposite
+#include <algorithm>                            // min, max
 
 namespace dctl::core {
 
@@ -58,22 +55,5 @@ struct add_orthogonal_captures<rectangular<Width, Height, IsInverted, IsOrthogon
 
 template<class Board>
 using add_orthogonal_captures_t = typename add_orthogonal_captures<Board>::type;
-
-template<class Board>
-constexpr file<Board> file_v{};
-
-template<class Board>
-constexpr rank<Board> rank_v{};
-
-template<class Board, class Color>
-constexpr auto promotion_v = rank_v<Board>(not Color{}, 0);
-
-template<class Board>
-constexpr auto squares_v = detail::set_filter<Board>([](auto const sq) {
-        return sq < Board::size();
-});
-
-template<class Board>
-constexpr auto initial_v = initial<Board>{};
 
 }       // namespace dctl::core

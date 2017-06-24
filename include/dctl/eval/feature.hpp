@@ -5,11 +5,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions.hpp>             // count, select::push
-#include <dctl/core/board/type_traits.hpp>        // file, row
-#include <dctl/core/state/color_piece.hpp>         // opposite
-#include <dctl/eval/weight.hpp>    // Weight
-#include <cstdlib>                      // abs
+#include <dctl/core/actions.hpp>                // count, select::push
+#include <dctl/core/state/color_piece.hpp>      // opposite
+#include <dctl/eval/weight.hpp>                 // Weight
+#include <cstdlib>                              // abs
 
 namespace dctl::eval {
 
@@ -47,7 +46,7 @@ public:
                 using board_type = core::board_t<State>;
                 auto score = 0;
                 for (auto i = 1; i < board_type::height; ++i) {
-                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(Color{}) & core::rank_v<board_type>(Color{}, i)).size());
+                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(Color{}) & board_type::rank(Color{}, i)).size());
                 }
                 return score;
         }
@@ -61,8 +60,8 @@ public:
                 for (auto i = 1; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::center[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>( Color{}, i)).size()) +
-                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>(not Color{}, i)).size())
+                                static_cast<int>((s.pieces(Color{}) & board_type::file( Color{}, i)).size()) +
+                                static_cast<int>((s.pieces(Color{}) & board_type::file(not Color{}, i)).size())
                         );
                 }
                 return score;
@@ -77,8 +76,8 @@ public:
                 for (auto i = 0; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::balance[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>( Color{}, i)).size()) -
-                                static_cast<int>((s.pieces(Color{}) & core::file_v<board_type>(not Color{}, i)).size())
+                                static_cast<int>((s.pieces(Color{}) & board_type::file( Color{}, i)).size()) -
+                                static_cast<int>((s.pieces(Color{}) & board_type::file(not Color{}, i)).size())
                         );
                 }
                 return -abs(score);

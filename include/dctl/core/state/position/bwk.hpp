@@ -5,7 +5,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/type_traits.hpp>      // squares
 #include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
@@ -109,7 +108,7 @@ public:
 
         constexpr auto pieces(empty_) const noexcept
         {
-                return squares_v<board_type> ^ pieces(occup_c);
+                return board_type::squares() ^ pieces(occup_c);
         }
 
         template<class... Args>

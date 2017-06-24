@@ -5,17 +5,16 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/angle.hpp>                    // angle, is_orthogonal
-#include <dctl/core/board/jump_start.hpp>          // jump_start
+#include <dctl/core/board/angle.hpp>            // angle, is_orthogonal
 #include <dctl/core/board/push_sources.hpp>
 #include <dctl/core/board/ray.hpp>
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>
-#include <dctl/util/type_traits.hpp>                    // board_t, rules_t, set_t, value_t
-#include <algorithm>                                    // none_of
-#include <cassert>                                      // assert
-#include <iterator>                                     // begin, end, prev
-#include <type_traits>                                  // is_same
+#include <dctl/util/type_traits.hpp>            // board_t, rules_t, set_t, value_t
+#include <algorithm>                            // none_of
+#include <cassert>                              // assert
+#include <iterator>                             // begin, end, prev
+#include <type_traits>                          // is_same
 
 namespace dctl::core {
 namespace detail {
@@ -139,7 +138,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                auto constexpr js = jump_start<board_type>{}(angle{Direction});
+                auto constexpr js = board_type::jump_start(angle{Direction});
                 return pieces(empty_c) & js;
         }
 
@@ -190,14 +189,14 @@ private:
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
-                ){
+                ) {
                         assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
-                ){
+                ) {
                         assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         if (m_actions.empty() || is_small() || is_unique()) {
                                 m_actions.push_back(m_candidate_action);
@@ -206,7 +205,7 @@ private:
                 if constexpr (
                         not is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
-                ){
+                ) {
                         if (m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back())) {
                                 return m_actions.push_back(m_candidate_action);
                         }
@@ -220,7 +219,7 @@ private:
                 if constexpr (
                         not is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
-                ){
+                ) {
                         if (m_actions.empty()) {
                                 return m_actions.push_back(m_candidate_action);
                         }

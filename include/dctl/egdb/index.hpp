@@ -68,10 +68,10 @@ public:
         using board_type = core::board_t<Position>;
         using   set_type = core::  set_t<Position>;
 
-        constexpr static auto bp_squares = (core::squares_v<board_type> ^ core::promotion_v<board_type, core::black_>).size();
-        constexpr static auto wp_squares = (core::squares_v<board_type> ^ core::promotion_v<board_type, core::white_>).size();
-        constexpr static auto bk_squares =  core::squares_v<board_type>.size();
-        constexpr static auto wk_squares =  core::squares_v<board_type>.size();
+        constexpr static auto bp_squares = (board_type::squares() ^ board_type::promotion(core::black_c)).size();
+        constexpr static auto wp_squares = (board_type::squares() ^ board_type::promotion(core::white_c)).size();
+        constexpr static auto bk_squares =  board_type::squares().size();
+        constexpr static auto wk_squares =  board_type::squares().size();
 
         int n_count, b_count, w_count;
         int bp_count, wp_count, bk_count, wk_count;
@@ -180,8 +180,8 @@ public:
 private:
         auto count_legal() const
         {
-                constexpr auto b0_squares = core::promotion_v<board_type, core::white_>.size();
-                constexpr auto w0_squares = core::promotion_v<board_type, core::black_>.size();
+                constexpr auto b0_squares = board_type::promotion(core::white_c).size();
+                constexpr auto w0_squares = board_type::promotion(core::black_c).size();
                 constexpr auto center_squares = board_type::size() - b0_squares - w0_squares;
                 auto n = 0LL;
                 for (auto b0_count  = 0; b0_count <= std::min(b0_squares, bp_count); ++b0_count) {

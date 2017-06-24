@@ -19,7 +19,7 @@ auto is_associativity(Object const& obj, Group const& g) noexcept
         auto const op = group::op(g);
 
         return boost::algorithm::all_of(set, [&](auto const& a) {
-                return boost::algorithm::all_of(set, [&](auto const& b){
+                return boost::algorithm::all_of(set, [&](auto const& b) {
                         return op(obj, op(a, b)) == op(op(obj, a), b);
                 });
         });

@@ -20,7 +20,7 @@ auto is_closure(Group const& g) noexcept
         auto const op = group::op(g);
 
         return boost::algorithm::all_of(set, [&](auto const& a) {
-                return boost::algorithm::all_of(set, [&](auto const& b){
+                return boost::algorithm::all_of(set, [&](auto const& b) {
                         return set.cend() != boost::find(set, op(a, b));
                 });
         });
@@ -33,7 +33,7 @@ auto is_associativity(Group const& g) noexcept
         auto const op = group::op(g);
 
         return boost::algorithm::all_of(set, [&](auto const& a) {
-                return boost::algorithm::all_of(set, [&](auto const& b){
+                return boost::algorithm::all_of(set, [&](auto const& b) {
                         return boost::algorithm::all_of(set, [&](auto const& c) {
                                 return
                                         op(a, op(b, c)) ==
@@ -51,7 +51,7 @@ auto is_identity(Group const& g) noexcept
         auto const op = group::op(g);
 
         return set.cend() != boost::find_if(set, [&](auto const& id) {
-                return boost::algorithm::all_of(set, [&](auto const& elem){
+                return boost::algorithm::all_of(set, [&](auto const& elem) {
                         return
                                 op(elem, id) == elem &&
                                 op(id, elem) == elem
@@ -69,7 +69,7 @@ auto is_inverse(Group const& g) noexcept
         auto const inv = group::inv(g);
 
         return boost::algorithm::all_of(set, [&](auto const& elem) {
-                return set.cend() != boost::find_if(set, [&](auto const& elem_inv){
+                return set.cend() != boost::find_if(set, [&](auto const& elem_inv) {
                         return
                                 inv(elem) == elem_inv &&
                                 op(elem, elem_inv) == id &&

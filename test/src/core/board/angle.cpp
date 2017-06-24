@@ -18,8 +18,8 @@ BOOST_AUTO_TEST_SUITE(angleangle)
 
 BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllangles)
 {
-        auto const op = [](auto i, auto j){ return rotate(i, j); };
-        auto const inv = [](auto i){ return inverse(i); };
+        auto const op = [](auto i, auto j) { return rotate(i, j); };
+        auto const inv = [](auto i) { return inverse(i); };
 
         auto const C1 = make_group(
                 { 0_deg },
@@ -52,8 +52,8 @@ BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllangles)
         auto const angles = boost::irange(0, 360);
 
         BOOST_CHECK(
-                boost::algorithm::all_of(C_N, [=](auto const& g){
-                        return boost::algorithm::all_of(angles, [&](auto const a){
+                boost::algorithm::all_of(C_N, [=](auto const& g) {
+                        return boost::algorithm::all_of(angles, [&](auto const a) {
                                 return group::action::is_realized(angle{a}, g);
                         });
                 })

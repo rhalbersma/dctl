@@ -5,13 +5,12 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/type_traits.hpp>   // squares
-#include <dctl/core/state/color_piece.hpp>    // color, black, white, piece, pawns, kings, occup, empty
-#include <dctl/core/state/position/legal.hpp> // is_legal
-#include <dctl/util/type_traits.hpp>    // set_t
-#include <hash_append/hash_append.h>    // hash_append
-#include <tuple>                        // tie
-#include <type_traits>                  // is_pod
+#include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/core/state/position/legal.hpp>   // is_legal
+#include <dctl/util/type_traits.hpp>            // set_t
+#include <hash_append/hash_append.h>            // hash_append
+#include <tuple>                                // tie
+#include <type_traits>                          // is_pod
 
 namespace dctl::core {
 namespace wpo {
@@ -143,7 +142,7 @@ public:
 
         constexpr auto pieces(empty_) const noexcept
         {
-                return squares_v<board_type> ^ m_occup;
+                return board_type::squares() ^ m_occup;
         }
 
         template<class... Args>

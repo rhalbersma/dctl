@@ -215,7 +215,7 @@ auto perft_inplace(Actions const& successor, State& s, int depth)
         }
 
         auto const moves = legal_actions(successor, s);
-        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a){
+        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a) {
                 s.make(a);
                 auto const res = sum + perft_inplace(successor, s, depth - 1);
                 s.undo(a);
@@ -238,7 +238,7 @@ auto perft_state(Actions const& successor, State const& s, int depth)
         }
 
         auto const moves = successor.generate(s);
-        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a){
+        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a) {
                 return sum + perft_state<IsBulk>(successor, result(s, a), depth - 1);
         });
 }
@@ -264,7 +264,7 @@ auto perft_node(Actions const& successor, Node const& n, int depth)
         }
 
         auto const moves = out_edges(n, successor);
-        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a){
+        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a) {
                 return sum + perft_node<IsBulk>(successor, child(n, a), depth - 1);
         });
 }
@@ -325,7 +325,7 @@ auto dfs_visit(ImplicitGraph const& g, Vertex const& u, Visitor& vis)
         }
 
         auto const moves = out_edges(u, g);
-        auto const res = std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& e){
+        auto const res = std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& e) {
                 return sum + dfs_visit(g, child(u, e), vis);
         });
 

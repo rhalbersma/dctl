@@ -44,7 +44,7 @@ public:
         {
                 auto const sources = s.pieces(to_move_c, piece_c);
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        sources.for_each([&, this](auto const& from_sq){
+                        sources.for_each([&, this](auto const& from_sq) {
                                 ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, s.pieces(empty_c));
                         });
                 } else {
@@ -72,7 +72,7 @@ private:
                 ray::classical(
                         from,
                         destinations
-                ).for_each([this, from](auto const dest_sq){
+                ).for_each([this, from](auto const dest_sq) {
                         m_actions.emplace_back(
                                 *from,
                                 dest_sq
@@ -86,7 +86,7 @@ private:
                 king_push_targets<Direction>{}(
                         sources,
                         destinations
-                ).for_each([this](auto const dest_sq){
+                ).for_each([this](auto const dest_sq) {
                         m_actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq

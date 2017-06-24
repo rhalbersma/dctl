@@ -11,7 +11,6 @@
 #include <dctl/core/board/bearing.hpp>                          // bearing
 #include <dctl/core/board/push_targets.hpp>                     // push_targets
 #include <dctl/core/board/ray.hpp>                              // make_iterator
-#include <dctl/core/board/type_traits.hpp>                      // promotion
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, pawn_
 #include <dctl/util/type_traits.hpp>                            // board_t, set_t, value_t
 #include <iterator>                                             // prev
@@ -59,7 +58,7 @@ private:
                 pawn_push_targets<Direction>{}(
                         sources,
                         destinations
-                ).for_each([this](auto const dest_sq){
+                ).for_each([this](auto const dest_sq) {
                         m_actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq,
@@ -76,7 +75,7 @@ private:
 
         auto is_promotion(int const sq) const // Throws: Nothing.
         {
-                return promotion_v<board_type, to_move_>.test(sq);
+                return board_type::promotion(Side).test(sq);
         }
 };
 

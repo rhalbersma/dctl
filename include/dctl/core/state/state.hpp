@@ -5,7 +5,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/position.hpp>
@@ -25,7 +24,7 @@ namespace block_adl {
 template<class Board>
 struct base_position
 {
-        using position_type = wpo::position<Board>;
+        using position_type = bwk::position<Board>;
         position_type m_position;
 };
 
@@ -92,16 +91,16 @@ public:
                 -> state
         {
                 constexpr auto separation = initial_position_gap_v<Rules> + Board::height % 2;
-                constexpr auto black_pawns = initial_v<board_type>(black_c, separation);
-                constexpr auto white_pawns = initial_v<board_type>(white_c, separation);
+                constexpr auto black_pawns = board_type::initial(black_c, separation);
+                constexpr auto white_pawns = board_type::initial(white_c, separation);
                 return {{black_pawns, white_pawns}, color::white};
         }
 
         constexpr static auto initial(int const separation)
                 -> state
         {
-                auto const black_pawns = initial_v<board_type>(black_c, separation);
-                auto const white_pawns = initial_v<board_type>(white_c, separation);
+                auto const black_pawns = board_type::initial(black_c, separation);
+                auto const white_pawns = board_type::initial(white_c, separation);
                 return {{black_pawns, white_pawns}, color::white};
         }
 

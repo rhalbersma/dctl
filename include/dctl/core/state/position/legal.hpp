@@ -5,23 +5,20 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/type_traits.hpp>        // promotion_v, squares_v
-#include <dctl/util/type_traits.hpp> // board_t
-
 namespace dctl::core {
 
 template<class Board, class Set>
 constexpr auto is_onboard_pieces(Set const occupied) noexcept
 {
-        return is_subset_of(occupied, squares_v<Board>);
+        return is_subset_of(occupied, Board::squares());
 }
 
 template<class Board, class Set>
 constexpr auto is_promoted_pawns(Set const black_pawns, Set const white_pawns) noexcept
 {
         return
-                intersects(black_pawns, promotion_v<Board, black_>) ||
-                intersects(white_pawns, promotion_v<Board, white_>)
+                intersects(black_pawns, Board::promotion(black_c)) ||
+                intersects(white_pawns, Board::promotion(white_c))
         ;
 }
 
