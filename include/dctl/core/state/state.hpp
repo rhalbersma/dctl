@@ -5,8 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/board/type_traits.hpp>
 #include <dctl/core/rules/type_traits.hpp>
+#include <dctl/core/state/color_piece.hpp>
 #include <dctl/core/state/position.hpp>
 #include <dctl/util/conditional_base.hpp>       // conditional_base
 #include <dctl/util/type_traits.hpp>            // set_t
@@ -50,7 +51,7 @@ using block_adl::conditional_base_mrpk;
 
 }       // namespace detail
 
-template<class Rules, class Board = rectangular_t<Rules>>
+template<class Rules, class Board = rectangular<Rules>>
 class state
 :
         detail::base_position<Board>,

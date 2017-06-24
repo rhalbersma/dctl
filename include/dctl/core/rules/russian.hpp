@@ -23,7 +23,6 @@ struct russian
 }       // namespace block_adl
 
 using block_adl::russian;
-
 using shashki = russian;
 
 }       // namespace dctl::core

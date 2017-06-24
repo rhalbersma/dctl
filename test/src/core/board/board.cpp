@@ -3,7 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/board/sequence.hpp>              // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
+#include <core/board/sequence.hpp>              // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/range/irange.hpp>               // irange
@@ -14,7 +14,7 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, board::BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
 {
         BOOST_CHECK(
                 boost::algorithm::all_of(boost::irange(0, T::size()), [](auto const sq) {

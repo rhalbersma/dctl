@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE(Walkinternationalshashki)
 
 BOOST_AUTO_TEST_CASE(Frontrows)
 {
-        auto const p = setup::read<international, board::international, pdn::protocol>()(
+        auto const p = setup::read<international>()(
                 "W:B16,17,18,19,20:W31,32,33,34,35"
         );
         auto const leafs = std::vector<int64_t>

@@ -35,7 +35,7 @@ public:
         constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) // Throws: Nothing.
         :
                 m_color_piece{{ {{ black_pawns, black_kings }}, {{ white_pawns, white_kings }} }},
-                m_empty{board_type::squares() ^ (black_pawns | white_pawns | black_kings | white_kings)}
+                m_empty{board_type::squares ^ (black_pawns | white_pawns | black_kings | white_kings)}
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
         }
@@ -43,7 +43,7 @@ public:
         constexpr position(set_type const black_pawns, set_type const white_pawns) // Throws: Nothing.
         :
                 m_color_piece{{ {{ black_pawns, {} }}, {{ white_pawns, {} }} }},
-                m_empty{board_type::squares() ^ (black_pawns | white_pawns)}
+                m_empty{board_type::squares ^ (black_pawns | white_pawns)}
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns));
         }
@@ -82,7 +82,7 @@ public:
 
         constexpr auto pieces(occup_) const noexcept
         {
-                return board_type::squares() ^ m_empty;
+                return board_type::squares ^ m_empty;
         }
 
         constexpr auto pieces(empty_) const noexcept

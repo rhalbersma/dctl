@@ -4,15 +4,14 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board.hpp>
+#include <dctl/core/rules.hpp>
 #include <boost/range/irange.hpp>
 #include <iostream>
 
 using namespace dctl::core;
-using square = int;
-using B = board::checkers;
 
-template<class CharT, class Traits, int Width, int Height, bool Inverted, bool OrthogonalCaptures>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, rectangular<Width, Height, Inverted, OrthogonalCaptures> const& b)
+template<class CharT, class Traits, class Board>
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, rectangular<Board> const& b)
 {
         using Coord = coordinates<upper_left>;
         for (auto y : boost::irange(0, b.height)) {
@@ -30,5 +29,5 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, rectangular<Width, Hei
 
 int main()
 {
-        std::cout << B{};
+        std::cout << rectangular<checkers>{};
 }

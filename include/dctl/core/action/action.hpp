@@ -5,7 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/rules/type_traits.hpp>      // rectangular, is_contents_precedence, is_ordering_precedence
+#include <dctl/core/board/rectangular.hpp>      // rectangular
+#include <dctl/core/rules/type_traits.hpp>      // is_contents_precedence, is_ordering_precedence
 #include <dctl/core/state/color_piece.hpp>      // pawn, king
 #include <dctl/util/conditional_base.hpp>       // conditional_base
 #include <dctl/util/type_traits.hpp>            // set_t, square_t
@@ -59,7 +60,7 @@ using block_adl::conditional_base_ordering_precedence;
 
 }       // namespace detail
 
-template<class Rules, class Board = rectangular_t<Rules>>
+template<class Rules, class Board = rectangular<Rules>>
 class action
 :
         detail::conditional_base_ordering_precedence<Rules, Board>,

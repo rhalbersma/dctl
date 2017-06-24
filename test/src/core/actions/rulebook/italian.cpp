@@ -17,7 +17,7 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(ActionsRulebookitalian)
 
-using F = Fixture<italian, board::italian>;
+using F = Fixture<italian>;
 
 BOOST_FIXTURE_TEST_CASE(pawn_jumpDirections, F)          // Art. 5.6
 {

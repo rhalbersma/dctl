@@ -5,46 +5,14 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/rectangular.hpp>      // rectangular
+#include <dctl/core/board/type_traits.hpp>      // is_orthogonal_jump_v
+#include <dctl/util/tti.hpp>                    // DCTL_PP_TTI_CONSTANT
 #include <dctl/util/type_traits.hpp>            // rules_t
 #include <tuple>                                // make_tuple
-#include <type_traits>                          // conditional_t, decay_t, is_same_v, false_type, true_type, void_t
+#include <type_traits>                          // conditional_t, decay_t, is_same_v, false_type, true_type
 #include <utility>                              // forward
 
-#define DCTL_PP_TTI_CONSTANT(NAME, DEFAULT)             \
-                                                        \
-template<class T, class = void>                         \
-constexpr static auto has_ ## NAME ## _v = false;       \
-                                                        \
-template<class T>                                       \
-constexpr static auto has_ ## NAME ## _v<               \
-        T, std::void_t<decltype(T::NAME)>               \
-> = true;                                               \
-                                                        \
-struct default_ ## NAME                                 \
-{                                                       \
-        constexpr static auto NAME = DEFAULT;           \
-};                                                      \
-                                                        \
-template<class T>                                       \
-constexpr auto NAME ## _v = std::conditional_t<         \
-        has_ ## NAME ## _v<T>, T, default_ ## NAME      \
->::NAME;                                                \
-
 namespace dctl::core {
-
-DCTL_PP_TTI_CONSTANT(width, 8)
-DCTL_PP_TTI_CONSTANT(height, 8)
-DCTL_PP_TTI_CONSTANT(is_inverted, false)
-DCTL_PP_TTI_CONSTANT(is_orthogonal_jump, false)
-
-template<class Rules>
-using rectangular_t = rectangular<
-        width_v<Rules>,
-        height_v<Rules>,
-        is_inverted_v<Rules>,
-        is_orthogonal_jump_v<Rules>
->;
 
 DCTL_PP_TTI_CONSTANT(initial_position_gap, 2)
 
@@ -221,5 +189,3 @@ constexpr auto notation_v =
 ;
 
 }       // namespace dctl::core
-
-#undef DCTL_PP_TTI_CONSTANT

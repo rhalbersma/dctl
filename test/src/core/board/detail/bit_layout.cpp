@@ -4,7 +4,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <core/board/group.hpp>                      // action::is_realized, make
-#include <core/board/sequence.hpp>                   // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
+#include <core/board/sequence.hpp>                   // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/core/board/angle.hpp>                 // _deg, inverse, rotate
 #include <dctl/core/board/detail/bit_layout.hpp>     // dimensions
@@ -19,7 +19,7 @@ using namespace literals;
 
 BOOST_AUTO_TEST_SUITE(Griddimensions)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimensions, T, board::BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimensions, T, BoardSequence)
 {
         auto const op = [](auto i, auto j) { return rotate(i, j); };
         auto const inv = [](auto i) { return inverse(i); };

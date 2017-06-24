@@ -12,7 +12,7 @@
 
 using namespace dctl::core;
 
-using F = Fixture<international, board::international>;
+using F = Fixture<international>;
 
 BOOST_AUTO_TEST_SUITE(ActionsRulebookinternational)
 

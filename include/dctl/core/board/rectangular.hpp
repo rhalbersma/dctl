@@ -8,6 +8,7 @@
 #include <dctl/core/board/angle.hpp>                    // angle, inverse
 #include <dctl/core/board/coordinates.hpp>              // to_llo, transform
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
+#include <dctl/core/board/type_traits.hpp>              // width_v, height_v, is_inverted_v, is_orthogonal_jump_v
 #include <dctl/core/state/color_piece.hpp>              // black, white
 #include <xstd/cstdint.hpp>                             // uint_fast
 #include <xstd/cstdlib.hpp>                             // align_on, euclidean_div
@@ -22,21 +23,24 @@
 namespace dctl::core {
 namespace block_adl {
 
-template
-<
-        int Width,
-        int Height,
-        bool IsInverted = false,
-        bool IsOrthogonalJump = false
->
+template<int Width, int Height, bool IsInverted = false, bool IsOrthogonalJump = false>
+struct pack
+{
+        constexpr static auto width = Width;
+        constexpr static auto height = Height;
+        constexpr static auto is_inverted = IsInverted;
+        constexpr static auto is_orthogonal_jump = IsOrthogonalJump;
+};
+
+template<class Board>
 class rectangular
 {
 public:
         using type = rectangular;
-        constexpr static auto width              = Width;
-        constexpr static auto height             = Height;
-        constexpr static auto is_inverted        = IsInverted;
-        constexpr static auto is_orthogonal_jump = IsOrthogonalJump;
+        constexpr static auto width              = width_v<Board>;
+        constexpr static auto height             = height_v<Board>;
+        constexpr static auto is_inverted        = is_inverted_v<Board>;
+        constexpr static auto is_orthogonal_jump = is_orthogonal_jump_v<Board>;
 
         constexpr static auto edge = is_orthogonal_jump ? 2 : 1;
         constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
@@ -53,13 +57,7 @@ private:
         constexpr static auto NumBits = outer_grid.size();
         constexpr static auto NumSquares = inner_grid.size();
 
-        constexpr static auto lower_left_is_square() noexcept { return inner_grid.lower_left_is_square(); }
-        constexpr static auto upper_left_is_square() noexcept { return inner_grid.upper_left_is_square(); }
-
 public:
-        constexpr static auto edge_le() noexcept { return inner_grid.edge_le(); }
-        constexpr static auto edge_lo() noexcept { return inner_grid.edge_lo(); }
-
         constexpr static auto size() noexcept
         {
                 return NumSquares;
@@ -126,8 +124,8 @@ public:
                 return square_from_bit_table[static_cast<std::size_t>(n)];
         }
 
-private:
-        constexpr static auto squares_table = []() {
+public:
+        constexpr static auto squares = []() {
                 auto table = set_type{};
                 for (auto sq = 0; sq < size(); ++sq) {
                         table.insert(bit_from_square(sq));
@@ -135,28 +133,22 @@ private:
                 return table;
         }();
 
-public:
-        constexpr static auto squares() noexcept
-        {
-                return squares_table;
-        }
-
 private:
         template<class UnaryPredicate>
         constexpr static auto squares_filter(UnaryPredicate pred) noexcept
         {
-                auto result = set_type{};
-                squares().for_each([&](auto const n) {
+                auto filter = set_type{};
+                squares.for_each([&](auto const n) {
                         if (pred(square_from_bit(n))) {
-                                result.insert(n);
+                                filter.insert(n);
                         }
                 });
-                return result;
+                return filter;
         }
 
         constexpr static auto file_table = []() {
                 auto table = std::array<std::array<set_type, width>, 2>{};
-                for (auto const c : { color::black, color::white }) {
+                for (auto&& c : { color::black, color::white }) {
                         for (auto f = 0; f < width; ++f) {
                                 table[xstd::to_underlying_type(c)][static_cast<std::size_t>(f)] =
                                         squares_filter([=](auto const sq) {
@@ -170,7 +162,7 @@ private:
 
         constexpr static auto rank_table = []() {
                  auto table = std::array<std::array<set_type, height>, 2>{};
-                 for (auto const c : { color::black, color::white }) {
+                 for (auto&& c : { color::black, color::white }) {
                          for (auto r = 0; r < height; ++r) {
                                  table[xstd::to_underlying_type(c)][static_cast<std::size_t>(r)] =
                                          squares_filter([=](auto const sq) {
@@ -226,10 +218,10 @@ private:
 
          constexpr static auto jump_group_table = std::array<set_type, 4>
          {{
-                 init_jump_group<edge_le() + 0>{}(),
-                 init_jump_group<edge_le() + 1>{}(),
-                 init_jump_group<edge_lo() + 0>{}(),
-                 init_jump_group<edge_lo() + 1>{}()
+                 init_jump_group<inner_grid.edge_le() + 0>{}(),
+                 init_jump_group<inner_grid.edge_le() + 1>{}(),
+                 init_jump_group<inner_grid.edge_lo() + 0>{}(),
+                 init_jump_group<inner_grid.edge_lo() + 1>{}()
          }};
 
 public:
@@ -267,7 +259,7 @@ private:
         constexpr static auto initial_table = []() {
                 constexpr auto N = height / 2 + 1;
                 auto table = std::array<std::array<set_type, N>, 2>{};
-                for (auto const c : { color::black, color::white }) {
+                for (auto&& c : { color::black, color::white }) {
                         for (auto d = 0; d < N; ++d) {
                                 table[xstd::to_underlying_type(c)][static_cast<std::size_t>(d)] = [=]() {
                                         auto accum = set_type{};
@@ -293,7 +285,7 @@ public:
 
         constexpr static auto is_square(coordinates<upper_left> const& coord) noexcept
         {
-                return ((coord.x % 2) ^ (coord.y % 2)) != upper_left_is_square();
+                return ((coord.x % 2) ^ (coord.y % 2)) != inner_grid.upper_left_is_square();
         }
 
         constexpr static auto to_square(coordinates<upper_left> const& coord) noexcept
@@ -304,6 +296,7 @@ public:
 
 }       // namespace block_adl
 
+using block_adl::pack;
 using block_adl::rectangular;
 
 }       // namespace dctl::core

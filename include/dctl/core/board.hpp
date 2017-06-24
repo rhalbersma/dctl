@@ -5,5 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/ktar.hpp>
+#include <dctl/core/board/micro.hpp>
+#include <dctl/core/board/nano.hpp>
 #include <dctl/core/board/rectangular.hpp>      // rectangular
-#include <dctl/core/board/types.hpp>
+#include <dctl/core/board/spantsiretti.hpp>
+#include <dctl/core/board/type_traits.hpp>

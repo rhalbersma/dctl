@@ -5,9 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/util/type_traits.hpp>        // board_t, set_t
+#include <dctl/util/type_traits.hpp>    // board_t, set_t
 #include <tuple>                        // make_tuple
-#include <type_traits>                        // decay_t
+#include <type_traits>                  // decay_t
 
 namespace dctl::core {
 namespace block_adl {

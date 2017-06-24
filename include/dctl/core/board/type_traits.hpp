@@ -5,21 +5,25 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/rectangular.hpp>      // rectangular
-#include <dctl/core/state/color_piece.hpp>      // opposite
-#include <algorithm>                            // min, max
+#include <dctl/util/tti.hpp>    // DCTL_PP_TTI_CONSTANT
+#include <algorithm>            // min, max
 
 namespace dctl::core {
 
-template<class Board>
-constexpr auto is_placeable = std::min(Board::width, Board::height) >= 1 && (not Board::is_inverted || std::max(Board::width, Board::height) > 1);
+DCTL_PP_TTI_CONSTANT(width, 8)
+DCTL_PP_TTI_CONSTANT(height, 8)
+DCTL_PP_TTI_CONSTANT(is_inverted, false)
+DCTL_PP_TTI_CONSTANT(is_orthogonal_jump, false)
 
 template<class Board>
-constexpr auto is_pushable = std::min(Board::width, Board::height) >= 2;
+constexpr auto is_placeable_v = std::min(width_v<Board>, height_v<Board>) >= 1 && (not is_inverted_v<Board> || std::max(width_v<Board>, height_v<Board>) > 1);
 
 template<class Board>
-constexpr auto is_jumpable = std::min(Board::width, Board::height) >= 3 && (not Board::is_inverted || std::max(Board::width, Board::height) > 3);
+constexpr auto is_pushable_v = std::min(width_v<Board>, height_v<Board>) >= 2;
 
+template<class Board>
+constexpr auto is_jumpable_v = std::min(width_v<Board>, height_v<Board>) >= 3 && (not is_inverted_v<Board> || std::max(width_v<Board>, height_v<Board>) > 3);
+/*
 template<class Board>
 struct invert;
 
@@ -55,5 +59,5 @@ struct add_orthogonal_captures<rectangular<Width, Height, IsInverted, IsOrthogon
 
 template<class Board>
 using add_orthogonal_captures_t = typename add_orthogonal_captures<Board>::type;
-
+*/
 }       // namespace dctl::core

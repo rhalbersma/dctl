@@ -11,7 +11,7 @@
 
 using namespace dctl::core;
 
-using F = Fixture<italian, board::italian>;
+using F = Fixture<italian>;
 
 BOOST_AUTO_TEST_SUITE(ActionsRegressionsitalian)
 

@@ -3,7 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/board/sequence.hpp>              // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
+#include <core/board/sequence.hpp>              // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
@@ -16,7 +16,7 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(TestBoard)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(jump_groupsEquivalencePartitionSquares, T, board::BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(jump_groupsEquivalencePartitionSquares, T, BoardSequence)
 {
         auto const jump_groups = std::vector<int>{ 0, 1, 2, 3 };
 
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(jump_groupsEquivalencePartitionSquares, T, board::
         BOOST_CHECK(
                 boost::accumulate(jump_groups, set_t<T>{}, [](auto result, auto i) {
                         return result ^ T::jump_group(i);
-                }) == T::squares()
+                }) == T::squares
         );
 }
 

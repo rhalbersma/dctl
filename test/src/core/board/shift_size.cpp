@@ -3,7 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/board/sequence.hpp>                   // micro, mini, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
+#include <core/board/sequence.hpp>                   // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, rectangular<12, 10>, canadian, srilankan, dumm
 #include <dctl/core/board/angle.hpp>                 // angle, reverse
 #include <dctl/core/board/detail/shift.hpp>                 // shift_size
@@ -17,7 +17,7 @@ using namespace literals;
 
 BOOST_AUTO_TEST_SUITE(GridShiftSize)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseangleSymmetryForAllDirections, T, board::BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseangleSymmetryForAllDirections, T, BoardSequence)
 {
         auto const directions = std::vector<angle>
         {

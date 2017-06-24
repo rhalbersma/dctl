@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         struct action
         {
                 using rules_type [[maybe_unused]] = frisian;
-                using board_type [[maybe_unused]] = board::frisian;
+                using board_type [[maybe_unused]] = rectangular<frisian>;
                 int num_captured_;
                 int num_captured_kings_;
                 piece with_;

@@ -3,6 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <core/board/sequence.hpp>
 #include <dctl/core/action.hpp>
 #include <dctl/core/board.hpp>                  // international
 #include <dctl/core/rules.hpp>
@@ -18,25 +19,6 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(SetupLayout)
 
-using BSequence = boost::mpl::vector
-<
-        board::micro,
-        board::mini,
-        board::checkers,
-        board::italian,
-        board::spantsiretti,
-        rectangular<10, 9>,
-        rectangular<11, 9>,
-        board::international,
-        board::ktar<10, 11>,
-        board::ktar<10, 12>,
-        rectangular<12, 10>,
-        board::canadian,
-        board::srilankan,
-        board::dumm,
-        rectangular<19, 10>
->;
-
 using RSequence = boost::mpl::vector
 <
         checkers,
@@ -50,7 +32,7 @@ using RSequence = boost::mpl::vector
         thai
 >;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(initial, T, BSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(initial, T, BoardSequence)
 {
         auto const s = state<international, T>::initial();
         std::cout << diag << s;
@@ -59,14 +41,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(initial, T, BSequence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ActionSize, T, RSequence)
 {
-        using A = action<T, board::international>;
+        using A = action<T, rectangular<international>>;
         std::cout << "sizeof(Action) = " << sizeof(A) << "\n";
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(StateSize, T, RSequence)
 {
-        using S = state<T, board::international>;
-        std::cout << "sizeof(State) = " << sizeof(S) << "(" << sizeof(square_t<board::international>) << ")" << "\n";
+        using S = state<T, rectangular<international>>;
+        std::cout << "sizeof(State) = " << sizeof(S) << "(" << sizeof(square_t<board_t<S>>) << ")" << "\n";
 }
 
 BOOST_AUTO_TEST_CASE(Grid)

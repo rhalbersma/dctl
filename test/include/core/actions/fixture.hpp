@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board.hpp>
 #include <dctl/core/action.hpp>
 #include <dctl/core/actions.hpp>                // generate
 #include <dctl/core/state.hpp>
@@ -18,13 +19,13 @@
 
 namespace dctl::core {
 
-template<class Rules, class Board>
+template<class Rules, class Board = rectangular<Rules>>
 struct Fixture
 {
         template<class Range>
         void test(std::string const& fen, Range const& rng)
         {
-                auto const p = setup::read<Rules, Board, pdn::protocol>{}(fen);
+                auto const p = setup::read<Rules, Board>{}(fen);
                 std::vector<action<Rules, Board>> moves;
                 actions<>{}.generate(p, moves);
 

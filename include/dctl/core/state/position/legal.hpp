@@ -10,7 +10,7 @@ namespace dctl::core {
 template<class Board, class Set>
 constexpr auto is_onboard_pieces(Set const occupied) noexcept
 {
-        return is_subset_of(occupied, Board::squares());
+        return is_subset_of(occupied, Board::squares);
 }
 
 template<class Board, class Set>

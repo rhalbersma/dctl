@@ -108,7 +108,7 @@ public:
 
         constexpr auto pieces(empty_) const noexcept
         {
-                return board_type::squares() ^ pieces(occup_c);
+                return board_type::squares ^ pieces(occup_c);
         }
 
         template<class... Args>

@@ -161,8 +161,8 @@ class king_targets
                         auto result = std::array<set_t<Board>, N>{};
                         for (auto n = 0; n < N; ++n) {
                                 result[static_cast<std::size_t>(n)] =
-                                        Board::squares().test(n) ?
-                                        fill(make_iterator<Board, Direction>(n), Board::squares()) :
+                                        Board::squares.test(n) ?
+                                        fill(make_iterator<Board, Direction>(n), Board::squares) :
                                         set_t<Board>{}
                                 ;
                         }
