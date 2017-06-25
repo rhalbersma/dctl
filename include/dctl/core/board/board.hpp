@@ -199,29 +199,26 @@ private:
          }();
 
          template<int FromSquare>
-         struct init_jump_group
+         constexpr static auto init_jump_group() noexcept
          {
-                 constexpr auto operator()() const noexcept
-                 {
-                         return squares_filter([](auto const dest_sq) {
-                                 auto const from_coord = to_llo(FromSquare, inner_grid);
-                                 auto const dest_coord = to_llo(dest_sq   , inner_grid);
-                                 auto const delta_x = xstd::euclidean_div(static_cast<int>(from_coord.x) - static_cast<int>(dest_coord.x), 4).rem;
-                                 auto const delta_y = xstd::euclidean_div(static_cast<int>(from_coord.y) - static_cast<int>(dest_coord.y), 4).rem;
-                                 return
-                                         (delta_x == 0 && delta_y == 0) ||
-                                         (delta_x == 2 && delta_y == 2)
-                                 ;
-                         });
-                 }
-         };
+                 return squares_filter([](auto const dest_sq) {
+                         auto const from_coord = to_llo(FromSquare, inner_grid);
+                         auto const dest_coord = to_llo(dest_sq   , inner_grid);
+                         auto const delta_x = xstd::euclidean_div(from_coord.x - dest_coord.x, 4).rem;
+                         auto const delta_y = xstd::euclidean_div(from_coord.y - dest_coord.y, 4).rem;
+                         return
+                                 (delta_x == 0 && delta_y == 0) ||
+                                 (delta_x == 2 && delta_y == 2)
+                         ;
+                 });
+         }
 
          constexpr static auto jump_group_table = std::array<set_type, 4>
          {{
-                 init_jump_group<inner_grid.edge_le() + 0>{}(),
-                 init_jump_group<inner_grid.edge_le() + 1>{}(),
-                 init_jump_group<inner_grid.edge_lo() + 0>{}(),
-                 init_jump_group<inner_grid.edge_lo() + 1>{}()
+                 init_jump_group<inner_grid.edge_le() + 0>(),
+                 init_jump_group<inner_grid.edge_le() + 1>(),
+                 init_jump_group<inner_grid.edge_lo() + 0>(),
+                 init_jump_group<inner_grid.edge_lo() + 1>()
          }};
 
 public:
