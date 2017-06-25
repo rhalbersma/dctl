@@ -112,19 +112,19 @@ constexpr auto operator*(int const n, angle const a) noexcept
         return angle{n * a.value()};
 }
 
-constexpr auto operator/(angle const a, int const n) noexcept // Throws: Nothing.
+constexpr auto operator/(angle const a, int const n) // Throws: Nothing.
 {
         assert(n != 0);
         return angle{a.value() / n};
 }
 
-constexpr auto operator/(angle const a, angle const b) noexcept // Throws: Nothing.
+constexpr auto operator/(angle const a, angle const b) // Throws: Nothing.
 {
         assert(b.value() != 0);
         return a.value() / b.value();
 }
 
-constexpr auto operator%(angle const a, angle const b) noexcept // Throws: Nothing.
+constexpr auto operator%(angle const a, angle const b) // Throws: Nothing.
 {
         assert(b.value() != 0);
         return angle{a.value() % b.value()};
