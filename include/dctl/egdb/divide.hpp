@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
+#include <numeric>
 
 namespace dctl::egdb {
 
