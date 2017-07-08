@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_SUITE(KingRangeCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsSameAsShortRangedTag, T, VariantsShortRangedTag)
         {
-                static_assert(not is_long_ranged_king_v<T>);
+                static_assert(!is_long_ranged_king_v<T>);
         }
 
         using VariantsLongRangedTag = boost::mpl::vector
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_SUITE(IsLandBehindpieceOr)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(not is_land_behind_piece_v<T>);
+                static_assert(!is_land_behind_piece_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_SUITE(IsHaltBehindKingOr)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalseT, T, Variants)
         {
-                static_assert(not is_halt_behind_king_v<T>);
+                static_assert(!is_halt_behind_king_v<T>);
         }
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrueKillerT, T, Variants)

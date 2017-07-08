@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/eval/feature.hpp>   // Feature
-#include <dctl/core/state/color_piece.hpp>         // flip
+#include <dctl/eval/feature.hpp>                // Feature
+#include <dctl/core/state/color_piece.hpp>      // opposite
 
 namespace dctl::eval {
 

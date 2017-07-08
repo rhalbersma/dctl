@@ -34,7 +34,7 @@ class detect<color_<Side>, kings_, select::jump, Reverse, State>
 public:
         auto operator()(State const& s) const noexcept
         {
-                if (auto const sources = s.pieces(to_move_c, piece_c); not sources.empty()) {
+                if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
                         return directions(sources, s.targets(to_move_c, piece_c), s.pieces(empty_c));
                 }
                 return false;
@@ -56,7 +56,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const sources, set_type const targets, set_type const destinations) const noexcept
         {
-                return (... || not king_jump_targets<Directions<orientation>{}>{}(sources, targets, destinations).empty());
+                return (... || !king_jump_targets<Directions<orientation>{}>{}(sources, targets, destinations).empty());
         }
 };
 

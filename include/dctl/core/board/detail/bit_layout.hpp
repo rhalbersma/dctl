@@ -29,7 +29,7 @@ constexpr auto operator==(dimensions const& lhs, dimensions const& rhs) noexcept
 
 constexpr auto operator!=(dimensions const& lhs, dimensions const& rhs) noexcept
 {
-        return not (lhs == rhs);
+        return !(lhs == rhs);
 }
 
 constexpr auto width_parity(dimensions const& dim) noexcept
@@ -44,12 +44,12 @@ constexpr auto height_parity(dimensions const& dim) noexcept
 
 constexpr auto lower_left_is_square(dimensions const& dim) noexcept
 {
-        return not dim.is_inverted;
+        return !dim.is_inverted;
 }
 
 constexpr auto upper_left_is_square(dimensions const& dim) noexcept
 {
-        return height_parity(dim) ^ not lower_left_is_square(dim);
+        return height_parity(dim) ^ !lower_left_is_square(dim);
 }
 
 constexpr auto upper_right_is_square(dimensions const& dim) noexcept
@@ -59,7 +59,7 @@ constexpr auto upper_right_is_square(dimensions const& dim) noexcept
 
 constexpr auto lower_right_is_square(dimensions const& dim) noexcept
 {
-        return width_parity(dim) ^ not lower_left_is_square(dim);
+        return width_parity(dim) ^ !lower_left_is_square(dim);
 }
 
 constexpr auto rotate(dimensions const& dim, angle const& a) noexcept
@@ -67,9 +67,9 @@ constexpr auto rotate(dimensions const& dim, angle const& a) noexcept
 {
         switch (a.value()) {
         case   0: return dim;
-        case  90: return { dim.height, dim.width , not upper_left_is_square(dim) };
-        case 180: return { dim.width , dim.height, not upper_right_is_square(dim) };
-        case 270: return { dim.height, dim.width , not lower_right_is_square(dim) };
+        case  90: return { dim.height, dim.width , !upper_left_is_square(dim) };
+        case 180: return { dim.width , dim.height, !upper_right_is_square(dim) };
+        case 270: return { dim.height, dim.width , !lower_right_is_square(dim) };
         default: assert(false); return dim;
         }
 }
@@ -94,7 +94,7 @@ public:
         constexpr auto edge_le() const noexcept { return 0;                                            }
         constexpr auto edge_re() const noexcept { return edge_le() + ((width() +  upper_left_is_square()) / 2 - 1); }
         constexpr auto edge_lo() const noexcept { return edge_re() + 1;                                             }
-        constexpr auto edge_ro() const noexcept { return edge_lo() + ((width() + not upper_left_is_square()) / 2 - 1); }
+        constexpr auto edge_ro() const noexcept { return edge_lo() + ((width() + !upper_left_is_square()) / 2 - 1); }
 
         constexpr auto size() const noexcept { return (width() * height()) / 2 + (width() * height() * upper_left_is_square()) % 2; }
 

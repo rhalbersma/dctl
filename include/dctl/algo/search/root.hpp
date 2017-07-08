@@ -158,13 +158,13 @@ private:
 
                 // generate moves
                 auto const moves = successor.generate(n.state());
-                assert(not moves.empty());
+                assert(!moves.empty());
 
                 Order move_order;
                 boost::algorithm::iota_n(std::back_inserter(move_order), 0, moves.size()); // generate indices [0, moves.size() - 1]
 
                 // internal iterative deepening (IID)
-                if (not (TT_entry && TT_entry->has_move())) {
+                if (!(TT_entry && TT_entry->has_move())) {
                         auto const IID_depth = is_pv(NodeType) ? depth - 2 : depth / 2;
                         if (IID_depth > 0) {
                                 pvs<NodeType>(successor, n, alpha, beta, IID_depth, ply, refutation);
@@ -279,7 +279,7 @@ private:
                         assert(
                                 (value == eval::score(n.state())) ||
                                 (value == draw_value() && is_draw(n.state())) ||
-                                (value == loss_min() && not successor.detect(n.state()))
+                                (value == loss_min() && !successor.detect(n.state()))
                                 // NOTE: with endgame databases, delayed losses can occur at the tips of the pv
                         );
                         TT.insert(n, Transposition(value, Bound::exact, depth, Transposition::no_move()));
@@ -313,15 +313,15 @@ private:
                 successor.generate(n.state(), moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 
-                if (not (ply % 2)) {
+                if (!(ply % 2)) {
                         std::cout << std::setw(2) << std::right << ((ply / 2) + 1) << ". ";
                 }
                 std::cout << best_move;
                 std::cout << ((ply % 10 == 9) ? '\n' : ' ');
 
                 auto q = child(n, best_move);
-                //if (q.same_king_push(not q.to_move()))
-                        //std::cout << "^" << q.same_king_push(not q.to_move());
+                //if (q.same_king_push(!q.to_move()))
+                        //std::cout << "^" << q.same_king_push(!q.to_move());
                 print_pv(successor, q, pv, ply + 1);
         }
 

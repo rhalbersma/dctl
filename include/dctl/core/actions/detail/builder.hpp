@@ -47,7 +47,7 @@ public:
         builder(State const& s, SequenceContainer& seq)
         :
                 m_state{s},
-                m_initial_targets(m_state.pieces(not to_move_c)),
+                m_initial_targets(m_state.pieces(!to_move_c)),
                 m_empty(m_state.pieces(empty_c)),
                 m_actions{seq}
         {}
@@ -55,7 +55,7 @@ public:
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_v<rules_type>);
-                m_initial_targets ^= m_state.pieces(not to_move_c, kings_c);
+                m_initial_targets ^= m_state.pieces(!to_move_c, kings_c);
         }
 
         auto make_launch(int const sq)
@@ -127,12 +127,12 @@ public:
         template<class Iterator>
         auto is_target(Iterator it) const
         {
-                return targets<ray::direction_v<Iterator>.value()>().test(*it);
+                return targets<ray::direction_v<Iterator>.value()>().contains(*it);
         }
 
         auto not_occupied(int const sq) const
         {
-                return m_empty.test(sq);
+                return m_empty.contains(sq);
         }
 
         template<int Direction>
@@ -145,12 +145,12 @@ public:
         template<int Direction>
         auto path(int const sq) const
         {
-                return path<Direction>().test(sq);
+                return path<Direction>().contains(sq);
         }
 
         auto is_last_jumped_king(int const sq) const
         {
-                return m_state.pieces(kings_c).test(sq);
+                return m_state.pieces(kings_c).contains(sq);
         }
 
         auto with() const noexcept
@@ -181,7 +181,7 @@ public:
 private:
         auto is_king(int sq) const
         {
-                return m_state.pieces(kings_c).test(sq);
+                return m_state.pieces(kings_c).contains(sq);
         }
 
         auto precedence_duplicates() const
@@ -203,7 +203,7 @@ private:
                         }
                 }
                 if constexpr (
-                        not is_trivial_precedence_v<rules_type> &&
+                        !is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
                 ) {
                         if (m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back())) {
@@ -217,7 +217,7 @@ private:
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
-                        not is_trivial_precedence_v<rules_type> &&
+                        !is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
                 ) {
                         if (m_actions.empty()) {
@@ -246,7 +246,7 @@ private:
         auto is_unique() const // Throws: Nothing.
         {
                 static_assert(std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
-                assert(not m_actions.empty());
+                assert(!m_actions.empty());
                 assert(precedence::equal_to{}(m_candidate_action, m_actions.back()));
                 return std::none_of(m_actions.cbegin(), m_actions.cend(), [&](auto const& a) { return a == m_candidate_action; });
         }

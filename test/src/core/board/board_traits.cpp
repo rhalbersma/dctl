@@ -29,18 +29,18 @@ BOOST_AUTO_TEST_CASE(IsEmpty)
 
 BOOST_AUTO_TEST_CASE(IsPushable)
 {
-        static_assert(not is_pushable_v<board<rectangular<1, 1>>>);
-        static_assert(not is_pushable_v<board<rectangular<2, 1>>>);
-        static_assert(not is_pushable_v<board<rectangular<1, 2>>>);
+        static_assert(!is_pushable_v<board<rectangular<1, 1>>>);
+        static_assert(!is_pushable_v<board<rectangular<2, 1>>>);
+        static_assert(!is_pushable_v<board<rectangular<1, 2>>>);
         static_assert(    is_pushable_v<board<rectangular<2, 2>>>);
 }
 
 BOOST_AUTO_TEST_CASE(IsJumpable)
 {
-        static_assert(not is_jumpable_v<board<rectangular<2, 2>>>);
-        static_assert(not is_jumpable_v<board<rectangular<3, 2>>>);
-        static_assert(not is_jumpable_v<board<rectangular<2, 3>>>);
-        static_assert(not is_jumpable_v<board<rectangular<3, 3, true>>>);
+        static_assert(!is_jumpable_v<board<rectangular<2, 2>>>);
+        static_assert(!is_jumpable_v<board<rectangular<3, 2>>>);
+        static_assert(!is_jumpable_v<board<rectangular<2, 3>>>);
+        static_assert(!is_jumpable_v<board<rectangular<3, 3, true>>>);
         static_assert(    is_jumpable_v<board<rectangular<3, 3>>>);
         static_assert(    is_jumpable_v<board<rectangular<4, 3, true>>>);
         static_assert(    is_jumpable_v<board<rectangular<3, 4, true>>>);
@@ -75,13 +75,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesAreIdemPotent, T, Board
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, BoardSequence)
 {
-        static_assert(not T::is_orthogonal_jump || is_identity_v<   add_orthogonal_captures_t, T>);
+        static_assert(!T::is_orthogonal_jump || is_identity_v<   add_orthogonal_captures_t, T>);
         static_assert( T::is_orthogonal_jump || is_identity_v<remove_orthogonal_captures_t, T>);
 }
 */
-BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresSizeEqualsBoardSize, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresCountEqualsBoardSize, T, BoardSequence)
 {
-        BOOST_CHECK_EQUAL(T::squares.size(), T::size());
+        BOOST_CHECK_EQUAL(T::squares.count(), T::size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)

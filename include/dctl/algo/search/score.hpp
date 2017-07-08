@@ -84,7 +84,7 @@ bool is_finite(int value)
 inline
 bool is_infinite(int value)
 {
-        return not is_finite(value);
+        return !is_finite(value);
 }
 
 inline

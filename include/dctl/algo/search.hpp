@@ -38,7 +38,7 @@ auto tree_search(Problem const& problem, Frontier& frontier)
 {
         assert(frontier.empty());
         frontier.push(problem.initial());
-        while (not frontier.empty()) {
+        while (!frontier.empty()) {
                 auto const node = first_out(frontier);
                 frontier.pop();
                 if (problem.goal_test(node)) {

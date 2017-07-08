@@ -41,7 +41,7 @@ public:
 
         auto operator()(State const& s) const
         {
-                if (auto const sources = s.pieces(to_move_c, piece_c); not sources.empty()) {
+                if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
                         directions_lfold<right_up, left_up>(sources, s.pieces(empty_c));
                 }
         }
@@ -75,7 +75,7 @@ private:
 
         auto is_promotion(int const sq) const // Throws: Nothing.
         {
-                return board_type::promotion(Side).test(sq);
+                return board_type::promotion(Side).contains(sq);
         }
 };
 

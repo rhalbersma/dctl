@@ -169,7 +169,7 @@ private:
                                 if (depends_on{}(m_subdivisions[j], m_subdivisions[i])) {
                                         boost::add_edge(j, i, m_graph);
                                 }
-                                assert(not depends_on{}(m_subdivisions[i], m_subdivisions[j]));
+                                assert(!depends_on{}(m_subdivisions[i], m_subdivisions[j]));
                         }
                 }
                 m_vertex_map = boost::get(boost::vertex_index, m_graph);*/

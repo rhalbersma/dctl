@@ -34,7 +34,7 @@ struct is_terminal<NoActionsLeft>
         template<class State, class Actions>
         bool operator()(State const& s, Actions successor) const
         {
-                return not successor.detect(s);
+                return !successor.detect(s);
         }
 };
 
@@ -45,7 +45,7 @@ struct is_terminal<Kingscourt>
         bool operator()(State const& s) const
         {
                 return
-                        (active_kings(s).size() - passive_kings(s).size() < 0) ||
+                        (active_kings(s).count() - passive_kings(s).count() < 0) ||
                         is_terminal<NoActionsLeft>()(s)
                 ;
         }

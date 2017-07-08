@@ -63,7 +63,7 @@ int main()
                                 }
                         } else {
                                 std::stringstream sstr(input);
-                                if (not (sstr >> choice)) {
+                                if (!(sstr >> choice)) {
                                         if (input.empty()) {
                                                 choice = 0;
                                         } else if (input == "s") {

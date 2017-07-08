@@ -35,7 +35,7 @@ class count<color_<Side>, kings_, select::push, Reverse, State>
 public:
         auto operator()(State const& s) const noexcept
         {
-                if (auto const sources = s.pieces(to_move_c, piece_c); not sources.empty()) {
+                if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
                         return directions_lfold<right_up, left_up, left_down, right_down>(sources, s.pieces(empty_c));
                 }
                 return 0;
@@ -45,7 +45,7 @@ private:
         template<template<int> class... Directions>
         auto directions_lfold(set_type const sources, set_type const destinations) const noexcept
         {
-                return (... + king_push_targets<Directions<orientation>{}>{}(sources, destinations).size());
+                return (... + king_push_targets<Directions<orientation>{}>{}(sources, destinations).count());
         }
 };
 

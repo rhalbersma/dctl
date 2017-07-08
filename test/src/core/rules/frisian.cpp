@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         static_assert(is_orthogonal_jump_v<T>);
 
-        static_assert(not is_trivial_precedence_v<T>);
+        static_assert(!is_trivial_precedence_v<T>);
         static_assert(is_quantity_precedence_v<T>);
         static_assert(is_contents_precedence_v<T>);
         static_assert(is_modality_precedence_v<T>);

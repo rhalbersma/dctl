@@ -124,20 +124,20 @@ struct write<pdn::protocol, Token>
 
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i ? color::white : color::black;
-                        if (not s.pieces(c).empty()) {
+                        if (!s.pieces(c).empty()) {
                                 sstr << Token::colon;                   // colon
                                 sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
                         }
                         auto const bs = s.pieces(c);
                         auto n = 0;
                         for (auto sq : bs) {
-                                if (s.pieces(kings_c).test(sq)) {
+                                if (s.pieces(kings_c).contains(sq)) {
                                         sstr << Token::king;            // king tag
                                 }
                                 sstr << Board::square_from_bit(sq) + 1; // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
                                 //        sstr << "^" << p.count(c);
-                                if (++n != bs.size()) {                 // still pieces remaining
+                                if (++n != bs.count()) {                 // still pieces remaining
                                         sstr << Token::comma;           // comma separator
                                 }
                         }

@@ -148,9 +148,9 @@ public:
         auto targets(color_<Side>, piece_<Type>) const noexcept
         {
                 if constexpr (Type == piece::pawns && is_superior_rank_jump_v<rules_type>) {
-                        return pieces(color_c<not Side>, pawns_c);
+                        return pieces(color_c<!Side>, pawns_c);
                 } else {
-                        return pieces(not color_c<Side>);
+                        return pieces(!color_c<Side>);
                 }
         }
 
@@ -181,7 +181,7 @@ public:
 private:
         constexpr auto pass_turn() noexcept
         {
-                m_color = not m_color;
+                m_color = !m_color;
         }
 };
 
@@ -200,7 +200,7 @@ constexpr auto operator< (state<Rules, Board> const& lhs, state<Rules, Board> co
 template<class Rules, class Board>
 constexpr auto operator!=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
 {
-        return not (lhs == rhs);
+        return !(lhs == rhs);
 }
 
 template<class Rules, class Board>
@@ -212,13 +212,13 @@ constexpr auto operator> (state<Rules, Board> const& lhs, state<Rules, Board> co
 template<class Rules, class Board>
 constexpr auto operator>=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
 {
-        return not (lhs < rhs);
+        return !(lhs < rhs);
 }
 
 template<class Rules, class Board>
 constexpr auto operator<=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
 {
-        return not (rhs < lhs);
+        return !(rhs < lhs);
 }
 
 }       // namespace dctl::core

@@ -52,7 +52,7 @@ public:
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
                 if (a.is_jump()) {
-                        set_pieces(not c) ^= a.captured_pieces();
+                        set_pieces(!c) ^= a.captured_pieces();
                         m_kings -= a.captured_pieces();
                 }
 
@@ -115,7 +115,7 @@ public:
         auto num_pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
-                return pieces(std::forward<Args>(args)...).size();
+                return pieces(std::forward<Args>(args)...).count();
         }
 
         constexpr auto tied() const noexcept
@@ -152,7 +152,7 @@ constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs
 template<class Board>
 constexpr auto operator!=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return not (lhs == rhs);
+        return !(lhs == rhs);
 }
 
 template<class Board>
@@ -164,13 +164,13 @@ constexpr auto operator> (position<Board> const& lhs, position<Board> const& rhs
 template<class Board>
 constexpr auto operator>=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return not (lhs < rhs);
+        return !(lhs < rhs);
 }
 
 template<class Board>
 constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
-        return not (rhs < lhs);
+        return !(rhs < lhs);
 }
 
 }       // namespace bwk

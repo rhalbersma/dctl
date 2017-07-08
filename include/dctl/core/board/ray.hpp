@@ -142,7 +142,7 @@ template<class Board, int Direction, class Set>
 auto fill(iterator<Board, Direction> from, Set const propagator)
 {
         auto targets = Set{};
-        for (++from; is_onboard(from) && propagator.test(*from); ++from) {
+        for (++from; is_onboard(from) && propagator.contains(*from); ++from) {
                 targets.insert(*from);
         }
         return targets;
@@ -161,7 +161,7 @@ class king_targets
                         auto result = std::array<set_t<Board>, N>{};
                         for (auto n = 0; n < N; ++n) {
                                 result[static_cast<std::size_t>(n)] =
-                                        Board::squares.test(n) ?
+                                        Board::squares.contains(n) ?
                                         fill(make_iterator<Board, Direction>(n), Board::squares) :
                                         set_t<Board>{}
                                 ;
@@ -197,7 +197,7 @@ auto classical(iterator<Board, Direction> from, Set const propagator)
         constexpr auto theta = angle{Direction};
         auto targets = king_targets<Board>{}(*from, theta);
         auto const blockers = targets & ~propagator;
-        if (not blockers.empty()) {
+        if (!blockers.empty()) {
                 auto const f = detail::first<detail::shift_sign_v<Direction>>{}(blockers);
                 targets ^= king_targets<Board>{}(f, theta);
                 targets.erase(f);

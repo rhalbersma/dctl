@@ -23,7 +23,7 @@ class Stopwatch
         bool invariant() const noexcept
         {
                 return
-                        (not splits.empty()     || not is_running) &&
+                        (!splits.empty()     || !is_running) &&
                         (    splits.size() != 1 ||     is_running)
                 ;
         }
@@ -36,7 +36,7 @@ public:
 
         void start_stop()
         {
-                if (not is_running) {
+                if (!is_running) {
                         start();
                 } else {
                         stop();
@@ -89,7 +89,7 @@ public:
 private:
         void start()
         {
-                assert(not is_running);
+                assert(!is_running);
                 is_running = true;
                 split();
         }
@@ -109,7 +109,7 @@ private:
 
         void reset()
         {
-                assert(not is_running);
+                assert(!is_running);
                 splits.clear();
         }
 };

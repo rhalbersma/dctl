@@ -50,7 +50,7 @@ struct UpperBits
         {
                 static_assert(std::is_integral_v<Index>,       "Bitwise shift only applicable to integral types.");
                 static_assert(std::is_integral_v<result_type>, "Bitwise shift only applicable to integral types.");
-                static_assert(sizeof(result_type) <= sizeof(Index), "Key cannot be of larger type than the hash.");
+                static_assert(sizeof(result_type) <= sizeof(Index), "Key can!be of larger type than the hash.");
 
                 return static_cast<result_type>(index >> (std::numeric_limits<Index>::digits - std::numeric_limits<result_type>::digits));
         }

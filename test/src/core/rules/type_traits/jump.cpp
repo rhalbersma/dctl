@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_SUITE(IsBackwardpawn_jump)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(not is_backward_pawn_jump_v<T>);
+                static_assert(!is_backward_pawn_jump_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(not is_orthogonal_jump_v<T>);
+                static_assert(!is_orthogonal_jump_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_SUITE(Ispawn_jumpKing)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsTrue)
         {
-                static_assert(not is_superior_rank_jump_v<T>);
+                static_assert(!is_superior_rank_jump_v<T>);
         }
 
         using VariantsFalse = boost::mpl::vector
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_SUITE(JumpRemovalCategory)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsStoppedJumpRemovalTag, T, VariantsStoppedJumpRemovalTag)
         {
-                static_assert(not is_passing_capture_v<T>);
+                static_assert(!is_passing_capture_v<T>);
         }
 
         using VariantsPassingJumpRemovalTag = boost::mpl::vector

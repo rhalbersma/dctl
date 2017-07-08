@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_SUITE(SearchScore)
 BOOST_AUTO_TEST_CASE(IsLoss)
 {
         // minus infinity is not a loss
-        BOOST_CHECK(not is_loss(-infinity()));
+        BOOST_CHECK(!is_loss(-infinity()));
 
         // losses start one above minus infinity
         BOOST_CHECK_EQUAL(-infinity() + 1, loss_min());
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(IsLoss)
 
         // all other scores in the [loss_max, +INF] interval are not losses
         for (auto v = loss_max(); v <= infinity(); ++v)
-                BOOST_CHECK(not is_loss(v));
+                BOOST_CHECK(!is_loss(v));
 }
 
 BOOST_AUTO_TEST_CASE(FiniteLoss)
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(NegativeLoss)
 BOOST_AUTO_TEST_CASE(IsWin)
 {
         // infinity is not a win
-        BOOST_CHECK(not is_win(infinity()));
+        BOOST_CHECK(!is_win(infinity()));
 
         // wins start at one below infinity
         BOOST_CHECK_EQUAL(infinity() - 1, win_min());
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(IsWin)
 
         // all other scores in the interval [-INF, win_max] are not wins
         for (auto v = -infinity(); v <= win_max(); ++v)
-                BOOST_CHECK(not is_win(v));
+                BOOST_CHECK(!is_win(v));
 }
 
 BOOST_AUTO_TEST_CASE(FiniteWin)

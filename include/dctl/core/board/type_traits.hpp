@@ -16,13 +16,13 @@ DCTL_PP_TTI_CONSTANT(is_inverted, false)
 DCTL_PP_TTI_CONSTANT(is_orthogonal_jump, false)
 
 template<class Geometry>
-constexpr auto is_placeable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 1 && (not is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 1);
+constexpr auto is_placeable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 1 && (!is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 1);
 
 template<class Geometry>
 constexpr auto is_pushable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 2;
 
 template<class Geometry>
-constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (not is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
+constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (!is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
 /*
 template<class Board>
 struct invert;
@@ -30,7 +30,7 @@ struct invert;
 template<int Width, int Height, bool IsInverted, bool IsOrthogonalJump>
 struct invert<board<Width, Height, IsInverted, IsOrthogonalJump>>
 :
-        board<Width, Height, not IsInverted, IsOrthogonalJump>
+        board<Width, Height, !IsInverted, IsOrthogonalJump>
 {};
 
 template<class Board>

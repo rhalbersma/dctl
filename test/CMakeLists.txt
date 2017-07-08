@@ -63,12 +63,13 @@ set(test_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/src)
 file(GLOB_RECURSE targets RELATIVE ${test_source_dir} *.cpp)
 
 foreach(t ${targets})
-	get_filename_component(target_path ${t} PATH)
-	get_filename_component(target_name_we ${t} NAME_WE)
-	string(REPLACE "/" "." target_id ${target_path}/${target_name_we})
-	string(REGEX REPLACE "^[.]" "" target_id ${target_id})
+		get_filename_component(target_path ${t} PATH)
+		get_filename_component(target_name_we ${t} NAME_WE)
+		string(REPLACE "/" "." target_id ${target_path}/${target_name_we})
+		string(REGEX REPLACE "^[.]" "" target_id ${target_id})
 
-	add_executable(${target_id} src/${t})
+		add_executable(${target_id} src/${t})
+	
         target_include_directories(${target_id} PRIVATE
                 ${test_include_dir}
         )

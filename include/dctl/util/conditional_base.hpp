@@ -34,7 +34,7 @@ struct conditional_base
 {
         constexpr static auto static_assert_type_traits() noexcept
         {
-                static_assert(not Condition || std::is_pod_v<Base>);
+                static_assert(!Condition || std::is_pod_v<Base>);
         }
 };
 
