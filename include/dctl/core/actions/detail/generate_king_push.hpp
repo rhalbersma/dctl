@@ -44,7 +44,7 @@ public:
         {
                 auto const sources = s.pieces(to_move_c, piece_c);
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        sources.for_each([&, this](auto const& from_sq) {
+                        xstd::for_each(sources, [&, this](auto const from_sq) {
                                 ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, s.pieces(empty_c));
                         });
                 } else {
@@ -69,10 +69,7 @@ private:
         template<class Iterator>
         auto serialize(Iterator const from, set_type const destinations) const
         {
-                ray::classical(
-                        from,
-                        destinations
-                ).for_each([this, from](auto const dest_sq) {
+                xstd::for_each(ray::classical(from, destinations), [this, from](auto const dest_sq) {
                         m_actions.emplace_back(
                                 *from,
                                 dest_sq
@@ -83,10 +80,7 @@ private:
         template<int Direction>
         auto serialize(set_type const sources, set_type const destinations) const
         {
-                king_push_targets<Direction>{}(
-                        sources,
-                        destinations
-                ).for_each([this](auto const dest_sq) {
+                xstd::for_each(king_push_targets<Direction>{}(sources, destinations), [this](auto const dest_sq) {
                         m_actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq

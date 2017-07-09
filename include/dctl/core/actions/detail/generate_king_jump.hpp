@@ -62,7 +62,7 @@ public:
 private:
         auto sources() const
         {
-                m_builder.pieces(to_move_c, piece_c).for_each([this](auto const from_sq) {
+                xstd::for_each(m_builder.pieces(to_move_c, piece_c), [this](auto const from_sq) {
                         raii::launch<Builder> guard{m_builder, from_sq};
                         if constexpr (is_orthogonal_jump_v<rules_type>) {
                                 directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(from_sq);

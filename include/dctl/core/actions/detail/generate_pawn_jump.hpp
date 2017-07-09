@@ -88,11 +88,12 @@ private:
         template<int Direction>
         auto sources() const
         {
-                pawn_jump_sources<Direction>{}(
+                auto src = pawn_jump_sources<Direction>{}(
                         m_builder.pieces(to_move_c, piece_c),
                         m_builder.targets(),
                         m_builder.pieces(empty_c)
-                ).for_each([this](auto const from_sq) {
+                );
+                xstd::for_each(src, [this](auto const from_sq) {
                         jump(along_ray<Direction>(from_sq));
                 });
         }

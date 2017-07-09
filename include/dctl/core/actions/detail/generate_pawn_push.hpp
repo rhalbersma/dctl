@@ -15,7 +15,6 @@
 #include <dctl/util/type_traits.hpp>                            // board_t, set_t, value_t
 #include <iterator>                                             // prev
 
-
 namespace dctl::core {
 namespace detail {
 
@@ -55,10 +54,7 @@ private:
         template<int Direction>
         auto serialize(set_type const sources, set_type const destinations) const
         {
-                pawn_push_targets<Direction>{}(
-                        sources,
-                        destinations
-                ).for_each([this](auto const dest_sq) {
+                xstd::for_each(pawn_push_targets<Direction>{}(sources, destinations), [this](auto const dest_sq) {
                         m_actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq,

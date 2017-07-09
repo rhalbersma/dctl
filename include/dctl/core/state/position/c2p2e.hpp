@@ -9,6 +9,7 @@
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <hash_append/hash_append.h>            // hash_append
 #include <array>                                // array
 #include <tuple>                                // tie
 #include <type_traits>                          // is_pod
