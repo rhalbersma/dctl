@@ -92,8 +92,8 @@ public:
                 -> state
         {
                 constexpr auto separation = initial_position_gap_v<Rules> + Board::height % 2;
-                constexpr auto black_pawns = board_type::initial(black_c, separation);
-                constexpr auto white_pawns = board_type::initial(white_c, separation);
+                PP_INTRINSIC_CONST auto black_pawns = board_type::initial(black_c, separation);
+                PP_INTRINSIC_CONST auto white_pawns = board_type::initial(white_c, separation);
                 return {{black_pawns, white_pawns}, color::white};
         }
 
