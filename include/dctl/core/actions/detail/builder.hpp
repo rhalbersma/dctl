@@ -138,7 +138,7 @@ public:
         template<int Direction>
         auto path() const
         {
-                PP_INTRINSIC_CONST auto js = board_type::jump_start(angle{Direction});
+                PP_CONSTEXPR_CONST auto js = board_type::jump_start(angle{Direction});
                 return pieces(empty_c) & js;
         }
 
