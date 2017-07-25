@@ -108,8 +108,8 @@ auto getnotation(std::ios_base& str, Action const&)
         return notation_v<rules_type>;
 }
 
-template<class CharT, class Traits, class Action>
-auto& print_algebraic(std::basic_ostream<CharT, Traits>& ostr, Action const& a)
+template<class charT, class traits, class Action>
+auto& print_algebraic(std::basic_ostream<charT, traits>& ostr, Action const& a)
 {
         using board_type = board_t<Action>;
         ostr << board_type::algebraic_from_bit(a.from());
@@ -118,8 +118,8 @@ auto& print_algebraic(std::basic_ostream<CharT, Traits>& ostr, Action const& a)
         return ostr;
 }
 
-template<class CharT, class Traits, class Action>
-auto& print_numeric(std::basic_ostream<CharT, Traits>& ostr, Action const& a)
+template<class charT, class traits, class Action>
+auto& print_numeric(std::basic_ostream<charT, traits>& ostr, Action const& a)
 {
         using board_type = board_t<Action>;
         ostr << board_type::numeric_from_bit(a.from());
@@ -146,8 +146,8 @@ auto str_numeric(Action const& a)
         return sstr.str();
 }
 
-template<class CharT, class Traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, action<Rules, Board> const& a)
+template<class charT, class traits, class Rules, class Board>
+auto& operator<<(std::basic_ostream<charT, traits>& ostr, action<Rules, Board> const& a)
 {
         switch (detail::getnotation(ostr, a)) {
         case notation::algebraic: return detail::print_algebraic(ostr, a);

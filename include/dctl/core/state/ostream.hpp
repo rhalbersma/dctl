@@ -42,8 +42,8 @@ auto getstateformat(std::ios_base& str)
 
 }       // namespace detail
 
-template<class CharT, class Traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, state<Rules, Board> const& s)
+template<class charT, class traits, class Rules, class Board>
+auto& operator<<(std::basic_ostream<charT, traits>& ostr, state<Rules, Board> const& s)
 {
         switch (detail::getstateformat(ostr)) {
         case detail::stateformat::diag: return ostr << diagram<Board>{}([&](auto const n) { return detail::content<detail::token_set<pdn::protocol>>(s, n); });
