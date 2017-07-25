@@ -26,7 +26,7 @@ struct first<direction::left>
         template<class Set>
         constexpr auto operator()(Set const s) const
         {
-                return *s.cbegin();
+                return s.front();
         }
 };
 
@@ -36,7 +36,7 @@ struct first<direction::right>
         template<class Set>
         constexpr auto operator()(Set const s) const
         {
-                return *s.crbegin();
+                return s.back();
         }
 };
 
