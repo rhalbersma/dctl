@@ -14,12 +14,7 @@ namespace block_adl {
 template<class Tag>
 struct tagged_empty
 {
-        constexpr static auto static_assert_type_traits() noexcept
-        {
-                using T = tagged_empty<Tag>;
-                static_assert(std::is_empty_v<T>);
-                static_assert(std::is_pod_v<T>);
-        }
+        static_assert(std::is_pod_v<Tag>);
 
         tagged_empty() = default;
 
@@ -32,10 +27,7 @@ struct conditional_base
 :
         std::conditional_t<Condition, Base, tagged_empty<Base>>
 {
-        constexpr static auto static_assert_type_traits() noexcept
-        {
-                static_assert(!Condition || std::is_pod_v<Base>);
-        }
+        static_assert(!Condition || std::is_pod_v<Base>);
 };
 
 }       // namespace block_adl

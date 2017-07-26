@@ -20,11 +20,6 @@ namespace bwk {
 template<class Board>
 class position
 {
-        constexpr static auto static_assert_type_traits() noexcept
-        {
-                static_assert(std::is_pod_v<position>);
-        }
-
         std::array<set_t<Board>, 2> m_color;
         set_t<Board> m_kings;
 public:

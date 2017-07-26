@@ -18,11 +18,6 @@ namespace wpo {
 template<class Board>
 class position
 {
-        constexpr static auto static_assert_type_traits() noexcept
-        {
-                static_assert(std::is_pod_v<position>);
-        }
-
         set_t<Board> m_white;
         set_t<Board> m_pawns;
         set_t<Board> m_occup;

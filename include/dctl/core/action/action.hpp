@@ -71,11 +71,6 @@ class action
         using conditional_base_contents_precedence = detail::conditional_base_contents_precedence<Rules, Board>;
         using base_action = detail::base_action<Board>;
 
-        constexpr static auto static_assert_type_traits() noexcept
-        {
-                static_assert(std::is_pod_v<action>);
-        }
-
         constexpr auto assert_invariants() const noexcept
         {
                 assert(from() != dest() || is_jump());

@@ -18,11 +18,8 @@ namespace detail {
 template<int N, int K, class IntegralType>
 class binomial
 {
-        constexpr static auto static_assert_type_traits() noexcept
-        {
-                static_assert(0 <= K); static_assert(K <= N);
-                static_assert(std::is_integral_v<IntegralType>);
-        }
+        static_assert(0 <= K); static_assert(K <= N);
+        static_assert(std::is_integral_v<IntegralType>);
 
         // https://en.wikipedia.org/wiki/Pascal's_triangle
         constexpr static auto pascal_triangle = []() {

@@ -68,11 +68,6 @@ public:
         using position_type = position_t<base_position>;
 
 private:
-        constexpr static auto static_assert_type_traits() noexcept
-        {
-                static_assert(std::is_pod_v<state>);
-        }
-
         constexpr auto assert_invariants() const noexcept
         {
                 assert(true);
