@@ -28,6 +28,7 @@ struct conditional_base
         std::conditional_t<Condition, Base, tagged_empty<Base>>
 {
         static_assert(!Condition || std::is_pod_v<Base>);
+        static_assert(std::is_empty_v<tagged_empty<Base>>);
 };
 
 }       // namespace block_adl
