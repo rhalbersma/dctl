@@ -149,21 +149,76 @@ struct fill
         {
                 if constexpr (ExcludesFrom{}) { ++from; }
                 auto targets = set_t<Board>{};
-                while (is_onboard(std::next(from, LookAhead)) && propagator.contains(*from)) {
+                while (is_onboard(from) && is_onboard(std::next(from, LookAhead)) && propagator.contains(*from)) {
                         targets.insert(*from++);
                 }
                 return targets;
         }
 };
 
-template<class Board, int Direction, class ExcludesFrom, int LookAhead>
-class king_ray_attacks_empty
+template<class Board, class ExcludesFrom, int LookAhead>
+class king_targets_sq_dir
+{
+        inline const static auto table = []() {
+                auto result = std::array<std::array<set_t<Board>, 4>, Board::bits()>{};
+                xstd::for_each(Board::squares, [&](auto const sq) {
+                        result[static_cast<std::size_t>(sq)] =
+                        {{
+                                fill<ExcludesFrom, LookAhead>{}(make_iterator<Board,  45>(sq), Board::squares),
+                                fill<ExcludesFrom, LookAhead>{}(make_iterator<Board, 135>(sq), Board::squares),
+                                fill<ExcludesFrom, LookAhead>{}(make_iterator<Board, 225>(sq), Board::squares),
+                                fill<ExcludesFrom, LookAhead>{}(make_iterator<Board, 315>(sq), Board::squares)
+                        }};
+                });
+                return result;
+        }();
+public:
+        auto operator()(int const sq, int const direction_index) const
+        {
+                return table[static_cast<std::size_t>(sq)][static_cast<std::size_t>(direction_index)];
+        }
+};
+
+template<class Board>
+using king_moves_empty = king_targets_sq_dir<Board, exclusive_tag, 0>;
+
+template<class Board>
+using king_jumps_empty = king_targets_sq_dir<Board, exclusive_tag, 1>;
+
+template<class Board, class ExcludesFrom, int LookAhead>
+class king_targets_dir_sq
+{
+        inline const static auto table = []() {
+                auto result = std::array<std::array<set_t<Board>, Board::bits()>, 4>{};
+                xstd::for_each(Board::squares, [&](auto const sq) {
+                        result[0][static_cast<std::size_t>(sq)] = fill<ExcludesFrom, LookAhead>{}(make_iterator<Board,  45>(sq), Board::squares);
+                        result[1][static_cast<std::size_t>(sq)] = fill<ExcludesFrom, LookAhead>{}(make_iterator<Board, 135>(sq), Board::squares);
+                        result[2][static_cast<std::size_t>(sq)] = fill<ExcludesFrom, LookAhead>{}(make_iterator<Board, 225>(sq), Board::squares);
+                        result[3][static_cast<std::size_t>(sq)] = fill<ExcludesFrom, LookAhead>{}(make_iterator<Board, 315>(sq), Board::squares);
+                });
+                return result;
+        }();
+public:
+        auto operator()(int const sq, int const direction_index) const
+        {
+                return table[static_cast<std::size_t>(direction_index)][static_cast<std::size_t>(sq)];
+        }
+};
+
+template<class Board>
+using blocker_and_beyond = king_targets_dir_sq<Board, inclusive_tag, 0>;
+
+template<class Board>
+class king_moves_empty_diagonal
 {
         inline const static auto table = []() {
                 auto result = std::array<set_t<Board>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                fill<ExcludesFrom, LookAhead>{}(make_iterator<Board, Direction>(sq), Board::squares)
+                                king_moves_empty<Board>{}(sq, 0) |
+                                king_moves_empty<Board>{}(sq, 1) |
+                                king_moves_empty<Board>{}(sq, 2) |
+                                king_moves_empty<Board>{}(sq, 3)
                         ;
                 });
                 return result;
@@ -175,60 +230,23 @@ public:
         }
 };
 
-template<class Board, int Direction>
-using king_moves_empty = king_ray_attacks_empty<Board, Direction, exclusive_tag, 0>;
-
-template<class Board, int Direction>
-using blocker_and_beyond = king_ray_attacks_empty<Board, Direction, inclusive_tag, 0>;
-
-template<class Board, int Direction>
-auto classical_approach(int const sq, set_t<Board> const occupied)
+template<class Board, int DirectionIndex>
+auto clear_blocker_and_beyond(set_t<Board>& targets, int const sq, set_t<Board> const occupied)
 {
-        auto targets = king_moves_empty<Board, Direction>{}(sq);
-        if (auto const blockers = targets & occupied; !blockers.empty()) {
-                targets ^= blocker_and_beyond<Board, Direction>{}(find_first<Direction>(blockers));
-        }
-        return targets;
-}
-
-template<class Board>
-class king_diagonal_moves_empty
-{
-        inline const static auto table = []() {
-                auto result = std::array<set_t<Board>, Board::bits()>{};
-                xstd::for_each(Board::squares, [&](auto const sq) {
-                        result[static_cast<std::size_t>(sq)] =
-                                king_moves_empty<Board,  45>{}(sq) |
-                                king_moves_empty<Board, 135>{}(sq) |
-                                king_moves_empty<Board, 225>{}(sq) |
-                                king_moves_empty<Board, 315>{}(sq)
-                        ;
-                });
-                return result;
-        }();
-public:
-        auto operator()(int const sq) const
-        {
-                return table[static_cast<std::size_t>(sq)];
-        }
-};
-
-template<class Board, int Direction>
-auto clear_blocker_and_beyond(set_t<Board>& attacks, int const sq, set_t<Board> const occupied)
-{
-        if (auto const blockers = king_moves_empty<Board, Direction>{}(sq) & occupied; !blockers.empty()) {
-                attacks ^= blocker_and_beyond<Board, Direction>{}(find_first<Direction>(blockers));
+        constexpr auto Direction = 45 + 90 * DirectionIndex;
+        if (auto const blockers = king_moves_empty<Board>{}(sq, DirectionIndex) & occupied; !blockers.empty()) {
+                targets ^= blocker_and_beyond<Board>{}(find_first<Direction>(blockers), DirectionIndex);
         }
 }
 
 template<class Board>
-auto classical_approach_in_one_run(int const sq, set_t<Board> const occupied)
+auto classical(int const sq, set_t<Board> const occupied)
 {
-        auto targets = king_diagonal_moves_empty<Board>{}(sq);
-        clear_blocker_and_beyond<Board,  45>(targets, sq, occupied);
-        clear_blocker_and_beyond<Board, 135>(targets, sq, occupied);
-        clear_blocker_and_beyond<Board, 225>(targets, sq, occupied);
-        clear_blocker_and_beyond<Board, 315>(targets, sq, occupied);
+        auto targets = king_moves_empty_diagonal<Board>{}(sq);
+        clear_blocker_and_beyond<Board, 0>(targets, sq, occupied);
+        clear_blocker_and_beyond<Board, 1>(targets, sq, occupied);
+        clear_blocker_and_beyond<Board, 2>(targets, sq, occupied);
+        clear_blocker_and_beyond<Board, 3>(targets, sq, occupied);
         return targets;
 }
 

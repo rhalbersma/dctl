@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(Ray)
         //auto const sq = 23;
         //auto const empty = B::set_type{};
 
-        auto block_first = ray::king_moves_empty<B, 225>{}(0);
+        auto block_first = ray::king_moves_empty<B>{}(0, 2);
         /*auto block_last = ray::king_ray_attacks_empty<B, 135, ray::inclusive_tag, B::set_type>{}(63);
 
         auto const w_NE = ray::classical<B, 45>(B::bit_from_square(sq - 1), empty);
