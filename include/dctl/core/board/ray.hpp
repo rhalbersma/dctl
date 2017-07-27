@@ -250,5 +250,14 @@ auto classical(int const sq, set_t<Board> const occupied)
         return targets;
 }
 
+template<class Board, int Direction>
+auto jump_blocker(int const sq, set_t<Board> const occupied)
+        -> std::optional<int>
+{
+        constexpr auto Index = (Direction - 45) / 90;
+        auto const blockers = king_jumps_empty<Board>{}(sq, Index) & occupied;
+        return blockers.empty() ? std::nullopt : find_first<Direction>(blockers);
+}
+
 }       // namespace ray
 }       // namespace dctl::core

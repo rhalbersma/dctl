@@ -62,10 +62,6 @@ private:
                 (... , serialize<Directions<orientation>{}>(sources, destinations));
         }
 
-        auto serialize(int const from_sq, set_type const targets) const
-        {
-        }
-
         template<int Direction>
         auto serialize(set_type const sources, set_type const destinations) const
         {
