@@ -138,70 +138,97 @@ constexpr auto is_onboard(iterator<Board, Direction> it)
         return static_cast<unsigned>(*it) < static_cast<unsigned>(set_t<Board>::max_size());
 }
 
-template<class Board, int Direction, class Set>
-auto fill(iterator<Board, Direction> from, Set const propagator)
-{
-        auto targets = Set{};
-        for (++from; is_onboard(from) && propagator.contains(*from); ++from) {
-                targets.insert(*from);
-        }
-        return targets;
-}
+struct inclusive_tag : std:: true_type {};
+struct exclusive_tag : std::false_type {};
 
-template<class Board>
-class king_targets
+template<class>
+struct fill;
+
+template<>
+struct fill<inclusive_tag>
+{
+        template<class Board, int Direction, class Set>
+        auto operator()(iterator<Board, Direction> from, Set const propagator) const
+        {
+                auto targets = Set{};
+                while (is_onboard(from) && propagator.contains(*from)) {
+                        targets.insert(*from++);
+                }
+                return targets;
+        }
+};
+
+template<>
+struct fill<exclusive_tag>
+{
+        template<class Board, int Direction, class Set>
+        auto operator()(iterator<Board, Direction> from, Set const propagator) const
+        {
+                return fill<inclusive_tag>{}(std::next(from), propagator);
+        }
+};
+
+template<class Board, int Direction, class IncludesFrom, class Set = set_t<Board>>
+class king_ray_attacks_empty
 {
         constexpr static auto N = Board::bits();
 
-        template<int Direction>
-        struct init
-        {
-                auto operator()() const noexcept
-                {
-                        auto result = std::array<set_t<Board>, N>{};
-                        for (auto n = 0; n < N; ++n) {
-                                result[static_cast<std::size_t>(n)] =
-                                        Board::squares.contains(n) ?
-                                        fill(make_iterator<Board, Direction>(n), Board::squares) :
-                                        set_t<Board>{}
-                                ;
-                        }
-                        return result;
-                }
-        };
-
-        inline static auto const table = std::array<std::array<set_t<Board>, N>, 8>
-        {{
-                init<  0>{}(),
-                init< 45>{}(),
-                init< 90>{}(),
-                init<135>{}(),
-                init<180>{}(),
-                init<225>{}(),
-                init<270>{}(),
-                init<315>{}()
-        }};
+        inline const static auto table = []() {
+                auto result = std::array<set_t<Board>, N>{};
+                xstd::for_each(Board::squares, [&](auto const sq) {
+                        result[static_cast<std::size_t>(sq)] =
+                                fill<IncludesFrom>{}(make_iterator<Board, Direction>(sq), Board::squares)
+                        ;
+                });
+                return result;
+        }();
 public:
-        auto operator()(int const sq, angle const alpha) const noexcept
+        auto operator()(int const sq) const
         {
-                constexpr static auto theta = 45_deg;
-                constexpr static auto beta  =  0_deg;
-                auto const segment = (alpha - beta) / theta;
-                return table[static_cast<std::size_t>(segment)][static_cast<std::size_t>(sq)];
+                return table[static_cast<std::size_t>(sq)];
+        }
+};
+
+template<class Board, class Set = set_t<Board>>
+class king_diagonal_attacks_empty
+{
+        constexpr static auto N = Board::bits();
+
+        inline const static auto table = []() {
+                auto result = std::array<Set, N>{};
+                xstd::for_each(Board::squares, [&](auto const sq) {
+                        result[static_cast<std::size_t>(sq)] =
+                                king_ray_attacks_empty<Board,  45, exclusive_tag, Set>{}(sq) |
+                                king_ray_attacks_empty<Board, 135, exclusive_tag, Set>{}(sq) |
+                                king_ray_attacks_empty<Board, 225, exclusive_tag, Set>{}(sq) |
+                                king_ray_attacks_empty<Board, 315, exclusive_tag, Set>{}(sq)
+                        ;
+                });
+                return result;
+        }();
+public:
+        auto operator()(int const sq) const
+        {
+                return table[static_cast<std::size_t>(sq)];
         }
 };
 
 template<class Board, int Direction, class Set = set_t<Board>>
-auto classical(iterator<Board, Direction> from, Set const propagator)
+auto classical(int const sq, Set const occupied)
 {
-        constexpr auto theta = angle{Direction};
-        auto targets = king_targets<Board>{}(*from, theta);
-        auto const blockers = targets & ~propagator;
-        if (!blockers.empty()) {
-                auto const f = detail::first<detail::shift_sign_v<Direction>>{}(blockers);
-                targets ^= king_targets<Board>{}(f, theta);
-                targets.erase(f);
+        auto targets = king_ray_attacks_empty<Board, Direction, exclusive_tag, Set>{}(sq);
+        if (auto const blockers = targets & occupied; !blockers.empty()) {
+                targets ^= king_ray_attacks_empty<Board, Direction, inclusive_tag, Set>{}(
+                        detail::first<detail::shift_sign_v<Direction>>{}(blockers)
+                );
         }
+        return targets;
+}
+
+template<class Board, class Set = set_t<Board>>
+auto classical_one_run(int const sq, Set const /*occupied*/)
+{
+        auto targets = king_diagonal_attacks_empty<Board, Set>{}(sq);
         return targets;
 }
 

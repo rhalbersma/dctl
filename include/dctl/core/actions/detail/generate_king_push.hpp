@@ -45,7 +45,7 @@ public:
                 auto const sources = s.pieces(to_move_c, piece_c);
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         xstd::for_each(sources, [&, this](auto const from_sq) {
-                                ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, s.pieces(empty_c));
+                                ray_directions_lfold<right_up, left_up, left_down, right_down>(from_sq, s.pieces(occup_c));
                         });
                 } else {
                         if (!sources.empty()) {
@@ -55,9 +55,9 @@ public:
         }
 private:
         template<template<int> class... Directions>
-        auto ray_directions_lfold(int const from, set_type const destinations) const
+        auto ray_directions_lfold(int const from_sq, set_type const destinations) const
         {
-                (... , serialize(along_ray<Directions<orientation>{}>(from), destinations));
+                serialize(from_sq, (... | ray::classical<board_type, Directions<orientation>{}>(from_sq, destinations)));
         }
 
         template<template<int> class... Directions>
@@ -66,12 +66,11 @@ private:
                 (... , serialize<Directions<orientation>{}>(sources, destinations));
         }
 
-        template<class Iterator>
-        auto serialize(Iterator const from, set_type const destinations) const
+        auto serialize(int const from_sq, set_type const targets) const
         {
-                xstd::for_each(ray::classical(from, destinations), [this, from](auto const dest_sq) {
+                xstd::for_each(targets, [this, from_sq](auto const dest_sq) {
                         m_actions.emplace_back(
-                                *from,
+                                from_sq,
                                 dest_sq
                         );
                 });
