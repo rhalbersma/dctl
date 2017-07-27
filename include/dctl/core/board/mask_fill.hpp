@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/detail/shift.hpp>    // shift, shift_sign, shift_size
+#include <dctl/core/board/shift.hpp>    // shift, shift_sign, shift_size
 
 namespace dctl::core {
 namespace mask {
@@ -13,13 +13,13 @@ namespace loop {
 
 // Chess Programming Wiki, "Fill Loop" algorithm
 // http://chessprogramming.wikispaces.com/Dumb7Fill#Occluded%20Fill-Fill%20Loop
-template<detail::direction Direction, int N, class Set>
+template<direction Direction, int N, class Set>
 constexpr auto fill(Set generator, Set const propagator)
 {
         Set flood {};
         while (!generator.empty()) {
                 flood |= generator;
-                generator = detail::shift<Direction, N>{}(generator) & propagator;
+                generator = shift<Direction, N>{}(generator) & propagator;
         }
         return flood;
 }
@@ -33,8 +33,8 @@ struct fill
         constexpr auto operator()(Set const generator, Set const propagator) const noexcept
         {
                 return loop::fill<
-                        detail::shift_sign_v<Direction>,
-                        detail::shift_size_v<Board, Direction>
+                        shift_sign_v<Direction>,
+                        shift_size_v<Board, Direction>
                 >(generator, propagator);
         }
 };

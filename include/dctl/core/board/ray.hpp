@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>            // angle
-#include <dctl/core/board/detail/shift.hpp>     // first, shift_sign, shift_size
+#include <dctl/core/board/shift.hpp>     // first, shift_sign, shift_size
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable, additive
@@ -26,9 +26,9 @@ class cursor
 ,       boost::additive       < cursor<Board, Direction>, int   // +, -
 > > >
 {
-        constexpr static auto sign = detail::shift_sign_v<Direction>;
-        constexpr static auto N = static_cast<int>(detail::shift_size_v<Board, Direction>);
-        constexpr static auto stride = (sign == detail::direction::right) ? -N : N;
+        constexpr static auto sign = shift_sign_v<Direction>;
+        constexpr static auto N = static_cast<int>(shift_size_v<Board, Direction>);
+        constexpr static auto stride = (sign == direction::right) ? -N : N;
         static_assert(stride != 0, "Cursors need a non-zero stride.");
 
         int m_cursor{};
@@ -138,46 +138,32 @@ constexpr auto is_onboard(iterator<Board, Direction> it)
         return static_cast<unsigned>(*it) < static_cast<unsigned>(set_t<Board>::max_size());
 }
 
-struct inclusive_tag : std:: true_type {};
-struct exclusive_tag : std::false_type {};
+struct exclusive_tag : std:: true_type {};
+struct inclusive_tag : std::false_type {};
 
-template<class>
-struct fill;
-
-template<>
-struct fill<inclusive_tag>
+template<class ExcludesFrom, int LookAhead>
+struct fill
 {
-        template<class Board, int Direction, class Set>
-        auto operator()(iterator<Board, Direction> from, Set const propagator) const
+        template<class Board, int Direction>
+        auto operator()(iterator<Board, Direction> from, set_t<Board> const propagator) const
         {
-                auto targets = Set{};
-                while (is_onboard(from) && propagator.contains(*from)) {
+                if constexpr (ExcludesFrom{}) { ++from; }
+                auto targets = set_t<Board>{};
+                while (is_onboard(std::next(from, LookAhead)) && propagator.contains(*from)) {
                         targets.insert(*from++);
                 }
                 return targets;
         }
 };
 
-template<>
-struct fill<exclusive_tag>
-{
-        template<class Board, int Direction, class Set>
-        auto operator()(iterator<Board, Direction> from, Set const propagator) const
-        {
-                return fill<inclusive_tag>{}(std::next(from), propagator);
-        }
-};
-
-template<class Board, int Direction, class IncludesFrom, class Set = set_t<Board>>
+template<class Board, int Direction, class ExcludesFrom, int LookAhead>
 class king_ray_attacks_empty
 {
-        constexpr static auto N = Board::bits();
-
         inline const static auto table = []() {
-                auto result = std::array<set_t<Board>, N>{};
+                auto result = std::array<set_t<Board>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                fill<IncludesFrom>{}(make_iterator<Board, Direction>(sq), Board::squares)
+                                fill<ExcludesFrom, LookAhead>{}(make_iterator<Board, Direction>(sq), Board::squares)
                         ;
                 });
                 return result;
@@ -189,46 +175,60 @@ public:
         }
 };
 
-template<class Board, class Set = set_t<Board>>
-class king_diagonal_attacks_empty
-{
-        constexpr static auto N = Board::bits();
+template<class Board, int Direction>
+using king_moves_empty = king_ray_attacks_empty<Board, Direction, exclusive_tag, 0>;
 
-        inline const static auto table = []() {
-                auto result = std::array<Set, N>{};
-                xstd::for_each(Board::squares, [&](auto const sq) {
-                        result[static_cast<std::size_t>(sq)] =
-                                king_ray_attacks_empty<Board,  45, exclusive_tag, Set>{}(sq) |
-                                king_ray_attacks_empty<Board, 135, exclusive_tag, Set>{}(sq) |
-                                king_ray_attacks_empty<Board, 225, exclusive_tag, Set>{}(sq) |
-                                king_ray_attacks_empty<Board, 315, exclusive_tag, Set>{}(sq)
-                        ;
-                });
-                return result;
-        }();
-public:
-        auto operator()(int const sq) const
-        {
-                return table[static_cast<std::size_t>(sq)];
-        }
-};
+template<class Board, int Direction>
+using blocker_and_beyond = king_ray_attacks_empty<Board, Direction, inclusive_tag, 0>;
 
-template<class Board, int Direction, class Set = set_t<Board>>
-auto classical(int const sq, Set const occupied)
+template<class Board, int Direction>
+auto classical_approach(int const sq, set_t<Board> const occupied)
 {
-        auto targets = king_ray_attacks_empty<Board, Direction, exclusive_tag, Set>{}(sq);
+        auto targets = king_moves_empty<Board, Direction>{}(sq);
         if (auto const blockers = targets & occupied; !blockers.empty()) {
-                targets ^= king_ray_attacks_empty<Board, Direction, inclusive_tag, Set>{}(
-                        detail::first<detail::shift_sign_v<Direction>>{}(blockers)
-                );
+                targets ^= blocker_and_beyond<Board, Direction>{}(find_first<Direction>(blockers));
         }
         return targets;
 }
 
-template<class Board, class Set = set_t<Board>>
-auto classical_one_run(int const sq, Set const /*occupied*/)
+template<class Board>
+class king_diagonal_moves_empty
 {
-        auto targets = king_diagonal_attacks_empty<Board, Set>{}(sq);
+        inline const static auto table = []() {
+                auto result = std::array<set_t<Board>, Board::bits()>{};
+                xstd::for_each(Board::squares, [&](auto const sq) {
+                        result[static_cast<std::size_t>(sq)] =
+                                king_moves_empty<Board,  45>{}(sq) |
+                                king_moves_empty<Board, 135>{}(sq) |
+                                king_moves_empty<Board, 225>{}(sq) |
+                                king_moves_empty<Board, 315>{}(sq)
+                        ;
+                });
+                return result;
+        }();
+public:
+        auto operator()(int const sq) const
+        {
+                return table[static_cast<std::size_t>(sq)];
+        }
+};
+
+template<class Board, int Direction>
+auto clear_blocker_and_beyond(set_t<Board>& attacks, int const sq, set_t<Board> const occupied)
+{
+        if (auto const blockers = king_moves_empty<Board, Direction>{}(sq) & occupied; !blockers.empty()) {
+                attacks ^= blocker_and_beyond<Board, Direction>{}(find_first<Direction>(blockers));
+        }
+}
+
+template<class Board>
+auto classical_approach_in_one_run(int const sq, set_t<Board> const occupied)
+{
+        auto targets = king_diagonal_moves_empty<Board>{}(sq);
+        clear_blocker_and_beyond<Board,  45>(targets, sq, occupied);
+        clear_blocker_and_beyond<Board, 135>(targets, sq, occupied);
+        clear_blocker_and_beyond<Board, 225>(targets, sq, occupied);
+        clear_blocker_and_beyond<Board, 315>(targets, sq, occupied);
         return targets;
 }
 

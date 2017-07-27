@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>            // angle, reverse
-#include <dctl/core/board/detail/shift.hpp>            // shift_assign, shift_sign, shift_size
+#include <dctl/core/board/shift.hpp>            // shift_assign, shift_sign, shift_size
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable
@@ -21,9 +21,9 @@ class cursor
 ,       boost::unit_steppable < cursor<Board, Direction>        // ++, --
 > >
 {
-        constexpr static auto sign_incr = detail::shift_sign_v<Direction>;
-        constexpr static auto sign_decr = detail::shift_sign_v<reverse(angle{Direction}).value()>;
-        constexpr static auto stride    = detail::shift_size_v<Board, Direction>;
+        constexpr static auto sign_incr = shift_sign_v<Direction>;
+        constexpr static auto sign_decr = shift_sign_v<reverse(angle{Direction}).value()>;
+        constexpr static auto stride    = shift_size_v<Board, Direction>;
         static_assert(stride != 0, "Cursors need a non-zero stride.");
 
         using set_type = set_t<Board>;
@@ -54,14 +54,14 @@ public:
         // operator++(int) provided by boost::unit_steppable
         auto& operator++() noexcept
         {
-                detail::shift_assign<sign_incr, stride>{}(m_cursor);
+                shift_assign<sign_incr, stride>{}(m_cursor);
                 return *this;
         }
 
         // operator--(int) provided by boost::unit_steppable
         auto& operator--() noexcept
         {
-                detail::shift_assign<sign_decr, stride>{}(m_cursor);
+                shift_assign<sign_decr, stride>{}(m_cursor);
                 return *this;
         }
 };

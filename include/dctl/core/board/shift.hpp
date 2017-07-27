@@ -9,13 +9,15 @@
 #include <cassert>
 
 namespace dctl::core {
-namespace detail {
 
 enum class direction
 {
         left,
         right
 };
+
+template<int Direction>
+constexpr auto shift_sign_v = (angle{Direction} == 0_deg || 180_deg < angle{Direction}) ? direction::left : direction::right;
 
 template<direction>
 struct first;
@@ -39,6 +41,12 @@ struct first<direction::right>
                 return s.back();
         }
 };
+
+template<int Direction, class Set>
+auto find_first(Set const& s)
+{
+        return first<shift_sign_v<Direction>>{}(s);
+}
 
 template<direction, int N>
 struct shift;
@@ -86,17 +94,6 @@ struct shift_assign<direction::right, N>
         }
 };
 
-struct shift_sign
-{
-        constexpr auto operator()(angle const a) const noexcept
-        {
-                return (a == 0_deg || 180_deg < a) ? direction::left : direction::right;
-        }
-};
-
-template<int Direction>
-constexpr auto shift_sign_v = shift_sign{}(angle{Direction});
-
 template<class Board>
 class shift_size
 {
@@ -128,5 +125,4 @@ public:
 template<class Board, int Direction>
 constexpr auto shift_size_v = shift_size<Board>{}(angle{Direction});
 
-}       // namespace detail
 }       // namespace dctl::core
