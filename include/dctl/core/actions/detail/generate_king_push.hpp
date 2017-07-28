@@ -24,7 +24,6 @@ class generate<color_<Side>, kings_, select::push, Reverse, State, SequenceConta
 {
         using to_move_ = color_<Side>;
         constexpr static auto to_move_c = color_c<Side>;
-        constexpr static auto piece_c = kings_c;
         using  board_type = board_t<State>;
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
@@ -42,41 +41,34 @@ public:
 
         auto operator()(State const& s) const
         {
-                auto const sources = s.pieces(to_move_c, piece_c);
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        xstd::for_each(sources, [&, this](auto const from_sq) {
-                                xstd::for_each(ray::classical<board_type>(from_sq, s.pieces(occup_c)), [this, from_sq](auto const dest_sq) {
+                        xstd::for_each(s.pieces(to_move_c, kings_c), [this, &s](auto const from_sq) {
+                                xstd::for_each(ray::sliding_king_moves<board_type>{}(from_sq, s.pieces(occup_c)), [this, from_sq](auto const dest_sq) {
                                         m_actions.emplace_back(from_sq, dest_sq);
                                 });
                         });
                 } else {
-                        if (!sources.empty()) {
-                                wave_directions_lfold<right_up, left_up, left_down, right_down>(sources, s.pieces(empty_c));
+                        if (auto const kings = s.pieces(to_move_c, kings_c); !kings.empty()) {
+                                foldr_wave_directions<right_up, left_up, left_down, right_down>(kings, s.pieces(empty_c));
                         }
                 }
         }
 private:
         template<template<int> class... Directions>
-        auto wave_directions_lfold(set_type const sources, set_type const destinations) const
+        auto foldr_wave_directions(set_type const kings, set_type const empty) const
         {
-                (... , serialize<Directions<orientation>{}>(sources, destinations));
+                (serialize<Directions<orientation>{}>(kings, empty) , ...);
         }
 
         template<int Direction>
-        auto serialize(set_type const sources, set_type const destinations) const
+        auto serialize(set_type const kings, set_type const empty) const
         {
-                xstd::for_each(king_push_targets<Direction>{}(sources, destinations), [this](auto const dest_sq) {
+                xstd::for_each(king_push_targets<Direction>{}(kings, empty), [this](auto const dest_sq) {
                         m_actions.emplace_back(
-                                *std::prev(along_ray<Direction>(dest_sq)),
+                                *std::prev(ray::make_iterator<board_type, Direction>(dest_sq)),
                                 dest_sq
                         );
                 });
-        }
-
-        template<int Direction>
-        auto along_ray(int const sq) const
-        {
-                return ray::make_iterator<board_type, Direction>(sq);
         }
 };
 

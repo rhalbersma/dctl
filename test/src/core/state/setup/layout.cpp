@@ -61,22 +61,4 @@ BOOST_AUTO_TEST_CASE(Grid)
         std::cout << "W = " << o.width() << ", H = " << o.height() << ", P = " << o.is_inverted() << ", bits = " << o.size() << "\n\n";
 }
 
-BOOST_AUTO_TEST_CASE(Ray)
-{
-        using B = board<international>;
-        //auto const sq = 23;
-        //auto const empty = B::set_type{};
-
-        auto block_first = ray::king_moves_empty<B>{}(0, 2);
-        /*auto block_last = ray::king_ray_attacks_empty<B, 135, ray::inclusive_tag, B::set_type>{}(63);
-
-        auto const w_NE = ray::classical<B, 45>(B::bit_from_square(sq - 1), empty);
-        auto const w_NW = ray::classical<B,135>(B::bit_from_square(sq - 1), empty);
-        auto const w_SW = ray::classical<B,225>(B::bit_from_square(sq - 1), empty);
-        auto const w_SE = ray::classical<B,315>(B::bit_from_square(sq - 1), empty);
-        auto const moves = w_NE | w_NW | w_SW | w_SE;*/
-        auto const pos = state<international>({{}, {}, {}, block_first}, white_c);
-        std::cout << pos;
-}
-
 BOOST_AUTO_TEST_SUITE_END()

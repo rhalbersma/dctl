@@ -113,6 +113,11 @@ public:
                 return m_empty;
         }
 
+        auto pieces(occup_) const noexcept
+        {
+                return board_type::squares ^ m_empty;
+        }
+
         auto targets() const noexcept
         {
                 return m_initial_targets & ~m_candidate_action.captured_pieces();

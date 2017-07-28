@@ -23,13 +23,13 @@ BOOST_AUTO_TEST_SUITE(WalkinitialBoard10x10)
 
 BOOST_AUTO_TEST_CASE(international)
 {
-        auto const p = state<international>::initial();
+        auto const s = state<international, board<rectangular<10, 10>>>::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
                 { 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'971, 41'022'614, 258'935'682, 1'666'207'133, 10'752'899'471 },
                 { 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'961, 41'022'423, 258'895'763, 1'665'861'398                 }
         };
-        traversal::test(keep_duplicates_gen, p, leafs[0]);
-        traversal::test(drop_duplicates_gen, p, leafs[1]);
+        traversal::test(keep_duplicates_gen, s, leafs[0]);
+        traversal::test(drop_duplicates_gen, s, leafs[1]);
 }
 /*
 // http://laatste.info/bb3/viewtopic.php?f=53&t=2822&start=15
