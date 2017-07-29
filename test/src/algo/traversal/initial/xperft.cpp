@@ -3,7 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/algo/traversal/root.hpp>
+#include <dctl/algo/traversal/root.hpp> // perft_state
 #include <dctl/core.hpp>
 #include <cstddef>
 #include <vector>
@@ -16,7 +16,8 @@ int main()
         //auto const s = state<checkers>::initial();
         //traversal::sperft(keep_duplicates_gen, s, 17);
 
-        using S = state<international>;
+        using S = state<international, board<international>>;
+        std::cout << S::initial() << "\n";
 
         auto const states = std::vector<S>{
                 S::initial(),

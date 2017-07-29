@@ -10,9 +10,9 @@
 using namespace dctl::algo;
 using namespace dctl::core;
 
-using F = search::Fixture< state<international>, search::DefaultObjective >;
+using F = search::Fixture< state<international, board<international>>, search::DefaultObjective >;
 
-BOOST_AUTO_TEST_SUITE(Searchinitial)
+BOOST_AUTO_TEST_SUITE(SearchInitialInternational)
 
 BOOST_FIXTURE_TEST_CASE(I, F)
 {

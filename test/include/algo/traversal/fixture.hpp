@@ -5,9 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/algo/traversal/root.hpp> // Root
-#include <dctl/core/actions.hpp>
-#include <dctl/util/units.hpp>
+#include <dctl/algo/traversal/root.hpp> // perft_state
 #include <boost/test/unit_test.hpp>     // BOOST_CHECK_EQUAL
 
 namespace dctl::algo {

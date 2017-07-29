@@ -47,7 +47,7 @@ auto& operator<<(std::basic_ostream<charT, traits>& ostr, state<Rules, Board> co
 {
         switch (detail::getstateformat(ostr)) {
         case detail::stateformat::diag: return ostr << diagram<Board>{}([&](auto const n) { return detail::content<detail::token_set<pdn::protocol>>(s, n); });
-        case detail::stateformat::fen : return ostr << setup::write<pdn::protocol>()(s);
+        case detail::stateformat::fen : return ostr << setup::write<pdn::protocol>{}(s);
         }
         return ostr;
 }

@@ -116,8 +116,6 @@ struct write<pdn::protocol, Token>
         template<class State>
         auto operator()(State const& s) const
         {
-                using Board = board_t<State>;
-
                 std::stringstream sstr;
                 sstr << Token::quote;                                   // opening quotes
                 sstr << write_color<Token>(s.to_move());                // side to move
@@ -134,7 +132,7 @@ struct write<pdn::protocol, Token>
                                 if (s.pieces(kings_c).contains(sq)) {
                                         sstr << Token::king;            // king tag
                                 }
-                                sstr << Board::square_from_bit(sq) + 1; // square number
+                                sstr << board_t<State>::square_from_bit(sq) + 1; // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
                                 //        sstr << "^" << p.count(c);
                                 if (++n != bs.count()) {                 // still pieces remaining
@@ -189,12 +187,12 @@ struct read<Rules, Board, dxp::protocol, Token>
 template<class Token>
 struct write<dxp::protocol, Token>
 {
-        template<class Rules, class Board>
-        auto operator()(state<Rules, Board> const& s) const
+        template<class State>
+        auto operator()(State const& s) const
         {
                 std::stringstream sstr;
                 sstr << write_color<Token>(s.to_move());
-                sstr << string<Board>{}([&](auto const n) { return detail::content<Token>(s, n); });
+                sstr << string<board_t<State>>{}([&](auto const n) { return detail::content<Token>(s, n); });
                 sstr << '\n';
                 return sstr.str();
         }

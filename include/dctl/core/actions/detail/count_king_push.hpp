@@ -38,7 +38,7 @@ public:
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         auto result = 0;
                         xstd::for_each(s.pieces(to_move_c, kings_c), [&](auto const from_sq) {
-                                result += ray::sliding_king_moves<board_type>{}(from_sq, s.pieces(occup_c)).count();
+                                result += ray::sliding_king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)).count();
                         });
                         return result;
                 } else {

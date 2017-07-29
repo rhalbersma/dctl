@@ -11,9 +11,9 @@
 using namespace dctl::algo;
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(SearchEGDBinternational)
+BOOST_AUTO_TEST_SUITE(SearchEGDBInternational)
 
-using F = search::Fixture< state<international>, search::DefaultObjective >;
+using F = search::Fixture<state<international, board<rectangular<10, 10>>>, search::DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {

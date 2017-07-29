@@ -46,7 +46,7 @@ struct is_terminal<Kingscourt>
         {
                 return
                         (active_kings(s).count() - passive_kings(s).count() < 0) ||
-                        is_terminal<NoActionsLeft>()(s)
+                        is_terminal<NoActionsLeft>{}(s)
                 ;
         }
 };
@@ -157,7 +157,7 @@ struct GameObjective
                         return cycle<CycleScoring>::value(s);
                 }
 
-                if (is_terminal<TerminalDetection>()(s, successor)) {
+                if (is_terminal<TerminalDetection>{}(s, successor)) {
                         return terminal<TerminalScoring>::value();
                 }
 

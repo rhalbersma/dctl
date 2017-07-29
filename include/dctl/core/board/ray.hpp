@@ -9,6 +9,7 @@
 #include <dctl/core/board/shift.hpp>            // first, shift_sign, shift_size
 #include <dctl/util/meta.hpp>                   // foldr_bitor, foldr_comma, int_c, quote
 #include <dctl/util/type_traits.hpp>            // set_t
+#include <xstd/int_set.hpp>
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
 #include <boost/operators.hpp>                  // totally_ordered, unit_steppable, additive
 #include <array>                                // array
@@ -139,30 +140,33 @@ constexpr auto is_onboard(iterator<Board, Direction> it)
         return static_cast<unsigned>(*it) < static_cast<unsigned>(set_t<Board>::max_size());
 }
 
-struct sliding_tag : std:: true_type {};
-struct pushing_tag : std::false_type {};
+using includes_from = std:: true_type;
+using excludes_from = std::false_type;
 
-struct exclusive_tag : std:: true_type {};
-struct inclusive_tag : std::false_type {};
+using includes_edge = std:: true_type;
+using excludes_edge = std::false_type;
 
-template<class Sliding, class ExcludesFrom, int LookAhead>
+template<class Rules, class IncludesFrom, class IncludesEdge>
 struct fill
 {
         template<class Board, int Direction>
         auto operator()(iterator<Board, Direction> from, set_t<Board> const propagator) const
         {
+                assert(is_onboard(from));
                 auto targets = set_t<Board>{};
-                if constexpr (ExcludesFrom{}) {
+                auto const is_within = [&](auto it) {
+                        return is_onboard(it) && propagator.contains(*it);
+                };
+                auto const is_valid = [&](auto it) {
+                        return is_within(it) && (IncludesEdge{} || is_within(std::next(it)));
+                };
+                if constexpr (!IncludesFrom{}) {
                         ++from;
                 }
-                if constexpr (Sliding{}) {
-                        while (is_onboard(from) && is_onboard(std::next(from, LookAhead)) && propagator.contains(*from)) {
-                                targets.insert(*from++);
-                        }
+                if constexpr (is_long_ranged_king_v<Rules>) {
+                        while (is_valid(from)) { targets.insert(*from++); }
                 } else {
-                        if (is_onboard(from) && is_onboard(std::next(from, LookAhead)) && propagator.contains(*from)) {
-                                targets.insert(*from);
-                        }
+                        if (is_valid(from)) { targets.insert(*from); }
                 }
                 return targets;
         }
@@ -219,11 +223,11 @@ public:
         }
 };
 
-template<class Board>
-using sliding_king_move_targets = king_targets_sq_dir<Board, fill<sliding_tag, exclusive_tag, 0>>;
+template<class Rules, class Board>
+using king_move_targets = king_targets_sq_dir<Board, fill<Rules, excludes_from, includes_edge>>;
 
-template<class Board>
-using sliding_king_jump_targets = king_targets_sq_dir<Board, fill<sliding_tag, exclusive_tag, 1>>;
+template<class Rules, class Board>
+using king_jump_targets = king_targets_sq_dir<Board, fill<Rules, excludes_from, excludes_edge>>;
 
 template<class Board, class Fill>
 class king_targets_dir_sq
@@ -251,19 +255,19 @@ public:
         }
 };
 
-template<class Board>
-using blocker_and_beyond = king_targets_dir_sq<Board, fill<sliding_tag, inclusive_tag, 0>>;
+template<class Rules, class Board>
+using blocker_and_beyond = king_targets_dir_sq<Board, fill<Rules, includes_from, includes_edge>>;
 
-template<class Board>
-class sliding_king_move_targets_diag
+template<class Rules, class Board>
+class king_move_targets_diag
 {
         template<class Direction>
-        struct sliding_king_move_targets_helper
+        struct king_move_targets_helper
         {
                 auto operator()(int const sq) const
                 {
                         constexpr auto index = Direction{} / 45;
-                        return sliding_king_move_targets<Board>{}(sq, index);
+                        return king_move_targets<Rules, Board>{}(sq, index);
                 }
         };
 
@@ -271,7 +275,7 @@ class sliding_king_move_targets_diag
                 auto result = std::array<set_t<Board>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::foldr_bitor<king_move_directions, meta::quote<sliding_king_move_targets_helper>>{}(sq);
+                                meta::foldr_bitor<king_move_directions, meta::quote<king_move_targets_helper>>{}(sq);
                         ;
                 });
                 return result;
@@ -283,7 +287,7 @@ public:
         }
 };
 
-template<class Board>
+template<class Rules, class Board>
 class sliding_king_moves
 {
         template<class Direction>
@@ -292,26 +296,26 @@ class sliding_king_moves
                 auto operator()(int const sq, set_t<Board> const occupied, set_t<Board>& targets) const
                 {
                         constexpr auto index = Direction{} / 45;
-                        if (auto const blockers = sliding_king_move_targets<Board>{}(sq, index) & occupied; !blockers.empty()) {
-                                targets ^= blocker_and_beyond<Board>{}(find_first<Direction{}>(blockers), index);
+                        if (auto const blockers = king_move_targets<Rules, Board>{}(sq, index) & occupied; !blockers.empty()) {
+                                targets ^= blocker_and_beyond<Rules, Board>{}(find_first<Direction{}>(blockers), index);
                         }
                 }
         };
 public:
         auto operator()(int const sq, set_t<Board> const occupied) const
         {
-                auto targets = sliding_king_move_targets_diag<Board>{}(sq);
+                auto targets = king_move_targets_diag<Rules, Board>{}(sq);
                 meta::foldr_comma<king_move_directions, meta::quote<clear_blocker_and_beyond>>{}(sq, occupied, targets);
                 return targets;
         }
 };
 
-template<class Board, int Direction>
+template<class Rules, class Board, int Direction>
 auto sliding_king_jump_target(iterator<Board, Direction> from, set_t<Board> const occupied)
         -> std::optional<iterator<Board, Direction>>
 {
         constexpr auto index = Direction / 45;
-        if (auto const blockers = sliding_king_jump_targets<Board>{}(*from, index) & occupied; !blockers.empty()) {
+        if (auto const blockers = king_jump_targets<Rules, Board>{}(*from, index) & occupied; !blockers.empty()) {
                 return make_iterator<Board, Direction>(find_first<Direction>(blockers));
         } else {
                 return std::nullopt;

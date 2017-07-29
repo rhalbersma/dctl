@@ -13,7 +13,7 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(SearchEGDBfrisian)
 
-using F = search::Fixture< state<frisian>, search::DefaultObjective >;
+using F = search::Fixture<state<frisian, board<frisian>>, search::DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(Walinga, F)
 {

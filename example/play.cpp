@@ -19,7 +19,7 @@ int main()
         using Board = board<micro>;
         using State = state<Rules, Board>;
 
-        auto initial = State::initial();// setup::read<Rules, Board>()("W:B1,5,6,9,10:W11,12,14,15,16");
+        auto initial = State::initial();// setup::read<Rules, Board>{}("W:B1,5,6,9,10:W11,12,14,15,16");
         //("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46");
 
         std::stack<State> game;

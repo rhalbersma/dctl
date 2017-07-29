@@ -5,7 +5,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/board.hpp>
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>
 #include <dctl/core/state/position.hpp>
@@ -51,7 +50,7 @@ using block_adl::conditional_base_mrpk;
 
 }       // namespace detail
 
-template<class Rules, class Board = board<Rules>>
+template<class Rules, class Board>
 class state
 :
         detail::base_position<Board>,

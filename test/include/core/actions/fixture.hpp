@@ -12,7 +12,7 @@
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/range/adaptor/transformed.hpp>  // transformed
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK, BOOST_CHECK_EQUAL
-#include <algorithm>
+#include <algorithm>                            // is_permutation
 #include <functional>                           // cref
 #include <string>                               // string
 #include <vector>                               // vector
@@ -25,9 +25,9 @@ struct Fixture
         template<class Range>
         void test(std::string const& fen, Range const& rng)
         {
-                auto const p = setup::read<Rules, Board>{}(fen);
+                auto const s = setup::read<Rules, Board>{}(fen);
                 std::vector<action<Rules, Board>> moves;
-                actions<>{}.generate(p, moves);
+                actions<>{}.generate(s, moves);
 
                 BOOST_CHECK_EQUAL(moves.size(), rng.size());
 

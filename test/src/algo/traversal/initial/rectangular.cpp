@@ -13,16 +13,16 @@
 using namespace dctl::algo;
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(Walkinitialboard)
+BOOST_AUTO_TEST_SUITE(TraversalInitialRectangular)
 
-BOOST_AUTO_TEST_CASE(spantsiretti)
+BOOST_AUTO_TEST_CASE(Spantsiretti)
 {
         auto const s = state<international, board<spantsiretti>>::initial();
         auto const leafs = std::vector<int64_t>{ 9, 81, 658, 4'265, 27'117, 167'140, 1'029'319, 6'127'190, 36'751'086, 218'398'167, 1'306'818'894 };
         traversal::test(drop_duplicates_gen, s, leafs);
 }
 
-BOOST_AUTO_TEST_CASE(ktar10x11)
+BOOST_AUTO_TEST_CASE(Ktar10x11)
 {
         auto const s = state<international, board<ktar<10,11>>>::initial();
         auto const leafs = std::vector<int64_t>{ 9, 81, 810, 7'583, 74'602, 688'835, 6'555'302, 59'796'721, 558'094'366, 5'058'805'542 };
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(ktar10x11)
 // The "Perft on large boards" thread on the FMJD forum (results until depth=11)
 // http://laatste.info/bb3/viewtopic.php?f=53&t=4563&start=2
 
-BOOST_AUTO_TEST_CASE(ktar10x12)
+BOOST_AUTO_TEST_CASE(Ktar10x12)
 {
         auto const leafs = std::vector<int64_t>{ 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'961, 41'291'394, 263'895'730, 1'731'541'289 };
 

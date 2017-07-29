@@ -3,13 +3,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <core/state/dxp/parser.hpp>
 #include <dctl/core/state/dxp.hpp>      // game_request, game_acknowledge, move, back_request, back_acknowledge, game_end, chat, factory
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/variant.hpp>            // apply_visitor
 #include <string>                       // string
 #include <variant>                      // monostate
 #include <vector>                       // vector
-#include <core/state/dxp/parser.hpp>
 
 using namespace dctl::core;
 using F = dxp::Fixture;
