@@ -43,7 +43,7 @@ public:
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         xstd::for_each(s.pieces(to_move_c, kings_c), [this, &s](auto const from_sq) {
-                                xstd::for_each(ray::sliding_king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)), [this, from_sq](auto const dest_sq) {
+                                xstd::for_each(ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)), [this, from_sq](auto const dest_sq) {
                                         m_actions.emplace_back(from_sq, dest_sq);
                                 });
                         });

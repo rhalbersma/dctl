@@ -81,10 +81,17 @@ private:
         template<class Iterator>
         auto first_target(Iterator jumper) const
         {
-                slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
-                if (is_onboard(jumper) && m_builder.is_target(jumper)) {
-                        assert(is_onboard(std::next(jumper)));
-                        capture(jumper);
+                if constexpr (is_long_ranged_king_v<rules_type>) {
+                        if (auto const target = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); target && m_builder.is_target(*target)) {
+                                assert(is_onboard(std::next(*target)));
+                                capture(*target);
+                        }
+                } else {
+                        slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
+                        if (is_onboard(jumper) && m_builder.is_target(jumper)) {
+                                assert(is_onboard(std::next(jumper)));
+                                capture(jumper);
+                        }
                 }
         }
 

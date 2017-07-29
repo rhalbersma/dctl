@@ -140,33 +140,31 @@ constexpr auto is_onboard(iterator<Board, Direction> it)
         return static_cast<unsigned>(*it) < static_cast<unsigned>(set_t<Board>::max_size());
 }
 
-using includes_from = std:: true_type;
-using excludes_from = std::false_type;
-
-using includes_edge = std:: true_type;
-using excludes_edge = std::false_type;
-
-template<class Rules, class IncludesFrom, class IncludesEdge>
+template<bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
 struct fill
 {
-        template<class Board, int Direction>
-        auto operator()(iterator<Board, Direction> from, set_t<Board> const propagator) const
+        template<class Board, int Direction, class Set>
+        auto operator()(iterator<Board, Direction> from, Set const propagator) const
         {
                 assert(is_onboard(from));
-                auto targets = set_t<Board>{};
                 auto const is_within = [&](auto it) {
                         return is_onboard(it) && propagator.contains(*it);
                 };
                 auto const is_valid = [&](auto it) {
-                        return is_within(it) && (IncludesEdge{} || is_within(std::next(it)));
+                        return is_within(it) && (IncludesEdge || is_within(std::next(it)));
                 };
-                if constexpr (!IncludesFrom{}) {
+                if constexpr (!IncludesFrom) {
                         ++from;
                 }
-                if constexpr (is_long_ranged_king_v<Rules>) {
-                        while (is_valid(from)) { targets.insert(*from++); }
+                auto targets = Set{};
+                if constexpr (IsLongRanged) {
+                        while (is_valid(from)) {
+                                targets.insert(*from++);
+                        }
                 } else {
-                        if (is_valid(from)) { targets.insert(*from); }
+                        if (is_valid(from)) {
+                                targets.insert(*from);
+                        }
                 }
                 return targets;
         }
@@ -224,10 +222,10 @@ public:
 };
 
 template<class Rules, class Board>
-using king_move_targets = king_targets_sq_dir<Board, fill<Rules, excludes_from, includes_edge>>;
+using king_move_targets = king_targets_sq_dir<Board, fill<is_long_ranged_king_v<Rules>, false, true>>;
 
 template<class Rules, class Board>
-using king_jump_targets = king_targets_sq_dir<Board, fill<Rules, excludes_from, excludes_edge>>;
+using king_jump_targets = king_targets_sq_dir<Board, fill<is_long_ranged_king_v<Rules>, false, false>>;
 
 template<class Board, class Fill>
 class king_targets_dir_sq
@@ -255,8 +253,8 @@ public:
         }
 };
 
-template<class Rules, class Board>
-using blocker_and_beyond = king_targets_dir_sq<Board, fill<Rules, includes_from, includes_edge>>;
+template<class Board>
+using blocker_and_beyond = king_targets_dir_sq<Board, fill<true, true, true>>;
 
 template<class Rules, class Board>
 class king_move_targets_diag
@@ -288,30 +286,36 @@ public:
 };
 
 template<class Rules, class Board>
-class sliding_king_moves
+class king_moves
 {
         template<class Direction>
         struct clear_blocker_and_beyond
         {
-                auto operator()(int const sq, set_t<Board> const occupied, set_t<Board>& targets) const
+                template<class Set>
+                auto operator()(int const sq, Set const& occupied, Set& targets) const
                 {
                         constexpr auto index = Direction{} / 45;
                         if (auto const blockers = king_move_targets<Rules, Board>{}(sq, index) & occupied; !blockers.empty()) {
-                                targets ^= blocker_and_beyond<Rules, Board>{}(find_first<Direction{}>(blockers), index);
+                                targets ^= blocker_and_beyond<Board>{}(find_first<Direction{}>(blockers), index);
                         }
                 }
         };
 public:
-        auto operator()(int const sq, set_t<Board> const occupied) const
+        template<class Set>
+        auto operator()(int const sq, Set const& occupied) const
         {
-                auto targets = king_move_targets_diag<Rules, Board>{}(sq);
-                meta::foldr_comma<king_move_directions, meta::quote<clear_blocker_and_beyond>>{}(sq, occupied, targets);
-                return targets;
+                if constexpr (is_long_ranged_king_v<Rules>) {
+                        auto targets = king_move_targets_diag<Rules, Board>{}(sq);
+                        meta::foldr_comma<king_move_directions, meta::quote<clear_blocker_and_beyond>>{}(sq, occupied, targets);
+                        return targets;
+                } else {
+                        return king_move_targets_diag<Rules, Board>{}(sq) - occupied;
+                }
         }
 };
 
-template<class Rules, class Board, int Direction>
-auto sliding_king_jump_target(iterator<Board, Direction> from, set_t<Board> const occupied)
+template<class Rules, class Board, int Direction, class Set>
+auto king_jump_target(iterator<Board, Direction> from, Set const& occupied)
         -> std::optional<iterator<Board, Direction>>
 {
         constexpr auto index = Direction / 45;
