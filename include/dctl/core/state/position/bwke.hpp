@@ -97,8 +97,8 @@ public:
                 if constexpr (std::is_same_v<PieceT, piece>) {
                         return p == piece::pawns ? pieces(c, pawns_c) : pieces(c, kings_c);
                 } else {
-                        if constexpr (p == pawns_c) { return pieces(c) & ~m_kings; }
-                        if constexpr (p == kings_c) { return pieces(c) &  m_kings; }
+                        if constexpr (p == pawns_c) { return pieces(c) - m_kings; }
+                        if constexpr (p == kings_c) { return pieces(c) & m_kings; }
                 }
         }
 

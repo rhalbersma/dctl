@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp> // pawn, king
-#include <cassert>              // assert
+#include <dctl/core/state/color_piece.hpp>      // pawn, king
+#include <cassert>                              // assert
 
 namespace dctl::core {
 namespace raii {
@@ -14,124 +14,118 @@ namespace raii {
 template<class Builder>
 class toggle_king_targets
 {
-        Builder& builder;
+        Builder& m_builder;
 public:
-        ~toggle_king_targets()
+        ~toggle_king_targets() noexcept
         {
-                builder.toggle_king_targets();
+                m_builder.toggle_king_targets();
         }
 
-        explicit toggle_king_targets(Builder& b)
+        explicit toggle_king_targets(Builder& b) noexcept
         :
-                builder{b}
+                m_builder{b}
         {
-                builder.toggle_king_targets();
+                m_builder.toggle_king_targets();
         }
 };
 
 template<class Builder>
 class launch
 {
-        Builder& builder;
-        int const square;
+        Builder& m_builder;
+        int const m_square;
 public:
-        ~launch()
+        ~launch() // Throws: Nothing.
         {
-                builder.undo_launch(square);
+                m_builder.undo_launch(m_square);
         }
 
-        launch(Builder& b, int const sq)
+        launch(Builder& b, int const sq) // Throws: Nothing.
         :
-                builder{b},
-                square{sq}
+                m_builder{b},
+                m_square{sq}
         {
-                builder.make_launch(square);
+                m_builder.make_launch(m_square);
         }
 };
 
 template<class Builder>
 class capture
 {
-        Builder& builder;
-        int const square;
+        Builder& m_builder;
+        int const m_square;
 public:
-        ~capture()
+        ~capture() // Throws: Nothing.
         {
-                builder.release(square);
+                m_builder.release(m_square);
         }
 
-        capture(Builder& b, int const sq)
+        capture(Builder& b, int const sq) // Throws: Nothing.
         :
-                builder{b},
-                square{sq}
+                m_builder{b},
+                m_square{sq}
         {
-                builder.capture(square);
+                m_builder.capture(m_square);
         }
 };
 
 template<class Builder>
 class Visit
 {
-        Builder& builder;
+        Builder& m_builder;
 public:
         ~Visit()
         {
-                builder.leave();
+                m_builder.leave();
         }
-
-        Visit(Visit const&) = delete;
-        Visit& operator=(Visit const&) = delete;
 
         Visit(Builder& b, int sq)
         :
-                builder{b}
+                m_builder{b}
         {
-                builder.visit(sq);
+                m_builder.visit(sq);
         }
 };
 
 template<class Builder>
 class set_king_jump
 {
-        Builder& builder;
+        Builder& m_builder;
 public:
-        ~set_king_jump()
+        ~set_king_jump() noexcept
         {
-                assert(builder.with() == piece::kings && builder.into() == piece::kings);
-                builder.with(piece::pawns);
-                builder.into(piece::pawns);
+                assert(m_builder.with() == piece::kings); assert(m_builder.into() == piece::kings);
+                m_builder.with(piece::pawns);
+                m_builder.into(piece::pawns);
         }
 
-        set_king_jump(set_king_jump const&) = delete;
-        set_king_jump& operator=(set_king_jump const&) = delete;
-
-        explicit set_king_jump(Builder& b)
+        explicit set_king_jump(Builder& b) noexcept
         :
-                builder{b}
+                m_builder{b}
         {
-                assert(builder.with() == piece::pawns && builder.into() == piece::pawns);
-                builder.with(piece::kings);
-                builder.into(piece::kings);
+                assert(m_builder.with() == piece::pawns); assert(m_builder.into() == piece::pawns);
+                m_builder.with(piece::kings);
+                m_builder.into(piece::kings);
         }
 };
 
 template<class Builder>
 class promotion
 {
-        Builder& builder;
+        Builder& m_builder;
 public:
-        ~promotion()
+        ~promotion() noexcept
         {
-                assert(builder.with() == piece::pawns && builder.into() == piece::kings);
-                builder.into(piece::pawns);
+                assert(m_builder.with() == piece::pawns); assert(m_builder.into() == piece::kings);
+                m_builder.into(piece::pawns);
         }
 
-        explicit promotion(Builder& b)
+        explicit promotion(Builder& b) noexcept
         :
-                builder{b}
+                m_builder{b}
         {
-                assert(builder.with() == piece::pawns && builder.into() == piece::pawns);
-                builder.into(piece::kings);
+                assert(m_builder.with() == piece::pawns); assert(m_builder.into() == piece::pawns);
+                m_builder.into(piece::kings);
         }
 };
 

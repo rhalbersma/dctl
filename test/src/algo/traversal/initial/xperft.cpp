@@ -17,7 +17,6 @@ int main()
         //traversal::sperft(keep_duplicates_gen, s, 17);
 
         using S = state<international, board<international>>;
-        std::cout << S::initial() << "\n";
 
         auto const states = std::vector<S>{
                 S::initial(),

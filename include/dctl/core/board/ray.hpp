@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>            // angle
 #include <dctl/core/board/shift.hpp>            // first, shift_sign, shift_size
-#include <dctl/util/meta.hpp>                   // foldr_bitor, foldr_comma, int_c, quote
+#include <dctl/util/meta.hpp>                   // foldl_bitor, foldl_comma, int_c, quote
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/int_set.hpp>
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
@@ -227,6 +227,9 @@ using king_move_targets = king_targets_sq_dir<Board, fill<is_long_ranged_king_v<
 template<class Rules, class Board>
 using king_jump_targets = king_targets_sq_dir<Board, fill<is_long_ranged_king_v<Rules>, false, false>>;
 
+template<class Rules, class Board>
+using pawn_jump_targets = king_targets_sq_dir<Board, fill<false, false, false>>;
+
 template<class Board, class Fill>
 class king_targets_dir_sq
 {
@@ -273,7 +276,7 @@ class king_move_targets_diag
                 auto result = std::array<set_t<Board>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::foldr_bitor<king_move_directions, meta::quote<king_move_targets_helper>>{}(sq);
+                                meta::foldl_bitor<king_move_directions, meta::quote<king_move_targets_helper>>{}(sq);
                         ;
                 });
                 return result;
@@ -306,24 +309,38 @@ public:
         {
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         auto targets = king_move_targets_diag<Rules, Board>{}(sq);
-                        meta::foldr_comma<king_move_directions, meta::quote<clear_blocker_and_beyond>>{}(sq, occupied, targets);
+                        meta::foldl_comma<king_move_directions, meta::quote<clear_blocker_and_beyond>>{}(sq, occupied, targets);
                         return targets;
                 } else {
                         return king_move_targets_diag<Rules, Board>{}(sq) - occupied;
                 }
         }
+
+        template<class Direction, class Set>
+        auto ahead(int const sq, Set const& occupied) const
+        {
+                if constexpr (is_long_ranged_king_v<Rules>) {
+                        constexpr auto index = Direction{} / 45;
+                        auto targets = king_move_targets<Rules, Board>{}(sq, index);
+                        clear_blocker_and_beyond<Direction>{}(sq, occupied, targets);
+                        return targets;
+                }
+        }
 };
 
-template<class Rules, class Board, int Direction, class Set>
-auto king_jump_target(iterator<Board, Direction> from, Set const& occupied)
-        -> std::optional<iterator<Board, Direction>>
+template<int Direction>
+constexpr auto index_v = Direction / 45;
+
+template<class Rules, class Board, int Direction>
+auto king_jump_target(iterator<Board, Direction> from, set_t<Board> const& targets)
 {
-        constexpr auto index = Direction / 45;
-        if (auto const blockers = king_jump_targets<Rules, Board>{}(*from, index) & occupied; !blockers.empty()) {
-                return make_iterator<Board, Direction>(find_first<Direction>(blockers));
-        } else {
-                return std::nullopt;
-        }
+        return king_jump_targets<Rules, Board>{}(*from, index_v<Direction>) & targets;
+}
+
+template<class Rules, class Board, int Direction>
+auto has_pawn_jump_target(iterator<Board, Direction> from, set_t<Board> const& targets)
+{
+        return !(pawn_jump_targets<Rules, Board>{}(*from, index_v<Direction>) & targets).empty();
 }
 
 }       // namespace ray

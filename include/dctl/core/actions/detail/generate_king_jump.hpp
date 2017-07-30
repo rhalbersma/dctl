@@ -33,7 +33,7 @@ class generate<color_<Side>, kings_, select::jump, Reverse, State, Builder>
         using  rules_type = rules_t<Builder>;
         using    set_type =   set_t<Builder>;
 
-        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>.value();
+        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>;
 
         template<class Iterator>
         constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
@@ -62,18 +62,18 @@ public:
 private:
         auto sources() const
         {
-                xstd::for_each(m_builder.pieces(to_move_c, piece_c), [this](auto const from_sq) {
+                m_builder.pieces(to_move_c, piece_c).consume([this](auto const from_sq) {
                         raii::launch<Builder> guard{m_builder, from_sq};
                         if constexpr (is_orthogonal_jump_v<rules_type>) {
-                                directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(from_sq);
+                                foldl_comma_first_target<right, right_up, up, left_up, left, left_down, down, right_down>(from_sq);
                         } else {
-                                directions_lfold<right_up, left_up, left_down, right_down>(from_sq);
+                                foldl_comma_first_target<right_up, left_up, left_down, right_down>(from_sq);
                         }
                 });
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold(int from_sq) const
+        auto foldl_comma_first_target(int from_sq) const
         {
                 (... , first_target(along_ray<Directions<orientation>{}>(from_sq)));
         }
@@ -82,14 +82,15 @@ private:
         auto first_target(Iterator jumper) const
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        if (auto const target = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); target && m_builder.is_target(*target)) {
-                                assert(is_onboard(std::next(*target)));
-                                capture(*target);
+                        constexpr auto direction = ray::direction_v<Iterator>.value();
+                        if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
+                                if (auto const first = find_first<direction>(blocker); m_builder.template targets<direction>().contains(first)) {
+                                        capture(along_ray<direction>(first));
+                                }
                         }
                 } else {
                         slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
                         if (is_onboard(jumper) && m_builder.is_target(jumper)) {
-                                assert(is_onboard(std::next(jumper)));
                                 capture(jumper);
                         }
                 }
@@ -143,16 +144,23 @@ private:
                 if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
                         return scan(jumper) | turn(jumper);
                 } else {
-                        // builder.template path<Direction>() would be an ERROR here
-                        // because we need all landing squares rather than the directional launching squares subset
-                        assert(is_onboard(jumper) && m_builder.not_occupied(*jumper));
-                        auto found_next = turn(jumper);
-                        auto slider = std::next(jumper);
-                        while (is_onboard(slider) && m_builder.not_occupied(*slider)) {
-                                found_next |= turn(slider);
-                                ++slider;
+                        constexpr auto direction = ray::direction_v<Iterator>.value();
+                        using Direction = meta::int_c<direction>;
+                        constexpr auto index = Direction{} / 45;
+
+                        auto found_next = false;
+                        auto ahead = ray::king_move_targets<rules_type, board_type>{}(*jumper, index);
+                        auto n = ahead.count();
+                        if (auto blockers = ahead & m_builder.pieces(occup_c); !blockers.empty()) {
+                                auto const first = find_first<Direction{}>(blockers);
+                                n -= ray::blocker_and_beyond<board_type>{}(first, index).count();
+                                if (m_builder.template targets<direction>().contains(first)) {
+                                        capture(along_ray<direction>(first));
+                                        found_next |= true;
+                                }
                         }
-                        return found_next |= is_en_prise(slider);
+                        do { found_next |= turn(jumper++); } while(n--);
+                        return found_next;
                 }
         }
 
@@ -161,15 +169,15 @@ private:
         {
                 if constexpr (is_orthogonal_jump_v<rules_type>) {
                         static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
-                        return rotate_directions_lfold<-135, -90, -45, +45, +90, +135>(jumper);
+                        return foldl_bitor_rotate_directions<-135, -90, -45, +45, +90, +135>(jumper);
                 } else {
                         static_assert(is_diagonal(direction_v<Iterator>));
-                        return rotate_directions_lfold<-90, +90>(jumper);
+                        return foldl_bitor_rotate_directions<-90, +90>(jumper);
                 }
         }
 
         template<int... Directions, class Iterator>
-        auto rotate_directions_lfold(Iterator jumper) const
+        auto foldl_bitor_rotate_directions(Iterator jumper) const
         {
                 return (... | scan(ray::rotate<Directions>(jumper)));
         }
@@ -177,8 +185,19 @@ private:
         template<class Iterator>
         auto scan(Iterator jumper) const
         {
-                slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
-                return is_en_prise(jumper);
+                if constexpr (is_long_ranged_king_v<rules_type>) {
+                        constexpr auto direction = ray::direction_v<Iterator>.value();
+                        if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
+                                if (auto const first = find_first<direction>(blocker); m_builder.template targets<direction>().contains(first)) {
+                                        capture(along_ray<direction>(first));
+                                        return true;
+                                }
+                        }
+                        return false;
+                } else {
+                        slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
+                        return is_en_prise(jumper);
+                }
         }
 
         template<class Iterator>
@@ -197,13 +216,12 @@ private:
         template<class Iterator>
         auto is_en_prise(Iterator jumper) const
         {
-                if (!(is_onboard(jumper) && m_builder.is_target(jumper))) {
-                        return false;
+                if (is_onboard(jumper) && m_builder.is_target(jumper)) {
+                        assert(is_onboard(std::next(jumper)));
+                        capture(jumper);
+                        return true;
                 }
-
-                assert(is_onboard(std::next(jumper)));
-                capture(jumper);
-                return true;
+                return false;
         }
 
         template<class Iterator>

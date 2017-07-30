@@ -11,6 +11,6 @@
 namespace dctl::core {
 
 template<class Board, class Color, class Reverse>
-constexpr auto bearing_v = rotate(Board::orientation, ((Color{} == white_c) ^ Reverse{}) ? 0_deg : 180_deg);
+constexpr auto bearing_v = rotate(Board::orientation, ((Color{} == white_c) ^ Reverse{}) ? 0_deg : 180_deg).value();
 
 }       // namespace dctl::core

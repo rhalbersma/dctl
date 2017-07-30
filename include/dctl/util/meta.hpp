@@ -30,28 +30,28 @@ struct apply
 {};
 
 template<class TypeList, class MetaFunctionClass>
-struct foldr_comma;
+struct foldl_comma;
 
 template<class... Elements, class MetaFunctionClass>
-struct foldr_comma<std::tuple<Elements...>, MetaFunctionClass>
+struct foldl_comma<std::tuple<Elements...>, MetaFunctionClass>
 {
         template<class... Args>
         auto operator()(Args&&... args) const
         {
-                return (apply<MetaFunctionClass, Elements>{}(std::forward<Args>(args)...) , ...);
+                return (... , apply<MetaFunctionClass, Elements>{}(std::forward<Args>(args)...));
         }
 };
 
 template<class TypeList, class MetaFunctionClass>
-struct foldr_bitor;
+struct foldl_bitor;
 
 template<class... Elements, class MetaFunctionClass>
-struct foldr_bitor<std::tuple<Elements...>, MetaFunctionClass>
+struct foldl_bitor<std::tuple<Elements...>, MetaFunctionClass>
 {
         template<class... Args>
         auto operator()(Args&&... args) const
         {
-                return (apply<MetaFunctionClass, Elements>{}(std::forward<Args>(args)...) | ...);
+                return (... | apply<MetaFunctionClass, Elements>{}(std::forward<Args>(args)...));
         }
 };
 

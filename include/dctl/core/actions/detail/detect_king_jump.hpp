@@ -30,7 +30,7 @@ class detect<color_<Side>, kings_, select::jump, Reverse, State>
         template<int Direction>
         using king_jump_targets = jump_targets<board_type, Direction, king_range_category_t<rules_type>>;
 
-        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>.value();
+        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>;
 public:
         auto operator()(State const& s) const noexcept
         {
@@ -43,18 +43,18 @@ private:
         auto directions(set_type const sources, set_type const targets, set_type const destinations) const noexcept
         {
                 if constexpr (is_orthogonal_jump_v<rules_type>) {
-                        return directions_lfold<right, right_up, up, left_up, left, left_down, down, right_down>(
+                        return foldl_or_targets<right, right_up, up, left_up, left, left_down, down, right_down>(
                                 sources, targets, destinations
                         );
                 } else {
-                        return directions_lfold<right_up, left_up, left_down, right_down>(
+                        return foldl_or_targets<right_up, left_up, left_down, right_down>(
                                 sources, targets, destinations
                         );
                 }
         }
 
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const sources, set_type const targets, set_type const destinations) const noexcept
+        auto foldl_or_targets(set_type const sources, set_type const targets, set_type const destinations) const noexcept
         {
                 return (... || !king_jump_targets<Directions<orientation>{}>{}(sources, targets, destinations).empty());
         }

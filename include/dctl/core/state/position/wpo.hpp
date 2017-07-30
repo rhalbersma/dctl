@@ -123,10 +123,10 @@ public:
                 } else if constexpr (std::is_same_v<PieceT, piece>) {
                         return p == piece::pawns ? pieces(c, pawns_c) : pieces(c, kings_c);
                 } else {
-                        if constexpr (c == black_c && p == pawns_c) { return ~m_white &  m_pawns;            }
-                        if constexpr (c == black_c && p == kings_c) { return (m_white |  m_pawns) ^ m_occup; }
-                        if constexpr (c == white_c && p == pawns_c) { return  m_white &  m_pawns;            }
-                        if constexpr (c == white_c && p == kings_c) { return  m_white & ~m_pawns;            }
+                        if constexpr (c == black_c && p == pawns_c) { return  m_pawns - m_white;            }
+                        if constexpr (c == black_c && p == kings_c) { return (m_white | m_pawns) ^ m_occup; }
+                        if constexpr (c == white_c && p == pawns_c) { return  m_white & m_pawns;            }
+                        if constexpr (c == white_c && p == kings_c) { return  m_white - m_pawns;            }
                 }
         }
 

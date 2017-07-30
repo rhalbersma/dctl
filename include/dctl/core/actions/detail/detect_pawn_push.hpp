@@ -28,18 +28,18 @@ class detect<color_<Side>, pawns_, select::push, Reverse, State>
         template<int Direction>
         using pawn_push_targets = push_targets<board_type, Direction, short_ranged_tag>;
 
-        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>.value();
+        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>;
 public:
         auto operator()(State const& s) const noexcept
         {
                 if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
-                        return directions_lfold<right_up, left_up>(sources, s.pieces(empty_c));
+                        return foldl_or_targets<right_up, left_up>(sources, s.pieces(empty_c));
                 }
                 return false;
         }
 private:
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const sources, set_type const destinations) const noexcept
+        auto foldl_or_targets(set_type const sources, set_type const destinations) const noexcept
         {
                 return (... || !pawn_push_targets<Directions<orientation>{}>{}(sources, destinations).empty());
         }

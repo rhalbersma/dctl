@@ -120,13 +120,19 @@ public:
 
         auto targets() const noexcept
         {
-                return m_initial_targets & ~m_candidate_action.captured_pieces();
+                return m_initial_targets - m_candidate_action.captured_pieces();
         }
 
         template<int Direction>
         auto targets() const
         {
                 return short_push_sources<Direction>{}(targets(), pieces(empty_c));
+        }
+
+        template<class Iterator>
+        auto has_pawn_target(Iterator it) const
+        {
+                return ray::has_pawn_jump_target<rules_type>(it, targets<ray::direction_v<Iterator>.value()>());
         }
 
         template<class Iterator>

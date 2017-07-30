@@ -30,7 +30,7 @@ class generate<color_<Side>, pawns_, select::push, Reverse, State, SequenceConta
         template<int Direction>
         using pawn_push_targets = push_targets<board_type, Direction, short_ranged_tag>;
 
-        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>.value();
+        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>;
         SequenceContainer& m_actions;
 public:
         explicit generate(SequenceContainer& seq) noexcept
@@ -41,12 +41,12 @@ public:
         auto operator()(State const& s) const
         {
                 if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
-                        directions_lfold<right_up, left_up>(sources, s.pieces(empty_c));
+                        foldl_comma_serialize<right_up, left_up>(sources, s.pieces(empty_c));
                 }
         }
 private:
         template<template<int> class... Directions>
-        auto directions_lfold(set_type const sources, set_type const destinations) const
+        auto foldl_comma_serialize(set_type const sources, set_type const destinations) const
         {
                 (... , serialize<Directions<orientation>{}>(sources, destinations));
         }
@@ -54,7 +54,7 @@ private:
         template<int Direction>
         auto serialize(set_type const sources, set_type const destinations) const
         {
-                xstd::for_each(pawn_push_targets<Direction>{}(sources, destinations), [this](auto const dest_sq) {
+                pawn_push_targets<Direction>{}(sources, destinations).consume([this](auto const dest_sq) {
                         m_actions.emplace_back(
                                 *std::prev(along_ray<Direction>(dest_sq)),
                                 dest_sq,
