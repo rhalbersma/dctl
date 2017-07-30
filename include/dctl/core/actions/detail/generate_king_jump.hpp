@@ -151,13 +151,13 @@ private:
                         auto found_next = false;
                         auto ahead = ray::king_move_targets<rules_type, board_type>{}(*jumper, index);
                         auto n = ahead.count();
-                        if (auto blockers = ahead & m_builder.pieces(occup_c); !blockers.empty()) {
-                                auto const first = find_first<Direction{}>(blockers);
-                                n -= ray::blocker_and_beyond<board_type>{}(first, index).count();
+                        if (ahead &= m_builder.pieces(occup_c); !ahead.empty()) {
+                                auto const first = find_first<Direction{}>(ahead);
                                 if (m_builder.template targets<direction>().contains(first)) {
                                         capture(along_ray<direction>(first));
                                         found_next |= true;
                                 }
+                                n -= ray::blocker_and_beyond<board_type>{}(first, index).count();
                         }
                         do { found_next |= turn(jumper++); } while(n--);
                         return found_next;
