@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>            // angle
 #include <dctl/core/board/shift.hpp>            // first, shift_sign, shift_size
-#include <dctl/util/meta.hpp>                   // foldl_bitor, foldl_comma, int_c, quote
+#include <dctl/util/meta.hpp>                   // array, bit_or, comma, map_reduce, tuple_c
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/int_set.hpp>
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
@@ -170,23 +170,9 @@ struct fill
         }
 };
 
-using king_move_directions = std::tuple
-<       meta::int_c< 45>
-,       meta::int_c<135>
-,       meta::int_c<225>
-,       meta::int_c<315>
->;
+using king_move_directions = meta::tuple_c<45, 135, 225, 315>;
 
-using king_jump_directions = std::tuple
-<       meta::int_c<  0>
-,       meta::int_c< 45>
-,       meta::int_c< 90>
-,       meta::int_c<135>
-,       meta::int_c<180>
-,       meta::int_c<225>
-,       meta::int_c<270>
-,       meta::int_c<315>
->;
+using king_jump_directions = meta::tuple_c<0, 45, 90, 135, 180, 225, 270, 315>;
 
 constexpr auto king_jump_index(int const direction)
 {
@@ -196,20 +182,13 @@ constexpr auto king_jump_index(int const direction)
 template<class Board, class Fill>
 class king_targets_sq_dir
 {
-        template<class Direction>
-        struct fill_helper
-        {
-                auto operator()(int const sq) const
-                {
-                        return Fill{}(make_iterator<Board, Direction{}>(sq), Board::squares);
-                }
-        };
-
         inline const static auto table = []() {
                 auto result = std::array<std::array<set_t<Board>, std::tuple_size<king_jump_directions>::value>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::make_array<king_jump_directions, meta::quote<fill_helper>>{}(sq)
+                                meta::map_reduce<king_jump_directions, meta::array>{}([=](auto direction) {
+                                        return Fill{}(make_iterator<Board, decltype(direction){}>(sq), Board::squares);
+                                });
                         ;
                 });
                 return result;
@@ -233,26 +212,19 @@ using pawn_jump_targets = king_targets_sq_dir<Board, fill<false, false, false>>;
 template<class Board, class Fill>
 class king_targets_dir_sq
 {
-        template<class Direction>
-        struct fill_helper
-        {
-                auto operator()() const
-                {
+        inline const static auto table = []() {
+                return meta::map_reduce<king_jump_directions, meta::array>{}([](auto direction) {
                         auto result = std::array<set_t<Board>, Board::bits()>{};
                         xstd::for_each(Board::squares, [&](auto const sq) {
-                                result[static_cast<std::size_t>(sq)] = Fill{}(make_iterator<Board, Direction{}>(sq), Board::squares);
+                                result[static_cast<std::size_t>(sq)] = Fill{}(make_iterator<Board, decltype(direction){}>(sq), Board::squares);
                         });
                         return result;
-                }
-        };
-
-        inline const static auto table = []() {
-                return meta::make_array<king_jump_directions, meta::quote<fill_helper>>{}();
+                });
         }();
 public:
-        auto operator()(int const sq, int const direction_index) const
+        auto operator()(int const sq, int const index) const
         {
-                return table[static_cast<std::size_t>(direction_index)][static_cast<std::size_t>(sq)];
+                return table[static_cast<std::size_t>(index)][static_cast<std::size_t>(sq)];
         }
 };
 
@@ -262,21 +234,14 @@ using blocker_and_beyond = king_targets_dir_sq<Board, fill<true, true, true>>;
 template<class Rules, class Board>
 class king_move_targets_diag
 {
-        template<class Direction>
-        struct king_move_targets_helper
-        {
-                auto operator()(int const sq) const
-                {
-                        constexpr auto index = Direction{} / 45;
-                        return king_move_targets<Rules, Board>{}(sq, index);
-                }
-        };
-
         inline const static auto table = []() {
                 auto result = std::array<set_t<Board>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::foldl_bitor<king_move_directions, meta::quote<king_move_targets_helper>>{}(sq);
+                                meta::map_reduce<king_move_directions, meta::bit_or>{}([=](auto direction) {
+                                        constexpr auto index = decltype(direction){} / 45;
+                                        return king_move_targets<Rules, Board>{}(sq, index);
+                                });
                         ;
                 });
                 return result;
@@ -291,38 +256,37 @@ public:
 template<class Rules, class Board>
 class king_moves
 {
-        template<class Direction>
-        struct clear_blocker_and_beyond
+        using set_type = set_t<Board>;
+
+        template<int Direction>
+        auto clear_blocker_and_beyond(int const sq, set_type const& occupied, set_type& targets) const
         {
-                template<class Set>
-                auto operator()(int const sq, Set const& occupied, Set& targets) const
-                {
-                        constexpr auto index = Direction{} / 45;
-                        if (auto const blockers = king_move_targets<Rules, Board>{}(sq, index) & occupied; !blockers.empty()) {
-                                targets ^= blocker_and_beyond<Board>{}(find_first<Direction{}>(blockers), index);
-                        }
+                constexpr auto index = Direction / 45;
+                if (auto const blockers = king_move_targets<Rules, Board>{}(sq, index) & occupied; !blockers.empty()) {
+                        targets ^= blocker_and_beyond<Board>{}(find_first<Direction>(blockers), index);
                 }
-        };
+        }
 public:
-        template<class Set>
-        auto operator()(int const sq, Set const& occupied) const
+        auto operator()(int const sq, set_type const& occupied) const
         {
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         auto targets = king_move_targets_diag<Rules, Board>{}(sq);
-                        meta::foldl_comma<king_move_directions, meta::quote<clear_blocker_and_beyond>>{}(sq, occupied, targets);
+                        meta::map_reduce<king_move_directions, meta::comma>{}([&, this](auto direction) {
+                                clear_blocker_and_beyond<decltype(direction){}>(sq, occupied, targets);
+                        });
                         return targets;
                 } else {
                         return king_move_targets_diag<Rules, Board>{}(sq) - occupied;
                 }
         }
 
-        template<class Direction, class Set>
-        auto ahead(int const sq, Set const& occupied) const
+        template<class Direction>
+        auto ahead(int const sq, set_type const& occupied) const
         {
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         constexpr auto index = Direction{} / 45;
                         auto targets = king_move_targets<Rules, Board>{}(sq, index);
-                        clear_blocker_and_beyond<Direction>{}(sq, occupied, targets);
+                        clear_blocker_and_beyond<Direction{}>(sq, occupied, targets);
                         return targets;
                 }
         }
