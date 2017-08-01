@@ -5,17 +5,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/count_primary_fwd.hpp>    // count (primary template)
-#include <dctl/core/actions/detail/count_king_push.hpp>      // count (king push specialization)
-#include <dctl/core/actions/detail/count_pawn_push.hpp>      // count (pawn push specialization)
-#include <dctl/core/actions/detail/detect_primary_fwd.hpp>   // detect (primary template)
-#include <dctl/core/actions/detail/detect_king_push.hpp>     // detect (king push specialization)
-#include <dctl/core/actions/detail/detect_pawn_push.hpp>     // detect (pawn push specialization)
-#include <dctl/core/actions/detail/generate_primary_fwd.hpp> // generate (primary template)
-#include <dctl/core/actions/detail/generate_king_push.hpp>   // generate (king push specialization)
-#include <dctl/core/actions/detail/generate_pawn_push.hpp>   // generate (pawn push specialization)
-#include <dctl/core/actions/select/push.hpp>                 // push
-#include <dctl/core/state/color_piece.hpp>                   // color, color_, kings_, pawn_
+#include <dctl/core/actions/detail/king_push.hpp>       // king_push
+#include <dctl/core/actions/detail/pawn_push.hpp>       // pawn_push
+#include <dctl/core/actions/select/push.hpp>            // push
+#include <dctl/core/state/color_piece.hpp>              // color, color_, kings_, pawn_
 
 namespace dctl::core {
 namespace detail {
@@ -24,33 +17,25 @@ template<color Side, class DuplicatesPolicy, class Reverse>
 class actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>
 {
         using to_move_ = color_<Side>;
+        template<class State> using king_push = detail::king_push<to_move_, kings_, select::push, Reverse, State>;
+        template<class State> using pawn_push = detail::pawn_push<to_move_, pawns_, select::push, Reverse, State>;
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& s, SequenceContainer& seq) const
         {
-                using king_push = detail::generate<to_move_, kings_, select::push, Reverse, State>;
-                using pawn_push = detail::generate<to_move_, pawns_, select::push, Reverse, State>;
-
-                king_push{}(s, seq);
-                pawn_push{}(s, seq);
+                return king_push<State>{}.generate(s, seq) , pawn_push<State>{}.generate(s, seq);
         }
 
         template<class State>
         auto count(State const& s) const noexcept
         {
-                using king_push = detail::count<to_move_, kings_, select::push, Reverse, State>;
-                using pawn_push = detail::count<to_move_, pawns_, select::push, Reverse, State>;
-
-                return king_push{}(s) + pawn_push{}(s);
+                return king_push<State>{}.count(s) + pawn_push<State>{}.count(s);
         }
 
         template<class State>
         auto detect(State const& s) const noexcept
         {
-                using pawn_push = detail::detect<to_move_, pawns_, select::push, Reverse, State>;
-                using king_push = detail::detect<to_move_, kings_, select::push, Reverse, State>;
-
-                return pawn_push{}(s) || king_push{}(s);
+                return pawn_push<State>{}.detect(s) || king_push<State>{}.detect(s);
         }
 };
 
