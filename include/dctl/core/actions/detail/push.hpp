@@ -28,11 +28,11 @@ public:
         template<class State, class SequenceContainer>
         auto generate(State const& s, SequenceContainer& seq) const
         {
-                using king_push = detail::generate<to_move_, kings_, select::push, Reverse, State, SequenceContainer>;
-                using pawn_push = detail::generate<to_move_, pawns_, select::push, Reverse, State, SequenceContainer>;
+                using king_push = detail::generate<to_move_, kings_, select::push, Reverse, State>;
+                using pawn_push = detail::generate<to_move_, pawns_, select::push, Reverse, State>;
 
-                king_push{seq}(s);
-                pawn_push{seq}(s);
+                king_push{}(s, seq);
+                pawn_push{}(s, seq);
         }
 
         template<class State>

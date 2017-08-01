@@ -13,6 +13,7 @@
 #include <dctl/core/board/push_targets.hpp>                     // push_targets
 #include <dctl/core/rules/type_traits.hpp>                      // king_range_category
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, king_
+#include <dctl/util/meta.hpp>                                   // map_reduce, plus
 #include <dctl/util/type_traits.hpp>                            // board_t, rules_t, set_t
 
 namespace dctl::core {
@@ -21,39 +22,28 @@ namespace detail {
 template<color Side, class Reverse, class State>
 class count<color_<Side>, kings_, select::push, Reverse, State>
 {
-        using to_move_ = color_<Side>;
-        constexpr static auto to_move_c = color_c<Side>;
-        using board_type = board_t<State>;
         using rules_type = rules_t<State>;
-        using   set_type =   set_t<State>;
-
-        template<int Direction>
-        using king_push_targets = push_targets<board_type, Direction, king_range_category_t<rules_type>>;
-
-        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>;
-
+        using board_type = board_t<State>;
+        constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
+        using king_push_directions = std::tuple<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>;
 public:
         auto operator()(State const& s) const noexcept
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         auto result = 0;
-                        s.pieces(to_move_c, kings_c).consume([&](auto const from_sq) {
+                        s.pieces(color_c<Side>, kings_c).consume([&](auto const from_sq) {
                                 result += ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)).count();
                         });
                         return result;
                 } else {
-                        if (auto const kings = s.pieces(to_move_c, kings_c); !kings.empty()) {
-                                return foldl_plus_targets<right_up, left_up, left_down, right_down>(kings, s.pieces(empty_c));
+                        if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
+                                return meta::map_reduce<king_push_directions, meta::plus>{}([&](auto direction) {
+                                        constexpr auto Direction = decltype(direction){};
+                                        return push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c)).count();
+                                });
                         }
                         return 0;
                 }
-        }
-
-private:
-        template<template<int> class... Directions>
-        auto foldl_plus_targets(set_type const kings, set_type const empty) const noexcept
-        {
-                return (... + king_push_targets<Directions<orientation>{}>{}(kings, empty).count());
         }
 };
 

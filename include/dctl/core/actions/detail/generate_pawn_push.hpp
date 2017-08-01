@@ -12,66 +12,35 @@
 #include <dctl/core/board/push_targets.hpp>                     // push_targets
 #include <dctl/core/board/ray.hpp>                              // make_iterator
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, pawn_
+#include <dctl/util/meta.hpp>                                   // comma, map_reduce
 #include <dctl/util/type_traits.hpp>                            // board_t, set_t, value_t
 #include <iterator>                                             // prev
 
 namespace dctl::core {
 namespace detail {
 
-template<color Side, class Reverse, class State, class SequenceContainer>
-class generate<color_<Side>, pawns_, select::push, Reverse, State, SequenceContainer>
+template<color Side, class Reverse, class State>
+class generate<color_<Side>, pawns_, select::push, Reverse, State>
 {
-        using to_move_ = color_<Side>;
-        constexpr static auto to_move_c = color_c<Side>;
-        constexpr static auto piece_c = pawns_c;
-        using  board_type = board_t<State>;
-        using    set_type =   set_t<State>;
-
-        template<int Direction>
-        using pawn_push_targets = push_targets<board_type, Direction, short_ranged_tag>;
-
-        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>;
-        SequenceContainer& m_actions;
+        using board_type = board_t<State>;
+        constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
+        using pawn_push_directions = std::tuple<right_up<orientation>, left_up<orientation>>;
 public:
-        explicit generate(SequenceContainer& seq) noexcept
-        :
-                m_actions{seq}
-        {}
-
-        auto operator()(State const& s) const
+        template<class SequenceContainer>
+        auto operator()(State const& s, SequenceContainer& seq) const
         {
-                if (auto const sources = s.pieces(to_move_c, piece_c); !sources.empty()) {
-                        foldl_comma_serialize<right_up, left_up>(sources, s.pieces(empty_c));
+                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
+                        meta::map_reduce<pawn_push_directions, meta::comma>{}([&](auto direction) {
+                                constexpr auto Direction = decltype(direction){};
+                                push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).consume([&](auto const dest_sq) {
+                                        seq.emplace_back(
+                                                *std::prev(ray::make_iterator<board_type, Direction>(dest_sq)),
+                                                dest_sq,
+                                                board_type::promotion(Side).contains(dest_sq)
+                                        );
+                                });
+                        });
                 }
-        }
-private:
-        template<template<int> class... Directions>
-        auto foldl_comma_serialize(set_type const sources, set_type const destinations) const
-        {
-                (... , serialize<Directions<orientation>{}>(sources, destinations));
-        }
-
-        template<int Direction>
-        auto serialize(set_type const sources, set_type const destinations) const
-        {
-                pawn_push_targets<Direction>{}(sources, destinations).consume([this](auto const dest_sq) {
-                        m_actions.emplace_back(
-                                *std::prev(along_ray<Direction>(dest_sq)),
-                                dest_sq,
-                                is_promotion(dest_sq)
-                        );
-                });
-        }
-
-        template<int Direction>
-        auto along_ray(int const sq) const noexcept
-        {
-                return ray::make_iterator<board_type, Direction>(sq);
-        }
-
-        auto is_promotion(int const sq) const // Throws: Nothing.
-        {
-                return board_type::promotion(Side).contains(sq);
         }
 };
 
