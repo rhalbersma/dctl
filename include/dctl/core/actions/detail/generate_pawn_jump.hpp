@@ -16,6 +16,7 @@
 #include <dctl/core/board/ray.hpp>                              // make_iterator, rotate, mirror, turn
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>                      // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
+#include <dctl/util/meta.hpp>                                   // map_reduce, comma, bit_or, tuple_c, int_c
 #include <dctl/util/type_traits.hpp>                            // action_t, board_t, rules_t, set_t
 #include <cassert>                                              // assert
 #include <iterator>                                             // next
@@ -27,18 +28,24 @@ namespace detail {
 template<color Side, class Reverse, class State, class Builder>
 class generate<color_<Side>, pawns_, select::jump, Reverse, State, Builder>
 {
-        using to_move_ = color_<Side>;
-        constexpr static auto to_move_c = color_c<Side>;
-        constexpr static auto piece_c = pawns_c;
-        using  king_jumps = generate<to_move_, kings_, select::jump, Reverse, State, Builder>;
+        using  king_jumps = generate<color_<Side>, kings_, select::jump, Reverse, State, Builder>;
         using  board_type = board_t<Builder>;
         using  rules_type = rules_t<Builder>;
         using    set_type =   set_t<Builder>;
-
-        template<int Direction>
-        using pawn_jump_sources = jump_sources<board_type, Direction, short_ranged_tag>;
-
-        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>;
+        constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
+        using pawn_jump_directions = std::conditional_t<
+                is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>,
+                std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>, left_down<orientation>, down<orientation>, right_down<orientation>>,
+                std::conditional_t<
+                        !is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>,
+                        std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>>,
+                        std::conditional_t<
+                                is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>,
+                                std::tuple<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>,
+                                std::tuple<right_up<orientation>, left_up<orientation>>
+                        >
+                >
+        >;
 
         template<class Iterator>
         constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
@@ -52,52 +59,19 @@ public:
 
         auto operator()() const
         {
-                if (m_builder.pieces(to_move_c, piece_c).empty()) {
-                        return;
-                }
-                if constexpr (is_superior_rank_jump_v<rules_type>) {
-                        raii::toggle_king_targets<Builder> guard{m_builder};
-                        directions();
-                } else {
-                        directions();
+                if (auto const pawns = m_builder.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
+                        if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
+                        meta::map_reduce<pawn_jump_directions, meta::comma>{}([&, this](auto direction) {
+                                constexpr auto Direction = decltype(direction){};
+                                jump_sources<board_type, Direction, short_ranged_tag>{}(pawns, m_builder.targets(), m_builder.pieces(empty_c)).consume([this](auto const from_sq) {
+                                        raii::launch<Builder> guard{m_builder, from_sq};
+                                        capture(std::next(along_ray<Direction>(from_sq)));
+                                });
+                        });
+                        if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                 }
         }
 private:
-        auto directions() const
-        {
-                if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        return foldl_comma_sources<right_up, left_up>();
-                }
-                if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        return foldl_comma_sources<right_up, left_up, left_down, right_down>();
-                }
-                if constexpr (!is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
-                        return foldl_comma_sources<right, right_up, up, left_up, left>();
-                }
-                if constexpr (is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>) {
-                        return foldl_comma_sources<right, right_up, up, left_up, left, left_down, down, right_down>();
-                }
-        }
-
-        template<template<int> class... Directions>
-        auto foldl_comma_sources() const
-        {
-                (... , sources<Directions<orientation>{}>());
-        }
-
-        template<int Direction>
-        auto sources() const
-        {
-                pawn_jump_sources<Direction>{}(
-                        m_builder.pieces(to_move_c, piece_c),
-                        m_builder.targets(),
-                        m_builder.pieces(empty_c)
-                ).consume([this](auto const from_sq) {
-                        raii::launch<Builder> guard{m_builder, from_sq};
-                        capture(std::next(along_ray<Direction>(from_sq)));
-                });
-        }
-
         template<class Iterator>
         auto capture(Iterator const jumper) const
                 -> void
@@ -160,48 +134,32 @@ private:
         template<class Iterator>
         auto turn(Iterator jumper) const
         {
-                if constexpr (!is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
+                if constexpr (is_backward_pawn_jump_v<rules_type>) {
+                        using rotation_angles = std::conditional_t<
+                                is_orthogonal_jump_v<rules_type>,
+                                meta::tuple_c<-135, -90, -45, +45, +90, +135>,
+                                meta::tuple_c<-90, +90>
+                        >;
+                        return meta::map_reduce<rotation_angles, meta::bit_or>{}([jumper, this](auto direction) {
+                                return scan(ray::rotate<decltype(direction){}>(jumper));
+                        });
+                } else if constexpr (is_orthogonal_jump_v<rules_type>) {
+                        static_assert(!is_down(direction_v<Iterator>));
+                        using turn_directions = meta::switch_<
+                                meta::int_c<direction_v<Iterator>>,
+                                meta::case_<   right<orientation>, std::tuple<right_up<orientation>, up<orientation>, left_up<orientation>>>,
+                                meta::case_<right_up<orientation>, std::tuple<right<orientation>, up<orientation>, left_up<orientation>, left<orientation>>>,
+                                meta::case_<      up<orientation>, std::tuple<right<orientation>, right_up<orientation>, left_up<orientation>, left<orientation>>>,
+                                meta::case_< left_up<orientation>, std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left<orientation>>>,
+                                meta::case_<    left<orientation>, std::tuple<right_up<orientation>, up<orientation>, left_up<orientation>>>
+                        >;
+                        return meta::map_reduce<turn_directions, meta::bit_or>{}([jumper, this](auto direction) {
+                                return scan(ray::turn<decltype(direction){}>(jumper));
+                        });
+                } else {
                         static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
                         return scan(ray::mirror<up<orientation>{}>(jumper));
                 }
-                if constexpr (is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>) {
-                        static_assert(is_diagonal(direction_v<Iterator>));
-                        return foldl_bitor_rotate_directions<-90, +90>(jumper);
-                }
-                if constexpr (!is_backward_pawn_jump_v<rules_type> &&  is_orthogonal_jump_v<rules_type>) {
-                        static_assert(!is_down(direction_v<Iterator>));
-
-                        if constexpr (direction_v<Iterator> == right<orientation>{}) {
-                                return foldl_bitor_turn_directions<right_up, up, left_up>(jumper);
-                        }
-                        if constexpr (direction_v<Iterator> == right_up<orientation>{}) {
-                                return foldl_bitor_turn_directions<right, up, left_up, left>(jumper);
-                        }
-                        if constexpr (direction_v<Iterator> == up<orientation>{}) {
-                                return foldl_bitor_turn_directions<right, right_up, left_up, left>(jumper);
-                        }
-                        if constexpr (direction_v<Iterator> == left_up<orientation>{}) {
-                                return foldl_bitor_turn_directions<right, right_up, up, left>(jumper);
-                        }
-                        if constexpr (direction_v<Iterator> == left<orientation>{}) {
-                                return foldl_bitor_turn_directions<right_up, up, left_up>(jumper);
-                        }
-                }
-                if constexpr (is_backward_pawn_jump_v<rules_type> &&  is_orthogonal_jump_v<rules_type>) {
-                        return foldl_bitor_rotate_directions<-135, -90, -45, +45, +90, +135>(jumper);
-                }
-        }
-
-        template<template<int> class... Directions, class Iterator>
-        auto foldl_bitor_turn_directions(Iterator jumper) const
-        {
-                return (... | scan(ray::turn<Directions<orientation>{}>(jumper)));
-        }
-
-        template<int... Directions, class Iterator>
-        auto foldl_bitor_rotate_directions(Iterator jumper) const
-        {
-                return (... | scan(ray::rotate<Directions>(jumper)));
         }
 
         template<class Iterator>

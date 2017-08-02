@@ -29,10 +29,10 @@ class detect<color_<Side>, pawns_, select::jump, Reverse, State>
                 is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>,
                 std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>, left_down<orientation>, down<orientation>, right_down<orientation>>,
                 std::conditional_t<
-                        is_orthogonal_jump_v<rules_type>,
+                        !is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>,
                         std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>>,
                         std::conditional_t<
-                                is_backward_pawn_jump_v<rules_type>,
+                                is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>,
                                 std::tuple<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>,
                                 std::tuple<right_up<orientation>, left_up<orientation>>
                         >

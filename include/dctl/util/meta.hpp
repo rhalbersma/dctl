@@ -7,7 +7,7 @@
 
 #include <experimental/array>   // make_array
 #include <tuple>                // tuple
-#include <type_traits>          // integral_constant
+#include <type_traits>          // conditional_t, integral_constant, is_same_v
 #include <utility>              // forward
 
 namespace dctl::core {
@@ -82,6 +82,33 @@ struct map_reduce<List<Elements...>, Reduce>
                 return Reduce{}(map(Elements{})...);
         }
 };
+
+template<class T, class... Cases>
+struct switch_;
+
+template<class Key, class Value>
+struct case_;
+
+template<class Value>
+struct default_;
+
+template<class T, class Key, class True, class Value>
+struct switch_<T, case_<Key, True>, default_<Value>>
+:
+        std::conditional_t<std::is_same_v<T, Key>, True, Value>
+{};
+
+template<class T, class Key, class True, class _, class False>
+struct switch_<T, case_<Key, True>, case_<_, False>>
+:
+        std::conditional_t<std::is_same_v<T, Key>, True, False>
+{};
+
+template<class T, class Key, class True, class Head, class... Tails>
+struct switch_<T, case_<Key, True>, Head, Tails...>
+:
+        std::conditional_t<std::is_same_v<T, Key>, True, switch_<T, Head, Tails...>>
+{};
 
 }       // namespace meta
 }       // namespace dctl::core

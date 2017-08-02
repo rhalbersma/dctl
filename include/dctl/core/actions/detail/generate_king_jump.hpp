@@ -15,6 +15,7 @@
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>                      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
+#include <dctl/util/meta.hpp>                                   // map_reduce, comma, bit_or, tuple_c, int_c
 #include <dctl/util/type_traits.hpp>                            // action_t, board_t, rules_t, set_t
 #include <cassert>                                              // assert
 #include <iterator>                                             // prev
@@ -26,14 +27,15 @@ namespace detail {
 template<color Side, class Reverse, class State, class Builder>
 class generate<color_<Side>, kings_, select::jump, Reverse, State, Builder>
 {
-        using to_move_ = color_<Side>;
-        constexpr static auto to_move_c = color_c<Side>;
-        constexpr static auto piece_c = kings_c;
-        using  board_type = board_t<Builder>;
-        using  rules_type = rules_t<Builder>;
-        using    set_type =   set_t<Builder>;
-
-        constexpr static auto orientation = bearing_v<board_type, to_move_, Reverse>;
+        using rules_type = rules_t<State>;
+        using board_type = board_t<State>;
+        using   set_type =   set_t<State>;
+        constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
+        using king_jump_directions = std::conditional_t<
+                is_orthogonal_jump_v<rules_type>,
+                std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>, left_down<orientation>, down<orientation>, right_down<orientation>>,
+                std::tuple<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>
+        >;
 
         template<class Iterator>
         constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
@@ -47,8 +49,26 @@ public:
 
         auto operator()() const
         {
-                raii::set_king_jump<Builder> guard{m_builder};
-                sources();
+                raii::set_king_jump<Builder> g1{m_builder};
+                m_builder.pieces(color_c<Side>, kings_c).consume([this](auto const from_sq) {
+                        raii::launch<Builder> g2{m_builder, from_sq};
+                        meta::map_reduce<king_jump_directions, meta::comma>{}([from_sq, this](auto direction) {
+                                constexpr auto Direction = decltype(direction){};
+                                if constexpr (is_long_ranged_king_v<rules_type>) {
+                                        auto const jumper = along_ray<Direction>(from_sq);
+                                        if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
+                                                if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
+                                                        capture(along_ray<Direction>(first));
+                                                }
+                                        }
+                                } else {
+                                        auto const jumper = std::next(along_ray<Direction>(from_sq));
+                                        if (is_onboard(jumper) && m_builder.is_target(jumper)) {
+                                                capture(jumper);
+                                        }
+                                }
+                        });
+                });
         }
 
         template<class Iterator>
@@ -60,42 +80,6 @@ public:
                 try_next(jumper);
         }
 private:
-        auto sources() const
-        {
-                m_builder.pieces(to_move_c, piece_c).consume([this](auto const from_sq) {
-                        raii::launch<Builder> guard{m_builder, from_sq};
-                        if constexpr (is_orthogonal_jump_v<rules_type>) {
-                                foldl_comma_first_target<right, right_up, up, left_up, left, left_down, down, right_down>(from_sq);
-                        } else {
-                                foldl_comma_first_target<right_up, left_up, left_down, right_down>(from_sq);
-                        }
-                });
-        }
-
-        template<template<int> class... Directions>
-        auto foldl_comma_first_target(int from_sq) const
-        {
-                (... , first_target(along_ray<Directions<orientation>{}>(from_sq)));
-        }
-
-        template<class Iterator>
-        auto first_target(Iterator jumper) const
-        {
-                if constexpr (is_long_ranged_king_v<rules_type>) {
-                        constexpr auto direction = ray::direction_v<Iterator>.value();
-                        if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
-                                if (auto const first = find_first<direction>(blocker); m_builder.template targets<direction>().contains(first)) {
-                                        capture(along_ray<direction>(first));
-                                }
-                        }
-                } else {
-                        slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
-                        if (is_onboard(jumper) && m_builder.is_target(jumper)) {
-                                capture(jumper);
-                        }
-                }
-        }
-
         template<class Iterator>
         auto capture(Iterator jumper) const
                 -> void
@@ -167,19 +151,14 @@ private:
         template<class Iterator>
         auto turn(Iterator jumper) const
         {
-                if constexpr (is_orthogonal_jump_v<rules_type>) {
-                        static_assert(is_diagonal(direction_v<Iterator>) || is_orthogonal(direction_v<Iterator>));
-                        return foldl_bitor_rotate_directions<-135, -90, -45, +45, +90, +135>(jumper);
-                } else {
-                        static_assert(is_diagonal(direction_v<Iterator>));
-                        return foldl_bitor_rotate_directions<-90, +90>(jumper);
-                }
-        }
-
-        template<int... Directions, class Iterator>
-        auto foldl_bitor_rotate_directions(Iterator jumper) const
-        {
-                return (... | scan(ray::rotate<Directions>(jumper)));
+                using rotation_angles = std::conditional_t<
+                        is_orthogonal_jump_v<rules_type>,
+                        meta::tuple_c<-135, -90, -45, +45, +90, +135>,
+                        meta::tuple_c<-90, +90>
+                >;
+                return meta::map_reduce<rotation_angles, meta::bit_or>{}([jumper, this](auto direction) {
+                        return scan(ray::rotate<decltype(direction){}>(jumper));
+                });
         }
 
         template<class Iterator>
@@ -195,21 +174,7 @@ private:
                         }
                         return false;
                 } else {
-                        slide(jumper, m_builder.template path<ray::direction_v<Iterator>.value()>());
-                        return is_en_prise(jumper);
-                }
-        }
-
-        template<class Iterator>
-        auto slide(Iterator& jumper, set_type const path [[maybe_unused]]) const
-        {
-                assert(is_onboard(jumper));
-                if constexpr (is_long_ranged_king_v<rules_type>) {
-                        do {
-                                ++jumper;
-                        } while (is_onboard(jumper) && path.contains(*jumper));
-                } else {
-                        ++jumper;
+                        return is_en_prise(std::next(jumper));
                 }
         }
 
