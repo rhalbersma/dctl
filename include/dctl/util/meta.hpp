@@ -83,23 +83,23 @@ struct map_reduce<List<Elements...>, Reduce>
         }
 };
 
-struct true_;
-struct false_;
+struct always;
+struct never;
 
 template<class Key, class Value>
 struct case_;
 
 template<class Value>
-using default_ = case_<true_, Value>;
+using default_ = case_<always, Value>;
 
 template<class T, class Key>
 constexpr auto match = std::is_same_v<T, Key>;
 
-template<class T> constexpr auto match<T, true_> = true;
-template<class T> constexpr auto match<true_, T> = true;
+template<class T> constexpr auto match<T, always> = true;
+template<class T> constexpr auto match<always, T> = true;
 
-template<class T> constexpr auto match<T, false_> = false;
-template<class T> constexpr auto match<false_, T> = false;
+template<class T> constexpr auto match<T, never> = false;
+template<class T> constexpr auto match<never, T> = false;
 
 template<class T, class... Cases>
 struct switch_;
@@ -110,13 +110,13 @@ using switch_t = typename switch_<T, Cases...>::type;
 template<class T, class Key, class Value>
 struct switch_<T, case_<Key, Value>>
 :
-        std::conditional<match<T, Key>, Value, false_>
+        std::conditional<match<T, Key>, Value, never>
 {};
 
-template<class T, class Key, class Value, class _, class Else>
-struct switch_<T, case_<Key, Value>, case_<_, Else>>
+template<class T, class Key, class Value, class _, class Other>
+struct switch_<T, case_<Key, Value>, case_<_, Other>>
 :
-        std::conditional<match<T, Key>, Value, Else>
+        std::conditional<match<T, Key>, Value, Other>
 {};
 
 template<class T, class Key, class Value, class Head, class... Tails>
