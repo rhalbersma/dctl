@@ -7,7 +7,7 @@
 
 #include <experimental/array>   // make_array
 #include <tuple>                // tuple
-#include <type_traits>          // conditional_t, integral_constant, is_same_v
+#include <type_traits>          // conditional, enable_if, integral_constant, is_same_v
 #include <utility>              // forward
 
 namespace dctl::core {
@@ -83,46 +83,38 @@ struct map_reduce<List<Elements...>, Reduce>
         }
 };
 
-struct always;
-struct never;
-
-template<class Key, class Value>
-struct case_;
-
-template<class Value>
-using default_ = case_<always, Value>;
-
-template<class T, class Key>
-constexpr auto match = std::is_same_v<T, Key>;
-
-template<class T> constexpr auto match<T, always> = true;
-template<class T> constexpr auto match<always, T> = true;
-
-template<class T> constexpr auto match<T, never> = false;
-template<class T> constexpr auto match<never, T> = false;
-
 template<class T, class... Cases>
 struct switch_;
 
 template<class T, class... Cases>
 using switch_t = typename switch_<T, Cases...>::type;
 
-template<class T, class Key, class Value>
-struct switch_<T, case_<Key, Value>>
+template<class Key, class Value>
+struct case_;
+
+template<class T, class Key, class Value, class... RemainingCases>
+struct switch_<T, case_<Key, Value>, RemainingCases...>
 :
-        std::conditional<match<T, Key>, Value, never>
+        std::conditional<std::is_same_v<T, Key>, Value, switch_t<T, RemainingCases...>>
 {};
 
-template<class T, class Key, class Value, class _, class Other>
-struct switch_<T, case_<Key, Value>, case_<_, Other>>
-:
-        std::conditional<match<T, Key>, Value, Other>
-{};
+template<class Value>
+struct default_;
 
-template<class T, class Key, class Value, class Head, class... Tails>
-struct switch_<T, case_<Key, Value>, Head, Tails...>
+template<class T, class Value, class... RemainingCases>
+struct switch_<T, default_<Value>, RemainingCases...>
 :
-        std::conditional<match<T, Key>, Value, switch_t<T, Head, Tails...>>
+        std::enable_if<true, Value>
+{
+        static_assert(sizeof...(RemainingCases) == 0, "default_ must be final case_ inside switch_");
+};
+
+struct nonematch;
+
+template<class T>
+struct switch_<T>
+:
+        std::enable_if<true, nonematch>
 {};
 
 }       // namespace meta
