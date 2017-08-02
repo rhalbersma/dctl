@@ -55,14 +55,14 @@ public:
                         meta::map_reduce<king_jump_directions, meta::comma>{}([from_sq, this](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const jumper = along_ray<Direction>(from_sq);
+                                        auto const jumper = ray::make_iterator<board_type, Direction>(from_sq);
                                         if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
                                                 if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
-                                                        capture(along_ray<Direction>(first));
+                                                        capture(ray::make_iterator<board_type, Direction>(first));
                                                 }
                                         }
                                 } else {
-                                        auto const jumper = std::next(along_ray<Direction>(from_sq));
+                                        auto const jumper = std::next(ray::make_iterator<board_type, Direction>(from_sq));
                                         if (is_onboard(jumper) && m_builder.is_target(jumper)) {
                                                 capture(jumper);
                                         }
@@ -77,7 +77,7 @@ public:
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(m_builder.with() == piece::pawns);
                 assert(m_builder.into() == piece::kings);
-                try_next(jumper);
+                land(jumper);
         }
 private:
         template<class Iterator>
@@ -93,15 +93,38 @@ private:
         auto land(Iterator jumper) const
         {
                 assert(is_onboard(jumper));
-                try_next(jumper);
-        }
-
-        template<class Iterator>
-        auto try_next(Iterator jumper) const
-        {
                 if (!next_target(jumper)) {
                         halt(jumper);
                 }
+        }
+
+        template<class Iterator>
+        auto halt(Iterator dest_sq) const
+        {
+                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
+                        if (m_builder.is_last_jumped_king(*std::prev(dest_sq))) {
+                                return m_builder.finalize(*dest_sq);
+                        } else {
+                                return add_sliding_jumps(dest_sq);
+                        }
+                }
+                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && !is_halt_behind_king_v<rules_type>) {
+                        return add_sliding_jumps(dest_sq);
+                }
+                if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
+                        return m_builder.finalize(*dest_sq);
+                }
+        }
+
+        template<class Iterator>
+        auto add_sliding_jumps(Iterator dest_sq) const
+        {
+                // builder.template path<Direction>() would be an ERROR here
+                // because we need all halting squares rather than the directional launching squares subset
+                assert(is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
+                do {
+                        m_builder.finalize(*dest_sq++);
+                } while (is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
         }
 
         template<class Iterator>
@@ -128,17 +151,16 @@ private:
                 if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
                         return scan(jumper) | turn(jumper);
                 } else {
-                        constexpr auto direction = ray::direction_v<Iterator>.value();
-                        using Direction = meta::int_c<direction>;
-                        constexpr auto index = Direction{} / 45;
+                        constexpr auto Direction = ray::direction_v<Iterator>.value();
+                        constexpr auto index = Direction / 45;
 
                         auto found_next = false;
                         auto ahead = ray::king_move_targets<rules_type, board_type>{}(*jumper, index);
                         auto n = ahead.count();
                         if (ahead &= m_builder.pieces(occup_c); !ahead.empty()) {
-                                auto const first = find_first<Direction{}>(ahead);
-                                if (m_builder.template targets<direction>().contains(first)) {
-                                        capture(along_ray<direction>(first));
+                                auto const first = find_first<Direction>(ahead);
+                                if (m_builder.template targets<Direction>().contains(first)) {
+                                        capture(ray::make_iterator<board_type, Direction>(first));
                                         found_next |= true;
                                 }
                                 n -= ray::blocker_and_beyond<board_type>{}(first, index).count();
@@ -165,68 +187,23 @@ private:
         auto scan(Iterator jumper) const
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        constexpr auto direction = ray::direction_v<Iterator>.value();
+                        constexpr auto Direction = ray::direction_v<Iterator>.value();
                         if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
-                                if (auto const first = find_first<direction>(blocker); m_builder.template targets<direction>().contains(first)) {
-                                        capture(along_ray<direction>(first));
+                                if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
+                                        capture(ray::make_iterator<board_type, Direction>(first));
                                         return true;
                                 }
                         }
                         return false;
                 } else {
-                        return is_en_prise(std::next(jumper));
-                }
-        }
-
-        template<class Iterator>
-        auto is_en_prise(Iterator jumper) const
-        {
-                if (is_onboard(jumper) && m_builder.is_target(jumper)) {
-                        assert(is_onboard(std::next(jumper)));
-                        capture(jumper);
-                        return true;
-                }
-                return false;
-        }
-
-        template<class Iterator>
-        auto halt(Iterator dest_sq) const
-        {
-                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
-                        if (m_builder.is_last_jumped_king(*std::prev(dest_sq))) {
-                                return add_halting_jump(*dest_sq);
-                        } else {
-                                return add_sliding_jumps(dest_sq);
+                        ++jumper;
+                        if (is_onboard(jumper) && m_builder.is_target(jumper)) {
+                                assert(is_onboard(std::next(jumper)));
+                                capture(jumper);
+                                return true;
                         }
+                        return false;
                 }
-                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && !is_halt_behind_king_v<rules_type>) {
-                        return add_sliding_jumps(dest_sq);
-                }
-                if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return add_halting_jump(*dest_sq);
-                }
-        }
-
-        template<class Iterator>
-        auto add_sliding_jumps(Iterator dest_sq) const
-        {
-                // builder.template path<Direction>() would be an ERROR here
-                // because we need all halting squares rather than the directional launching squares subset
-                assert(is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
-                do {
-                        add_halting_jump(*dest_sq++);
-                } while (is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
-        }
-
-        auto add_halting_jump(int const dest_sq) const
-        {
-                m_builder.finalize(dest_sq);
-        }
-
-        template<int Direction>
-        auto along_ray(int const sq) const
-        {
-                return ray::make_iterator<board_type, Direction>(sq);
         }
 };
 

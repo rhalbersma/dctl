@@ -65,7 +65,7 @@ public:
                                 constexpr auto Direction = decltype(direction){};
                                 jump_sources<board_type, Direction, short_ranged_tag>{}(pawns, m_builder.targets(), m_builder.pieces(empty_c)).consume([this](auto const from_sq) {
                                         raii::launch<Builder> guard{m_builder, from_sq};
-                                        capture(std::next(along_ray<Direction>(from_sq)));
+                                        capture(std::next(ray::make_iterator<board_type, Direction>(from_sq)));
                                 });
                         });
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
@@ -73,7 +73,7 @@ public:
         }
 private:
         template<class Iterator>
-        auto capture(Iterator const jumper) const
+        auto capture(Iterator jumper) const
                 -> void
         {
                 raii::capture<Builder> guard{m_builder, *jumper};
@@ -84,7 +84,7 @@ private:
         auto land(Iterator jumper) const
         {
                 if constexpr (is_passing_promotion_v<rules_type>) {
-                        if (is_promotion(*jumper)) {
+                        if (board_type::promotion(Side).contains(*jumper)) {
                                 return on_promotion(jumper);
                         }
                         if (next_target(jumper)) {
@@ -94,11 +94,11 @@ private:
                         if (next_target(jumper)) {
                                 return;
                         }
-                        if (is_promotion(*jumper)) {
+                        if (board_type::promotion(Side).contains(*jumper)) {
                                 return on_promotion(jumper);
                         }
                 }
-                add_jump(*jumper);
+                m_builder.finalize(*jumper);
         }
 
         template<class Iterator>
@@ -108,7 +108,7 @@ private:
                 if constexpr (is_passing_promotion_v<rules_type>) {
                         return on_king_jump(jumper);
                 } else {
-                        return add_jump(*jumper);
+                        return m_builder.finalize(*jumper);
                 }
         }
 
@@ -170,22 +170,6 @@ private:
                         return true;
                 }
                 return false;
-        }
-
-        auto add_jump(int const dest_sq) const
-        {
-                m_builder.finalize(dest_sq);
-        }
-
-        template<int Direction>
-        auto along_ray(int const sq) const noexcept
-        {
-                return ray::make_iterator<board_type, Direction>(sq);
-        }
-
-        auto is_promotion(int const sq) const // Throws: Nothing.
-        {
-                return board_type::promotion(Side).contains(sq);
         }
 };
 
