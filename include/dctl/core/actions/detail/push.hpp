@@ -17,8 +17,8 @@ template<color Side, class DuplicatesPolicy, class Reverse>
 class actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>
 {
         using to_move_ = color_<Side>;
-        template<class State> using king_push = detail::king_push<to_move_, kings_, select::push, Reverse, State>;
-        template<class State> using pawn_push = detail::pawn_push<to_move_, pawns_, select::push, Reverse, State>;
+        template<class State> using king_push = detail::king_push<to_move_, Reverse, State>;
+        template<class State> using pawn_push = detail::pawn_push<to_move_, Reverse, State>;
 public:
         template<class State, class SequenceContainer>
         auto generate(State const& s, SequenceContainer& seq) const

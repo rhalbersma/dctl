@@ -5,14 +5,14 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/action/action.hpp>                       // Action
-#include <dctl/core/actions/detail/builder.hpp>              // builder
-#include <dctl/core/actions/detail/detect_primary_fwd.hpp>   // detect (primary template)
-#include <dctl/core/actions/detail/detect_king_jump.hpp>     // detect (king jump specialization)
-#include <dctl/core/actions/detail/detect_pawn_jump.hpp>     // detect (pawn jump specialization)
-#include <dctl/core/actions/detail/generate_primary_fwd.hpp> // generate (primary template)
-#include <dctl/core/actions/detail/generate_king_jump.hpp>   // generate (king jump specialization)
-#include <dctl/core/actions/detail/generate_pawn_jump.hpp>   // generate (pawn jump specialization)
+#include <dctl/core/action/action.hpp>                          // Action
+#include <dctl/core/actions/detail/builder.hpp>                 // builder
+#include <dctl/core/actions/detail/detect_primary_fwd.hpp>      // detect (primary template)
+#include <dctl/core/actions/detail/detect_king_jump.hpp>        // detect (king jump specialization)
+#include <dctl/core/actions/detail/detect_pawn_jump.hpp>        // detect (pawn jump specialization)
+#include <dctl/core/actions/detail/generate_primary_fwd.hpp>    // generate (primary template)
+#include <dctl/core/actions/detail/generate_king_jump.hpp>      // generate (king jump specialization)
+#include <dctl/core/actions/detail/generate_pawn_jump.hpp>      // generate (pawn jump specialization)
 #include <dctl/core/actions/select/jump.hpp>                    // jump
 #include <dctl/core/state/color_piece.hpp>                      // color, color_, kings_, pawn_
 #include <dctl/core/rules/type_traits.hpp>

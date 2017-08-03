@@ -5,7 +5,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/select/push.hpp>    // select
 #include <dctl/core/board/angle.hpp>            // left_up, right_up
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/board/push_targets.hpp>     // push_targets
@@ -22,12 +21,34 @@ template<class...>
 class pawn_push;
 
 template<color Side, class Reverse, class State>
-class pawn_push<color_<Side>, pawns_, select::push, Reverse, State>
+class pawn_push<color_<Side>, Reverse, State>
 {
         using board_type = board_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
         using pawn_push_directions = std::tuple<right_up<orientation>, left_up<orientation>>;
 public:
+        auto detect(State const& s) const noexcept
+        {
+                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
+                        return meta::map_reduce<pawn_push_directions, meta::logical_or>{}([&](auto direction) {
+                                constexpr auto Direction = decltype(direction){};
+                                return !push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).empty();
+                        });
+                }
+                return false;
+        }
+
+        auto count(State const& s) const noexcept
+        {
+                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
+                        return meta::map_reduce<pawn_push_directions, meta::plus>{}([&](auto direction) {
+                                constexpr auto Direction = decltype(direction){};
+                                return push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).count();
+                        });
+                }
+                return 0;
+        }
+
         template<class SequenceContainer>
         auto generate(State const& s, SequenceContainer& seq) const
         {
@@ -43,28 +64,6 @@ public:
                                 });
                         });
                 }
-        }
-
-        auto count(State const& s) const noexcept
-        {
-                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        return meta::map_reduce<pawn_push_directions, meta::plus>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                return push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).count();
-                        });
-                }
-                return 0;
-        }
-
-        auto detect(State const& s) const noexcept
-        {
-                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        return meta::map_reduce<pawn_push_directions, meta::logical_or>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                return !push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).empty();
-                        });
-                }
-                return false;
         }
 };
 
