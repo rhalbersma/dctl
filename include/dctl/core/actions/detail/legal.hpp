@@ -26,36 +26,36 @@ class actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>
         using Push = actions<to_move_, select::push, DuplicatesPolicy, Reverse>;
 
 public:
-        template<class State, class SequenceContainer>
-        auto generate(State const& s, SequenceContainer& seq) const
+        template<class State>
+        static auto detect(State const& s) noexcept
         {
-#ifndef cj
-                if (Jump{}.generate(s, seq); seq.empty()) {
-                        Push{}.generate(s, seq);
-                }
-#else
-                if (Jump{}.detect(s)) {
-                        Jump{}.generate(s, seq);
-                } else {
-                        Push{}.generate(s, seq);
-                }
-#endif
+                return Push::detect(s) || Jump::detect(s);
         }
 
         template<class State>
-        auto count(State const& s) const
+        static auto count(State const& s)
         {
-                if (auto const num_jumps = Jump{}.count(s); !num_jumps) {
-                        return Push{}.count(s);
+                if (auto const num_jumps = Jump::count(s); !num_jumps) {
+                        return Push::count(s);
                 } else {
                         return num_jumps;
                 }
         }
 
-        template<class State>
-        auto detect(State const& s) const noexcept
+        template<class State, class SequenceContainer>
+        static auto generate(State const& s, SequenceContainer& seq)
         {
-                return Push{}.detect(s) || Jump{}.detect(s);
+#ifndef cj
+                if (Jump::generate(s, seq); seq.empty()) {
+                        Push::generate(s, seq);
+                }
+#else
+                if (Jump::detect(s)) {
+                        Jump::generate(s, seq);
+                } else {
+                        Push::generate(s, seq);
+                }
+#endif
         }
 };
 

@@ -27,7 +27,7 @@ class pawn_push<color_<Side>, Reverse, State>
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
         using pawn_push_directions = std::tuple<right_up<orientation>, left_up<orientation>>;
 public:
-        auto detect(State const& s) const noexcept
+        static auto detect(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
                         return meta::map_reduce<pawn_push_directions, meta::logical_or>{}([&](auto direction) {
@@ -38,7 +38,7 @@ public:
                 return false;
         }
 
-        auto count(State const& s) const noexcept
+        static auto count(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
                         return meta::map_reduce<pawn_push_directions, meta::plus>{}([&](auto direction) {
@@ -50,12 +50,12 @@ public:
         }
 
         template<class SequenceContainer>
-        auto generate(State const& s, SequenceContainer& seq) const
+        static auto generate(State const& s, SequenceContainer& seq)
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
                         meta::map_reduce<pawn_push_directions, meta::comma>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
-                                push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).consume([&](auto const dest_sq) {
+                                push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).consume([&](auto dest_sq) {
                                         seq.emplace_back(
                                                 *std::prev(ray::make_iterator<board_type, Direction>(dest_sq)),
                                                 dest_sq,

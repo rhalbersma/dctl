@@ -19,8 +19,11 @@ namespace dctl::core {
 template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
 class actions
 {
+        template<class Action>
+        using default_container = boost::container::static_vector<Action, 128>;
+
         template<class Color>
-        constexpr static auto impl = detail::actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>{};
+        using impl = detail::actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
 
         template<class Color, class State, class SequenceContainer>
         auto assert_invariants(State const& s [[maybe_unused]], SequenceContainer const& seq [[maybe_unused]]) const noexcept
@@ -31,7 +34,31 @@ class actions
         }
 
 public:
-        template<class State, class SequenceContainer = boost::container::static_vector<action<rules_t<State>, board_t<State>>, 128>>
+        template<class State>
+        auto detect(State const& s) const
+        {
+                return s.to_move() == color::black ? detect<black_>(s) : detect<white_>(s);
+        }
+
+        template<class Color, class State>
+        auto detect(State const& s) const
+        {
+                return impl<Color>::detect(s);
+        }
+
+        template<class State>
+        auto count(State const& s) const
+        {
+                return s.to_move() == color::black ? count<black_>(s) : count<white_>(s);
+        }
+
+        template<class Color, class State>
+        auto count(State const& s) const
+        {
+                return impl<Color>::count(s);
+        }
+
+        template<class State, class SequenceContainer = default_container<action<rules_t<State>, board_t<State>>>>
         auto generate(State const& s) const
         {
                 SequenceContainer seq;
@@ -39,7 +66,7 @@ public:
                 return seq;
         }
 
-        template<class Color, class State, class SequenceContainer = boost::container::static_vector<action<rules_t<State>, board_t<State>>, 128>>
+        template<class Color, class State, class SequenceContainer = default_container<action<rules_t<State>, board_t<State>>>>
         auto generate(State const& s) const
         {
                 SequenceContainer seq;
@@ -59,32 +86,8 @@ public:
                 using action_type = value_t<SequenceContainer>;
                 static_assert(std::is_same_v<rules_t<State>, rules_t<action_type>>);
                 static_assert(std::is_same_v<board_t<State>, board_t<action_type>>);
-                impl<Color>.generate(s, seq);
+                impl<Color>::generate(s, seq);
                 assert_invariants<Color>(s, seq);
-        }
-
-        template<class State>
-        auto count(State const& s) const
-        {
-                return s.to_move() == color::black ? count<black_>(s) : count<white_>(s);
-        }
-
-        template<class Color, class State>
-        auto count(State const& s) const
-        {
-                return impl<Color>.count(s);
-        }
-
-        template<class State>
-        auto detect(State const& s) const
-        {
-                return s.to_move() == color::black ? detect<black_>(s) : detect<white_>(s);
-        }
-
-        template<class Color, class State>
-        auto detect(State const& s) const
-        {
-                return impl<Color>.detect(s);
         }
 };
 

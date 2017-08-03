@@ -29,7 +29,7 @@ class king_push<color_<Side>, Reverse, State>
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
         using king_push_directions = std::tuple<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>;
 public:
-        auto detect(State const& s) const noexcept
+        static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
                         return meta::map_reduce<king_push_directions, meta::logical_or>{}([&](auto direction) {
@@ -40,11 +40,11 @@ public:
                 return false;
         }
 
-        auto count(State const& s) const noexcept
+        static auto count(State const& s) noexcept
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         auto result = 0;
-                        s.pieces(color_c<Side>, kings_c).consume([&](auto const from_sq) {
+                        s.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
                                 result += ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)).count();
                         });
                         return result;
@@ -60,11 +60,11 @@ public:
         }
 
         template<class SequenceContainer>
-        auto generate(State const& s, SequenceContainer& seq) const
+        static auto generate(State const& s, SequenceContainer& seq)
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        s.pieces(color_c<Side>, kings_c).consume([&](auto const from_sq) {
-                                ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)).consume([&](auto const dest_sq) {
+                        s.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
+                                ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)).consume([&](auto dest_sq) {
                                         seq.emplace_back(
                                                 from_sq,
                                                 dest_sq
@@ -75,7 +75,7 @@ public:
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
                                 meta::map_reduce<king_push_directions, meta::comma>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
-                                        push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c)).consume([&](auto const dest_sq) {
+                                        push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c)).consume([&](auto dest_sq) {
                                                 seq.emplace_back(
                                                         *std::prev(ray::make_iterator<board_type, Direction>(dest_sq)),
                                                         dest_sq
