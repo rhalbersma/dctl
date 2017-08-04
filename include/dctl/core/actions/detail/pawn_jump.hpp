@@ -16,7 +16,7 @@
 #include <dctl/core/board/ray.hpp>                      // make_iterator, rotate, mirror, turn
 #include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
-#include <dctl/util/meta.hpp>                           // map_reduce, comma, bit_or, tuple_c, int_c
+#include <dctl/util/meta.hpp>                           // map_reduce, comma, bit_or
 #include <dctl/util/type_traits.hpp>                    // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // next
@@ -140,7 +140,7 @@ private:
                         });
                 } else {
                         static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                        return scan(ray::mirror<angle{dir_N<0>{} + orientation}.value()>(jumper), m_builder);
+                        return scan(ray::mirror<angle{dir_N + orientation}.value()>(jumper), m_builder);
                 }
         }
 

@@ -12,17 +12,17 @@
 namespace dctl::core {
 namespace meta {
 
-template<auto N>
-using int_c = std::integral_constant<std::decay_t<decltype(N)>, N>;
-
 template<class... Elements>
 struct list
 {
         using type = list;
 };
 
-template<auto... Ns>
-using list_c = list<int_c<Ns>...>;
+template<class T, T N>
+using integral_c = std::integral_constant<T, N>;
+
+template<class T, T... Ns>
+using list_c = list<integral_c<T, Ns>...>;
 
 template<class List>
 constexpr int size_v;

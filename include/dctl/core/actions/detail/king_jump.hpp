@@ -15,7 +15,7 @@
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
-#include <dctl/util/meta.hpp>                   // map_reduce, comma, bit_or, tuple_c, int_c
+#include <dctl/util/meta.hpp>                   // map_reduce, comma, bit_or
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
 #include <cassert>                              // assert
 #include <iterator>                             // prev
