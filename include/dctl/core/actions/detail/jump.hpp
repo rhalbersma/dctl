@@ -21,20 +21,39 @@
 namespace dctl::core {
 namespace detail {
 
-class MoveCounter
+template<class Action>
+class counter_container
 {
-        int n{};
+        Action m_action {};
+        int m_count = 0;
 public:
-        MoveCounter() = default;
+        using value_type = Action;
 
-        auto& operator++()
+        counter_container() = default;
+
+        auto& back() const
         {
-                ++n; return *this;
+                return m_action;
+        }
+
+        auto empty() const
+        {
+                return m_count == 0;
         }
 
         auto size() const
         {
-                return n;
+                return m_count;
+        }
+
+        auto push_back(Action const&)
+        {
+                ++m_count;
+        }
+
+        auto push_back(Action&&)
+        {
+                ++m_count;
         }
 };
 
@@ -44,6 +63,13 @@ class actions<color_<Side>, select::jump, DuplicatesPolicy, Reverse>
         using to_move_ = color_<Side>;
         template<class State> using king_jump = detail::king_jump<to_move_, Reverse, State>;
         template<class State> using pawn_jump = detail::pawn_jump<to_move_, Reverse, State>;
+
+        template<class State, class Action>
+        using container_type = std::conditional_t<
+                is_trivial_precedence_v<rules_t<State>> && std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>,
+                counter_container<Action>,
+                boost::container::static_vector<Action, 128>
+        >;
 public:
         template<class State>
         static auto detect(State const& s) noexcept
@@ -54,7 +80,9 @@ public:
         template<class State>
         static auto count(State const& s)
         {
-                return static_cast<int>(generate(s).size());
+                container_type<State, action<rules_t<State>, board_t<State>>> seq;
+                generate(s, seq);
+                return static_cast<int>(seq.size());
         }
 
         template<class State, class SequenceContainer = boost::container::static_vector<action<rules_t<State>, board_t<State>>, 128>>

@@ -184,11 +184,6 @@ public:
                 return m_state.to_move();
         }
 
-        auto num_captured_pieces() const noexcept
-        {
-                return 0;
-        }
-
 private:
         auto is_king(int sq) const
         {
