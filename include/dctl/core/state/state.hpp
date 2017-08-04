@@ -38,7 +38,7 @@ struct most_recently_pushed_kings {};
 
 template<class Rules, class Board>
 using conditional_base_mrpk = util::conditional_base<
-        is_restricted_king_push_v<Rules>,
+        is_restricted_king_move_v<Rules>,
         most_recently_pushed_kings<Board>
 >;
 

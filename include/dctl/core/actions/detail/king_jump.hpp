@@ -34,11 +34,6 @@ class king_jump<color_<Side>, Reverse, State>
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
-        using king_jump_directions = std::conditional_t<
-                is_orthogonal_jump_v<rules_type>,
-                std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>, left_down<orientation>, down<orientation>, right_down<orientation>>,
-                std::tuple<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>
-        >;
 
         template<class Iterator>
         constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
@@ -48,7 +43,7 @@ public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                        return meta::map_reduce<king_jump_directions, meta::logical_or>{}([&](auto direction) {
+                        return meta::map_reduce<king_jump_directions<rules_type, orientation>, meta::logical_or>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return !jump_targets<board_type, Direction, king_range_category_t<rules_type>>{}(kings, s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).empty();
                         });
@@ -62,7 +57,7 @@ public:
                 raii::set_king_jump<Builder> g1{m_builder};
                 m_builder.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
                         raii::launch<Builder> g2{m_builder, from_sq};
-                        meta::map_reduce<king_jump_directions, meta::comma>{}([&](auto direction) {
+                        meta::map_reduce<king_jump_directions<rules_type, orientation>, meta::comma>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
                                         auto const jumper = ray::make_iterator<board_type, Direction>(from_sq);
@@ -162,10 +157,9 @@ private:
                         return scan(jumper, m_builder) | turn(jumper, m_builder);
                 } else {
                         constexpr auto Direction = ray::direction_v<Iterator>.value();
-                        constexpr auto index = Direction / 45;
 
                         auto found_next = false;
-                        auto ahead = ray::king_move_targets<rules_type, board_type>{}(*jumper, index);
+                        auto ahead = ray::king_move_scan<rules_type, board_type>{}(*jumper, ray::move_index(Direction));
                         auto n = ahead.count();
                         if (ahead &= m_builder.pieces(occup_c); !ahead.empty()) {
                                 auto const first = find_first<Direction>(ahead);
@@ -173,7 +167,7 @@ private:
                                         capture(ray::make_iterator<board_type, Direction>(first), m_builder);
                                         found_next |= true;
                                 }
-                                n -= ray::blocker_and_beyond<board_type>{}(first, index).count();
+                                n -= ray::blocker_and_beyond<rules_type, board_type>{}(first, ray::jump_index<rules_type>(Direction)).count();
                         }
                         do { found_next |= turn(jumper++, m_builder); } while(n--);
                         return found_next;
@@ -183,12 +177,7 @@ private:
         template<class Iterator, class Builder>
         static auto turn(Iterator jumper, Builder& m_builder)
         {
-                using rotation_angles = std::conditional_t<
-                        is_orthogonal_jump_v<rules_type>,
-                        meta::tuple_c<-135, -90, -45, +45, +90, +135>,
-                        meta::tuple_c<-90, +90>
-                >;
-                return meta::map_reduce<rotation_angles, meta::bit_or>{}([&](auto direction) {
+                return meta::map_reduce<jump_rotations<rules_type>, meta::bit_or>{}([&](auto direction) {
                         return scan(ray::rotate<decltype(direction){}>(jumper), m_builder);
                 });
         }

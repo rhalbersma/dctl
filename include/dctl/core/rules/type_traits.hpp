@@ -5,7 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/angle.hpp>
 #include <dctl/core/board/type_traits.hpp>      // is_orthogonal_jump_v
+#include <dctl/util/meta.hpp>
 #include <dctl/util/tti.hpp>                    // DCTL_PP_TTI_CONSTANT
 #include <dctl/util/type_traits.hpp>            // rules_t
 #include <tuple>                                // make_tuple
@@ -159,10 +161,10 @@ struct not_equivalent_to
 struct keep_duplicates_tag : std::false_type {};
 struct drop_duplicates_tag : std:: true_type {};
 
-DCTL_PP_TTI_CONSTANT(max_same_king_push, 0)
+DCTL_PP_TTI_CONSTANT(max_same_king_move, 0)
 
 template<class Rules>
-constexpr auto is_restricted_king_push_v = max_same_king_push_v<Rules> != 0;
+constexpr auto is_restricted_king_move_v = max_same_king_move_v<Rules> != 0;
 
 DCTL_PP_TTI_CONSTANT(max_reversible_moves, 0)
 
@@ -187,5 +189,44 @@ constexpr auto notation_v =
         notation::algebraic :
         notation::numeric
 ;
+
+template<int orientation>
+using pawn_move_directions = meta::list<right_up<orientation>, left_up<orientation>>;
+
+template<int orientation>
+using king_move_directions = meta::list<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>;
+
+template<class Rules, int orientation>
+using pawn_jump_directions = meta::switch_t<
+        meta::list_c<is_backward_pawn_jump_v<Rules>, is_orthogonal_jump_v<Rules>>,
+        meta::case_<meta::list_c<true , true >, meta::list<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>, left_down<orientation>, down<orientation>, right_down<orientation>>>,
+        meta::case_<meta::list_c<false, true >, meta::list<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>>>,
+        meta::case_<meta::list_c<true , false>, meta::list<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>>,
+        meta::case_<meta::list_c<false, false>, meta::list<right_up<orientation>, left_up<orientation>>>
+>;
+
+template<int Direction, int orientation>
+using pawn_jump_turns = meta::switch_t<
+        meta::int_c<Direction>,
+        meta::case_<   right<orientation>, meta::list<right_up<orientation>, up<orientation>, left_up<orientation>>>,
+        meta::case_<right_up<orientation>, meta::list<right<orientation>, up<orientation>, left_up<orientation>, left<orientation>>>,
+        meta::case_<      up<orientation>, meta::list<right<orientation>, right_up<orientation>, left_up<orientation>, left<orientation>>>,
+        meta::case_< left_up<orientation>, meta::list<right<orientation>, right_up<orientation>, up<orientation>, left<orientation>>>,
+        meta::case_<    left<orientation>, meta::list<right_up<orientation>, up<orientation>, left_up<orientation>>>
+>;
+
+template<class Rules, int orientation>
+using king_jump_directions = std::conditional_t<
+        is_orthogonal_jump_v<Rules>,
+        meta::list<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>, left_down<orientation>, down<orientation>, right_down<orientation>>,
+        meta::list<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>
+>;
+
+template<class Rules>
+using jump_rotations = std::conditional_t<
+        is_orthogonal_jump_v<Rules>,
+        meta::list_c<-135, -90, -45, +45, +90, +135>,
+        meta::list_c<-90, +90>
+>;
 
 }       // namespace dctl::core

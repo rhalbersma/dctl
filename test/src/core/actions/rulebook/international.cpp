@@ -21,21 +21,21 @@ BOOST_AUTO_TEST_SUITE(ActionsRulebookinternational)
 
         BOOST_AUTO_TEST_SUITE(FrenchTutorial)
 
-                BOOST_FIXTURE_TEST_CASE(Whitepawn_pushDirections, F)     // Art. 3.4
+                BOOST_FIXTURE_TEST_CASE(Whitepawn_moveDirections, F)     // Art. 3.4
                 {
                         auto const fen = "W:W28";
                         auto const legal = std::vector<std::string>{ "28-22", "28-23" };
                         test(fen, legal);
                 }
 
-                BOOST_FIXTURE_TEST_CASE(Blackpawn_pushDirections, F)     // Art. 3.4
+                BOOST_FIXTURE_TEST_CASE(Blackpawn_moveDirections, F)     // Art. 3.4
                 {
                         auto const fen = "B:B13";
                         auto const legal = std::vector<std::string>{ "13-18", "13-19" };
                         test(fen, legal);
                 }
 
-                BOOST_FIXTURE_TEST_CASE(Whiteking_pushRange, F)          // Art. 3.9
+                BOOST_FIXTURE_TEST_CASE(Whiteking_moveRange, F)          // Art. 3.9
                 {
                         auto const fen = "W:WK28";
                         auto const legal = std::vector<std::string>{
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_SUITE(ActionsRulebookinternational)
                         test(fen, legal);
                 }
 
-                BOOST_FIXTURE_TEST_CASE(Blackking_pushRange, F)          // Art. 3.9
+                BOOST_FIXTURE_TEST_CASE(Blackking_moveRange, F)          // Art. 3.9
                 {
                         auto const fen = "B:BK1";
                         auto const legal = std::vector<std::string>{
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_SUITE(ActionsRulebookinternational)
 
         BOOST_AUTO_TEST_SUITE(italianOfficialVersion)
 
-                BOOST_FIXTURE_TEST_CASE(king_pushRange, F)               // Art. 3.9
+                BOOST_FIXTURE_TEST_CASE(king_moveRange, F)               // Art. 3.9
                 {
                         auto const fen = "W:WK23";
                         auto const legal = std::vector<std::string>{

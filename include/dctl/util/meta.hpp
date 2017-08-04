@@ -6,7 +6,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <experimental/array>   // make_array
-#include <tuple>                // tuple
 #include <type_traits>          // conditional, enable_if, integral_constant, is_same_v
 #include <utility>              // forward
 
@@ -14,14 +13,59 @@ namespace dctl::core {
 namespace meta {
 
 template<auto N>
-using int_c = std::integral_constant<decltype(N), N>;
+using int_c = std::integral_constant<std::decay_t<decltype(N)>, N>;
+
+template<class... Elements>
+struct list
+{
+        using type = list;
+};
 
 template<auto... Ns>
-using tuple_c = std::tuple<int_c<Ns>...>;
+using list_c = list<int_c<Ns>...>;
+
+template<class List>
+constexpr int size;
+
+template<class... Elements>
+constexpr int size<list<Elements...>> = sizeof...(Elements);
+
+template<class List, class Reduce>
+struct map_reduce;
 
 struct array;
 
+template<template<class...> class List, class... Elements>
+struct map_reduce<List<Elements...>, array>
+{
+        template<class UnaryFunction>
+        auto operator()(UnaryFunction map) const
+        {
+                return std::experimental::make_array(map(Elements{})...);
+        }
+};
+
 struct comma;
+
+template<template<class...> class List, class... Elements>
+struct map_reduce<List<Elements...>, comma>
+{
+        template<class UnaryFunction>
+        auto operator()(UnaryFunction map) const
+        {
+                (... , map(Elements{}));
+        }
+};
+
+template<template<class...> class List, class... Elements, class Reduce>
+struct map_reduce<List<Elements...>, Reduce>
+{
+        template<class UnaryFunction>
+        auto operator()(UnaryFunction map) const
+        {
+                return Reduce{}(map(Elements{})...);
+        }
+};
 
 struct plus
 {
@@ -47,39 +91,6 @@ struct bit_or
         auto operator()(Args&&... args) const
         {
                 return (... | std::forward<Args>(args));
-        }
-};
-
-template<class List, class Reduce>
-struct map_reduce;
-
-template<template<class...> class List, class... Elements>
-struct map_reduce<List<Elements...>, array>
-{
-        template<class UnaryFunction>
-        auto operator()(UnaryFunction map) const
-        {
-                return std::experimental::make_array(map(Elements{})...);
-        }
-};
-
-template<template<class...> class List, class... Elements>
-struct map_reduce<List<Elements...>, comma>
-{
-        template<class UnaryFunction>
-        auto operator()(UnaryFunction map) const
-        {
-                (... , map(Elements{}));
-        }
-};
-
-template<template<class...> class List, class... Elements, class Reduce>
-struct map_reduce<List<Elements...>, Reduce>
-{
-        template<class UnaryFunction>
-        auto operator()(UnaryFunction map) const
-        {
-                return Reduce{}(map(Elements{})...);
         }
 };
 

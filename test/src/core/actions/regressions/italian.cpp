@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE(ActionsRegressionsitalian)
                         test(fen, legal);
                 }
 
-                BOOST_FIXTURE_TEST_CASE(pawn_push, F)            // Art 5.3(b)
+                BOOST_FIXTURE_TEST_CASE(pawn_move, F)            // Art 5.3(b)
                 {
                         auto const fen = "W:W30:BK26";
                         auto const legal = std::vector<std::string>{ "30-27" };

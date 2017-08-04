@@ -19,22 +19,23 @@ namespace dctl::core {
 namespace detail {
 
 template<class...>
-class king_push;
+class king_move;
 
 template<color Side, class Reverse, class State>
-class king_push<color_<Side>, Reverse, State>
+class king_move<color_<Side>, Reverse, State>
 {
         using rules_type = rules_t<State>;
         using board_type = board_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
-        using king_push_directions = std::tuple<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>;
 public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                        return meta::map_reduce<king_push_directions, meta::logical_or>{}([&](auto direction) {
+                        return meta::map_reduce<king_move_directions<orientation>, meta::logical_or>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
-                                return !push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c)).empty();
+                                return !push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
+                                        .empty()
+                                ;
                         });
                 }
                 return false;
@@ -45,14 +46,18 @@ public:
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         auto result = 0;
                         s.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
-                                result += ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)).count();
+                                result += ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c))
+                                        .count()
+                                ;
                         });
                         return result;
                 } else {
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                                return meta::map_reduce<king_push_directions, meta::plus>{}([&](auto direction) {
+                                return meta::map_reduce<king_move_directions<orientation>, meta::plus>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
-                                        return push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c)).count();
+                                        return push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
+                                                .count()
+                                        ;
                                 });
                         }
                         return 0;
@@ -64,23 +69,24 @@ public:
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         s.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
-                                ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c)).consume([&](auto dest_sq) {
-                                        seq.emplace_back(
-                                                from_sq,
-                                                dest_sq
-                                        );
-                                });
+                                ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c))
+                                        .consume([&](auto dest_sq) {
+                                                seq.emplace_back(from_sq, dest_sq);
+                                        })
+                                ;
                         });
                 } else {
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                                meta::map_reduce<king_push_directions, meta::comma>{}([&](auto direction) {
+                                meta::map_reduce<king_move_directions<orientation>, meta::comma>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
-                                        push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c)).consume([&](auto dest_sq) {
-                                                seq.emplace_back(
-                                                        *std::prev(ray::make_iterator<board_type, Direction>(dest_sq)),
-                                                        dest_sq
-                                                );
-                                        });
+                                        push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
+                                                .consume([&](auto dest_sq) {
+                                                        seq.emplace_back(
+                                                                *std::prev(ray::make_iterator<board_type, Direction>(dest_sq)),
+                                                                dest_sq
+                                                        );
+                                                })
+                                        ;
                                 });
                         }
                 }

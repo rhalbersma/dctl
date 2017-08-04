@@ -18,19 +18,18 @@ namespace dctl::core {
 namespace detail {
 
 template<class...>
-class pawn_push;
+class pawn_move;
 
 template<color Side, class Reverse, class State>
-class pawn_push<color_<Side>, Reverse, State>
+class pawn_move<color_<Side>, Reverse, State>
 {
         using board_type = board_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
-        using pawn_push_directions = std::tuple<right_up<orientation>, left_up<orientation>>;
 public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        return meta::map_reduce<pawn_push_directions, meta::logical_or>{}([&](auto direction) {
+                        return meta::map_reduce<pawn_move_directions<orientation>, meta::logical_or>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return !push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).empty();
                         });
@@ -41,7 +40,7 @@ public:
         static auto count(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        return meta::map_reduce<pawn_push_directions, meta::plus>{}([&](auto direction) {
+                        return meta::map_reduce<pawn_move_directions<orientation>, meta::plus>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).count();
                         });
@@ -53,7 +52,7 @@ public:
         static auto generate(State const& s, SequenceContainer& seq)
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        meta::map_reduce<pawn_push_directions, meta::comma>{}([&](auto direction) {
+                        meta::map_reduce<pawn_move_directions<orientation>, meta::comma>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 push_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.pieces(empty_c)).consume([&](auto dest_sq) {
                                         seq.emplace_back(

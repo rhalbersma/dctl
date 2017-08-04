@@ -319,8 +319,8 @@ private:
                 std::cout << ((ply % 10 == 9) ? '\n' : ' ');
 
                 auto q = child(n, best_move);
-                //if (q.same_king_push(!q.to_move()))
-                        //std::cout << "^" << q.same_king_push(!q.to_move());
+                //if (q.same_king_move(!q.to_move()))
+                        //std::cout << "^" << q.same_king_move(!q.to_move());
                 print_pv(successor, q, pv, ply + 1);
         }
 

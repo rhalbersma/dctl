@@ -3,7 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/rules/type_traits.hpp>                 // max_same_king_push
+#include <dctl/core/rules/type_traits.hpp>                 // max_same_king_move
 #include <dctl/core/rules.hpp>                       // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -11,7 +11,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(MaxSameking_push)
+BOOST_AUTO_TEST_SUITE(MaxSameking_move)
 
 using VariantsZero = boost::mpl::vector
 <
@@ -20,7 +20,7 @@ using VariantsZero = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsZero, T, VariantsZero)
 {
-        static_assert(max_same_king_push_v<T> == 0);
+        static_assert(max_same_king_move_v<T> == 0);
 }
 
 using VariantsThree = boost::mpl::vector
@@ -30,7 +30,7 @@ using VariantsThree = boost::mpl::vector
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsThree, T, VariantsThree)
 {
-        static_assert(max_same_king_push_v<T> == 3);
+        static_assert(max_same_king_move_v<T> == 3);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

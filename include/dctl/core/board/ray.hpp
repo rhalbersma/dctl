@@ -141,7 +141,7 @@ constexpr auto is_onboard(iterator<Board, Direction> it)
 }
 
 template<bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
-struct fill
+struct scan
 {
         template<class Board, int Direction, class Set>
         auto operator()(iterator<Board, Direction> from, Set const propagator) const
@@ -170,24 +170,30 @@ struct fill
         }
 };
 
-using king_move_directions = meta::tuple_c<45, 135, 225, 315>;
-
-using king_jump_directions = meta::tuple_c<0, 45, 90, 135, 180, 225, 270, 315>;
-
-constexpr auto king_jump_index(int const direction)
+constexpr auto move_index(int direction) noexcept
 {
-        return direction / 45;
+        return (direction - 45) / 90;
 }
 
-template<class Board, class Fill>
-class king_targets_sq_dir
+template<class Rules>
+constexpr jump_index(int direction) noexcept
+{
+        if constexpr (is_orthogonal_jump_v<Rules>) {
+                return direction / 45;
+        } else {
+                return (direction - 45) / 90;
+        }
+}
+
+template<class Board, class Scan, class Directions>
+class board_scan_sq_dir
 {
         inline const static auto table = []() {
-                auto result = std::array<std::array<set_t<Board>, std::tuple_size<king_jump_directions>::value>, Board::bits()>{};
+                auto result = std::array<std::array<set_t<Board>, meta::size<Directions>>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::map_reduce<king_jump_directions, meta::array>{}([=](auto direction) {
-                                        return Fill{}(make_iterator<Board, decltype(direction){}>(sq), Board::squares);
+                                meta::map_reduce<Directions, meta::array>{}([=](auto direction) {
+                                        return Scan{}(make_iterator<Board, decltype(direction){}>(sq), Board::squares);
                                 });
                         ;
                 });
@@ -201,22 +207,22 @@ public:
 };
 
 template<class Rules, class Board>
-using king_move_targets = king_targets_sq_dir<Board, fill<is_long_ranged_king_v<Rules>, false, true>>;
+using king_move_scan = board_scan_sq_dir<Board, scan<is_long_ranged_king_v<Rules>, false, true>, king_move_directions<0>>;
 
 template<class Rules, class Board>
-using king_jump_targets = king_targets_sq_dir<Board, fill<is_long_ranged_king_v<Rules>, false, false>>;
+using king_jump_scan = board_scan_sq_dir<Board, scan<is_long_ranged_king_v<Rules>, false, false>, king_jump_directions<Rules, 0>>;
 
 template<class Rules, class Board>
-using pawn_jump_targets = king_targets_sq_dir<Board, fill<false, false, false>>;
+using pawn_jump_scan = board_scan_sq_dir<Board, scan<false, false, false>, king_jump_directions<Rules, 0>>;
 
-template<class Board, class Fill>
-class king_targets_dir_sq
+template<class Board, class Scan, class Directions>
+class board_scan_dir_sq
 {
         inline const static auto table = []() {
-                return meta::map_reduce<king_jump_directions, meta::array>{}([](auto direction) {
+                return meta::map_reduce<Directions, meta::array>{}([](auto direction) {
                         auto result = std::array<set_t<Board>, Board::bits()>{};
                         xstd::for_each(Board::squares, [&](auto const sq) {
-                                result[static_cast<std::size_t>(sq)] = Fill{}(make_iterator<Board, decltype(direction){}>(sq), Board::squares);
+                                result[static_cast<std::size_t>(sq)] = Scan{}(make_iterator<Board, decltype(direction){}>(sq), Board::squares);
                         });
                         return result;
                 });
@@ -228,19 +234,18 @@ public:
         }
 };
 
-template<class Board>
-using blocker_and_beyond = king_targets_dir_sq<Board, fill<true, true, true>>;
+template<class Rules, class Board>
+using blocker_and_beyond = board_scan_dir_sq<Board, scan<true, true, true>, king_jump_directions<Rules, 0>>;
 
 template<class Rules, class Board>
-class king_move_targets_diag
+class king_move_scan_diag
 {
         inline const static auto table = []() {
                 auto result = std::array<set_t<Board>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::map_reduce<king_move_directions, meta::bit_or>{}([=](auto direction) {
-                                        constexpr auto index = decltype(direction){} / 45;
-                                        return king_move_targets<Rules, Board>{}(sq, index);
+                                meta::map_reduce<king_move_directions<0>, meta::bit_or>{}([=](auto direction) {
+                                        return king_move_scan<Rules, Board>{}(sq, move_index(direction));
                                 });
                         ;
                 });
@@ -261,22 +266,21 @@ class king_moves
         template<int Direction>
         auto clear_blocker_and_beyond(int const sq, set_type const& occupied, set_type& targets) const
         {
-                constexpr auto index = Direction / 45;
-                if (auto const blockers = king_move_targets<Rules, Board>{}(sq, index) & occupied; !blockers.empty()) {
-                        targets ^= blocker_and_beyond<Board>{}(find_first<Direction>(blockers), index);
+                if (auto const blockers = king_move_scan<Rules, Board>{}(sq, move_index(Direction)) & occupied; !blockers.empty()) {
+                        targets ^= blocker_and_beyond<Rules, Board>{}(find_first<Direction>(blockers), jump_index<Rules>(Direction));
                 }
         }
 public:
         auto operator()(int const sq, set_type const& occupied) const
         {
                 if constexpr (is_long_ranged_king_v<Rules>) {
-                        auto targets = king_move_targets_diag<Rules, Board>{}(sq);
-                        meta::map_reduce<king_move_directions, meta::comma>{}([&, this](auto direction) {
+                        auto targets = king_move_scan_diag<Rules, Board>{}(sq);
+                        meta::map_reduce<king_move_directions<0>, meta::comma>{}([&, this](auto direction) {
                                 clear_blocker_and_beyond<decltype(direction){}>(sq, occupied, targets);
                         });
                         return targets;
                 } else {
-                        return king_move_targets_diag<Rules, Board>{}(sq) - occupied;
+                        return king_move_scan_diag<Rules, Board>{}(sq) - occupied;
                 }
         }
 
@@ -284,27 +288,23 @@ public:
         auto ahead(int const sq, set_type const& occupied) const
         {
                 if constexpr (is_long_ranged_king_v<Rules>) {
-                        constexpr auto index = Direction{} / 45;
-                        auto targets = king_move_targets<Rules, Board>{}(sq, index);
+                        auto targets = king_move_scan<Rules, Board>{}(sq, move_index(Direction{}));
                         clear_blocker_and_beyond<Direction{}>(sq, occupied, targets);
                         return targets;
                 }
         }
 };
 
-template<int Direction>
-constexpr auto index_v = Direction / 45;
-
 template<class Rules, class Board, int Direction>
 auto king_jump_target(iterator<Board, Direction> from, set_t<Board> const& targets)
 {
-        return king_jump_targets<Rules, Board>{}(*from, index_v<Direction>) & targets;
+        return king_jump_scan<Rules, Board>{}(*from, jump_index<Rules>(Direction)) & targets;
 }
 
 template<class Rules, class Board, int Direction>
 auto has_pawn_jump_target(iterator<Board, Direction> from, set_t<Board> const& targets)
 {
-        return !(pawn_jump_targets<Rules, Board>{}(*from, index_v<Direction>) & targets).empty();
+        return !(pawn_jump_scan<Rules, Board>{}(*from, jump_index<Rules>(Direction)) & targets).empty();
 }
 
 }       // namespace ray

@@ -16,46 +16,34 @@
 namespace dctl::core {
 namespace detail {
 
-//#define cj
-
 template<color Side, class DuplicatesPolicy, class Reverse>
 class actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>
 {
-        using to_move_ = color_<Side>;
-        using Jump = actions<to_move_, select::jump, DuplicatesPolicy, Reverse>;
-        using Push = actions<to_move_, select::push, DuplicatesPolicy, Reverse>;
-
+        using jumps = actions<color_<Side>, select::jump, DuplicatesPolicy, Reverse>;
+        using moves = actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>;
 public:
         template<class State>
         static auto detect(State const& s) noexcept
         {
-                return Push::detect(s) || Jump::detect(s);
+                return moves::detect(s) || jumps::detect(s);
         }
 
         template<class State>
         static auto count(State const& s)
         {
-                if (auto const num_jumps = Jump::count(s); !num_jumps) {
-                        return Push::count(s);
-                } else {
+                if (auto const num_jumps = jumps::count(s); num_jumps != 0) {
                         return num_jumps;
+                } else {
+                        return moves::count(s);
                 }
         }
 
         template<class State, class SequenceContainer>
         static auto generate(State const& s, SequenceContainer& seq)
         {
-#ifndef cj
-                if (Jump::generate(s, seq); seq.empty()) {
-                        Push::generate(s, seq);
+                if (jumps::generate(s, seq); seq.empty()) {
+                        moves::generate(s, seq);
                 }
-#else
-                if (Jump::detect(s)) {
-                        Jump::generate(s, seq);
-                } else {
-                        Push::generate(s, seq);
-                }
-#endif
         }
 };
 

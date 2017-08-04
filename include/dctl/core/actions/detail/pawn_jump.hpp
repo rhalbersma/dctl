@@ -36,19 +36,6 @@ class pawn_jump<color_<Side>, Reverse, State>
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
-        using pawn_jump_directions = std::conditional_t<
-                is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>,
-                std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>, left_down<orientation>, down<orientation>, right_down<orientation>>,
-                std::conditional_t<
-                        !is_backward_pawn_jump_v<rules_type> && is_orthogonal_jump_v<rules_type>,
-                        std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left_up<orientation>, left<orientation>>,
-                        std::conditional_t<
-                                is_backward_pawn_jump_v<rules_type> && !is_orthogonal_jump_v<rules_type>,
-                                std::tuple<right_up<orientation>, left_up<orientation>, left_down<orientation>, right_down<orientation>>,
-                                std::tuple<right_up<orientation>, left_up<orientation>>
-                        >
-                >
-        >;
 
         template<class Iterator>
         constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
@@ -56,7 +43,7 @@ public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        return meta::map_reduce<pawn_jump_directions, meta::logical_or>{}([&](auto direction) {
+                        return meta::map_reduce<pawn_jump_directions<rules_type, orientation>, meta::logical_or>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return !jump_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
                         });
@@ -69,7 +56,7 @@ public:
         {
                 if (auto const pawns = m_builder.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
-                        meta::map_reduce<pawn_jump_directions, meta::comma>{}([&](auto direction) {
+                        meta::map_reduce<pawn_jump_directions<rules_type, orientation>, meta::comma>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 jump_sources<board_type, Direction, short_ranged_tag>{}(pawns, m_builder.targets(), m_builder.pieces(empty_c)).consume([&](auto from_sq) {
                                         raii::launch<Builder> guard{m_builder, from_sq};
@@ -143,25 +130,12 @@ private:
         static auto turn(Iterator jumper, Builder& m_builder)
         {
                 if constexpr (is_backward_pawn_jump_v<rules_type>) {
-                        using rotation_angles = std::conditional_t<
-                                is_orthogonal_jump_v<rules_type>,
-                                meta::tuple_c<-135, -90, -45, +45, +90, +135>,
-                                meta::tuple_c<-90, +90>
-                        >;
-                        return meta::map_reduce<rotation_angles, meta::bit_or>{}([&](auto direction) {
+                        return meta::map_reduce<jump_rotations<rules_type>, meta::bit_or>{}([&](auto direction) {
                                 return scan(ray::rotate<decltype(direction){}>(jumper), m_builder);
                         });
                 } else if constexpr (is_orthogonal_jump_v<rules_type>) {
                         static_assert(!is_down(direction_v<Iterator>));
-                        using turn_directions = meta::switch_<
-                                meta::int_c<direction_v<Iterator>>,
-                                meta::case_<   right<orientation>, std::tuple<right_up<orientation>, up<orientation>, left_up<orientation>>>,
-                                meta::case_<right_up<orientation>, std::tuple<right<orientation>, up<orientation>, left_up<orientation>, left<orientation>>>,
-                                meta::case_<      up<orientation>, std::tuple<right<orientation>, right_up<orientation>, left_up<orientation>, left<orientation>>>,
-                                meta::case_< left_up<orientation>, std::tuple<right<orientation>, right_up<orientation>, up<orientation>, left<orientation>>>,
-                                meta::case_<    left<orientation>, std::tuple<right_up<orientation>, up<orientation>, left_up<orientation>>>
-                        >;
-                        return meta::map_reduce<turn_directions, meta::bit_or>{}([&](auto direction) {
+                        return meta::map_reduce<pawn_jump_turns<direction_v<Iterator>, orientation>, meta::bit_or>{}([&](auto direction) {
                                 return scan(ray::turn<decltype(direction){}>(jumper), m_builder);
                         });
                 } else {

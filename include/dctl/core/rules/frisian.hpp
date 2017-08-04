@@ -23,7 +23,7 @@ struct frisian
         constexpr static auto is_long_ranged_king       = true;
 
         constexpr static auto is_orthogonal_jump        = true;
-        constexpr static auto max_same_king_push        = 3;
+        constexpr static auto max_same_king_move        = 3;
 
         constexpr static auto is_quantity_precedence    = true;
         constexpr static auto is_contents_precedence    = true;

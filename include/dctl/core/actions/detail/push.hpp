@@ -5,11 +5,11 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/king_push.hpp>       // king_push
-#include <dctl/core/actions/detail/pawn_push.hpp>       // pawn_push
+#include <dctl/core/actions/detail/king_move.hpp>       // king_move
+#include <dctl/core/actions/detail/pawn_move.hpp>       // pawn_move
 #include <dctl/core/actions/detail/primary_fwd.hpp>     // actions (primary template)
 #include <dctl/core/actions/select/push.hpp>            // push
-#include <dctl/core/state/color_piece.hpp>              // color, color_, kings_, pawn_
+#include <dctl/core/state/color_piece.hpp>              // color_
 
 namespace dctl::core {
 namespace detail {
@@ -17,27 +17,26 @@ namespace detail {
 template<color Side, class DuplicatesPolicy, class Reverse>
 class actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>
 {
-        using to_move_ = color_<Side>;
-        template<class State> using king_push = detail::king_push<to_move_, Reverse, State>;
-        template<class State> using pawn_push = detail::pawn_push<to_move_, Reverse, State>;
+        template<class State> using king_move = detail::king_move<color_<Side>, Reverse, State>;
+        template<class State> using pawn_move = detail::pawn_move<color_<Side>, Reverse, State>;
 public:
         template<class State>
         static auto detect(State const& s) noexcept
         {
-                return pawn_push<State>::detect(s) || king_push<State>::detect(s);
+                return pawn_move<State>::detect(s) || king_move<State>::detect(s);
         }
 
         template<class State>
         static auto count(State const& s) noexcept
         {
-                return king_push<State>::count(s) + pawn_push<State>::count(s);
+                return king_move<State>::count(s) + pawn_move<State>::count(s);
         }
 
         template<class State, class SequenceContainer>
         static auto generate(State const& s, SequenceContainer& seq)
         {
-                king_push<State>::generate(s, seq);
-                pawn_push<State>::generate(s, seq);
+                king_move<State>::generate(s, seq);
+                pawn_move<State>::generate(s, seq);
         }
 };
 
