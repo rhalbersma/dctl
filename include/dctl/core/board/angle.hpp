@@ -173,14 +173,14 @@ template<int N> using angle_holder = std::integral_constant<int, angle{N}.value(
 
 }       // namespace detail
 
-template<int N> using right      = detail::angle_holder<N +   0>;
-template<int N> using right_up   = detail::angle_holder<N +  45>;
-template<int N> using up         = detail::angle_holder<N +  90>;
-template<int N> using left_up    = detail::angle_holder<N + 135>;
-template<int N> using left       = detail::angle_holder<N + 180>;
-template<int N> using left_down  = detail::angle_holder<N + 225>;
-template<int N> using down       = detail::angle_holder<N + 270>;
-template<int N> using right_down = detail::angle_holder<N + 315>;
+template<int N> using dir_E  = detail::angle_holder<N +   0>;
+template<int N> using dir_NE = detail::angle_holder<N +  45>;
+template<int N> using dir_N  = detail::angle_holder<N +  90>;
+template<int N> using dir_NW = detail::angle_holder<N + 135>;
+template<int N> using dir_W  = detail::angle_holder<N + 180>;
+template<int N> using dir_SW = detail::angle_holder<N + 225>;
+template<int N> using dir_S  = detail::angle_holder<N + 270>;
+template<int N> using dir_SE = detail::angle_holder<N + 315>;
 
 constexpr auto is_orthogonal(angle const a) noexcept
 {

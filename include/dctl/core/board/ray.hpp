@@ -176,7 +176,7 @@ constexpr auto move_index(int direction) noexcept
 }
 
 template<class Rules>
-constexpr jump_index(int direction) noexcept
+constexpr auto jump_index(int direction) noexcept
 {
         if constexpr (is_orthogonal_jump_v<Rules>) {
                 return direction / 45;
@@ -189,7 +189,7 @@ template<class Board, class Scan, class Directions>
 class board_scan_sq_dir
 {
         inline const static auto table = []() {
-                auto result = std::array<std::array<set_t<Board>, meta::size<Directions>>, Board::bits()>{};
+                auto result = std::array<std::array<set_t<Board>, meta::size_v<Directions>>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::map_reduce<Directions, meta::array>{}([=](auto direction) {

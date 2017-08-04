@@ -140,7 +140,7 @@ private:
                         });
                 } else {
                         static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                        return scan(ray::mirror<up<orientation>{}>(jumper), m_builder);
+                        return scan(ray::mirror<angle{dir_N<0>{} + orientation}.value()>(jumper), m_builder);
                 }
         }
 

@@ -25,10 +25,31 @@ template<auto... Ns>
 using list_c = list<int_c<Ns>...>;
 
 template<class List>
-constexpr int size;
+constexpr int size_v;
 
 template<class... Elements>
-constexpr int size<list<Elements...>> = sizeof...(Elements);
+constexpr int size_v<list<Elements...>> = sizeof...(Elements);
+
+template<class MetaFunctionClass, class... Args>
+struct apply
+:
+        MetaFunctionClass::template apply<Args...>
+{};
+
+template<class MetaFunctionClass, class... Args>
+using apply_t = typename apply<MetaFunctionClass, Args...>::type;
+
+template<class List, class MetaFunctionClass>
+struct transform;
+
+template<class List, class MetaFunctionClass>
+using transform_t = typename transform<List, MetaFunctionClass>::type;
+
+template<template<class...> class List, class... Elements, class MetaFunctionClass>
+struct transform<List<Elements...>, MetaFunctionClass>
+:
+        List<apply_t<MetaFunctionClass, Elements>...>
+{};
 
 template<class List, class Reduce>
 struct map_reduce;
