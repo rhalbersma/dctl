@@ -80,7 +80,7 @@ before_script:
 script: 
 - |
   make -j2
-  ctest -E "search|traversal"
+  ctest -E "search"
 
 after_success:
 - |
