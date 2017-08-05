@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>            // angle
 #include <dctl/core/board/shift.hpp>            // first, shift_sign, shift_size
-#include <dctl/util/meta.hpp>                   // array, bit_or, comma, map_reduce, tuple_c
+#include <dctl/util/meta.hpp>                   // make_array, foldl_bit_or, foldl_comma
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/int_set.hpp>
 #include <boost/iterator/counting_iterator.hpp> // counting_iterator
@@ -124,7 +124,7 @@ template<int Theta, class Board, int Direction>
 auto turn(iterator<Board, Direction> it)
         -> iterator<Board, Theta>
 {
-        static_assert(Theta != Direction);
+        //static_assert(Theta != Direction);
         return { it.base() };
 }
 
@@ -192,7 +192,7 @@ class board_scan_sq_dir
                 auto result = std::array<std::array<set_t<Board>, meta::size_v<Directions>>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::map_reduce<Directions, meta::array>{}([=](auto direction) {
+                                meta::make_array<Directions>{}([=](auto direction) {
                                         return Scan{}(make_iterator<Board, decltype(direction){}>(sq), Board::squares);
                                 });
                         ;
@@ -219,7 +219,7 @@ template<class Board, class Scan, class Directions>
 class board_scan_dir_sq
 {
         inline const static auto table = []() {
-                return meta::map_reduce<Directions, meta::array>{}([](auto direction) {
+                return meta::make_array<Directions>{}([](auto direction) {
                         auto result = std::array<set_t<Board>, Board::bits()>{};
                         xstd::for_each(Board::squares, [&](auto const sq) {
                                 result[static_cast<std::size_t>(sq)] = Scan{}(make_iterator<Board, decltype(direction){}>(sq), Board::squares);
@@ -244,7 +244,7 @@ class king_move_scan_diag
                 auto result = std::array<set_t<Board>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::map_reduce<king_move_directions<0>, meta::bit_or>{}([=](auto direction) {
+                                meta::foldl_bit_or<king_move_directions<0>>{}([=](auto direction) {
                                         return king_move_scan<Rules, Board>{}(sq, move_index(direction));
                                 });
                         ;
@@ -275,7 +275,7 @@ public:
         {
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         auto targets = king_move_scan_diag<Rules, Board>{}(sq);
-                        meta::map_reduce<king_move_directions<0>, meta::comma>{}([&, this](auto direction) {
+                        meta::foldl_comma<king_move_directions<0>>{}([&, this](auto direction) {
                                 clear_blocker_and_beyond<decltype(direction){}>(sq, occupied, targets);
                         });
                         return targets;

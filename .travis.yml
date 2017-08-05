@@ -81,7 +81,7 @@ script:
 - |
   make -j2
   ctest -E "search|traversal"
-  travis_wait 30 ctest -R "traversal"
+  travis_wait 50 ctest -R "traversal"
 
 after_success:
 - |

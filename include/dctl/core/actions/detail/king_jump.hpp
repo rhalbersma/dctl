@@ -15,7 +15,7 @@
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
-#include <dctl/util/meta.hpp>                   // map_reduce, comma, bit_or
+#include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_comma, foldl_bit_or
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
 #include <cassert>                              // assert
 #include <iterator>                             // prev
@@ -43,7 +43,7 @@ public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                        return meta::map_reduce<king_jump_directions<rules_type, orientation>, meta::logical_or>{}([&](auto direction) {
+                        return meta::foldl_logical_or<king_jump_directions<rules_type, orientation>>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return !jump_targets<board_type, Direction, king_range_category_t<rules_type>>{}(kings, s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).empty();
                         });
@@ -57,7 +57,7 @@ public:
                 raii::set_king_jump<Builder> g1{m_builder};
                 m_builder.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
                         raii::launch<Builder> g2{m_builder, from_sq};
-                        meta::map_reduce<king_jump_directions<rules_type, orientation>, meta::comma>{}([&](auto direction) {
+                        meta::foldl_comma<king_jump_directions<rules_type, orientation>>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
                                         auto const jumper = ray::make_iterator<board_type, Direction>(from_sq);
@@ -82,7 +82,9 @@ public:
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(m_builder.with() == piece::pawns);
                 assert(m_builder.into() == piece::kings);
-                land(jumper, m_builder);
+                if (!next_target(jumper, m_builder)) {
+                        halt(jumper, m_builder);
+                }
         }
 private:
         template<class Iterator, class Builder>
@@ -91,13 +93,7 @@ private:
         {
                 assert(is_onboard(jumper));
                 raii::capture<Builder> guard{m_builder, *jumper};
-                land(std::next(jumper), m_builder);
-        }
-
-        template<class Iterator, class Builder>
-        static auto land(Iterator jumper, Builder& m_builder)
-        {
-                assert(is_onboard(jumper));
+                ++jumper;
                 if (!next_target(jumper, m_builder)) {
                         halt(jumper, m_builder);
                 }
@@ -177,7 +173,7 @@ private:
         template<class Iterator, class Builder>
         static auto turn(Iterator jumper, Builder& m_builder)
         {
-                return meta::map_reduce<jump_rotations<rules_type>, meta::bit_or>{}([&](auto direction) {
+                return meta::foldl_bit_or<jump_rotations<rules_type>>{}([&](auto direction) {
                         return scan(ray::rotate<decltype(direction){}>(jumper), m_builder);
                 });
         }

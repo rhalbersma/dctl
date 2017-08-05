@@ -39,81 +39,52 @@ struct apply
 template<class MetaFunctionClass, class... Args>
 using apply_t = typename apply<MetaFunctionClass, Args...>::type;
 
-template<class List, class MetaFunctionClass>
-struct transform;
+template<class... Lists> struct append;
 
-template<class List, class MetaFunctionClass>
-using transform_t = typename transform<List, MetaFunctionClass>::type;
+template<class... Lists>
+using append_t = typename append<Lists...>::type;
 
-template<template<class...> class List, class... Elements, class MetaFunctionClass>
-struct transform<List<Elements...>, MetaFunctionClass>
+template<>
+struct append<>
 :
-        List<apply_t<MetaFunctionClass, Elements>...>
+        list<>
 {};
 
-template<class List, class Reduce>
-struct map_reduce;
-
-struct array;
-
 template<template<class...> class List, class... Elements>
-struct map_reduce<List<Elements...>, array>
-{
-        template<class UnaryFunction>
-        auto operator()(UnaryFunction map) const
-        {
-                return std::experimental::make_array(map(Elements{})...);
-        }
-};
+struct append<List<Elements...>>
+:
+        List<Elements...>
+{};
 
-struct comma;
+template<template<class...> class List, class... Elements1, class... Elements2, class... RemainingLists>
+struct append<List<Elements1...>, List<Elements2...>, RemainingLists...>
+:
+        append<List<Elements1..., Elements2...>, RemainingLists...>
+{};
 
-template<template<class...> class List, class... Elements>
-struct map_reduce<List<Elements...>, comma>
-{
-        template<class UnaryFunction>
-        auto operator()(UnaryFunction map) const
-        {
-                (... , map(Elements{}));
-        }
-};
+template<class List, class Pred>
+struct remove_if;
 
-template<template<class...> class List, class... Elements, class Reduce>
-struct map_reduce<List<Elements...>, Reduce>
-{
-        template<class UnaryFunction>
-        auto operator()(UnaryFunction map) const
-        {
-                return Reduce{}(map(Elements{})...);
-        }
-};
+template<class List, class Pred>
+using remove_if_t = typename remove_if<List, Pred>::type;
 
-struct plus
-{
-        template<class... Args>
-        auto operator()(Args&&... args) const
-        {
-                return (... + std::forward<Args>(args));
-        }
-};
+template<template<class...> class List, class... Elements, class Pred>
+struct remove_if<List<Elements...>, Pred>
+:
+        append<std::conditional_t<apply_t<Pred, Elements>{}, List<>, List<Elements>>...>
+{};
 
-struct logical_or
-{
-        template<class... Args>
-        auto operator()(Args&&... args) const
-        {
-                return (... || std::forward<Args>(args));
-        }
-};
+template<class List, class Op>
+struct transform;
 
-struct bit_or
-{
-        template<class... Args>
-        auto operator()(Args&&... args) const
-        {
-                return (... | std::forward<Args>(args));
-        }
-};
+template<class List, class Op>
+using transform_t = typename transform<List, Op>::type;
+
+template<template<class...> class List, class... Elements, class Op>
+struct transform<List<Elements...>, Op>
+:
+        List<apply_t<Op, Elements>...>
+{};
 
 template<class T, class... Cases>
 struct switch_;
@@ -148,6 +119,71 @@ struct switch_<T>
 :
         std::enable_if<true, nonematch>
 {};
+
+template<class List>
+struct foldl_logical_or;
+
+template<template<class...> class List, class... Elements>
+struct foldl_logical_or<List<Elements...>>
+{
+        template<class UnaryFunction>
+        auto operator()(UnaryFunction fun) const
+        {
+                return (... || fun(Elements{}));
+        }
+};
+
+template<class List>
+struct foldl_plus;
+
+template<template<class...> class List, class... Elements>
+struct foldl_plus<List<Elements...>>
+{
+        template<class UnaryFunction>
+        auto operator()(UnaryFunction fun) const
+        {
+                return (... + fun(Elements{}));
+        }
+};
+
+template<class List>
+struct foldl_comma;
+
+template<template<class...> class List, class... Elements>
+struct foldl_comma<List<Elements...>>
+{
+        template<class UnaryFunction>
+        auto operator()(UnaryFunction fun) const
+        {
+                (... , fun(Elements{}));
+        }
+};
+
+template<class List>
+struct foldl_bit_or;
+
+template<template<class...> class List, class... Elements>
+struct foldl_bit_or<List<Elements...>>
+{
+        template<class UnaryFunction>
+        auto operator()(UnaryFunction fun) const
+        {
+                return (... | fun(Elements{}));
+        }
+};
+
+template<class List>
+struct make_array;
+
+template<template<class...> class List, class... Elements>
+struct make_array<List<Elements...>>
+{
+        template<class UnaryFunction>
+        auto operator()(UnaryFunction fun) const
+        {
+                return std::experimental::make_array(fun(Elements{})...);
+        }
+};
 
 }       // namespace meta
 }       // namespace dctl::core

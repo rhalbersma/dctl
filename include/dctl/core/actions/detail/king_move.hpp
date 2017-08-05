@@ -11,7 +11,7 @@
 #include <dctl/core/board/push_targets.hpp>     // push_targets
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_t
-#include <dctl/util/meta.hpp>                   // map_reduce, comma, plus, logical_or
+#include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t, set_t, value_t
 #include <iterator>                             // prev
 
@@ -31,7 +31,7 @@ public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                        return meta::map_reduce<king_move_directions<orientation>, meta::logical_or>{}([&](auto direction) {
+                        return meta::foldl_logical_or<king_move_directions<orientation>>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return !push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
                                         .empty()
@@ -53,7 +53,7 @@ public:
                         return result;
                 } else {
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                                return meta::map_reduce<king_move_directions<orientation>, meta::plus>{}([&](auto direction) {
+                                return meta::foldl_plus<king_move_directions<orientation>>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
                                         return push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
                                                 .count()
@@ -77,7 +77,7 @@ public:
                         });
                 } else {
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                                meta::map_reduce<king_move_directions<orientation>, meta::comma>{}([&](auto direction) {
+                                meta::foldl_comma<king_move_directions<orientation>>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
                                         push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
                                                 .consume([&](auto dest_sq) {

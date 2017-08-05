@@ -224,6 +224,22 @@ using pawn_jump_directions = meta::transform_t<
         rotated<orientation>
 >;
 
+template<int Direction>
+struct is_reverse
+{
+        template<class Arg>
+        struct apply
+        :
+                std::conditional_t<(Arg{} == angle{Direction + 180}.value()), std::true_type, std::false_type>
+        {};
+};
+
+template<class Rules, int Direction, int orientation>
+using pawn_scan_turns = meta::remove_if_t<
+        pawn_jump_directions<Rules, orientation>,
+        is_reverse<Direction>
+>;
+
 template<int Direction, int orientation>
 using pawn_jump_turns = meta::transform_t<
         meta::switch_t<
