@@ -40,27 +40,4 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsFour, T, VariantsFour)
         static_assert(initial_position_gap_v<T> == 4);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(Jump, T, VariantsTwo)
-{
-        constexpr auto Or = bearing_v<board<T>, black_, std::false_type>;
-        std::cout << "-------------------------\n";
-        std::cout << "orientation = " << Or << "\n";
-        std::cout << "J:      ";
-        using pjd = pawn_jump_directions<T, Or>;
-
-        meta::foldl_comma<pjd>{}([](auto dir) {
-                std::cout << std::setw(3) << decltype(dir){} << ", ";
-        });
-        std::cout << "\n";
-
-        meta::foldl_comma<pjd>{}([&](auto dir) {
-                std::cout << "S: " << std::setw(3) << decltype(dir){} << ": ";
-                using pst = pawn_scan_turns<T, Or, decltype(dir){}>;
-                meta::foldl_comma<pst>{}([&](auto jum) {
-                        std::cout << std::setw(3) << decltype(jum){} << ", ";
-                });
-                std::cout << "\n";
-        });
-}
-
 BOOST_AUTO_TEST_SUITE_END()

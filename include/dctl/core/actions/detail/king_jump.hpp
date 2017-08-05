@@ -35,12 +35,32 @@ class king_jump<color_<Side>, Reverse, State>
         using   set_type =   set_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
+        template<class Direction>
+        using rot = meta::integral_c<int, rotate(angle{Direction::value}, angle{orientation}).value()>;
+
+        using king_jump_directions = meta::transform<rot, basic_king_jump_directions<rules_type>>;
+
+        template<class Direction, class Iterator>
+        using is_forward = std::bool_constant<Direction::value == ray::direction_v<Iterator>.value()>;
+
+        template<class Direction, class Iterator>
+        using is_reverse = std::bool_constant<Direction::value == rotate_v<ray::direction_v<Iterator>.value(), 180>>;
+
+        template<class Direction, class Iterator>
+        using is_forward_or_reverse = std::disjunction<is_forward<Direction, Iterator>, is_reverse<Direction, Iterator>>;
+
+        template<class Iterator>
+        using king_turn_directions = meta::remove_if_q<
+                king_jump_directions,
+                meta::bind_back<is_forward_or_reverse, Iterator>
+        >;
+
         constexpr static auto GCC7_ICE_WORKAROUND_is_long_ranged_king = is_long_ranged_king_v<rules_type>;
 public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                        return meta::foldl_logical_or<king_jump_directions<rules_type, orientation>>{}([&](auto direction) {
+                        return meta::foldl_logical_or<king_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return !jump_targets<board_type, Direction, king_range_category_t<rules_type>>{}(kings, s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).empty();
                         });
@@ -54,7 +74,7 @@ public:
                 raii::set_king_jump<Builder> g1{m_builder};
                 m_builder.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
                         raii::launch<Builder> g2{m_builder, from_sq};
-                        meta::foldl_comma<king_jump_directions<rules_type, orientation>>{}([&](auto direction) {
+                        meta::foldl_comma<king_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
                                         auto const jumper = ray::make_iterator<board_type, Direction>(from_sq);
@@ -128,7 +148,6 @@ private:
         template<class Iterator, class Builder>
         static auto next_target(Iterator jumper, Builder& m_builder)
         {
-                //raii::Visit<Builder> guard{m_builder, *jumper};
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
                         return scan_turn(jumper, m_builder) | reverse(jumper, m_builder);
                 } else {
@@ -170,11 +189,7 @@ private:
         template<class Iterator, class Builder>
         static auto turn(Iterator jumper, Builder& m_builder)
         {
-                return meta::foldl_bit_or<king_jump_directions<rules_type, orientation>>{}([&](auto direction) {
-                        if constexpr (
-                                decltype(direction){} == ray::direction_v<Iterator>.value() ||
-                                decltype(direction){} == rotate_v<ray::direction_v<Iterator>.value(), 180>
-                        ) { return false; }
+                return meta::foldl_bit_or<king_turn_directions<Iterator>>{}([&](auto direction) {
                         return scan(ray::turn<decltype(direction){}>(jumper), m_builder);
                 });
         }

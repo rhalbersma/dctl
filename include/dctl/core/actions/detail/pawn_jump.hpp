@@ -36,11 +36,25 @@ class pawn_jump<color_<Side>, Reverse, State>
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
+
+        template<class Direction>
+        using rot = meta::integral_c<int, rotate(angle{Direction::value}, angle{orientation}).value()>;
+
+        using pawn_jump_directions = meta::transform<rot, basic_pawn_jump_directions<rules_type>>;
+
+        template<class Direction, class Iterator>
+        using is_reverse = std::bool_constant<Direction::value == rotate_v<ray::direction_v<Iterator>.value(), 180>>;
+
+        template<class Iterator>
+        using pawn_scan_directions = meta::remove_if_q<
+                pawn_jump_directions,
+                meta::bind_back<is_reverse, Iterator>
+        >;
 public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        return meta::foldl_logical_or<pawn_jump_directions<rules_type, orientation>>{}([&](auto direction) {
+                        return meta::foldl_logical_or<pawn_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return !jump_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
                         });
@@ -53,7 +67,7 @@ public:
         {
                 if (auto const pawns = m_builder.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
-                        meta::foldl_comma<pawn_jump_directions<rules_type, orientation>>{}([&](auto direction) {
+                        meta::foldl_comma<pawn_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 jump_sources<board_type, Direction, short_ranged_tag>{}(pawns, m_builder.targets(), m_builder.pieces(empty_c)).consume([&](auto from_sq) {
                                         raii::launch<Builder> guard{m_builder, from_sq};
@@ -114,11 +128,7 @@ private:
         template<class Iterator, class Builder>
         static auto next_target(Iterator jumper, Builder& m_builder)
         {
-                //raii::Visit<Builder> guard{builder, *jumper};
-                return meta::foldl_bit_or<pawn_jump_directions<rules_type, orientation>>{}([&](auto direction) {
-                        if constexpr (
-                                decltype(direction){} == rotate_v<ray::direction_v<Iterator>.value(), 180>
-                        ) { return false; }
+                return meta::foldl_bit_or<pawn_scan_directions<Iterator>>{}([&](auto direction) {
                         auto const turner = ray::turn<decltype(direction){}>(jumper);
                         if (m_builder.has_pawn_target(turner)) {
                                 capture(std::next(turner), m_builder);

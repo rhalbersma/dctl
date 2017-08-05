@@ -189,7 +189,7 @@ template<class Board, class Scan, class Directions>
 class board_scan_sq_dir
 {
         inline const static auto table = []() {
-                auto result = std::array<std::array<set_t<Board>, meta::size_v<Directions>>, Board::bits()>{};
+                auto result = std::array<std::array<set_t<Board>, meta::size<Directions>::value>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::make_array<Directions>{}([=](auto direction) {
@@ -207,13 +207,13 @@ public:
 };
 
 template<class Rules, class Board>
-using king_move_scan = board_scan_sq_dir<Board, scan<is_long_ranged_king_v<Rules>, false, true>, king_move_directions<0>>;
+using king_move_scan = board_scan_sq_dir<Board, scan<is_long_ranged_king_v<Rules>, false, true>, basic_king_move_directions>;
 
 template<class Rules, class Board>
-using king_jump_scan = board_scan_sq_dir<Board, scan<is_long_ranged_king_v<Rules>, false, false>, king_jump_directions<Rules, 0>>;
+using king_jump_scan = board_scan_sq_dir<Board, scan<is_long_ranged_king_v<Rules>, false, false>, basic_king_jump_directions<Rules>>;
 
 template<class Rules, class Board>
-using pawn_jump_scan = board_scan_sq_dir<Board, scan<false, false, false>, king_jump_directions<Rules, 0>>;
+using pawn_jump_scan = board_scan_sq_dir<Board, scan<false, false, false>, basic_king_jump_directions<Rules>>;
 
 template<class Board, class Scan, class Directions>
 class board_scan_dir_sq
@@ -235,7 +235,7 @@ public:
 };
 
 template<class Rules, class Board>
-using blocker_and_beyond = board_scan_dir_sq<Board, scan<true, true, true>, king_jump_directions<Rules, 0>>;
+using blocker_and_beyond = board_scan_dir_sq<Board, scan<true, true, true>, basic_king_jump_directions<Rules>>;
 
 template<class Rules, class Board>
 class king_move_scan_diag
@@ -244,7 +244,7 @@ class king_move_scan_diag
                 auto result = std::array<set_t<Board>, Board::bits()>{};
                 xstd::for_each(Board::squares, [&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::foldl_bit_or<king_move_directions<0>>{}([=](auto direction) {
+                                meta::foldl_bit_or<basic_king_move_directions>{}([=](auto direction) {
                                         return king_move_scan<Rules, Board>{}(sq, move_index(direction));
                                 });
                         ;
@@ -275,7 +275,7 @@ public:
         {
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         auto targets = king_move_scan_diag<Rules, Board>{}(sq);
-                        meta::foldl_comma<king_move_directions<0>>{}([&, this](auto direction) {
+                        meta::foldl_comma<basic_king_move_directions>{}([&, this](auto direction) {
                                 clear_blocker_and_beyond<decltype(direction){}>(sq, occupied, targets);
                         });
                         return targets;

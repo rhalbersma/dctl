@@ -27,11 +27,16 @@ class king_move<color_<Side>, Reverse, State>
         using rules_type = rules_t<State>;
         using board_type = board_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
+
+        template<class Direction>
+        using rot = meta::integral_c<int, rotate(angle{Direction::value}, angle{orientation}).value()>;
+
+        using king_move_directions = meta::transform<rot, basic_king_move_directions>;
 public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                        return meta::foldl_logical_or<king_move_directions<orientation>>{}([&](auto direction) {
+                        return meta::foldl_logical_or<king_move_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 return !push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
                                         .empty()
@@ -53,7 +58,7 @@ public:
                         return result;
                 } else {
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                                return meta::foldl_plus<king_move_directions<orientation>>{}([&](auto direction) {
+                                return meta::foldl_plus<king_move_directions>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
                                         return push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
                                                 .count()
@@ -77,7 +82,7 @@ public:
                         });
                 } else {
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                                meta::foldl_comma<king_move_directions<orientation>>{}([&](auto direction) {
+                                meta::foldl_comma<king_move_directions>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
                                         push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
                                                 .consume([&](auto dest_sq) {

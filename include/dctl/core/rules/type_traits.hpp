@@ -190,67 +190,36 @@ constexpr auto notation_v =
         notation::numeric
 ;
 
-template<int orientation>
+template<int A, int B>
+constexpr auto rotate_v = rotate(angle{A}, angle{B}).value();
+
+template<int Orientation>
 struct rotated
 {
         template<class Arg>
         struct apply
         :
-                meta::integral_c<int, angle{orientation + Arg{}}.value()>
+                meta::integral_c<int, rotate_v<Orientation, Arg{}>>
         {};
 };
 
-template<int orientation>
-using pawn_move_directions = meta::transform_t<
-        meta::list_c<int, dir_NE, dir_NW>,
-        rotated<orientation>
+using basic_pawn_move_directions = meta::list_c<int, dir_NE, dir_NW>;
+using basic_king_move_directions = meta::list_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
+
+template<class Rules>
+using basic_pawn_jump_directions = meta::switch_<
+        meta::list_c<bool, is_backward_pawn_jump_v<Rules>, is_orthogonal_jump_v<Rules>>,
+        meta::case_<meta::list_c<bool, true , true >, meta::list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>>,
+        meta::case_<meta::list_c<bool, false, true >, meta::list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W                       >>,
+        meta::case_<meta::list_c<bool, true , false>, meta::list_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>>,
+        meta::case_<meta::list_c<bool, false, false>, meta::list_c<int,        dir_NE,        dir_NW                              >>
 >;
 
-template<int orientation>
-using king_move_directions = meta::transform_t<
-        meta::list_c<int, dir_NE, dir_NW, dir_SW, dir_SE>,
-        rotated<orientation>
->;
-
-template<class Rules, int orientation>
-using pawn_jump_directions = meta::transform_t<
-        meta::switch_t<
-                meta::list_c<bool, is_backward_pawn_jump_v<Rules>, is_orthogonal_jump_v<Rules>>,
-                meta::case_<meta::list_c<bool, true , true >, meta::list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>>,
-                meta::case_<meta::list_c<bool, false, true >, meta::list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W                       >>,
-                meta::case_<meta::list_c<bool, true , false>, meta::list_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>>,
-                meta::case_<meta::list_c<bool, false, false>, meta::list_c<int,        dir_NE,        dir_NW                              >>
-        >,
-        rotated<orientation>
->;
-
-template<class Rules, int orientation>
-using king_jump_directions = meta::transform_t<
-        std::conditional_t<
-                is_orthogonal_jump_v<Rules>,
-                meta::list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>,
-                meta::list_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>
-        >,
-        rotated<orientation>
->;
-
-template<int A, int B>
-constexpr auto rotate_v = rotate(angle{A}, angle{B}).value();
-
-template<int Direction>
-struct is_reverse
-{
-        template<class Arg>
-        struct apply
-        :
-                std::conditional_t<(Arg::value == rotate_v<Direction, 180>), std::true_type, std::false_type>
-        {};
-};
-
-template<class Rules, int orientation, int Direction>
-using pawn_scan_turns = meta::remove_t<
-        pawn_jump_directions<Rules, orientation>,
-        meta::integral_c<int, angle{Direction + 180}.value()>
+template<class Rules>
+using basic_king_jump_directions = std::conditional_t<
+        is_orthogonal_jump_v<Rules>,
+        meta::list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>,
+        meta::list_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>
 >;
 
 }       // namespace dctl::core
