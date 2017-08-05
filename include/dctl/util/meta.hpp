@@ -70,13 +70,13 @@ struct switch_impl<T>
         using type = nonematch;
 };
 
-template<template<class> class F, class L>
+template<template<class...> class F, class L>
 struct transform_impl;
 
-template<template<class> class F, class L>
+template<template<class...> class F, class L>
 using transform = typename transform_impl<F, L>::type;
 
-template<template<class> class F, template<class...> class L, class... T>
+template<template<class...> class F, template<class...> class L, class... T>
 struct transform_impl<F, L<T...>>
 {
         using type = L<F<T>...>;
@@ -100,16 +100,16 @@ struct append_impl<L<T1...>, L<T2...>, Lr...>
         using type = append<L<T1..., T2...>, Lr...>;
 };
 
-template<class L, template<class> class P>
+template<class L, template<class...> class P>
 struct remove_if_impl;
 
-template<class L, template<class> class P>
+template<class L, template<class...> class P>
 using remove_if = typename remove_if_impl<L, P>::type;
 
 template<class L, class Q>
 using remove_if_q = remove_if<L, Q::template fn>;
 
-template<template<class...> class L, class... T, template<class> class P>
+template<template<class...> class L, class... T, template<class...> class P>
 struct remove_if_impl<L<T...>, P>
 {
         using type = append<L<>, if_<P<T>, L<>, L<T>>...>;
@@ -125,68 +125,68 @@ public:
         using fn = typename fn_impl<U...>::type;
 };
 
-template<class List>
+template<class L>
 struct foldl_logical_or;
 
-template<template<class...> class List, class... Elements>
-struct foldl_logical_or<List<Elements...>>
+template<template<class...> class L, class... T>
+struct foldl_logical_or<L<T...>>
 {
         template<class UnaryFunction>
         constexpr auto operator()(UnaryFunction fun) const
         {
-                return (... || fun(Elements{}));
+                return (... || fun(T{}));
         }
 };
 
-template<class List>
+template<class L>
 struct foldl_plus;
 
-template<template<class...> class List, class... Elements>
-struct foldl_plus<List<Elements...>>
+template<template<class...> class L, class... T>
+struct foldl_plus<L<T...>>
 {
         template<class UnaryFunction>
         constexpr auto operator()(UnaryFunction fun) const
         {
-                return (... + fun(Elements{}));
+                return (... + fun(T{}));
         }
 };
 
-template<class List>
+template<class L>
 struct foldl_comma;
 
-template<template<class...> class List, class... Elements>
-struct foldl_comma<List<Elements...>>
+template<template<class...> class L, class... T>
+struct foldl_comma<L<T...>>
 {
         template<class UnaryFunction>
         constexpr auto operator()(UnaryFunction fun) const
         {
-                (... , fun(Elements{}));
+                (... , fun(T{}));
         }
 };
 
-template<class List>
+template<class L>
 struct foldl_bit_or;
 
-template<template<class...> class List, class... Elements>
-struct foldl_bit_or<List<Elements...>>
+template<template<class...> class L, class... T>
+struct foldl_bit_or<L<T...>>
 {
         template<class UnaryFunction>
         constexpr auto operator()(UnaryFunction fun) const
         {
-                return (... | fun(Elements{}));
+                return (... | fun(T{}));
         }
 };
 
-template<class List>
+template<class L>
 struct make_array;
 
-template<template<class...> class List, class... Elements>
-struct make_array<List<Elements...>>
+template<template<class...> class L, class... T>
+struct make_array<L<T...>>
 {
         template<class UnaryFunction>
         constexpr auto operator()(UnaryFunction fun) const
         {
-                return std::experimental::make_array(fun(Elements{})...);
+                return std::experimental::make_array(fun(T{})...);
         }
 };
 
