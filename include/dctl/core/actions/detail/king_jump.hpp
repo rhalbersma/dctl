@@ -35,9 +35,6 @@ class king_jump<color_<Side>, Reverse, State>
         using   set_type =   set_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
-        template<class Iterator>
-        constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
-
         constexpr static auto GCC7_ICE_WORKAROUND_is_long_ranged_king = is_long_ranged_king_v<rules_type>;
 public:
         static auto detect(State const& s) noexcept
@@ -173,8 +170,12 @@ private:
         template<class Iterator, class Builder>
         static auto turn(Iterator jumper, Builder& m_builder)
         {
-                return meta::foldl_bit_or<jump_rotations<rules_type>>{}([&](auto direction) {
-                        return scan(ray::rotate<decltype(direction){}>(jumper), m_builder);
+                return meta::foldl_bit_or<king_jump_directions<rules_type, orientation>>{}([&](auto direction) {
+                        if constexpr (
+                                decltype(direction){} == ray::direction_v<Iterator>.value() ||
+                                decltype(direction){} == rotate_v<ray::direction_v<Iterator>.value(), 180>
+                        ) { return false; }
+                        return scan(ray::turn<decltype(direction){}>(jumper), m_builder);
                 });
         }
 

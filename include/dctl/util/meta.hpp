@@ -25,10 +25,10 @@ template<class T, T... Ns>
 using list_c = list<integral_c<T, Ns>...>;
 
 template<class List>
-constexpr int size_v;
+constexpr auto size_v = 0;
 
 template<class... Elements>
-constexpr int size_v<list<Elements...>> = sizeof...(Elements);
+constexpr auto size_v<list<Elements...>> = sizeof...(Elements);
 
 template<class MetaFunctionClass, class... Args>
 struct apply
@@ -47,7 +47,7 @@ using append_t = typename append<Lists...>::type;
 template<>
 struct append<>
 :
-        list<>
+        list_c<int>
 {};
 
 template<template<class...> class List, class... Elements>
@@ -62,16 +62,16 @@ struct append<List<Elements1...>, List<Elements2...>, RemainingLists...>
         append<List<Elements1..., Elements2...>, RemainingLists...>
 {};
 
-template<class List, class Pred>
-struct remove_if;
+template<class List, class Value>
+struct remove;
 
-template<class List, class Pred>
-using remove_if_t = typename remove_if<List, Pred>::type;
+template<class List, class Value>
+using remove_t = typename remove<List, Value>::type;
 
-template<template<class...> class List, class... Elements, class Pred>
-struct remove_if<List<Elements...>, Pred>
+template<template<class...> class List, class... Elements, class Value>
+struct remove<List<Elements...>, Value>
 :
-        append<std::conditional_t<apply_t<Pred, Elements>{}, List<>, List<Elements>>...>
+        append<std::conditional_t<std::is_same_v<Value, Elements>, List<>, List<Elements>>...>
 {};
 
 template<class List, class Op>

@@ -36,9 +36,6 @@ class pawn_jump<color_<Side>, Reverse, State>
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
-
-        template<class Iterator>
-        constexpr static auto direction_v = rotate(ray::direction_v<Iterator>, inverse(angle{orientation}));
 public:
         static auto detect(State const& s) noexcept
         {
@@ -118,39 +115,17 @@ private:
         static auto next_target(Iterator jumper, Builder& m_builder)
         {
                 //raii::Visit<Builder> guard{builder, *jumper};
-                return scan(jumper, m_builder) | turn(jumper, m_builder);
-/*
-                return meta::foldl_bit_or<dirs>{}([&](auto direction) {
-                        return scan(ray::turn<decltype(direction){}>(jumper), m_builder);
-                });*/
-        }
-
-        template<class Iterator, class Builder>
-        static auto turn(Iterator jumper, Builder& m_builder)
-        {
-                if constexpr (is_backward_pawn_jump_v<rules_type>) {
-                        return meta::foldl_bit_or<jump_rotations<rules_type>>{}([&](auto direction) {
-                                return scan(ray::rotate<decltype(direction){}>(jumper), m_builder);
-                        });
-                } else if constexpr (is_orthogonal_jump_v<rules_type>) {
-                        static_assert(!is_down(direction_v<Iterator>));
-                        return meta::foldl_bit_or<pawn_jump_turns<direction_v<Iterator>.value(), orientation>>{}([&](auto direction) {
-                                return scan(ray::turn<decltype(direction){}>(jumper), m_builder);
-                        });
-                } else {
-                        static_assert(is_up(direction_v<Iterator>) && is_diagonal(direction_v<Iterator>));
-                        return scan(ray::mirror<angle{dir_N + orientation}.value()>(jumper), m_builder);
-                }
-        }
-
-        template<class Iterator, class Builder>
-        static auto scan(Iterator jumper, Builder& m_builder)
-        {
-                if (m_builder.has_pawn_target(jumper)) {
-                        capture(std::next(jumper), m_builder);
-                        return true;
-                }
-                return false;
+                return meta::foldl_bit_or<pawn_jump_directions<rules_type, orientation>>{}([&](auto direction) {
+                        if constexpr (
+                                decltype(direction){} == rotate_v<ray::direction_v<Iterator>.value(), 180>
+                        ) { return false; }
+                        auto const turner = ray::turn<decltype(direction){}>(jumper);
+                        if (m_builder.has_pawn_target(turner)) {
+                                capture(std::next(turner), m_builder);
+                                return true;
+                        }
+                        return false;
+                });
         }
 };
 

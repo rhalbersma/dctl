@@ -224,35 +224,6 @@ using pawn_jump_directions = meta::transform_t<
         rotated<orientation>
 >;
 
-template<int Direction>
-struct is_reverse
-{
-        template<class Arg>
-        struct apply
-        :
-                std::conditional_t<(Arg{} == angle{Direction + 180}.value()), std::true_type, std::false_type>
-        {};
-};
-
-template<class Rules, int Direction, int orientation>
-using pawn_scan_turns = meta::remove_if_t<
-        pawn_jump_directions<Rules, orientation>,
-        is_reverse<Direction>
->;
-
-template<int Direction, int orientation>
-using pawn_jump_turns = meta::transform_t<
-        meta::switch_t<
-                meta::integral_c<int, angle{Direction - orientation}.value()>,
-                meta::case_<meta::integral_c<int, dir_E >, meta::list_c<int,        dir_NE, dir_N, dir_NW       >>,
-                meta::case_<meta::integral_c<int, dir_NE>, meta::list_c<int, dir_E,         dir_N, dir_NW, dir_W>>,
-                meta::case_<meta::integral_c<int, dir_N >, meta::list_c<int, dir_E, dir_NE,        dir_NW, dir_W>>,
-                meta::case_<meta::integral_c<int, dir_NW>, meta::list_c<int, dir_E, dir_NE, dir_N,         dir_W>>,
-                meta::case_<meta::integral_c<int, dir_W >, meta::list_c<int,        dir_NE, dir_N, dir_NW       >>
-        >,
-        rotated<orientation>
->;
-
 template<class Rules, int orientation>
 using king_jump_directions = meta::transform_t<
         std::conditional_t<
@@ -263,11 +234,23 @@ using king_jump_directions = meta::transform_t<
         rotated<orientation>
 >;
 
-template<class Rules>
-using jump_rotations = std::conditional_t<
-        is_orthogonal_jump_v<Rules>,
-        meta::list_c<int, -135, -90, -45, +45, +90, +135>,
-        meta::list_c<int,       -90,           +90      >
+template<int A, int B>
+constexpr auto rotate_v = rotate(angle{A}, angle{B}).value();
+
+template<int Direction>
+struct is_reverse
+{
+        template<class Arg>
+        struct apply
+        :
+                std::conditional_t<(Arg::value == rotate_v<Direction, 180>), std::true_type, std::false_type>
+        {};
+};
+
+template<class Rules, int orientation, int Direction>
+using pawn_scan_turns = meta::remove_t<
+        pawn_jump_directions<Rules, orientation>,
+        meta::integral_c<int, angle{Direction + 180}.value()>
 >;
 
 }       // namespace dctl::core
