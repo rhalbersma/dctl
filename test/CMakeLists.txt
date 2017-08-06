@@ -33,7 +33,8 @@ set(cxx_compile_options_warnings_general
                 -Wshadow
                 -Wsign-compare 
                 -Wsign-promo
-                -Wno-error=sign-conversion 
+                -Wno-error=sign-conversion
+				-Wno-unused-but-set-variable                
         >
  		-Werror 
         -pedantic-errors

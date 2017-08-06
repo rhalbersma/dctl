@@ -79,9 +79,9 @@ class board_scan_dir_sq
 {
         inline const static auto table = []() {
                 return meta::make_array<Directions>{}([](auto direction) {
+                        constexpr auto direction_v = decltype(direction){};
                         auto result = std::array<set_t<Board>, Board::bits()>{};
                         xstd::for_each(Board::squares, [&](auto const sq) {
-                                constexpr auto direction_v = decltype(direction){}; // GCC7 requires it here, instead of at the top of the outer lambda
                                 result[static_cast<std::size_t>(sq)] =
                                         scan<Board, direction_v, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
                                 ;
