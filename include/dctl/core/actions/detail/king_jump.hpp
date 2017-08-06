@@ -40,14 +40,14 @@ class king_jump<color_<Side>, Reverse, State>
 
         using king_jump_directions = meta::transform<rot, basic_king_jump_directions<rules_type>>;
 
-        template<class Arg, class Iterator>
-        using is_forward = std::bool_constant<Arg::value == ray::direction_v<Iterator>.value()>;
+        template<class Arg, class Direction>
+        using is_forward = std::bool_constant<Arg::value == Direction::value>;
 
-        template<class Arg, class Iterator>
-        using is_reverse = std::bool_constant<Arg::value == rotate_v<ray::direction_v<Iterator>.value(), 180>>;
+        template<class Arg, class Direction>
+        using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;
 
-        template<class Arg, class Iterator>
-        using is_forward_or_reverse = std::disjunction<is_forward<Arg, Iterator>, is_reverse<Arg, Iterator>>;
+        template<class Arg, class Direction>
+        using is_forward_or_reverse = std::disjunction<is_forward<Arg, Direction>, is_reverse<Arg, Direction>>;
 
         template<class Direction>
         using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, Direction>>;
@@ -59,7 +59,9 @@ public:
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
                         return meta::foldl_logical_or<king_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
-                                return !jump_targets<board_type, Direction, king_range_category_t<rules_type>>{}(kings, s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).empty();
+                                return !jump_targets<board_type, Direction, king_range_category_t<rules_type>>{}(kings, s.targets(color_c<Side>, kings_c), s.pieces(empty_c))
+                                        .empty()
+                                ;
                         });
                 }
                 return false;
@@ -184,7 +186,8 @@ private:
         template<class Iterator, class Builder>
         static auto turn(Iterator jumper, Builder& m_builder)
         {
-                return meta::foldl_bit_or<king_turn_directions<Iterator>>{}([&](auto direction) {
+                constexpr auto Direction = ray::direction_v<Iterator>.value();
+                return meta::foldl_bit_or<king_turn_directions<meta::integral_c<int, Direction>>>{}([&](auto direction) {
                         return scan(ray::turn<decltype(direction){}>(jumper), m_builder);
                 });
         }

@@ -8,6 +8,7 @@
 #include <dctl/core/actions/detail/pattern.hpp> // move_targets
 #include <dctl/core/board/angle.hpp>            // angle, rotate
 #include <dctl/core/board/bearing.hpp>          // bearing
+#include <dctl/core/board/ray.hpp>              // king_moves
 #include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_t
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma

@@ -41,8 +41,8 @@ class pawn_jump<color_<Side>, Reverse, State>
 
         using pawn_jump_directions = meta::transform<rot, basic_pawn_jump_directions<rules_type>>;
 
-        template<class Arg, class Iterator>
-        using is_reverse = std::bool_constant<Arg::value == rotate_v<ray::direction_v<Iterator>.value(), 180>>;
+        template<class Arg, class Direction>
+        using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;
 
         template<class Direction>
         using pawn_scan_directions = meta::remove_if_q<pawn_jump_directions, meta::bind_back<is_reverse, Direction>>;
@@ -52,7 +52,9 @@ public:
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
                         return meta::foldl_logical_or<pawn_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
-                                return !jump_targets<board_type, Direction>{}(pawns, s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
+                                return !jump_targets<board_type, Direction>{}(pawns, s.targets(color_c<Side>, pawns_c), s.pieces(empty_c))
+                                        .empty()
+                                ;
                         });
                 }
                 return false;
@@ -67,68 +69,57 @@ public:
                                 constexpr auto Direction = decltype(direction){};
                                 jump_sources<board_type, Direction>{}(pawns, m_builder.targets(), m_builder.pieces(empty_c)).consume([&](auto from_sq) {
                                         raii::launch<Builder> guard{m_builder, from_sq};
-                                        capture(std::next(ray::make_iterator<board_type, Direction>(from_sq)), m_builder);
+                                        capture<Direction>(next<board_type, Direction>{}(from_sq), m_builder);
                                 });
                         });
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                 }
         }
 private:
-        template<class Iterator, class Builder>
-        static auto capture(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto capture(int jumper, Builder& m_builder)
                 -> void
         {
-                raii::capture<Builder> guard{m_builder, *jumper};
-                ++jumper;
+                raii::capture<Builder> guard{m_builder, jumper};
+                advance<board_type, Direction>{}(jumper);
                 if constexpr (is_passing_promotion_v<rules_type>) {
-                        if (board_type::promotion(Side).contains(*jumper)) {
-                                return on_promotion(jumper, m_builder);
+                        if (board_type::promotion(Side).contains(jumper)) {
+                                return on_promotion<Direction>(jumper, m_builder);
                         }
-                        if (next_target(jumper, m_builder)) {
+                        if (next_target<Direction>(jumper, m_builder)) {
                                 return;
                         }
                 } else {
-                        if (next_target(jumper, m_builder)) {
+                        if (next_target<Direction>(jumper, m_builder)) {
                                 return;
                         }
-                        if (board_type::promotion(Side).contains(*jumper)) {
-                                return on_promotion(jumper, m_builder);
+                        if (board_type::promotion(Side).contains(jumper)) {
+                                return on_promotion<Direction>(jumper, m_builder);
                         }
                 }
-                m_builder.finalize(*jumper);
+                m_builder.finalize(jumper);
         }
 
-        template<class Iterator, class Builder>
-        static auto on_promotion(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto on_promotion(int jumper, Builder& m_builder)
         {
                 raii::promotion<Builder> guard{m_builder};
                 if constexpr (is_passing_promotion_v<rules_type>) {
-                        return on_king_jump(jumper, m_builder);
+                        if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
+                        king_jumps::try_next_passing_promotion(ray::make_iterator<board_type, Direction>(jumper), m_builder);
+                        if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                 } else {
-                        return m_builder.finalize(*jumper);
+                        return m_builder.finalize(jumper);
                 }
         }
 
-        template<class Iterator, class Builder>
-        static auto on_king_jump(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto next_target(int jumper, Builder& m_builder)
         {
-                static_assert(is_passing_promotion_v<rules_type>);
-                if constexpr (is_superior_rank_jump_v<rules_type>) {
-                        raii::toggle_king_targets<Builder> guard{m_builder};
-                        king_jumps::try_next_passing_promotion(jumper, m_builder);
-                } else {
-                        king_jumps::try_next_passing_promotion(jumper, m_builder);
-                }
-        }
-
-        template<class Iterator, class Builder>
-        static auto next_target(Iterator jumper, Builder& m_builder)
-        {
-                return meta::foldl_bit_or<pawn_scan_directions<Iterator>>{}([&](auto direction) {
+                return meta::foldl_bit_or<pawn_scan_directions<meta::integral_c<int, Direction>>>{}([&](auto direction) {
                         constexpr auto TurnedDirection = decltype(direction){};
-                        auto const turner = ray::turn<TurnedDirection>(jumper);
-                        if (ray::has_pawn_jump_target<rules_type, board_type, TurnedDirection>(*turner, m_builder.template targets<TurnedDirection>())) {
-                                capture(std::next(turner), m_builder);
+                        if (ray::has_pawn_jump_target<rules_type, board_type, TurnedDirection>(jumper, m_builder.template targets<TurnedDirection>())) {
+                                capture<TurnedDirection>(next<board_type, TurnedDirection>{}(jumper), m_builder);
                                 return true;
                         }
                         return false;
