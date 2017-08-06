@@ -19,7 +19,7 @@
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
 #include <cassert>                              // assert
 #include <iterator>                             // prev
-#include <type_traits>                          // is_same
+#include <type_traits>                          // bool_constant
 
 namespace dctl::core {
 namespace detail {
@@ -78,138 +78,139 @@ public:
                         meta::foldl_comma<king_jump_directions>{}([&](auto direction) {
                                 constexpr auto direction_v = decltype(direction){};
                                 if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
-                                        if (auto const blocker = ray::king_jump_target<rules_type, board_type, direction_v>(from_sq, m_builder.pieces(occup_c)); !blocker.empty()) {
+                                        if (auto const blocker = ray::king_jump_scan<rules_type, board_type, direction_v>(from_sq) & m_builder.pieces(occup_c); !blocker.empty()) {
                                                 if (auto const first = find_first<direction_v>(blocker); m_builder.template targets<direction_v>().contains(first)) {
-                                                        capture(ray::make_iterator<board_type, direction_v>(first), m_builder);
+                                                        capture<direction_v>(first, m_builder);
                                                 }
                                         }
                                 } else {
-                                        auto const jumper = std::next(ray::make_iterator<board_type, direction_v>(from_sq));
-                                        if (board_type::is_onboard(*jumper) && m_builder.template is_target<direction_v>(*jumper)) {
-                                                capture(jumper, m_builder);
+                                        auto const jumper = next<board_type, direction_v>{}(from_sq);
+                                        if (board_type::is_onboard(jumper) && m_builder.template is_target<direction_v>(jumper)) {
+                                                capture<direction_v>(jumper, m_builder);
                                         }
                                 }
                         });
                 });
         }
 
-        template<class Iterator, class Builder>
-        static auto try_next_passing_promotion(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto try_next_passing_promotion(int jumper, Builder& m_builder)
         {
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(m_builder.with() == piece::pawns);
                 assert(m_builder.into() == piece::kings);
-                if (!next_target(jumper, m_builder)) {
-                        halt(jumper, m_builder);
+                if (!next_target<Direction>(jumper, m_builder)) {
+                        halt<Direction>(jumper, m_builder);
                 }
         }
 private:
-        template<class Iterator, class Builder>
-        static auto capture(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto capture(int jumper, Builder& m_builder)
                 -> void
         {
-                assert(board_type::is_onboard(*jumper));
-                raii::capture<Builder> guard{m_builder, *jumper};
-                ++jumper;
-                if (!next_target(jumper, m_builder)) {
-                        halt(jumper, m_builder);
+                assert(board_type::is_onboard(jumper));
+                raii::capture<Builder> guard{m_builder, jumper};
+                advance<board_type, Direction>{}(jumper);
+                if (!next_target<Direction>(jumper, m_builder)) {
+                        halt<Direction>(jumper, m_builder);
                 }
         }
 
-        template<class Iterator, class Builder>
-        static auto halt(Iterator dest_sq, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto halt(int dest_sq, Builder& m_builder)
         {
                 if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
-                        if (m_builder.is_last_jumped_king(*std::prev(dest_sq))) {
-                                return m_builder.finalize(*dest_sq);
+                        if (m_builder.is_last_jumped_king(prev<board_type, Direction>{}(dest_sq))) {
+                                return m_builder.finalize(dest_sq);
                         } else {
-                                return add_sliding_jumps(dest_sq, m_builder);
+                                return add_sliding_jumps<Direction>(dest_sq, m_builder);
                         }
                 }
                 if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && !is_halt_behind_king_v<rules_type>) {
-                        return add_sliding_jumps(dest_sq, m_builder);
+                        return add_sliding_jumps<Direction>(dest_sq, m_builder);
                 }
                 if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return m_builder.finalize(*dest_sq);
+                        return m_builder.finalize(dest_sq);
                 }
         }
 
-        template<class Iterator, class Builder>
-        static auto add_sliding_jumps(Iterator dest_sq, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto add_sliding_jumps(int dest_sq, Builder& m_builder)
         {
-                assert(board_type::is_onboard(*dest_sq) && m_builder.not_occupied(*dest_sq));
+                assert(board_type::is_onboard(dest_sq) && m_builder.not_occupied(dest_sq));
                 do {
-                        m_builder.finalize(*dest_sq++);
-                } while (board_type::is_onboard(*dest_sq) && m_builder.not_occupied(*dest_sq));
+                        m_builder.finalize(dest_sq);
+                        advance<board_type, Direction>{}(dest_sq);
+                } while (board_type::is_onboard(dest_sq) && m_builder.not_occupied(dest_sq));
         }
 
-        template<class Iterator, class Builder>
-        static auto next_target(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto next_target(int jumper, Builder& m_builder)
         {
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
-                        return scan_turn(jumper, m_builder) | reverse(jumper, m_builder);
+                        return scan_turn<Direction>(jumper, m_builder) | reverse<Direction>(jumper, m_builder);
                 } else {
-                        return scan_turn(jumper, m_builder);
+                        return scan_turn<Direction>(jumper, m_builder);
                 }
         }
 
-        template<class Iterator, class Builder>
-        static auto reverse(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto reverse(int jumper, Builder& m_builder)
         {
                 static_assert(is_reverse_king_jump_v<rules_type>);
-                return scan(ray::rotate<180>(jumper), m_builder);
+                return scan<rotate_v<Direction, 180>>(jumper, m_builder);
         }
 
-        template<class Iterator, class Builder>
-        static auto scan_turn(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto scan_turn(int jumper, Builder& m_builder)
         {
                 if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return scan(jumper, m_builder) | turn(jumper, m_builder);
+                        return scan<Direction>(jumper, m_builder) | turn<Direction>(jumper, m_builder);
                 } else {
-                        constexpr auto Direction = ray::direction_v<Iterator>.value();
-
                         auto found_next = false;
-                        auto ahead = ray::king_move_scan<rules_type, board_type>{}(*jumper, ray::move_index(Direction));
+                        auto ahead = ray::king_move_scan<rules_type, board_type, Direction>(jumper);
                         auto n = ahead.count();
                         if (ahead &= m_builder.pieces(occup_c); !ahead.empty()) {
                                 auto const first = find_first<Direction>(ahead);
                                 if (m_builder.template targets<Direction>().contains(first)) {
-                                        capture(ray::make_iterator<board_type, Direction>(first), m_builder);
+                                        capture<Direction>(first, m_builder);
                                         found_next |= true;
                                 }
-                                n -= ray::blocker_and_beyond<rules_type, board_type>{}(first, ray::jump_index<rules_type>(Direction)).count();
+                                n -= ray::blocker_and_beyond<rules_type, board_type, Direction>(first).count();
                         }
-                        do { found_next |= turn(jumper++, m_builder); } while(n--);
+                        do {
+                                found_next |= turn<Direction>(jumper, m_builder);
+                                advance<board_type, Direction>{}(jumper);
+                        } while(n--);
                         return found_next;
                 }
         }
 
-        template<class Iterator, class Builder>
-        static auto turn(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto turn(int jumper, Builder& m_builder)
         {
-                constexpr auto Direction = ray::direction_v<Iterator>.value();
                 return meta::foldl_bit_or<king_turn_directions<meta::integral_c<int, Direction>>>{}([&](auto direction) {
-                        return scan(ray::turn<decltype(direction){}>(jumper), m_builder);
+                        constexpr auto direction_v = decltype(direction){};
+                        return scan<direction_v>(jumper, m_builder);
                 });
         }
 
-        template<class Iterator, class Builder>
-        static auto scan(Iterator jumper, Builder& m_builder)
+        template<int Direction, class Builder>
+        static auto scan(int jumper, Builder& m_builder)
         {
-                constexpr auto Direction = ray::direction_v<Iterator>.value();
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        if (auto const blocker = ray::king_jump_target<rules_type, board_type, Direction>(*jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
+                        if (auto const blocker = ray::king_jump_scan<rules_type, board_type, Direction>(jumper) & m_builder.pieces(occup_c); !blocker.empty()) {
                                 if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
-                                        capture(ray::make_iterator<board_type, Direction>(first), m_builder);
+                                        capture<Direction>(first, m_builder);
                                         return true;
                                 }
                         }
                         return false;
                 } else {
-                        ++jumper;
-                        if (board_type::is_onboard(*jumper) && m_builder.template is_target<Direction>(*jumper)) {
-                                assert(board_type::is_onboard(*std::next(jumper)));
-                                capture(jumper, m_builder);
+                        advance<board_type, Direction>{}(jumper);
+                        if (board_type::is_onboard(jumper) && m_builder.template is_target<Direction>(jumper)) {
+                                assert(board_type::is_onboard(next<board_type, Direction>{}(jumper)));
+                                capture<Direction>(jumper, m_builder);
                                 return true;
                         }
                         return false;

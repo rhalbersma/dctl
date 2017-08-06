@@ -20,35 +20,6 @@ enum class direction
 template<int Direction>
 constexpr auto shift_sign_v = (angle{Direction} == 0_deg || 180_deg < angle{Direction}) ? direction::left : direction::right;
 
-template<direction>
-struct first;
-
-template<>
-struct first<direction::left>
-{
-        template<class Set>
-        constexpr auto operator()(Set const s) const
-        {
-                return s.front();
-        }
-};
-
-template<>
-struct first<direction::right>
-{
-        template<class Set>
-        constexpr auto operator()(Set const s) const
-        {
-                return s.back();
-        }
-};
-
-template<int Direction, class Set>
-auto find_first(Set const& s)
-{
-        return first<shift_sign_v<Direction>>{}(s);
-}
-
 template<direction, int N>
 struct shift;
 

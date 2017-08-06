@@ -19,7 +19,7 @@
 #include <dctl/util/type_traits.hpp>                    // action_t, board_t, rules_t, set_t
 #include <cassert>                                      // assert
 #include <iterator>                                     // next
-#include <type_traits>                                  // is_same
+#include <type_traits>                                  // bool_constant
 
 namespace dctl::core {
 namespace detail {
@@ -36,10 +36,10 @@ class pawn_jump<color_<Side>, Reverse, State>
         using    set_type =   set_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
-        template<class Direction>
-        using rot = meta::integral_c<int, rotate(angle{Direction::value}, angle{orientation}).value()>;
+        template<class Arg>
+        using orient = meta::integral_c<int, rotate(angle{Arg::value}, angle{orientation}).value()>;
 
-        using pawn_jump_directions = meta::transform<rot, basic_pawn_jump_directions<rules_type>>;
+        using pawn_jump_directions = meta::transform<orient, basic_pawn_jump_directions<rules_type>>;
 
         template<class Arg, class Direction>
         using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;
@@ -112,7 +112,7 @@ private:
                 raii::promotion<Builder> guard{m_builder};
                 if constexpr (is_passing_promotion_v<rules_type>) {
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
-                        king_jumps::try_next_passing_promotion(ray::make_iterator<board_type, Direction>(jumper), m_builder);
+                        king_jumps::template try_next_passing_promotion<Direction>(jumper, m_builder);
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                 } else {
                         return m_builder.finalize(jumper);
@@ -124,7 +124,7 @@ private:
         {
                 return meta::foldl_bit_or<pawn_scan_directions<meta::integral_c<int, Direction>>>{}([&](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        if (!ray::pawn_jump_target<rules_type, board_type, direction_v>(jumper, m_builder.template targets<direction_v>()).empty()) {
+                        if (!(ray::pawn_jump_scan<rules_type, board_type, direction_v>(jumper) & m_builder.template targets<direction_v>()).empty()) {
                                 capture<direction_v>(next<board_type, direction_v>{}(jumper), m_builder);
                                 return true;
                         }

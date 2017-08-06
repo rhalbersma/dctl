@@ -18,6 +18,16 @@ namespace dctl::core {
 template<int Direction>
 constexpr auto is_forward_v = angle{Direction} == 0_deg || 180_deg < angle{Direction};
 
+template<int Direction, class Set>
+auto find_first(Set const& s)
+{
+        if constexpr (is_forward_v<Direction>) {
+                return s.front();
+        } else {
+                return s.back();
+        }
+}
+
 template<class Board, int Direction, int Distance = 1>
 struct advance
 {
