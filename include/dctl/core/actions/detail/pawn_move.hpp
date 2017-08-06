@@ -10,7 +10,7 @@
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_, pawn_
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
-#include <dctl/util/type_traits.hpp>            // board_t, set_t, value_t
+#include <dctl/util/type_traits.hpp>            // board_t
 
 namespace dctl::core {
 namespace detail {

@@ -82,7 +82,7 @@ public:
                                         }
                                 } else {
                                         auto const jumper = std::next(ray::make_iterator<board_type, Direction>(from_sq));
-                                        if (is_onboard(jumper) && m_builder.is_target(jumper)) {
+                                        if (is_onboard(jumper) && m_builder.template is_target<Direction>(*jumper)) {
                                                 capture(jumper, m_builder);
                                         }
                                 }
@@ -192,8 +192,8 @@ private:
         template<class Iterator, class Builder>
         static auto scan(Iterator jumper, Builder& m_builder)
         {
+                constexpr auto Direction = ray::direction_v<Iterator>.value();
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        constexpr auto Direction = ray::direction_v<Iterator>.value();
                         if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
                                 if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
                                         capture(ray::make_iterator<board_type, Direction>(first), m_builder);
@@ -203,7 +203,7 @@ private:
                         return false;
                 } else {
                         ++jumper;
-                        if (is_onboard(jumper) && m_builder.is_target(jumper)) {
+                        if (is_onboard(jumper) && m_builder.template is_target<Direction>(*jumper)) {
                                 assert(is_onboard(std::next(jumper)));
                                 capture(jumper, m_builder);
                                 return true;

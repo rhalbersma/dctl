@@ -125,8 +125,9 @@ private:
         static auto next_target(Iterator jumper, Builder& m_builder)
         {
                 return meta::foldl_bit_or<pawn_scan_directions<Iterator>>{}([&](auto direction) {
-                        auto const turner = ray::turn<decltype(direction){}>(jumper);
-                        if (m_builder.has_pawn_target(turner)) {
+                        constexpr auto TurnedDirection = decltype(direction){};
+                        auto const turner = ray::turn<TurnedDirection>(jumper);
+                        if (ray::has_pawn_jump_target<rules_type, board_type, TurnedDirection>(*turner, m_builder.template targets<TurnedDirection>())) {
                                 capture(std::next(turner), m_builder);
                                 return true;
                         }

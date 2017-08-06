@@ -302,9 +302,9 @@ auto king_jump_target(iterator<Board, Direction> from, set_t<Board> const& targe
 }
 
 template<class Rules, class Board, int Direction>
-auto has_pawn_jump_target(iterator<Board, Direction> from, set_t<Board> const& targets)
+auto has_pawn_jump_target(int sq, set_t<Board> const& targets)
 {
-        return !(pawn_jump_scan<Rules, Board>{}(*from, jump_index<Rules>(Direction)) & targets).empty();
+        return !(pawn_jump_scan<Rules, Board>{}(sq, jump_index<Rules>(Direction)) & targets).empty();
 }
 
 }       // namespace ray

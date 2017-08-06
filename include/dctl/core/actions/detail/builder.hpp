@@ -7,7 +7,6 @@
 
 #include <dctl/core/actions/detail/pattern.hpp> // move_sources
 #include <dctl/core/board/angle.hpp>            // angle, is_orthogonal
-#include <dctl/core/board/ray.hpp>
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t, set_t, value_t
@@ -126,34 +125,15 @@ public:
                 return move_sources<board_type, Direction>{}(targets(), pieces(empty_c));
         }
 
-        template<class Iterator>
-        auto has_pawn_target(Iterator it) const
+        template<int Direction>
+        auto is_target(int const sq) const
         {
-                return ray::has_pawn_jump_target<rules_type>(it, targets<ray::direction_v<Iterator>.value()>());
-        }
-
-        template<class Iterator>
-        auto is_target(Iterator it) const
-        {
-                return targets<ray::direction_v<Iterator>.value()>().contains(*it);
+                return targets<Direction>().contains(sq);
         }
 
         auto not_occupied(int const sq) const
         {
                 return m_empty.contains(sq);
-        }
-
-        template<int Direction>
-        auto path() const
-        {
-                PP_CONSTEXPR_CONST auto js = board_type::jump_start(angle{Direction});
-                return pieces(empty_c) & js;
-        }
-
-        template<int Direction>
-        auto path(int const sq) const
-        {
-                return path<Direction>().contains(sq);
         }
 
         auto is_last_jumped_king(int const sq) const
