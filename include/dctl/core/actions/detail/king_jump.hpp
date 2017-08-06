@@ -57,9 +57,11 @@ public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
+                        auto const enemy = s.targets(color_c<Side>, kings_c);
+                        auto const empty = s.pieces(empty_c);
                         return meta::foldl_logical_or<king_jump_directions>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                return !jump_targets<board_type, Direction, king_range_category_t<rules_type>>{}(kings, s.targets(color_c<Side>, kings_c), s.pieces(empty_c))
+                                constexpr auto direction_v = decltype(direction){};
+                                return !jump_targets<board_type, direction_v, king_range_category_t<rules_type>>{}(kings, enemy, empty)
                                         .empty()
                                 ;
                         });
@@ -74,16 +76,16 @@ public:
                 m_builder.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
                         raii::launch<Builder> g2{m_builder, from_sq};
                         meta::foldl_comma<king_jump_directions>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
+                                constexpr auto direction_v = decltype(direction){};
                                 if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
-                                        if (auto const blocker = ray::king_jump_target<rules_type, board_type, Direction>(from_sq, m_builder.pieces(occup_c)); !blocker.empty()) {
-                                                if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
-                                                        capture(ray::make_iterator<board_type, Direction>(first), m_builder);
+                                        if (auto const blocker = ray::king_jump_target<rules_type, board_type, direction_v>(from_sq, m_builder.pieces(occup_c)); !blocker.empty()) {
+                                                if (auto const first = find_first<direction_v>(blocker); m_builder.template targets<direction_v>().contains(first)) {
+                                                        capture(ray::make_iterator<board_type, direction_v>(first), m_builder);
                                                 }
                                         }
                                 } else {
-                                        auto const jumper = std::next(ray::make_iterator<board_type, Direction>(from_sq));
-                                        if (board_type::is_onboard(*jumper) && m_builder.template is_target<Direction>(*jumper)) {
+                                        auto const jumper = std::next(ray::make_iterator<board_type, direction_v>(from_sq));
+                                        if (board_type::is_onboard(*jumper) && m_builder.template is_target<direction_v>(*jumper)) {
                                                 capture(jumper, m_builder);
                                         }
                                 }

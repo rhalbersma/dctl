@@ -50,9 +50,11 @@ public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
+                        auto const enemy = s.targets(color_c<Side>, pawns_c);
+                        auto const empty = s.pieces(empty_c);
                         return meta::foldl_logical_or<pawn_jump_directions>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                return !jump_targets<board_type, Direction>{}(pawns, s.targets(color_c<Side>, pawns_c), s.pieces(empty_c))
+                                constexpr auto direction_v = decltype(direction){};
+                                return !jump_targets<board_type, direction_v>{}(pawns, enemy, empty)
                                         .empty()
                                 ;
                         });
@@ -65,12 +67,16 @@ public:
         {
                 if (auto const pawns = m_builder.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
+                        auto const enemy = m_builder.targets();
+                        auto const empty = m_builder.pieces(empty_c);
                         meta::foldl_comma<pawn_jump_directions>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                jump_sources<board_type, Direction>{}(pawns, m_builder.targets(), m_builder.pieces(empty_c)).consume([&](auto from_sq) {
-                                        raii::launch<Builder> guard{m_builder, from_sq};
-                                        capture<Direction>(next<board_type, Direction>{}(from_sq), m_builder);
-                                });
+                                constexpr auto direction_v = decltype(direction){};
+                                jump_sources<board_type, direction_v>{}(pawns, enemy, empty)
+                                        .consume([&](auto from_sq) {
+                                                raii::launch<Builder> guard{m_builder, from_sq};
+                                                capture<direction_v>(next<board_type, direction_v>{}(from_sq), m_builder);
+                                        })
+                                ;
                         });
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                 }
@@ -117,9 +123,9 @@ private:
         static auto next_target(int jumper, Builder& m_builder)
         {
                 return meta::foldl_bit_or<pawn_scan_directions<meta::integral_c<int, Direction>>>{}([&](auto direction) {
-                        constexpr auto TurnedDirection = decltype(direction){};
-                        if (!ray::pawn_jump_target<rules_type, board_type, TurnedDirection>(jumper, m_builder.template targets<TurnedDirection>()).empty()) {
-                                capture<TurnedDirection>(next<board_type, TurnedDirection>{}(jumper), m_builder);
+                        constexpr auto direction_v = decltype(direction){};
+                        if (!ray::pawn_jump_target<rules_type, board_type, direction_v>(jumper, m_builder.template targets<direction_v>()).empty()) {
+                                capture<direction_v>(next<board_type, direction_v>{}(jumper), m_builder);
                                 return true;
                         }
                         return false;

@@ -35,9 +35,10 @@ public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
+                        auto const empty = s.pieces(empty_c);
                         return meta::foldl_logical_or<king_move_directions>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                return !move_targets<board_type, Direction>{}(kings, s.pieces(empty_c))
+                                constexpr auto direction_v = decltype(direction){};
+                                return !move_targets<board_type, direction_v>{}(kings, empty)
                                         .empty()
                                 ;
                         });
@@ -48,18 +49,20 @@ public:
         static auto count(State const& s) noexcept
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
+                        auto const occup = s.pieces(occup_c);
                         auto result = 0;
                         s.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
-                                result += ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c))
+                                result += ray::king_moves<rules_type, board_type>{}(from_sq, occup)
                                         .count()
                                 ;
                         });
                         return result;
                 } else {
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
+                                auto const empty = s.pieces(empty_c);
                                 return meta::foldl_plus<king_move_directions>{}([&](auto direction) {
-                                        constexpr auto Direction = decltype(direction){};
-                                        return move_targets<board_type, Direction>{}(kings, s.pieces(empty_c))
+                                        constexpr auto direction_v = decltype(direction){};
+                                        return move_targets<board_type, direction_v>{}(kings, empty)
                                                 .count()
                                         ;
                                 });
@@ -72,8 +75,9 @@ public:
         static auto generate(State const& s, SequenceContainer& seq)
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
+                        auto const occup = s.pieces(occup_c);
                         s.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
-                                ray::king_moves<rules_type, board_type>{}(from_sq, s.pieces(occup_c))
+                                ray::king_moves<rules_type, board_type>{}(from_sq, occup)
                                         .consume([&](auto dest_sq) {
                                                 seq.emplace_back(from_sq, dest_sq);
                                         })
@@ -81,12 +85,13 @@ public:
                         });
                 } else {
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
+                                auto const empty = s.pieces(empty_c);
                                 meta::foldl_comma<king_move_directions>{}([&](auto direction) {
-                                        constexpr auto Direction = decltype(direction){};
-                                        move_targets<board_type, Direction>{}(kings, s.pieces(empty_c))
+                                        constexpr auto direction_v = decltype(direction){};
+                                        move_targets<board_type, direction_v>{}(kings, empty)
                                                 .consume([&](auto dest_sq) {
                                                         seq.emplace_back(
-                                                                prev<board_type, Direction>{}(dest_sq),
+                                                                prev<board_type, direction_v>{}(dest_sq),
                                                                 dest_sq
                                                         );
                                                 })

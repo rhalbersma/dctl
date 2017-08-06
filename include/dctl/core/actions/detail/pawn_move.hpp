@@ -32,9 +32,10 @@ public:
         static auto detect(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
+                        auto const empty = s.pieces(empty_c);
                         return meta::foldl_logical_or<pawn_move_directions>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                return !move_targets<board_type, Direction>{}(pawns, s.pieces(empty_c))
+                                constexpr auto direction_v = decltype(direction){};
+                                return !move_targets<board_type, direction_v>{}(pawns, empty)
                                         .empty()
                                 ;
                         });
@@ -45,9 +46,10 @@ public:
         static auto count(State const& s) noexcept
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
+                        auto const empty = s.pieces(empty_c);
                         return meta::foldl_plus<pawn_move_directions>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                return move_targets<board_type, Direction>{}(pawns, s.pieces(empty_c))
+                                constexpr auto direction_v = decltype(direction){};
+                                return move_targets<board_type, direction_v>{}(pawns, empty)
                                         .count()
                                 ;
                         });
@@ -59,12 +61,13 @@ public:
         static auto generate(State const& s, SequenceContainer& seq)
         {
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
+                        auto const empty = s.pieces(empty_c);
                         meta::foldl_comma<pawn_move_directions>{}([&](auto direction) {
-                                constexpr auto Direction = decltype(direction){};
-                                move_targets<board_type, Direction>{}(pawns, s.pieces(empty_c))
+                                constexpr auto direction_v = decltype(direction){};
+                                move_targets<board_type, direction_v>{}(pawns, empty)
                                         .consume([&](auto dest_sq) {
                                                 seq.emplace_back(
-                                                        prev<board_type, Direction>{}(dest_sq),
+                                                        prev<board_type, direction_v>{}(dest_sq),
                                                         dest_sq,
                                                         board_type::promotion(Side).contains(dest_sq)
                                                 );
