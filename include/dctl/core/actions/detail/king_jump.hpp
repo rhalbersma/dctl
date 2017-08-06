@@ -76,8 +76,7 @@ public:
                         meta::foldl_comma<king_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
                                 if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
-                                        auto const jumper = ray::make_iterator<board_type, Direction>(from_sq);
-                                        if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
+                                        if (auto const blocker = ray::king_jump_target<rules_type, board_type, Direction>(from_sq, m_builder.pieces(occup_c)); !blocker.empty()) {
                                                 if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
                                                         capture(ray::make_iterator<board_type, Direction>(first), m_builder);
                                                 }
@@ -197,7 +196,7 @@ private:
         {
                 constexpr auto Direction = ray::direction_v<Iterator>.value();
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        if (auto const blocker = ray::king_jump_target<rules_type>(jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
+                        if (auto const blocker = ray::king_jump_target<rules_type, board_type, Direction>(*jumper, m_builder.pieces(occup_c)); !blocker.empty()) {
                                 if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
                                         capture(ray::make_iterator<board_type, Direction>(first), m_builder);
                                         return true;
