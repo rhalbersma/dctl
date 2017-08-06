@@ -137,8 +137,6 @@ private:
         template<class Iterator, class Builder>
         static auto add_sliding_jumps(Iterator dest_sq, Builder& m_builder)
         {
-                // builder.template path<Direction>() would be an ERROR here
-                // because we need all halting squares rather than the directional launching squares subset
                 assert(is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
                 do {
                         m_builder.finalize(*dest_sq++);

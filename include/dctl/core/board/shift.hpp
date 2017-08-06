@@ -6,6 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>
+#include <dctl/util/type_traits.hpp>
 #include <cassert>
 
 namespace dctl::core {
@@ -124,5 +125,86 @@ public:
 
 template<class Board, int Direction>
 constexpr auto shift_size_v = shift_size<Board>{}(angle{Direction});
+
+template<int Direction>
+constexpr auto is_forward_v = angle{Direction} == 0_deg || 180_deg < angle{Direction};
+
+template<class Board, int Direction, int Distance = 1>
+struct advance
+{
+        using set_type = set_t<Board>;
+        constexpr static auto stride = shift_size_v<Board, Direction>;
+        constexpr static auto n = Distance * stride;
+
+        auto operator()(set_type& s) const
+        {
+                if constexpr (is_forward_v<Direction>) {
+                        return s <<= n;
+                } else {
+                        return s >>= n;
+                }
+        }
+
+        auto operator()(int& sq) const
+        {
+                if constexpr (is_forward_v<Direction>) {
+                        return sq += n;
+                } else {
+                        return sq -= n;
+                }
+        }
+};
+
+template<class Board, int Direction, int Distance = 1>
+struct next
+{
+        using set_type = set_t<Board>;
+        constexpr static auto stride = shift_size_v<Board, Direction>;
+        constexpr static auto n = Distance * stride;
+
+        auto operator()(set_type const& s) const
+        {
+                if constexpr (is_forward_v<Direction>) {
+                        return s << n;
+                } else {
+                        return s >> n;
+                }
+        }
+
+        auto operator()(int const sq) const
+        {
+                if constexpr (is_forward_v<Direction>) {
+                        return sq + n;
+                } else {
+                        return sq - n;
+                }
+        }
+};
+
+template<class Board, int Direction, int Distance = 1>
+struct prev
+{
+        using set_type = set_t<Board>;
+        constexpr static auto stride = shift_size_v<Board, Direction>;
+        constexpr static auto n = Distance * stride;
+
+        auto operator()(set_type const& s) const
+        {
+                if constexpr (is_forward_v<Direction>) {
+                        return s >> n;
+                } else {
+                        return s << n;
+                }
+        }
+
+        auto operator()(int const sq) const
+        {
+                if constexpr (is_forward_v<Direction>) {
+                        return sq - n;
+                } else {
+                        return sq + n;
+                }
+        }
+};
 
 }       // namespace dctl::core

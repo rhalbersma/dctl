@@ -11,8 +11,7 @@
 #include <dctl/core/actions/select/jump.hpp>            // jumps
 #include <dctl/core/board/angle.hpp>                    // rotate, inverse
 #include <dctl/core/board/bearing.hpp>                  // bearing
-#include <dctl/core/board/jump_sources.hpp>             // jump_sources
-#include <dctl/core/board/jump_targets.hpp>             // jump_targets
+#include <dctl/core/board/jump_targets.hpp>             // jump_sources, jump_targets
 #include <dctl/core/board/ray.hpp>                      // make_iterator, rotate, mirror, turn
 #include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
@@ -56,7 +55,7 @@ public:
                 if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
                         return meta::foldl_logical_or<pawn_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
-                                return !jump_targets<board_type, Direction, short_ranged_tag>{}(pawns, s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
+                                return !jump_targets<board_type, Direction>{}(pawns, s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
                         });
                 }
                 return false;
@@ -69,7 +68,7 @@ public:
                         if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                         meta::foldl_comma<pawn_jump_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
-                                jump_sources<board_type, Direction, short_ranged_tag>{}(pawns, m_builder.targets(), m_builder.pieces(empty_c)).consume([&](auto from_sq) {
+                                jump_sources<board_type, Direction>{}(pawns, m_builder.targets(), m_builder.pieces(empty_c)).consume([&](auto from_sq) {
                                         raii::launch<Builder> guard{m_builder, from_sq};
                                         capture(std::next(ray::make_iterator<board_type, Direction>(from_sq)), m_builder);
                                 });

@@ -7,40 +7,38 @@
 
 #include <dctl/core/board/mask_fill.hpp>        // fill
 #include <dctl/core/board/mask_iterator.hpp>    // make_iterator
-#include <dctl/core/rules/type_traits.hpp>           // short_ranged_tag, long_ranged_tag
+#include <dctl/core/board/shift.hpp>            // next, prev
+#include <dctl/util/type_traits.hpp>            // set_t
+#include <dctl/core/rules/type_traits.hpp>      // short_ranged_tag, long_ranged_tag
 #include <iterator>                             // next, prev
 
 namespace dctl::core {
 
-template<class Board, int Direction, class KingRangeCategory>
-class jump_targets;
-
 template<class Board, int Direction>
-class jump_targets<Board, Direction, short_ranged_tag>
+struct jump_sources
 {
-        template<class Set>
-        auto next_set(Set const s) const
-        {
-                return Set(*std::next(mask::make_iterator<Board, Direction>(s)));
-        }
+        using set_type = set_t<Board>;
 
-        template<class Set>
-        auto prev_set(Set const s) const
+        auto operator()(set_type const& sources, set_type const& targets, set_type const& empty) const
         {
-                return Set(*std::prev(mask::make_iterator<Board, Direction>(s)));
+                return sources & prev<Board, Direction, 1>{}(targets) & prev<Board, Direction, 2>{}(empty);
         }
-public:
-        template<class Set>
-        auto operator()(Set const active_pieces, Set const passive_pieces, Set const not_occupied) const
+};
+
+template<class Board, int Direction, class KingRangeCategory = short_ranged_tag>
+struct jump_targets
+{
+        using set_type = set_t<Board>;
+
+        auto operator()(set_type const& sources, set_type const& targets, set_type const& empty) const
         {
-                return next_set(active_pieces) & passive_pieces & prev_set(not_occupied);
+                return next<Board, Direction>{}(sources) & targets & prev<Board, Direction>{}(empty);
         }
 };
 
 template<class Board, int Direction>
-class jump_targets<Board, Direction, long_ranged_tag>
+struct jump_targets<Board, Direction, long_ranged_tag>
 {
-public:
         template<class Set>
         auto operator()(Set const active_pieces, Set const passive_pieces, Set const not_occupied) const
         {
