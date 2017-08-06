@@ -289,6 +289,11 @@ public:
         {
                 return core::to_square(coord, inner_grid);
         }
+
+        constexpr static auto is_onboard(int const sq) noexcept
+        {
+                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type::max_size());
+        }
 };
 
 }       // namespace block_adl

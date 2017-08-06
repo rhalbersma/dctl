@@ -134,21 +134,15 @@ constexpr auto direction_v = angle{};
 template<class Board, int Direction>
 constexpr auto direction_v<iterator<Board, Direction>> = angle{Direction};
 
-template<class Board, int Direction>
-constexpr auto is_onboard(iterator<Board, Direction> it)
-{
-        return static_cast<unsigned>(*it) < static_cast<unsigned>(set_t<Board>::max_size());
-}
-
 template<bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
 struct scan
 {
         template<class Board, int Direction, class Set>
         auto operator()(iterator<Board, Direction> from, Set const propagator) const
         {
-                assert(is_onboard(from));
+                assert(Board::is_onboard(*from));
                 auto const is_within = [&](auto it) {
-                        return is_onboard(it) && propagator.contains(*it);
+                        return Board::is_onboard(*it) && propagator.contains(*it);
                 };
                 auto const is_valid = [&](auto it) {
                         return is_within(it) && (IncludesEdge || is_within(std::next(it)));

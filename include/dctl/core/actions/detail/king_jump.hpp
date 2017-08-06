@@ -83,7 +83,7 @@ public:
                                         }
                                 } else {
                                         auto const jumper = std::next(ray::make_iterator<board_type, Direction>(from_sq));
-                                        if (is_onboard(jumper) && m_builder.template is_target<Direction>(*jumper)) {
+                                        if (board_type::is_onboard(*jumper) && m_builder.template is_target<Direction>(*jumper)) {
                                                 capture(jumper, m_builder);
                                         }
                                 }
@@ -106,7 +106,7 @@ private:
         static auto capture(Iterator jumper, Builder& m_builder)
                 -> void
         {
-                assert(is_onboard(jumper));
+                assert(board_type::is_onboard(*jumper));
                 raii::capture<Builder> guard{m_builder, *jumper};
                 ++jumper;
                 if (!next_target(jumper, m_builder)) {
@@ -135,10 +135,10 @@ private:
         template<class Iterator, class Builder>
         static auto add_sliding_jumps(Iterator dest_sq, Builder& m_builder)
         {
-                assert(is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
+                assert(board_type::is_onboard(*dest_sq) && m_builder.not_occupied(*dest_sq));
                 do {
                         m_builder.finalize(*dest_sq++);
-                } while (is_onboard(dest_sq) && m_builder.not_occupied(*dest_sq));
+                } while (board_type::is_onboard(*dest_sq) && m_builder.not_occupied(*dest_sq));
         }
 
         template<class Iterator, class Builder>
@@ -205,8 +205,8 @@ private:
                         return false;
                 } else {
                         ++jumper;
-                        if (is_onboard(jumper) && m_builder.template is_target<Direction>(*jumper)) {
-                                assert(is_onboard(std::next(jumper)));
+                        if (board_type::is_onboard(*jumper) && m_builder.template is_target<Direction>(*jumper)) {
+                                assert(board_type::is_onboard(*std::next(jumper)));
                                 capture(jumper, m_builder);
                                 return true;
                         }

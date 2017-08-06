@@ -103,7 +103,7 @@ public:
 
         constexpr auto capture(int const sq, bool const is_king [[maybe_unused]]) // Throws: Nothing.
         {
-                assert(is_onboard(sq));
+                assert(board_type::is_onboard(sq));
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         capture_contents_ordering(is_king);
                 }
@@ -112,7 +112,7 @@ public:
 
         constexpr auto release(int const sq, bool const is_king [[maybe_unused]]) // Throws: Nothing.
         {
-                assert(is_onboard(sq));
+                assert(board_type::is_onboard(sq));
                 this->m_captured_pieces.erase(sq);
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         release_contents_ordering(is_king);
@@ -131,7 +131,7 @@ public:
 
         constexpr auto from(int const sq) // Throws: Nothing.
         {
-                assert(is_onboard(sq));
+                assert(board_type::is_onboard(sq));
                 this->m_from = static_cast<square_type>(sq);
         }
 
@@ -142,7 +142,7 @@ public:
 
         constexpr auto dest(int const sq) // Throws: Nothing.
         {
-                assert(is_onboard(sq));
+                assert(board_type::is_onboard(sq));
                 this->m_dest = static_cast<square_type>(sq);
         }
 
@@ -243,11 +243,6 @@ private:
                                 --this->m_num_captured_kings;
                         }
                 }
-        }
-
-        constexpr auto is_onboard(int const sq) const noexcept
-        {
-                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type::max_size());
         }
 
         constexpr auto is_demotion() const noexcept
