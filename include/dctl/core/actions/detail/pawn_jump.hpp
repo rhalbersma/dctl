@@ -7,11 +7,11 @@
 
 #include <dctl/core/actions/detail/builder.hpp>         // builder
 #include <dctl/core/actions/detail/king_jump.hpp>       // promote_en_passant
+#include <dctl/core/actions/detail/pattern.hpp>         // jump_sources, jump_targets
 #include <dctl/core/actions/detail/raii.hpp>            // Launch, Capture, Visit, Toggleking_targets, Setpromotion
 #include <dctl/core/actions/select/jump.hpp>            // jumps
 #include <dctl/core/board/angle.hpp>                    // rotate, inverse
 #include <dctl/core/board/bearing.hpp>                  // bearing
-#include <dctl/core/board/jump_targets.hpp>             // jump_sources, jump_targets
 #include <dctl/core/board/ray.hpp>                      // make_iterator, rotate, mirror, turn
 #include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
@@ -41,14 +41,11 @@ class pawn_jump<color_<Side>, Reverse, State>
 
         using pawn_jump_directions = meta::transform<rot, basic_pawn_jump_directions<rules_type>>;
 
-        template<class Direction, class Iterator>
-        using is_reverse = std::bool_constant<Direction::value == rotate_v<ray::direction_v<Iterator>.value(), 180>>;
+        template<class Arg, class Iterator>
+        using is_reverse = std::bool_constant<Arg::value == rotate_v<ray::direction_v<Iterator>.value(), 180>>;
 
-        template<class Iterator>
-        using pawn_scan_directions = meta::remove_if_q<
-                pawn_jump_directions,
-                meta::bind_back<is_reverse, Iterator>
-        >;
+        template<class Direction>
+        using pawn_scan_directions = meta::remove_if_q<pawn_jump_directions, meta::bind_back<is_reverse, Direction>>;
 public:
         static auto detect(State const& s) noexcept
         {

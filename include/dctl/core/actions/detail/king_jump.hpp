@@ -6,11 +6,11 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/actions/detail/builder.hpp> // builder
+#include <dctl/core/actions/detail/pattern.hpp> // jump_targets
 #include <dctl/core/actions/detail/raii.hpp>    // Launch, Capture, Visit, set_king_jump
 #include <dctl/core/actions/select/jump.hpp>    // jump
 #include <dctl/core/board/angle.hpp>            // left_up, right_up, left_down, right_down, rotate, inverse
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/board/jump_targets.hpp>     // jump_targets
 #include <dctl/core/board/ray.hpp>              // make_iterator, rotate, mirror
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
@@ -40,20 +40,17 @@ class king_jump<color_<Side>, Reverse, State>
 
         using king_jump_directions = meta::transform<rot, basic_king_jump_directions<rules_type>>;
 
-        template<class Direction, class Iterator>
-        using is_forward = std::bool_constant<Direction::value == ray::direction_v<Iterator>.value()>;
+        template<class Arg, class Iterator>
+        using is_forward = std::bool_constant<Arg::value == ray::direction_v<Iterator>.value()>;
 
-        template<class Direction, class Iterator>
-        using is_reverse = std::bool_constant<Direction::value == rotate_v<ray::direction_v<Iterator>.value(), 180>>;
+        template<class Arg, class Iterator>
+        using is_reverse = std::bool_constant<Arg::value == rotate_v<ray::direction_v<Iterator>.value(), 180>>;
 
-        template<class Direction, class Iterator>
-        using is_forward_or_reverse = std::disjunction<is_forward<Direction, Iterator>, is_reverse<Direction, Iterator>>;
+        template<class Arg, class Iterator>
+        using is_forward_or_reverse = std::disjunction<is_forward<Arg, Iterator>, is_reverse<Arg, Iterator>>;
 
-        template<class Iterator>
-        using king_turn_directions = meta::remove_if_q<
-                king_jump_directions,
-                meta::bind_back<is_forward_or_reverse, Iterator>
-        >;
+        template<class Direction>
+        using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, Direction>>;
 
         constexpr static auto GCC7_ICE_WORKAROUND_is_long_ranged_king = is_long_ranged_king_v<rules_type>;
 public:

@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/actions/detail/pattern.hpp> // move_sources
 #include <dctl/core/board/angle.hpp>            // angle, is_orthogonal
-#include <dctl/core/board/push_sources.hpp>
 #include <dctl/core/board/ray.hpp>
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>
@@ -39,9 +39,6 @@ private:
         set_type m_empty;
         SequenceContainer& m_actions;
         action_type m_candidate_action{};
-
-        template<int Direction>
-        using short_push_sources = push_sources<board_type, Direction, short_ranged_tag>;
 
 public:
         builder(State const& s, SequenceContainer& seq)
@@ -126,7 +123,7 @@ public:
         template<int Direction>
         auto targets() const
         {
-                return short_push_sources<Direction>{}(targets(), pieces(empty_c));
+                return move_sources<board_type, Direction>{}(targets(), pieces(empty_c));
         }
 
         template<class Iterator>

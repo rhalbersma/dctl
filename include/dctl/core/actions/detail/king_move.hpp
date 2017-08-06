@@ -5,15 +5,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/angle.hpp>            // left_up, right_up, left_down, right_down
+#include <dctl/core/actions/detail/pattern.hpp> // move_targets
+#include <dctl/core/board/angle.hpp>            // angle, rotate
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/board/ray.hpp>              // make_iterator
-#include <dctl/core/board/push_targets.hpp>     // push_targets
-#include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_t
+#include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t, set_t, value_t
-#include <iterator>                             // prev
 
 namespace dctl::core {
 namespace detail {
@@ -38,7 +36,7 @@ public:
                 if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
                         return meta::foldl_logical_or<king_move_directions>{}([&](auto direction) {
                                 constexpr auto Direction = decltype(direction){};
-                                return !push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
+                                return !move_targets<board_type, Direction>{}(kings, s.pieces(empty_c))
                                         .empty()
                                 ;
                         });
@@ -60,7 +58,7 @@ public:
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
                                 return meta::foldl_plus<king_move_directions>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
-                                        return push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
+                                        return move_targets<board_type, Direction>{}(kings, s.pieces(empty_c))
                                                 .count()
                                         ;
                                 });
@@ -84,10 +82,10 @@ public:
                         if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
                                 meta::foldl_comma<king_move_directions>{}([&](auto direction) {
                                         constexpr auto Direction = decltype(direction){};
-                                        push_targets<board_type, Direction, short_ranged_tag>{}(kings, s.pieces(empty_c))
+                                        move_targets<board_type, Direction>{}(kings, s.pieces(empty_c))
                                                 .consume([&](auto dest_sq) {
                                                         seq.emplace_back(
-                                                                *std::prev(ray::make_iterator<board_type, Direction>(dest_sq)),
+                                                                prev<board_type, Direction>{}(dest_sq),
                                                                 dest_sq
                                                         );
                                                 })
