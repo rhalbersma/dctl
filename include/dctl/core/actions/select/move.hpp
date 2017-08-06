@@ -8,7 +8,7 @@
 namespace dctl::core {
 namespace select {
 
-struct push {};
+struct move {};
 
 }       // namespace select
 }       // namespace dctl::core

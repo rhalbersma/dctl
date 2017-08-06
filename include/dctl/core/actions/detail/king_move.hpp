@@ -6,9 +6,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/actions/detail/pattern.hpp> // move_targets
+#include <dctl/core/actions/detail/tables.hpp>  // king_moves
 #include <dctl/core/board/angle.hpp>            // angle, rotate
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/board/ray.hpp>              // king_moves
 #include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_t
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
@@ -52,7 +52,7 @@ public:
                         auto const occup = s.pieces(occup_c);
                         auto result = 0;
                         s.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
-                                result += ray::king_moves<rules_type, board_type>{}(from_sq, occup)
+                                result += king_moves<rules_type, board_type>{}(from_sq, occup)
                                         .count()
                                 ;
                         });
@@ -77,7 +77,7 @@ public:
                 if constexpr (is_long_ranged_king_v<rules_type>) {
                         auto const occup = s.pieces(occup_c);
                         s.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
-                                ray::king_moves<rules_type, board_type>{}(from_sq, occup)
+                                king_moves<rules_type, board_type>{}(from_sq, occup)
                                         .consume([&](auto dest_sq) {
                                                 seq.emplace_back(from_sq, dest_sq);
                                         })

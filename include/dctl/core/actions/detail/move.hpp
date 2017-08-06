@@ -8,14 +8,14 @@
 #include <dctl/core/actions/detail/king_move.hpp>       // king_move
 #include <dctl/core/actions/detail/pawn_move.hpp>       // pawn_move
 #include <dctl/core/actions/detail/primary_fwd.hpp>     // actions (primary template)
-#include <dctl/core/actions/select/push.hpp>            // push
+#include <dctl/core/actions/select/move.hpp>            // push
 #include <dctl/core/state/color_piece.hpp>              // color_
 
 namespace dctl::core {
 namespace detail {
 
 template<color Side, class DuplicatesPolicy, class Reverse>
-class actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>
+class actions<color_<Side>, select::move, DuplicatesPolicy, Reverse>
 {
         template<class State> using king_move = detail::king_move<color_<Side>, Reverse, State>;
         template<class State> using pawn_move = detail::pawn_move<color_<Side>, Reverse, State>;

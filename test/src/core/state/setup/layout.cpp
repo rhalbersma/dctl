@@ -12,9 +12,6 @@
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <iostream>
-#include <iterator>
-#include <typeinfo>
-#include <dctl/core/board/ray.hpp>
 
 using namespace dctl::core;
 

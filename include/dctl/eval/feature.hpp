@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions.hpp>                // count, select::push
+#include <dctl/core/actions.hpp>                // count, select::move
 #include <dctl/core/state/color_piece.hpp>      // opposite
 #include <dctl/eval/weight.hpp>                 // Weight
 #include <cstdlib>                              // abs
@@ -88,7 +88,7 @@ public:
         {
                 using rules_type = core::rules_t<State>;
                 using board_type = core::board_t<State>;
-                return Weight<rules_type, board_type>::mobility * static_cast<int>(core::actions<core::select::push>{}.template count<Color>(s));
+                return Weight<rules_type, board_type>::mobility * static_cast<int>(core::actions<core::select::move>{}.template count<Color>(s));
         }
 };
 

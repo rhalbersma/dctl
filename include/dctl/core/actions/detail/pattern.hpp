@@ -6,9 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>            // angle, _deg
-#include <dctl/core/board/mask_fill.hpp>        // fill
-#include <dctl/core/board/mask_iterator.hpp>    // make_iterator
-#include <dctl/core/board/shift.hpp>            // next, prev
+#include <dctl/core/board/stride.hpp>           // stride_v
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <dctl/core/rules/type_traits.hpp>      // short_ranged_tag, long_ranged_tag
 #include <iterator>                             // next, prev
@@ -32,8 +30,7 @@ template<class Board, int Direction, int Distance = 1>
 struct advance
 {
         using set_type = set_t<Board>;
-        constexpr static auto stride = shift_size_v<Board, Direction>;
-        constexpr static auto n = Distance * stride;
+        constexpr static auto n = Distance * stride_v<Board, Direction>;
 
         auto operator()(set_type& s) const noexcept
         {
@@ -59,8 +56,7 @@ template<class Board, int Direction, int Distance = 1>
 struct next
 {
         using set_type = set_t<Board>;
-        constexpr static auto stride = shift_size_v<Board, Direction>;
-        constexpr static auto n = Distance * stride;
+        constexpr static auto n = Distance * stride_v<Board, Direction>;
 
         auto operator()(set_type const& s) const noexcept
         {
@@ -86,8 +82,7 @@ template<class Board, int Direction, int Distance = 1>
 struct prev
 {
         using set_type = set_t<Board>;
-        constexpr static auto stride = shift_size_v<Board, Direction>;
-        constexpr static auto n = Distance * stride;
+        constexpr static auto n = Distance * stride_v<Board, Direction>;
 
         auto operator()(set_type const& s) const noexcept
         {
@@ -154,25 +149,43 @@ struct jump_targets
 };
 
 template<class Board, int Direction>
+struct fill
+{
+        using set_type = set_t<Board>;
+
+        constexpr auto operator()(set_type generator, set_type const& propagator) const noexcept
+        {
+                auto flood = set_type{};
+                while (!generator.empty()) {
+                        flood |= generator;
+                        generator = next<Board, Direction>{}(generator) & propagator;
+                }
+                return flood;
+        }
+};
+
+template<class Board, int Direction>
 struct move_targets<Board, Direction, long_ranged_tag>
 {
-        template<class Set>
-        auto operator()(Set const active_pieces, Set const not_occupied) const noexcept
+        using set_type = set_t<Board>;
+
+        auto operator()(set_type const& sources, set_type const& targets) const noexcept
         {
-                return active_pieces ^ mask::fill<Board, Direction>{}(active_pieces, not_occupied);
+                return sources ^ fill<Board, Direction>{}(sources, targets);
         }
 };
 
 template<class Board, int Direction>
 struct jump_targets<Board, Direction, long_ranged_tag>
 {
-        template<class Set>
-        auto operator()(Set const active_pieces, Set const passive_pieces, Set const not_occupied) const noexcept
+        using set_type = set_t<Board>;
+
+        auto operator()(set_type const& sources, set_type const& targets, set_type const& empty) const noexcept
         {
                 return
-                        Set(*std::next(mask::make_iterator<Board, Direction>(mask::fill<Board, Direction>{}(active_pieces, not_occupied)))) &
-                        passive_pieces &
-                        Set(*std::prev(mask::make_iterator<Board, Direction>(not_occupied)))
+                        next<Board, Direction>{}(fill<Board, Direction>{}(sources, empty)) &
+                        targets &
+                        prev<Board, Direction>{}(empty)
                 ;
         }
 };

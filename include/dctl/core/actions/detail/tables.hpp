@@ -7,17 +7,15 @@
 
 #include <dctl/core/actions/detail/pattern.hpp>
 #include <dctl/core/board/angle.hpp>            // angle
-#include <dctl/core/board/shift.hpp>            // first, shift_sign, shift_size
+#include <dctl/core/board/stride.hpp>           // find_first
 #include <dctl/util/meta.hpp>                   // make_array, foldl_bit_or, foldl_comma
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/int_set.hpp>
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <type_traits>                          // bool_constant
 
 namespace dctl::core {
-namespace ray {
 namespace detail {
 
 template<class Board, int Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
@@ -57,7 +55,7 @@ class board_scan_sq_dir
 {
         inline const static auto table = []() {
                 auto result = std::array<std::array<set_t<Board>, meta::size<Directions>::value>, Board::bits()>{};
-                xstd::for_each(Board::squares, [&](auto const sq) {
+                Board::squares.for_each([&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::make_array<Directions>{}([=](auto direction) {
                                         constexpr auto direction_v = decltype(direction){};
@@ -81,7 +79,7 @@ class board_scan_dir_sq
                 return meta::make_array<Directions>{}([](auto direction) {
                         constexpr auto direction_v [[maybe_unused]] = decltype(direction){}; // silence bogus GCC warning unused-but-set-variable
                         auto result = std::array<set_t<Board>, Board::bits()>{};
-                        xstd::for_each(Board::squares, [&](auto const sq) {
+                        Board::squares.for_each([&](auto const sq) {
                                 result[static_cast<std::size_t>(sq)] =
                                         scan<Board, direction_v, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
                                 ;
@@ -160,7 +158,7 @@ class king_moves
 
         inline const static auto table = []() {
                 auto result = std::array<set_t<Board>, Board::bits()>{};
-                xstd::for_each(Board::squares, [&](auto const sq) {
+                Board::squares.for_each([&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::foldl_bit_or<basic_king_move_directions>{}([=](auto direction) {
                                         constexpr auto direction_v = decltype(direction){};
@@ -185,7 +183,8 @@ public:
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         auto targets = table[static_cast<std::size_t>(sq)];
                         meta::foldl_comma<basic_king_move_directions>{}([&, this](auto direction) {
-                                clear_blocker_and_beyond<decltype(direction){}>(sq, occup, targets);
+                                constexpr auto direction_v = decltype(direction){};
+                                clear_blocker_and_beyond<direction_v>(sq, occup, targets);
                         });
                         return targets;
                 } else {
@@ -194,5 +193,4 @@ public:
         }
 };
 
-}       // namespace ray
 }       // namespace dctl::core

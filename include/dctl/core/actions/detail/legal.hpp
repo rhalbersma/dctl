@@ -7,10 +7,10 @@
 
 #include <dctl/core/actions/detail/primary_fwd.hpp>     // actions (primary template)
 #include <dctl/core/actions/detail/jump.hpp>            // actions (jump specialization)
-#include <dctl/core/actions/detail/push.hpp>            // actions (push specialization)
+#include <dctl/core/actions/detail/move.hpp>            // actions (push specialization)
 #include <dctl/core/actions/select/legal.hpp>           // legal
 #include <dctl/core/actions/select/jump.hpp>            // jump
-#include <dctl/core/actions/select/push.hpp>            // push
+#include <dctl/core/actions/select/move.hpp>            // move
 #include <dctl/core/state/color_piece.hpp>              // color, color_
 
 namespace dctl::core {
@@ -20,7 +20,7 @@ template<color Side, class DuplicatesPolicy, class Reverse>
 class actions<color_<Side>, select::legal, DuplicatesPolicy, Reverse>
 {
         using jumps = actions<color_<Side>, select::jump, DuplicatesPolicy, Reverse>;
-        using moves = actions<color_<Side>, select::push, DuplicatesPolicy, Reverse>;
+        using moves = actions<color_<Side>, select::move, DuplicatesPolicy, Reverse>;
 public:
         template<class State>
         static auto detect(State const& s) noexcept

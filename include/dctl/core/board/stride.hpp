@@ -6,68 +6,12 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>
-#include <dctl/util/type_traits.hpp>
 #include <cassert>
 
 namespace dctl::core {
 
-enum class direction
-{
-        left,
-        right
-};
-
-template<int Direction>
-constexpr auto shift_sign_v = (angle{Direction} == 0_deg || 180_deg < angle{Direction}) ? direction::left : direction::right;
-
-template<direction, int N>
-struct shift;
-
-template<int N>
-struct shift<direction::left, N>
-{
-        template<class T>
-        constexpr auto operator()(T const& t) const noexcept
-        {
-                return t << N;
-        }
-};
-
-template<int N>
-struct shift<direction::right, N>
-{
-        template<class T>
-        constexpr auto operator()(T const& t) const noexcept
-        {
-                return t >> N;
-        }
-};
-
-template<direction, int N>
-struct shift_assign;
-
-template<int N>
-struct shift_assign<direction::left, N>
-{
-        template<class T>
-        constexpr auto operator()(T& t) const noexcept
-        {
-                t <<= N;
-        }
-};
-
-template<int N>
-struct shift_assign<direction::right, N>
-{
-        template<class T>
-        constexpr auto operator()(T& t) const noexcept
-        {
-                t >>= N;
-        }
-};
-
 template<class Board>
-class shift_size
+class stride
 {
         constexpr auto left_down () const noexcept { return (Board::outer_grid.width() + Board::outer_grid.edge()) / 2; }
         constexpr auto right_down() const noexcept { return left_down() + 1;            }
@@ -95,6 +39,6 @@ public:
 };
 
 template<class Board, int Direction>
-constexpr auto shift_size_v = shift_size<Board>{}(angle{Direction});
+constexpr auto stride_v = stride<Board>{}(angle{Direction});
 
 }       // namespace dctl::core

@@ -9,10 +9,10 @@
 #include <dctl/core/actions/detail/king_jump.hpp>       // promote_en_passant
 #include <dctl/core/actions/detail/pattern.hpp>         // jump_sources, jump_targets
 #include <dctl/core/actions/detail/raii.hpp>            // Launch, Capture, Visit, Toggleking_targets, Setpromotion
+#include <dctl/core/actions/detail/tables.hpp>          // pawn_jump_scan
 #include <dctl/core/actions/select/jump.hpp>            // jumps
 #include <dctl/core/board/angle.hpp>                    // rotate, inverse
 #include <dctl/core/board/bearing.hpp>                  // bearing
-#include <dctl/core/board/ray.hpp>                      // pawn_jump_target, make_iterator
 #include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/util/meta.hpp>                           // foldl_logical_or, foldl_comma, foldl_bit_or
@@ -124,7 +124,7 @@ private:
         {
                 return meta::foldl_bit_or<pawn_scan_directions<meta::integral_c<int, Direction>>>{}([&](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        if (!(ray::pawn_jump_scan<rules_type, board_type, direction_v>(jumper) & m_builder.template targets<direction_v>()).empty()) {
+                        if (!(pawn_jump_scan<rules_type, board_type, direction_v>(jumper) & m_builder.template targets<direction_v>()).empty()) {
                                 capture<direction_v>(next<board_type, direction_v>{}(jumper), m_builder);
                                 return true;
                         }

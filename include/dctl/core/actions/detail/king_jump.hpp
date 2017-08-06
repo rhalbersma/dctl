@@ -8,10 +8,10 @@
 #include <dctl/core/actions/detail/builder.hpp> // builder
 #include <dctl/core/actions/detail/pattern.hpp> // jump_targets
 #include <dctl/core/actions/detail/raii.hpp>    // Launch, Capture, Visit, set_king_jump
+#include <dctl/core/actions/detail/tables.hpp>  // king_jump_scan, king_move_scan, blocker_and_beyond
 #include <dctl/core/actions/select/jump.hpp>    // jump
 #include <dctl/core/board/angle.hpp>            // left_up, right_up, left_down, right_down, rotate, inverse
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/board/ray.hpp>              // make_iterator, rotate, mirror
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
@@ -78,7 +78,7 @@ public:
                         meta::foldl_comma<king_jump_directions>{}([&](auto direction) {
                                 constexpr auto direction_v = decltype(direction){};
                                 if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
-                                        if (auto const blocker = ray::king_jump_scan<rules_type, board_type, direction_v>(from_sq) & m_builder.pieces(occup_c); !blocker.empty()) {
+                                        if (auto const blocker = king_jump_scan<rules_type, board_type, direction_v>(from_sq) & m_builder.pieces(occup_c); !blocker.empty()) {
                                                 if (auto const first = find_first<direction_v>(blocker); m_builder.template targets<direction_v>().contains(first)) {
                                                         capture<direction_v>(first, m_builder);
                                                 }
@@ -168,7 +168,7 @@ private:
                         return scan<Direction>(jumper, m_builder) | turn<Direction>(jumper, m_builder);
                 } else {
                         auto found_next = false;
-                        auto ahead = ray::king_move_scan<rules_type, board_type, Direction>(jumper);
+                        auto ahead = king_move_scan<rules_type, board_type, Direction>(jumper);
                         auto n = ahead.count();
                         if (ahead &= m_builder.pieces(occup_c); !ahead.empty()) {
                                 auto const first = find_first<Direction>(ahead);
@@ -176,7 +176,7 @@ private:
                                         capture<Direction>(first, m_builder);
                                         found_next |= true;
                                 }
-                                n -= ray::blocker_and_beyond<rules_type, board_type, Direction>(first).count();
+                                n -= blocker_and_beyond<rules_type, board_type, Direction>(first).count();
                         }
                         do {
                                 found_next |= turn<Direction>(jumper, m_builder);
@@ -199,7 +199,7 @@ private:
         static auto scan(int jumper, Builder& m_builder)
         {
                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                        if (auto const blocker = ray::king_jump_scan<rules_type, board_type, Direction>(jumper) & m_builder.pieces(occup_c); !blocker.empty()) {
+                        if (auto const blocker = king_jump_scan<rules_type, board_type, Direction>(jumper) & m_builder.pieces(occup_c); !blocker.empty()) {
                                 if (auto const first = find_first<Direction>(blocker); m_builder.template targets<Direction>().contains(first)) {
                                         capture<Direction>(first, m_builder);
                                         return true;
