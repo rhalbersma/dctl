@@ -92,7 +92,7 @@ public:
 
 private:
         constexpr static auto bit_from_square_table = []() {
-                auto table = std::array<int, NumSquares>{};
+                auto table = std::array<int, static_cast<std::size_t>(NumSquares)>{};
                 for (auto sq = 0; sq < NumSquares; ++sq) {
                         table[static_cast<std::size_t>(sq)] =
                                 transform(sq, inner_grid, outer_grid, inverse(orientation))
@@ -102,7 +102,7 @@ private:
         }();
 
         constexpr static auto square_from_bit_table = []() {
-                auto table = std::array<int, NumBits>{};
+                auto table = std::array<int, static_cast<std::size_t>(NumBits)>{};
                 for (auto n = 0; n < NumBits; ++n) {
                         table[static_cast<std::size_t>(n)] =
                                 transform(n, outer_grid, inner_grid, orientation)

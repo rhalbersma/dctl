@@ -32,8 +32,8 @@ set(cxx_compile_options_warnings_general
                 -Wconversion                
                 -Wshadow
                 -Wsign-compare 
+                -Wsign-conversion
                 -Wsign-promo
-                -Wno-error=sign-conversion
         >
  		-Werror 
         -pedantic-errors
