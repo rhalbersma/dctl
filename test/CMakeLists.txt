@@ -34,7 +34,6 @@ set(cxx_compile_options_warnings_general
                 -Wsign-compare 
                 -Wsign-promo
                 -Wno-error=sign-conversion
-				-Wno-unused-but-set-variable                
         >
  		-Werror 
         -pedantic-errors
