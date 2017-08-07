@@ -44,8 +44,8 @@ class pawn_jump<color_<Side>, Reverse, State>
         template<class Arg, class Direction>
         using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;
 
-        template<class Direction>
-        using pawn_scan_directions = meta::remove_if_q<pawn_jump_directions, meta::bind_back<is_reverse, Direction>>;
+        template<int Direction>
+        using pawn_scan_directions = meta::remove_if_q<pawn_jump_directions, meta::bind_back<is_reverse, meta::integral_c<int, Direction>>>;
 public:
         static auto detect(State const& s) noexcept
         {
@@ -122,7 +122,7 @@ private:
         template<int Direction, class Builder>
         static auto next_target(int jumper, Builder& m_builder)
         {
-                return meta::foldl_bit_or<pawn_scan_directions<meta::integral_c<int, Direction>>>{}([&](auto direction) {
+                return meta::foldl_bit_or<pawn_scan_directions<Direction>>{}([&](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
                         if (!(pawn_jump_scan<rules_type, board_type, direction_v>(jumper) & m_builder.template targets<direction_v>()).empty()) {
                                 capture<direction_v>(next<board_type, direction_v>{}(jumper), m_builder);

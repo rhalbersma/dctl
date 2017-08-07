@@ -49,8 +49,8 @@ class king_jump<color_<Side>, Reverse, State>
         template<class Arg, class Direction>
         using is_forward_or_reverse = std::disjunction<is_forward<Arg, Direction>, is_reverse<Arg, Direction>>;
 
-        template<class Direction>
-        using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, Direction>>;
+        template<int Direction>
+        using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, meta::integral_c<int, Direction>>>;
 
         constexpr static auto GCC7_ICE_WORKAROUND_is_long_ranged_king = is_long_ranged_king_v<rules_type>;
 public:
@@ -84,9 +84,8 @@ public:
                                                 }
                                         }
                                 } else {
-                                        auto const jumper = next<board_type, direction_v>{}(from_sq);
-                                        if (board_type::is_onboard(jumper) && m_builder.template is_target<direction_v>(jumper)) {
-                                                capture<direction_v>(jumper, m_builder);
+                                        if (!(king_jump_scan<rules_type, board_type, direction_v>(from_sq) & m_builder.template targets<direction_v>()).empty()) {
+                                                capture<direction_v>(next<board_type, direction_v>{}(from_sq), m_builder);
                                         }
                                 }
                         });
@@ -108,7 +107,6 @@ private:
         static auto capture(int jumper, Builder& m_builder)
                 -> void
         {
-                assert(board_type::is_onboard(jumper));
                 raii::capture<Builder> guard{m_builder, jumper};
                 advance<board_type, Direction>{}(jumper);
                 if (!next_target<Direction>(jumper, m_builder)) {
@@ -137,11 +135,10 @@ private:
         template<int Direction, class Builder>
         static auto add_sliding_jumps(int dest_sq, Builder& m_builder)
         {
-                assert(board_type::is_onboard(dest_sq) && m_builder.not_occupied(dest_sq));
                 do {
                         m_builder.finalize(dest_sq);
                         advance<board_type, Direction>{}(dest_sq);
-                } while (board_type::is_onboard(dest_sq) && m_builder.not_occupied(dest_sq));
+                } while (board_type::is_onboard(dest_sq) && m_builder.pieces(empty_c).contains(dest_sq));
         }
 
         template<int Direction, class Builder>
@@ -189,7 +186,7 @@ private:
         template<int Direction, class Builder>
         static auto turn(int jumper, Builder& m_builder)
         {
-                return meta::foldl_bit_or<king_turn_directions<meta::integral_c<int, Direction>>>{}([&](auto direction) {
+                return meta::foldl_bit_or<king_turn_directions<Direction>>{}([&](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
                         return scan<direction_v>(jumper, m_builder);
                 });
@@ -207,10 +204,8 @@ private:
                         }
                         return false;
                 } else {
-                        advance<board_type, Direction>{}(jumper);
-                        if (board_type::is_onboard(jumper) && m_builder.template is_target<Direction>(jumper)) {
-                                assert(board_type::is_onboard(next<board_type, Direction>{}(jumper)));
-                                capture<Direction>(jumper, m_builder);
+                        if (!(king_jump_scan<rules_type, board_type, Direction>(jumper) & m_builder.template targets<Direction>()).empty()) {
+                                capture<Direction>(next<board_type, Direction>{}(jumper), m_builder);
                                 return true;
                         }
                         return false;

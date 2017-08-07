@@ -125,17 +125,6 @@ public:
                 return move_sources<board_type, Direction>{}(targets(), pieces(empty_c));
         }
 
-        template<int Direction>
-        auto is_target(int const sq) const
-        {
-                return targets<Direction>().contains(sq);
-        }
-
-        auto not_occupied(int const sq) const
-        {
-                return m_empty.contains(sq);
-        }
-
         auto is_last_jumped_king(int const sq) const
         {
                 return m_state.pieces(kings_c).contains(sq);
