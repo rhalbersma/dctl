@@ -160,7 +160,7 @@ class king_moves
                 auto result = std::array<set_t<Board>, Board::bits()>{};
                 Board::squares.for_each([&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::foldl_bit_or<basic_king_move_directions>{}([=](auto direction) {
+                                meta::foldl_bit_or<basic_king_move_directions>{}([&](auto direction) {
                                         constexpr auto direction_v = decltype(direction){};
                                         return king_move_scan<Rules, Board, direction_v>(sq);
                                 });
@@ -180,7 +180,7 @@ public:
                 assert(Board::is_onboard(sq));
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         auto targets = table[static_cast<std::size_t>(sq)];
-                        meta::foldl_comma<basic_king_move_directions>{}([&, this](auto direction) {
+                        meta::foldl_comma<basic_king_move_directions>{}([&](auto direction) {
                                 constexpr auto direction_v = decltype(direction){};
                                 if (auto const blockers = king_move_scan<Rules, Board, direction_v>(sq) & occup; !blockers.empty()) {
                                         targets ^= blocker_and_beyond<Rules, Board, direction_v>(find_first<direction_v>(blockers));

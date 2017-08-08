@@ -92,14 +92,12 @@ public:
         }
 
         template<int Direction, class Builder>
-        static auto try_next_passing_promotion(int jumper, Builder& m_builder)
+        static auto next_target_passing_promotion(int sq, Builder& m_builder)
         {
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(m_builder.with() == piece::pawns);
                 assert(m_builder.into() == piece::kings);
-                if (!next_target<Direction>(jumper, m_builder)) {
-                        halt<Direction>(jumper, m_builder);
-                }
+                return next_target<Direction>(sq, m_builder);
         }
 private:
         template<int Direction, class Builder>
