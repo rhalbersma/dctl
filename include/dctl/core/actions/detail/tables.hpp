@@ -168,15 +168,13 @@ class king_moves
                 });
                 return result;
         }();
-
-        template<int Direction>
-        auto clear_blocker_and_beyond(int const sq, set_type const& occupied, set_type& targets) const
-        {
-                if (auto const blockers = king_move_scan<Rules, Board, Direction>(sq) & occupied; !blockers.empty()) {
-                        targets ^= blocker_and_beyond<Rules, Board, Direction>(find_first<Direction>(blockers));
-                }
-        }
 public:
+        auto operator()(int const sq) const
+        {
+                assert(Board::is_onboard(sq));
+                return table[static_cast<std::size_t>(sq)];
+        }
+
         auto operator()(int const sq, set_type const& occup) const
         {
                 assert(Board::is_onboard(sq));
@@ -184,7 +182,9 @@ public:
                         auto targets = table[static_cast<std::size_t>(sq)];
                         meta::foldl_comma<basic_king_move_directions>{}([&, this](auto direction) {
                                 constexpr auto direction_v = decltype(direction){};
-                                clear_blocker_and_beyond<direction_v>(sq, occup, targets);
+                                if (auto const blockers = king_move_scan<Rules, Board, direction_v>(sq) & occup; !blockers.empty()) {
+                                        targets ^= blocker_and_beyond<Rules, Board, direction_v>(find_first<direction_v>(blockers));
+                                }
                         });
                         return targets;
                 } else {
