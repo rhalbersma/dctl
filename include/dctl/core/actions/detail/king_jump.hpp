@@ -56,17 +56,16 @@ class king_jump<color_<Side>, Reverse, State>
 public:
         static auto detect(State const& s) noexcept
         {
-                if (auto const kings = s.pieces(color_c<Side>, kings_c); !kings.empty()) {
-                        auto const enemy = s.targets(color_c<Side>, kings_c);
-                        auto const empty = s.pieces(empty_c);
-                        return meta::foldl_logical_or<king_jump_directions>{}([&](auto direction) {
-                                constexpr auto direction_v = decltype(direction){};
-                                return !jump_targets<board_type, direction_v, king_range_category_t<rules_type>>{}(kings, enemy, empty)
-                                        .empty()
-                                ;
-                        });
+                auto const kings = s.pieces(color_c<Side>, kings_c);
+                if (kings.empty()) {
+                        return false;
                 }
-                return false;
+                return meta::foldl_logical_or<king_jump_directions>{}([&, targets = s.targets(color_c<Side>, kings_c), empty = s.pieces(empty_c)](auto direction) {
+                        constexpr auto direction_v = decltype(direction){};
+                        return !jump_targets<board_type, direction_v, king_range_category_t<rules_type>>{}(kings, targets, empty)
+                                .empty()
+                        ;
+                });
         }
 
         template<class Builder>

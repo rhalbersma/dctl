@@ -31,50 +31,51 @@ class pawn_move<color_<Side>, Reverse, State>
 public:
         static auto detect(State const& s) noexcept
         {
-                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        auto const empty = s.pieces(empty_c);
-                        return meta::foldl_logical_or<pawn_move_directions>{}([&](auto direction) {
-                                constexpr auto direction_v = decltype(direction){};
-                                return !move_targets<board_type, direction_v>{}(pawns, empty)
-                                        .empty()
-                                ;
-                        });
+                auto const pawns = s.pieces(color_c<Side>, pawns_c);
+                if (pawns.empty()) {
+                        return false;
                 }
-                return false;
+                return meta::foldl_logical_or<pawn_move_directions>{}([&, empty = s.pieces(empty_c)](auto direction) {
+                        constexpr auto direction_v = decltype(direction){};
+                        return !move_targets<board_type, direction_v>{}(pawns, empty)
+                                .empty()
+                        ;
+                });
         }
 
         static auto count(State const& s) noexcept
         {
-                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        auto const empty = s.pieces(empty_c);
-                        return meta::foldl_plus<pawn_move_directions>{}([&](auto direction) {
-                                constexpr auto direction_v = decltype(direction){};
-                                return move_targets<board_type, direction_v>{}(pawns, empty)
-                                        .count()
-                                ;
-                        });
+                auto const pawns = s.pieces(color_c<Side>, pawns_c);
+                if (pawns.empty()) {
+                        return 0;
                 }
-                return 0;
+                return meta::foldl_plus<pawn_move_directions>{}([&, empty = s.pieces(empty_c)](auto direction) {
+                        constexpr auto direction_v = decltype(direction){};
+                        return move_targets<board_type, direction_v>{}(pawns, empty)
+                                .count()
+                        ;
+                });
         }
 
         template<class SequenceContainer>
         static auto generate(State const& s, SequenceContainer& seq)
         {
-                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        auto const empty = s.pieces(empty_c);
-                        meta::foldl_comma<pawn_move_directions>{}([&](auto direction) {
-                                constexpr auto direction_v = decltype(direction){};
-                                move_targets<board_type, direction_v>{}(pawns, empty)
-                                        .consume([&](auto dest_sq) {
-                                                seq.emplace_back(
-                                                        prev<board_type, direction_v>{}(dest_sq),
-                                                        dest_sq,
-                                                        board_type::promotion(Side).contains(dest_sq)
-                                                );
-                                        })
-                                ;
-                        });
+                auto const pawns = s.pieces(color_c<Side>, pawns_c);
+                if (pawns.empty()) {
+                        return;
                 }
+                meta::foldl_comma<pawn_move_directions>{}([&, empty = s.pieces(empty_c)](auto direction) {
+                        constexpr auto direction_v = decltype(direction){};
+                        move_targets<board_type, direction_v>{}(pawns, empty)
+                                .consume([&](auto dest_sq) {
+                                        seq.emplace_back(
+                                                prev<board_type, direction_v>{}(dest_sq),
+                                                dest_sq,
+                                                board_type::promotion(Side).contains(dest_sq)
+                                        );
+                                })
+                        ;
+                });
         }
 };
 

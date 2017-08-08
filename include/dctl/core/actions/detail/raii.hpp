@@ -12,24 +12,6 @@ namespace dctl::core {
 namespace raii {
 
 template<class Builder>
-class toggle_king_targets
-{
-        Builder& m_builder;
-public:
-        ~toggle_king_targets() noexcept
-        {
-                m_builder.toggle_king_targets();
-        }
-
-        explicit toggle_king_targets(Builder& b) noexcept
-        :
-                m_builder{b}
-        {
-                m_builder.toggle_king_targets();
-        }
-};
-
-template<class Builder>
 class launch
 {
         Builder& m_builder;

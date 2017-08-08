@@ -49,36 +49,39 @@ class pawn_jump<color_<Side>, Reverse, State>
 public:
         static auto detect(State const& s) noexcept
         {
-                if (auto const pawns = s.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        auto const enemy = s.targets(color_c<Side>, pawns_c);
-                        auto const empty = s.pieces(empty_c);
-                        return meta::foldl_logical_or<pawn_jump_directions>{}([&](auto direction) {
-                                constexpr auto direction_v = decltype(direction){};
-                                return !jump_targets<board_type, direction_v>{}(pawns, enemy, empty)
-                                        .empty()
-                                ;
-                        });
+                auto const pawns = s.pieces(color_c<Side>, pawns_c);
+                if (pawns.empty()) {
+                        return false;
                 }
-                return false;
+                return meta::foldl_logical_or<pawn_jump_directions>{}([&, targets = s.targets(color_c<Side>, pawns_c), empty = s.pieces(empty_c)](auto direction) {
+                        constexpr auto direction_v = decltype(direction){};
+                        return !jump_targets<board_type, direction_v>{}(pawns, targets, empty)
+                                .empty()
+                        ;
+                });
         }
 
         template<class Builder>
         static auto generate(Builder& m_builder)
         {
-                if (auto const pawns = m_builder.pieces(color_c<Side>, pawns_c); !pawns.empty()) {
-                        if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
-                        auto const enemy = m_builder.targets();
-                        auto const empty = m_builder.pieces(empty_c);
-                        meta::foldl_comma<pawn_jump_directions>{}([&](auto direction) {
-                                constexpr auto direction_v = decltype(direction){};
-                                jump_sources<board_type, direction_v>{}(pawns, enemy, empty)
-                                        .consume([&](auto from_sq) {
-                                                raii::launch<Builder> guard{m_builder, from_sq};
-                                                capture<direction_v>(next<board_type, direction_v>{}(from_sq), m_builder);
-                                        })
-                                ;
-                        });
-                        if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
+                auto const pawns = m_builder.pieces(color_c<Side>, pawns_c);
+                if (pawns.empty()) {
+                        return;
+                }
+                if constexpr (is_superior_rank_jump_v<rules_type>) {
+                        m_builder.toggle_king_targets();
+                }
+                meta::foldl_comma<pawn_jump_directions>{}([&, targets = m_builder.targets(), empty = m_builder.pieces(empty_c)](auto direction) {
+                        constexpr auto direction_v = decltype(direction){};
+                        jump_sources<board_type, direction_v>{}(pawns, targets, empty)
+                                .consume([&](auto from_sq) {
+                                        raii::launch<Builder> guard{m_builder, from_sq};
+                                        capture<direction_v>(next<board_type, direction_v>{}(from_sq), m_builder);
+                                })
+                        ;
+                });
+                if constexpr (is_superior_rank_jump_v<rules_type>) {
+                        m_builder.toggle_king_targets();
                 }
         }
 private:
@@ -111,9 +114,13 @@ private:
         {
                 raii::promotion<Builder> guard{m_builder};
                 if constexpr (is_passing_promotion_v<rules_type>) {
-                        if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
+                        if constexpr (is_superior_rank_jump_v<rules_type>) {
+                                m_builder.toggle_king_targets();
+                        }
                         king_jumps::template try_next_passing_promotion<Direction>(jumper, m_builder);
-                        if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
+                        if constexpr (is_superior_rank_jump_v<rules_type>) {
+                                m_builder.toggle_king_targets();
+                        }
                 } else {
                         return m_builder.finalize(jumper);
                 }
