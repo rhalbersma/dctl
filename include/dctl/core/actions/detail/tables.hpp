@@ -5,9 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/pattern.hpp>
-#include <dctl/core/board/angle.hpp>            // angle
-#include <dctl/core/board/stride.hpp>           // find_first
+#include <dctl/core/actions/detail/stride.hpp>  // find_first, advance, next
 #include <dctl/util/meta.hpp>                   // make_array, foldl_bit_or, foldl_comma
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <array>                                // array
@@ -151,8 +149,37 @@ auto blocker_and_beyond(int const sq)
         return detail::basic_blocker_and_beyond<Rules, Board>{}(sq, index);
 }
 
+template<class Rules, class Board, int... Direction>
+class king_moves;
+
+template<class Rules, class Board, int Direction>
+class king_moves<Rules, Board, Direction>
+{
+        using set_type = set_t<Board>;
+public:
+        auto operator()(int const sq) const
+        {
+                assert(Board::is_onboard(sq));
+                return king_move_scan<Rules, Board, Direction>(sq);
+        }
+
+        auto operator()(int const sq, set_type const& occup) const
+        {
+                assert(Board::is_onboard(sq));
+                if constexpr (is_long_ranged_king_v<Rules>) {
+                        auto targets = king_move_scan<Rules, Board, Direction>(sq);
+                        if (auto const blockers = targets & occup; !blockers.empty()) {
+                                targets ^= blocker_and_beyond<Rules, Board, Direction>(find_first<Direction>(blockers));
+                        }
+                        return targets;
+                } else {
+                        return king_move_scan<Rules, Board, Direction>(sq) - occup;
+                }
+        }
+};
+
 template<class Rules, class Board>
-class king_moves
+class king_moves<Rules, Board>
 {
         using set_type = set_t<Board>;
 

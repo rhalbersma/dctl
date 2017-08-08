@@ -5,17 +5,17 @@
 
 #include <core/board/sequence.hpp>              // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, board<12, 10>, canadian, srilankan, dumm
+#include <dctl/core/actions/detail/stride.hpp>  // stride
 #include <dctl/core/board/angle.hpp>            // angle, reverse
 #include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK_EQUAL
 #include <vector>                               // vector
-#include <dctl/core/board/stride.hpp>           // stride
 
 using namespace dctl::core;
 using namespace literals;
 
-BOOST_AUTO_TEST_SUITE(GridStride)
+BOOST_AUTO_TEST_SUITE(ActionsStride)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseAngleSymmetryForAllDirections, T, BoardSequence)
 {

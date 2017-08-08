@@ -6,7 +6,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/actions/detail/pattern.hpp> // move_sources
-#include <dctl/core/board/angle.hpp>            // angle, is_orthogonal
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t, set_t, value_t

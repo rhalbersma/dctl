@@ -10,7 +10,6 @@
 #include <dctl/core/actions/detail/raii.hpp>    // Launch, Capture, Visit, set_king_jump
 #include <dctl/core/actions/detail/tables.hpp>  // king_jump_scan, king_move_scan, blocker_and_beyond
 #include <dctl/core/actions/select/jump.hpp>    // jump
-#include <dctl/core/board/angle.hpp>            // left_up, right_up, left_down, right_down, rotate, inverse
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
@@ -35,10 +34,10 @@ class king_jump<color_<Side>, Reverse, State>
         using   set_type =   set_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
-        template<class Direction>
-        using rot = meta::integral_c<int, rotate(angle{Direction::value}, angle{orientation}).value()>;
+        template<class Arg>
+        using oriented = meta::integral_c<int, rotate_v<Arg::value, orientation>>;
 
-        using king_jump_directions = meta::transform<rot, basic_king_jump_directions<rules_type>>;
+        using king_jump_directions = meta::transform<oriented, basic_king_jump_directions<rules_type>>;
 
         template<class Arg, class Direction>
         using is_forward = std::bool_constant<Arg::value == Direction::value>;

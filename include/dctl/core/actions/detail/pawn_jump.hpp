@@ -11,7 +11,6 @@
 #include <dctl/core/actions/detail/raii.hpp>            // Launch, Capture, Visit, Toggleking_targets, Setpromotion
 #include <dctl/core/actions/detail/tables.hpp>          // pawn_jump_scan
 #include <dctl/core/actions/select/jump.hpp>            // jumps
-#include <dctl/core/board/angle.hpp>                    // rotate, inverse
 #include <dctl/core/board/bearing.hpp>                  // bearing
 #include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
@@ -37,9 +36,9 @@ class pawn_jump<color_<Side>, Reverse, State>
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
         template<class Arg>
-        using orient = meta::integral_c<int, rotate(angle{Arg::value}, angle{orientation}).value()>;
+        using oriented = meta::integral_c<int, rotate_v<Arg::value, orientation>>;
 
-        using pawn_jump_directions = meta::transform<orient, basic_pawn_jump_directions<rules_type>>;
+        using pawn_jump_directions = meta::transform<oriented, basic_pawn_jump_directions<rules_type>>;
 
         template<class Arg, class Direction>
         using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;

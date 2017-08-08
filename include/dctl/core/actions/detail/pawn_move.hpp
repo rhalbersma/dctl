@@ -6,7 +6,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/actions/detail/pattern.hpp> // move_targets
-#include <dctl/core/board/angle.hpp>            // angle, rotate
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_, pawn_
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
@@ -24,10 +23,10 @@ class pawn_move<color_<Side>, Reverse, State>
         using board_type = board_t<State>;
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
-        template<class Direction>
-        using rot = meta::integral_c<int, rotate(angle{Direction::value}, angle{orientation}).value()>;
+        template<class Arg>
+        using oriented = meta::integral_c<int, rotate_v<Arg::value, orientation>>;
 
-        using pawn_move_directions = meta::transform<rot, basic_pawn_move_directions>;
+        using pawn_move_directions = meta::transform<oriented, basic_pawn_move_directions>;
 public:
         static auto detect(State const& s) noexcept
         {
@@ -35,11 +34,9 @@ public:
                 if (pawns.empty()) {
                         return false;
                 }
-                return meta::foldl_logical_or<pawn_move_directions>{}([&, empty = s.pieces(empty_c)](auto direction) {
+                return meta::foldl_logical_or<pawn_move_directions>{}([&pawns, empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        return !move_targets<board_type, direction_v>{}(pawns, empty)
-                                .empty()
-                        ;
+                        return !move_targets<board_type, direction_v>{}(pawns, empty).empty();
                 });
         }
 
@@ -49,11 +46,9 @@ public:
                 if (pawns.empty()) {
                         return 0;
                 }
-                return meta::foldl_plus<pawn_move_directions>{}([&, empty = s.pieces(empty_c)](auto direction) {
+                return meta::foldl_plus<pawn_move_directions>{}([&pawns, empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        return move_targets<board_type, direction_v>{}(pawns, empty)
-                                .count()
-                        ;
+                        return move_targets<board_type, direction_v>{}(pawns, empty).count();
                 });
         }
 
@@ -64,17 +59,11 @@ public:
                 if (pawns.empty()) {
                         return;
                 }
-                meta::foldl_comma<pawn_move_directions>{}([&, empty = s.pieces(empty_c)](auto direction) {
+                meta::foldl_comma<pawn_move_directions>{}([&seq, &pawns, empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        move_targets<board_type, direction_v>{}(pawns, empty)
-                                .consume([&](auto dest_sq) {
-                                        seq.emplace_back(
-                                                prev<board_type, direction_v>{}(dest_sq),
-                                                dest_sq,
-                                                board_type::promotion(Side).contains(dest_sq)
-                                        );
-                                })
-                        ;
+                        move_targets<board_type, direction_v>{}(pawns, empty).consume([&](auto dest_sq) {
+                                seq.emplace_back(prev<board_type, direction_v>{}(dest_sq), dest_sq, board_type::promotion(Side).contains(dest_sq));
+                        });
                 });
         }
 };
