@@ -83,11 +83,11 @@ public:
 
         action() = default;
 
-        constexpr action(int const src, int const dst, bool const promotion) noexcept
+        constexpr action(int const src, int const dst, bool const is_promotion) noexcept
         :
                 conditional_base_ordering_precedence{},
                 conditional_base_contents_precedence{},
-                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::pawns, promotion ? piece::kings : piece::pawns}
+                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::pawns, is_promotion ? piece::kings : piece::pawns}
         {
                 assert_invariants();
         }

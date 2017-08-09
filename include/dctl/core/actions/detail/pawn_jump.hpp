@@ -7,9 +7,8 @@
 
 #include <dctl/core/actions/detail/builder.hpp>         // builder
 #include <dctl/core/actions/detail/king_jump.hpp>       // promote_en_passant
-#include <dctl/core/actions/detail/pattern.hpp>         // jump_sources, jump_targets
+#include <dctl/core/actions/detail/pattern.hpp>         // jump_squares
 #include <dctl/core/actions/detail/raii.hpp>            // Launch, Capture, Visit, Toggleking_targets, Setpromotion
-#include <dctl/core/actions/detail/tables.hpp>          // pawn_jump_scan
 #include <dctl/core/actions/select/jump.hpp>            // jumps
 #include <dctl/core/board/bearing.hpp>                  // bearing
 #include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
@@ -49,14 +48,10 @@ public:
         static auto detect(State const& s) noexcept
         {
                 auto const pawns = s.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) {
-                        return false;
-                }
+                if (pawns.empty()) { return false; }
                 return meta::foldl_logical_or<pawn_jump_directions>{}([&, targets = s.targets(color_c<Side>, pawns_c), empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        return !jump_targets<board_type, direction_v>{}(pawns, targets, empty)
-                                .empty()
-                        ;
+                        return !jump_squares<board_type, direction_v>{}(pawns, targets, empty).empty();
                 });
         }
 
@@ -64,24 +59,16 @@ public:
         static auto generate(Builder& m_builder)
         {
                 auto const pawns = m_builder.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) {
-                        return;
-                }
-                if constexpr (is_superior_rank_jump_v<rules_type>) {
-                        m_builder.toggle_king_targets();
-                }
+                if (pawns.empty()) { return; }
+                if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                 meta::foldl_comma<pawn_jump_directions>{}([&, targets = m_builder.targets(), empty = m_builder.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        jump_sources<board_type, direction_v>{}(pawns, targets, empty)
-                                .consume([&](auto sq) {
-                                        raii::launch<Builder> guard{m_builder, sq};
-                                        capture<direction_v>(next<board_type, direction_v, 2>{}(sq), m_builder);
-                                })
-                        ;
+                        jump_squares<board_type, direction_v>{}(pawns, targets, empty).consume([&](auto sq) {
+                                raii::launch<Builder> guard{m_builder, prev<board_type, direction_v, 2>{}(sq)};
+                                capture<direction_v>(sq, m_builder);
+                        });
                 });
-                if constexpr (is_superior_rank_jump_v<rules_type>) {
-                        m_builder.toggle_king_targets();
-                }
+                if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
         }
 private:
         template<int Direction, class Builder>
@@ -91,41 +78,28 @@ private:
                 raii::capture<Builder> guard{m_builder, prev<board_type, Direction>{}(sq)};
                 if constexpr (is_passing_promotion_v<rules_type>) {
                         if (board_type::promotion(Side).contains(sq)) {
-                                raii::promotion<Builder> guard2{m_builder};
-                                if constexpr (is_superior_rank_jump_v<rules_type>) {
-                                        m_builder.toggle_king_targets();
-                                }
+                                if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                                 if (!king_jumps::template next_target_passing_promotion<Direction>(sq, m_builder)) {
-                                        m_builder.finalize(sq);
+                                        m_builder.finalize(sq, piece::kings);
                                 }
-                                if constexpr (is_superior_rank_jump_v<rules_type>) {
-                                        m_builder.toggle_king_targets();
-                                }
+                                if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
                         } else if (!next_target<Direction>(sq, m_builder)) {
-                                m_builder.finalize(sq);
+                                m_builder.finalize(sq, piece::pawns);
                         }
                 } else {
-                        if (!next_target<Direction>(sq, m_builder)) {
-                                if (board_type::promotion(Side).contains(sq)) {
-                                        raii::promotion<Builder> guard2{m_builder};
-                                        m_builder.finalize(sq);
-                                } else {
-                                        m_builder.finalize(sq);
-                                }
-                        }
+                        if (next_target<Direction>(sq, m_builder)) { return; }
+                        m_builder.finalize(sq, board_type::promotion(Side).contains(sq) ? piece::kings : piece::pawns);
                 }
         }
 
         template<int Direction, class Builder>
         static auto next_target(int sq, Builder& m_builder)
         {
-                return meta::foldl_bit_or<pawn_scan_directions<Direction>>{}([&](auto direction) {
+                return meta::foldl_bit_or<pawn_scan_directions<Direction>>{}([&, targets = m_builder.targets(), empty = m_builder.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        if (!(pawn_jump_scan<rules_type, board_type, direction_v>(sq) & m_builder.template targets<direction_v>()).empty()) {
-                                capture<direction_v>(next<board_type, direction_v, 2>{}(sq), m_builder);
-                                return true;
-                        }
-                        return false;
+                        if (jump_squares<board_type, direction_v>{}(set_type{sq}, targets, empty).empty()) { return false; }
+                        capture<direction_v>(next<board_type, direction_v, 2>{}(sq), m_builder);
+                        return true;
                 });
         }
 };

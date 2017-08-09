@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/pattern.hpp> // move_targets
+#include <dctl/core/actions/detail/pattern.hpp> // move_squares
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_, pawn_
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
@@ -31,24 +31,20 @@ public:
         static auto detect(State const& s) noexcept
         {
                 auto const pawns = s.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) {
-                        return false;
-                }
+                if (pawns.empty()) { return false; }
                 return meta::foldl_logical_or<pawn_move_directions>{}([&pawns, empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        return !move_targets<board_type, direction_v>{}(pawns, empty).empty();
+                        return !move_squares<board_type, direction_v>{}(pawns, empty).empty();
                 });
         }
 
         static auto count(State const& s) noexcept
         {
                 auto const pawns = s.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) {
-                        return 0;
-                }
+                if (pawns.empty()) { return 0; }
                 return meta::foldl_plus<pawn_move_directions>{}([&pawns, empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        return move_targets<board_type, direction_v>{}(pawns, empty).count();
+                        return move_squares<board_type, direction_v>{}(pawns, empty).count();
                 });
         }
 
@@ -56,12 +52,10 @@ public:
         static auto generate(State const& s, SequenceContainer& seq)
         {
                 auto const pawns = s.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) {
-                        return;
-                }
+                if (pawns.empty()) { return; }
                 meta::foldl_comma<pawn_move_directions>{}([&seq, &pawns, empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        move_targets<board_type, direction_v>{}(pawns, empty).consume([&](auto dest_sq) {
+                        move_squares<board_type, direction_v>{}(pawns, empty).consume([&](auto dest_sq) {
                                 seq.emplace_back(prev<board_type, direction_v>{}(dest_sq), dest_sq, board_type::promotion(Side).contains(dest_sq));
                         });
                 });

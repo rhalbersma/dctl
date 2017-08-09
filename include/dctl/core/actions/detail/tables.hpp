@@ -99,9 +99,6 @@ template<class Rules, class Board>
 using basic_king_jump_scan = detail::board_scan_sq_dir<Board, basic_king_jump_directions<Rules>, is_long_ranged_king_v<Rules>, false, false>;
 
 template<class Rules, class Board>
-using basic_pawn_jump_scan = detail::board_scan_sq_dir<Board, basic_king_jump_directions<Rules>, false, false, false>;
-
-template<class Rules, class Board>
 using basic_blocker_and_beyond = detail::board_scan_dir_sq<Board, basic_king_jump_directions<Rules>, true, true, true>;
 
 constexpr auto move_index(int direction) noexcept
@@ -133,13 +130,6 @@ auto king_jump_scan(int const sq)
 {
         constexpr auto index = detail::jump_index<Rules>(Direction);
         return detail::basic_king_jump_scan<Rules, Board>{}(sq, index);
-}
-
-template<class Rules, class Board, int Direction>
-auto pawn_jump_scan(int const sq)
-{
-        constexpr auto index = detail::jump_index<Rules>(Direction);
-        return detail::basic_pawn_jump_scan<Rules, Board>{}(sq, index);
 }
 
 template<class Rules, class Board, int Direction>

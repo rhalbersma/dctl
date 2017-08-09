@@ -90,8 +90,15 @@ public:
                 m_candidate_action.into(p);
         }
 
+        auto finalize(int const sq, piece const p)
+        {
+                m_candidate_action.into(p);
+                finalize(sq);
+        }
+
         auto finalize(int const sq)
         {
+                assert(into() == piece::kings);
                 m_candidate_action.dest(sq);
                 precedence_duplicates();
         }
@@ -116,12 +123,6 @@ public:
         auto targets() const noexcept
         {
                 return m_initial_targets - m_candidate_action.captured_pieces();
-        }
-
-        template<int Direction>
-        auto targets() const
-        {
-                return move_sources<board_type, Direction>{}(targets(), pieces(empty_c));
         }
 
         auto is_last_jumped_king(int const sq) const
