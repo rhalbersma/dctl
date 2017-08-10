@@ -49,6 +49,9 @@ class king_jump<color_<Side>, Reverse, State>
         using is_forward_or_reverse = std::disjunction<is_forward<Arg, Direction>, is_reverse<Arg, Direction>>;
 
         template<int Direction>
+        using king_scan_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_reverse, meta::integral_c<int, Direction>>>;
+
+        template<int Direction>
         using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, meta::integral_c<int, Direction>>>;
 
         constexpr static auto GCC7_ICE_WORKAROUND_is_long_ranged_king = is_long_ranged_king_v<rules_type>;
@@ -64,141 +67,104 @@ public:
         }
 
         template<class Builder>
-        static auto generate(Builder& m_builder)
+        static auto generate(Builder& builder)
         {
-                raii::set_king_jump<Builder> g1{m_builder};
-                m_builder.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
-                        raii::launch<Builder> g2{m_builder, from_sq};
-                        meta::foldl_comma<king_jump_directions>{}([&, occup = m_builder.pieces(occup_c), targets = m_builder.targets(), empty = m_builder.pieces(empty_c)](auto direction) {
+                raii::set_king_jump<Builder> g1{builder};
+                builder.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
+                        raii::launch<Builder> g2{builder, from_sq};
+                        meta::foldl_comma<king_jump_directions>{}([&, occup = builder.pieces(occup_c), targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
                                 constexpr auto direction_v = decltype(direction){};
                                 if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
-                                        if (auto const blocker = king_jump_scan<rules_type, board_type, direction_v>(from_sq) & occup; !blocker.empty()) {
-                                                if (auto const first = find_first<direction_v>(blocker); move_sources<board_type, direction_v>{}(targets, empty).contains(first)) {
-                                                        capture<direction_v>(next<board_type, direction_v>{}(first), m_builder);
-                                                }
-                                        }
+                                        auto const blocker = king_jump_scan<rules_type, board_type, direction_v>(from_sq) & occup;
+                                        if (blocker.empty()) { return; }
+                                        auto const first = find_first<direction_v>(blocker);
+                                        if (!jump_targets<board_type, direction_v>{}(targets, empty).contains(first)) { return; }
+                                        capture<direction_v>(first, builder);
                                 } else {
-                                        if (!jump_squares<board_type, direction_v>{}(set_type{from_sq}, targets, empty).empty()) {
-                                                capture<direction_v>(next<board_type, direction_v, 2>{}(from_sq), m_builder);
-                                        }
+                                        if (jump_targets<board_type, direction_v>{}(set_type{from_sq}, targets, empty).empty()) { return; }
+                                        capture<direction_v>(next<board_type, direction_v>{}(from_sq), builder);
                                 }
                         });
                 });
         }
 
         template<int Direction, class Builder>
-        static auto next_target_passing_promotion(int sq, Builder& m_builder)
+        static auto next_target_passing_promotion(int sq, Builder& builder)
         {
                 static_assert(is_passing_promotion_v<rules_type>);
-                assert(m_builder.with() == piece::pawns);
-                m_builder.into(piece::kings);
-                return next_target<Direction>(sq, m_builder);
+                assert(builder.with() == piece::pawns);
+                builder.into(piece::kings);
+                auto const n [[maybe_unused]] = king_moves<rules_type, board_type, Direction>{}(sq, builder.pieces(occup_c)).count();
+                return next_target<Direction>(sq, n, builder);
         }
 private:
         template<int Direction, class Builder>
-        static auto capture(int sq, Builder& m_builder)
+        static auto capture(int sq, Builder& builder)
                 -> void
         {
-                raii::capture<Builder> guard{m_builder, prev<board_type, Direction>{}(sq)};
-                if (!next_target<Direction>(sq, m_builder)) {
-                        halt<Direction>(sq, m_builder);
-                }
-        }
-
-        template<int Direction, class Builder>
-        static auto halt(int dest_sq, Builder& m_builder)
-        {
-                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
-                        if (m_builder.is_last_jumped_king(prev<board_type, Direction>{}(dest_sq))) {
-                                return m_builder.finalize(dest_sq);
-                        } else {
-                                return add_sliding_jumps<Direction>(dest_sq, m_builder);
+                raii::capture<Builder> guard{builder, sq};
+                auto const n [[maybe_unused]] = king_moves<rules_type, board_type, Direction>{}(sq, builder.pieces(occup_c)).count();
+                advance<board_type, Direction>{}(sq);
+                if (!next_target<Direction>(sq, n, builder)) {
+                        if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
+                                if (builder.is_last_jumped_king(prev<board_type, Direction>{}(sq))) {
+                                        return builder.finalize(sq);
+                                } else {
+                                        return add_sliding_jumps<Direction>(sq, n, builder);
+                                }
+                        }
+                        if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && !is_halt_behind_king_v<rules_type>) {
+                                return add_sliding_jumps<Direction>(sq, n, builder);
+                        }
+                        if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
+                                return builder.finalize(sq);
                         }
                 }
-                if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && !is_halt_behind_king_v<rules_type>) {
-                        return add_sliding_jumps<Direction>(dest_sq, m_builder);
-                }
-                if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return m_builder.finalize(dest_sq);
-                }
         }
 
         template<int Direction, class Builder>
-        static auto add_sliding_jumps(int dest_sq, Builder& m_builder)
+        static auto add_sliding_jumps(int sq, int n, Builder& builder)
         {
                 do {
-                        m_builder.finalize(dest_sq);
-                        advance<board_type, Direction>{}(dest_sq);
-                } while (board_type::is_onboard(dest_sq) && m_builder.pieces(empty_c).contains(dest_sq));
+                        builder.finalize(sq);
+                        advance<board_type, Direction>{}(sq);
+                } while (--n);
         }
 
         template<int Direction, class Builder>
-        static auto next_target(int sq, Builder& m_builder)
+        static auto next_target(int sq, int n [[maybe_unused]], Builder& builder)
         {
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
-                        return scan_turn<Direction>(sq, m_builder) | reverse<Direction>(sq, m_builder);
+                        return scan<king_jump_directions>(sq, builder);
+                } else if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
+                        return scan<king_scan_directions<Direction>>(sq, builder);
                 } else {
-                        return scan_turn<Direction>(sq, m_builder);
-                }
-        }
-
-        template<int Direction, class Builder>
-        static auto reverse(int sq, Builder& m_builder)
-        {
-                static_assert(is_reverse_king_jump_v<rules_type>);
-                return scan<rotate_v<Direction, 180>>(sq, m_builder);
-        }
-
-        template<int Direction, class Builder>
-        static auto scan_turn(int sq, Builder& m_builder)
-        {
-                if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return scan<Direction>(sq, m_builder) | turn<Direction>(sq, m_builder);
-                } else {
-                        auto found_next = false;
-                        auto ahead = king_move_scan<rules_type, board_type, Direction>(sq);
-                        auto n = ahead.count();
-                        if (ahead &= m_builder.pieces(occup_c); !ahead.empty()) {
-                                auto const first = find_first<Direction>(ahead);
-                                if (move_sources<board_type, Direction>{}(m_builder.targets(), m_builder.pieces(empty_c)).contains(first)) {
-                                        capture<Direction>(next<board_type, Direction>{}(first), m_builder);
-                                        found_next |= true;
-                                }
-                                n -= blocker_and_beyond<rules_type, board_type, Direction>(first).count();
-                        }
-                        do {
-                                found_next |= turn<Direction>(sq, m_builder);
+                        auto found_next = scan<king_scan_directions<Direction>>(sq, builder);
+                        while (--n) {
                                 advance<board_type, Direction>{}(sq);
-                        } while(n--);
+                                found_next |= scan<king_turn_directions<Direction>>(sq, builder);
+                        }
                         return found_next;
                 }
         }
 
-        template<int Direction, class Builder>
-        static auto turn(int sq, Builder& m_builder)
+        template<class Directions, class Builder>
+        static auto scan(int sq, Builder& builder)
         {
-                return meta::foldl_bit_or<king_turn_directions<Direction>>{}([&](auto direction) {
+                return meta::foldl_bit_or<Directions>{}([&, targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        return scan<direction_v>(sq, m_builder);
-                });
-        }
-
-        template<int Direction, class Builder>
-        static auto scan(int sq, Builder& m_builder)
-        {
-                if constexpr (is_long_ranged_king_v<rules_type>) {
-                        if (auto const blocker = king_jump_scan<rules_type, board_type, Direction>(sq) & m_builder.pieces(occup_c); !blocker.empty()) {
-                                if (auto const first = find_first<Direction>(blocker); move_sources<board_type, Direction>{}(m_builder.targets(), m_builder.pieces(empty_c)).contains(first)) {
-                                        capture<Direction>(next<board_type, Direction>{}(first), m_builder);
-                                        return true;
-                                }
+                        if constexpr (is_long_ranged_king_v<rules_type>) {
+                                auto const blocker = king_jump_scan<rules_type, board_type, direction_v>(sq) & builder.pieces(occup_c);
+                                if (blocker.empty()) { return false; }
+                                auto const first = find_first<direction_v>(blocker);
+                                if (!jump_targets<board_type, direction_v>{}(targets, empty).contains(first)) { return false; }
+                                capture<direction_v>(first, builder);
+                        } else {
+                                if (jump_targets<board_type, direction_v>{}(set_type{sq}, targets, empty).empty()) { return false; }
+                                capture<direction_v>(next<board_type, direction_v>{}(sq), builder);
                         }
-                        return false;
-                } else {
-                        if (jump_squares<board_type, Direction>{}(set_type{sq}, m_builder.targets(), m_builder.pieces(empty_c)).empty()) { return false; }
-                        capture<Direction>(next<board_type, Direction, 2>{}(sq), m_builder);
                         return true;
-                }
+                });
         }
 };
 

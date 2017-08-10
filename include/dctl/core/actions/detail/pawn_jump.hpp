@@ -7,7 +7,7 @@
 
 #include <dctl/core/actions/detail/builder.hpp>         // builder
 #include <dctl/core/actions/detail/king_jump.hpp>       // promote_en_passant
-#include <dctl/core/actions/detail/pattern.hpp>         // jump_squares
+#include <dctl/core/actions/detail/pattern.hpp>         // jump_targets
 #include <dctl/core/actions/detail/raii.hpp>            // Launch, Capture, Visit, Toggleking_targets, Setpromotion
 #include <dctl/core/actions/select/jump.hpp>            // jumps
 #include <dctl/core/board/bearing.hpp>                  // bearing
@@ -51,54 +51,56 @@ public:
                 if (pawns.empty()) { return false; }
                 return meta::foldl_logical_or<pawn_jump_directions>{}([&, targets = s.targets(color_c<Side>, pawns_c), empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        return !jump_squares<board_type, direction_v>{}(pawns, targets, empty).empty();
+                        return !jump_targets<board_type, direction_v>{}(pawns, targets, empty).empty();
                 });
         }
 
         template<class Builder>
-        static auto generate(Builder& m_builder)
+        static auto generate(Builder& builder)
         {
-                auto const pawns = m_builder.pieces(color_c<Side>, pawns_c);
+                auto const pawns = builder.pieces(color_c<Side>, pawns_c);
                 if (pawns.empty()) { return; }
-                if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
-                meta::foldl_comma<pawn_jump_directions>{}([&, targets = m_builder.targets(), empty = m_builder.pieces(empty_c)](auto direction) {
+                if constexpr (is_superior_rank_jump_v<rules_type>) { builder.toggle_king_targets(); }
+                meta::foldl_comma<pawn_jump_directions>{}([&, targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        jump_squares<board_type, direction_v>{}(pawns, targets, empty).consume([&](auto sq) {
-                                raii::launch<Builder> guard{m_builder, prev<board_type, direction_v, 2>{}(sq)};
-                                capture<direction_v>(sq, m_builder);
+                        jump_targets<board_type, direction_v>{}(pawns, targets, empty).consume([&](auto sq) {
+                                raii::launch<Builder> guard{builder, prev<board_type, direction_v>{}(sq)};
+                                capture<direction_v>(sq, builder);
                         });
                 });
-                if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
+                if constexpr (is_superior_rank_jump_v<rules_type>) { builder.toggle_king_targets(); }
         }
 private:
         template<int Direction, class Builder>
-        static auto capture(int sq, Builder& m_builder)
+        static auto capture(int sq, Builder& builder)
                 -> void
         {
-                raii::capture<Builder> guard{m_builder, prev<board_type, Direction>{}(sq)};
+                raii::capture<Builder> guard{builder, sq};
+                advance<board_type, Direction>{}(sq);
                 if constexpr (is_passing_promotion_v<rules_type>) {
                         if (board_type::promotion(Side).contains(sq)) {
-                                if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
-                                if (!king_jumps::template next_target_passing_promotion<Direction>(sq, m_builder)) {
-                                        m_builder.finalize(sq, piece::kings);
+                                if constexpr (is_superior_rank_jump_v<rules_type>) { builder.toggle_king_targets(); }
+                                if (!king_jumps::template next_target_passing_promotion<Direction>(sq, builder)) {
+                                        builder.finalize(sq, piece::kings);
                                 }
-                                if constexpr (is_superior_rank_jump_v<rules_type>) { m_builder.toggle_king_targets(); }
-                        } else if (!next_target<Direction>(sq, m_builder)) {
-                                m_builder.finalize(sq, piece::pawns);
+                                if constexpr (is_superior_rank_jump_v<rules_type>) { builder.toggle_king_targets(); }
+                        } else  {
+                                if (next_target<Direction>(sq, builder)) { return; }
+                                builder.finalize(sq, piece::pawns);
                         }
                 } else {
-                        if (next_target<Direction>(sq, m_builder)) { return; }
-                        m_builder.finalize(sq, board_type::promotion(Side).contains(sq) ? piece::kings : piece::pawns);
+                        if (next_target<Direction>(sq, builder)) { return; }
+                        builder.finalize(sq, board_type::promotion(Side).contains(sq) ? piece::kings : piece::pawns);
                 }
         }
 
         template<int Direction, class Builder>
-        static auto next_target(int sq, Builder& m_builder)
+        static auto next_target(int sq, Builder& builder)
         {
-                return meta::foldl_bit_or<pawn_scan_directions<Direction>>{}([&, targets = m_builder.targets(), empty = m_builder.pieces(empty_c)](auto direction) {
+                return meta::foldl_bit_or<pawn_scan_directions<Direction>>{}([&, targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        if (jump_squares<board_type, direction_v>{}(set_type{sq}, targets, empty).empty()) { return false; }
-                        capture<direction_v>(next<board_type, direction_v, 2>{}(sq), m_builder);
+                        if (jump_targets<board_type, direction_v>{}(set_type{sq}, targets, empty).empty()) { return false; }
+                        capture<direction_v>(next<board_type, direction_v>{}(sq), builder);
                         return true;
                 });
         }
