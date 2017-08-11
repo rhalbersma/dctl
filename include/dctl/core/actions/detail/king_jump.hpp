@@ -94,8 +94,7 @@ public:
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(builder.with() == piece::pawns);
                 builder.into(piece::kings);
-                auto const n [[maybe_unused]] = king_moves<rules_type, board_type, Direction>{}(sq, builder.pieces(occup_c)).count();
-                return next_target<Direction>(sq, n, builder);
+                return scan<king_turn_directions<Direction>>(sq, builder);
         }
 private:
         template<int Direction, class Builder>
