@@ -55,7 +55,7 @@ auto find_first(Set const& s)
 }
 
 template<int Direction, class Set>
-auto last()
+constexpr auto last() noexcept
 {
         if constexpr (is_forward_v<Direction>) {
                 return Set::max_size() - 1;

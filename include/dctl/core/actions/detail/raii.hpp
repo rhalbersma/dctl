@@ -12,22 +12,22 @@ namespace dctl::core {
 namespace raii {
 
 template<class Builder>
-class launch
+class lift
 {
         Builder& m_builder;
         int const m_square;
 public:
-        ~launch() // Throws: Nothing.
+        ~lift() // Throws: Nothing.
         {
-                m_builder.undo_launch(m_square);
+                m_builder.drop(m_square);
         }
 
-        launch(Builder& b, int const sq) // Throws: Nothing.
+        lift(int const sq, Builder& b) // Throws: Nothing.
         :
                 m_builder{b},
                 m_square{sq}
         {
-                m_builder.make_launch(m_square);
+                m_builder.lift(m_square);
         }
 };
 
@@ -42,7 +42,7 @@ public:
                 m_builder.release(m_square);
         }
 
-        capture(Builder& b, int const sq) // Throws: Nothing.
+        capture(int const sq, Builder& b) // Throws: Nothing.
         :
                 m_builder{b},
                 m_square{sq}

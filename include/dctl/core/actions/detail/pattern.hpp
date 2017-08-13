@@ -23,6 +23,17 @@ struct move_squares
 };
 
 template<class Board, int Direction>
+struct jump_sources
+{
+        using set_type = set_t<Board>;
+
+        auto operator()(set_type const& sources, set_type const& targets, set_type const& squares) const noexcept
+        {
+                return sources & prev<Board, Direction, 1>{}(targets) & prev<Board, Direction, 2>{}(squares);
+        }
+};
+
+template<class Board, int Direction>
 struct jump_targets
 {
         using set_type = set_t<Board>;

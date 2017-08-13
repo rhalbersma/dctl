@@ -52,13 +52,13 @@ public:
                 m_initial_targets ^= m_state.pieces(!to_move_c, kings_c);
         }
 
-        auto make_launch(int const sq)
+        auto lift(int const sq)
         {
                 m_candidate_action.from(sq);
                 m_empty.insert(sq);
         }
 
-        auto undo_launch(int const sq)
+        auto drop(int const sq)
         {
                 m_empty.erase(sq);
         }

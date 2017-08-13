@@ -26,23 +26,23 @@ class king_move<color_<Side>, Reverse, State>
 public:
         static auto detect(State const& s) noexcept
         {
-                return s.pieces(color_c<Side>, kings_c).any_of([occup = s.pieces(occup_c)](auto from_sq) {
-                        return !king_moves<rules_type, board_type>{}(from_sq, occup).empty();
+                return s.pieces(color_c<Side>, kings_c).any_of([&](auto const from_sq) {
+                        return !king_moves<rules_type, board_type>{}(from_sq, s.pieces(empty_c)).empty();
                 });
         }
 
         static auto count(State const& s) noexcept
         {
-                return s.pieces(color_c<Side>, kings_c).accumulate(0, [occup = s.pieces(occup_c)](auto result, auto from_sq) {
-                        return result + king_moves<rules_type, board_type>{}(from_sq, occup).count();
+                return s.pieces(color_c<Side>, kings_c).accumulate(0, [&](auto const result, auto const from_sq) {
+                        return result + king_moves<rules_type, board_type>{}(from_sq, s.pieces(empty_c)).count();
                 });
         }
 
         template<class SequenceContainer>
         static auto generate(State const& s, SequenceContainer& seq)
         {
-                s.pieces(color_c<Side>, kings_c).consume([&seq, occup = s.pieces(occup_c)](auto from_sq) {
-                        king_moves<rules_type, board_type>{}(from_sq, occup).consume([&](auto dest_sq) {
+                s.pieces(color_c<Side>, kings_c).consume([&](auto const from_sq) {
+                        king_moves<rules_type, board_type>{}(from_sq, s.pieces(empty_c)).consume([&](auto const dest_sq) {
                                 seq.emplace_back(from_sq, dest_sq);
                         });
                 });

@@ -153,17 +153,17 @@ public:
                 return king_move_scan<Rules, Board, Direction>(sq);
         }
 
-        auto operator()(int const sq, set_type const& occup) const
+        auto operator()(int const sq, set_type const& empty) const
         {
                 assert(Board::is_onboard(sq));
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         auto targets = king_move_scan<Rules, Board, Direction>(sq);
-                        if (auto const blockers = targets & occup; !blockers.empty()) {
+                        if (auto const blockers = targets - empty; !blockers.empty()) {
                                 targets ^= blocker_and_beyond<Rules, Board, Direction>(find_first<Direction>(blockers));
                         }
                         return targets;
                 } else {
-                        return king_move_scan<Rules, Board, Direction>(sq) - occup;
+                        return king_move_scan<Rules, Board, Direction>(sq) & empty;
                 }
         }
 };
@@ -192,20 +192,20 @@ public:
                 return table[static_cast<std::size_t>(sq)];
         }
 
-        auto operator()(int const sq, set_type const& occup) const
+        auto operator()(int const sq, set_type const& empty) const
         {
                 assert(Board::is_onboard(sq));
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         auto targets = table[static_cast<std::size_t>(sq)];
                         meta::foldl_comma<basic_king_move_directions>{}([&](auto direction) {
                                 constexpr auto direction_v = decltype(direction){};
-                                auto const blockers = king_move_scan<Rules, Board, direction_v>(sq) & occup;
+                                auto const blockers = king_move_scan<Rules, Board, direction_v>(sq) - empty;
                                 if (blockers.empty()) { return; }
                                 targets ^= blocker_and_beyond<Rules, Board, direction_v>(find_first<direction_v>(blockers));
                         });
                         return targets;
                 } else {
-                        return table[static_cast<std::size_t>(sq)] - occup;
+                        return table[static_cast<std::size_t>(sq)] & empty;
                 }
         }
 };
