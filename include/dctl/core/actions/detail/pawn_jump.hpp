@@ -47,9 +47,7 @@ class pawn_jump<color_<Side>, Reverse, State>
 public:
         static auto detect(State const& s) noexcept
         {
-                auto const pawns = s.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) { return false; }
-                return meta::foldl_logical_or<pawn_jump_directions>{}([&, targets = s.targets(color_c<Side>, pawns_c), empty = s.pieces(empty_c)](auto direction) {
+                return meta::foldl_logical_or<pawn_jump_directions>{}([pawns = s.pieces(color_c<Side>, pawns_c), targets = s.targets(color_c<Side>, pawns_c), empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
                         return !jump_targets<board_type, direction_v>{}(pawns, targets, empty).empty();
                 });
@@ -58,10 +56,8 @@ public:
         template<class Builder>
         static auto generate(Builder& builder)
         {
-                auto const pawns = builder.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) { return; }
                 if constexpr (is_superior_rank_jump_v<rules_type>) { builder.toggle_king_targets(); }
-                meta::foldl_comma<pawn_jump_directions>{}([&, targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
+                meta::foldl_comma<pawn_jump_directions>{}([&, pawns = builder.pieces(color_c<Side>, pawns_c), targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
                         jump_targets<board_type, direction_v>{}(pawns, targets, empty).consume([&](auto sq) {
                                 raii::launch<Builder> guard{builder, prev<board_type, direction_v>{}(sq)};

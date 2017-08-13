@@ -22,7 +22,7 @@ struct move_squares
         }
 };
 
-template<class Board, int Direction, class KingRangeCategory = short_ranged_tag>
+template<class Board, int Direction>
 struct jump_targets
 {
         using set_type = set_t<Board>;
@@ -35,37 +35,6 @@ struct jump_targets
         auto operator()(set_type const& targets, set_type const& squares) const noexcept
         {
                 return targets & prev<Board, Direction, 1>{}(squares);
-        }
-};
-
-template<class Board, int Direction>
-struct fill
-{
-        using set_type = set_t<Board>;
-
-        constexpr auto operator()(set_type generator, set_type const& propagator) const noexcept
-        {
-                auto flood = set_type{};
-                while (!generator.empty()) {
-                        flood |= generator;
-                        generator = next<Board, Direction>{}(generator) & propagator;
-                }
-                return flood;
-        }
-};
-
-template<class Board, int Direction>
-struct jump_targets<Board, Direction, long_ranged_tag>
-{
-        using set_type = set_t<Board>;
-
-        auto operator()(set_type const& sources, set_type const& targets, set_type const& empty) const noexcept
-        {
-                return
-                        next<Board, Direction>{}(fill<Board, Direction>{}(sources, empty)) &
-                        targets &
-                        prev<Board, Direction>{}(empty)
-                ;
         }
 };
 

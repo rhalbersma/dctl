@@ -30,9 +30,7 @@ class pawn_move<color_<Side>, Reverse, State>
 public:
         static auto detect(State const& s) noexcept
         {
-                auto const pawns = s.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) { return false; }
-                return meta::foldl_logical_or<pawn_move_directions>{}([&pawns, empty = s.pieces(empty_c)](auto direction) {
+                return meta::foldl_logical_or<pawn_move_directions>{}([pawns = s.pieces(color_c<Side>, pawns_c), empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
                         return !move_squares<board_type, direction_v>{}(pawns, empty).empty();
                 });
@@ -40,9 +38,7 @@ public:
 
         static auto count(State const& s) noexcept
         {
-                auto const pawns = s.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) { return 0; }
-                return meta::foldl_plus<pawn_move_directions>{}([&pawns, empty = s.pieces(empty_c)](auto direction) {
+                return meta::foldl_plus<pawn_move_directions>{}([pawns = s.pieces(color_c<Side>, pawns_c), empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
                         return move_squares<board_type, direction_v>{}(pawns, empty).count();
                 });
@@ -51,9 +47,7 @@ public:
         template<class SequenceContainer>
         static auto generate(State const& s, SequenceContainer& seq)
         {
-                auto const pawns = s.pieces(color_c<Side>, pawns_c);
-                if (pawns.empty()) { return; }
-                meta::foldl_comma<pawn_move_directions>{}([&seq, &pawns, empty = s.pieces(empty_c)](auto direction) {
+                meta::foldl_comma<pawn_move_directions>{}([&, pawns = s.pieces(color_c<Side>, pawns_c), empty = s.pieces(empty_c)](auto direction) {
                         constexpr auto direction_v = decltype(direction){};
                         move_squares<board_type, direction_v>{}(pawns, empty).consume([&](auto dest_sq) {
                                 seq.emplace_back(prev<board_type, direction_v>{}(dest_sq), dest_sq, board_type::promotion(Side).contains(dest_sq));

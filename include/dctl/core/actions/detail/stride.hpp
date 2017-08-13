@@ -54,6 +54,16 @@ auto find_first(Set const& s)
         }
 }
 
+template<int Direction, class Set>
+auto last()
+{
+        if constexpr (is_forward_v<Direction>) {
+                return Set::max_size() - 1;
+        } else {
+                return 0;
+        }
+}
+
 template<class Board, int Direction, int Distance = 1>
 struct advance
 {

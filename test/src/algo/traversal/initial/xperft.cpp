@@ -13,8 +13,8 @@ using namespace dctl::core;
 
 int main()
 {
-        auto const s = state<checkers, board<checkers>>::initial();
-        traversal::sperft(keep_duplicates_gen, s, 13);
+        //auto const s = state<checkers, board<checkers>>::initial();
+        //traversal::sperft(keep_duplicates_gen, s, 13);
 
         using S = state<international, board<international>>;
 

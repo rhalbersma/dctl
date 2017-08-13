@@ -92,7 +92,8 @@ public:
         auto finalize(int const sq, piece const p)
         {
                 m_candidate_action.into(p);
-                finalize(sq);
+                m_candidate_action.dest(sq);
+                precedence_duplicates();
         }
 
         auto finalize(int const sq)

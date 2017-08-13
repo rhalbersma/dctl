@@ -54,15 +54,25 @@ class king_jump<color_<Side>, Reverse, State>
         template<int Direction>
         using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, meta::integral_c<int, Direction>>>;
 
-        constexpr static auto GCC7_ICE_WORKAROUND_is_long_ranged_king = is_long_ranged_king_v<rules_type>;
+        constexpr static auto GCC7_ICE_WORK_AROUND_is_long_ranged_king = is_long_ranged_king_v<rules_type>;
 public:
         static auto detect(State const& s) noexcept
         {
-                auto const kings = s.pieces(color_c<Side>, kings_c);
-                if (kings.empty()) { return false; }
-                return meta::foldl_logical_or<king_jump_directions>{}([&, targets = s.targets(color_c<Side>, kings_c), empty = s.pieces(empty_c)](auto direction) {
-                        constexpr auto direction_v = decltype(direction){};
-                        return !jump_targets<board_type, direction_v, king_range_category_t<rules_type>>{}(kings, targets, empty).empty();
+                return s.pieces(color_c<Side>, kings_c).any_of([&, targets = s.targets(color_c<Side>, kings_c), empty = s.pieces(empty_c)](auto from_sq) {
+                        if constexpr (is_long_ranged_king_v<rules_type>) {
+                                return meta::foldl_logical_or<king_jump_directions>{}([&, occup = s.pieces(occup_c)](auto direction) {
+                                        constexpr auto direction_v = decltype(direction){};
+                                        auto const blocker = king_jump_scan<rules_type, board_type, direction_v>(from_sq) & occup;
+                                        if (blocker.empty()) { return false; }
+                                        auto const first = find_first<direction_v>(blocker);
+                                        return jump_targets<board_type, direction_v>{}(targets, empty).contains(first);
+                                });
+                        } else {
+                                return meta::foldl_logical_or<king_jump_directions>{}([&](auto direction) {
+                                        constexpr auto direction_v = decltype(direction){};
+                                        return !jump_targets<board_type, direction_v>{}(set_type{from_sq}, targets, empty).empty();
+                                });
+                        }
                 });
         }
 
@@ -72,19 +82,22 @@ public:
                 raii::set_king_jump<Builder> g1{builder};
                 builder.pieces(color_c<Side>, kings_c).consume([&](auto from_sq) {
                         raii::launch<Builder> g2{builder, from_sq};
-                        meta::foldl_comma<king_jump_directions>{}([&, occup = builder.pieces(occup_c), targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
-                                constexpr auto direction_v = decltype(direction){};
-                                if constexpr (GCC7_ICE_WORKAROUND_is_long_ranged_king) {
-                                        auto const blocker = king_jump_scan<rules_type, board_type, direction_v>(from_sq) & occup;
+                        if constexpr (GCC7_ICE_WORK_AROUND_is_long_ranged_king) {
+                                meta::foldl_comma<king_jump_directions>{}([&, occup = builder.pieces(occup_c), targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
+                                        constexpr auto direction_v = decltype(direction){};
+                                        auto const blocker = (king_jump_scan<rules_type, board_type, direction_v>(from_sq) & occup);
                                         if (blocker.empty()) { return; }
                                         auto const first = find_first<direction_v>(blocker);
                                         if (!jump_targets<board_type, direction_v>{}(targets, empty).contains(first)) { return; }
                                         capture<direction_v>(first, builder);
-                                } else {
+                                });
+                        } else {
+                                meta::foldl_comma<king_jump_directions>{}([&, targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
+                                        constexpr auto direction_v = decltype(direction){};
                                         if (jump_targets<board_type, direction_v>{}(set_type{from_sq}, targets, empty).empty()) { return; }
                                         capture<direction_v>(next<board_type, direction_v>{}(from_sq), builder);
-                                }
-                        });
+                                });
+                        }
                 });
         }
 
@@ -150,20 +163,24 @@ private:
         template<class Directions, class Builder>
         static auto scan(int sq, Builder& builder)
         {
-                return meta::foldl_bit_or<Directions>{}([&, targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
-                        constexpr auto direction_v = decltype(direction){};
-                        if constexpr (is_long_ranged_king_v<rules_type>) {
-                                auto const blocker = king_jump_scan<rules_type, board_type, direction_v>(sq) & builder.pieces(occup_c);
+                if constexpr (is_long_ranged_king_v<rules_type>) {
+                        return meta::foldl_bit_or<Directions>{}([&, occup = builder.pieces(occup_c), targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
+                                constexpr auto direction_v = decltype(direction){};
+                                auto const blocker = king_jump_scan<rules_type, board_type, direction_v>(sq) & occup;
                                 if (blocker.empty()) { return false; }
                                 auto const first = find_first<direction_v>(blocker);
                                 if (!jump_targets<board_type, direction_v>{}(targets, empty).contains(first)) { return false; }
                                 capture<direction_v>(first, builder);
-                        } else {
+                                return true;
+                        });
+                } else {
+                        return meta::foldl_bit_or<Directions>{}([&, targets = builder.targets(), empty = builder.pieces(empty_c)](auto direction) {
+                                constexpr auto direction_v = decltype(direction){};
                                 if (jump_targets<board_type, direction_v>{}(set_type{sq}, targets, empty).empty()) { return false; }
                                 capture<direction_v>(next<board_type, direction_v>{}(sq), builder);
-                        }
-                        return true;
-                });
+                                return true;
+                        });
+                }
         }
 };
 
