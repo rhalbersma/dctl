@@ -16,16 +16,6 @@ int main()
         //auto const s = state<checkers, board<checkers>>::initial();
         //traversal::sperft(keep_duplicates_gen, s, 13);
 
-        auto const s1 = state<checkers, board<rectangular< 6,  6>>>::initial();
-        traversal::sperft(keep_duplicates_gen, s1, 17);
-
-        auto const s2 = state<international, board<rectangular< 6,  6>>>::initial();
-        traversal::sperft(drop_duplicates_gen, s2, 17);
-
-        auto const s3 = state<international, board<rectangular<14, 14>>>::initial();
-        traversal::sperft(drop_duplicates_gen, s3, 9);
-
-
         using S = state<international, board<international>>;
 
         auto const states = std::vector<S>{
