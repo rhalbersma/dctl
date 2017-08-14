@@ -13,7 +13,7 @@
 using namespace dctl::algo;
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(TraversalInitialBoard8x8)
+BOOST_AUTO_TEST_SUITE(TraversalInitialBoard08x08)
 
 BOOST_AUTO_TEST_CASE(Brazilian)
 {
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(Checkers)
 
 BOOST_AUTO_TEST_CASE(Czech)
 {
-        // The alternative game rules thread on the FMJD forum
+        // The "Perft for all recognized draughts variants thread" on the FMJD forum
         // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 
         auto const p = state<czech, board<rectangular<8, 8>>>::initial();
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(Czech)
 
 BOOST_AUTO_TEST_CASE(Spanish)
 {
-        // The alternative game rules thread on the FMJD forum
+        // The "Perft for all recognized draughts variants thread" on the FMJD forum
         // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 
         auto const p = state<spanish, board<rectangular<8, 8, true>>>::initial();
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
 
 BOOST_AUTO_TEST_CASE(Italian)
 {
-        // The alternative game rules thread on the FMJD forum
+        // The "Perft for all recognized draughts variants thread" on the FMJD forum
         // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 
         auto const p = state<italian, board<rectangular<8, 8, true>>>::initial();
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(Italian)
 
 BOOST_AUTO_TEST_CASE(Thai)
 {
-        // The alternative game rules thread on the FMJD forum
+        // The "Perft for all recognized draughts variants thread" on the FMJD forum
         // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
 
         auto const p = state<thai, board<rectangular<8, 8>>>::initial(2);
