@@ -94,7 +94,7 @@ private:
         {
                 return meta::foldl_bit_or<pawn_scan_directions<Direction>>{}([&](auto const direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        if (jump_targets<board_type, direction_v>{}(set_type{sq}, b.targets(), b.pieces(empty_c)).empty()) { return false; }
+                        if (!jump_sources<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
                         capture<direction_v>(next<board_type, direction_v, 2>{}(sq), b);
                         return true;
                 });
