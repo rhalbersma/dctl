@@ -67,7 +67,7 @@ public:
                                         auto const first = find_first<direction_v>(blockers);
                                         return jump_targets<board_type, direction_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
                                 } else {
-                                        return !jump_targets<board_type, direction_v>{}(set_type{from_sq}, s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).empty();
+                                        return jump_sources<board_type, direction_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
                                 }
                         });
                 });
@@ -88,7 +88,7 @@ public:
                                         if (!jump_targets<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
                                         capture<direction_v>(next<board_type, direction_v>{}(first), b);
                                 } else {
-                                        if (jump_targets<board_type, direction_v>{}(set_type{from_sq}, b.targets(), b.pieces(empty_c)).empty()) { return; }
+                                        if (!jump_sources<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
                                         capture<direction_v>(next<board_type, direction_v, 2>{}(from_sq), b);
                                 }
                         });
@@ -165,7 +165,7 @@ private:
                                 if (!jump_targets<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
                                 capture<direction_v>(next<board_type, direction_v>{}(first), b);
                         } else {
-                                if (jump_targets<board_type, direction_v>{}(set_type{sq}, b.targets(), b.pieces(empty_c)).empty()) { return false; }
+                                if (!jump_sources<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
                                 capture<direction_v>(next<board_type, direction_v, 2>{}(sq), b);
                         }
                         return true;
