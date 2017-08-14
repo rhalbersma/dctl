@@ -31,6 +31,11 @@ struct jump_sources
         {
                 return sources & prev<Board, Direction, 1>{}(targets) & prev<Board, Direction, 2>{}(squares);
         }
+
+        auto operator()(set_type const& targets, set_type const& squares) const noexcept
+        {
+                return prev<Board, Direction, 1>{}(targets) & prev<Board, Direction, 2>{}(squares);
+        }
 };
 
 template<class Board, int Direction>
