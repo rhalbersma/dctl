@@ -16,6 +16,7 @@ int main()
         //auto const s = state<checkers, board<checkers>>::initial();
         //traversal::sperft(keep_duplicates_gen, s, 13);
 
+
         using S = state<international, board<international>>;
 
         auto const states = std::vector<S>{
@@ -35,4 +36,5 @@ int main()
         for (auto i = std::size_t{0}; i < states.size(); ++i) {
                 traversal::sperft(drop_duplicates_gen, states[i], depths[i]);
         }
+
 }

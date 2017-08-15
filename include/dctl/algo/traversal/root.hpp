@@ -356,8 +356,8 @@ void print_move(Action const& move, int i)
         std::cout << std::setw(2) << (i + 1) << "." << move << " ";
 }
 
-template<class Stopwatch, class Enhancements>
-void report(int depth, int64_t leafs, Stopwatch const& stopwatch, Enhancements e)
+template<class Stopwatch>
+void report(int depth, int64_t leafs, Stopwatch const& stopwatch)
 {
         std::cout << "info";
 
@@ -367,15 +367,11 @@ void report(int depth, int64_t leafs, Stopwatch const& stopwatch, Enhancements e
         std::cout << " leafs ";
         std::cout << std::setw(12) << std::right << leafs;
 
-        auto const node_count = boost::accumulators::count(e.handle_->statistics_.nodes());
-        std::cout << " nodes ";
-        std::cout << std::setw(12) << std::right << node_count;
-
         auto const lap = stopwatch.lap_time();
         std::cout << " time ";
         std::cout << std::setw( 6) << lap.count();
 
-        auto const nps = static_cast<double>(node_count) / static_cast<double>(std::chrono::duration_cast<std::chrono::seconds>(lap).count());
+        auto const nps = static_cast<double>(leafs) / static_cast<double>(std::chrono::duration_cast<std::chrono::seconds>(lap).count());
         std::cout << " nps ";
         std::cout << std::dec << std::setiosflags(std::ios::fixed) << std::setprecision(0);
         std::cout << std::setw( 7) << nps;
@@ -500,25 +496,26 @@ auto dperft(Actions successor, State const& s, int depth)
         }
 }
 
-template<class State, class Actions, class Enhancements>
-auto divide(State const& s, int depth, Actions successor, Enhancements e)
+template<class Actions, class State>
+auto divide(Actions successor, State const& s, int depth)
 {
         int64_t leaf_nodes = 0;
 
-        std::vector<core::action<core::rules_t<State>, core::board_t<State>>> moves;
-        successor.generate(s, moves);
+        auto moves = successor.generate(s);
+        std::sort(moves.begin(), moves.end(), [](auto const& lhs, auto const& rhs) {
+                return str_numeric(lhs) < str_numeric(rhs);
+        });
 
-        announce(s, depth, moves.size());
+        announce(s, depth, static_cast<int>(moves.size()));
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
-        for (auto const& m : moves) {
-                e.reset_statistics();
-                auto const i = std::distance(&moves[0], &m);
-                print_move(moves[i], i);
-                auto const sub_count = walk(result(s, moves[i]), depth - 1, 1, successor, e);
+        for (auto&& a : moves) {
+                auto const i = static_cast<int>(std::distance(&moves[0], &a));
+                print_move(a, i);
+                auto const sub_count = perft_state<false>(successor, result(s, a), depth - 1);
                 leaf_nodes += sub_count;
                 stopwatch.split_reset();
-                report(depth - 1, sub_count, stopwatch, e);
+                report(depth - 1, sub_count, stopwatch);
         }
         summary(leaf_nodes);
         return leaf_nodes;
