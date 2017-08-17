@@ -59,7 +59,7 @@ public:
                 if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
                 meta::foldl_comma<pawn_jump_directions>{}([&](auto const direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        jump_sources<board_type, direction_v>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c)).consume([&](auto const from_sq) {
+                        jump_sources<board_type, direction_v>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c)).for_each([&](auto const from_sq) {
                                 raii::lift<Builder> guard{from_sq, b};
                                 capture<direction_v>(next<board_type, direction_v, 2>{}(from_sq), b);
                         });

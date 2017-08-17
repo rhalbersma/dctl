@@ -49,7 +49,7 @@ public:
         {
                 meta::foldl_comma<pawn_move_directions>{}([&](auto const direction) {
                         constexpr auto direction_v = decltype(direction){};
-                        move_squares<board_type, direction_v>{}(s.pieces(color_c<Side>, pawns_c), s.pieces(empty_c)).consume([&](auto const dest_sq) {
+                        move_squares<board_type, direction_v>{}(s.pieces(color_c<Side>, pawns_c), s.pieces(empty_c)).for_each([&](auto const dest_sq) {
                                 seq.emplace_back(prev<board_type, direction_v>{}(dest_sq), dest_sq, board_type::promotion(Side).contains(dest_sq));
                         });
                 });

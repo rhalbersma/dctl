@@ -138,7 +138,7 @@ private:
         PP_CONSTEXPR_INLINE static auto squares_filter(UnaryPredicate pred) noexcept
         {
                 auto filter = set_type{};
-                xstd::for_each(squares, [&](auto const n) {
+                squares.for_each([&](auto const n) {
                         if (pred(square_from_bit(n))) {
                                 filter.insert(n);
                         }

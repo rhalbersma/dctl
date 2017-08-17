@@ -118,7 +118,7 @@ public:
         auto print_set(IntSet const& is) const
         {
                 std::cout << " { ";
-                xstd::for_each(is, [&](auto const sq) {
+                is.for_each([&](auto const sq) {
                         std::cout << (board_t<State>::square_from_bit(sq)) << ", ";
                 });
                 std::cout << " } ";

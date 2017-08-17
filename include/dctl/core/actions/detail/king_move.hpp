@@ -41,8 +41,8 @@ public:
         template<class SequenceContainer>
         static auto generate(State const& s, SequenceContainer& seq)
         {
-                s.pieces(color_c<Side>, kings_c).consume([&](auto const from_sq) {
-                        king_moves<rules_type, board_type>{}(from_sq, s.pieces(empty_c)).consume([&](auto const dest_sq) {
+                s.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
+                        king_moves<rules_type, board_type>{}(from_sq, s.pieces(empty_c)).for_each([&](auto const dest_sq) {
                                 seq.emplace_back(from_sq, dest_sq);
                         });
                 });

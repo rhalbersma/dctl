@@ -96,7 +96,7 @@ template<class Rules, class Board>
 using basic_king_move_scan = detail::board_scan_sq_dir<Board, basic_king_move_directions, is_long_ranged_king_v<Rules>, false, true>;
 
 template<class Rules, class Board>
-using basic_king_jump_scan = detail::board_scan_sq_dir<Board, basic_king_jump_directions<Rules>, is_long_ranged_king_v<Rules>, false, false>;
+using basic_king_jumps = detail::board_scan_sq_dir<Board, basic_king_jump_directions<Rules>, is_long_ranged_king_v<Rules>, false, false>;
 
 template<class Rules, class Board>
 using basic_blocker_and_beyond = detail::board_scan_dir_sq<Board, basic_king_jump_directions<Rules>, true, true, true>;
@@ -123,13 +123,6 @@ auto king_move_scan(int const sq)
 {
         constexpr auto index = detail::move_index(Direction);
         return detail::basic_king_move_scan<Rules, Board>{}(sq, index);
-}
-
-template<class Rules, class Board, int Direction>
-auto king_jump_scan(int const sq)
-{
-        constexpr auto index = detail::jump_index<Rules>(Direction);
-        return detail::basic_king_jump_scan<Rules, Board>{}(sq, index);
 }
 
 template<class Rules, class Board, int Direction>
@@ -209,5 +202,12 @@ public:
                 }
         }
 };
+
+template<class Rules, class Board, int Direction>
+auto king_jumps(int const sq, set_t<Board> const& empty)
+{
+        constexpr auto index = detail::jump_index<Rules>(Direction);
+        return detail::basic_king_jumps<Rules, Board>{}(sq, index) - empty;
+}
 
 }       // namespace dctl::core

@@ -8,7 +8,7 @@
 #include <dctl/core/actions/detail/builder.hpp> // builder
 #include <dctl/core/actions/detail/pattern.hpp> // jump_targets
 #include <dctl/core/actions/detail/raii.hpp>    // Launch, Capture, Visit, set_king_jump
-#include <dctl/core/actions/detail/tables.hpp>  // king_jump_scan, king_move_scan, blocker_and_beyond
+#include <dctl/core/actions/detail/tables.hpp>  // king_jumps, king_move_scan, blocker_and_beyond
 #include <dctl/core/actions/select/jump.hpp>    // jump
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
@@ -62,7 +62,7 @@ public:
                         return meta::foldl_logical_or<king_jump_directions>{}([&](auto const direction) {
                                 constexpr auto direction_v = decltype(direction){};
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jump_scan<rules_type, board_type, direction_v>(from_sq) - s.pieces(empty_c);
+                                        auto const blockers = king_jumps<rules_type, board_type, direction_v>(from_sq, s.pieces(empty_c));
                                         if (blockers.empty()) { return false; }
                                         auto const first = find_first<direction_v>(blockers);
                                         return jump_targets<board_type, direction_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
@@ -77,12 +77,12 @@ public:
         static auto generate(Builder& b)
         {
                 raii::set_king_jump<Builder> g1{b};
-                b.pieces(color_c<Side>, kings_c).consume([&](auto const from_sq) {
+                b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
                         raii::lift<Builder> guard{from_sq, b};
                         meta::foldl_comma<king_jump_directions>{}([&](auto const direction) {
                                 constexpr auto direction_v = decltype(direction){};
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jump_scan<rules_type, board_type, direction_v>(from_sq) - b.pieces(empty_c);
+                                        auto const blockers = king_jumps<rules_type, board_type, direction_v>(from_sq, b.pieces(empty_c));
                                         if (blockers.empty()) { return; }
                                         auto const first = find_first<direction_v>(blockers);
                                         if (!jump_targets<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
@@ -159,7 +159,7 @@ private:
                 return meta::foldl_bit_or<Directions>{}([&](auto const direction) {
                         constexpr auto direction_v = decltype(direction){};
                         if constexpr (is_long_ranged_king_v<rules_type>) {
-                                auto const blockers = king_jump_scan<rules_type, board_type, direction_v>(sq) - b.pieces(empty_c);
+                                auto const blockers = king_jumps<rules_type, board_type, direction_v>(sq, b.pieces(empty_c));
                                 if (blockers.empty()) { return false; }
                                 auto const first = find_first<direction_v>(blockers);
                                 if (!jump_targets<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }

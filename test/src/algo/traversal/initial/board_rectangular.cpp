@@ -22,6 +22,13 @@ BOOST_AUTO_TEST_CASE(Spantsiretti)
         traversal::test(drop_duplicates_gen, s, leafs);
 }
 
+BOOST_AUTO_TEST_CASE(Ktar08x10)
+{
+        auto const s = state<international, board<ktar< 8, 10>>>::initial();
+        auto const leafs = std::vector<int64_t>{ 7, 49, 302, 1'469, 7'473, 37'628, 193'605, 995'303, 5'222'464, 27'405'228, 146'853'805 };
+        traversal::test(drop_duplicates_gen, s, leafs);
+}
+
 BOOST_AUTO_TEST_CASE(Ktar10x11)
 {
         auto const s = state<international, board<ktar<10,11>>>::initial();
