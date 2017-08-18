@@ -26,6 +26,7 @@ class king_move
         template<int Dir>
         static auto king_move_scan(int const from_sq)
         {
+                assert(Board::is_onboard(from_sq));
                 constexpr auto index = move_index(Dir);
                 return basic_king_move_scan{}(from_sq, index);
         }
@@ -33,6 +34,7 @@ class king_move
         template<int Dir>
         static auto blocker_and_beyond(int const from_sq)
         {
+                assert(Board::is_onboard(from_sq));
                 static_assert(is_long_ranged_king_v<Rules>);
                 constexpr auto index = move_index(Dir);
                 return basic_blocker_and_beyond{}(from_sq, index);
@@ -55,7 +57,7 @@ class king_move
         // https://chessprogramming.wikispaces.com/Classical+Approach#Piece%20Attacks-In%20one%20Run
         static auto caior(int const from_sq, set_type const& empty) // Throws: Nothing.
         {
-                assert(Board::is_onboard(sq));
+                assert(Board::is_onboard(from_sq));
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         return
                                 table[static_cast<std::size_t>(from_sq)] ^
