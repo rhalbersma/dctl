@@ -5,44 +5,90 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/tables.hpp>  // king_moves
-#include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_t
-#include <dctl/core/state/color_piece.hpp>      // color, color_, king_
-#include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
-#include <dctl/util/type_traits.hpp>            // board_t, rules_t
+#include <dctl/core/actions/detail/stride.hpp>  // find_first
+#include <dctl/core/actions/detail/tables.hpp>  // board_scan_sq_dir, board_scan_dir_sq, move_index
+#include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_v, king_move_directions
+#include <dctl/util/meta.hpp>                   // foldl_bit_or, foldl_comma
+#include <dctl/util/type_traits.hpp>            // set_t
+#include <array>                                // array
+#include <cstddef>                              // size_t
 
 namespace dctl::core {
 namespace detail {
 
-template<class...>
-class king_move;
-
-template<color Side, class Reverse, class State>
-class king_move<color_<Side>, Reverse, State>
+template<class Rules, class Board>
+class king_move
 {
-        using rules_type = rules_t<State>;
-        using board_type = board_t<State>;
-public:
-        static auto detect(State const& s) noexcept
+        using set_type = set_t<Board>;
+        using basic_king_move_scan = board_scan_sq_dir<Board, king_move_directions, is_long_ranged_king_v<Rules>, false, true>;
+        using basic_blocker_and_beyond = board_scan_dir_sq<Board, king_move_directions, true, true, true>;
+
+        template<int Dir>
+        static auto king_move_scan(int const from_sq)
         {
-                return s.pieces(color_c<Side>, kings_c).any_of([&](auto const from_sq) {
-                        return !king_moves<rules_type, board_type>{}(from_sq, s.pieces(empty_c)).empty();
+                constexpr auto index = move_index(Dir);
+                return basic_king_move_scan{}(from_sq, index);
+        }
+
+        template<int Dir>
+        static auto blocker_and_beyond(int const from_sq)
+        {
+                static_assert(is_long_ranged_king_v<Rules>);
+                constexpr auto index = move_index(Dir);
+                return basic_blocker_and_beyond{}(from_sq, index);
+        }
+
+        inline const static auto table = []() {
+                auto result = std::array<set_type, Board::bits()>{};
+                Board::squares.for_each([&](auto const from_sq) {
+                        result[static_cast<std::size_t>(from_sq)] =
+                                meta::foldl_bit_or<king_move_directions>{}([&](auto const dir) {
+                                        constexpr auto dir_v = decltype(dir){};
+                                        return king_move_scan<dir_v>(from_sq);
+                                });
+                        ;
+                });
+                return result;
+        }();
+
+        // Classical Approach In One Run
+        // https://chessprogramming.wikispaces.com/Classical+Approach#Piece%20Attacks-In%20one%20Run
+        static auto caior(int const from_sq, set_type const& empty) // Throws: Nothing.
+        {
+                assert(Board::is_onboard(sq));
+                if constexpr (is_long_ranged_king_v<Rules>) {
+                        return
+                                table[static_cast<std::size_t>(from_sq)] ^
+                                meta::foldl_bit_or<king_move_directions>{}([&](auto const dir) {
+                                        constexpr auto dir_v = decltype(dir){};
+                                        auto const blockers = king_move_scan<dir_v>(from_sq) - empty;
+                                        return blockers.empty() ? set_type{} : blocker_and_beyond<dir_v>(find_first<dir_v>(blockers));
+                                })
+                        ;
+                } else {
+                        return table[static_cast<std::size_t>(from_sq)] & empty;
+                }
+        }
+public:
+        static auto detect(set_type const& kings, set_type const& empty) noexcept
+        {
+                return kings.any_of([&](auto const from_sq) {
+                        return !caior(from_sq, empty).empty();
                 });
         }
 
-        static auto count(State const& s) noexcept
+        static auto count(set_type const& kings, set_type const& empty) noexcept
         {
-                return s.pieces(color_c<Side>, kings_c).accumulate(0, [&](auto const result, auto const from_sq) {
-                        return result + king_moves<rules_type, board_type>{}(from_sq, s.pieces(empty_c)).count();
+                return kings.accumulate(0, [&](auto const result, auto const from_sq) {
+                        return result + caior(from_sq, empty).count();
                 });
         }
 
         template<class SequenceContainer>
-        static auto generate(State const& s, SequenceContainer& seq)
+        static auto generate(set_type const& kings, set_type const& empty, SequenceContainer& seq)
         {
-                s.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
-                        king_moves<rules_type, board_type>{}(from_sq, s.pieces(empty_c)).for_each([&](auto const dest_sq) {
+                kings.for_each([&](auto const from_sq) {
+                        caior(from_sq, empty).for_each([&](auto const dest_sq) {
                                 seq.emplace_back(from_sq, dest_sq);
                         });
                 });

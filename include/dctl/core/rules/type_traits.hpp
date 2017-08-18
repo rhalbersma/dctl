@@ -204,7 +204,7 @@ struct rotated
 };
 
 using basic_pawn_move_directions = meta::list_c<int, dir_NE, dir_NW>;
-using basic_king_move_directions = meta::list_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
+using king_move_directions = meta::list_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
 
 template<class Rules>
 using basic_pawn_jump_directions = meta::switch_<

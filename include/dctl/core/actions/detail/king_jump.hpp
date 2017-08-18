@@ -8,7 +8,7 @@
 #include <dctl/core/actions/detail/builder.hpp> // builder
 #include <dctl/core/actions/detail/pattern.hpp> // jump_targets
 #include <dctl/core/actions/detail/raii.hpp>    // Launch, Capture, Visit, set_king_jump
-#include <dctl/core/actions/detail/tables.hpp>  // king_jumps, king_move_scan, blocker_and_beyond
+#include <dctl/core/actions/detail/tables.hpp>  // king_jumps, king_moves
 #include <dctl/core/actions/select/jump.hpp>    // jump
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
@@ -59,15 +59,15 @@ public:
         static auto detect(State const& s) noexcept
         {
                 return s.pieces(color_c<Side>, kings_c).any_of([&](auto from_sq) {
-                        return meta::foldl_logical_or<king_jump_directions>{}([&](auto const direction) {
-                                constexpr auto direction_v = decltype(direction){};
+                        return meta::foldl_logical_or<king_jump_directions>{}([&](auto const dir) {
+                                constexpr auto dir_v = decltype(dir){};
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jumps<rules_type, board_type, direction_v>(from_sq, s.pieces(empty_c));
+                                        auto const blockers = king_jumps<rules_type, board_type, dir_v>(from_sq, s.pieces(empty_c));
                                         if (blockers.empty()) { return false; }
-                                        auto const first = find_first<direction_v>(blockers);
-                                        return jump_targets<board_type, direction_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
+                                        auto const first = find_first<dir_v>(blockers);
+                                        return jump_targets<board_type, dir_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
                                 } else {
-                                        return jump_sources<board_type, direction_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
+                                        return jump_sources<board_type, dir_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
                                 }
                         });
                 });
@@ -79,17 +79,17 @@ public:
                 raii::set_king_jump<Builder> g1{b};
                 b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
                         raii::lift<Builder> guard{from_sq, b};
-                        meta::foldl_comma<king_jump_directions>{}([&](auto const direction) {
-                                constexpr auto direction_v = decltype(direction){};
+                        meta::foldl_comma<king_jump_directions>{}([&](auto const dir) {
+                                constexpr auto dir_v = decltype(dir){};
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jumps<rules_type, board_type, direction_v>(from_sq, b.pieces(empty_c));
+                                        auto const blockers = king_jumps<rules_type, board_type, dir_v>(from_sq, b.pieces(empty_c));
                                         if (blockers.empty()) { return; }
-                                        auto const first = find_first<direction_v>(blockers);
-                                        if (!jump_targets<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
-                                        capture<direction_v>(next<board_type, direction_v>{}(first), b);
+                                        auto const first = find_first<dir_v>(blockers);
+                                        if (!jump_targets<board_type, dir_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
+                                        capture<dir_v>(next<board_type, dir_v>{}(first), b);
                                 } else {
-                                        if (!jump_sources<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
-                                        capture<direction_v>(next<board_type, direction_v, 2>{}(from_sq), b);
+                                        if (!jump_sources<board_type, dir_v>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
+                                        capture<dir_v>(next<board_type, dir_v, 2>{}(from_sq), b);
                                 }
                         });
                 });
@@ -109,7 +109,7 @@ private:
                 -> void
         {
                 raii::capture<Builder> guard{prev<board_type, Direction>{}(sq), b};
-                auto const n [[maybe_unused]] = king_moves<rules_type, board_type, Direction>{}(prev<board_type, Direction>{}(sq), b.pieces(empty_c)).count();
+                auto const n [[maybe_unused]] = king_slide<rules_type, board_type, Direction>(prev<board_type, Direction>{}(sq), b.pieces(empty_c)).count();
                 if (!next_target<Direction>(sq, n, b)) {
                         if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
                                 if (b.is_last_jumped_king(prev<board_type, Direction>{}(sq))) {
@@ -156,17 +156,17 @@ private:
         template<class Directions, class Builder>
         static auto scan(int const sq, Builder& b)
         {
-                return meta::foldl_bit_or<Directions>{}([&](auto const direction) {
-                        constexpr auto direction_v = decltype(direction){};
+                return meta::foldl_bit_or<Directions>{}([&](auto const dir) {
+                        constexpr auto dir_v = decltype(dir){};
                         if constexpr (is_long_ranged_king_v<rules_type>) {
-                                auto const blockers = king_jumps<rules_type, board_type, direction_v>(sq, b.pieces(empty_c));
+                                auto const blockers = king_jumps<rules_type, board_type, dir_v>(sq, b.pieces(empty_c));
                                 if (blockers.empty()) { return false; }
-                                auto const first = find_first<direction_v>(blockers);
-                                if (!jump_targets<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
-                                capture<direction_v>(next<board_type, direction_v>{}(first), b);
+                                auto const first = find_first<dir_v>(blockers);
+                                if (!jump_targets<board_type, dir_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
+                                capture<dir_v>(next<board_type, dir_v>{}(first), b);
                         } else {
-                                if (!jump_sources<board_type, direction_v>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
-                                capture<direction_v>(next<board_type, direction_v, 2>{}(sq), b);
+                                if (!jump_sources<board_type, dir_v>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                                capture<dir_v>(next<board_type, dir_v, 2>{}(sq), b);
                         }
                         return true;
                 });

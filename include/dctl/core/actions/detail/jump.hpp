@@ -74,7 +74,10 @@ public:
         template<class State>
         static auto detect(State const& s) noexcept
         {
-                return pawn_jump<State>::detect(s) || king_jump<State>::detect(s);
+                return
+                        pawn_jump<State>::detect(s) ||
+                        king_jump<State>::detect(s)
+                ;
         }
 
         template<class State>
