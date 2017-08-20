@@ -33,7 +33,7 @@ auto const depth = std::size_t{28};
 
 using clock_type = std::chrono::steady_clock;
 
-auto perft(state_type const& s, std::size_t d)
+inline auto perft(state_type const& s, std::size_t d)
 {
         if (d == 1) {
                 return static_cast<count_type>(successor.count(s));
@@ -45,7 +45,7 @@ auto perft(state_type const& s, std::size_t d)
         });
 }
 
-auto perft(state_type const& s, std::size_t d, trans& tt)
+inline auto perft(state_type const& s, std::size_t d, trans& tt)
 {
         if (auto entry = tt.find({s, d}); entry != tt.end()) {
                 return entry->second;

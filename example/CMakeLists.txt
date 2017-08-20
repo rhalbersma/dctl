@@ -6,6 +6,13 @@ set(cxx_compile_definitions_boost
         BOOST_ALL_DYN_LINK 
 )
 
+set(cxx_compile_options_warnings_boost 
+        $<$<CXX_COMPILER_ID:Clang>:
+                -Wno-disabled-macro-expansion 
+                -Wno-global-constructors 
+        >
+)
+
 ###############################################################
 # common compiler and linker flags
 ###############################################################
@@ -77,12 +84,12 @@ foreach(t ${targets})
         )
 
         target_compile_definitions(${target_id} PRIVATE 
-                ${cxx_compile_definitions_boost_test}
+                ${cxx_compile_definitions_boost}
         )
 
         target_compile_options(${target_id} PRIVATE 
                 ${cxx_compile_options_warnings_general}
-                ${cxx_compile_options_warnings_boost_test}
+                ${cxx_compile_options_warnings_boost}
                 ${cxx_compile_options_optimization}     
         )
 endforeach()
