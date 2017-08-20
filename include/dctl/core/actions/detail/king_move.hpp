@@ -40,7 +40,7 @@ class king_move
                 return basic_blocker_and_beyond{}(from_sq, index);
         }
 
-        inline const static auto table = []() {
+        inline const static auto attacks_table = []() {
                 auto result = std::array<set_type, Board::bits()>{};
                 Board::squares.for_each([&](auto const from_sq) {
                         result[static_cast<std::size_t>(from_sq)] =
@@ -55,12 +55,12 @@ class king_move
 
         // Classical Approach In One Run
         // https://chessprogramming.wikispaces.com/Classical+Approach#Piece%20Attacks-In%20one%20Run
-        static auto caior(int const from_sq, set_type const& empty) // Throws: Nothing.
+        static auto attacks(int const from_sq, set_type const& empty) // Throws: Nothing.
         {
                 assert(Board::is_onboard(from_sq));
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         return
-                                table[static_cast<std::size_t>(from_sq)] ^
+                                attacks_table[static_cast<std::size_t>(from_sq)] ^
                                 meta::foldl_bit_or<king_move_directions>{}([&](auto const dir) {
                                         constexpr auto dir_v = decltype(dir){};
                                         auto const blockers = king_move_scan<dir_v>(from_sq) - empty;
@@ -68,21 +68,21 @@ class king_move
                                 })
                         ;
                 } else {
-                        return table[static_cast<std::size_t>(from_sq)] & empty;
+                        return attacks_table[static_cast<std::size_t>(from_sq)] & empty;
                 }
         }
 public:
         static auto detect(set_type const& kings, set_type const& empty) noexcept
         {
                 return kings.any_of([&](auto const from_sq) {
-                        return !caior(from_sq, empty).empty();
+                        return !attacks(from_sq, empty).empty();
                 });
         }
 
         static auto count(set_type const& kings, set_type const& empty) noexcept
         {
                 return kings.accumulate(0, [&](auto const result, auto const from_sq) {
-                        return result + caior(from_sq, empty).count();
+                        return result + attacks(from_sq, empty).count();
                 });
         }
 
@@ -90,7 +90,7 @@ public:
         static auto generate(set_type const& kings, set_type const& empty, SequenceContainer& seq)
         {
                 kings.for_each([&](auto const from_sq) {
-                        caior(from_sq, empty).for_each([&](auto const dest_sq) {
+                        attacks(from_sq, empty).for_each([&](auto const dest_sq) {
                                 seq.emplace_back(from_sq, dest_sq);
                         });
                 });

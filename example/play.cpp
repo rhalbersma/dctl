@@ -5,13 +5,14 @@
 
 #include <dctl/algo/node.hpp>
 #include <dctl/core.hpp>
-#include <boost/range/algorithm.hpp>    // sort, transform
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <stack>
 #include <vector>
 
 using namespace dctl::core;
+using namespace dctl::algo;
 
 int main()
 {
@@ -31,9 +32,8 @@ int main()
                 std::cout << fen << state;
                 //std::cout << "[" << p.reversible_actions() << "]\n";
 
-                std::vector<action<Rules, Board>> actions;
-                actions<>{}.generate(state, actions);
-                boost::sort(actions, [](auto const& lhs, auto const& rhs) {
+                auto actions = drop_duplicates_gen.generate(state);
+                std::sort(actions.begin(), actions.end(), [](auto const& lhs, auto const& rhs) {
                         return str_numeric(lhs) < str_numeric(rhs);
                 });
 
@@ -50,7 +50,7 @@ int main()
                 int choice = 0;
 
                 for (std::string input; std::getline(std::cin, input);) {
-                        boost::transform(input, input.begin(), ::tolower);
+                        std::transform(input.begin(), input.end(), input.begin(), ::tolower);
 
                         if (actions.empty()) {
                                 if (input.empty() || input == "u") {
@@ -92,6 +92,6 @@ int main()
                 }
 
                 auto const a = actions[static_cast<std::size_t>(choice)];
-                game.push(algo::result(state, a));
+                game.push(result(state, a));
         }
 }
