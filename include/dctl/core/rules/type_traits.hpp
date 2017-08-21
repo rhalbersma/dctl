@@ -193,16 +193,6 @@ constexpr auto notation_v =
 template<int A, int B>
 constexpr auto rotate_v = rotate(angle{A}, angle{B}).value();
 
-template<int Orientation>
-struct rotated
-{
-        template<class Arg>
-        struct apply
-        :
-                meta::integral_c<int, rotate_v<Orientation, Arg{}>>
-        {};
-};
-
 using basic_pawn_move_directions = meta::list_c<int, dir_NE, dir_NW>;
 using king_move_directions = meta::list_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
 
