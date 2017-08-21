@@ -49,7 +49,7 @@ install:
 ################################################################################
 - |
   cd ${DEPS_DIR}
-  BOOST_URL="https://dl.bintray.com/boostorg/release/1.65.0/source/boost_1_65_0_rc5.tar.bz2"
+  BOOST_URL="https://dl.bintray.com/boostorg/release/1.65.0/source/boost_1_65_0.tar.bz2"
   mkdir boost-1.65.0 && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C boost-1.65.0
   cd boost-1.65.0 && ./bootstrap.sh --with-libraries=test,program_options && sudo ./b2 -d0 install
 
