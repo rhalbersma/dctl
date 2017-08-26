@@ -22,10 +22,10 @@ BOOST_AUTO_TEST_SUITE(TraversalInitialBoard10x10)
 
 BOOST_AUTO_TEST_CASE(International)
 {
-        using S = state<international, board<international>>;
-        std::cout << S::initial() << "\n";
+        using state = basic_state<international, board<international>>;
+        std::cout << state::initial() << "\n";
 
-        auto const s = S::initial();
+        auto const s = state::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
                 { 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'971, 41'022'614, 258'935'682, 1'666'207'133, 10'752'899'471 },
                 { 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'961, 41'022'423, 258'895'763, 1'665'861'398                 }
@@ -39,9 +39,9 @@ BOOST_AUTO_TEST_CASE(International)
 
 BOOST_AUTO_TEST_CASE(Frisian)
 {
-        auto const p = state<frisian, board<frisian>>::initial();
+        auto const s = basic_state<frisian, board<frisian>>::initial();
         auto const leafs = std::vector<int64_t>{ 9, 81, 658, 3'874, 21'265, 102'431, 540'126, 2'825'779, 15'605'069, 85'817'725, 491'186'430 };
-        traversal::test(drop_duplicates_gen, p, leafs);
+        traversal::test(drop_duplicates_gen, s, leafs);
 }
 */
 BOOST_AUTO_TEST_SUITE_END()

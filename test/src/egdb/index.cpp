@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE(Index)
 
 BOOST_AUTO_TEST_CASE(NumeralIsInverseOfPosition)
 {
-        using state_type = state<international, board<micro>>;
+        using state_type = basic_state<international, board<micro>>;
 
         using subdivision_type = subdivision<position_t<state_type>>;
         auto const subdivisions = std::vector<subdivision_type>

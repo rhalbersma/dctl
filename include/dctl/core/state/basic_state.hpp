@@ -51,7 +51,7 @@ using block_adl::conditional_base_mrpk;
 }       // namespace detail
 
 template<class Rules, class Board>
-class state
+class basic_state
 :
         detail::base_position<Board>,
         detail::conditional_base_mrpk<Rules, Board>,
@@ -73,7 +73,7 @@ private:
         }
 
 public:
-        state(position_type const& position, color const to_move)
+        basic_state(position_type const& position, color const to_move)
         :
                 base_position{position},
                 conditional_base_mrpk{},
@@ -83,7 +83,7 @@ public:
         }
 
         constexpr static auto initial()
-                -> state
+                -> basic_state
         {
                 constexpr auto separation = initial_position_gap_v<Rules> + Board::height % 2;
                 PP_CONSTEXPR_CONST auto black_pawns = board_type::initial(black_c, separation);
@@ -92,7 +92,7 @@ public:
         }
 
         constexpr static auto initial(int const separation)
-                -> state
+                -> basic_state
         {
                 auto const black_pawns = board_type::initial(black_c, separation);
                 auto const white_pawns = board_type::initial(white_c, separation);
@@ -166,7 +166,7 @@ public:
         }
 
         template<class HashAlgorithm>
-        friend auto hash_append(HashAlgorithm& h, state const& s)
+        friend auto hash_append(HashAlgorithm& h, basic_state const& s)
         {
                 using xstd::hash_append;
                 hash_append(h, s.m_position, s.m_color);
@@ -180,37 +180,37 @@ private:
 };
 
 template<class Rules, class Board>
-constexpr auto operator==(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+constexpr auto operator==(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
 {
         return lhs.tied() == rhs.tied();
 }
 
 template<class Rules, class Board>
-constexpr auto operator< (state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+constexpr auto operator< (basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
 {
         return lhs.tied() < rhs.tied();
 }
 
 template<class Rules, class Board>
-constexpr auto operator!=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+constexpr auto operator!=(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
 {
         return !(lhs == rhs);
 }
 
 template<class Rules, class Board>
-constexpr auto operator> (state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+constexpr auto operator> (basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
 {
         return rhs < lhs;
 }
 
 template<class Rules, class Board>
-constexpr auto operator>=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+constexpr auto operator>=(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
 {
         return !(lhs < rhs);
 }
 
 template<class Rules, class Board>
-constexpr auto operator<=(state<Rules, Board> const& lhs, state<Rules, Board> const& rhs) noexcept
+constexpr auto operator<=(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
 {
         return !(rhs < lhs);
 }

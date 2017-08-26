@@ -58,7 +58,7 @@ public:
                 return impl<Color>::count(s);
         }
 
-        template<class State, class SequenceContainer = default_container<action<rules_t<State>, board_t<State>>>>
+        template<class State, class SequenceContainer = default_container<basic_action<rules_t<State>, board_t<State>>>>
         auto generate(State const& s) const
         {
                 SequenceContainer seq;
@@ -66,7 +66,7 @@ public:
                 return seq;
         }
 
-        template<class Color, class State, class SequenceContainer = default_container<action<rules_t<State>, board_t<State>>>>
+        template<class Color, class State, class SequenceContainer = default_container<basic_action<rules_t<State>, board_t<State>>>>
         auto generate(State const& s) const
         {
                 SequenceContainer seq;

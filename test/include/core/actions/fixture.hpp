@@ -26,7 +26,7 @@ struct Fixture
         void test(std::string const& fen, Range const& rng)
         {
                 auto const s = setup::read<Rules, Board>{}(fen);
-                std::vector<action<Rules, Board>> moves;
+                std::vector<basic_action<Rules, Board>> moves;
                 actions<>{}.generate(s, moves);
 
                 BOOST_CHECK_EQUAL(moves.size(), rng.size());

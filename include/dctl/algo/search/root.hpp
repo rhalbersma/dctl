@@ -37,7 +37,7 @@ template
 >
 class Root
 {
-        using node_type = node<State, core::action<core::rules_t<State>, core::board_t<State>>>;
+        using node_type = node<State, core::basic_action<core::rules_t<State>, core::board_t<State>>>;
 public:
         // typdefs
         enum EntryType { ZW, PV };
@@ -287,7 +287,7 @@ private:
 
                 using R = core::rules_t<State>;
                 using B = core::board_t<State>;
-                std::vector<core::action<R,B>> moves;
+                std::vector<core::basic_action<R,B>> moves;
                 successor.generate(n.state(), moves);
                 auto const index = static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size();
                 auto const best_move = moves[index];
@@ -308,7 +308,7 @@ private:
 
                 using R = core::rules_t<State>;
                 using B = core::board_t<State>;
-                std::vector<core::action<R,B>> moves;
+                std::vector<core::basic_action<R,B>> moves;
                 successor.generate(n.state(), moves);
                 auto const best_move = moves[static_cast<std::size_t>(pv[static_cast<std::size_t>(ply)]) % moves.size()];
 

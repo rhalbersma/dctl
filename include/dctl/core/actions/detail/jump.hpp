@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/action/action.hpp>                  // action
+#include <dctl/core/action/basic_action.hpp>            // action
 #include <dctl/core/actions/detail/builder.hpp>         // builder
 #include <dctl/core/actions/detail/king_jump.hpp>       // king_jump
 #include <dctl/core/actions/detail/pawn_jump.hpp>       // pawn_jump
@@ -83,12 +83,12 @@ public:
         template<class State>
         static auto count(State const& s)
         {
-                container_type<State, action<rules_t<State>, board_t<State>>> seq;
+                container_type<State, basic_action<rules_t<State>, board_t<State>>> seq;
                 generate(s, seq);
                 return static_cast<int>(seq.size());
         }
 
-        template<class State, class SequenceContainer = boost::container::static_vector<action<rules_t<State>, board_t<State>>, 128>>
+        template<class State, class SequenceContainer = boost::container::static_vector<basic_action<rules_t<State>, board_t<State>>, 128>>
         static auto generate(State const& s)
         {
                 SequenceContainer seq;

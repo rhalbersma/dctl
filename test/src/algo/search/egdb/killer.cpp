@@ -13,7 +13,7 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(SearchEGDBKiller)
 
-using F = search::Fixture<state<killer<international>, board<international>>, search::DefaultObjective >;
+using F = search::Fixture<basic_state<killer<international>, board<international>>, search::DefaultObjective >;
 
 BOOST_FIXTURE_TEST_CASE(DavidGoliath, F)
 {

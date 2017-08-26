@@ -10,7 +10,7 @@
 #include <dctl/core/state/color_piece.hpp>
 #include <dctl/core/state/detail/content.hpp>
 #include <dctl/core/state/detail/token_set.hpp>
-#include <dctl/core/state/state.hpp>
+#include <dctl/core/state/basic_state.hpp>
 #include <dctl/core/state/dxp/version.hpp>
 #include <dctl/core/state/pdn/version.hpp>
 #include <dctl/util/type_traits.hpp>    // set_t
@@ -58,7 +58,7 @@ template<class Rules, class Board, class Token>
 struct read<Rules, Board, pdn::protocol, Token>
 {
         auto operator()(std::string const& s) const
-                -> state<Rules, Board>
+                -> basic_state<Rules, Board>
         {
                 using set_type = set_t<Board>;
                 set_type by_color_piece[2][2]{};
@@ -149,7 +149,7 @@ template<class Rules, class Board, class Token>
 struct read<Rules, Board, dxp::protocol, Token>
 {
         auto operator()(std::string const& s) const
-                -> state<Rules, Board>
+                -> basic_state<Rules, Board>
         {
                 using set_type = set_t<Board>;
                 set_type by_color_piece[2][2]{};

@@ -20,7 +20,7 @@ using namespace dctl::algo;
 
 using rules_type = checkers;
 using board_type = board<checkers>;
-using state_type = state<rules_type, board_type>;
+using state_type = basic_state<rules_type, board_type>;
 
 using count_type = int64_t;
 using cache = std::map<state_type, count_type>;

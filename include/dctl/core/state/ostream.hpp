@@ -9,7 +9,7 @@
 #include <dctl/core/state/detail/content.hpp>
 #include <dctl/core/state/pdn.hpp>
 #include <dctl/core/state/setup/string.hpp>
-#include <dctl/core/state/state.hpp>
+#include <dctl/core/state/basic_state.hpp>
 #include <cassert>
 #include <ios>                                  // ios_base
 #include <ostream>                              // basic_ostream
@@ -43,7 +43,7 @@ auto getstateformat(std::ios_base& str)
 }       // namespace detail
 
 template<class charT, class traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<charT, traits>& ostr, state<Rules, Board> const& s)
+auto& operator<<(std::basic_ostream<charT, traits>& ostr, basic_state<Rules, Board> const& s)
 {
         switch (detail::getstateformat(ostr)) {
         case detail::stateformat::diag: return ostr << diagram<Board>{}([&](auto const n) { return detail::content<detail::token_set<pdn::protocol>>(s, n); });

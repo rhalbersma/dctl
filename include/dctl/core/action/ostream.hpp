@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/action/action.hpp>          // action
+#include <dctl/core/action/basic_action.hpp>    // basic_action
 #include <dctl/core/rules/type_traits.hpp>      // pushsep_v, jumpsep_v, notation_v
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -147,7 +147,7 @@ auto str_numeric(Action const& a)
 }
 
 template<class charT, class traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<charT, traits>& ostr, action<Rules, Board> const& a)
+auto& operator<<(std::basic_ostream<charT, traits>& ostr, basic_action<Rules, Board> const& a)
 {
         switch (detail::getnotation(ostr, a)) {
         case notation::algebraic: return detail::print_algebraic(ostr, a);

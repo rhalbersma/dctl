@@ -60,7 +60,7 @@ using block_adl::conditional_base_ordering_precedence;
 }       // namespace detail
 
 template<class Rules, class Board>
-class action
+class basic_action
 :
         detail::conditional_base_ordering_precedence<Rules, Board>,
         detail::conditional_base_contents_precedence<Rules, Board>,
@@ -81,9 +81,9 @@ public:
         using    set_type =    set_t<Board>;
         using square_type = square_t<Board>;
 
-        action() = default;
+        basic_action() = default;
 
-        constexpr action(int const src, int const dst, bool const is_promotion) noexcept
+        constexpr basic_action(int const src, int const dst, bool const is_promotion) noexcept
         :
                 conditional_base_ordering_precedence{},
                 conditional_base_contents_precedence{},
@@ -92,7 +92,7 @@ public:
                 assert_invariants();
         }
 
-        constexpr action(int const src, int const dst) noexcept
+        constexpr basic_action(int const src, int const dst) noexcept
         :
                 conditional_base_ordering_precedence{},
                 conditional_base_contents_precedence{},
@@ -257,37 +257,37 @@ private:
 };
 
 template<class Rules, class Board>
-constexpr auto operator==(action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
+constexpr auto operator==(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
 {
         return lhs.tied() == rhs.tied();
 }
 
 template<class Rules, class Board>
-constexpr auto operator< (action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
+constexpr auto operator< (basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
 {
         return lhs.tied() < rhs.tied();
 }
 
 template<class Rules, class Board>
-constexpr auto operator!=(action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
+constexpr auto operator!=(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
 {
         return !(lhs == rhs);
 }
 
 template<class Rules, class Board>
-constexpr auto operator> (action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
+constexpr auto operator> (basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
 {
         return rhs < lhs;
 }
 
 template<class Rules, class Board>
-constexpr auto operator>=(action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
+constexpr auto operator>=(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
 {
         return !(lhs < rhs);
 }
 
 template<class Rules, class Board>
-constexpr auto operator<=(action<Rules, Board> const& lhs, action<Rules, Board> const& rhs) noexcept
+constexpr auto operator<=(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
 {
         return !(rhs < lhs);
 }

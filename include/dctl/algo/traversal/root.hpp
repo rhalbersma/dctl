@@ -467,7 +467,7 @@ auto nperft(Actions successor, State const& s, int depth)
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
-        using Node = node<State, core::action<core::rules_t<State>, core::board_t<State>>>;
+        using Node = node<State, core::basic_action<core::rules_t<State>, core::board_t<State>>>;
         auto const n = root<Node>(s);
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
@@ -483,7 +483,7 @@ auto dperft(Actions successor, State const& s, int depth)
         announce(s, depth);
         util::Stopwatch stopwatch;
         stopwatch.start_stop();
-        using Node = node<State, core::action<core::rules_t<State>, core::board_t<State>>>;
+        using Node = node<State, core::basic_action<core::rules_t<State>, core::board_t<State>>>;
         auto const n = root<Node>(s);
         dls_visitor<true, Node> vis;
         for (auto d = 1; d <= depth; ++d) {
