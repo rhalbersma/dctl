@@ -41,7 +41,6 @@ set(cxx_compile_options_warnings_general
 
 set(cxx_compile_options_optimization 
 #	--coverage
-#		-fwhole-program
 #        -fprofile-generate
 #        -fprofile-use 
         -g
@@ -53,7 +52,6 @@ set(cxx_compile_options_optimization
 
 set(cxx_linker_optimization_flags
 #	--coverage
-#		-fwhole-program
 #        -fprofile-generate
 #        -fprofile-use 
         -flto 

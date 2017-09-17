@@ -8,6 +8,7 @@
 #include <dctl/algo/node.hpp>
 #include <dctl/algo/traversal/transposition.hpp>
 #include <dctl/core.hpp>
+#include <dctl/core/state/color_piece.hpp>
 #include <dctl/util/hash/dual_map.hpp>
 #include <dctl/util/hash/extract.hpp>
 #include <dctl/util/statistics.hpp>
@@ -227,6 +228,8 @@ template<bool IsBulk, class Actions, class State>
 auto perft_state(Actions const& successor, State const& s, int depth)
         -> int64_t
 {
+        if (!s.pieces(core::kings_c).empty()) { return 1; }
+
         if constexpr(IsBulk) {
                 if (depth == 1) {
                         return successor.count(s);

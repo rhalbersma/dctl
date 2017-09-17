@@ -2,7 +2,7 @@
 # project settings
 ###############################################################
 
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.9)
 project(dctl CXX)
 
 set(project_include_dir
@@ -27,7 +27,7 @@ set(ext_include_dir ${PROJECT_SOURCE_DIR}/../ext)
 #----------------
 # Boost libraries
 #----------------
-find_package(Boost 1.64.0 REQUIRED COMPONENTS 
+find_package(Boost 1.65.1 REQUIRED COMPONENTS 
 	unit_test_framework
 	program_options
 )
