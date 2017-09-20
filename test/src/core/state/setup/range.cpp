@@ -5,7 +5,6 @@
 
 #include <dctl/core/board.hpp>
 #include <dctl/core/rules.hpp>
-#include <boost/range/irange.hpp>
 #include <iostream>
 
 using namespace dctl::core;
@@ -14,8 +13,8 @@ template<class charT, class traits, class Board>
 auto& operator<<(std::basic_ostream<charT, traits>& ostr, board<Board> const& b)
 {
         using Coord = coordinates<upper_left>;
-        for (auto y : boost::irange(0, b.height)) {
-                for (auto x : boost::irange(0, b.width)) {
+        for (auto y = 0; y < b.height; ++y) {
+                for (auto x = 0; x < b.width; ++x) {
                         if (auto const coord = Coord{x, y}; b.is_square(coord)) {
                                 ostr << std::setw(2) << b.to_square(coord);
                         } else {

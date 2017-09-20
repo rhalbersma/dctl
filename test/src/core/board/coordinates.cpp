@@ -3,17 +3,17 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/board/group.hpp>                         // action::is_realized, make_group
-#include <core/board/sequence.hpp>                      // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
-                                                        // ktar<10, 12>, Compact_10_12, Compact_12_10, board<12, 10>, canadian, srilankan, dumm
-#include <dctl/core/board/angle.hpp>                    // _deg, inverse, rotate
-#include <dctl/core/board/coordinates.hpp>       // operator==, rotate, to_sco
-#include <boost/algorithm/cxx11/all_of.hpp>             // all_of
-#include <boost/range/irange.hpp>                       // irange
-#include <boost/test/test_case_template.hpp>            // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <boost/test/unit_test.hpp>                     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
-#include <type_traits>                                  // common_type
-#include <vector>                                       // vector
+#include <core/board/group.hpp>                 // action::is_realized, make_group
+#include <core/board/sequence.hpp>              // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
+                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, board<12, 10>, canadian, srilankan, dumm
+#include <dctl/core/board/angle.hpp>            // _deg, inverse, rotate
+#include <dctl/core/board/coordinates.hpp>      // operator==, rotate, to_sco
+#include <boost/range/irange.hpp>               // irange
+#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
+#include <algorithm>                            // all_of
+#include <type_traits>                          // common_type
+#include <vector>                               // vector
 
 using namespace dctl::core;
 using namespace literals;
@@ -47,9 +47,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquare
                 C1, C2, C4
         };
 
+        auto const squares = boost::irange(0, T::size());
         BOOST_CHECK(
-                boost::algorithm::all_of(C_N, [=](auto const& g) {
-                        return boost::algorithm::all_of(boost::irange(0, T::size()), [&](auto i) {
+                std::all_of(C_N.begin(), C_N.end(), [=](auto const& g) {
+                        return std::all_of(squares.begin(), squares.end(), [&](auto i) {
                                 auto const coord = to_sco(i, T::inner_grid);
                                 return group::action::is_realized(coord, g);
                         });

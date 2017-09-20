@@ -27,6 +27,12 @@ set(ext_include_dir ${PROJECT_SOURCE_DIR}/../ext)
 #----------------
 # Boost libraries
 #----------------
+
+set(BOOST_INCLUDEDIR /usr/local/include/boost-1_65_1)
+set(BOOST_LIBRARYDIR /usr/local/lib)
+set(Boost_COMPILER -gcc)
+#set(Boost_COMPILER -clang50) 
+
 find_package(Boost 1.65.1 REQUIRED COMPONENTS 
 	unit_test_framework
 	program_options
@@ -41,6 +47,7 @@ target_include_directories(dctl INTERFACE
 	${ext_include_dir}
 )
 target_link_libraries(dctl INTERFACE -lstdc++fs)
+#target_link_libraries(dctl INTERFACE -lc++experimental)
 target_compile_features(dctl INTERFACE cxx_std_17)
 
 ###############################################################

@@ -6,8 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <core/board/group/primitives.hpp>      // set, op, id, inv
-#include <boost/algorithm/cxx11/all_of.hpp>     // all_of
-#include <boost/range/algorithm.hpp>            // find, find_if
+#include <algorithm>                            // all_of, find, find_if
 
 namespace dctl::core {
 namespace group {
@@ -19,9 +18,9 @@ auto is_closure(Group const& g) noexcept
         auto const set = group::set(g);
         auto const op = group::op(g);
 
-        return boost::algorithm::all_of(set, [&](auto const& a) {
-                return boost::algorithm::all_of(set, [&](auto const& b) {
-                        return set.cend() != boost::find(set, op(a, b));
+        return std::all_of(set.begin(), set.end(), [&](auto const& a) {
+                return std::all_of(set.begin(), set.end(), [&](auto const& b) {
+                        return set.cend() != std::find(set.begin(), set.end(), op(a, b));
                 });
         });
 }
@@ -32,9 +31,9 @@ auto is_associativity(Group const& g) noexcept
         auto const set = group::set(g);
         auto const op = group::op(g);
 
-        return boost::algorithm::all_of(set, [&](auto const& a) {
-                return boost::algorithm::all_of(set, [&](auto const& b) {
-                        return boost::algorithm::all_of(set, [&](auto const& c) {
+        return std::all_of(set.begin(), set.end(), [&](auto const& a) {
+                return std::all_of(set.begin(), set.end(), [&](auto const& b) {
+                        return std::all_of(set.begin(), set.end(), [&](auto const& c) {
                                 return
                                         op(a, op(b, c)) ==
                                         op(op(a, b), c)
@@ -50,8 +49,8 @@ auto is_identity(Group const& g) noexcept
         auto const set = group::set(g);
         auto const op = group::op(g);
 
-        return set.cend() != boost::find_if(set, [&](auto const& id) {
-                return boost::algorithm::all_of(set, [&](auto const& elem) {
+        return set.cend() != std::find_if(set.begin(), set.end(), [&](auto const& id) {
+                return std::all_of(set.begin(), set.end(), [&](auto const& elem) {
                         return
                                 op(elem, id) == elem &&
                                 op(id, elem) == elem
@@ -68,8 +67,8 @@ auto is_inverse(Group const& g) noexcept
         auto const id = group::id(g);
         auto const inv = group::inv(g);
 
-        return boost::algorithm::all_of(set, [&](auto const& elem) {
-                return set.cend() != boost::find_if(set, [&](auto const& elem_inv) {
+        return std::all_of(set.begin(), set.end(), [&](auto const& elem) {
+                return set.cend() != std::find_if(set.begin(), set.end(), [&](auto const& elem_inv) {
                         return
                                 inv(elem) == elem_inv &&
                                 op(elem, elem_inv) == id &&

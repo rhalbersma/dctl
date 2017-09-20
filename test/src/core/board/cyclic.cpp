@@ -3,10 +3,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/board/group.hpp>              // axioms::is_realized, make
-#include <dctl/core/board/angle.hpp>         // _deg, inverse, rotate
+#include <core/board/group.hpp>         // axioms::is_realized, make
+#include <dctl/core/board/angle.hpp>    // _deg, inverse, rotate
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
-#include <boost/algorithm/cxx11/all_of.hpp>                    // all_of
+#include <algorithm>                    // all_of
 #include <type_traits>                  // common_type
 #include <vector>                       // vector
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(GroupAxiomsAreRealizedOnCyclicGroups)
         };
 
         BOOST_CHECK(
-                boost::algorithm::all_of(C_N, [](auto const& g) {
+                std::all_of(C_N.begin(), C_N.end(), [](auto const& g) {
                         return group::axioms::is_realized(g);
                 })
         );

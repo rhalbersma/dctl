@@ -42,7 +42,8 @@ set(cxx_compile_options_optimization
 #	--coverage
 #		-fwhole-program
 #        -fprofile-generate
-#        -fprofile-use 
+#        -fprofile-use
+#		-stdlib=libc++ 
         -g
         -O3
         -flto
@@ -54,7 +55,9 @@ set(cxx_linker_optimization_flags
 #	--coverage
 #		-fwhole-program
 #        -fprofile-generate
-#        -fprofile-use 
+#        -fprofile-use
+#		-stdlib=libc++
+#		-lc++abi 
         -flto 
         -fuse-ld=gold
 )
@@ -74,7 +77,8 @@ foreach(t ${targets})
 
 		add_executable(${target_id} src/${t})
 	
-        target_include_directories(${target_id} PRIVATE
+        target_include_directories(${target_id} SYSTEM PRIVATE 
+        		${Boost_INCLUDE_DIR}
         )
 
         target_link_libraries(${target_id} PRIVATE

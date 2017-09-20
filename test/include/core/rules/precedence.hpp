@@ -5,9 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/rules/type_traits.hpp>                 // equal_to, less, equivalent_to
-#include <boost/range/algorithm.hpp>            // adjacent_find
-#include <boost/range/algorithm_ext.hpp>        // is_sorted
+#include <dctl/core/rules/type_traits.hpp>      // equal_to, less, equivalent_to
+#include <algorithm>                            // adjacent_find, is_sorted
 
 namespace dctl::core {
 namespace precedence {
@@ -16,9 +15,9 @@ template<class Range>
 auto is_consistent(Range const& rng)
 {
         return
-                (boost::adjacent_find(rng, equal_to     {}) == rng.cend()) &&
-                (boost::adjacent_find(rng, equivalent_to{}) == rng.cend()) &&
-                 boost::is_sorted    (rng, less         {})
+                (std::adjacent_find(rng.begin(), rng.end(), equal_to     {}) == rng.end()) &&
+                (std::adjacent_find(rng.begin(), rng.end(), equivalent_to{}) == rng.end()) &&
+                 std::is_sorted    (rng.begin(), rng.end(), less         {})
         ;
 }
 

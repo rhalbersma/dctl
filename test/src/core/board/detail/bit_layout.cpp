@@ -8,9 +8,9 @@
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, board<12, 10>, canadian, srilankan, dumm
 #include <dctl/core/board/angle.hpp>                 // _deg, inverse, rotate
 #include <dctl/core/board/detail/bit_layout.hpp>     // dimensions
-#include <boost/algorithm/cxx11/all_of.hpp>     // all_of
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_CHECK
+#include <algorithm>                            // all_of
 #include <type_traits>                          // common_type
 #include <vector>                               // vector
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimens
         auto const dim = detail::dimensions{ T::width, T::height, T::is_inverted };
 
         BOOST_CHECK(
-                boost::algorithm::all_of(C_N, [&](auto const& g) {
+                std::all_of(C_N.begin(), C_N.begin(), [&](auto const& g) {
                         return group::action::is_realized(dim, g);
                 })
         );
