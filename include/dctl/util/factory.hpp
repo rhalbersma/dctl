@@ -9,10 +9,9 @@
 #include <functional>           // function
 #include <map>                  // map
 #include <string>               // string
-#include <utility>              // forward
 #include <variant>              // monostate
 
-namespace dctl::core {
+namespace dctl::util {
 
 template<class... Types>
 class factory
@@ -44,11 +43,11 @@ private:
         template<class T>
         struct construct
         {
-                auto operator()(argument_type&& arg) const
+                auto operator()(argument_type const& arg) const
                 {
-                        return T(std::forward<argument_type>(arg));
+                        return T(arg);
                 }
         };
 };
 
-}       // namespace dctl::core
+}       // namespace dctl::util

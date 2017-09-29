@@ -6,24 +6,23 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/state/dxp.hpp>
+#include <dctl/util/factory.hpp>
 #include <string>
 #include <variant>
 #include <vector>
 
 namespace dctl::core {
-namespace dxp {
 
 struct Fixture
 {
-        factory
-        <
-                dxp::game_request,
-                dxp::game_acknowledge,
-                dxp::move,
-                dxp::back_request,
-                dxp::back_acknowledge,
-                dxp::game_end,
-                dxp::chat
+        util::factory
+        <       dxp::game_request
+        ,       dxp::game_acknowledge
+        ,       dxp::move
+        ,       dxp::back_request
+        ,       dxp::back_acknowledge
+        ,       dxp::game_end
+        ,       dxp::chat
         > f;
 
         struct visitor
@@ -40,5 +39,4 @@ struct Fixture
         visitor vis{parsed};
 };
 
-}        // namespace dxp
 }        // namespace dctl::core

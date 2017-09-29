@@ -9,8 +9,8 @@
 
 using namespace dctl::core;
 
-template<class charT, class traits, class Board>
-auto& operator<<(std::basic_ostream<charT, traits>& ostr, board<Board> const& b)
+template<class CharT, class Traits, class Board>
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board<Board> const& b)
 {
         using Coord = coordinates<upper_left>;
         for (auto y = 0; y < b.height; ++y) {

@@ -16,8 +16,8 @@ using namespace dctl::algo;
 
 int main()
 {
-        using Rules = international;
-        using Board = board<micro>;
+        using Rules = russian;
+        using Board = board<russian>;
         using State = basic_state<Rules, Board>;
 
         auto initial = State::initial();// setup::read<Rules, Board>{}("W:B1,5,6,9,10:W11,12,14,15,16");

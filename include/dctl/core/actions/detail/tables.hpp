@@ -56,8 +56,8 @@ class board_scan_sq_dir
                 Board::squares.for_each([&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::make_array<Directions>{}([=](auto const dir) {
-                                        constexpr auto dir_v = decltype(dir){};
-                                        return scan<Board, dir_v, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares);
+                                        constexpr auto dir_c = decltype(dir){};
+                                        return scan<Board, dir_c, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares);
                                 });
                         ;
                 });
@@ -75,11 +75,11 @@ class board_scan_dir_sq
 {
         inline const static auto table = []() {
                 return meta::make_array<Directions>{}([](auto const dir) {
-                        constexpr auto dir_v [[maybe_unused]] = decltype(dir){}; // silence bogus GCC warning unused-but-set-variable
+                        constexpr auto dir_c [[maybe_unused]] = decltype(dir){}; // silence bogus GCC warning unused-but-set-variable
                         auto result = std::array<set_t<Board>, Board::bits()>{};
                         Board::squares.for_each([&](auto const sq) {
                                 result[static_cast<std::size_t>(sq)] =
-                                        scan<Board, dir_v, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
+                                        scan<Board, dir_c, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
                                 ;
                         });
                         return result;

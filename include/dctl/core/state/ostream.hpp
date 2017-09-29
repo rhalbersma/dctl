@@ -24,15 +24,13 @@ enum class stateformat
         fen = 2
 };
 
-inline
-auto setstateformat()
+inline auto setstateformat()
 {
         static auto const i = std::ios_base::xalloc();
         return i;
 }
 
-inline
-auto getstateformat(std::ios_base& str)
+inline auto getstateformat(std::ios_base& str)
 {
         if (auto const iword = str.iword(setstateformat()); iword) {
                 return static_cast<stateformat>(iword);
@@ -42,8 +40,8 @@ auto getstateformat(std::ios_base& str)
 
 }       // namespace detail
 
-template<class charT, class traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<charT, traits>& ostr, basic_state<Rules, Board> const& s)
+template<class CharT, class Traits, class Rules, class Board>
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_state<Rules, Board> const& s)
 {
         switch (detail::getstateformat(ostr)) {
         case detail::stateformat::diag: return ostr << diagram<Board>{}([&](auto const n) { return detail::content<detail::token_set<pdn::protocol>>(s, n); });
@@ -52,15 +50,13 @@ auto& operator<<(std::basic_ostream<charT, traits>& ostr, basic_state<Rules, Boa
         return ostr;
 }
 
-inline
-auto& diag(std::ios_base& str)
+inline auto& diag(std::ios_base& str)
 {
         str.iword(detail::setstateformat()) = xstd::to_underlying_type(detail::stateformat::diag);
         return str;
 }
 
-inline
-auto& fen(std::ios_base& str)
+inline auto& fen(std::ios_base& str)
 {
         str.iword(detail::setstateformat()) = xstd::to_underlying_type(detail::stateformat::fen);
         return str;

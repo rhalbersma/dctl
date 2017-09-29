@@ -12,7 +12,7 @@
 #include <vector>                       // vector
 
 using namespace dctl::core;
-using F = dxp::Fixture;
+using F = Fixture;
 
 BOOST_AUTO_TEST_SUITE(DXPParser)
 
@@ -27,15 +27,16 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
                         "ATornado voor Windows 4.0        0",
                         "M0012061100",
                         "M001205250422122320",
+                        "E00",
                         "B005Z",
                         "K1",
-                        "E00",
                         "CWhat do you think about move 35?"
                 };
 
                 for (auto const& m : messages) {
                         auto v = f.create(m);
                         boost::apply_visitor(vis, v);
+                        //std::visit(vis, v);
                 }
 
                 BOOST_CHECK_EQUAL_COLLECTIONS(messages.begin(), messages.end(), parsed.begin(), parsed.end());
@@ -46,6 +47,7 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
                 auto const n = vis.data.size();
                 auto v = f.create("This is an invalid message");
                 boost::apply_visitor(vis, v);
+                //std::visit(vis, v);
                 BOOST_CHECK_EQUAL(vis.data.size(), n);
         }
 

@@ -30,8 +30,8 @@ public:
         static auto detect(Set const& pawns, Set const& empty) noexcept
         {
                 return meta::foldl_logical_or<pawn_move_directions>{}([&](auto const dir) {
-                        constexpr auto dir_v = decltype(dir){};
-                        return !move_squares<Board, dir_v>{}(pawns, empty).empty();
+                        constexpr auto dir_c = decltype(dir){};
+                        return !move_squares<Board, dir_c>{}(pawns, empty).empty();
                 });
         }
 
@@ -39,8 +39,8 @@ public:
         static auto count(Set const& pawns, Set const& empty) noexcept
         {
                 return meta::foldl_plus<pawn_move_directions>{}([&](auto const dir) {
-                        constexpr auto dir_v = decltype(dir){};
-                        return move_squares<Board, dir_v>{}(pawns, empty).count();
+                        constexpr auto dir_c = decltype(dir){};
+                        return move_squares<Board, dir_c>{}(pawns, empty).count();
                 });
         }
 
@@ -48,9 +48,9 @@ public:
         static auto generate(Set const& pawns, Set const& empty, SequenceContainer& seq)
         {
                 meta::foldl_comma<pawn_move_directions>{}([&](auto const dir) {
-                        constexpr auto dir_v = decltype(dir){};
-                        move_squares<Board, dir_v>{}(pawns, empty).for_each([&](auto const dest_sq) {
-                                seq.emplace_back(prev<Board, dir_v>{}(dest_sq), dest_sq, Board::promotion(Side).contains(dest_sq));
+                        constexpr auto dir_c = decltype(dir){};
+                        move_squares<Board, dir_c>{}(pawns, empty).for_each([&](auto const dest_sq) {
+                                seq.emplace_back(prev<Board, dir_c>{}(dest_sq), dest_sq, Board::promotion(Side).contains(dest_sq));
                         });
                 });
         }

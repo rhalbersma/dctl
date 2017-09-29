@@ -37,8 +37,7 @@ public:
         }
 };
 
-inline
-auto& operator<<(std::ios_base& str, setpushsep const& manip)
+inline auto& operator<<(std::ios_base& str, setpushsep const& manip)
 {
         str.iword(manip.index()) = manip.iword();
         return str;
@@ -65,8 +64,7 @@ public:
         }
 };
 
-inline
-auto& operator<<(std::ios_base& str, setjumpsep const& manip)
+inline auto& operator<<(std::ios_base& str, setjumpsep const& manip)
 {
         str.iword(manip.index()) = manip.iword();
         return str;
@@ -91,8 +89,7 @@ auto separator(std::ios_base& str, Action const& a)
         }
 }
 
-inline
-auto setnotation()
+inline auto setnotation()
 {
         static auto const i = std::ios_base::xalloc();
         return i;
@@ -108,8 +105,8 @@ auto getnotation(std::ios_base& str, Action const&)
         return notation_v<rules_type>;
 }
 
-template<class charT, class traits, class Action>
-auto& print_algebraic(std::basic_ostream<charT, traits>& ostr, Action const& a)
+template<class CharT, class Traits, class Action>
+auto& print_algebraic(std::basic_ostream<CharT, Traits>& ostr, Action const& a)
 {
         using board_type = board_t<Action>;
         ostr << board_type::algebraic_from_bit(a.from());
@@ -118,8 +115,8 @@ auto& print_algebraic(std::basic_ostream<charT, traits>& ostr, Action const& a)
         return ostr;
 }
 
-template<class charT, class traits, class Action>
-auto& print_numeric(std::basic_ostream<charT, traits>& ostr, Action const& a)
+template<class CharT, class Traits, class Action>
+auto& print_numeric(std::basic_ostream<CharT, Traits>& ostr, Action const& a)
 {
         using board_type = board_t<Action>;
         ostr << board_type::numeric_from_bit(a.from());
@@ -146,8 +143,8 @@ auto str_numeric(Action const& a)
         return sstr.str();
 }
 
-template<class charT, class traits, class Rules, class Board>
-auto& operator<<(std::basic_ostream<charT, traits>& ostr, basic_action<Rules, Board> const& a)
+template<class CharT, class Traits, class Rules, class Board>
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_action<Rules, Board> const& a)
 {
         switch (detail::getnotation(ostr, a)) {
         case notation::algebraic: return detail::print_algebraic(ostr, a);
@@ -156,15 +153,13 @@ auto& operator<<(std::basic_ostream<charT, traits>& ostr, basic_action<Rules, Bo
         return ostr;
 }
 
-inline
-auto& algebraic(std::ios_base& str)
+inline auto& algebraic(std::ios_base& str)
 {
         str.iword(detail::setnotation()) = xstd::to_underlying_type(notation::algebraic);
         return str;
 }
 
-inline
-auto& numeric(std::ios_base& str)
+inline auto& numeric(std::ios_base& str)
 {
         str.iword(detail::setnotation()) = xstd::to_underlying_type(notation::numeric);
         return str;

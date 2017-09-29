@@ -60,14 +60,14 @@ public:
         {
                 return s.pieces(color_c<Side>, kings_c).any_of([&](auto from_sq) {
                         return meta::foldl_logical_or<king_jump_directions>{}([&](auto const dir) {
-                                constexpr auto dir_v = decltype(dir){};
+                                constexpr auto dir_c = decltype(dir){};
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jumps<rules_type, board_type, dir_v>(from_sq, s.pieces(empty_c));
+                                        auto const blockers = king_jumps<rules_type, board_type, dir_c>(from_sq, s.pieces(empty_c));
                                         if (blockers.empty()) { return false; }
-                                        auto const first = find_first<dir_v>(blockers);
-                                        return jump_targets<board_type, dir_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
+                                        auto const first = find_first<dir_c>(blockers);
+                                        return jump_targets<board_type, dir_c>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
                                 } else {
-                                        return jump_sources<board_type, dir_v>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
+                                        return jump_sources<board_type, dir_c>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
                                 }
                         });
                 });
@@ -80,16 +80,16 @@ public:
                 b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
                         raii::lift<Builder> guard{from_sq, b};
                         meta::foldl_comma<king_jump_directions>{}([&](auto const dir) {
-                                constexpr auto dir_v = decltype(dir){};
+                                constexpr auto dir_c = decltype(dir){};
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jumps<rules_type, board_type, dir_v>(from_sq, b.pieces(empty_c));
+                                        auto const blockers = king_jumps<rules_type, board_type, dir_c>(from_sq, b.pieces(empty_c));
                                         if (blockers.empty()) { return; }
-                                        auto const first = find_first<dir_v>(blockers);
-                                        if (!jump_targets<board_type, dir_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
-                                        capture<dir_v>(next<board_type, dir_v>{}(first), b);
+                                        auto const first = find_first<dir_c>(blockers);
+                                        if (!jump_targets<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
+                                        capture<dir_c>(next<board_type, dir_c>{}(first), b);
                                 } else {
-                                        if (!jump_sources<board_type, dir_v>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
-                                        capture<dir_v>(next<board_type, dir_v, 2>{}(from_sq), b);
+                                        if (!jump_sources<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
+                                        capture<dir_c>(next<board_type, dir_c, 2>{}(from_sq), b);
                                 }
                         });
                 });
@@ -157,16 +157,16 @@ private:
         static auto scan(int const sq, Builder& b)
         {
                 return meta::foldl_bit_or<Directions>{}([&](auto const dir) {
-                        constexpr auto dir_v = decltype(dir){};
+                        constexpr auto dir_c = decltype(dir){};
                         if constexpr (is_long_ranged_king_v<rules_type>) {
-                                auto const blockers = king_jumps<rules_type, board_type, dir_v>(sq, b.pieces(empty_c));
+                                auto const blockers = king_jumps<rules_type, board_type, dir_c>(sq, b.pieces(empty_c));
                                 if (blockers.empty()) { return false; }
-                                auto const first = find_first<dir_v>(blockers);
-                                if (!jump_targets<board_type, dir_v>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
-                                capture<dir_v>(next<board_type, dir_v>{}(first), b);
+                                auto const first = find_first<dir_c>(blockers);
+                                if (!jump_targets<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
+                                capture<dir_c>(next<board_type, dir_c>{}(first), b);
                         } else {
-                                if (!jump_sources<board_type, dir_v>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
-                                capture<dir_v>(next<board_type, dir_v, 2>{}(sq), b);
+                                if (!jump_sources<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                                capture<dir_c>(next<board_type, dir_c, 2>{}(sq), b);
                         }
                         return true;
                 });
