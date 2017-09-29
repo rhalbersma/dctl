@@ -6,15 +6,12 @@ env:
 - CXX_COMPILER=g++-7       BUILD_TYPE=Release
 - CXX_COMPILER=clang++-5.0 BUILD_TYPE=Debug    
 - CXX_COMPILER=clang++-5.0 BUILD_TYPE=Release   
-- CXX_COMPILER=clang++-6.0 BUILD_TYPE=Debug    
-- CXX_COMPILER=clang++-6.0 BUILD_TYPE=Release   
 
 before_install:
 - |
   sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   sudo add-apt-repository -y ppa:anthony-justsoftwaresolutions/libcxx
   sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-5.0 main"
-  sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty main"
   wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
 
 - |
@@ -31,7 +28,6 @@ install:
 - |
   sudo apt-get install g++-7 binutils-2.26 lcov
   sudo apt-get install clang-5.0 lldb-5.0 lld-5.0
-  sudo apt-get install clang-6.0 lldb-6.0 lld-6.0
   sudo apt-get install libc++-helpers libc++-dev libc++1 libc++abi-dev libc++abi1
 
 - |
