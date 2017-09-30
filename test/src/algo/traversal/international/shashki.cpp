@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_SUITE(TraversalInternationalShashki)
 
 BOOST_AUTO_TEST_CASE(FrontRows)
 {
-        auto const s = setup::read<international>{}(
+        auto const s = pdn::read<international>{}(
                 "W:B16,17,18,19,20:W31,32,33,34,35"
         );
         auto const leafs = std::vector<int64_t>

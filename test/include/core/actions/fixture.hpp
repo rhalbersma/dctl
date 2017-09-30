@@ -24,7 +24,7 @@ struct Fixture
         template<class Range>
         void test(std::string const& fen, Range const& rng)
         {
-                auto const s = setup::read<Rules, Board>{}(fen);
+                auto const s = pdn::read<Rules, Board>{}(fen);
                 std::vector<basic_action<Rules, Board>> moves;
                 actions<>{}.generate(s, moves);
 

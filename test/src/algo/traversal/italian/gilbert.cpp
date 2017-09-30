@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_SUITE(TraversalItalianGilbert)
 
 BOOST_AUTO_TEST_CASE(Position1)
 {
-        auto const s = setup::read<italian>{}(
+        auto const s = pdn::read<italian>{}(
                 "W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3"
         );
         auto const leafs = std::vector<int64_t>
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(Position1)
 
 BOOST_AUTO_TEST_CASE(Position2)
 {
-        auto const s = setup::read<italian>{}(
+        auto const s = pdn::read<italian>{}(
                 "B:W30,21,22,17,20,K6:B25,28,9,5,1,3"
         );
         auto const leafs = std::vector<int64_t>
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(Position2)
 
 BOOST_AUTO_TEST_CASE(Position3)
 {
-        auto const s = setup::read<italian>{}(
+        auto const s = pdn::read<italian>{}(
                 "W:WK27,K28,17,20,9,K12,8:B21,24,K19,K13,14,K11,4"
         );
         auto const leafs = std::vector<int64_t>

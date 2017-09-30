@@ -8,10 +8,9 @@
 #include <cctype>       // tolower, toupper
 
 namespace dctl::core {
-namespace detail {
 
 template<char Black, char White, char Empty>
-struct token_interface
+struct basic_token_set
 {
         constexpr static auto black = Black;
         constexpr static auto white = White;
@@ -36,5 +35,4 @@ struct token_interface
         };
 };
 
-}       // namespace detail
 }       // namespace dctl::core

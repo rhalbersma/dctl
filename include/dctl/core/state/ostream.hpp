@@ -6,10 +6,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/diagram.hpp>
-#include <dctl/core/state/detail/content.hpp>
-#include <dctl/core/state/pdn.hpp>
-#include <dctl/core/state/setup/string.hpp>
 #include <dctl/core/state/basic_state.hpp>
+#include <dctl/core/ui/position.hpp>
+#include <dctl/core/ui/pdn/state.hpp>
 #include <cassert>
 #include <ios>                                  // ios_base
 #include <ostream>                              // basic_ostream
@@ -44,8 +43,8 @@ template<class CharT, class Traits, class Rules, class Board>
 auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_state<Rules, Board> const& s)
 {
         switch (detail::getstateformat(ostr)) {
-        case detail::stateformat::diag: return ostr << diagram<Board>{}([&](auto const n) { return detail::content<detail::token_set<pdn::protocol>>(s, n); });
-        case detail::stateformat::fen : return ostr << setup::write<pdn::protocol>{}(s);
+        case detail::stateformat::diag: return ostr << diagram<Board>{}([&](auto const n) { return content<pdn::token_set>(s, n); });
+        case detail::stateformat::fen : return ostr << pdn::write<>{}(s);
         }
         return ostr;
 }

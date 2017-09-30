@@ -5,7 +5,8 @@
 
 #include <dctl/core/board.hpp>          // international
 #include <dctl/core/rules.hpp>          // international
-#include <dctl/core/state.hpp>          // read, write
+#include <dctl/core/ui/dxp.hpp>         // read
+#include <dctl/core/ui/pdn.hpp>         // read, write
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_CHECK_EQUAL, BOOST_AUTO_TEST_SUITE_END
 
 using namespace dctl::core;
@@ -30,16 +31,14 @@ BOOST_AUTO_TEST_CASE(WiegerWesselink)
 
         // parse the above diagram into a position with the DamExchange protocol
         // with a modified character set (default is <'Z', 'W', 'E'>)
-        auto const pos_w = setup::read<
-                international, board<international>, dxp::protocol, detail::token_interface<'X', 'O', '.'>
-        >{}(w);
+        auto const pos_w = dxp::read<international, board<international>, basic_token_set<'X', 'O', '.'>>{}(w);
 
         // write the above position as a fen string with the PDN protocol
-        auto const fen_w = setup::write<pdn::protocol>{}(pos_w);
+        auto const fen_w = pdn::write<>{}(pos_w);
 
         // convert the new fen string to a new position and back into a new fen string
-        auto const pos_r = setup::read<international>{}(fen_w);
-        auto const fen_r = setup::write<pdn::protocol>{}(pos_r);
+        auto const pos_r = pdn::read<international>{}(fen_w);
+        auto const fen_r = pdn::write<>{}(pos_r);
 
         // the two positions have been parsed through different protocols,
         // but they should have identical fen strings

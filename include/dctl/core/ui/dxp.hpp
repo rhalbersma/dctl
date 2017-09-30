@@ -1,3 +1,4 @@
+
 #pragma once
 
 //          Copyright Rein Halbersma 2010-2017.
@@ -5,11 +6,5 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-namespace dctl::core {
-namespace pdn {
-
-struct v3 {};
-using protocol = v3;
-
-}       // namespace pdn
-}       // namespace dctl::core
+#include <dctl/core/ui/dxp/message.hpp> // gamereq, gameacc, move, gameend, chat, backreq, backacc, basic_parser, parser
+#include <dctl/core/ui/dxp/state.hpp>   // token_set, read, write

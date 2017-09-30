@@ -5,49 +5,85 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <chrono>       // minutes, seconds
-#include <iomanip>      // setfill, setw
-#include <sstream>      // stringstream
-#include <string>       // stoi, string
-#include <vector>       // vector
+#include <boost/blank.hpp>      // blank
+#include <boost/variant.hpp>    // variant
+#include <chrono>               // minutes, seconds
+#include <cstddef>              // size_t
+#include <functional>           // function
+#include <iomanip>              // setfill, setw
+#include <map>                  // map
+#include <sstream>              // stringstream
+#include <string>               // stoi, string
+#include <vector>               // vector
 
 namespace dctl::core {
 namespace dxp {
+inline namespace v1 {
 
-// The format and semantics of GAMEREQ are defined at:
-// http://www.mesander.nl/damexchange/egamereq.htm
+// The Layer 2 protocol description can be found at:
+// http://www.mesander.nl/damexchange/edxplg2.htm
 
-class game_request
+class gamereq
 {
-        inline static auto const s_header = "R";
+        // The format and semantics of the GAMEREQ message type can be found at:
+        // http://www.mesander.nl/damexchange/egamereq.htm
+
+        constexpr static auto s_header = "R";
+        constexpr static auto s_version = 1;
+        constexpr static auto s_color_to_move_first = 'W';
+        constexpr static auto s_starting_position = "zzzzzzzzzzzzzzzzzzzzeeeeeeeeeewwwwwwwwwwwwwwwwwwww";
         int m_version;
         std::string m_initiator_name;
-        std::string m_follower_color;
+        char m_follower_color;
         std::chrono::minutes m_thinking_time;
         int m_number_of_moves;
-        std::string m_starting_position;
-        std::string m_color_to_move_first;
+        char m_starting_position;
+        char m_color_to_move_first;
         std::string m_position;
 public:
-        explicit game_request(std::string const& message)
+        explicit gamereq(std::string const& message)
         :
                 m_version{std::stoi(message.substr(0, 2))},
                 m_initiator_name{message.substr(2, 32)},
-                m_follower_color{message.substr(34, 1)},
+                m_follower_color{message[34]},
                 m_thinking_time{std::stoi(message.substr(35, 3))},
                 m_number_of_moves{std::stoi(message.substr(38, 3))},
-                m_starting_position{message.substr(41, 1)}
+                m_starting_position{message[41]}
         {
-                if (m_starting_position == "A") {
-                        m_color_to_move_first = "W";
-                        m_position = std::string(20, 'z') + std::string(10, 'e') + std::string(20, 'w');
-                } else if (m_starting_position == "B") {
-                        m_color_to_move_first = message.substr(42, 1);
+                if (m_starting_position == 'A') {
+                        m_color_to_move_first = s_color_to_move_first;
+                        m_position = s_starting_position;
+                } else if (m_starting_position == 'B') {
+                        m_color_to_move_first = message[42];
                         m_position = message.substr(43, 50);
                 }
         }
 
-        static auto header() noexcept
+        gamereq(std::string const& in, char const fc, std::chrono::minutes const tt, int const nofm)
+        :
+                m_version{s_version},
+                m_initiator_name{in},
+                m_follower_color{fc},
+                m_thinking_time{tt},
+                m_number_of_moves{nofm},
+                m_starting_position{'A'},
+                m_color_to_move_first{s_color_to_move_first},
+                m_position{s_starting_position}
+        {}
+
+        gamereq(std::string const& in, char const fc, std::chrono::minutes const tt, int const nofm, char const ctmf, std::string const& p)
+        :
+                m_version{s_version},
+                m_initiator_name{in},
+                m_follower_color{fc},
+                m_thinking_time{tt},
+                m_number_of_moves{nofm},
+                m_starting_position{'B'},
+                m_color_to_move_first{ctmf},
+                m_position{p}
+        {}
+
+        constexpr static auto header() noexcept
         {
                 return s_header;
         }
@@ -102,7 +138,7 @@ public:
                 sstr << std::setw(3) << thinking_time().count();
                 sstr << std::setw(3) << number_of_moves();
                 sstr << starting_position();
-                if (starting_position() == "B") {
+                if (starting_position() == 'B') {
                         sstr << color_to_move_first();
                         sstr << position();
                 }
@@ -110,22 +146,28 @@ public:
         }
 };
 
-// The format and semantics of GAMEACC are defined at:
-// http://www.mesander.nl/damexchange/egameacc.htm
-
-class game_acknowledge
+class gameacc
 {
-        inline static auto const s_header = "A";
+        // The format and semantics of the GAMEACC message type can be found at:
+        // http://www.mesander.nl/damexchange/egameacc.htm
+
+        constexpr static auto s_header = "A";
         std::string m_follower_name;
         int m_acceptance_code;
 public:
-        explicit game_acknowledge(std::string const& message)
+        explicit gameacc(std::string const& message)
         :
                 m_follower_name{message.substr(0, 32)},
                 m_acceptance_code{std::stoi(message.substr(32, 1))}
         {}
 
-        static auto header() noexcept
+        gameacc(std::string const& fn, int const ac)
+        :
+                m_follower_name{fn},
+                m_acceptance_code{ac}
+        {}
+
+        constexpr static auto header() noexcept
         {
                 return s_header;
         }
@@ -150,12 +192,12 @@ public:
         }
 };
 
-// The format and semantics of MOVE are defined at:
-// http://www.mesander.nl/damexchange/emove.htm
-
 class move
 {
-        inline static auto const s_header = "M";
+        // The format and semantics of the MOVE message type can be found at:
+        // http://www.mesander.nl/damexchange/emove.htm
+
+        constexpr static auto s_header = "M";
         std::chrono::seconds m_time;
         int m_from_field;
         int m_to_field;
@@ -173,7 +215,15 @@ public:
                 }
         }
 
-        static auto header() noexcept
+        move(std::chrono::seconds const t, int const ff, int const tf, std::vector<int> const& cp)
+        :
+                m_time{t},
+                m_from_field{ff},
+                m_to_field{tf},
+                m_captured_pieces{cp}
+        {}
+
+        constexpr static auto header() noexcept
         {
                 return s_header;
         }
@@ -218,22 +268,28 @@ public:
         }
 };
 
-// The format and semantics of GAMEEND are defined at:
-// http://www.mesander.nl/damexchange/egameend.htm
-
-class game_end
+class gameend
 {
-        inline static auto const s_header = "E";
+        // The format and semantics of the GAMEEND message type can be found at:
+        // http://www.mesander.nl/damexchange/egameend.htm
+
+        constexpr static auto s_header = "E";
         int m_reason;
         int m_stop_code;
 public:
-        explicit game_end(std::string const& message)
+        explicit gameend(std::string const& message)
         :
                 m_reason{std::stoi(message.substr(0, 1))},
                 m_stop_code{std::stoi(message.substr(1, 1))}
         {}
 
-        static auto header() noexcept
+        gameend(int const r, int const sc) noexcept
+        :
+                m_reason{r},
+                m_stop_code{sc}
+        {}
+
+        constexpr static auto header() noexcept
         {
                 return s_header;
         }
@@ -258,12 +314,12 @@ public:
         }
 };
 
-// The format and semantics of CHAT are defined at:
-// http://www.mesander.nl/damexchange/echat.htm
-
 class chat
 {
-        inline static auto const s_header = "C";
+        // The format and semantics of the CHAT message type can be found at:
+        // http://www.mesander.nl/damexchange/echat.htm
+
+        constexpr static auto s_header = "C";
         std::string m_text;
 public:
         explicit chat(std::string const& message)
@@ -271,7 +327,7 @@ public:
                 m_text{message}
         {}
 
-        static auto header() noexcept
+        constexpr static auto header() noexcept
         {
                 return s_header;
         }
@@ -290,22 +346,28 @@ public:
         }
 };
 
-// The format and semantics of BACKREQ are explained at:
-// http://www.mesander.nl/damexchange/ebackreq.htm
-
-class back_request
+class backreq
 {
-        inline static auto const s_header = "B";
+        // The format and semantics of the BACKREQ message type can be found at:
+        // http://www.mesander.nl/damexchange/ebackreq.htm
+
+        constexpr static auto s_header = "B";
         int m_move_number;
-        std::string m_color_to_move;
+        char m_color_to_move;
 public:
-        explicit back_request(std::string const& message)
+        explicit backreq(std::string const& message)
         :
                 m_move_number{std::stoi(message.substr(0, 3))},
-                m_color_to_move{message.substr(3, 1)}
+                m_color_to_move{message[3]}
         {}
 
-        static auto header() noexcept
+        backreq(int const mn, char const ctm) noexcept
+        :
+                m_move_number{mn},
+                m_color_to_move{ctm}
+        {}
+
+        constexpr static auto header() noexcept
         {
                 return s_header;
         }
@@ -330,20 +392,25 @@ public:
         }
 };
 
-// The format and semantics of BACKACC are explained at:
-// http://www.mesander.nl/damexchange/ebackacc.htm
-
-class back_acknowledge
+class backacc
 {
-        inline static auto const s_header = "K";
+        // The format and semantics of the BACKACC message type can be found at:
+        // http://www.mesander.nl/damexchange/ebackacc.htm
+
+        constexpr static auto s_header = "K";
         int m_acceptance_code;
 public:
-        explicit back_acknowledge(std::string const& message)
+        explicit backacc(std::string const& message)
         :
                 m_acceptance_code{std::stoi(message.substr(0, 1))}
         {}
 
-        static auto header() noexcept
+        explicit backacc(int const ac) noexcept
+        :
+                m_acceptance_code{ac}
+        {}
+
+        constexpr static auto header() noexcept
         {
                 return s_header;
         }
@@ -362,5 +429,44 @@ public:
         }
 };
 
+template<class... MessageTypes>
+class basic_parser
+{
+        using input_type = std::string;
+        using key_type = std::string;
+        using argument_type = std::string;
+        using result_type = boost::variant<boost::blank, MessageTypes...>;              // TODO: https://bugs.llvm.org//show_bug.cgi?id=33222
+        using mapped_type = std::function<result_type(argument_type)>;
+        std::map<key_type, mapped_type> m_registry;
+public:
+        basic_parser()
+        :
+                m_registry{{MessageTypes::header(), construct<MessageTypes>{}}...}      // TODO: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=47226
+        {}
+
+        auto operator()(input_type const& in) const
+                -> result_type
+        {
+                if (auto const it = m_registry.find(in.substr(0, 1)); it != m_registry.end()) {
+                        return (it->second)(in.substr(1));
+                } else {
+                        return {};
+                }
+        }
+
+private:
+        template<class T>
+        struct construct
+        {
+                auto operator()(argument_type const& arg) const
+                {
+                        return T(arg);
+                }
+        };
+};
+
+using parser = basic_parser<gamereq, gameacc, move, gameend, chat, backreq, backacc>;
+
+}       // inline namespace v1
 }       // namespace dxp
 }       // namespace dctl::core
