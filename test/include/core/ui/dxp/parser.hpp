@@ -32,5 +32,5 @@ struct Fixture
                         throw std::invalid_argument("Did not match a DXP gamereq type.");
                 }
 
-        } state_visitor;
+        } to_state;
 };

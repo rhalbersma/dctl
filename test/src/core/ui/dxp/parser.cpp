@@ -10,7 +10,6 @@
 #include <boost/variant.hpp>            // apply_visitor
 #include <string>                       // string
 #include <vector>                       // vector
-#include <iostream>
 
 using namespace dctl::core;
 
@@ -39,9 +38,13 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
                 }
                 BOOST_CHECK_THROW(parse("This is not a valid DXP message"), std::invalid_argument);
 
-                auto const state = basic_state<international, board<international>>::initial();
+                auto const initial = basic_state<international, board<international>>::initial();
                 auto gamereq = parse(messages[0]);
-                BOOST_CHECK_EQUAL(boost::apply_visitor(state_visitor, gamereq), state);
+                BOOST_CHECK_EQUAL(boost::apply_visitor(to_state, gamereq), initial);
+                for (auto it = std::next(messages.begin()); it != messages.end(); ++it) {
+                        auto value = parse(*it);
+                        BOOST_CHECK_THROW(boost::apply_visitor(to_state, value), std::invalid_argument);
+                }
         }
 
 BOOST_AUTO_TEST_SUITE_END()
