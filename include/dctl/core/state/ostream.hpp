@@ -7,11 +7,12 @@
 
 #include <dctl/core/board/diagram.hpp>
 #include <dctl/core/state/basic_state.hpp>
-#include <dctl/core/ui/position.hpp>
 #include <dctl/core/ui/pdn/state.hpp>
+#include <dctl/core/ui/content.hpp>             // content
 #include <cassert>
 #include <ios>                                  // ios_base
 #include <ostream>                              // basic_ostream
+
 
 namespace dctl::core {
 namespace detail {

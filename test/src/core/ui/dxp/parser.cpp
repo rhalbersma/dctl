@@ -3,19 +3,20 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/state/dxp/parser.hpp>
+#include <core/ui/dxp/parser.hpp>
 #include <dctl/core/ui/dxp/message.hpp> // parser
+#include <dctl/core.hpp>
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <boost/variant.hpp>            // apply_visitor
 #include <string>                       // string
 #include <vector>                       // vector
+#include <iostream>
 
 using namespace dctl::core;
-using F = Fixture;
 
 BOOST_AUTO_TEST_SUITE(DXPParser)
 
-        BOOST_FIXTURE_TEST_CASE(MesanderMessageExamples, F)
+        BOOST_FIXTURE_TEST_CASE(MesanderMessageExamples, Fixture)
         {
                 // Examples of DXP messages (Layer 2 protocol description)
                 // http://www.mesander.nl/damexchange/edxplg2.htm
@@ -33,19 +34,14 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
                 };
 
                 for (auto const& m : messages) {
-                        auto v = parse(m);
-                        boost::apply_visitor(vis, v);
+                        auto value = parse(m);
+                        BOOST_CHECK_EQUAL(boost::apply_visitor(to_string, value), m);
                 }
+                BOOST_CHECK_THROW(parse("This is not a valid DXP message"), std::invalid_argument);
 
-                BOOST_CHECK_EQUAL_COLLECTIONS(messages.begin(), messages.end(), parsed.begin(), parsed.end());
-        }
-
-        BOOST_FIXTURE_TEST_CASE(InvalidMessagesAreIgnored, F)
-        {
-                auto const n = vis.data.size();
-                auto v = parse("This is an invalid message");
-                boost::apply_visitor(vis, v);
-                BOOST_CHECK_EQUAL(vis.data.size(), n);
+                auto const state = basic_state<international, board<international>>::initial();
+                auto gamereq = parse(messages[0]);
+                BOOST_CHECK_EQUAL(boost::apply_visitor(state_visitor, gamereq), state);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -5,13 +5,15 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/blank.hpp>      // blank
+// TODO: https://bugs.llvm.org//show_bug.cgi?id=33222
 #include <boost/variant.hpp>    // variant
+
 #include <chrono>               // minutes, seconds
 #include <cstddef>              // size_t
 #include <functional>           // function
 #include <iomanip>              // setfill, setw
 #include <map>                  // map
+#include <stdexcept>            // invalid_argument
 #include <sstream>              // stringstream
 #include <string>               // stoi, string
 #include <vector>               // vector
@@ -31,7 +33,18 @@ class gamereq
         constexpr static auto s_header = "R";
         constexpr static auto s_version = 1;
         constexpr static auto s_color_to_move_first = 'W';
-        constexpr static auto s_starting_position = "zzzzzzzzzzzzzzzzzzzzeeeeeeeeeewwwwwwwwwwwwwwwwwwww";
+        constexpr static auto s_starting_position = "\
+                  z   z   z   z   z \
+                z   z   z   z   z   \
+                  z   z   z   z   z \
+                z   z   z   z   z   \
+                  e   e   e   e   e \
+                e   e   e   e   e   \
+                  w   w   w   w   w \
+                w   w   w   w   w   \
+                  w   w   w   w   w \
+                w   w   w   w   w   \
+        ";
         int m_version;
         std::string m_initiator_name;
         char m_follower_color;
@@ -432,25 +445,29 @@ public:
 template<class... MessageTypes>
 class basic_parser
 {
+public:
         using input_type = std::string;
         using key_type = std::string;
         using argument_type = std::string;
-        using result_type = boost::variant<boost::blank, MessageTypes...>;              // TODO: https://bugs.llvm.org//show_bug.cgi?id=33222
+        using result_type = boost::variant<MessageTypes...>;
         using mapped_type = std::function<result_type(argument_type)>;
+
+private:
         std::map<key_type, mapped_type> m_registry;
+
 public:
         basic_parser()
         :
-                m_registry{{MessageTypes::header(), construct<MessageTypes>{}}...}      // TODO: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=47226
+                // TODO: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=47226
+                m_registry{{MessageTypes::header(), construct<MessageTypes>{}}...}
         {}
 
         auto operator()(input_type const& in) const
-                -> result_type
         {
                 if (auto const it = m_registry.find(in.substr(0, 1)); it != m_registry.end()) {
                         return (it->second)(in.substr(1));
                 } else {
-                        return {};
+                        throw std::invalid_argument(in);
                 }
         }
 

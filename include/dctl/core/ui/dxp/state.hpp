@@ -11,11 +11,11 @@
 #include <dctl/core/state/basic_state.hpp>
 #include <dctl/core/ui/basic_token_set.hpp>     // basic_token_set
 #include <dctl/core/ui/color.hpp>               // read_color, write_color
-#include <dctl/core/ui/position.hpp>            // content
+#include <dctl/core/ui/content.hpp>             // content
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
-#include <cctype>                               // isupper, toupper
+#include <cctype>                               // islower, isupper, tolower, toupper
 #include <sstream>                              // stringstream
 #include <string>                               // string
 
@@ -50,14 +50,18 @@ struct read
                 sstr >> ch;
                 p_side = read_color<Token>(ch);
 
-                 for (auto sq = 0; sq < Board::size(); ++sq) {
-                        auto b = Board::bit_from_square(sq);
+                for (auto const sq : Board::squares) {
                         sstr >> ch;
-                        switch (std::toupper(ch)) {
-                        case Token::black: by_color_piece[xstd::to_underlying_type(color::black)][std::isupper(ch)].insert(b); break;
-                        case Token::white: by_color_piece[xstd::to_underlying_type(color::white)][std::isupper(ch)].insert(b); break;
-                        case Token::empty: break;
-                        default: assert(false);
+                        if (std::islower(ch) && ch == std::tolower(Token::black)) {
+                                by_color_piece[0][0].insert(sq);
+                        } else if (std::isupper(ch) && ch == std::toupper(Token::black)) {
+                                by_color_piece[0][1].insert(sq);
+                        } else if (std::islower(ch) && ch == std::tolower(Token::white)) {
+                                by_color_piece[1][0].insert(sq);
+                        } else if (std::isupper(ch) && ch == std::toupper(Token::white)) {
+                                by_color_piece[1][1].insert(sq);
+                        } else if (ch != Token::empty) {
+                                assert(false);
                         }
                 }
                 return {{by_color_piece[0][0], by_color_piece[1][0], by_color_piece[0][1], by_color_piece[1][1]}, p_side};
@@ -70,9 +74,11 @@ struct write
         template<class State>
         auto operator()(State const& s) const
         {
+                using board_type = board_t<State>;
+
                 std::stringstream sstr;
                 sstr << write_color<Token>(s.to_move());
-                sstr << string<board_t<State>>{}([&](auto const n) { return content<Token>(s, n); });
+                sstr << string<board_type>{}([&](auto const n) { return content<Token>(s, n); });
                 sstr << '\n';
                 return sstr.str();
         }

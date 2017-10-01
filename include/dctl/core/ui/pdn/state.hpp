@@ -11,7 +11,6 @@
 #include <dctl/core/state/color_piece.hpp>
 #include <dctl/core/ui/basic_token_set.hpp>     // basic_token_set
 #include <dctl/core/ui/color.hpp>               // read_color, write_color
-#include <dctl/core/ui/position.hpp>            // content
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
@@ -29,7 +28,6 @@ struct token_set
         constexpr static auto king  = 'K';
         constexpr static auto colon = ':';
         constexpr static auto comma = ',';
-        constexpr static auto quote = '"';
 };
 
 template<class Rules, class Board = board<Rules>, class Token = token_set>
@@ -60,7 +58,7 @@ struct read
                 int sq;
 
                 for (sstr >> ch; sstr; sstr >> ch) {
-                        switch (ch) {
+                        switch (std::toupper(ch)) {
                         case Token::black :
                         case Token::white :
                                 p_side = read_color<Token>(ch);
@@ -94,31 +92,30 @@ struct write
         template<class State>
         auto operator()(State const& s) const
         {
-                std::stringstream sstr;
-                sstr << Token::quote;                                   // opening quotes
-                sstr << write_color<Token>(s.to_move());                // side to move
+                using board_type = board_t<State>;
 
+                std::stringstream sstr;
+                sstr << write_color<Token>(s.to_move());                                // side to move
                 for (auto i = 0; i < 2; ++i) {
                         auto c = i ? color::white : color::black;
                         if (!s.pieces(c).empty()) {
-                                sstr << Token::colon;                   // colon
-                                sstr << Token::color[xstd::to_underlying_type(c)];                // color tag
+                                sstr << Token::colon;                                   // colon
+                                sstr << Token::color[xstd::to_underlying_type(c)];      // color tag
                         }
                         auto const bs = s.pieces(c);
                         auto n = 0;
-                        for (auto sq : bs) {
+                        for (auto const sq : bs) {
                                 if (s.pieces(kings_c).contains(sq)) {
-                                        sstr << Token::king;            // king tag
+                                        sstr << Token::king;                            // king tag
                                 }
-                                sstr << board_t<State>::square_from_bit(sq) + 1; // square number
+                                sstr << board_type::square_from_bit(sq) + 1;            // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
                                 //        sstr << "^" << p.count(c);
-                                if (++n != bs.count()) {                 // still pieces remaining
-                                        sstr << Token::comma;           // comma separator
+                                if (++n != bs.count()) {                                // still pieces remaining
+                                        sstr << Token::comma;                           // comma separator
                                 }
                         }
                 }
-                sstr << Token::quote << '\n';                           // closing quotes
                 return sstr.str();
         }
 };

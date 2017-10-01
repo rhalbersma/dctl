@@ -7,30 +7,27 @@
 
 #include <dctl/core/state/color_piece.hpp>      // black_c, white_c, kings_c
 #include <xstd/type_traits.hpp>                 // to_underlying_type
-#include <sstream>                              // stringstream
 
 namespace dctl::core {
 
 template<class Token, class Position>
 auto content(Position const& p, int const n) // Throws: Nothing.
 {
-        std::stringstream sstr;
         if (p.pieces(black_c).contains(n)) {
                 if (p.pieces(kings_c).contains(n)) {
-                        sstr << Token::upper[xstd::to_underlying_type(black_c)];        // black king
+                        return Token::kings[xstd::to_underlying_type(black_c)]; // black king
                 } else {
-                        sstr << Token::lower[xstd::to_underlying_type(black_c)];        // black pawn
+                        return Token::pawns[xstd::to_underlying_type(black_c)]; // black pawn
                 }
         } else if (p.pieces(white_c).contains(n)) {
                 if (p.pieces(kings_c).contains(n)) {
-                        sstr << Token::upper[xstd::to_underlying_type(white_c)];        // white king
+                        return Token::kings[xstd::to_underlying_type(white_c)]; // white king
                 } else {
-                        sstr << Token::lower[xstd::to_underlying_type(white_c)];        // white pawn
+                        return Token::pawns[xstd::to_underlying_type(white_c)]; // white pawn
                 }
         } else {
-                sstr << Token::empty;                                                   // empty square
+                return Token::empty;                                            // empty square
         }
-        return sstr.str();
 }
 
 }       // namespace dctl::core
