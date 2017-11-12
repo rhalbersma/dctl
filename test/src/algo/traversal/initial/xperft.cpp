@@ -13,10 +13,10 @@ using namespace dctl::core;
 
 int main()
 {
-        auto const s = basic_state<international, board<checkers>>::initial();
-        traversal::sperft(drop_duplicates_gen, s, 17);
+        //auto const s = basic_state<international, basic_board<checkers>>::initial();
+        //traversal::sperft(drop_duplicates_gen, s, 17);
 
-        using state = basic_state<international, board<international>>;
+        using state = basic_state<international, basic_board<international>>;
 
         auto const states = std::vector<state>{
                 state::initial(),

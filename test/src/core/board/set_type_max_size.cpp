@@ -4,7 +4,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board.hpp>                       // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
-                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, board<12, 10>, canadian, srilankan, dumm
+                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, basic_board<12, 10>, canadian, srilankan, dumm
 #include <dctl/core/board/type_traits.hpp>                // add_orthogonal_captures, remove_orthogonal_captures
 #include <dctl/util/type_traits.hpp>         // set_t
 #include <boost/mpl/vector.hpp>                 // vector
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64, T, SmallBoardSequence)
 using IntermediateBoardSequence = boost::mpl::vector
 <
         board::ktar<10, 12>,
-        board<12, 10>
+        basic_board<12, 10>
 >;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SetTypeMaxSizeIs64Or128, T, IntermediateBoardSequence)

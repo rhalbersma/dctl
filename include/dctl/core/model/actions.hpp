@@ -5,23 +5,20 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/specializations.hpp> // generate
-#include <dctl/core/actions/select/legal.hpp>           // legal
+#include <dctl/core/model/container.hpp>
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color_piece.hpp>              // black, white
 #include <dctl/util/type_traits.hpp>                    // value_t
-#include <boost/container/static_vector.hpp>
 #include <cassert>                                      // assert
 #include <type_traits>                                  // bool_constant, is_same_v
+#include <dctl/core/model/specializations.hpp> // generate
+#include <dctl/core/model/select/legal.hpp>           // legal
 
 namespace dctl::core {
 
 template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
 class actions
 {
-        template<class Action>
-        using default_container = boost::container::static_vector<Action, 128>;
-
         template<class Color>
         using impl = detail::actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
 
@@ -58,7 +55,7 @@ public:
                 return impl<Color>::count(s);
         }
 
-        template<class State, class SequenceContainer = default_container<basic_action<rules_t<State>, board_t<State>>>>
+        template<class State, class SequenceContainer = detail::default_container<basic_action<rules_t<State>, board_t<State>>>>
         auto generate(State const& s) const
         {
                 SequenceContainer seq;
@@ -66,7 +63,7 @@ public:
                 return seq;
         }
 
-        template<class Color, class State, class SequenceContainer = default_container<basic_action<rules_t<State>, board_t<State>>>>
+        template<class Color, class State, class SequenceContainer = detail::default_container<basic_action<rules_t<State>, board_t<State>>>>
         auto generate(State const& s) const
         {
                 SequenceContainer seq;

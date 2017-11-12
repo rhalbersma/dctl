@@ -30,7 +30,7 @@ constexpr auto color_c = color_<Side>{};
 constexpr auto black_c = color_c<color::black>;
 constexpr auto white_c = color_c<color::white>;
 
-constexpr auto operator not(color const c) noexcept
+constexpr auto operator!(color const c) noexcept
 {
         return static_cast<color>(!xstd::to_underlying_type(c));
 }

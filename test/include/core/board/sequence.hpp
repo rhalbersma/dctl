@@ -35,7 +35,7 @@ using Sequence = boost::mpl::vector
 template<class T>
 struct wrap_board
 {
-    using type = board<T>;
+    using type = basic_board<T>;
 };
 
 using BoardSequence = typename boost::mpl::transform<

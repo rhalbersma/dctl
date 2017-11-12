@@ -5,11 +5,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/builder.hpp> // builder
-#include <dctl/core/actions/detail/pattern.hpp> // jump_targets
-#include <dctl/core/actions/detail/raii.hpp>    // Launch, Capture, Visit, set_king_jump
-#include <dctl/core/actions/detail/tables.hpp>  // king_jumps, king_moves
-#include <dctl/core/actions/select/jump.hpp>    // jump
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
@@ -19,6 +14,11 @@
 #include <cassert>                              // assert
 #include <iterator>                             // prev
 #include <type_traits>                          // bool_constant
+#include <dctl/core/model/builder.hpp> // builder
+#include <dctl/core/model/pattern.hpp> // jump_targets
+#include <dctl/core/model/raii.hpp>    // Launch, Capture, Visit, set_king_jump
+#include <dctl/core/model/tables.hpp>  // king_jumps, king_moves
+#include <dctl/core/model/select/jump.hpp>    // jump
 
 namespace dctl::core {
 namespace detail {

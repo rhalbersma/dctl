@@ -7,7 +7,7 @@
 
 #include <dctl/algo/search/objective.hpp>
 #include <dctl/algo/search/root.hpp>
-#include <dctl/core/actions.hpp>
+#include <dctl/core/model.hpp>
 #include <dctl/core/state.hpp>
 #include <dctl/util/type_traits.hpp>
 #include <dctl/util/units.hpp>

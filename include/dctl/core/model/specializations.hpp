@@ -5,5 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/select/legal.hpp>
-#include <dctl/core/actions/actions.hpp>
+#include <dctl/core/model/jump.hpp>
+#include <dctl/core/model/legal.hpp>
+#include <dctl/core/model/move.hpp>
+#include <dctl/core/model/primary_fwd.hpp>

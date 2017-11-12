@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/action.hpp>
-#include <dctl/core/actions.hpp>
 #include <dctl/core/board.hpp>
+#include <dctl/core/model.hpp>
 #include <dctl/core/rules.hpp>
 #include <dctl/core/state.hpp>

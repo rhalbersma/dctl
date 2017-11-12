@@ -5,7 +5,7 @@
 
 #include <core/board/group.hpp>                      // action::is_realized, make
 #include <core/board/sequence.hpp>                   // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
-                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, board<12, 10>, canadian, srilankan, dumm
+                                                // ktar<10, 12>, Compact_10_12, Compact_12_10, basic_board<12, 10>, canadian, srilankan, dumm
 #include <dctl/core/board/angle.hpp>                 // _deg, inverse, rotate
 #include <dctl/core/board/detail/bit_layout.hpp>     // dimensions
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE

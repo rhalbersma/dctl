@@ -5,18 +5,19 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/model/select/jump.hpp>            // jump
+
 #include <dctl/core/action/basic_action.hpp>            // action
-#include <dctl/core/actions/detail/builder.hpp>         // builder
-#include <dctl/core/actions/detail/king_jump.hpp>       // king_jump
-#include <dctl/core/actions/detail/pawn_jump.hpp>       // pawn_jump
-#include <dctl/core/actions/detail/primary_fwd.hpp>     // actions (primary template)
-#include <dctl/core/actions/select/jump.hpp>            // jump
 #include <dctl/core/state/color_piece.hpp>              // color, color_, kings_, pawn_
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>                    // rules_t, board_t
-#include <boost/container/static_vector.hpp>
+#include <dctl/core/model/container.hpp>
 #include <cassert>                                      // assert
 #include <type_traits>
+#include <dctl/core/model/builder.hpp>         // builder
+#include <dctl/core/model/king_jump.hpp>       // king_jump
+#include <dctl/core/model/pawn_jump.hpp>       // pawn_jump
+#include <dctl/core/model/primary_fwd.hpp>     // actions (primary template)
 
 namespace dctl::core {
 namespace detail {
@@ -55,6 +56,18 @@ public:
         {
                 ++m_count;
         }
+
+        template<class... Args>
+        auto emplace_back(Args const&...)
+        {
+                ++m_count;
+        }
+
+        template<class... Args>
+        auto emplace_back(Args&&...)
+        {
+                ++m_count;
+        }
 };
 
 template<color Side, class DuplicatesPolicy, class Reverse>
@@ -68,7 +81,7 @@ class actions<color_<Side>, select::jump, DuplicatesPolicy, Reverse>
         using container_type = std::conditional_t<
                 is_trivial_precedence_v<rules_t<State>> && std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>,
                 counter_container<Action>,
-                boost::container::static_vector<Action, 128>
+                default_container<Action>
         >;
 public:
         template<class State>
@@ -88,7 +101,7 @@ public:
                 return static_cast<int>(seq.size());
         }
 
-        template<class State, class SequenceContainer = boost::container::static_vector<basic_action<rules_t<State>, board_t<State>>, 128>>
+        template<class State, class SequenceContainer = default_container<basic_action<rules_t<State>, board_t<State>>>>
         static auto generate(State const& s)
         {
                 SequenceContainer seq;

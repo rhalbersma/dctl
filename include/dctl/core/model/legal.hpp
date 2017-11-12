@@ -5,13 +5,14 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/primary_fwd.hpp>     // actions (primary template)
-#include <dctl/core/actions/detail/jump.hpp>            // actions (jump specialization)
-#include <dctl/core/actions/detail/move.hpp>            // actions (push specialization)
-#include <dctl/core/actions/select/legal.hpp>           // legal
-#include <dctl/core/actions/select/jump.hpp>            // jump
-#include <dctl/core/actions/select/move.hpp>            // move
+#include <dctl/core/model/select/legal.hpp>           // legal
+
 #include <dctl/core/state/color_piece.hpp>              // color, color_
+#include <dctl/core/model/jump.hpp>            // actions (jump specialization)
+#include <dctl/core/model/move.hpp>            // actions (push specialization)
+#include <dctl/core/model/primary_fwd.hpp>     // actions (primary template)
+#include <dctl/core/model/select/jump.hpp>            // jump
+#include <dctl/core/model/select/move.hpp>            // move
 
 namespace dctl::core {
 namespace detail {

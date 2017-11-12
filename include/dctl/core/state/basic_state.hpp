@@ -82,16 +82,7 @@ public:
                 assert_invariants();
         }
 
-        constexpr static auto initial()
-                -> basic_state
-        {
-                constexpr auto separation = initial_position_gap_v<Rules> + Board::height % 2;
-                PP_CONSTEXPR_CONST auto black_pawns = board_type::initial(black_c, separation);
-                PP_CONSTEXPR_CONST auto white_pawns = board_type::initial(white_c, separation);
-                return {{black_pawns, white_pawns}, color::white};
-        }
-
-        constexpr static auto initial(int const separation)
+        constexpr static auto initial(int const separation = initial_position_gap_v<Rules> + Board::height % 2)
                 -> basic_state
         {
                 auto const black_pawns = board_type::initial(black_c, separation);

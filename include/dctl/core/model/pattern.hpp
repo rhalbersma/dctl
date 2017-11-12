@@ -5,9 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/stride.hpp>  // stride_v
 #include <dctl/core/rules/type_traits.hpp>      // short_ranged_tag, long_ranged_tag
 #include <dctl/util/type_traits.hpp>            // set_t
+#include <dctl/core/model/stride.hpp>  // stride_v
 
 namespace dctl::core {
 

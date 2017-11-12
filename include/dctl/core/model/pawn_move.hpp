@@ -5,10 +5,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/pattern.hpp> // move_squares
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
+#include <dctl/core/model/pattern.hpp> // move_squares
 
 namespace dctl::core {
 namespace detail {

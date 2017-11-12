@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions.hpp>                // count, select::move
+#include <dctl/core/model.hpp>                // count, select::move
 #include <dctl/core/state/color_piece.hpp>      // opposite
 #include <dctl/eval/weight.hpp>                 // Weight
 #include <cstdlib>                              // abs

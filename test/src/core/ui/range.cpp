@@ -10,7 +10,7 @@
 using namespace dctl::core;
 
 template<class CharT, class Traits, class Board>
-auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board<Board> const& b)
+auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_board<Board> const& b)
 {
         using Coord = coordinates<upper_left>;
         for (auto y = 0; y < b.height; ++y) {
@@ -28,5 +28,5 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, board<Board> const& b)
 
 int main()
 {
-        std::cout << board<checkers>{};
+        std::cout << basic_board<checkers>{};
 }

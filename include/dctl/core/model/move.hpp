@@ -5,12 +5,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/king_move.hpp>       // king_move
-#include <dctl/core/actions/detail/pawn_move.hpp>       // pawn_move
-#include <dctl/core/actions/detail/primary_fwd.hpp>     // actions (primary template)
-#include <dctl/core/actions/select/move.hpp>            // move
+#include <dctl/core/model/select/move.hpp>            // move
+
 #include <dctl/core/state/color_piece.hpp>              // color, color_
 #include <dctl/util/type_traits.hpp>                    // board_t, rules_t
+#include <dctl/core/model/king_move.hpp>       // king_move
+#include <dctl/core/model/pawn_move.hpp>       // pawn_move
+#include <dctl/core/model/primary_fwd.hpp>     // actions (primary template)
 
 namespace dctl::core {
 namespace detail {

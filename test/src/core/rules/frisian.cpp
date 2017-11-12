@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         static_assert(is_orthogonal_jump_v<T>);
 
-        static_assert(!is_trivial_precedence_v<T>);
+        static_assert(not is_trivial_precedence_v<T>);
         static_assert(is_quantity_precedence_v<T>);
         static_assert(is_contents_precedence_v<T>);
         static_assert(is_modality_precedence_v<T>);
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         struct action
         {
                 using rules_type [[maybe_unused]] = frisian;
-                using board_type [[maybe_unused]] = board<frisian>;
+                using board_type [[maybe_unused]] = basic_board<frisian>;
                 int m_num_captured_pieces;
                 int m_num_captured_kings;
                 piece m_with;

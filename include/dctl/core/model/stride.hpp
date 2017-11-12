@@ -6,6 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>
+#include <dctl/util/type_traits.hpp>
 #include <cassert>
 
 namespace dctl::core {

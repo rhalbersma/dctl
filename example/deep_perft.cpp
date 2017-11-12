@@ -19,7 +19,7 @@ using namespace dctl::core;
 using namespace dctl::algo;
 
 using rules_type = checkers;
-using board_type = board<checkers>;
+using board_type = basic_board<checkers>;
 using state_type = basic_state<rules_type, board_type>;
 
 using count_type = int64_t;

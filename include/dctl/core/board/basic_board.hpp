@@ -33,10 +33,10 @@ struct rectangular
 };
 
 template<class Geometry>
-class board
+class basic_board
 {
 public:
-        using type = board;
+        using type = basic_board;
         constexpr static auto width              = width_v<Geometry>;
         constexpr static auto height             = height_v<Geometry>;
         constexpr static auto is_inverted        = is_inverted_v<Geometry>;
@@ -299,6 +299,6 @@ public:
 }       // namespace block_adl
 
 using block_adl::rectangular;
-using block_adl::board;
+using block_adl::basic_board;
 
 }       // namespace dctl::core

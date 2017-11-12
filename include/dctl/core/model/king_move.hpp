@@ -5,13 +5,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/actions/detail/stride.hpp>  // find_first
-#include <dctl/core/actions/detail/tables.hpp>  // board_scan_sq_dir, board_scan_dir_sq, move_index
 #include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_v, king_move_directions
 #include <dctl/util/meta.hpp>                   // foldl_bit_or, foldl_comma
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <array>                                // array
 #include <cstddef>                              // size_t
+#include <dctl/core/model/stride.hpp>  // find_first
+#include <dctl/core/model/tables.hpp>  // board_scan_sq_dir, board_scan_dir_sq, move_index
 
 namespace dctl::core {
 namespace detail {

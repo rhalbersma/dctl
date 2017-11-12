@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/algo/search/score.hpp>
-#include <dctl/core/actions.hpp>
+#include <dctl/core/model.hpp>
 #include <type_traits>                  // false_type, true_type
 
 namespace dctl::algo {

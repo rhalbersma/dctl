@@ -5,13 +5,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/container/static_vector.hpp>
+#include <dctl/core/model/container.hpp>
 
 namespace dctl::algo {
 namespace search {
 
-using Order = boost::container::static_vector<int, 128>;
-using Variation = boost::container::static_vector<int, 128>;
+using Order = dctl::core::detail::default_container<int>;
+using Variation = dctl::core::detail::default_container<int>;
 
 inline void update_variation(Variation& line, int move, Variation const& continuation)
 {

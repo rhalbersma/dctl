@@ -27,7 +27,7 @@ struct Fixture
 
                 template<class T>
                 [[noreturn]] auto operator()(T const&) const
-                        -> dctl::core::basic_state<dctl::core::international, dctl::core::board<dctl::core::international>>
+                        -> dctl::core::basic_state<dctl::core::international, dctl::core::basic_board<dctl::core::international>>
                 {
                         throw std::invalid_argument("Did not match a DXP gamereq type.");
                 }

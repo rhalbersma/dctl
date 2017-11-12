@@ -7,7 +7,7 @@
 
 #include <dctl/core/board.hpp>
 #include <dctl/core/action.hpp>
-#include <dctl/core/actions.hpp>                // generate
+#include <dctl/core/model.hpp>                // generate
 #include <dctl/core/state.hpp>
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK, BOOST_CHECK_EQUAL
@@ -18,7 +18,7 @@
 
 namespace dctl::core {
 
-template<class Rules, class Board = board<Rules>>
+template<class Rules, class Board = basic_board<Rules>>
 struct Fixture
 {
         template<class Range>

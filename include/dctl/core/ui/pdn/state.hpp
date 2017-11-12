@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/board.hpp>
+#include <dctl/core/board/basic_board.hpp>
 #include <dctl/core/board/string.hpp>
 #include <dctl/core/state/basic_state.hpp>
 #include <dctl/core/state/color_piece.hpp>
@@ -30,7 +30,7 @@ struct token_set
         constexpr static auto comma = ',';
 };
 
-template<class Rules, class Board = board<Rules>, class Token = token_set>
+template<class Rules, class Board = basic_board<Rules>, class Token = token_set>
 struct read
 {
         auto operator()(std::string const& s) const
