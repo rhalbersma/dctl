@@ -16,7 +16,7 @@ void test(Actions const& successor, State const& s, Range const& leafs)
 {
         auto depth = 0;
         for (auto const& node_count : leafs) {
-                BOOST_CHECK_EQUAL(node_count, perft_state<true>(successor, s, ++depth));
+                BOOST_CHECK_EQUAL(node_count, depth_limited_count<true>(successor, s, ++depth));
         }
 }
 

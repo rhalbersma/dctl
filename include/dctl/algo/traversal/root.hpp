@@ -28,313 +28,17 @@
 namespace dctl::algo {
 namespace traversal {
 
-template<class Tag, class State>
-struct Data;
-
-template<class Tag, class State>
-struct Enhancements;
-
-struct default_tag {};
-
-template<class State>
-struct Data<default_tag, State>
-{
-        Statistics statistics_;
-};
-
-template<class State>
-struct Enhancements<default_tag, State>
-{
-        using value_type = Data<default_tag, State>;
-
-        explicit Enhancements(value_type* p): handle_(p) {}
-
-        void reset_statistics() { handle_->statistics_.reset(); }
-        void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
-
-        std::pair<bool, std::size_t> find(State const& /* p */, int /* depth */) const
-        {
-                return std::make_pair(false, std::size_t{0});
-        }
-
-        template<class Actions>
-        std::pair<bool, std::size_t> terminal(State const& /* p */, Actions /* successor */, int depth) const
-        {
-                return std::make_pair(depth == 0, std::size_t(1));
-        }
-
-        void insert(State const& /* p */, std::size_t /* nodes */, int /* depth */) const
-        {
-                /* no-op */
-        }
-
-        value_type* handle_;
-};
-
-struct bulk_tag {};
-
-template<class State>
-struct Data<bulk_tag, State>
-:
-        Data<default_tag, State>
-{};
-
-template<class State>
-struct Enhancements<bulk_tag, State>
-{
-        using value_type = Data<bulk_tag, State>;
-
-        explicit Enhancements(value_type* p): handle_(p) {}
-
-        void reset_statistics() { handle_->statistics_.reset(); }
-        void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
-
-        std::pair<bool, std::size_t> find(State const& /* p */, int /* depth */) const
-        {
-                return std::make_pair(false, std::size_t{0});
-        }
-
-        template<class Actions>
-        std::pair<bool, std::size_t> terminal(State const& s, Actions successor, int depth) const
-        {
-                return std::make_pair(depth == 1, successor.count(s));
-        }
-
-        void insert(State const& /* s */, std::size_t /* nodes */, int /* depth */) const
-        {
-                /* no-op */
-        }
-
-        value_type* handle_;
-};
-
-struct hash_tag {};
-
-template<class State>
-struct Data<hash_tag, State>
-{
-        hash::set_associative_cache<
-                State,
-                Transposition,
-                4,
-                dctl::hash::EmptyOldMin<hash::Smallest>,
-                extract::UpperBits,
-                extract::Hash
-        > TT_;
-
-        Statistics statistics_;
-};
-
-template<class State>
-struct Enhancements<hash_tag, State>
-{
-        using value_type = Data<hash_tag, State>;
-
-        explicit Enhancements(value_type* p): handle_(p) {}
-
-        void reset_statistics() { handle_->statistics_.reset(); }
-        void collect_statistics(int ply) { handle_->statistics_.collect(ply); }
-
-        void clear_TT() { handle_->TT_.clear(); }
-        void resize_TT(std::size_t n) { handle_->TT_.resize(n); }
-
-        std::pair<bool, std::size_t> find(State const& s, int depth) const
-        {
-                auto const TT_entry = handle_->TT_.find(s);
-                return TT_entry && TT_entry->depth() == depth ?
-                        std::make_pair(true, std::size_t(TT_entry->nodes())) :
-                        std::make_pair(false, std::size_t{0})
-                ;
-        }
-
-        template<class Actions>
-        std::pair<bool, std::size_t> terminal(State const& s, Actions successor, int depth) const
-        {
-                return depth == 1 ?
-                        std::make_pair(true, std::size_t(successor.count(s))) :
-                        std::make_pair(false, std::size_t{0})
-                ;
-        }
-
-        void insert(State const& s, std::size_t nodes, int depth) const
-        {
-                handle_->TT_.insert(s, { nodes, depth } );
-        }
-
-        value_type* handle_;
-};
-
-template<class State, class Actions, class Enhancements>
-int64_t walk(State const& s, int depth, int ply, Actions successor, Enhancements e)
-{
-        // (0)
-        e.collect_statistics(ply);
-
-        // (1)
-        auto const found = e.find(s, depth);
-        if (found.first) {
-                return found.second;
-        }
-
-        int64_t nodes = 0;
-
-        // (2)
-        auto const terminal = e.terminal(s, successor, depth);
-        if (terminal.first) {
-                nodes = terminal.second;
-        } else {
-                auto const moves = successor.generate(s);
-                for (auto const& m : moves) {
-                        nodes += walk(result(s, m), depth - 1, ply + 1, successor, e);
-                }
-        }
-
-        // (3)
-        e.insert(s, nodes, depth);
-
-        return nodes;
-}
-
-template<class Actions, class State>
-auto legal_actions(Actions const& successor, State const& s)
-{
-        return successor.generate(s);
-}
-
-template<bool IsBulk, class Actions, class State>
-auto perft_inplace(Actions const& successor, State& s, int depth)
+template<bool IsBulk, class Model, class State>
+auto depth_limited_count(Model const& m, State const& s, int depth)
         -> int64_t
 {
-        if constexpr(IsBulk) {
-                if (depth == 1) {
-                        return successor.count(s);
-                }
-        } else {
-                if (depth == 0) {
-                        return 1;
-                }
-        }
+        if constexpr(IsBulk) { if (depth == 1) { return m.count(s); } }
+        else                 { if (depth == 0) { return 1;          } }
 
-        auto const moves = legal_actions(successor, s);
-        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a) {
-                s.make(a);
-                auto const res = sum + perft_inplace(successor, s, depth - 1);
-                s.undo(a);
-                return res;
+        auto const actions = m.generate(s);
+        return std::accumulate(actions.cbegin(), actions.cend(), int64_t{0}, [&](auto sum, auto const& a) {
+                return sum + depth_limited_count<IsBulk>(m, result(s, a), depth - 1);
         });
-}
-
-template<bool IsBulk, class Actions, class State>
-auto perft_state(Actions const& successor, State const& s, int depth)
-        -> int64_t
-{
-        if (!s.pieces(core::kings_c).empty()) { return 1; }
-
-        if constexpr(IsBulk) {
-                if (depth == 1) {
-                        return successor.count(s);
-                }
-        } else {
-                if (depth == 0) {
-                        return 1;
-                }
-        }
-
-        auto const moves = successor.generate(s);
-        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a) {
-                return sum + perft_state<IsBulk>(successor, result(s, a), depth - 1);
-        });
-}
-
-template<class Vertex, class ImplicitGraph>
-auto out_edges(Vertex const& u, ImplicitGraph const& g)
-{
-        return g.generate(u.state());
-}
-
-template<bool IsBulk, class Actions, class Node>
-auto perft_node(Actions const& successor, Node const& n, int depth)
-        -> int64_t
-{
-        if constexpr(IsBulk) {
-                if (depth == 1) {
-                        return successor.count(n.state());
-                }
-        } else {
-                if (depth == 0) {
-                        return 1;
-                }
-        }
-
-        auto const moves = out_edges(n, successor);
-        return std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& a) {
-                return sum + perft_node<IsBulk>(successor, child(n, a), depth - 1);
-        });
-}
-
-template<bool IsBulk, class Vertex>
-class dls_visitor
-{
-        //std::map<Vertex, std::pair<int, int64_t>> m_color_map;
-        std::unordered_map<Vertex, std::pair<int, int64_t>, xstd::uhash<acme::identity_hash>> m_color_map;
-        int m_limit {};
-public:
-        auto is_frontier(Vertex const& u) const noexcept
-        {
-                return m_limit == u.cost();
-        }
-
-        template<class ImplicitGraph>
-        auto frontier_vertex(Vertex const& u, ImplicitGraph const& g)
-        {
-                if constexpr (IsBulk) {
-                        return g.count(u.state());
-                } else {
-                        return 1;
-                }
-        }
-
-        auto find(Vertex const& u)
-                -> std::pair<bool, int64_t>
-        {
-                auto const it = m_color_map.find(u);
-                if (it != m_color_map.end() && it->second.first == u.cost()) {
-                        return { true, it->second.second };
-                } else {
-                        return { false, 0 };
-                }
-        }
-
-        template<class... Args>
-        auto emplace(Args&&... args)
-        {
-                m_color_map.emplace(std::forward<Args>(args)...);
-        }
-
-        auto depth(int d) { m_limit = d - (IsBulk ? 1 : 0); }
-        auto clear() { m_color_map.clear(); }
-};
-
-template<class ImplicitGraph, class Vertex, class Visitor>
-auto dfs_visit(ImplicitGraph const& g, Vertex const& u, Visitor& vis)
-        -> int64_t
-{
-        if (auto const lookup = vis.find(u); lookup.first) {
-                return lookup.second;
-        }
-
-        if (vis.is_frontier(u)) {
-                return vis.frontier_vertex(u, g);
-        }
-
-        auto const moves = out_edges(u, g);
-        auto const res = std::accumulate(moves.cbegin(), moves.cend(), int64_t{0}, [&](auto sum, auto const& e) {
-                return sum + dfs_visit(g, child(u, e), vis);
-        });
-
-        vis.emplace(u, std::make_pair(u.cost(), res));
-
-        return res;
 }
 
 template<class State>
@@ -418,38 +122,6 @@ void summary(int64_t leafs)
         std::cout << "Total leafs: " << leafs << "\n\n";
 }
 
-template<class State, class Actions, class Enhancements>
-auto perft(State const& s, int depth, Actions successor, Enhancements e)
-{
-
-        int64_t nodes = 0;
-        announce(s, depth);
-        util::Stopwatch stopwatch;
-        stopwatch.start_stop();
-        for (auto d = 1; d <= depth; ++d) {
-                e.reset_statistics();
-                nodes = walk(s, d, 0, successor, e);
-                stopwatch.split_reset();
-                report(d, nodes, stopwatch, e);
-        }
-        return nodes;
-}
-
-template<class Actions, class State>
-auto iperft(Actions successor, State const& s, int depth)
-{
-        announce(s, depth);
-        util::Stopwatch stopwatch;
-        stopwatch.start_stop();
-        auto c{s};
-        for (auto d = 1; d <= depth; ++d) {
-                stopwatch.split_reset();
-                auto const nodes = perft_inplace<true>(successor, c, d);
-                stopwatch.split_reset();
-                xreport(d, nodes, stopwatch);
-        }
-}
-
 template<class Actions, class State>
 auto sperft(Actions successor, State const& s, int depth)
 {
@@ -458,44 +130,9 @@ auto sperft(Actions successor, State const& s, int depth)
         stopwatch.start_stop();
         for (auto d = 1; d <= depth; ++d) {
                 stopwatch.split_reset();
-                auto const nodes = perft_state<true>(successor, s, d);
+                auto const nodes = depth_limited_count<true>(successor, s, d);
                 stopwatch.split_reset();
                 xreport(d, nodes, stopwatch);
-        }
-}
-
-template<class Actions, class State>
-auto nperft(Actions successor, State const& s, int depth)
-{
-        announce(s, depth);
-        util::Stopwatch stopwatch;
-        stopwatch.start_stop();
-        using Node = node<State, core::basic_action<core::rules_t<State>, core::board_t<State>>>;
-        auto const n = root<Node>(s);
-        for (auto d = 1; d <= depth; ++d) {
-                stopwatch.split_reset();
-                auto const nodes = perft_node<true>(successor, n, d);
-                stopwatch.split_reset();
-                xreport(d, nodes, stopwatch);
-        }
-}
-
-template<class Actions, class State>
-auto dperft(Actions successor, State const& s, int depth)
-{
-        announce(s, depth);
-        util::Stopwatch stopwatch;
-        stopwatch.start_stop();
-        using Node = node<State, core::basic_action<core::rules_t<State>, core::board_t<State>>>;
-        auto const n = root<Node>(s);
-        dls_visitor<true, Node> vis;
-        for (auto d = 1; d <= depth; ++d) {
-                stopwatch.split_reset();
-                vis.depth(d);
-                auto const cnt = dfs_visit(successor, n, vis);
-                vis.clear();
-                stopwatch.split_reset();
-                xreport(d, cnt, stopwatch);
         }
 }
 
@@ -515,7 +152,7 @@ auto divide(Actions successor, State const& s, int depth)
         for (auto&& a : moves) {
                 auto const i = static_cast<int>(std::distance(&moves[0], &a));
                 print_move(a, i);
-                auto const sub_count = perft_state<false>(successor, result(s, a), depth - 1);
+                auto const sub_count = depth_limited_count<false>(successor, result(s, a), depth - 1);
                 leaf_nodes += sub_count;
                 stopwatch.split_reset();
                 report(depth - 1, sub_count, stopwatch);
