@@ -53,7 +53,7 @@ install:
   mkdir -p boost-1.65.1 && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C boost-1.65.1
   cd boost-1.65.1 
   ./bootstrap.sh --with-toolset=gcc   --with-libraries=test,program_options && sudo ./b2 -d0 --layout=versioned install toolset=gcc
-  ./bootstrap.sh --with-toolset=clang --with-libraries=test,program_options && sudo ./b2 -d0 --layout=versioned install toolset=clang cxxflag="-stdlib=libc++" linkflag="-stdlib=libc++ -lc++abi"
+  ./bootstrap.sh --with-toolset=clang --with-libraries=test,program_options && sudo ./b2 -d0 --layout=versioned install toolset=clang cxxflags="-stdlib=libc++" linkflags="-stdlib=libc++ -lc++abi"
   sudo ldconfig /usr/local/lib
 
 ################################################################################
@@ -61,9 +61,9 @@ install:
 ################################################################################
 - |
   cd ${DEPS_DIR}
-  CMAKE_URL="http://www.cmake.org/files/v3.9/cmake-3.9.2-Linux-x86_64.tar.gz"
-  mkdir cmake-3.9.2 && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-3.9.2
-  export PATH=${DEPS_DIR}/cmake-3.9.2/bin:${PATH}
+  CMAKE_URL="http://www.cmake.org/files/v3.10/cmake-3.10.1-Linux-x86_64.tar.gz"
+  mkdir cmake-3.10.1 && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-3.10.1
+  export PATH=${DEPS_DIR}/cmake-3.10.1/bin:${PATH}
 
 ################################################################################
 # Install the dependent GitHub repositories xstd and hash_append
