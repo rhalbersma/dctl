@@ -13,7 +13,6 @@
 #include <dctl/core/ui/color.hpp>               // read_color, write_color
 #include <dctl/core/ui/content.hpp>             // content
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/type_traits.hpp>                 // to_underlying_type
 #include <cassert>                              // assert
 #include <cctype>                               // islower, isupper, tolower, toupper
 #include <sstream>                              // stringstream

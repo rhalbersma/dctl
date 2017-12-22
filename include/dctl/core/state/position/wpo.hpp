@@ -8,9 +8,7 @@
 #include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <hash_append/hash_append.h>            // hash_append
 #include <tuple>                                // tie
-#include <type_traits>                          // is_pod
 
 namespace dctl::core {
 namespace wpo {
@@ -151,13 +149,6 @@ public:
         {
                 return std::tie(m_white, m_pawns, m_occup);
         }
-
-        template<class HashAlgorithm>
-        friend auto hash_append(HashAlgorithm& h, position const& p)
-        {
-                using xstd::hash_append;
-                hash_append(h, p.m_white, p.m_pawns, p.m_occup);
-        }
 };
 
 template<class Board>
@@ -167,15 +158,15 @@ constexpr auto operator==(position<Board> const& lhs, position<Board> const& rhs
 }
 
 template<class Board>
-constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs) noexcept
-{
-        return lhs.tied() < rhs.tied();
-}
-
-template<class Board>
 constexpr auto operator!=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
         return !(lhs == rhs);
+}
+
+template<class Board>
+constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs) noexcept
+{
+        return lhs.tied() < rhs.tied();
 }
 
 template<class Board>

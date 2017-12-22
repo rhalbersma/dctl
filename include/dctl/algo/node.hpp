@@ -5,10 +5,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <hash_append/fnv1a.h>                  // fnv1a
-#include <hash_append/jenkins1.h>               // jenkins1
-#include <hash_append/hash_append.h>            // uhash
-#include <hash_append/identity_hash.h>          // identity_hash
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
 #include <tuple>                                // tie
@@ -42,8 +38,6 @@ class node
                 ;
         }
 
-        using state_hasher = acme::jenkins1;
-
         State m_state;
         node const* m_parent = nullptr;
         Action const* m_action = nullptr;
@@ -55,7 +49,7 @@ public:
 
         explicit constexpr node(State const& s) noexcept
         :       m_state{s}
-        ,       m_hash{xstd::uhash<state_hasher>{}(m_state)}
+        ,       m_hash{}
         {
                 assert(is_root());
         }
@@ -65,7 +59,7 @@ public:
         ,       m_parent{&n}
         ,       m_action{&a}
         ,       m_cost{n.m_cost + 1}
-        ,       m_hash{xstd::uhash<state_hasher>{}(m_state)}
+        ,       m_hash{}
         {
                 assert(is_child());
         }
@@ -77,14 +71,6 @@ public:
         constexpr auto tied() const
         {
                 return std::tie(m_state);
-        }
-
-        template<class HashAlgorithm>
-        friend auto hash_append(HashAlgorithm& h, node const& n)
-        {
-                static_assert(std::is_same_v<HashAlgorithm, acme::identity_hash>);
-                using xstd::hash_append;
-                hash_append(h, n.m_hash);
         }
 };
 
@@ -203,13 +189,6 @@ public:
         ,       m_hash{xstd::uhash<InternalHash>{}(m_value)}
         {}
 
-        template<class ExternalHash>
-        friend void hash_append(ExternalHash& h, wrap const& w)
-        {
-                static_assert(std::is_same_v<ExternalHash, acme::identity_hash>);
-                using xstd::hash_append;
-                hash_append(h, w.m_hash);
-        }
 };
 
 std::unordered_set<wrap, acme::identity_hash>;

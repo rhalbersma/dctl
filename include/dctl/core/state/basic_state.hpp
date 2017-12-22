@@ -10,7 +10,6 @@
 #include <dctl/core/state/position.hpp>
 #include <dctl/util/conditional_base.hpp>       // conditional_base
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <hash_append/hash_append.h>            // hash_append
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
 #include <type_traits>                          // is_pod, is_same
@@ -156,13 +155,6 @@ public:
                 return std::tie(this->m_position, m_color);
         }
 
-        template<class HashAlgorithm>
-        friend auto hash_append(HashAlgorithm& h, basic_state const& s)
-        {
-                using xstd::hash_append;
-                hash_append(h, s.m_position, s.m_color);
-        }
-
 private:
         constexpr auto pass_turn() noexcept
         {
@@ -177,15 +169,15 @@ constexpr auto operator==(basic_state<Rules, Board> const& lhs, basic_state<Rule
 }
 
 template<class Rules, class Board>
-constexpr auto operator< (basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
-{
-        return lhs.tied() < rhs.tied();
-}
-
-template<class Rules, class Board>
 constexpr auto operator!=(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
 {
         return !(lhs == rhs);
+}
+
+template<class Rules, class Board>
+constexpr auto operator< (basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
+{
+        return lhs.tied() < rhs.tied();
 }
 
 template<class Rules, class Board>

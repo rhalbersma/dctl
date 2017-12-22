@@ -9,10 +9,8 @@
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
-#include <hash_append/hash_append.h>            // hash_append
 #include <array>                                // array
 #include <tuple>                                // tie
-#include <type_traits>                          // is_pod
 
 namespace dctl::core {
 namespace bwke {
@@ -31,7 +29,7 @@ public:
 
         constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) // Throws: Nothing.
         :
-                m_color{{ black_pawns | black_kings, white_pawns | white_kings }},
+                m_color{{black_pawns | black_kings, white_pawns | white_kings}},
                 m_kings{black_kings | white_kings},
                 m_empty{board_type::squares ^ (m_color[0] | m_color[1])}
         {
@@ -40,7 +38,7 @@ public:
 
         constexpr position(set_type const black_pawns, set_type const white_pawns) // Throws: Nothing.
         :
-                m_color{{ black_pawns, white_pawns }},
+                m_color{{black_pawns, white_pawns}},
                 m_kings{},
                 m_empty{board_type::squares ^ (m_color[0] | m_color[1])}
         {
@@ -121,14 +119,7 @@ public:
 
         constexpr auto tied() const noexcept
         {
-                return std::tie(m_color[0], m_color[1], m_kings);
-        }
-
-        template<class HashAlgorithm>
-        friend auto hash_append(HashAlgorithm& h, position const& p)
-        {
-                using xstd::hash_append;
-                hash_append(h, p.m_color, p.m_kings);
+                return std::tie(m_color, m_kings);
         }
 
 private:
@@ -145,15 +136,15 @@ constexpr auto operator==(position<Board> const& lhs, position<Board> const& rhs
 }
 
 template<class Board>
-constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs) noexcept
-{
-        return lhs.tied() < rhs.tied();
-}
-
-template<class Board>
 constexpr auto operator!=(position<Board> const& lhs, position<Board> const& rhs) noexcept
 {
         return !(lhs == rhs);
+}
+
+template<class Board>
+constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs) noexcept
+{
+        return lhs.tied() < rhs.tied();
 }
 
 template<class Board>

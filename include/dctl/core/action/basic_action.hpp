@@ -21,10 +21,8 @@ template<class Board>
 struct base_action
 {
         set_t<Board> m_captured_pieces;
-        square_t<Board> m_from;
-        square_t<Board> m_dest;
-        piece m_with;
-        piece m_into;
+        square_t<Board> m_from, m_dest;
+        piece m_with, m_into;
 };
 
 template<class Board>
@@ -263,15 +261,15 @@ constexpr auto operator==(basic_action<Rules, Board> const& lhs, basic_action<Ru
 }
 
 template<class Rules, class Board>
-constexpr auto operator< (basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
-{
-        return lhs.tied() < rhs.tied();
-}
-
-template<class Rules, class Board>
 constexpr auto operator!=(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
 {
         return !(lhs == rhs);
+}
+
+template<class Rules, class Board>
+constexpr auto operator< (basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
+{
+        return lhs.tied() < rhs.tied();
 }
 
 template<class Rules, class Board>

@@ -13,8 +13,6 @@
 #include <dctl/util/hash/extract.hpp>
 #include <dctl/util/statistics.hpp>
 #include <dctl/util/stopwatch.hpp>
-#include <hash_append/hash_append.h>
-#include <hash_append/identity_hash.h>
 #include <cstddef>
 #include <iomanip>
 #include <iostream>
