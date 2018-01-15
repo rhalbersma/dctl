@@ -12,6 +12,7 @@
 #include <cstdint>                      // int64_t
 #include <optional>                     // nullopt, optional
 #include <sstream>                      // stringstream
+#include <iostream>
 
 namespace dctl::egdb {
 
@@ -26,19 +27,15 @@ auto reverse_colex_rank_combination(IntSet const& is, UnaryFunction fun)
         is.reverse_for_each([&, i = 1](auto const sq) mutable {
                 index += choose(fun(sq), i++);
         });
-        assert(0 <= index); // TODO assert(index < choose(fun(is.first), is.count());
         return index;
 }
 
 template<class IntSet, class UnaryFunction>
 auto colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
-        auto index = 0LL;
-        is.for_each([&, i = 1](auto const sq) mutable {
-                index += choose(fun(sq), i++);
+        return is.accumulate(0LL, [&, i = 1](auto const result, auto const sq) mutable {
+                return result + choose(fun(sq), i++);
         });
-        assert(0 <= index); // TODO assert(index < choose(fun(is.last), is.count());
-        return index;
 }
 
 template<class IntSet, class UnaryFunction>
@@ -47,7 +44,6 @@ auto colex_unrank_combination(int64_t index, int const N, int const K, UnaryFunc
         assert(0 <= K); assert(K <= N);
         assert(0 <= index); assert(index < choose(N, K));
         IntSet is{};
-        // TODO: optimize for i == 1
         for (auto sq = N - 1, i = K; i > 0; index -= choose(sq--, i--)) {
                 while (choose(sq, i) > index) {
                         --sq;
