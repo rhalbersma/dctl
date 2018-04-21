@@ -7,6 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>
 #include <dctl/util/type_traits.hpp>
+#include <xstd/cstdlib.hpp>
 #include <cassert>
 
 namespace dctl::core {
@@ -47,6 +48,7 @@ constexpr auto is_forward_v = angle{Direction} == 0_deg || 180_deg < angle{Direc
 
 template<int Direction, class Set>
 auto find_first(Set const& s)
+        -> int
 {
         if constexpr (is_forward_v<Direction>) {
                 return s.front();
@@ -69,24 +71,25 @@ template<class Board, int Direction, int Distance = 1>
 struct advance
 {
         using set_type = set_t<Board>;
-        constexpr static auto n = Distance * stride_v<Board, Direction>;
 
         auto operator()(set_type& s) const noexcept
         {
+                constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
                 static_assert(0 <= n); static_assert(n < set_type::max_size());
-                if constexpr (is_forward_v<Direction>) {
-                        return s <<= n;
+                if constexpr (!(is_forward_v<Direction> ^ (Distance >= 0))) {
+                        s <<= n;
                 } else {
-                        return s >>= n;
+                        s >>= n;
                 }
         }
 
         constexpr auto operator()(int& sq) const noexcept
         {
+                constexpr auto n = Distance * stride_v<Board, Direction>;
                 if constexpr (is_forward_v<Direction>) {
-                        return sq += n;
+                        sq += n;
                 } else {
-                        return sq -= n;
+                        sq -= n;
                 }
         }
 };
@@ -94,52 +97,22 @@ struct advance
 template<class Board, int Direction, int Distance = 1>
 struct next
 {
-        using set_type = set_t<Board>;
-        constexpr static auto n = Distance * stride_v<Board, Direction>;
-
-        auto operator()(set_type const& s) const noexcept
+        template<class ForwardIterator>
+        constexpr auto operator()(ForwardIterator it) const noexcept
         {
-                static_assert(0 <= n); static_assert(n < set_type::max_size());
-                if constexpr (is_forward_v<Direction>) {
-                        return s << n;
-                } else {
-                        return s >> n;
-                }
-        }
-
-        constexpr auto operator()(int const sq) const noexcept
-        {
-                if constexpr (is_forward_v<Direction>) {
-                        return sq + n;
-                } else {
-                        return sq - n;
-                }
+                advance<Board, Direction, Distance>{}(it);
+                return it;
         }
 };
 
 template<class Board, int Direction, int Distance = 1>
 struct prev
 {
-        using set_type = set_t<Board>;
-        constexpr static auto n = Distance * stride_v<Board, Direction>;
-
-        auto operator()(set_type const& s) const noexcept
+        template<class ForwardIterator>
+        constexpr auto operator()(ForwardIterator it) const noexcept
         {
-                static_assert(0 <= n); static_assert(n < set_type::max_size());
-                if constexpr (is_forward_v<Direction>) {
-                        return s >> n;
-                } else {
-                        return s << n;
-                }
-        }
-
-        constexpr auto operator()(int const sq) const noexcept
-        {
-                if constexpr (is_forward_v<Direction>) {
-                        return sq - n;
-                } else {
-                        return sq + n;
-                }
+                advance<Board, Direction, -Distance>{}(it);
+                return it;
         }
 };
 

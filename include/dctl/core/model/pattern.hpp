@@ -29,12 +29,12 @@ struct jump_sources
 
         auto operator()(set_type const& sources, set_type const& targets, set_type const& squares) const noexcept
         {
-                return sources & prev<Board, Direction, 1>{}(targets) & prev<Board, Direction, 2>{}(squares);
+                return sources & prev<Board, Direction>{}(targets) & prev<Board, Direction, 2>{}(squares);
         }
 
         auto operator()(set_type const& targets, set_type const& squares) const noexcept
         {
-                return prev<Board, Direction, 1>{}(targets) & prev<Board, Direction, 2>{}(squares);
+                return prev<Board, Direction>{}(targets) & prev<Board, Direction, 2>{}(squares);
         }
 };
 
@@ -45,12 +45,12 @@ struct jump_targets
 
         auto operator()(set_type const& sources, set_type const& targets, set_type const& squares) const noexcept
         {
-                return next<Board, Direction, 1>{}(sources) & targets & prev<Board, Direction, 1>{}(squares);
+                return next<Board, Direction>{}(sources) & targets & prev<Board, Direction>{}(squares);
         }
 
         auto operator()(set_type const& targets, set_type const& squares) const noexcept
         {
-                return targets & prev<Board, Direction, 1>{}(squares);
+                return targets & prev<Board, Direction>{}(squares);
         }
 };
 
