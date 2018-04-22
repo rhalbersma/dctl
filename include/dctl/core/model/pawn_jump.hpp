@@ -48,7 +48,7 @@ public:
         static auto detect(State const& s) noexcept
         {
                 return meta::foldl_logical_or<pawn_jump_directions>{}([&](auto const dir) {
-                        constexpr auto dir_c = decltype(dir){};
+                        constexpr auto dir_c = decltype(dir)::value;
                         return !jump_targets<board_type, dir_c>{}(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
                 });
         }
@@ -58,7 +58,7 @@ public:
         {
                 if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
                 meta::foldl_comma<pawn_jump_directions>{}([&](auto const dir) {
-                        constexpr auto dir_c = decltype(dir){};
+                        constexpr auto dir_c = decltype(dir)::value;
                         jump_sources<board_type, dir_c>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c)).for_each([&](auto const from_sq) {
                                 raii::lift<Builder> guard{from_sq, b};
                                 capture<dir_c>(next<board_type, dir_c, 2>{}(from_sq), b);
@@ -93,7 +93,7 @@ private:
         static auto next_target(int const sq, Builder& b)
         {
                 return meta::foldl_bit_or<pawn_scan_directions<Direction>>{}([&](auto const dir) {
-                        constexpr auto dir_c = decltype(dir){};
+                        constexpr auto dir_c = decltype(dir)::value;
                         if (!jump_sources<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
                         capture<dir_c>(next<board_type, dir_c, 2>{}(sq), b);
                         return true;

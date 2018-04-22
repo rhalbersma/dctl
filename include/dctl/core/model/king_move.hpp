@@ -45,7 +45,7 @@ class king_move
                 Board::squares.for_each([&](auto const from_sq) {
                         result[static_cast<std::size_t>(from_sq)] =
                                 meta::foldl_bit_or<king_move_directions>{}([&](auto const dir) {
-                                        constexpr auto dir_c = decltype(dir){};
+                                        constexpr auto dir_c = decltype(dir)::value;
                                         return king_move_scan<dir_c>(from_sq);
                                 });
                         ;
@@ -62,7 +62,7 @@ class king_move
                         return
                                 attacks_table[static_cast<std::size_t>(from_sq)] ^
                                 meta::foldl_bit_or<king_move_directions>{}([&](auto const dir) {
-                                        constexpr auto dir_c = decltype(dir){};
+                                        constexpr auto dir_c = decltype(dir)::value;
                                         auto const blockers = king_move_scan<dir_c>(from_sq) - empty;
                                         return blockers.empty() ? set_type{} : blocker_and_beyond<dir_c>(find_first<dir_c>(blockers));
                                 })

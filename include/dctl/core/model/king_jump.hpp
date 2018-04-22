@@ -60,7 +60,7 @@ public:
         {
                 return s.pieces(color_c<Side>, kings_c).any_of([&](auto from_sq) {
                         return meta::foldl_logical_or<king_jump_directions>{}([&](auto const dir) {
-                                constexpr auto dir_c = decltype(dir){};
+                                constexpr auto dir_c = decltype(dir)::value;
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
                                         auto const blockers = king_jumps<rules_type, board_type, dir_c>(from_sq, s.pieces(empty_c));
                                         if (blockers.empty()) { return false; }
@@ -80,7 +80,7 @@ public:
                 b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
                         raii::lift<Builder> guard{from_sq, b};
                         meta::foldl_comma<king_jump_directions>{}([&](auto const dir) {
-                                constexpr auto dir_c = decltype(dir){};
+                                constexpr auto dir_c = decltype(dir)::value;
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
                                         auto const blockers = king_jumps<rules_type, board_type, dir_c>(from_sq, b.pieces(empty_c));
                                         if (blockers.empty()) { return; }
@@ -157,7 +157,7 @@ private:
         static auto scan(int const sq, Builder& b)
         {
                 return meta::foldl_bit_or<Directions>{}([&](auto const dir) {
-                        constexpr auto dir_c = decltype(dir){};
+                        constexpr auto dir_c = decltype(dir)::value;
                         if constexpr (is_long_ranged_king_v<rules_type>) {
                                 auto const blockers = king_jumps<rules_type, board_type, dir_c>(sq, b.pieces(empty_c));
                                 if (blockers.empty()) { return false; }

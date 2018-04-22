@@ -72,7 +72,7 @@ struct advance
 {
         using set_type = set_t<Board>;
 
-        auto operator()(set_type& s) const noexcept
+        auto operator()(set_type& s) const
         {
                 constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
                 static_assert(0 <= n); static_assert(n < set_type::max_size());
@@ -83,7 +83,7 @@ struct advance
                 }
         }
 
-        constexpr auto operator()(int& sq) const noexcept
+        constexpr auto operator()(int& sq) const
         {
                 constexpr auto n = Distance * stride_v<Board, Direction>;
                 if constexpr (is_forward_v<Direction>) {
@@ -97,8 +97,8 @@ struct advance
 template<class Board, int Direction, int Distance = 1>
 struct next
 {
-        template<class ForwardIterator>
-        constexpr auto operator()(ForwardIterator it) const noexcept
+        template<class InputIterator>
+        constexpr auto operator()(InputIterator it) const
         {
                 advance<Board, Direction, Distance>{}(it);
                 return it;
@@ -108,8 +108,8 @@ struct next
 template<class Board, int Direction, int Distance = 1>
 struct prev
 {
-        template<class ForwardIterator>
-        constexpr auto operator()(ForwardIterator it) const noexcept
+        template<class InputIterator>
+        constexpr auto operator()(InputIterator it) const
         {
                 advance<Board, Direction, -Distance>{}(it);
                 return it;
