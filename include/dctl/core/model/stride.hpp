@@ -40,13 +40,13 @@ public:
         }
 };
 
-template<class Board, int Direction>
-constexpr auto stride_v = stride<Board>{}(angle{Direction});
+template<class Board, class Direction>
+constexpr auto stride_v = stride<Board>{}(angle{Direction::value});
 
-template<int Direction>
-constexpr auto is_forward_v = angle{Direction} == 0_deg || 180_deg < angle{Direction};
+template<class Direction>
+constexpr auto is_forward_v = angle{Direction::value} == 0_deg || 180_deg < angle{Direction::value};
 
-template<int Direction, class Set>
+template<class Direction, class Set>
 auto find_first(Set const& s)
         -> int
 {
@@ -57,7 +57,7 @@ auto find_first(Set const& s)
         }
 }
 
-template<int Direction, class Set>
+template<class Direction, class Set>
 constexpr auto last() noexcept
 {
         if constexpr (is_forward_v<Direction>) {
@@ -67,7 +67,7 @@ constexpr auto last() noexcept
         }
 }
 
-template<class Board, int Direction, int Distance = 1>
+template<class Board, class Direction, int Distance = 1>
 struct advance
 {
         using set_type = set_t<Board>;
@@ -94,7 +94,7 @@ struct advance
         }
 };
 
-template<class Board, int Direction, int Distance = 1>
+template<class Board, class Direction, int Distance = 1>
 struct next
 {
         template<class InputIterator>
@@ -105,7 +105,7 @@ struct next
         }
 };
 
-template<class Board, int Direction, int Distance = 1>
+template<class Board, class Direction, int Distance = 1>
 struct prev
 {
         template<class InputIterator>

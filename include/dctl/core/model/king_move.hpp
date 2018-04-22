@@ -23,21 +23,19 @@ class king_move
         using basic_king_move_scan = board_scan_sq_dir<Board, king_move_directions, is_long_ranged_king_v<Rules>, false, true>;
         using basic_blocker_and_beyond = board_scan_dir_sq<Board, king_move_directions, true, true, true>;
 
-        template<int Dir>
+        template<class Direction>
         static auto king_move_scan(int const from_sq)
         {
                 assert(Board::is_onboard(from_sq));
-                constexpr auto index = move_index(Dir);
-                return basic_king_move_scan{}(from_sq, index);
+                return basic_king_move_scan{}(from_sq, move_index<Direction>);
         }
 
-        template<int Dir>
+        template<class Direction>
         static auto blocker_and_beyond(int const from_sq)
         {
                 assert(Board::is_onboard(from_sq));
                 static_assert(is_long_ranged_king_v<Rules>);
-                constexpr auto index = move_index(Dir);
-                return basic_blocker_and_beyond{}(from_sq, index);
+                return basic_blocker_and_beyond{}(from_sq, move_index<Direction>);
         }
 
         inline const static auto attacks_table = []() {
@@ -45,8 +43,8 @@ class king_move
                 Board::squares.for_each([&](auto const from_sq) {
                         result[static_cast<std::size_t>(from_sq)] =
                                 meta::foldl_bit_or<king_move_directions>{}([&](auto const dir) {
-                                        constexpr auto dir_c = decltype(dir)::value;
-                                        return king_move_scan<dir_c>(from_sq);
+                                        using direction_t = decltype(dir);
+                                        return king_move_scan<direction_t>(from_sq);
                                 });
                         ;
                 });
@@ -62,9 +60,9 @@ class king_move
                         return
                                 attacks_table[static_cast<std::size_t>(from_sq)] ^
                                 meta::foldl_bit_or<king_move_directions>{}([&](auto const dir) {
-                                        constexpr auto dir_c = decltype(dir)::value;
-                                        auto const blockers = king_move_scan<dir_c>(from_sq) - empty;
-                                        return blockers.empty() ? set_type{} : blocker_and_beyond<dir_c>(find_first<dir_c>(blockers));
+                                        using direction_t = decltype(dir);
+                                        auto const blockers = king_move_scan<direction_t>(from_sq) - empty;
+                                        return blockers.empty() ? set_type{} : blocker_and_beyond<direction_t>(find_first<direction_t>(blockers));
                                 })
                         ;
                 } else {

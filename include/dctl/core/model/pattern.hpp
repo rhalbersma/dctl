@@ -5,13 +5,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/model/stride.hpp>           // next, prev
 #include <dctl/core/rules/type_traits.hpp>      // short_ranged_tag, long_ranged_tag
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <dctl/core/model/stride.hpp>  // stride_v
 
 namespace dctl::core {
 
-template<class Board, int Direction>
+template<class Board, class Direction>
 struct move_squares
 {
         using set_type = set_t<Board>;
@@ -22,7 +22,7 @@ struct move_squares
         }
 };
 
-template<class Board, int Direction>
+template<class Board, class Direction>
 struct jump_sources
 {
         using set_type = set_t<Board>;
@@ -38,7 +38,7 @@ struct jump_sources
         }
 };
 
-template<class Board, int Direction>
+template<class Board, class Direction>
 struct jump_targets
 {
         using set_type = set_t<Board>;

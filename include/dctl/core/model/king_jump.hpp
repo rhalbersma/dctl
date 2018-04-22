@@ -48,11 +48,11 @@ class king_jump<color_<Side>, Reverse, State>
         template<class Arg, class Direction>
         using is_forward_or_reverse = std::disjunction<is_forward<Arg, Direction>, is_reverse<Arg, Direction>>;
 
-        template<int Direction>
-        using king_scan_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_reverse, meta::integral_c<int, Direction>>>;
+        template<class Direction>
+        using king_scan_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_reverse, Direction>>;
 
-        template<int Direction>
-        using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, meta::integral_c<int, Direction>>>;
+        template<class Direction>
+        using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, Direction>>;
 
         constexpr static auto GCC7_ICE_WORK_AROUND = is_long_ranged_king_v<rules_type>;
 public:
@@ -60,14 +60,14 @@ public:
         {
                 return s.pieces(color_c<Side>, kings_c).any_of([&](auto from_sq) {
                         return meta::foldl_logical_or<king_jump_directions>{}([&](auto const dir) {
-                                constexpr auto dir_c = decltype(dir)::value;
+                                using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jumps<rules_type, board_type, dir_c>(from_sq, s.pieces(empty_c));
+                                        auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, s.pieces(empty_c));
                                         if (blockers.empty()) { return false; }
-                                        auto const first = find_first<dir_c>(blockers);
-                                        return jump_targets<board_type, dir_c>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
+                                        auto const first = find_first<direction_t>(blockers);
+                                        return jump_targets<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
                                 } else {
-                                        return jump_sources<board_type, dir_c>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
+                                        return jump_sources<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
                                 }
                         });
                 });
@@ -80,22 +80,22 @@ public:
                 b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
                         raii::lift<Builder> guard{from_sq, b};
                         meta::foldl_comma<king_jump_directions>{}([&](auto const dir) {
-                                constexpr auto dir_c = decltype(dir)::value;
+                                using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jumps<rules_type, board_type, dir_c>(from_sq, b.pieces(empty_c));
+                                        auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, b.pieces(empty_c));
                                         if (blockers.empty()) { return; }
-                                        auto const first = find_first<dir_c>(blockers);
-                                        if (!jump_targets<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
-                                        capture<dir_c>(next<board_type, dir_c>{}(first), b);
+                                        auto const first = find_first<direction_t>(blockers);
+                                        if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
+                                        capture<direction_t>(next<board_type, direction_t>{}(first), b);
                                 } else {
-                                        if (!jump_sources<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
-                                        capture<dir_c>(next<board_type, dir_c, 2>{}(from_sq), b);
+                                        if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
+                                        capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                                 }
                         });
                 });
         }
 
-        template<int Direction, class Builder>
+        template<class Direction, class Builder>
         static auto next_target_passing_promotion(int const sq, Builder& b)
         {
                 static_assert(is_passing_promotion_v<rules_type>);
@@ -104,7 +104,7 @@ public:
                 return scan<king_turn_directions<Direction>>(sq, b);
         }
 private:
-        template<int Direction, class Builder>
+        template<class Direction, class Builder>
         static auto capture(int const sq, Builder& b)
                 -> void
         {
@@ -127,7 +127,7 @@ private:
                 }
         }
 
-        template<int Direction, class Builder>
+        template<class Direction, class Builder>
         static auto add_sliding_jumps(int sq, int n, Builder& b)
         {
                 do {
@@ -136,7 +136,7 @@ private:
                 } while (--n);
         }
 
-        template<int Direction, class Builder>
+        template<class Direction, class Builder>
         static auto next_target(int sq, int n [[maybe_unused]], Builder& b)
         {
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
@@ -157,16 +157,16 @@ private:
         static auto scan(int const sq, Builder& b)
         {
                 return meta::foldl_bit_or<Directions>{}([&](auto const dir) {
-                        constexpr auto dir_c = decltype(dir)::value;
+                        using direction_t = decltype(dir);
                         if constexpr (is_long_ranged_king_v<rules_type>) {
-                                auto const blockers = king_jumps<rules_type, board_type, dir_c>(sq, b.pieces(empty_c));
+                                auto const blockers = king_jumps<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
                                 if (blockers.empty()) { return false; }
-                                auto const first = find_first<dir_c>(blockers);
-                                if (!jump_targets<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
-                                capture<dir_c>(next<board_type, dir_c>{}(first), b);
+                                auto const first = find_first<direction_t>(blockers);
+                                if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
+                                capture<direction_t>(next<board_type, direction_t>{}(first), b);
                         } else {
-                                if (!jump_sources<board_type, dir_c>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
-                                capture<dir_c>(next<board_type, dir_c, 2>{}(sq), b);
+                                if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                                capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
                         }
                         return true;
                 });

@@ -16,7 +16,7 @@
 namespace dctl::core {
 namespace detail {
 
-template<class Board, int Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
+template<class Board, class Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
 struct scan
 {
         using   set_type = set_t<Board>;
@@ -56,8 +56,8 @@ class board_scan_sq_dir
                 Board::squares.for_each([&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::make_array<Directions>{}([=](auto const dir) {
-                                        constexpr auto dir_c = decltype(dir)::value;
-                                        return scan<Board, dir_c, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares);
+                                        using direction_t = decltype(dir);
+                                        return scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares);
                                 });
                         ;
                 });
@@ -75,11 +75,11 @@ class board_scan_dir_sq
 {
         inline const static auto table = []() {
                 return meta::make_array<Directions>{}([](auto const dir) {
-                        constexpr auto dir_c [[maybe_unused]] = decltype(dir)::value; // silence bogus GCC warning unused-but-set-variable
+                        using direction_t = decltype(dir); // silence bogus GCC warning unused-but-set-variable
                         auto result = std::array<set_t<Board>, Board::bits()>{};
                         Board::squares.for_each([&](auto const sq) {
                                 result[static_cast<std::size_t>(sq)] =
-                                        scan<Board, dir_c, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
+                                        scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
                                 ;
                         });
                         return result;
@@ -101,37 +101,26 @@ using basic_king_jumps = detail::board_scan_sq_dir<Board, basic_king_jump_direct
 template<class Rules, class Board>
 using basic_blocker_and_beyond = detail::board_scan_dir_sq<Board, basic_king_jump_directions<Rules>, true, true, true>;
 
-constexpr auto move_index(int direction) noexcept
-{
-        return (direction - 45) / 90;
-}
+template<class Direction>
+constexpr auto move_index = (Direction::value - 45) / 90;
 
-template<class Rules>
-constexpr auto jump_index(int direction) noexcept
-{
-        if constexpr (is_orthogonal_jump_v<Rules>) {
-                return direction / 45;
-        } else {
-                return (direction - 45) / 90;
-        }
-}
+template<class Rules, class Direction>
+constexpr auto jump_index = is_orthogonal_jump_v<Rules> ? Direction::value / 45 : move_index<Direction>;
 
-template<class Rules, class Board, int Direction>
+template<class Rules, class Board, class Direction>
 auto king_slide(int const sq)
 {
-        constexpr auto index = detail::jump_index<Rules>(Direction);
-        return detail::basic_king_slide<Rules, Board>{}(sq, index);
+        return detail::basic_king_slide<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
-template<class Rules, class Board, int Direction>
+template<class Rules, class Board, class Direction>
 auto blocker_and_beyond(int const sq)
 {
         static_assert(is_long_ranged_king_v<Rules>);
-        constexpr auto index = detail::jump_index<Rules>(Direction);
-        return detail::basic_blocker_and_beyond<Rules, Board>{}(sq, index);
+        return detail::basic_blocker_and_beyond<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
-template<class Rules, class Board, int Direction>
+template<class Rules, class Board, class Direction>
 auto king_slide(int const sq, set_t<Board> const& empty)
 {
         assert(Board::is_onboard(sq));
@@ -146,11 +135,10 @@ auto king_slide(int const sq, set_t<Board> const& empty)
         }
 }
 
-template<class Rules, class Board, int Direction>
+template<class Rules, class Board, class Direction>
 auto king_jumps(int const sq, set_t<Board> const& empty)
 {
-        constexpr auto index = detail::jump_index<Rules>(Direction);
-        return detail::basic_king_jumps<Rules, Board>{}(sq, index) - empty;
+        return detail::basic_king_jumps<Rules, Board>{}(sq, jump_index<Rules, Direction>) - empty;
 }
 
 }       // namespace detail
