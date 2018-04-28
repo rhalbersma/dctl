@@ -43,7 +43,6 @@ set(cxx_compile_options_optimization
 #	--coverage
 #        -fprofile-generate
 #        -fprofile-use 
-#        -stdlib=libc++
         -g
         -O3
         -flto
@@ -55,8 +54,6 @@ set(cxx_linker_optimization_flags
 #	--coverage
 #        -fprofile-generate
 #        -fprofile-use 
-#		-stdlib=libc++
-#		-lc++abi
         -flto 
         -fuse-ld=gold
 )
