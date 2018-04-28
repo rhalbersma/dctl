@@ -11,14 +11,17 @@
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_comma, foldl_bit_or
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
+#include <boost/mp11/algorithm.hpp>             // mp_remove_if_q, mp_transform
+#include <boost/mp11/bind.hpp>                  // mp_bind_back
+#include <boost/mp11/integral.hpp>              // mp_int
 #include <cassert>                              // assert
 #include <iterator>                             // prev
 #include <type_traits>                          // bool_constant
-#include <dctl/core/model/builder.hpp> // builder
-#include <dctl/core/model/pattern.hpp> // jump_targets
-#include <dctl/core/model/raii.hpp>    // Launch, Capture, Visit, set_king_jump
-#include <dctl/core/model/tables.hpp>  // king_jumps, king_moves
-#include <dctl/core/model/select/jump.hpp>    // jump
+#include <dctl/core/model/builder.hpp>          // builder
+#include <dctl/core/model/pattern.hpp>          // jump_targets
+#include <dctl/core/model/raii.hpp>             // Launch, Capture, Visit, set_king_jump
+#include <dctl/core/model/tables.hpp>           // king_jumps, king_moves
+#include <dctl/core/model/select/jump.hpp>      // jump
 
 namespace dctl::core {
 namespace detail {
@@ -35,9 +38,9 @@ class king_jump<color_<Side>, Reverse, State>
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
         template<class Arg>
-        using oriented = meta::integral_c<int, rotate_v<Arg::value, orientation>>;
+        using oriented = boost::mp11::mp_int<rotate_v<Arg::value, orientation>>;
 
-        using king_jump_directions = meta::transform<oriented, basic_king_jump_directions<rules_type>>;
+        using king_jump_directions = boost::mp11::mp_transform<oriented, basic_king_jump_directions<rules_type>>;
 
         template<class Arg, class Direction>
         using is_forward = std::bool_constant<Arg::value == Direction::value>;
@@ -49,10 +52,10 @@ class king_jump<color_<Side>, Reverse, State>
         using is_forward_or_reverse = std::disjunction<is_forward<Arg, Direction>, is_reverse<Arg, Direction>>;
 
         template<class Direction>
-        using king_scan_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_reverse, Direction>>;
+        using king_scan_directions = boost::mp11::mp_remove_if_q<king_jump_directions, boost::mp11::mp_bind_back<is_reverse, Direction>>;
 
         template<class Direction>
-        using king_turn_directions = meta::remove_if_q<king_jump_directions, meta::bind_back<is_forward_or_reverse, Direction>>;
+        using king_turn_directions = boost::mp11::mp_remove_if_q<king_jump_directions, boost::mp11::mp_bind_back<is_forward_or_reverse, Direction>>;
 
         constexpr static auto GCC7_ICE_WORK_AROUND = is_long_ranged_king_v<rules_type>;
 public:

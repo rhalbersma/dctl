@@ -5,19 +5,22 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/bearing.hpp>                  // bearing
-#include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
-#include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
-#include <dctl/util/meta.hpp>                           // foldl_logical_or, foldl_comma, foldl_bit_or
-#include <dctl/util/type_traits.hpp>                    // action_t, board_t, rules_t, set_t
-#include <cassert>                                      // assert
-#include <iterator>                                     // next
-#include <type_traits>                                  // bool_constant
-#include <dctl/core/model/builder.hpp>         // builder
-#include <dctl/core/model/king_jump.hpp>       // promote_en_passant
-#include <dctl/core/model/pattern.hpp>         // jump_targets
-#include <dctl/core/model/raii.hpp>            // Launch, Capture, Visit, Toggleking_targets, Setpromotion
-#include <dctl/core/model/select/jump.hpp>            // jumps
+#include <dctl/core/board/bearing.hpp>          // bearing
+#include <dctl/core/state/color_piece.hpp>      // color, color_, pawns_, king_
+#include <dctl/core/rules/type_traits.hpp>      // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
+#include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_comma, foldl_bit_or
+#include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
+#include <boost/mp11/algorithm.hpp>             // mp_remove_if_q, mp_transform
+#include <boost/mp11/bind.hpp>                  // mp_bind_back
+#include <boost/mp11/integral.hpp>              // mp_int
+#include <cassert>                              // assert
+#include <iterator>                             // next
+#include <type_traits>                          // bool_constant
+#include <dctl/core/model/builder.hpp>          // builder
+#include <dctl/core/model/king_jump.hpp>        // promote_en_passant
+#include <dctl/core/model/pattern.hpp>          // jump_targets
+#include <dctl/core/model/raii.hpp>             // Launch, Capture, Visit, Toggleking_targets, Setpromotion
+#include <dctl/core/model/select/jump.hpp>      // jumps
 
 namespace dctl::core {
 namespace detail {
@@ -35,15 +38,15 @@ class pawn_jump<color_<Side>, Reverse, State>
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
         template<class Arg>
-        using oriented = meta::integral_c<int, rotate_v<Arg::value, orientation>>;
+        using oriented = boost::mp11::mp_int<rotate_v<Arg::value, orientation>>;
 
-        using pawn_jump_directions = meta::transform<oriented, basic_pawn_jump_directions<rules_type>>;
+        using pawn_jump_directions = boost::mp11::mp_transform<oriented, basic_pawn_jump_directions<rules_type>>;
 
         template<class Arg, class Direction>
         using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;
 
         template<class Direction>
-        using pawn_scan_directions = meta::remove_if_q<pawn_jump_directions, meta::bind_back<is_reverse, Direction>>;
+        using pawn_scan_directions = boost::mp11::mp_remove_if_q<pawn_jump_directions, boost::mp11::mp_bind_back<is_reverse, Direction>>;
 public:
         static auto detect(State const& s) noexcept
         {

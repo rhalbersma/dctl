@@ -8,7 +8,9 @@
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
-#include <dctl/core/model/pattern.hpp> // move_squares
+#include <dctl/core/model/pattern.hpp>          // move_squares
+#include <boost/mp11/algorithm.hpp>             // mp_transform
+#include <boost/mp11/integral.hpp>              // mp_int
 
 namespace dctl::core {
 namespace detail {
@@ -22,9 +24,9 @@ class pawn_move<Rules, Board, color_<Side>, Reverse>
         constexpr static auto orientation = bearing_v<Board, color_<Side>, Reverse>;
 
         template<class Arg>
-        using oriented = meta::integral_c<int, rotate_v<Arg::value, orientation>>;
+        using oriented = boost::mp11::mp_int<rotate_v<Arg::value, orientation>>;
 
-        using pawn_move_directions = meta::transform<oriented, basic_pawn_move_directions>;
+        using pawn_move_directions = boost::mp11::mp_transform<oriented, basic_pawn_move_directions>;
 public:
         template<class Set>
         static auto detect(Set const& pawns, Set const& empty) noexcept

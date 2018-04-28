@@ -5,13 +5,14 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/util/meta.hpp>                   // make_array, foldl_bit_or, foldl_comma
-#include <dctl/util/type_traits.hpp>            // set_t
-#include <array>                                // array
-#include <cassert>                              // assert
-#include <cstddef>                              // size_t
-#include <type_traits>                          // bool_constant
-#include <dctl/core/model/stride.hpp>  // find_first, advance, next
+#include <dctl/util/meta.hpp>           // make_array, foldl_bit_or, foldl_comma
+#include <dctl/util/type_traits.hpp>    // set_t
+#include <boost/mp11/list.hpp>          // mp_size
+#include <array>                        // array
+#include <cassert>                      // assert
+#include <cstddef>                      // size_t
+#include <type_traits>                  // bool_constant
+#include <dctl/core/model/stride.hpp>   // find_first, advance, next
 
 namespace dctl::core {
 namespace detail {
@@ -52,7 +53,7 @@ template<class Board, class Directions, bool IsLongRanged, bool IncludesFrom, bo
 class board_scan_sq_dir
 {
         inline const static auto table = []() {
-                auto result = std::array<std::array<set_t<Board>, meta::size<Directions>::value>, Board::bits()>{};
+                auto result = std::array<std::array<set_t<Board>, boost::mp11::mp_size<Directions>::value>, Board::bits()>{};
                 Board::squares.for_each([&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::make_array<Directions>{}([=](auto const dir) {
