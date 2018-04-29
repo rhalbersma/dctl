@@ -76,7 +76,7 @@ class board_scan_dir_sq
 {
         inline const static auto table = []() {
                 return meta::make_array<Directions>{}([](auto const dir) {
-                        using direction_t = decltype(dir); // silence bogus GCC warning unused-but-set-variable
+                        using direction_t = decltype(dir);
                         auto result = std::array<set_t<Board>, Board::bits()>{};
                         Board::squares.for_each([&](auto const sq) {
                                 result[static_cast<std::size_t>(sq)] =

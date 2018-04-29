@@ -35,19 +35,23 @@ public:
         template<class Set>
         static auto detect(Set const& pawns, Set const& empty) noexcept
         {
-                return boost::hana::fold(boost::hana::transform(pawn_move_directions, [&](auto const dir) {
-                        using direction_t = decltype(dir);
-                        return !move_squares<Board, direction_t>{}(pawns, empty).empty();
-                }), boost::hana::or_);
+                return boost::hana::fold(
+                        boost::hana::transform(pawn_move_directions, [&](auto const dir) {
+                                return !move_squares<Board, decltype(dir)>{}(pawns, empty).empty();
+                        }), 
+                        boost::hana::or_
+                );
         }
 
         template<class Set>
         static auto count(Set const& pawns, Set const& empty) noexcept
         {
-                return boost::hana::fold(boost::hana::transform(pawn_move_directions, [&](auto const dir) {
-                        using direction_t = decltype(dir);
-                        return move_squares<Board, direction_t>{}(pawns, empty).count();
-                }), boost::hana::plus);
+                return boost::hana::fold(
+                        boost::hana::transform(pawn_move_directions, [&](auto const dir) {
+                                return move_squares<Board, decltype(dir)>{}(pawns, empty).count();
+                        }), 
+                        boost::hana::plus
+                );
         }
 
         template<class Set, class SequenceContainer>
