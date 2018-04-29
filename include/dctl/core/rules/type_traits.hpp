@@ -220,7 +220,7 @@ constexpr auto dir_SW = 225;
 constexpr auto dir_S  = 270;
 constexpr auto dir_SE = 315;
 
-DCTL_PP_TTI_CONSTANT(basic_pawn_move_directions, boost::hana::to_tuple(boost::hana::tuple_c<int, dir_NE, dir_NW>))
+DCTL_PP_TTI_CONSTANT(pawn_move_directions, boost::hana::to_tuple(boost::hana::tuple_c<int, dir_NE, dir_NW>))
 
 using king_move_directions = boost::mp11::mp_list_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
 

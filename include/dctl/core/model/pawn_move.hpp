@@ -28,7 +28,7 @@ class pawn_move<Rules, Board, color_<Side>, Reverse>
 {
         constexpr static auto orientation = bearing_v<Board, color_<Side>, Reverse>;
 
-        constexpr static auto pawn_move_directions = boost::hana::transform(basic_pawn_move_directions_v<Rules>, [](auto const dir) {
+        constexpr static auto pawn_move_directions = boost::hana::transform(pawn_move_directions_v<Rules>, [](auto const dir) {
                 return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
         });
 public:
