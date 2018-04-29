@@ -10,6 +10,7 @@
 #include <dctl/util/meta.hpp>
 #include <dctl/util/tti.hpp>                    // DCTL_PP_TTI_CONSTANT
 #include <dctl/util/type_traits.hpp>            // rules_t
+#include <boost/hana/tuple.hpp>                 // to_tuple, tuple_c
 #include <boost/mp11/list.hpp>                  // mp_list_c
 #include <tuple>                                // make_tuple
 #include <type_traits>                          // conditional_t, decay_t, is_same_v, false_type, true_type
@@ -194,7 +195,33 @@ constexpr auto notation_v =
 template<int A, int B>
 constexpr auto rotate_v = rotate(angle{A}, angle{B}).value();
 
-using basic_pawn_move_directions = boost::mp11::mp_list_c<int, dir_NE, dir_NW>;
+/*
+
+                up == 90
+                   |
+   135 == left_up  |  right_up == 45
+                 \ | /
+                  \|/
+  180 == left ----- ----- right == 0
+                  /|\
+                 / | \
+ 225 == left_down  |  right_down == 315
+                   |
+              270 == down
+
+*/
+
+constexpr auto dir_E  =   0;
+constexpr auto dir_NE =  45;
+constexpr auto dir_N  =  90;
+constexpr auto dir_NW = 135;
+constexpr auto dir_W  = 180;
+constexpr auto dir_SW = 225;
+constexpr auto dir_S  = 270;
+constexpr auto dir_SE = 315;
+
+DCTL_PP_TTI_CONSTANT(basic_pawn_move_directions, boost::hana::to_tuple(boost::hana::tuple_c<int, dir_NE, dir_NW>))
+
 using king_move_directions = boost::mp11::mp_list_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
 
 template<class Rules>

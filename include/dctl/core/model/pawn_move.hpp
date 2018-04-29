@@ -5,12 +5,17 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/angle.hpp>            // angle, rotate
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/state/color_piece.hpp>      // color, color_
-#include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_plus, foldl_comma
 #include <dctl/core/model/pattern.hpp>          // move_squares
-#include <boost/mp11/algorithm.hpp>             // mp_transform
-#include <boost/mp11/integral.hpp>              // mp_int
+#include <dctl/core/rules/type_traits.hpp>      // basic_pawn_move_directions_v
+#include <dctl/core/state/color_piece.hpp>      // color, color_
+#include <boost/hana/fold.hpp>                  // fold
+#include <boost/hana/for_each.hpp>              // for_each
+#include <boost/hana/integral_constant.hpp>     // int_c
+#include <boost/hana/or.hpp>                    // or_
+#include <boost/hana/plus.hpp>                  // plus
+#include <boost/hana/transform.hpp>             // transform
 
 namespace dctl::core {
 namespace detail {
@@ -23,33 +28,32 @@ class pawn_move<Rules, Board, color_<Side>, Reverse>
 {
         constexpr static auto orientation = bearing_v<Board, color_<Side>, Reverse>;
 
-        template<class Arg>
-        using oriented = boost::mp11::mp_int<rotate_v<Arg::value, orientation>>;
-
-        using pawn_move_directions = boost::mp11::mp_transform<oriented, basic_pawn_move_directions>;
+        constexpr static auto pawn_move_directions = boost::hana::transform(basic_pawn_move_directions_v<Rules>, [](auto const dir) {
+                return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
+        });
 public:
         template<class Set>
         static auto detect(Set const& pawns, Set const& empty) noexcept
         {
-                return meta::foldl_logical_or<pawn_move_directions>{}([&](auto const dir) {
+                return boost::hana::fold(boost::hana::transform(pawn_move_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
                         return !move_squares<Board, direction_t>{}(pawns, empty).empty();
-                });
+                }), boost::hana::or_);
         }
 
         template<class Set>
         static auto count(Set const& pawns, Set const& empty) noexcept
         {
-                return meta::foldl_plus<pawn_move_directions>{}([&](auto const dir) {
+                return boost::hana::fold(boost::hana::transform(pawn_move_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
                         return move_squares<Board, direction_t>{}(pawns, empty).count();
-                });
+                }), boost::hana::plus);
         }
 
         template<class Set, class SequenceContainer>
         static auto generate(Set const& pawns, Set const& empty, SequenceContainer& seq)
         {
-                meta::foldl_comma<pawn_move_directions>{}([&](auto const dir) {
+                boost::hana::for_each(pawn_move_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
                         move_squares<Board, direction_t>{}(pawns, empty).for_each([&](auto const dest_sq) {
                                 seq.emplace_back(prev<Board, direction_t>{}(dest_sq), dest_sq, Board::promotion(Side).contains(dest_sq));

@@ -173,7 +173,6 @@ constexpr auto to_sco(int const sq, Grid const grid)
 template<class FromGrid, class DestGrid>
 constexpr auto transform(int const sq, FromGrid const from, DestGrid const dest, angle const a)
 {
-        // sq.to_sco(from).rotate(a).to_square(dest)
         return to_square(rotate(to_sco(sq, from), a), dest);
 }
 

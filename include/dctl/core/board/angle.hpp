@@ -7,18 +7,11 @@
 
 #include <xstd/cstdlib.hpp>     // euclidean_div
 #include <cassert>              // assert
-#include <type_traits>          // integral_constant, is_pod, is_nothrow_constructible
 
 namespace dctl::core {
 
 class angle
 {
-        constexpr static auto static_assert_type_traits() noexcept
-        {
-                static_assert(std::is_pod_v<angle>);
-                static_assert(std::is_nothrow_constructible_v<angle, int>);
-        }
-
         constexpr auto assert_invariants() const noexcept
         {
                 assert(0 <= m_value); assert(m_value < 360);
@@ -57,14 +50,14 @@ constexpr auto operator==(angle const a, angle const b) noexcept
         return a.value() == b.value();
 }
 
-constexpr auto operator<(angle const a, angle const b) noexcept
-{
-        return a.value() < b.value();
-}
-
 constexpr auto operator!=(angle const a, angle const b) noexcept
 {
         return !(a == b);
+}
+
+constexpr auto operator<(angle const a, angle const b) noexcept
+{
+        return a.value() < b.value();
 }
 
 constexpr auto operator>(angle const a, angle const b) noexcept
@@ -147,34 +140,8 @@ constexpr auto reverse(angle const a) noexcept
 
 constexpr auto mirror(angle const a, angle const b) noexcept
 {
-        // a.rotate(inverse(b)).inverse().rotate(b)
         return rotate(inverse(rotate(a, inverse(b))), b);
 }
-
-/*
-
-                up == 90
-                   |
-   135 == left_up  |  right_up == 45
-                 \ | /
-                  \|/
-  180 == left ----- ----- right == 0
-                  /|\
-                 / | \
- 225 == left_down  |  right_down == 315
-                   |
-              270 == down
-
-*/
-
-constexpr auto dir_E  =   0;
-constexpr auto dir_NE =  45;
-constexpr auto dir_N  =  90;
-constexpr auto dir_NW = 135;
-constexpr auto dir_W  = 180;
-constexpr auto dir_SW = 225;
-constexpr auto dir_S  = 270;
-constexpr auto dir_SE = 315;
 
 constexpr auto is_orthogonal(angle const a) noexcept
 {
