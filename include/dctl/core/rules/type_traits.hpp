@@ -10,8 +10,7 @@
 #include <dctl/util/meta.hpp>
 #include <dctl/util/tti.hpp>                    // DCTL_PP_TTI_CONSTANT
 #include <dctl/util/type_traits.hpp>            // rules_t
-#include <boost/hana/tuple.hpp>                 // to_tuple, tuple_c
-#include <boost/mp11/list.hpp>                  // mp_list_c
+#include <boost/hana/tuple.hpp>                 // tuple_c
 #include <tuple>                                // make_tuple
 #include <type_traits>                          // conditional_t, decay_t, is_same_v, false_type, true_type
 #include <utility>                              // forward
@@ -220,24 +219,24 @@ constexpr auto dir_SW = 225;
 constexpr auto dir_S  = 270;
 constexpr auto dir_SE = 315;
 
-DCTL_PP_TTI_CONSTANT(pawn_move_directions, boost::hana::to_tuple(boost::hana::tuple_c<int, dir_NE, dir_NW>))
+DCTL_PP_TTI_CONSTANT(pawn_move_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
 
-using king_move_directions = boost::mp11::mp_list_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
+using king_move_directions = std::decay_t<decltype(boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>)>;
 
 template<class Rules>
 using basic_pawn_jump_directions = meta::mp_switch<
-        boost::mp11::mp_list_c<bool, is_backward_pawn_jump_v<Rules>, is_orthogonal_jump_v<Rules>>,
-        meta::mp_case<boost::mp11::mp_list_c<bool, true , true >, boost::mp11::mp_list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>>,
-        meta::mp_case<boost::mp11::mp_list_c<bool, false, true >, boost::mp11::mp_list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W                       >>,
-        meta::mp_case<boost::mp11::mp_list_c<bool, true , false>, boost::mp11::mp_list_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>>,
-        meta::mp_case<boost::mp11::mp_list_c<bool, false, false>, boost::mp11::mp_list_c<int,        dir_NE,        dir_NW                              >>
+        std::decay_t<decltype(boost::hana::tuple_c<bool, is_backward_pawn_jump_v<Rules>, is_orthogonal_jump_v<Rules>>)>,
+        meta::mp_case<std::decay_t<decltype(boost::hana::tuple_c<bool, true , true >)>, std::decay_t<decltype(boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>)>>,
+        meta::mp_case<std::decay_t<decltype(boost::hana::tuple_c<bool, false, true >)>, std::decay_t<decltype(boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W                       >)>>,
+        meta::mp_case<std::decay_t<decltype(boost::hana::tuple_c<bool, true , false>)>, std::decay_t<decltype(boost::hana::tuple_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>)>>,
+        meta::mp_case<std::decay_t<decltype(boost::hana::tuple_c<bool, false, false>)>, std::decay_t<decltype(boost::hana::tuple_c<int,        dir_NE,        dir_NW                              >)>>
 >;
 
 template<class Rules>
 using basic_king_jump_directions = std::conditional_t<
         is_orthogonal_jump_v<Rules>,
-        boost::mp11::mp_list_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>,
-        boost::mp11::mp_list_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>
+        std::decay_t<decltype(boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>)>,
+        std::decay_t<decltype(boost::hana::tuple_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>)>
 >;
 
 }       // namespace dctl::core

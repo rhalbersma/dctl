@@ -26,14 +26,15 @@ class pawn_move;
 template<class Rules, class Board, color Side, class Reverse>
 class pawn_move<Rules, Board, color_<Side>, Reverse>
 {
+        using set_type = set_t<Board>;
+
         constexpr static auto orientation = bearing_v<Board, color_<Side>, Reverse>;
 
         constexpr static auto pawn_move_directions = boost::hana::transform(pawn_move_directions_v<Rules>, [](auto const dir) {
                 return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
         });
 public:
-        template<class Set>
-        static auto detect(Set const& pawns, Set const& empty) noexcept
+        static auto detect(set_type const& pawns, set_type const& empty) noexcept
         {
                 return boost::hana::fold(
                         boost::hana::transform(pawn_move_directions, [&](auto const dir) {
@@ -43,8 +44,7 @@ public:
                 );
         }
 
-        template<class Set>
-        static auto count(Set const& pawns, Set const& empty) noexcept
+        static auto count(set_type const& pawns, set_type const& empty) noexcept
         {
                 return boost::hana::fold(
                         boost::hana::transform(pawn_move_directions, [&](auto const dir) {
@@ -54,8 +54,8 @@ public:
                 );
         }
 
-        template<class Set, class SequenceContainer>
-        static auto generate(Set const& pawns, Set const& empty, SequenceContainer& seq)
+        template<class SequenceContainer>
+        static auto generate(set_type const& pawns, set_type const& empty, SequenceContainer& seq)
         {
                 boost::hana::for_each(pawn_move_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
