@@ -5,9 +5,11 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/util/type_traits.hpp>    // board_t, set_t
-#include <tuple>                        // make_tuple
-#include <type_traits>                  // decay_t
+#include <dctl/core/rules/type_traits.hpp>      // dir_...
+#include <dctl/util/type_traits.hpp>            // board_t, set_t
+#include <boost/hana/tuple.hpp>                 // tuple_c
+#include <tuple>                                // make_tuple
+#include <type_traits>                          // decay_t
 
 namespace dctl::core {
 namespace block_adl {
@@ -28,6 +30,8 @@ struct frisian
         constexpr static auto is_quantity_precedence    = true;
         constexpr static auto is_contents_precedence    = true;
         constexpr static auto is_modality_precedence    = true;
+
+        constexpr static auto pawn_jump_directions = boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
 
         constexpr static auto precedence = [](auto const& a) {
                 constexpr auto max_captured_pieces = set_t<board_t<std::decay_t<decltype(a)>>>::capacity();

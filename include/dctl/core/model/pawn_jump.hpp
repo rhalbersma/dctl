@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/state/color_piece.hpp>      // color, color_, pawns_, king_
-#include <dctl/core/rules/type_traits.hpp>      // is_superior_rank_jump_t, is_backward_pawn_jump, is_orthogonal_jump_t, is_promotion_en_passant_t
+#include <dctl/core/rules/type_traits.hpp>      // is_superior_rank_jump_t, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_comma, foldl_bit_or
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
 #include <boost/mp11/algorithm.hpp>             // mp_remove_if_q, mp_transform
@@ -22,6 +22,9 @@
 #include <dctl/core/model/raii.hpp>             // Launch, Capture, Visit, Toggleking_targets, Setpromotion
 #include <dctl/core/model/select/jump.hpp>      // jumps
 
+#include <boost/hana/integral_constant.hpp>     // int_c
+#include <boost/hana/transform.hpp>             // transform
+
 namespace dctl::core {
 namespace detail {
 
@@ -35,22 +38,24 @@ class pawn_jump<color_<Side>, Reverse, State>
         using  board_type = board_t<State>;
         using  rules_type = rules_t<State>;
         using    set_type =   set_t<State>;
+
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
-        template<class Arg>
-        using oriented = boost::mp11::mp_int<rotate_v<Arg::value, orientation>>;
+        constexpr static auto pawn_jump_directions = boost::hana::transform(pawn_jump_directions_v<rules_type>, [](auto const dir) {
+                return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
+        });
 
-        using pawn_jump_directions = boost::mp11::mp_transform<oriented, basic_pawn_jump_directions<rules_type>>;
+        using pawn_jump_directions_t = std::decay_t<decltype(pawn_jump_directions)>;
 
         template<class Arg, class Direction>
         using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;
 
         template<class Direction>
-        using pawn_scan_directions = boost::mp11::mp_remove_if_q<pawn_jump_directions, boost::mp11::mp_bind_back<is_reverse, Direction>>;
+        using pawn_scan_directions_t = boost::mp11::mp_remove_if_q<pawn_jump_directions_t, boost::mp11::mp_bind_back<is_reverse, Direction>>;
 public:
         static auto detect(State const& s) noexcept
         {
-                return meta::foldl_logical_or<pawn_jump_directions>{}([&](auto const dir) {
+                return meta::foldl_logical_or<pawn_jump_directions_t>{}([&](auto const dir) {
                         using direction_t = decltype(dir);
                         return !jump_targets<board_type, direction_t>{}(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
                 });
@@ -60,7 +65,7 @@ public:
         static auto generate(Builder& b)
         {
                 if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
-                meta::foldl_comma<pawn_jump_directions>{}([&](auto const dir) {
+                meta::foldl_comma<pawn_jump_directions_t>{}([&](auto const dir) {
                         using direction_t = decltype(dir);
                         jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c)).for_each([&](auto const from_sq) {
                                 raii::lift<Builder> guard{from_sq, b};
@@ -95,7 +100,7 @@ private:
         template<class Direction, class Builder>
         static auto next_target(int const sq, Builder& b)
         {
-                return meta::foldl_bit_or<pawn_scan_directions<Direction>>{}([&](auto const dir) {
+                return meta::foldl_bit_or<pawn_scan_directions_t<Direction>>{}([&](auto const dir) {
                         using direction_t = decltype(dir);
                         if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
                         capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
