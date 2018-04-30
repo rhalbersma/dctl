@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/meta.hpp>           // make_array, foldl_bit_or, foldl_comma
 #include <dctl/util/type_traits.hpp>    // set_t
 #include <boost/mp11/list.hpp>          // mp_size
@@ -93,14 +94,17 @@ public:
         }
 };
 
-template<class Rules, class Board>
-using basic_king_slide = detail::board_scan_sq_dir<Board, basic_king_jump_directions<Rules>, is_long_ranged_king_v<Rules>, false, true>;
+template<class Rules>
+using king_jump_directions_t = std::decay_t<decltype(king_jump_directions_v<Rules>)>;
 
 template<class Rules, class Board>
-using basic_king_jumps = detail::board_scan_sq_dir<Board, basic_king_jump_directions<Rules>, is_long_ranged_king_v<Rules>, false, false>;
+using basic_king_slide = detail::board_scan_sq_dir<Board, king_jump_directions_t<Rules>, is_long_ranged_king_v<Rules>, false, true>;
 
 template<class Rules, class Board>
-using basic_blocker_and_beyond = detail::board_scan_dir_sq<Board, basic_king_jump_directions<Rules>, true, true, true>;
+using basic_king_jumps = detail::board_scan_sq_dir<Board, king_jump_directions_t<Rules>, is_long_ranged_king_v<Rules>, false, false>;
+
+template<class Rules, class Board>
+using basic_blocker_and_beyond = detail::board_scan_dir_sq<Board, king_jump_directions_t<Rules>, true, true, true>;
 
 template<class Direction>
 constexpr auto move_index = (Direction::value - 45) / 90;

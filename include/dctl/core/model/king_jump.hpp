@@ -35,12 +35,14 @@ class king_jump<color_<Side>, Reverse, State>
         using rules_type = rules_t<State>;
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
+
         constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
 
-        template<class Arg>
-        using oriented = boost::mp11::mp_int<rotate_v<Arg::value, orientation>>;
+        constexpr static auto king_jump_directions = boost::hana::transform(king_jump_directions_v<rules_type>, [](auto const dir) {
+                return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
+        });
 
-        using king_jump_directions = boost::mp11::mp_transform<oriented, basic_king_jump_directions<rules_type>>;
+        using king_jump_directions_t = std::decay_t<decltype(king_jump_directions)>;
 
         template<class Arg, class Direction>
         using is_forward = std::bool_constant<Arg::value == Direction::value>;
@@ -52,17 +54,17 @@ class king_jump<color_<Side>, Reverse, State>
         using is_forward_or_reverse = std::disjunction<is_forward<Arg, Direction>, is_reverse<Arg, Direction>>;
 
         template<class Direction>
-        using king_scan_directions = boost::mp11::mp_remove_if_q<king_jump_directions, boost::mp11::mp_bind_back<is_reverse, Direction>>;
+        using king_scan_directions_t = boost::mp11::mp_remove_if_q<king_jump_directions_t, boost::mp11::mp_bind_back<is_reverse, Direction>>;
 
         template<class Direction>
-        using king_turn_directions = boost::mp11::mp_remove_if_q<king_jump_directions, boost::mp11::mp_bind_back<is_forward_or_reverse, Direction>>;
+        using king_turn_directions_t = boost::mp11::mp_remove_if_q<king_jump_directions_t, boost::mp11::mp_bind_back<is_forward_or_reverse, Direction>>;
 
         constexpr static auto GCC7_ICE_WORK_AROUND = is_long_ranged_king_v<rules_type>;
 public:
         static auto detect(State const& s) noexcept
         {
                 return s.pieces(color_c<Side>, kings_c).any_of([&](auto from_sq) {
-                        return meta::foldl_logical_or<king_jump_directions>{}([&](auto const dir) {
+                        return meta::foldl_logical_or<king_jump_directions_t>{}([&](auto const dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
                                         auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, s.pieces(empty_c));
@@ -82,7 +84,7 @@ public:
                 raii::set_king_jump<Builder> g1{b};
                 b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
                         raii::lift<Builder> guard{from_sq, b};
-                        meta::foldl_comma<king_jump_directions>{}([&](auto const dir) {
+                        meta::foldl_comma<king_jump_directions_t>{}([&](auto const dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
                                         auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, b.pieces(empty_c));
@@ -104,7 +106,7 @@ public:
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(b.with() == piece::pawns);
                 b.into(piece::kings);
-                return scan<king_turn_directions<Direction>>(sq, b);
+                return scan<king_turn_directions_t<Direction>>(sq, b);
         }
 private:
         template<class Direction, class Builder>
@@ -143,14 +145,14 @@ private:
         static auto next_target(int sq, int n [[maybe_unused]], Builder& b)
         {
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
-                        return scan<king_jump_directions>(sq, b);
+                        return scan<king_jump_directions_t>(sq, b);
                 } else if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return scan<king_scan_directions<Direction>>(sq, b);
+                        return scan<king_scan_directions_t<Direction>>(sq, b);
                 } else {
-                        auto found_next = scan<king_scan_directions<Direction>>(sq, b);
+                        auto found_next = scan<king_scan_directions_t<Direction>>(sq, b);
                         while (--n) {
                                 advance<board_type, Direction>{}(sq);
-                                found_next |= scan<king_turn_directions<Direction>>(sq, b);
+                                found_next |= scan<king_turn_directions_t<Direction>>(sq, b);
                         }
                         return found_next;
                 }

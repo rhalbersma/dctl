@@ -13,9 +13,8 @@
 #include <boost/hana/fold.hpp>                  // fold
 #include <boost/hana/for_each.hpp>              // for_each
 #include <boost/hana/integral_constant.hpp>     // int_c
-#include <boost/hana/or.hpp>                    // or_
-#include <boost/hana/plus.hpp>                  // plus
 #include <boost/hana/transform.hpp>             // transform
+#include <functional>                           // logical_or, plus
 
 namespace dctl::core {
 namespace detail {
@@ -40,7 +39,7 @@ public:
                         boost::hana::transform(pawn_move_directions, [&](auto const dir) {
                                 return !move_squares<Board, decltype(dir)>{}(pawns, empty).empty();
                         }), 
-                        boost::hana::or_
+                        std::logical_or<>{}
                 );
         }
 
@@ -50,7 +49,7 @@ public:
                         boost::hana::transform(pawn_move_directions, [&](auto const dir) {
                                 return move_squares<Board, decltype(dir)>{}(pawns, empty).count();
                         }), 
-                        boost::hana::plus
+                        std::plus<>{}
                 );
         }
 

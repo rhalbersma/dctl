@@ -32,6 +32,7 @@ struct frisian
         constexpr static auto is_modality_precedence    = true;
 
         constexpr static auto pawn_jump_directions = boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
+        constexpr static auto king_jump_directions = boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
 
         constexpr static auto precedence = [](auto const& a) {
                 constexpr auto max_captured_pieces = set_t<board_t<std::decay_t<decltype(a)>>>::capacity();

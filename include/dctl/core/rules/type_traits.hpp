@@ -220,14 +220,7 @@ constexpr auto dir_SE = 315;
 
 DCTL_PP_TTI_CONSTANT(pawn_move_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
 DCTL_PP_TTI_CONSTANT(pawn_jump_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
-
-using king_move_directions = std::decay_t<decltype(boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>)>;
-
-template<class Rules>
-using basic_king_jump_directions = std::conditional_t<
-        is_orthogonal_jump_v<Rules>,
-        std::decay_t<decltype(boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>)>,
-        std::decay_t<decltype(boost::hana::tuple_c<int,        dir_NE,        dir_NW,        dir_SW,        dir_SE>)>
->;
+DCTL_PP_TTI_CONSTANT(king_move_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
+DCTL_PP_TTI_CONSTANT(king_jump_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
 
 }       // namespace dctl::core
