@@ -6,22 +6,23 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/bearing.hpp>          // bearing
+#include <dctl/core/model/builder.hpp>          // builder
+#include <dctl/core/model/pattern.hpp>          // jump_targets
+#include <dctl/core/model/raii.hpp>             // capture, lift, set_king_jump
+#include <dctl/core/model/tables.hpp>           // king_jumps, king_moves
+#include <dctl/core/model/select/jump.hpp>      // jump
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
 #include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_comma, foldl_bit_or
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
+#include <boost/hana/fold.hpp>                  // fold
+#include <boost/hana/for_each.hpp>              // for_each
 #include <boost/mp11/algorithm.hpp>             // mp_remove_if_q, mp_transform
 #include <boost/mp11/bind.hpp>                  // mp_bind_back
-#include <boost/mp11/integral.hpp>              // mp_int
 #include <cassert>                              // assert
-#include <iterator>                             // prev
+#include <functional>                           // logical_or
 #include <type_traits>                          // bool_constant
-#include <dctl/core/model/builder.hpp>          // builder
-#include <dctl/core/model/pattern.hpp>          // jump_targets
-#include <dctl/core/model/raii.hpp>             // Launch, Capture, Visit, set_king_jump
-#include <dctl/core/model/tables.hpp>           // king_jumps, king_moves
-#include <dctl/core/model/select/jump.hpp>      // jump
 
 namespace dctl::core {
 namespace detail {
@@ -36,11 +37,7 @@ class king_jump<color_<Side>, Reverse, State>
         using board_type = board_t<State>;
         using   set_type =   set_t<State>;
 
-        constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
-
-        constexpr static auto king_jump_directions = boost::hana::transform(king_jump_directions_v<rules_type>, [](auto const dir) {
-                return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
-        });
+        constexpr static auto king_jump_directions = king_jump_directions_v<rules_type>;
 
         using king_jump_directions_t = std::decay_t<decltype(king_jump_directions)>;
 
@@ -64,17 +61,20 @@ public:
         static auto detect(State const& s) noexcept
         {
                 return s.pieces(color_c<Side>, kings_c).any_of([&](auto from_sq) {
-                        return meta::foldl_logical_or<king_jump_directions_t>{}([&](auto const dir) {
-                                using direction_t = decltype(dir);
-                                if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, s.pieces(empty_c));
-                                        if (blockers.empty()) { return false; }
-                                        auto const first = find_first<direction_t>(blockers);
-                                        return jump_targets<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
-                                } else {
-                                        return jump_sources<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
-                                }
-                        });
+                        return boost::hana::fold(
+                                boost::hana::transform(king_jump_directions, [&](auto const dir) {
+                                        using direction_t = decltype(dir);
+                                        if constexpr (is_long_ranged_king_v<rules_type>) {
+                                                auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, s.pieces(empty_c));
+                                                if (blockers.empty()) { return false; }
+                                                auto const first = find_first<direction_t>(blockers);
+                                                return jump_targets<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
+                                        } else {
+                                                return jump_sources<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
+                                        }
+                                }),
+                                std::logical_or{}
+                        );
                 });
         }
 
@@ -84,7 +84,7 @@ public:
                 raii::set_king_jump<Builder> g1{b};
                 b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
                         raii::lift<Builder> guard{from_sq, b};
-                        meta::foldl_comma<king_jump_directions_t>{}([&](auto const dir) {
+                        boost::hana::for_each(king_jump_directions, [&](auto const dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
                                         auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, b.pieces(empty_c));

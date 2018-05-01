@@ -5,11 +5,12 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/angle.hpp>            // angle, deg
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/model/builder.hpp>          // builder
 #include <dctl/core/model/king_jump.hpp>        // promote_en_passant
 #include <dctl/core/model/pattern.hpp>          // jump_targets
-#include <dctl/core/model/raii.hpp>             // Launch, Capture, Visit, Toggleking_targets, Setpromotion
+#include <dctl/core/model/raii.hpp>             // capture, lift
 #include <dctl/core/model/select/jump.hpp>      // jumps
 #include <dctl/core/state/color_piece.hpp>      // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_superior_rank_jump_t, is_orthogonal_jump_t, is_promotion_en_passant_t

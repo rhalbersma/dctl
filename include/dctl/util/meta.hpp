@@ -11,45 +11,6 @@ namespace dctl::core {
 namespace meta {
 
 template<class L>
-struct foldl_logical_or;
-
-template<template<class...> class L, class... T>
-struct foldl_logical_or<L<T...>>
-{
-        template<class UnaryFunction>
-        constexpr auto operator()(UnaryFunction fun) const
-        {
-                return (... || fun(T{}));
-        }
-};
-
-template<class L>
-struct foldl_plus;
-
-template<template<class...> class L, class... T>
-struct foldl_plus<L<T...>>
-{
-        template<class UnaryFunction>
-        constexpr auto operator()(UnaryFunction fun) const
-        {
-                return (... + fun(T{}));
-        }
-};
-
-template<class L>
-struct foldl_comma;
-
-template<template<class...> class L, class... T>
-struct foldl_comma<L<T...>>
-{
-        template<class UnaryFunction>
-        constexpr auto operator()(UnaryFunction fun) const
-        {
-                (... , fun(T{}));
-        }
-};
-
-template<class L>
 struct foldl_bit_or;
 
 template<template<class...> class L, class... T>
