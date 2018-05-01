@@ -6,24 +6,25 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/state/color_piece.hpp>      // color, color_, pawns_, king_
-#include <dctl/core/rules/type_traits.hpp>      // is_superior_rank_jump_t, is_orthogonal_jump_t, is_promotion_en_passant_t
-#include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_comma, foldl_bit_or
-#include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
-#include <boost/mp11/algorithm.hpp>             // mp_remove_if_q, mp_transform
-#include <boost/mp11/bind.hpp>                  // mp_bind_back
-#include <boost/mp11/integral.hpp>              // mp_int
-#include <cassert>                              // assert
-#include <iterator>                             // next
-#include <type_traits>                          // bool_constant
 #include <dctl/core/model/builder.hpp>          // builder
 #include <dctl/core/model/king_jump.hpp>        // promote_en_passant
 #include <dctl/core/model/pattern.hpp>          // jump_targets
 #include <dctl/core/model/raii.hpp>             // Launch, Capture, Visit, Toggleking_targets, Setpromotion
 #include <dctl/core/model/select/jump.hpp>      // jumps
-
+#include <dctl/core/state/color_piece.hpp>      // color, color_, pawns_, king_
+#include <dctl/core/rules/type_traits.hpp>      // is_superior_rank_jump_t, is_orthogonal_jump_t, is_promotion_en_passant_t
+#include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
+#include <boost/hana/equal.hpp>                 // ==
+#include <boost/hana/fold.hpp>                  // fold
+#include <boost/hana/for_each.hpp>              // for_each
 #include <boost/hana/integral_constant.hpp>     // int_c
+#include <boost/hana/remove_if.hpp>             // remove_if
 #include <boost/hana/transform.hpp>             // transform
+#include <boost/hana/type.hpp>                  // decltype_
+#include <cassert>                              // assert
+#include <functional>                           // bit_or, logical_or
+#include <iterator>                             // next
+#include <type_traits>                          // bool_constant
 
 namespace dctl::core {
 namespace detail {
@@ -44,28 +45,23 @@ class pawn_jump<color_<Side>, Reverse, State>
         constexpr static auto pawn_jump_directions = boost::hana::transform(pawn_jump_directions_v<rules_type>, [](auto const dir) {
                 return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
         });
-
-        using pawn_jump_directions_t = std::decay_t<decltype(pawn_jump_directions)>;
-
-        template<class Arg, class Direction>
-        using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;
-
-        template<class Direction>
-        using pawn_scan_directions_t = boost::mp11::mp_remove_if_q<pawn_jump_directions_t, boost::mp11::mp_bind_back<is_reverse, Direction>>;
 public:
         static auto detect(State const& s) noexcept
         {
-                return meta::foldl_logical_or<pawn_jump_directions_t>{}([&](auto const dir) {
-                        using direction_t = decltype(dir);
-                        return !jump_targets<board_type, direction_t>{}(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
-                });
+                return boost::hana::fold(
+                        boost::hana::transform(pawn_jump_directions, [&](auto const dir) {
+                                using direction_t = decltype(dir);
+                                return !jump_targets<board_type, direction_t>{}(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
+                        }),
+                        std::logical_or{}
+                );
         }
 
         template<class Builder>
         static auto generate(Builder& b)
         {
                 if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
-                meta::foldl_comma<pawn_jump_directions_t>{}([&](auto const dir) {
+                boost::hana::for_each(pawn_jump_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
                         jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c)).for_each([&](auto const from_sq) {
                                 raii::lift<Builder> guard{from_sq, b};
@@ -100,12 +96,19 @@ private:
         template<class Direction, class Builder>
         static auto next_target(int const sq, Builder& b)
         {
-                return meta::foldl_bit_or<pawn_scan_directions_t<Direction>>{}([&](auto const dir) {
-                        using direction_t = decltype(dir);
-                        if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
-                        capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
-                        return true;
-                });
+                constexpr static auto is_reverse = [](auto const arg) {
+                        return boost::hana::decltype_(arg) == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
+                };
+ 
+                return boost::hana::fold(
+                        boost::hana::transform(boost::hana::remove_if(pawn_jump_directions, is_reverse), [&](auto const dir) {
+                                using direction_t = decltype(dir);
+                                if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                                capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
+                                return true;
+                        }),
+                        std::bit_or{}
+                );
         }
 };
 
