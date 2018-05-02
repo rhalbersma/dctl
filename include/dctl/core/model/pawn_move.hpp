@@ -39,7 +39,7 @@ public:
                         boost::hana::transform(pawn_move_directions, [&](auto const dir) {
                                 return !move_squares<Board, decltype(dir)>{}(pawns, empty).empty();
                         }), 
-                        std::logical_or<>{}
+                        std::logical_or{}
                 );
         }
 
@@ -49,7 +49,7 @@ public:
                         boost::hana::transform(pawn_move_directions, [&](auto const dir) {
                                 return move_squares<Board, decltype(dir)>{}(pawns, empty).count();
                         }), 
-                        std::plus<>{}
+                        std::plus{}
                 );
         }
 

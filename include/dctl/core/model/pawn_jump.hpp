@@ -51,8 +51,7 @@ public:
         {
                 return boost::hana::fold(
                         boost::hana::transform(pawn_jump_directions, [&](auto const dir) {
-                                using direction_t = decltype(dir);
-                                return !jump_targets<board_type, direction_t>{}(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
+                                return !jump_targets<board_type, decltype(dir)>{}(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
                         }),
                         std::logical_or{}
                 );
@@ -65,7 +64,7 @@ public:
                 boost::hana::for_each(pawn_jump_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
                         jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c)).for_each([&](auto const from_sq) {
-                                raii::lift<Builder> guard{from_sq, b};
+                                raii::lift guard{from_sq, b};
                                 capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                         });
                 });
@@ -76,7 +75,7 @@ private:
         static auto capture(int const sq, Builder& b)
                 -> void
         {
-                raii::capture<Builder> guard{prev<board_type, Direction>{}(sq), b};
+                raii::capture guard{prev<board_type, Direction>{}(sq), b};
                 if constexpr (is_passing_promotion_v<rules_type>) {
                         if (board_type::promotion(Side).contains(sq)) {
                                 if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }

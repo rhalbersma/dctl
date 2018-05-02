@@ -81,9 +81,9 @@ public:
         template<class Builder>
         static auto generate(Builder& b)
         {
-                raii::set_king_jump<Builder> g1{b};
+                raii::set_king_jump g1{b};
                 b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
-                        raii::lift<Builder> guard{from_sq, b};
+                        raii::lift guard{from_sq, b};
                         boost::hana::for_each(king_jump_directions, [&](auto const dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
@@ -113,7 +113,7 @@ private:
         static auto capture(int const sq, Builder& b)
                 -> void
         {
-                raii::capture<Builder> guard{prev<board_type, Direction>{}(sq), b};
+                raii::capture guard{prev<board_type, Direction>{}(sq), b};
                 auto const n [[maybe_unused]] = king_slide<rules_type, board_type, Direction>(prev<board_type, Direction>{}(sq), b.pieces(empty_c)).count();
                 if (!next_target<Direction>(sq, n, b)) {
                         if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
