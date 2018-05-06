@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/model/stride.hpp>           // find_first, advance, next
+#include <dctl/core/model/detail/stride.hpp>    // find_first, advance, next
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/meta.hpp>                   // make_array, foldl_bit_or, foldl_comma
 #include <dctl/util/type_traits.hpp>            // set_t
@@ -15,7 +15,7 @@
 #include <cstddef>                              // size_t
 #include <type_traits>                          // bool_constant
 
-namespace dctl::core {
+namespace dctl::core::model {
 namespace detail {
 
 template<class Board, class Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
@@ -98,13 +98,13 @@ template<class Rules>
 using king_jump_directions_t = std::decay_t<decltype(king_jump_directions_v<Rules>)>;
 
 template<class Rules, class Board>
-using basic_king_slide = detail::board_scan_sq_dir<Board, king_jump_directions_t<Rules>, is_long_ranged_king_v<Rules>, false, true>;
+using basic_king_slide = board_scan_sq_dir<Board, king_jump_directions_t<Rules>, is_long_ranged_king_v<Rules>, false, true>;
 
 template<class Rules, class Board>
-using basic_king_jumps = detail::board_scan_sq_dir<Board, king_jump_directions_t<Rules>, is_long_ranged_king_v<Rules>, false, false>;
+using basic_king_jump = board_scan_sq_dir<Board, king_jump_directions_t<Rules>, is_long_ranged_king_v<Rules>, false, false>;
 
 template<class Rules, class Board>
-using basic_blocker_and_beyond = detail::board_scan_dir_sq<Board, king_jump_directions_t<Rules>, true, true, true>;
+using basic_blocker_and_beyond = board_scan_dir_sq<Board, king_jump_directions_t<Rules>, true, true, true>;
 
 template<class Direction>
 constexpr auto move_index = (Direction::value - 45) / 90;
@@ -115,14 +115,14 @@ constexpr auto jump_index = is_orthogonal_jump_v<Rules> ? Direction::value / 45 
 template<class Rules, class Board, class Direction>
 auto king_slide(int const sq)
 {
-        return detail::basic_king_slide<Rules, Board>{}(sq, jump_index<Rules, Direction>);
+        return basic_king_slide<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
 template<class Rules, class Board, class Direction>
 auto blocker_and_beyond(int const sq)
 {
         static_assert(is_long_ranged_king_v<Rules>);
-        return detail::basic_blocker_and_beyond<Rules, Board>{}(sq, jump_index<Rules, Direction>);
+        return basic_blocker_and_beyond<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
 template<class Rules, class Board, class Direction>
@@ -141,10 +141,10 @@ auto king_slide(int const sq, set_t<Board> const& empty)
 }
 
 template<class Rules, class Board, class Direction>
-auto king_jumps(int const sq, set_t<Board> const& empty)
+auto king_jump(int const sq, set_t<Board> const& empty)
 {
-        return detail::basic_king_jumps<Rules, Board>{}(sq, jump_index<Rules, Direction>) - empty;
+        return basic_king_jump<Rules, Board>{}(sq, jump_index<Rules, Direction>) - empty;
 }
 
 }       // namespace detail
-}       // namespace dctl::core
+}       // namespace dctl::core::model

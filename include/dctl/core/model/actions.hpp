@@ -6,21 +6,21 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/model/container.hpp>
+#include <dctl/core/model/detail/jumps.hpp>     // jumps
+#include <dctl/core/model/detail/moves.hpp>     // moves
 #include <dctl/core/rules/type_traits.hpp>
-#include <dctl/core/state/color_piece.hpp>              // black, white
-#include <dctl/util/type_traits.hpp>                    // value_t
-#include <cassert>                                      // assert
-#include <type_traits>                                  // bool_constant, is_same_v
-#include <dctl/core/model/specializations.hpp> // generate
-#include <dctl/core/model/select/legal.hpp>           // legal
+#include <dctl/core/state/color_piece.hpp>      // black, white
+#include <dctl/util/type_traits.hpp>            // value_t
+#include <cassert>                              // assert
+#include <type_traits>                          // false_type, is_same_v
 
-namespace dctl::core {
+namespace dctl::core::model {
 
-template<class Select = select::legal, class DuplicatesPolicy = drop_duplicates_tag, bool Reverse = false>
+template<class DuplicatesPolicy = drop_duplicates_tag, class ReverseGenerator = std::false_type>
 class actions
 {
-        template<class Color>
-        using impl = detail::actions<Color, Select, DuplicatesPolicy, std::bool_constant<Reverse>>;
+        template<class Color> using jumps = detail::jumps<Color, DuplicatesPolicy>;
+        template<class Color> using moves = detail::moves<Color, ReverseGenerator>;
 
         template<class Color, class State, class SequenceContainer>
         auto assert_invariants(State const& s [[maybe_unused]], SequenceContainer const& seq [[maybe_unused]]) const noexcept
@@ -40,7 +40,7 @@ public:
         template<class Color, class State>
         auto detect(State const& s) const
         {
-                return impl<Color>::detect(s);
+                return moves<Color>::detect(s) || jumps<Color>::detect(s);
         }
 
         template<class State>
@@ -52,10 +52,14 @@ public:
         template<class Color, class State>
         auto count(State const& s) const
         {
-                return impl<Color>::count(s);
+                if (auto const num_jumps = jumps<Color>::count(s); num_jumps != 0) {
+                        return num_jumps;
+                } else {
+                        return moves<Color>::count(s);
+                }
         }
 
-        template<class State, class SequenceContainer = detail::default_container<basic_action<rules_t<State>, board_t<State>>>>
+        template<class State, class SequenceContainer = default_container<basic_action<rules_t<State>, board_t<State>>>>
         auto generate(State const& s) const
         {
                 SequenceContainer seq;
@@ -63,7 +67,7 @@ public:
                 return seq;
         }
 
-        template<class Color, class State, class SequenceContainer = detail::default_container<basic_action<rules_t<State>, board_t<State>>>>
+        template<class Color, class State, class SequenceContainer = default_container<basic_action<rules_t<State>, board_t<State>>>>
         auto generate(State const& s) const
         {
                 SequenceContainer seq;
@@ -83,12 +87,14 @@ public:
                 using action_type = value_t<SequenceContainer>;
                 static_assert(std::is_same_v<rules_t<State>, rules_t<action_type>>);
                 static_assert(std::is_same_v<board_t<State>, board_t<action_type>>);
-                impl<Color>::generate(s, seq);
+                if (jumps<Color>::generate(s, seq); seq.empty()) {
+                        moves<Color>::generate(s, seq);
+                }
                 assert_invariants<Color>(s, seq);
         }
 };
 
-constexpr auto keep_duplicates_gen = actions<select::legal, keep_duplicates_tag>{};
-constexpr auto drop_duplicates_gen = actions<select::legal, drop_duplicates_tag>{};
+constexpr auto keep_duplicates_gen = actions<keep_duplicates_tag>{};
+constexpr auto drop_duplicates_gen = actions<drop_duplicates_tag>{};
 
-}       // namespace dctl::core
+}       // namespace dctl::core::model

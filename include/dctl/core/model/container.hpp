@@ -9,11 +9,9 @@
 #include <boost/container/static_vector.hpp>
 #include <vector>
 
-namespace dctl::core {
-namespace detail {
+namespace dctl::core::model {
 
 template<class Action>
 using default_container = boost::container::static_vector<Action, 128>;
 
-}       // namespace detail
-}       // namespace dctl::core
+}       // namespace dctl::core::model

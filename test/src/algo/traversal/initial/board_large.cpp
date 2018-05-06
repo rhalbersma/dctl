@@ -24,12 +24,12 @@ BOOST_AUTO_TEST_CASE(Board12x12)
 
         {
                 auto const s = basic_state<canadian, basic_board<rectangular<12, 12>>>::initial();
-                traversal::test(drop_duplicates_gen, s, leafs);
+                traversal::test(model::drop_duplicates_gen, s, leafs);
         }
 
         {
                 auto const s = basic_state<srilankan, basic_board<rectangular<12, 12, false>>>::initial();
-                traversal::test(drop_duplicates_gen, s, leafs);
+                traversal::test(model::drop_duplicates_gen, s, leafs);
         }
 }
 
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(Board14x14)
         auto const s = basic_state<international, basic_board<rectangular<14, 14>>>::initial();
         auto const leafs = std::vector<int64_t>{ 13, 169, 2'042, 20'513, 195'333, 1'710'812, 15'007'858, 127'249'292, 1'093'968'733 };
 
-        traversal::test(drop_duplicates_gen, s, leafs);
+        traversal::test(model::drop_duplicates_gen, s, leafs);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

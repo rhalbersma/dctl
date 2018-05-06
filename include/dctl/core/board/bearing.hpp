@@ -7,10 +7,11 @@
 
 #include <dctl/core/board/angle.hpp>            // _deg, rotate
 #include <dctl/core/state/color_piece.hpp>      // white
+#include <type_traits>                          // false_type
 
 namespace dctl::core {
 
-template<class Board, class Color, class Reverse>
+template<class Board, class Color, class Reverse = std::false_type>
 constexpr auto bearing_v = rotate(Board::orientation, ((Color{} == white_c) ^ Reverse{}) ? 0_deg : 180_deg).value();
 
 }       // namespace dctl::core

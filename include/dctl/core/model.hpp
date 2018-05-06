@@ -6,4 +6,3 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/model/actions.hpp>
-#include <dctl/core/model/select/legal.hpp>

@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(SearchInitialInternational)
 BOOST_FIXTURE_TEST_CASE(I, F)
 {
         auto const s = basic_state<rules_t<F>, board_t<F>>::initial();
-        root_.analyze(drop_duplicates_gen, s, 71);
+        root_.analyze(model::drop_duplicates_gen, s, 71);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

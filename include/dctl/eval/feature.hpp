@@ -88,7 +88,7 @@ public:
         {
                 using rules_type = core::rules_t<State>;
                 using board_type = core::board_t<State>;
-                return Weight<rules_type, board_type>::mobility * static_cast<int>(core::actions<core::select::move>{}.template count<Color>(s));
+                return Weight<rules_type, board_type>::mobility * static_cast<int>(core::model::actions{}.template count<Color>(s));
         }
 };
 

@@ -44,7 +44,7 @@ public:
                 for (auto const& t : tests) {
                         root_.clear_hash();
                         auto const position = core::pdn::read<rules_type, board_type>{}(t.first);
-                        auto const value = root_.analyze(core::drop_duplicates_gen, position, t.second);
+                        auto const value = root_.analyze(core::model::drop_duplicates_gen, position, t.second);
                         BOOST_WARN_EQUAL(win_value(t.second), value);
                 }
         }

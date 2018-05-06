@@ -31,7 +31,7 @@ int main()
                 std::cout << fen << state;
                 //std::cout << "[" << p.reversible_actions() << "]\n";
 
-                auto actions = drop_duplicates_gen.generate(state);
+                auto actions = model::drop_duplicates_gen.generate(state);
                 std::sort(actions.begin(), actions.end(), [](auto const& lhs, auto const& rhs) {
                         return str_numeric(lhs) < str_numeric(rhs);
                 });

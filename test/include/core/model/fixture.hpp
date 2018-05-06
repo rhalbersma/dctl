@@ -5,9 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board.hpp>
 #include <dctl/core/action.hpp>
-#include <dctl/core/model.hpp>                // generate
+#include <dctl/core/board.hpp>
+#include <dctl/core/model.hpp>                  // generate
 #include <dctl/core/state.hpp>
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK, BOOST_CHECK_EQUAL
@@ -26,7 +26,7 @@ struct Fixture
         {
                 auto const s = pdn::read<Rules, Board>{}(fen);
                 std::vector<basic_action<Rules, Board>> moves;
-                actions<>{}.generate(s, moves);
+                model::actions{}.generate(s, moves);
 
                 BOOST_CHECK_EQUAL(moves.size(), rng.size());
 

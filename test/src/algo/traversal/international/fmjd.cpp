@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(Random178)
         );
         auto const leafs = std::vector<int64_t>
                 { 14, 55, 1'168, 5'432, 87'195, 629'010, 9'041'010, 86'724'219, 1'216'917'193 };
-        traversal::test(drop_duplicates_gen, s, leafs);
+        traversal::test(model::drop_duplicates_gen, s, leafs);
 }
 
 // The "Perft" thread on the FMJD forum (results until depth=15)
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(Woldouby)
         );
         auto const leafs = std::vector<int64_t>
                 { 6, 12, 30, 73, 215, 590, 1'944, 6'269, 22'369, 88'050, 377'436, 1'910'989, 9'872'645, 58'360'286, 346'184'885 };
-        traversal::test(drop_duplicates_gen, s, leafs);
+        traversal::test(model::drop_duplicates_gen, s, leafs);
 }
 
 // The "Perft" thread on the FMJD forum (results until depth=11)
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(AllKings)
         );
         auto const leafs = std::vector<int64_t>
                 { 17, 79, 352, 1'399, 7'062, 37'589, 217'575, 1'333'217, 8'558'321, 58'381'162, 417'920'283 };
-        traversal::test(drop_duplicates_gen, s, leafs);
+        traversal::test(model::drop_duplicates_gen, s, leafs);
 }
 
 // The "Perft" thread on the FMJD forum (results until depth=9)
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(AlmostPromotion)
         );
         auto const leafs = std::vector<int64_t>
                 { 9, 81, 795, 7'578, 86'351, 936'311, 11'448'262, 138'362'698, 1'799'526'674 };
-        traversal::test(drop_duplicates_gen, s, leafs);
+        traversal::test(model::drop_duplicates_gen, s, leafs);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

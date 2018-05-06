@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(Position1)
                   212'130'912,
                 1'021'757'399
         };
-        traversal::test(keep_duplicates_gen, s, leafs);
+        traversal::test(model::keep_duplicates_gen, s, leafs);
 }
 
 BOOST_AUTO_TEST_CASE(Position2)
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(Position2)
                   396'940'628,
                 2'365'222'285
         };
-        traversal::test(keep_duplicates_gen, s, leafs);
+        traversal::test(model::keep_duplicates_gen, s, leafs);
 }
 
 BOOST_AUTO_TEST_CASE(Position3)
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(Position3)
                 1'056'217'651,
                 6'894'949'061
         };
-        traversal::test(keep_duplicates_gen, s, leafs);
+        traversal::test(model::keep_duplicates_gen, s, leafs);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

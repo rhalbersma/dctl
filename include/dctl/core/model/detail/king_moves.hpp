@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/model/stride.hpp>           // find_first
-#include <dctl/core/model/tables.hpp>           // board_scan_sq_dir, board_scan_dir_sq, move_index
+#include <dctl/core/model/detail/stride.hpp>    // find_first
+#include <dctl/core/model/detail/tables.hpp>    // board_scan_sq_dir, board_scan_dir_sq, move_index
 #include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_v, king_move_directions
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/hana/fold.hpp>                  // fold
@@ -15,11 +15,11 @@
 #include <cstddef>                              // size_t
 #include <functional>                           // bit_or
 
-namespace dctl::core {
+namespace dctl::core::model {
 namespace detail {
 
 template<class Rules, class Board>
-class king_move
+class king_moves
 {
         using set_type = set_t<Board>;
 
@@ -107,4 +107,4 @@ public:
 };
 
 }       // namespace detail
-}       // namespace dctl::core
+}       // namespace dctl::core::model

@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>            // angle, rotate
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/model/pattern.hpp>          // move_squares
+#include <dctl/core/model/detail/pattern.hpp>   // move_squares
 #include <dctl/core/rules/type_traits.hpp>      // pawn_move_directions_v
 #include <dctl/core/state/color_piece.hpp>      // color, color_
 #include <boost/hana/fold.hpp>                  // fold
@@ -16,18 +16,18 @@
 #include <boost/hana/transform.hpp>             // transform
 #include <functional>                           // logical_or, plus
 
-namespace dctl::core {
+namespace dctl::core::model {
 namespace detail {
 
 template<class...>
-class pawn_move;
+class pawn_moves;
 
-template<class Rules, class Board, color Side, class Reverse>
-class pawn_move<Rules, Board, color_<Side>, Reverse>
+template<class Rules, class Board, color Side, class ReverseGenerator>
+class pawn_moves<Rules, Board, color_<Side>, ReverseGenerator>
 {
         using set_type = set_t<Board>;
 
-        constexpr static auto orientation = bearing_v<Board, color_<Side>, Reverse>;
+        constexpr static auto orientation = bearing_v<Board, color_<Side>, ReverseGenerator>;
 
         constexpr static auto pawn_move_directions = boost::hana::transform(pawn_move_directions_v<Rules>, [](auto const dir) {
                 return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
@@ -66,4 +66,4 @@ public:
 };
 
 }       // namespace detail
-}       // namespace dctl::core
+}       // namespace dctl::core::model

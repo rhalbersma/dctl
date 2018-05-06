@@ -10,8 +10,8 @@
 namespace dctl::algo {
 namespace search {
 
-using Order = dctl::core::detail::default_container<int>;
-using Variation = dctl::core::detail::default_container<int>;
+using Order = dctl::core::model::default_container<int>;
+using Variation = dctl::core::model::default_container<int>;
 
 inline void update_variation(Variation& line, int move, Variation const& continuation)
 {

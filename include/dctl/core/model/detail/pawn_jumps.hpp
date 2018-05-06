@@ -5,13 +5,12 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/angle.hpp>            // angle, deg
-#include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/model/builder.hpp>          // builder
-#include <dctl/core/model/king_jump.hpp>        // promote_en_passant
-#include <dctl/core/model/pattern.hpp>          // jump_targets
-#include <dctl/core/model/raii.hpp>             // capture, lift
-#include <dctl/core/model/select/jump.hpp>      // jumps
+#include <dctl/core/board/angle.hpp>                    // angle, deg
+#include <dctl/core/board/bearing.hpp>                  // bearing
+#include <dctl/core/model/detail/builder.hpp>           // builder
+#include <dctl/core/model/detail/king_jumps.hpp>        // promote_en_passant
+#include <dctl/core/model/detail/pattern.hpp>           // jump_targets
+#include <dctl/core/model/detail/raii.hpp>              // capture, lift
 #include <dctl/core/state/color_piece.hpp>      // color, color_, pawns_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_superior_rank_jump_t, is_orthogonal_jump_t, is_promotion_en_passant_t
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
@@ -27,26 +26,26 @@
 #include <iterator>                             // next
 #include <type_traits>                          // bool_constant
 
-namespace dctl::core {
+namespace dctl::core::model {
 namespace detail {
 
 template<class...>
-class pawn_jump;
+class pawn_jumps;
 
-template<color Side, class Reverse, class State>
-class pawn_jump<color_<Side>, Reverse, State>
+template<class Rules, class Board, color Side>
+class pawn_jumps<Rules, Board, color_<Side>>
 {
-        using  king_jumps = king_jump<color_<Side>, Reverse, State>;
-        using  board_type = board_t<State>;
-        using  rules_type = rules_t<State>;
-        using    set_type =   set_t<State>;
+        using rules_type = Rules;
+        using board_type = Board;
+        using king_jumps = detail::king_jumps<rules_type, board_type, color_<Side>>;
 
-        constexpr static auto orientation = bearing_v<board_type, color_<Side>, Reverse>;
+        constexpr static auto orientation = bearing_v<board_type, color_<Side>>;
 
         constexpr static auto pawn_jump_directions = boost::hana::transform(pawn_jump_directions_v<rules_type>, [](auto const dir) {
                 return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
         });
 public:
+        template<class State>
         static auto detect(State const& s) noexcept
         {
                 return boost::hana::fold(
@@ -113,4 +112,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace dctl::core
+}       // namespace dctl::core::model

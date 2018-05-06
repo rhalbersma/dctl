@@ -6,11 +6,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/model/builder.hpp>          // builder
-#include <dctl/core/model/pattern.hpp>          // jump_targets
-#include <dctl/core/model/raii.hpp>             // capture, lift, set_king_jump
-#include <dctl/core/model/tables.hpp>           // king_jumps, king_moves
-#include <dctl/core/model/select/jump.hpp>      // jump
+#include <dctl/core/model/detail/builder.hpp>   // builder
+#include <dctl/core/model/detail/pattern.hpp>   // jump_targets
+#include <dctl/core/model/detail/raii.hpp>      // capture, lift, set_king_jump
+#include <dctl/core/model/detail/tables.hpp>    // king_jumps, king_moves
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_orthogonal_jump_t, is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
@@ -24,18 +23,17 @@
 #include <functional>                           // logical_or
 #include <type_traits>                          // bool_constant
 
-namespace dctl::core {
+namespace dctl::core::model {
 namespace detail {
 
 template<class...>
-class king_jump;
+class king_jumps;
 
-template<color Side, class Reverse, class State>
-class king_jump<color_<Side>, Reverse, State>
+template<class Rules, class Board, color Side>
+class king_jumps<Rules, Board, color_<Side>>
 {
-        using rules_type = rules_t<State>;
-        using board_type = board_t<State>;
-        using   set_type =   set_t<State>;
+        using rules_type = Rules;
+        using board_type = Board;
 
         constexpr static auto king_jump_directions = king_jump_directions_v<rules_type>;
 
@@ -58,6 +56,7 @@ class king_jump<color_<Side>, Reverse, State>
 
         constexpr static auto GCC7_ICE_WORK_AROUND = is_long_ranged_king_v<rules_type>;
 public:
+        template<class State>
         static auto detect(State const& s) noexcept
         {
                 return s.pieces(color_c<Side>, kings_c).any_of([&](auto from_sq) {
@@ -65,7 +64,7 @@ public:
                                 boost::hana::transform(king_jump_directions, [&](auto const dir) {
                                         using direction_t = decltype(dir);
                                         if constexpr (is_long_ranged_king_v<rules_type>) {
-                                                auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, s.pieces(empty_c));
+                                                auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, s.pieces(empty_c));
                                                 if (blockers.empty()) { return false; }
                                                 auto const first = find_first<direction_t>(blockers);
                                                 return jump_targets<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
@@ -87,7 +86,7 @@ public:
                         boost::hana::for_each(king_jump_directions, [&](auto const dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jumps<rules_type, board_type, direction_t>(from_sq, b.pieces(empty_c));
+                                        auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, b.pieces(empty_c));
                                         if (blockers.empty()) { return; }
                                         auto const first = find_first<direction_t>(blockers);
                                         if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
@@ -164,7 +163,7 @@ private:
                 return meta::foldl_bit_or<Directions>{}([&](auto const dir) {
                         using direction_t = decltype(dir);
                         if constexpr (is_long_ranged_king_v<rules_type>) {
-                                auto const blockers = king_jumps<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
+                                auto const blockers = king_jump<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
                                 if (blockers.empty()) { return false; }
                                 auto const first = find_first<direction_t>(blockers);
                                 if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
@@ -179,4 +178,4 @@ private:
 };
 
 }       // namespace detail
-}       // namespace dctl::core
+}       // namespace dctl::core::model
