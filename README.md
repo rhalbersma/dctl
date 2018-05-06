@@ -57,15 +57,15 @@ The DCTL aims to be cross-platform in the near future, but is currently only sup
 
 ##### Compilers
 
-The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf). This currently restricts usage of the DCTL to either [gcc](https://gcc.gnu.org/projects/cxx-status.html), version 7.2 or higher, or [Clang](http://clang.llvm.org/cxx_status.html) version 6.0 or higher, both with libstdc++ 7.2. Visual C++ is not yet supported because of its currently incomplete C++17 support (inline variables and fold expressions in particular). Stay tuned for further developments.
+The DCTL is a modern [C++](http://isocpp.org) library that targets the upcoming [C++17 Standard](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf). This currently restricts usage of the DCTL to either [gcc](https://gcc.gnu.org/projects/cxx-status.html), version 7.3 or higher, or [Clang](http://clang.llvm.org/cxx_status.html) version 6.0 or higher, both with libstdc++ 7.3. Visual C++ is not yet supported because of its currently incomplete C++17 support (inline variables and fold expressions in particular). Stay tuned for further developments.
 
 ##### Boost headers
 
-The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.65.1. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_64_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
+The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.66.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_66_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
 
 ##### Boost libraries
 
-The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_65_1/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_65_1/more/getting_started/index.html) on how to do this on your system.
+The test-suite uses [Boost.Test](http://www.boost.org/doc/libs/1_66_0/libs/test/doc/html/index.html). In order to build and run the test-suite (see below), you need to compile Boost.Test into a dynamic library and point your linker to its location. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_66_0/more/getting_started/index.html) on how to do this on your system.
 
 > #### Note 
 > Compilation of the Boost libraries is **ONLY** a requirement for running the test-suite, and **NOT** for using the DCTL headers with your application.  
