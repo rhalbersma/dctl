@@ -59,7 +59,7 @@ public:
         template<class Builder>
         static auto generate(Builder& b)
         {
-                 boost::hana::for_each(pawn_jump_directions, [&](auto const dir) {
+                boost::hana::for_each(pawn_jump_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
                         jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c)).for_each([&](auto const from_sq) {
                                 raii::lift guard{from_sq, b};
