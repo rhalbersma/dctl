@@ -88,8 +88,8 @@ public:
         static auto detect(State const& s) noexcept
         {
                 return
-                        pawn_jumps<State>::detect(s) ||
-                        king_jumps<State>::detect(s)
+                        pawn_jumps<State>::detect(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)) ||
+                        king_jumps<State>::detect(s.pieces(color_c<Side>, kings_c), s.targets(color_c<Side>, kings_c), s.pieces(empty_c))
                 ;
         }
 
@@ -112,9 +112,12 @@ public:
         template<class State, class SequenceContainer>
         static auto generate(State const& s, SequenceContainer& seq)
         {
+                using rules_type = rules_t<State>;
                 auto b = builder<to_move_, DuplicatesPolicy, State, SequenceContainer>{s, seq};
                 king_jumps<State>::generate(b);
+                if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
                 pawn_jumps<State>::generate(b);
+                if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
         }
 };
 

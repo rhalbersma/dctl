@@ -37,6 +37,7 @@ class pawn_jumps<Rules, Board, color_<Side>>
 {
         using rules_type = Rules;
         using board_type = Board;
+        using   set_type = set_t<Board>;
         using king_jumps = detail::king_jumps<rules_type, board_type, color_<Side>>;
 
         constexpr static auto orientation = bearing_v<board_type, color_<Side>>;
@@ -45,12 +46,11 @@ class pawn_jumps<Rules, Board, color_<Side>>
                 return boost::hana::int_c<rotate(angle{dir}, angle{orientation}).value()>;
         });
 public:
-        template<class State>
-        static auto detect(State const& s) noexcept
+        static auto detect(set_type const& pawns, set_type const& targets, set_type const& empty) noexcept
         {
                 return boost::hana::fold(
                         boost::hana::transform(pawn_jump_directions, [&](auto const dir) {
-                                return !jump_targets<board_type, decltype(dir)>{}(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)).empty();
+                                return !jump_targets<board_type, decltype(dir)>{}(pawns, targets, empty).empty();
                         }),
                         std::logical_or{}
                 );
@@ -59,15 +59,13 @@ public:
         template<class Builder>
         static auto generate(Builder& b)
         {
-                if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
-                boost::hana::for_each(pawn_jump_directions, [&](auto const dir) {
+                 boost::hana::for_each(pawn_jump_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
                         jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c)).for_each([&](auto const from_sq) {
                                 raii::lift guard{from_sq, b};
                                 capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                         });
                 });
-                if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
         }
 private:
         template<class Direction, class Builder>

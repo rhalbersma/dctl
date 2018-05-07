@@ -34,6 +34,7 @@ class king_jumps<Rules, Board, color_<Side>>
 {
         using rules_type = Rules;
         using board_type = Board;
+        using   set_type = set_t<Board>;
 
         constexpr static auto king_jump_directions = king_jump_directions_v<rules_type>;
 
@@ -56,20 +57,19 @@ class king_jumps<Rules, Board, color_<Side>>
 
         constexpr static auto GCC7_ICE_WORK_AROUND = is_long_ranged_king_v<rules_type>;
 public:
-        template<class State>
-        static auto detect(State const& s) noexcept
+        static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
         {
-                return s.pieces(color_c<Side>, kings_c).any_of([&](auto from_sq) {
+                return kings.any_of([&](auto from_sq) {
                         return boost::hana::fold(
                                 boost::hana::transform(king_jump_directions, [&](auto const dir) {
                                         using direction_t = decltype(dir);
                                         if constexpr (is_long_ranged_king_v<rules_type>) {
-                                                auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, s.pieces(empty_c));
+                                                auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, empty);
                                                 if (blockers.empty()) { return false; }
                                                 auto const first = find_first<direction_t>(blockers);
-                                                return jump_targets<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(first);
+                                                return jump_targets<board_type, direction_t>{}(targets, empty).contains(first);
                                         } else {
-                                                return jump_sources<board_type, direction_t>{}(s.targets(color_c<Side>, kings_c), s.pieces(empty_c)).contains(from_sq);
+                                                return jump_sources<board_type, direction_t>{}(targets, empty).contains(from_sq);
                                         }
                                 }),
                                 std::logical_or{}
