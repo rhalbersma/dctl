@@ -91,8 +91,8 @@ script:
 - |
   cmake --build . -- -j2
   ctest -E "search|traversal"
-  travis_wait ctest -R "traversal" -E "board08x08"
-  if [ ${BUILD_TYPE} == "Release" ]; then travis_wait ctest -R "board08x08"; fi
+  travis_wait ctest -j2 -R "traversal" -E "board08x08"
+  if [ ${BUILD_TYPE} == "Release" ]; then travis_wait ctest -j2 -R "board08x08"; fi
 
 after_success:
 - |
