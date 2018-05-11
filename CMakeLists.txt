@@ -1,7 +1,3 @@
-###############################################################
-# project settings
-###############################################################
-
 cmake_minimum_required(VERSION 3.11)
 project(dctl CXX)
 
@@ -10,30 +6,13 @@ set(project_include_dir
 	$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include>
 )
 
-###############################################################
-# dependencies
-###############################################################
-
-#-----------------------------------------------
-# modified and extended Standard Library headers
-#-----------------------------------------------
 set(xstd_include_dir ${PROJECT_SOURCE_DIR}/../xstd/include)
-
-#-----------------------------------------------
-# Howard Hinnant's hash_append
-#-----------------------------------------------
 set(ext_include_dir ${PROJECT_SOURCE_DIR}/../ext)
 
-#----------------
-# Boost libraries
-#----------------
-
-find_package(Boost 1.66.0 REQUIRED COMPONENTS 
-	unit_test_framework
+find_package(Boost 1.66.0 REQUIRED COMPONENTS
 	program_options
+	unit_test_framework
 )
-
-###############################################################
 
 add_library(dctl INTERFACE)
 target_include_directories(dctl INTERFACE 
@@ -42,16 +21,7 @@ target_include_directories(dctl INTERFACE
 	${ext_include_dir}
 )
 target_link_libraries(dctl INTERFACE -lstdc++fs)
-#target_link_libraries(dctl INTERFACE -lc++experimental)
 target_compile_features(dctl INTERFACE cxx_std_17)
-
-###############################################################
-
-#TODO: install()
-
-###############################################################
-# enable unit testing
-###############################################################
 
 add_subdirectory(example)
 include(CTest)
