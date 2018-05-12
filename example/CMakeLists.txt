@@ -5,6 +5,7 @@ set(cxx_compile_definitions
         BOOST_TEST_MAIN
         $<$<CXX_COMPILER_ID:MSVC>:
                 _SCL_SECURE_NO_WARNINGS
+                _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
         >
 )
 
