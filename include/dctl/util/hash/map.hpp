@@ -6,7 +6,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/util/units.hpp>
-#include <xstd/cstdlib.hpp>      // is_power_of
 #include <algorithm>    // find_if
 #include <array>        // array
 #include <cassert>      // assert
@@ -32,7 +31,6 @@ template
 >
 class set_associative_cache
 {
-        static_assert(xstd::is_power_of_2(N));
 public:
         using key_type          = Key;
         using tag_type          = typename Tag::result_type;
@@ -62,7 +60,6 @@ private:
 public:
         explicit set_associative_cache(size_type sz)
         {
-                assert(xstd::is_power_of_2(sz));
                 resize(sz);
         }
 
@@ -83,7 +80,6 @@ public:
 
         auto resize(size_type sz)
         {
-                assert(xstd::is_power_of_2(sz));
                 data_.resize(sz);
                 clear();
         }

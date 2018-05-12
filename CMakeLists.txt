@@ -15,12 +15,19 @@ find_package(Boost 1.66.0 REQUIRED COMPONENTS
 )
 
 add_library(dctl INTERFACE)
-target_include_directories(dctl INTERFACE 
+target_include_directories(dctl INTERFACE
 	${project_include_dir}
 	${xstd_include_dir}
 	${ext_include_dir}
 )
-target_link_libraries(dctl INTERFACE -lstdc++fs)
+
+if(NOT MSVC)
+        set(cxx_link_to_file_system
+		-lstdc++fs
+        )
+endif()
+
+target_link_libraries(dctl INTERFACE ${cxx_link_to_file_system})
 target_compile_features(dctl INTERFACE cxx_std_17)
 
 add_subdirectory(example)
