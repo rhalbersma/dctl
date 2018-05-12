@@ -39,7 +39,7 @@ template<class Color>
 using opposite = color_<!Color::value>;
 
 template<color Side>
-constexpr auto operator not(color_<Side>) noexcept
+constexpr auto operator!(color_<Side>) noexcept
 {
         return color_c<!Side>;
 }
