@@ -10,7 +10,7 @@
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
 #include <dctl/core/board/type_traits.hpp>              // width_v, height_v, is_inverted_v, is_orthogonal_jump_v
 #include <dctl/core/state/color_piece.hpp>              // black, white
-#include <xstd/cstdint.hpp>                             // uint_fast
+#include <xstd/cstdint.hpp>                             // uint_least_t
 #include <xstd/cstdlib.hpp>                             // align_on, euclidean_div
 #include <xstd/int_set.hpp>                             // int_set
 #include <algorithm>                                    // min
@@ -69,7 +69,7 @@ public:
         }
 
         using    set_type = xstd::int_set<xstd::align_on(NumBits, xstd::int_set<NumBits>::capacity())>;
-        using square_type = xstd::uint_fast_t<set_type::max_size()>;
+        using square_type = xstd::uint_least_t<decltype(set_type::max_size()), set_type::max_size()>;
 
         static auto numeric_from_bit(int const n)
         {
