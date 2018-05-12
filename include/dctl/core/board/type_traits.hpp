@@ -23,41 +23,5 @@ constexpr auto is_pushable_v = std::min(width_v<Geometry>, height_v<Geometry>) >
 
 template<class Geometry>
 constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (!is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
-/*
-template<class Board>
-struct invert;
 
-template<int Width, int Height, bool IsInverted, bool IsOrthogonalJump>
-struct invert<basic_board<Width, Height, IsInverted, IsOrthogonalJump>>
-:
-        basic_board<Width, Height, !IsInverted, IsOrthogonalJump>
-{};
-
-template<class Board>
-using invert_t = typename invert<Board>::type;
-
-template<class Board>
-struct remove_orthogonal_captures;
-
-template<int Width, int Height, bool IsInverted, bool IsOrthogonalJump>
-struct remove_orthogonal_captures<basic_board<Width, Height, IsInverted, IsOrthogonalJump>>
-:
-        basic_board<Width, Height, IsInverted, false>
-{};
-
-template<class Board>
-using remove_orthogonal_captures_t = typename remove_orthogonal_captures<Board>::type;
-
-template<class Board>
-struct add_orthogonal_captures;
-
-template<int Width, int Height, bool IsInverted, bool IsOrthogonalJump>
-struct add_orthogonal_captures<basic_board<Width, Height, IsInverted, IsOrthogonalJump>>
-:
-        basic_board<Width, Height, IsInverted, true>
-{};
-
-template<class Board>
-using add_orthogonal_captures_t = typename add_orthogonal_captures<Board>::type;
-*/
 }       // namespace dctl::core

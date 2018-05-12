@@ -11,20 +11,20 @@
 #include <dctl/core/model/detail/king_jumps.hpp>        // promote_en_passant
 #include <dctl/core/model/detail/pattern.hpp>           // jump_targets
 #include <dctl/core/model/detail/raii.hpp>              // capture, lift
-#include <dctl/core/state/color_piece.hpp>      // color, color_, pawns_, king_
-#include <dctl/core/rules/type_traits.hpp>      // is_superior_rank_jump_t, is_orthogonal_jump_t, is_promotion_en_passant_t
-#include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
-#include <boost/hana/equal.hpp>                 // ==
-#include <boost/hana/fold.hpp>                  // fold
-#include <boost/hana/for_each.hpp>              // for_each
-#include <boost/hana/integral_constant.hpp>     // int_c
-#include <boost/hana/remove_if.hpp>             // remove_if
-#include <boost/hana/transform.hpp>             // transform
-#include <boost/hana/type.hpp>                  // decltype_
-#include <cassert>                              // assert
-#include <functional>                           // bit_or, logical_or
-#include <iterator>                             // next
-#include <type_traits>                          // bool_constant
+#include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
+#include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_promotion_en_passant_t
+#include <dctl/util/type_traits.hpp>                    // action_t, board_t, rules_t, set_t
+#include <boost/hana/equal.hpp>                         // ==
+#include <boost/hana/fold.hpp>                          // fold
+#include <boost/hana/for_each.hpp>                      // for_each
+#include <boost/hana/integral_constant.hpp>             // int_c
+#include <boost/hana/remove_if.hpp>                     // remove_if
+#include <boost/hana/transform.hpp>                     // transform
+#include <boost/hana/type.hpp>                          // decltype_
+#include <cassert>                                      // assert
+#include <functional>                                   // bit_or, logical_or
+#include <iterator>                                     // next
+#include <type_traits>                                  // bool_constant
 
 namespace dctl::core::model {
 namespace detail {
