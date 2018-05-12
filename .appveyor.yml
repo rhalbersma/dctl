@@ -16,7 +16,17 @@ build:
 
 before_build:
 - cmd: >-
-    cd %APPVEYOR_BUILD_FOLDER%
+    cd %APPVEYOR_BUILD_FOLDER%/..
+
+    git clone https://github.com/rhalbersma/xstd.git    
+    
+    mkdir ext
+
+    cd ext
+
+    git clone https://github.com/rhalbersma/hash_append.git
+
+    cd ../%APPVEYOR_BUILD_FOLDER%
     
     mkdir build         
     
