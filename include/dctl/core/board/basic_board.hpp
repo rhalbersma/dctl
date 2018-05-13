@@ -10,9 +10,10 @@
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
 #include <dctl/core/board/type_traits.hpp>              // width_v, height_v, is_inverted_v, is_orthogonal_jump_v
 #include <dctl/core/state/color_piece.hpp>              // black, white
-#include <xstd/cstdint.hpp>                             // uint_least_t
-#include <xstd/cstdlib.hpp>                             // align_on, euclidean_div
+#include <xstd/cstdlib.hpp>                             // euclidean_div
 #include <xstd/int_set.hpp>                             // int_set
+#include <boost/align/align_up.hpp>                     // align_up
+#include <boost/integer.hpp>                            // uint_value_t
 #include <algorithm>                                    // min
 #include <array>                                        // array
 #include <cstddef>                                      // size_t
@@ -68,8 +69,8 @@ public:
                 return NumBits;
         }
 
-        using    set_type = xstd::int_set<xstd::align_on(NumBits, xstd::int_set<NumBits>::capacity())>;
-        using square_type = xstd::uint_least_t<decltype(set_type::max_size()), set_type::max_size()>;
+        using    set_type = xstd::int_set<boost::alignment::align_up(NumBits, xstd::int_set<NumBits>::capacity())>;
+        using square_type = typename boost::uint_value_t<set_type::max_size()>::least;
 
         static auto numeric_from_bit(int const n)
         {
