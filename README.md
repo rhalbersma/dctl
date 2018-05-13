@@ -5,7 +5,7 @@ DCTL: Draughts and Checkers Template Library
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) 
 [![License](https://img.shields.io/badge/license-Boost-blue.svg)](https://opensource.org/licenses/BSL-1.0)
 [![](https://tokei.rs/b1/github/rhalbersma/dctl)](https://github.com/rhalbersma/dctl)
-[![Build Status](https://travis-ci.org/rhalbersma/dctl.svg?branch=master)](https://travis-ci.org/rhalbersma/dctl)
+[![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl)
 [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl)
 
 A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting almost all known rules variations, board sizes and game objectives.
@@ -51,12 +51,11 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 Requirements
 ------------
 
-These header-only libraries are usable with any conforming [C++17](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf) compiler. The following compilers are actively tested (on Travis CI, using CMake and Boost.Test)
+This header-only library is actively being tested with the following conforming [C++17](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf) compilers:
 
-| Platform | Compiler      | Minimum version |
-| :------- | :------------ | --------------: |
-| Linux    | Clang         |             6.0 |
-| Linux    | GCC           |             7.3 |
+| Platform | Compiler       | Minimum version | Continuous integration |
+| :------- | :------------- | --------------: | :--------------------: |
+| Linux    | Clang <br> GCC |     6.0<br> 7.3 | [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
 
 ##### Boost library
 
