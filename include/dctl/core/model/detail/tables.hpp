@@ -35,7 +35,7 @@ struct scan
                 if constexpr (!IncludesFrom) {
                         advance<Board, Direction>{}(from);
                 }
-                auto targets = set_type{};
+                set_type targets;
                 if constexpr (IsLongRanged) {
                         while (is_valid(from)) {
                                 targets.insert(from);
@@ -54,7 +54,7 @@ template<class Board, class Directions, bool IsLongRanged, bool IncludesFrom, bo
 class board_scan_sq_dir
 {
         inline const static auto table = []() {
-                auto result = std::array<std::array<set_t<Board>, boost::mp11::mp_size<Directions>::value>, Board::bits()>{};
+                std::array<std::array<set_t<Board>, boost::mp11::mp_size<Directions>::value>, Board::bits()> result;
                 Board::squares.for_each([&](auto const sq) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::make_array<Directions>{}([=](auto const dir) {
@@ -78,7 +78,7 @@ class board_scan_dir_sq
         inline const static auto table = []() {
                 return meta::make_array<Directions>{}([](auto const dir) {
                         using direction_t = decltype(dir);
-                        auto result = std::array<set_t<Board>, Board::bits()>{};
+                        std::array<set_t<Board>, Board::bits()> result;
                         Board::squares.for_each([&](auto const sq) {
                                 result[static_cast<std::size_t>(sq)] =
                                         scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)

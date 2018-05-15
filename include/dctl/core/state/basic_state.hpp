@@ -12,7 +12,7 @@
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
-#include <type_traits>                          // is_pod, is_same
+#include <type_traits>                          // is_same
 #include <tuple>                                // tie
 #include <utility>                              // forward
 

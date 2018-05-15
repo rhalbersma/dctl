@@ -69,7 +69,7 @@ int main()
 {
         std::cout.imbue(std::locale("en_US.utf8"));
 
-        auto frontier = std::vector<std::pair<state_type, count_type>>{};
+        std::vector<std::pair<state_type, count_type>> frontier;
         {
                 auto N = std::vector<count_type>{1};
                 auto U = layer{{{state_type::initial(), 1}}};

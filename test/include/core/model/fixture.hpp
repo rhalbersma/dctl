@@ -31,7 +31,7 @@ struct Fixture
                 BOOST_CHECK_EQUAL(moves.size(), rng.size());
 
                 auto const move_str = [](auto const& m) { return str_numeric(m); };
-                auto notations = std::vector<std::string>{};
+                std::vector<std::string> notations;
                 std::transform(moves.begin(), moves.end(), std::back_inserter(notations), std::cref(move_str));
 
                 BOOST_CHECK(

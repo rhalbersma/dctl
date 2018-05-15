@@ -45,7 +45,7 @@ class king_moves
         }
 
         inline const static auto attacks_table = []() {
-                auto result = std::array<set_type, Board::bits()>{};
+                std::array<set_type, Board::bits()> result;
                 Board::squares.for_each([&](auto const from_sq) {
                         result[static_cast<std::size_t>(from_sq)] =
                                 boost::hana::fold(

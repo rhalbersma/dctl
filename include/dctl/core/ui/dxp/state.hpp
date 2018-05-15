@@ -31,7 +31,7 @@ struct read
                 -> basic_state<Rules, Board>
         {
                 using set_type = set_t<Board>;
-                set_type by_color_piece[2][2]{};
+                set_type by_color_piece[2][2];
                 auto p_side = color::black;
 
                 assert(by_color_piece[0][0].empty());

@@ -127,7 +127,7 @@ public:
 
 public:
         constexpr static auto squares = []() {
-                auto table = set_type{};
+                set_type table;
                 for (auto sq = 0; sq < size(); ++sq) {
                         table.insert(bit_from_square(sq));
                 }
@@ -138,7 +138,7 @@ private:
         template<class UnaryPredicate>
         constexpr static auto squares_filter(UnaryPredicate pred) noexcept
         {
-                auto filter = set_type{};
+                set_type filter;
                 squares.for_each([&](auto const n) {
                         if (pred(square_from_bit(n))) {
                                 filter.insert(n);
@@ -148,7 +148,7 @@ private:
         }
 
         constexpr static auto file_table = []() {
-                auto table = std::array<std::array<set_type, width>, 2>{};
+                std::array<std::array<set_type, width>, 2> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto f = 0; f < width; ++f) {
                                 table[xstd::to_underlying_type(c)][static_cast<std::size_t>(f)] =
@@ -162,7 +162,7 @@ private:
         }();
 
         constexpr static auto rank_table = []() {
-                 auto table = std::array<std::array<set_type, height>, 2>{};
+                 std::array<std::array<set_type, height>, 2> table;
                  for (auto&& c : { color::black, color::white }) {
                          for (auto r = 0; r < height; ++r) {
                                  table[xstd::to_underlying_type(c)][static_cast<std::size_t>(r)] =
@@ -180,7 +180,7 @@ private:
          constexpr static auto num_segments = is_orthogonal_jump ?      8 :      4;
 
          constexpr static auto jump_start_table = []() {
-                 auto table = std::array<set_type, num_segments>{};
+                 std::array<set_type, num_segments> table;
                  for (auto segment = 0; segment < num_segments; ++segment) {
                          table[static_cast<std::size_t>(segment)] = squares_filter([=](auto const sq) {
                                  auto const alpha = rotate(segment * theta + beta, inverse(orientation));
@@ -256,11 +256,11 @@ public:
 private:
         constexpr static auto initial_table = []() {
                 constexpr auto N = height / 2 + 1;
-                auto table = std::array<std::array<set_type, N>, 2>{};
+                std::array<std::array<set_type, N>, 2> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto d = 0; d < N; ++d) {
                                 table[xstd::to_underlying_type(c)][static_cast<std::size_t>(d)] = [=]() {
-                                        auto accum = set_type{};
+                                        set_type accum;
                                         for (auto r = 0; r < d; ++r) {
                                                 accum ^= rank(c, r);
                                         }

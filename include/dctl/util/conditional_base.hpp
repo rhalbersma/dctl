@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <type_traits>  // conditional, is_empty, is_pod
+#include <type_traits>  // conditional, is_empty
 
 namespace dctl {
 namespace util {
@@ -14,8 +14,6 @@ namespace block_adl {
 template<class Tag>
 struct tagged_empty
 {
-        static_assert(std::is_pod_v<Tag>);
-
         tagged_empty() = default;
 
         template<class... Args>
@@ -27,7 +25,6 @@ struct conditional_base
 :
         std::conditional_t<Condition, Base, tagged_empty<Base>>
 {
-        static_assert(!Condition || std::is_pod_v<Base>);
         static_assert(std::is_empty_v<tagged_empty<Base>>);
 };
 
