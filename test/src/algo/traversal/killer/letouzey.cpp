@@ -14,8 +14,7 @@ using namespace dctl::core;
 
 BOOST_AUTO_TEST_SUITE(TraversalKillerLetouzey)
 
-// The alternative game rules thread on the FMJD forum
-// http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+// email conversation with Fabien Letouzey
 
 BOOST_AUTO_TEST_CASE(Random178)
 {
@@ -24,13 +23,16 @@ BOOST_AUTO_TEST_CASE(Random178)
         );
         auto const leafs = std::vector<int64_t>
         {
-                   14,
-                   55,
-                1'168,
-                5'165,
-               84'326,
-              573'965,
-            8'476'150
+                        14,
+                        55,
+                     1'168,
+                     5'165,
+                    84'326,
+                   573'965,
+                 8'476'150,
+                78'944'517,
+             1'133'545'351,
+            12'070'611'997
         };
         traversal::test(model::drop_duplicates_gen, s, leafs);
 }
@@ -42,18 +44,23 @@ BOOST_AUTO_TEST_CASE(Woldouby)
         );
         auto const leafs = std::vector<int64_t>
         {
-                    6,
-                   12,
-                   30,
-                   73,
-                  215,
-                  590,
-                1'944,
-                6'269,
-               22'369,
-               88'043,
-              377'339,
-            1'908'829
+                         6,
+                        12,
+                        30,
+                        73,
+                       215,
+                       590,
+                     1'944,
+                     6'269,
+                    22'369,
+                    88'043,
+                   377'339,
+                 1'908'829,
+                 9'850'540,
+                58'116'971,
+               343'968'214,
+             2'251'657'424,
+            14'783'093'851
         };
         traversal::test(model::drop_duplicates_gen, s, leafs);
 }

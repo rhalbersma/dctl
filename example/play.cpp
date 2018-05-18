@@ -20,6 +20,10 @@ int main()
         using Board = basic_board<international>;
         using State = basic_state<Rules, Board>;
 
+        auto test = pdn::read<Rules, Board>{}("W:WK13:B7,8,9,10,17,18,19,20,21,30,31,32,33,34,41,42,43,44");
+        std::cout << diag << test << "\n";
+        std::cout << "Moves = " <<  model::keep_duplicates_gen.count(test);
+
         auto initial = pdn::read<Rules, Board>{}("B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46");
 
         std::stack<State> game;
