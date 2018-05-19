@@ -2,8 +2,6 @@ os: linux
 dist: trusty
 language: cpp
 env:
-- CXX_COMPILER=g++-7       BUILD_TYPE=Debug
-- CXX_COMPILER=g++-7       BUILD_TYPE=Release
 - CXX_COMPILER=g++-8       BUILD_TYPE=Debug
 - CXX_COMPILER=g++-8       BUILD_TYPE=Release
 - CXX_COMPILER=clang++-6.0 BUILD_TYPE=Debug    
@@ -25,20 +23,17 @@ install:
 
 ################################################################################
 # Install the latest gcc and clang compilers plus code coverage generator
-# Boost.Test needs to be built with gcc-7, but Ubuntu 14.04 provides 4.8
-# ./bootstrap.sh needs to find gcc-7 and clang and ./b2 needs to find g++-7 and clang++
-# gcc-7 needs binutils 2.28 for LTO builds, but Ubuntu 14.04 provides 2.24
+# Boost.Test needs to be built with gcc-8, but Ubuntu 14.04 provides 4.8
+# ./bootstrap.sh needs to find gcc-8 and clang and ./b2 needs to find g++-8 and clang++
+# gcc-8 needs binutils 2.28 for LTO builds, but Ubuntu 14.04 provides 2.24
 ################################################################################
 - |
-  sudo apt-get install g++-7 binutils lcov
-  sudo apt-get install g++-8
+  sudo apt-get install g++-8 binutils lcov
   sudo apt-get install clang-6.0 lldb-6.0 lld-6.0
   sudo apt-get install clang-7   lldb-7   lld-7
 - |
-  sudo update-alternatives --install /usr/bin/gcc     gcc     /usr/bin/gcc-7       90
-  sudo update-alternatives --install /usr/bin/g++     g++     /usr/bin/g++-7       90
-  sudo update-alternatives --install /usr/bin/gcc     gcc     /usr/bin/gcc-8       80
-  sudo update-alternatives --install /usr/bin/g++     g++     /usr/bin/g++-8       80
+  sudo update-alternatives --install /usr/bin/gcc     gcc     /usr/bin/gcc-8       90
+  sudo update-alternatives --install /usr/bin/g++     g++     /usr/bin/g++-8       90
   sudo update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-6.0   90
   sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-6.0 90
   sudo update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-7     80
@@ -52,7 +47,7 @@ install:
   mkdir -p ${DEPS_DIR}
   
 ################################################################################
-# Install the latest Boost and build Boost.Test (compiled with g++-7)
+# Install the latest Boost and build Boost.Test (compiled with g++-8)
 ################################################################################
 - |
   cd ${DEPS_DIR}

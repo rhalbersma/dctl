@@ -5,21 +5,21 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <experimental/filesystem>      // exists, is_directory, directory_iterator
-#include <algorithm>                    // copy, sort
-#include <iostream>                     // ostream_iterator
-#include <iterator>                     // back_inserter
-#include <numeric>                      // accumulate
-#include <string>                       // string
-#include <utility>                      // move
-#include <vector>                       // vector
+#include <algorithm>    // copy, sort
+#include <filesystem>   // exists, is_directory, directory_iterator
+#include <iostream>     // ostream_iterator
+#include <iterator>     // back_inserter
+#include <numeric>      // accumulate
+#include <string>       // string
+#include <utility>      // move
+#include <vector>       // vector
 
 namespace dctl::egdb {
 
 class database
 {
         std::string m_dir_path;
-        std::vector<std::experimental::filesystem::path> m_files;
+        std::vector<std::filesystem::path> m_files;
 public:
         explicit database(std::string dir_path)
         :
@@ -42,7 +42,7 @@ public:
 
         auto scan_directory()
         {
-                namespace fs = std::experimental::filesystem;
+                namespace fs = std::filesystem;
                 try {
                         if (fs::exists(m_dir_path) && fs::is_directory(m_dir_path))
                         {
