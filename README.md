@@ -5,8 +5,6 @@ DCTL: Draughts and Checkers Template Library
 [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) 
 [![License](https://img.shields.io/badge/license-Boost-blue.svg)](https://opensource.org/licenses/BSL-1.0)
 [![](https://tokei.rs/b1/github/rhalbersma/dctl)](https://github.com/rhalbersma/dctl)
-[![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl)
-[![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl)
 
 A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting almost all known rules variations, board sizes and game objectives.
 
@@ -55,7 +53,7 @@ This header-only library is actively being tested with the following conforming 
 
 | Platform | Compiler       | Minimum version | Continuous integration |
 | :------- | :------------- | --------------: | :--------------------: |
-| Linux    | Clang <br> GCC |     6.0<br> 7.3 | [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
+| Linux    | Clang <br> GCC |     6.0<br> 7.3 | [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) <br> [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) |
 
 ##### Boost library
 

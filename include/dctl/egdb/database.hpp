@@ -18,7 +18,7 @@ namespace dctl::egdb {
 
 class database
 {
-        std::string m_dir_path;
+        std::filesystem::path m_dir_path;
         std::vector<std::filesystem::path> m_files;
 public:
         explicit database(std::string dir_path)
