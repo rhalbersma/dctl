@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_SUITE(DXPParser)
 
                 for (auto const& m : messages) {
                         auto value = parse(m);
-                        BOOST_CHECK_EQUAL(std::visit(to_string, value), m);
+                        BOOST_CHECK_EQUAL(std::visit([](auto const& v){ return v.str(); }, value), m);
                 }
                 BOOST_CHECK_THROW(parse("This is not a valid DXP message"), std::invalid_argument);
 

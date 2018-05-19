@@ -15,7 +15,6 @@
 struct Fixture
 {
         dctl::core::dxp::factory parse;
-        inline static auto const to_string = [](auto const& value) { return value.str(); };
 
         struct
         {
@@ -31,6 +30,5 @@ struct Fixture
                 {
                         throw std::invalid_argument("Did not match a DXP gamereq type.");
                 }
-
         } to_state;
 };
