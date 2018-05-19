@@ -14,9 +14,9 @@ namespace detail {
 
 struct dimensions
 {
-        int const width;
-        int const height;
-        bool const is_inverted;
+        int width;
+        int height;
+        bool is_inverted;
 };
 
 constexpr auto operator==(dimensions const& lhs, dimensions const& rhs) noexcept
@@ -106,8 +106,8 @@ public:
 
 class bit_layout
 {
-        InnerGrid const inner_;
-        int const edge_;
+        InnerGrid inner_;
+        int edge_;
 public:
         constexpr bit_layout(InnerGrid const& i, int const e) noexcept : inner_{i}, edge_{e} {}
 
