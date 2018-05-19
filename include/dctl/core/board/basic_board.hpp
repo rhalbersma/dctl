@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/config.hpp>
 #include <dctl/core/board/angle.hpp>                    // angle, inverse
 #include <dctl/core/board/coordinates.hpp>              // to_llo, transform
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
@@ -136,7 +137,7 @@ public:
 
 private:
         template<class UnaryPredicate>
-        constexpr static auto squares_filter(UnaryPredicate pred) noexcept
+        XSTD_PP_CONSTEXPR_INTRINSIC static auto squares_filter(UnaryPredicate pred) noexcept
         {
                 set_type filter;
                 squares.for_each([&](auto const n) {
@@ -147,7 +148,7 @@ private:
                 return filter;
         }
 
-        constexpr static auto file_table = []() {
+        DCTL_PP_CONSTEXPR_INTRINSIC static auto file_table = []() {
                 std::array<std::array<set_type, width>, 2> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto f = 0; f < width; ++f) {
@@ -161,100 +162,100 @@ private:
                 return table;
         }();
 
-        constexpr static auto rank_table = []() {
-                 std::array<std::array<set_type, height>, 2> table;
-                 for (auto&& c : { color::black, color::white }) {
-                         for (auto r = 0; r < height; ++r) {
-                                 table[xstd::to_underlying_type(c)][static_cast<std::size_t>(r)] =
-                                         squares_filter([=](auto const sq) {
-                                                 return to_llo(sq, inner_grid).y == (c == color::white ? r : height - 1 - r);
-                                         })
-                                 ;
-                         }
-                 }
-                 return table;
+        DCTL_PP_CONSTEXPR_INTRINSIC static auto rank_table = []() {
+                std::array<std::array<set_type, height>, 2> table;
+                for (auto&& c : { color::black, color::white }) {
+                        for (auto r = 0; r < height; ++r) {
+                                table[xstd::to_underlying_type(c)][static_cast<std::size_t>(r)] =
+                                        squares_filter([=](auto const sq) {
+                                                return to_llo(sq, inner_grid).y == (c == color::white ? r : height - 1 - r);
+                                        })
+                                ;
+                        }
+                }
+                return table;
          }();
 
-         constexpr static auto theta        = is_orthogonal_jump ? 45_deg : 90_deg;
-         constexpr static auto beta         = is_orthogonal_jump ?  0_deg : 45_deg;
-         constexpr static auto num_segments = is_orthogonal_jump ?      8 :      4;
+        constexpr static auto theta        = is_orthogonal_jump ? 45_deg : 90_deg;
+        constexpr static auto beta         = is_orthogonal_jump ?  0_deg : 45_deg;
+        constexpr static auto num_segments = is_orthogonal_jump ?      8 :      4;
 
-         constexpr static auto jump_start_table = []() {
-                 std::array<set_type, num_segments> table;
-                 for (auto segment = 0; segment < num_segments; ++segment) {
-                         table[static_cast<std::size_t>(segment)] = squares_filter([=](auto const sq) {
-                                 auto const alpha = rotate(segment * theta + beta, inverse(orientation));
-                                 auto const offset = is_diagonal(alpha) ? 2 : 4;
-                                 auto const min_x = is_left(alpha) ? offset : 0;
-                                 auto const max_x = width - (is_right(alpha) ? offset : 0);
-                                 auto const min_y = is_up(alpha) ? offset : 0;
-                                 auto const max_y = height - (is_down(alpha) ? offset : 0);
-                                 auto const coord = to_ulo(sq, inner_grid);
-                                 return
-                                         (min_x <= coord.x && coord.x < max_x) &&
-                                         (min_y <= coord.y && coord.y < max_y)
-                                 ;
-                         });
-                 }
-                 return table;
-         }();
+        DCTL_PP_CONSTEXPR_INTRINSIC static auto jump_start_table = []() {
+                std::array<set_type, num_segments> table;
+                for (auto segment = 0; segment < num_segments; ++segment) {
+                        table[static_cast<std::size_t>(segment)] = squares_filter([=](auto const sq) {
+                                auto const alpha = rotate(segment * theta + beta, inverse(orientation));
+                                auto const offset = is_diagonal(alpha) ? 2 : 4;
+                                auto const min_x = is_left(alpha) ? offset : 0;
+                                auto const max_x = width - (is_right(alpha) ? offset : 0);
+                                auto const min_y = is_up(alpha) ? offset : 0;
+                                auto const max_y = height - (is_down(alpha) ? offset : 0);
+                                auto const coord = to_ulo(sq, inner_grid);
+                                return
+                                        (min_x <= coord.x && coord.x < max_x) &&
+                                        (min_y <= coord.y && coord.y < max_y)
+                                ;
+                        });
+                }
+                return table;
+        }();
 
-         template<int FromSquare>
-         constexpr static auto init_jump_group() noexcept
-         {
-                 return squares_filter([](auto const dest_sq) {
-                         auto const from_coord = to_llo(FromSquare, inner_grid);
-                         auto const dest_coord = to_llo(dest_sq   , inner_grid);
-                         auto const delta_x = xstd::euclidean_div(from_coord.x - dest_coord.x, 4).rem;
-                         auto const delta_y = xstd::euclidean_div(from_coord.y - dest_coord.y, 4).rem;
-                         return
-                                 (delta_x == 0 && delta_y == 0) ||
-                                 (delta_x == 2 && delta_y == 2)
-                         ;
-                 });
-         }
+        template<int FromSquare>
+        XSTD_PP_CONSTEXPR_INTRINSIC static auto init_jump_group() noexcept
+        {
+                return squares_filter([](auto const dest_sq) {
+                        auto const from_coord = to_llo(FromSquare, inner_grid);
+                        auto const dest_coord = to_llo(dest_sq   , inner_grid);
+                        auto const delta_x = xstd::euclidean_div(from_coord.x - dest_coord.x, 4).rem;
+                        auto const delta_y = xstd::euclidean_div(from_coord.y - dest_coord.y, 4).rem;
+                        return
+                                (delta_x == 0 && delta_y == 0) ||
+                                (delta_x == 2 && delta_y == 2)
+                        ;
+                });
+        }
 
-         constexpr static auto jump_group_table = std::array<set_type, 4>
-         {{
-                 init_jump_group<inner_grid.edge_le() + 0>(),
-                 init_jump_group<inner_grid.edge_le() + 1>(),
-                 init_jump_group<inner_grid.edge_lo() + 0>(),
-                 init_jump_group<inner_grid.edge_lo() + 1>()
-         }};
+        DCTL_PP_CONSTEXPR_INTRINSIC static auto jump_group_table = std::array<set_type, 4>
+        {{
+                init_jump_group<inner_grid.edge_le() + 0>(),
+                init_jump_group<inner_grid.edge_le() + 1>(),
+                init_jump_group<inner_grid.edge_lo() + 0>(),
+                init_jump_group<inner_grid.edge_lo() + 1>()
+        }};
 
 public:
-        constexpr static auto file(color const c, int const f) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC static auto file(color const c, int const f) // Throws: Nothing.
         {
                 assert(0 <= f); assert(f < width);
                 return file_table[xstd::to_underlying_type(c)][static_cast<std::size_t>(f)];
         }
 
-        constexpr static auto rank(color const c, int const r) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC static auto rank(color const c, int const r) // Throws: Nothing.
         {
                 assert(0 <= r); assert(r < height);
                 return rank_table[xstd::to_underlying_type(c)][static_cast<std::size_t>(r)];
         }
 
-        constexpr static auto promotion(color const c) noexcept
+        XSTD_PP_CONSTEXPR_INTRINSIC static auto promotion(color const c) noexcept
         {
                 return rank(c, height - 1);
         }
 
-        constexpr static auto jump_start(angle const alpha) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC static auto jump_start(angle const alpha) // Throws: Nothing.
         {
                 auto const segment = (alpha - beta) / theta;
                 assert(0 <= segment); assert(segment < num_segments);
                 return jump_start_table[static_cast<std::size_t>(segment)];
         }
 
-        constexpr static auto jump_group(int const j) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC static auto jump_group(int const j) // Throws: Nothing.
         {
                 assert(0 <= j); assert(j < 4);
                 return jump_group_table[static_cast<std::size_t>(j)];
         }
 
 private:
-        constexpr static auto initial_table = []() {
+        DCTL_PP_CONSTEXPR_INTRINSIC static auto initial_table = []() {
                 constexpr auto N = height / 2 + 1;
                 std::array<std::array<set_type, N>, 2> table;
                 for (auto&& c : { color::black, color::white }) {
@@ -272,7 +273,7 @@ private:
         }();
 
 public:
-        constexpr static auto initial(color const c, int const separation) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC static auto initial(color const c, int const separation) // Throws: Nothing.
         {
                 assert((height - separation) % 2 == 0);
                 assert(height % 2 <= separation); assert(separation <= height);
