@@ -4,7 +4,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <core/ui/dxp/parser.hpp>
-#include <dctl/core/ui/dxp/message.hpp> // parser
+#include <dctl/core/ui/dxp/message.hpp> // factory
 #include <dctl/core.hpp>
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_CHECK_EQUAL_COLLECTIONS, BOOST_AUTO_TEST_SUITE_END
 #include <string>                       // string

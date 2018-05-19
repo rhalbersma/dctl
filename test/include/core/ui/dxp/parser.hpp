@@ -7,14 +7,14 @@
 
 #include <dctl/core/board.hpp>          // board
 #include <dctl/core/rules.hpp>          // international
-#include <dctl/core/ui/dxp/message.hpp> // parser
+#include <dctl/core/ui/dxp/message.hpp> // factory
 #include <dctl/core/ui/dxp/state.hpp>   // basic_state, read
 #include <stdexcept>                    // invalid_argument
 #include <string>                       // string
 
 struct Fixture
 {
-        dctl::core::dxp::parser parse;
+        dctl::core::dxp::factory parse;
         inline static auto const to_string = [](auto const& value) { return value.str(); };
 
         struct

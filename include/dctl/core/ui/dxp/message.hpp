@@ -440,27 +440,17 @@ public:
         }
 };
 
-template<class... MessageTypes>
-class basic_parser
+template<class... Ts>
+class basic_factory
 {
+        std::map<std::string, std::function<std::variant<Ts...>(std::string)>> m_registry;
 public:
-        using input_type = std::string;
-        using key_type = std::string;
-        using argument_type = std::string;
-        using result_type = std::variant<MessageTypes...>;
-        using mapped_type = std::function<result_type(argument_type)>;
-
-private:
-        std::map<key_type, mapped_type> m_registry;
-
-public:
-        basic_parser()
+        basic_factory()
         :
-                // TODO: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=47226
-                m_registry{{MessageTypes::header(), construct<MessageTypes>{}}...}
+                m_registry{{Ts::header(), [](auto const& arg){ return Ts(arg); }}...}
         {}
 
-        auto operator()(input_type const& in) const
+        auto operator()(std::string const& in) const
         {
                 if (auto const it = m_registry.find(in.substr(0, 1)); it != m_registry.end()) {
                         return (it->second)(in.substr(1));
@@ -468,19 +458,9 @@ public:
                         throw std::invalid_argument(in);
                 }
         }
-
-private:
-        template<class T>
-        struct construct
-        {
-                auto operator()(argument_type const& arg) const
-                {
-                        return T(arg);
-                }
-        };
 };
 
-using parser = basic_parser<gamereq, gameacc, move, gameend, chat, backreq, backacc>;
+using factory = basic_factory<gamereq, gameacc, move, gameend, chat, backreq, backacc>;
 
 }       // inline namespace v1
 }       // namespace dxp
