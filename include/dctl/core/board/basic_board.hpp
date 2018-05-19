@@ -9,7 +9,7 @@
 #include <dctl/core/board/angle.hpp>                    // angle, inverse
 #include <dctl/core/board/coordinates.hpp>              // to_llo, transform
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
-#include <dctl/core/board/type_traits.hpp>              // width_v, height_v, is_inverted_v, is_orthogonal_jump_v
+#include <dctl/core/rules/type_traits.hpp>              // width_v, height_v, is_inverted_v, is_orthogonal_jump_v
 #include <dctl/core/state/color_piece.hpp>              // black, white
 #include <xstd/cstdlib.hpp>                             // euclidean_div
 #include <xstd/int_set.hpp>                             // int_set
@@ -44,8 +44,8 @@ public:
         constexpr static auto is_inverted        = is_inverted_v<Geometry>;
         constexpr static auto is_orthogonal_jump = is_orthogonal_jump_v<Geometry>;
 
-        constexpr static auto edge = is_orthogonal_jump_v<Geometry> ? 2 : 1;
-        constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted_v<Geometry>}};
+        constexpr static auto edge = is_orthogonal_jump ? 2 : 1;
+        constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
         constexpr static angle orientation = std::min(
                 { 0_deg, 90_deg, 180_deg, 270_deg },
                 [g = detail::bit_layout{inner_grid, edge}]
@@ -176,9 +176,9 @@ private:
                 return table;
          }();
 
-        constexpr static auto theta        = is_orthogonal_jump_v<Geometry> ? 45_deg : 90_deg;
-        constexpr static auto beta         = is_orthogonal_jump_v<Geometry> ?  0_deg : 45_deg;
-        constexpr static auto num_segments = is_orthogonal_jump_v<Geometry> ?      8 :      4;
+        constexpr static auto theta        = is_orthogonal_jump ? 45_deg : 90_deg;
+        constexpr static auto beta         = is_orthogonal_jump ?  0_deg : 45_deg;
+        constexpr static auto num_segments = is_orthogonal_jump ?      8 :      4;
 
         DCTL_PP_CONSTEXPR_INTRINSIC static auto jump_start_table = []() {
                 std::array<set_type, num_segments> table;

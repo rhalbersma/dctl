@@ -6,8 +6,8 @@
 #include <core/board/sequence.hpp>              // nano, micro, checkers, Roman, spantsiretti, international, frisian, ktar<10, 11>,
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, basic_board<12, 10>, canadian, srilankan, dumm
 #include <core/board/transform.hpp>             // is_involution, is_idempotent
-#include <dctl/core/board/basic_board.hpp>            // board
-#include <dctl/core/board/type_traits.hpp>      // is_empty, is_pushable, is_jumpable, invert, add_orthogonal_captures, remove_orthogonal_captures
+#include <dctl/core/board/basic_board.hpp>      // board
+#include <dctl/core/rules/type_traits.hpp>      // is_empty, is_pushable, is_jumpable, invert
 #include <dctl/core/state/color_piece.hpp>
 #include <boost/range/irange.hpp>               // irange
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -52,33 +52,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, BoardSequence)
         static_assert(is_pushable_v<T>);
         static_assert(is_jumpable_v<T>);
 }
-/*
-BOOST_AUTO_TEST_CASE(Invert)
-{
-        static_assert(std::is_same_v<invert_t<board::checkers>, board::italian >);
-        static_assert(std::is_same_v<invert_t<board::italian >, board::checkers>);
 
-        static_assert(std::is_same_v<invert_t<board::canadian >, board::srilankan>);
-        static_assert(std::is_same_v<invert_t<board::srilankan>, board::canadian >);
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(InvertIsInvolution, T, BoardSequence)
-{
-        static_assert(is_involution_v<invert_t, T>);
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesAreIdemPotent, T, BoardSequence)
-{
-        static_assert(is_idempotent_v<   add_orthogonal_captures_t, T>);
-        static_assert(is_idempotent_v<remove_orthogonal_captures_t, T>);
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveOrthogonalCapturesCanBeIdentity, T, BoardSequence)
-{
-        static_assert(!T::is_orthogonal_jump || is_identity_v<   add_orthogonal_captures_t, T>);
-        static_assert( T::is_orthogonal_jump || is_identity_v<remove_orthogonal_captures_t, T>);
-}
-*/
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresCountEqualsBoardSize, T, BoardSequence)
 {
         BOOST_CHECK_EQUAL(T::squares.count(), T::size());

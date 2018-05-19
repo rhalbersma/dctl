@@ -5,16 +5,29 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/angle.hpp>
-#include <dctl/core/board/type_traits.hpp>      // is_orthogonal_jump_v
-#include <dctl/util/tti.hpp>                    // DCTL_PP_TTI_CONSTANT
-#include <dctl/util/type_traits.hpp>            // rules_t
-#include <boost/hana/tuple.hpp>                 // tuple_c
-#include <tuple>                                // make_tuple
-#include <type_traits>                          // conditional_t, decay_t, is_same_v, false_type, true_type
-#include <utility>                              // forward
+#include <dctl/util/tti.hpp>            // DCTL_PP_TTI_CONSTANT
+#include <dctl/util/type_traits.hpp>    // rules_t
+#include <boost/hana/tuple.hpp>         // tuple_c
+#include <algorithm>                    // min, max
+#include <tuple>                        // make_tuple
+#include <type_traits>                  // conditional_t, decay_t, is_same_v, false_type, true_type
+#include <utility>                      // forward
 
 namespace dctl::core {
+
+DCTL_PP_TTI_CONSTANT(width, 8)
+DCTL_PP_TTI_CONSTANT(height, 8)
+DCTL_PP_TTI_CONSTANT(is_inverted, false)
+DCTL_PP_TTI_CONSTANT(is_orthogonal_jump, false)
+
+template<class Geometry>
+constexpr auto is_placeable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 1 && (!is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 1);
+
+template<class Geometry>
+constexpr auto is_pushable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 2;
+
+template<class Geometry>
+constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (!is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
 
 DCTL_PP_TTI_CONSTANT(initial_position_gap, 2)
 
@@ -189,9 +202,6 @@ constexpr auto notation_v =
         notation::algebraic :
         notation::numeric
 ;
-
-template<int A, int B>
-constexpr auto rotate_v = rotate(angle{A}, angle{B}).value();
 
 /*
 

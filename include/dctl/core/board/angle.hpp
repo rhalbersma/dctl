@@ -173,4 +173,7 @@ constexpr auto is_right(angle const a) noexcept
         return 270_deg < a || a < 90_deg;
 }
 
+template<int A, int B>
+constexpr auto rotate_v = rotate(angle{A}, angle{B}).value();
+
 }       // namespace dctl::core
