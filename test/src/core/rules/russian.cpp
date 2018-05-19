@@ -9,7 +9,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(Rulesrussian)
+BOOST_AUTO_TEST_SUITE(RulesRussian)
 
 using T = russian;
 

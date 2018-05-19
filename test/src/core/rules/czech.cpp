@@ -12,7 +12,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(Rulesczech)
+BOOST_AUTO_TEST_SUITE(RulesCzech)
 
 using T = czech;
 

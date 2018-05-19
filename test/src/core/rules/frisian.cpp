@@ -13,7 +13,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(Rulesfrisian)
+BOOST_AUTO_TEST_SUITE(RulesFrisian)
 
 using T = frisian;
 

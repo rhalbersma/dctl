@@ -9,7 +9,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(Rulescheckers)
+BOOST_AUTO_TEST_SUITE(RulesCheckers)
 
 using T = checkers;
 

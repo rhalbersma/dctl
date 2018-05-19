@@ -12,7 +12,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(Rulesitalian)
+BOOST_AUTO_TEST_SUITE(RulesItalian)
 
 using T = italian;
 

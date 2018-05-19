@@ -11,7 +11,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(Rulesspanish)
+BOOST_AUTO_TEST_SUITE(RulesSpanish)
 
 using T = spanish;
 

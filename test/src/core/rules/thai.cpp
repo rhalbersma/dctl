@@ -9,7 +9,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(Rulesthai)
+BOOST_AUTO_TEST_SUITE(RulesThai)
 
 using T = thai;
 
