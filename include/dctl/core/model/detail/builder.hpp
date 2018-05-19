@@ -162,14 +162,14 @@ private:
                         is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
                 ) {
-                        assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
+                        assert(m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
                 ) {
-                        assert(m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back()));
+                        assert(m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         if (m_actions.empty() || is_small() || is_unique()) {
                                 m_actions.push_back(m_candidate_action);
                         }
@@ -178,13 +178,13 @@ private:
                         !is_trivial_precedence_v<rules_type> &&
                         std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
                 ) {
-                        if (m_actions.empty() || precedence::equal_to{}(m_candidate_action, m_actions.back())) {
+                        if (m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back())) {
                                 return m_actions.push_back(m_candidate_action);
                         }
-                        if (precedence::less{}(m_candidate_action, m_actions.back())) {
+                        if (xxx_precedence::less{}(m_candidate_action, m_actions.back())) {
                                 return;
                         }
-                        assert(precedence::greater{}(m_candidate_action, m_actions.back()));
+                        assert(xxx_precedence::greater{}(m_candidate_action, m_actions.back()));
                         m_actions.clear();
                         m_actions.push_back(m_candidate_action);
                 }
@@ -195,16 +195,16 @@ private:
                         if (m_actions.empty()) {
                                 return m_actions.push_back(m_candidate_action);
                         }
-                        if (precedence::equal_to{}(m_candidate_action, m_actions.back())) {
+                        if (xxx_precedence::equal_to{}(m_candidate_action, m_actions.back())) {
                                 if (is_small() || is_unique()) {
                                         m_actions.push_back(m_candidate_action);
                                 }
                                 return;
                         }
-                        if (precedence::less{}(m_candidate_action, m_actions.back())) {
+                        if (xxx_precedence::less{}(m_candidate_action, m_actions.back())) {
                                 return;
                         }
-                        assert(precedence::greater{}(m_candidate_action, m_actions.back()));
+                        assert(xxx_precedence::greater{}(m_candidate_action, m_actions.back()));
                         m_actions.clear();
                         m_actions.push_back(m_candidate_action);
                 }
@@ -219,7 +219,7 @@ private:
         {
                 static_assert(std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!m_actions.empty());
-                assert(precedence::equal_to{}(m_candidate_action, m_actions.back()));
+                assert(xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
                 return std::none_of(m_actions.cbegin(), m_actions.cend(), [&](auto const& a) { return a == m_candidate_action; });
         }
 };

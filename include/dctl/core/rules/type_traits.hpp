@@ -70,7 +70,7 @@ constexpr auto is_trivial_precedence_v = std::is_same_v<
         decltype(trivial_precedence_c)
 >;
 
-namespace precedence {
+namespace xxx_precedence {
 
 struct equal_to
 {
@@ -156,7 +156,7 @@ struct not_equivalent_to
         }
 };
 
-}       // namespace precedence
+}       // namespace xxx_precedence
 
 struct keep_duplicates_tag : std::false_type {};
 struct drop_duplicates_tag : std:: true_type {};

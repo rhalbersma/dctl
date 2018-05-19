@@ -3,7 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/rules/precedence.hpp>            // precedence::is_consistent
+#include <core/rules/precedence.hpp>            // is_consistent
 #include <dctl/core/rules/frisian.hpp>          // frisian
 #include <dctl/core/board.hpp>
 #include <dctl/core/state/color_piece.hpp>      // king, pawn
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 { 4, 0, piece::kings }
         };
 
-        BOOST_CHECK(precedence::is_consistent(moves));
+        BOOST_CHECK(xxx_precedence::is_consistent(moves));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

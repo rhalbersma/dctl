@@ -9,7 +9,7 @@
 #include <algorithm>                            // adjacent_find, is_sorted
 
 namespace dctl::core {
-namespace precedence {
+namespace xxx_precedence {
 
 template<class Range>
 auto is_consistent(Range const& rng)
@@ -21,5 +21,5 @@ auto is_consistent(Range const& rng)
         ;
 }
 
-}       // namespace precedence
+}       // namespace xxx_precedence
 }       // namespace dctl::core
