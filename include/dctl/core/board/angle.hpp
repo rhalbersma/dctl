@@ -17,7 +17,7 @@ class angle
                 assert(0 <= m_value); assert(m_value < 360);
         }
 
-        int m_value;
+        int m_value{};
 public:
         angle() = default;
 
