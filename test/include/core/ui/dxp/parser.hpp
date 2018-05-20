@@ -5,17 +5,17 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board.hpp>          // board
-#include <dctl/core/rules.hpp>          // international
+//#include <dctl/core/board.hpp>          // board
+//#include <dctl/core/rules.hpp>          // international
 #include <dctl/core/ui/dxp/message.hpp> // factory
-#include <dctl/core/ui/dxp/state.hpp>   // basic_state, read
-#include <stdexcept>                    // invalid_argument
+//#include <dctl/core/ui/dxp/state.hpp>   // basic_state, read
+//#include <stdexcept>                    // invalid_argument
 #include <string>                       // string
 
 struct Fixture
 {
         dctl::core::dxp::factory parse;
-
+/*
         struct
         {
                 auto operator()(dctl::core::dxp::gamereq const& gr) const
@@ -31,4 +31,5 @@ struct Fixture
                         throw std::invalid_argument("Did not match a DXP gamereq type.");
                 }
         } to_state;
+*/
 };
