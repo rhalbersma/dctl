@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.9)
 project(dctl CXX)
 
 set(project_include_dir
@@ -22,9 +22,9 @@ target_include_directories(dctl INTERFACE
 )
 
 if(NOT MSVC)
-        set(cxx_link_to_file_system
-                -lstdc++fs
-        )
+    set(cxx_link_to_file_system
+        -lstdc++fs
+    )
 endif()
 
 target_link_libraries(dctl INTERFACE ${cxx_link_to_file_system})
