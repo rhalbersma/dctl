@@ -13,24 +13,13 @@
 using namespace dctl::core;
 using T = checkers;
 
-// primary template handles types that have no nested ::type member:
-template< class, class = std::void_t<> >
-constexpr auto has_var_member_v = false;
- 
-// specialization recognizes types that do have a nested ::type member:
-template< class T >
-constexpr auto has_var_member_v<T, std::void_t<decltype(std::declval<T>().var)>> = true;
-
 BOOST_AUTO_TEST_SUITE(RulesCheckers)
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
         static_assert(!is_backward_pawn_jump_v<T>);
         static_assert(!is_long_ranged_king_v<T>);
-        //static_assert(is_trivial_precedence_v<T>);
-        //static_assert(!is_ordering_precedence_v<T>);
-        static_assert(!has_var_member_v<T>);
-        //static_assert(bla_v<T> == 42);
+        static_assert(is_trivial_precedence_v<T>);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
