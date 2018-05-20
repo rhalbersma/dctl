@@ -8,6 +8,7 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
 #include <type_traits>
+#include <utility>
 
 using namespace dctl::core;
 using T = checkers;
@@ -18,7 +19,7 @@ constexpr auto has_var_member_v = false;
  
 // specialization recognizes types that do have a nested ::type member:
 template< class T >
-constexpr auto has_var_member_v<T, std::void_t<decltype(T::var)>> = true;
+constexpr auto has_var_member_v<T, std::void_t<decltype(std::declval<T>().var)>> = true;
 
 BOOST_AUTO_TEST_SUITE(RulesCheckers)
 
