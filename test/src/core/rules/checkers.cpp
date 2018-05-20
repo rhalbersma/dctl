@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         //static_assert(is_trivial_precedence_v<T>);
         //static_assert(!is_ordering_precedence_v<T>);
         static_assert(!has_bla_v<T>);
-        static_assert(bla_v<T> == 42);
+        //static_assert(bla_v<T> == 42);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
