@@ -14,11 +14,11 @@ using T = checkers;
 
 // primary template handles types that have no nested ::type member:
 template< class, class = std::void_t<> >
-struct has_type_member : std::false_type { };
+constexpr auto has_type_member_v = false;
  
 // specialization recognizes types that do have a nested ::type member:
 template< class T >
-struct has_type_member<T, std::void_t<typename T::type>> : std::true_type { };
+constexpr auto has_type_member_v<T, std::void_t<typename T::type>> = true;
 
 BOOST_AUTO_TEST_SUITE(RulesCheckers)
 
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(!is_long_ranged_king_v<T>);
         //static_assert(is_trivial_precedence_v<T>);
         //static_assert(!is_ordering_precedence_v<T>);
-        static_assert(!has_type_member<T>{});
+        static_assert(!has_type_member_v<T>);
         //static_assert(bla_v<T> == 42);
 }
 
