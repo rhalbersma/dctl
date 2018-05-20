@@ -15,9 +15,6 @@ matrix:
       addons: { apt: { packages: ["g++-8"], sources: ["ubuntu-toolchain-r-test"] } }
 
 install:
-- |
-  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
-  sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
 
 ################################################################################
 # All manual dependencies are installed in ${TRAVIS_BUILD_DIR}/../deps
@@ -34,8 +31,8 @@ install:
   BOOST_URL="https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2"
   mkdir -p boost-1.66.0 && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C boost-1.66.0
   cd boost-1.66.0 
-  ./bootstrap.sh --with-toolset=gcc --with-libraries=test,program_options && sudo ./b2 -d0 install
-  sudo ldconfig /usr/local/lib
+  ./bootstrap.sh --with-toolset=gcc --with-libraries=test,program_options
+  export BOOST_DIR=${DEPS_DIR}/boost-1.66.0
 
 ################################################################################
 # Install the latest CMake
