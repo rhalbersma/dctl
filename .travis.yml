@@ -29,7 +29,7 @@ install:
 - |
   BOOST_VERSION=1.66.0
   BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
-  BOOST_URL="https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION//\./_}.bz2"
+  BOOST_URL="https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION//\./_}.tar.bz2"
   mkdir -p ${BOOST_DIR} && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C ${BOOST_DIR}
   cd ${BOOST_DIR} 
   ./bootstrap.sh --with-toolset=gcc --with-libraries=test,program_options
@@ -38,10 +38,11 @@ install:
 # Install the latest CMake
 ################################################################################
 - |
-  cd ${DEPS_DIR}
-  CMAKE_URL="http://www.cmake.org/files/v3.11/cmake-3.11.1-Linux-x86_64.tar.gz"
-  mkdir -p cmake-3.11.1 && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-3.11.1
-  export PATH=${DEPS_DIR}/cmake-3.11.1/bin:${PATH}
+  CMAKE_VERSION=3.11.1
+  CMAKE_DIR=${DEPS_DIR}/cmake-${CMAKE_VERSION}
+  CMAKE_URL="http://www.cmake.org/files/v${CMAKE_VERSION%.[0-9]}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
+  mkdir -p ${CMAKE_DIR} && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${CMAKE_DIR}
+  export PATH=${CMAKE_DIR}/bin:${PATH}
 
 ################################################################################
 # Install the dependent GitHub repositories xstd and hash_append
