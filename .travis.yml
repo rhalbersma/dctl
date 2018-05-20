@@ -27,12 +27,12 @@ install:
 # Install the latest Boost and build Boost.Test (compiled with g++-8)
 ################################################################################
 - |
-  cd ${DEPS_DIR}
-  BOOST_URL="https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2"
-  mkdir -p boost-1.66.0 && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C boost-1.66.0
-  cd boost-1.66.0 
+  BOOST_VERSION=1.66.0
+  BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
+  BOOST_URL="https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION//\./_}.bz2"
+  mkdir -p ${BOOST_DIR} && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C ${BOOST_DIR}
+  cd ${BOOST_DIR} 
   ./bootstrap.sh --with-toolset=gcc --with-libraries=test,program_options
-  export BOOST_DIR=${DEPS_DIR}/boost-1.66.0
 
 ################################################################################
 # Install the latest CMake
@@ -57,7 +57,7 @@ before_script:
 - |
   cd ${TRAVIS_BUILD_DIR}
   mkdir build && cd build
-  cmake .. -DCMAKE_CXX_COMPILER=${CXX_COMPILER}
+  cmake .. -DCMAKE_CXX_COMPILER=${CXX_COMPILER} -DBOOST_ROOT="${BOOST_DIR}"
  
 script: 
 - |
