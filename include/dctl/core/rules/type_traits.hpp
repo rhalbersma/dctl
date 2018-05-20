@@ -71,7 +71,7 @@ DCTL_PP_TTI_CONSTANT(is_contents_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_modality_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_ordering_precedence, false)
 
-inline constexpr auto trivial_precedence_c = [](auto&&) {
+constexpr auto trivial_precedence_c = [](auto&&) {
         return std::make_tuple();
 };
 
