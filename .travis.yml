@@ -66,8 +66,9 @@ script:
 
 after_success:
 - |
-  lcov --capture --directory .. --output-file coverage.info
-  bash <(curl -s https://codecov.io/bash)
+  if [[ "${CXX_COMPILER}" == "g++-8" ]]; then
+    bash <(curl -s https://codecov.io/bash)
+  fi
 
 notifications:
   email: false

@@ -49,11 +49,12 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 Requirements
 ------------
 
-This header-only library is actively being tested with the following conforming [C++17](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf) compilers:
+These header-only libraries are continuously being tested with the following conforming [C++17](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf) compilers:
 
-| Platform | Compiler       | Minimum version | Continuous integration |
-| :------- | :------------- | --------------: | :--------------------: |
-| Linux    | Clang <br> GCC |     6.0<br> 7.3 | [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) <br> [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) |
+| Platform | Compiler | Versions | Build |
+| :------- | :------- | :------- | :---- |
+| Linux    | Clang <br> GCC | 6.0, 7-SVN<br> 8.1 | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/xstd) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/xstd) |
+| Windows  | Visual Studio  |                    15.7 | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
 
 ##### Boost library
 
