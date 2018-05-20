@@ -7,8 +7,28 @@
 #include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, is_long_ranged_king, is_trivial_precedence
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 
+#include <type_traits>
+
 using namespace dctl::core;
 using T = checkers;
+
+template<class T, class = void>
+constexpr auto has_bla_v = false;
+
+template<class T>
+constexpr auto has_bla_v<T, std::void_t<decltype(
+        T::bla
+)>> = true;
+
+struct default_bla
+{
+        constexpr static auto bla = 42;
+};
+
+template<class T>
+constexpr auto bla_v = std::conditional_t<
+        has_bla_v<T>, T, default_bla
+>::bla;
 
 BOOST_AUTO_TEST_SUITE(RulesCheckers)
 
@@ -17,7 +37,9 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         static_assert(!is_backward_pawn_jump_v<T>);
         static_assert(!is_long_ranged_king_v<T>);
         //static_assert(is_trivial_precedence_v<T>);
-        static_assert(!is_ordering_precedence_v<T>);
+        //static_assert(!is_ordering_precedence_v<T>);
+        static_assert(!has_bla_v<T>);
+        static_assert(bla_v<T> == 42);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
