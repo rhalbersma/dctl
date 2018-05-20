@@ -14,7 +14,7 @@
 using namespace dctl::core;
 using namespace literals;
 
-BOOST_AUTO_TEST_SUITE(angleangle)
+BOOST_AUTO_TEST_SUITE(AngleAngle)
 
 BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllangles)
 {
