@@ -11,9 +11,10 @@
 #include <utility>
 
 using namespace dctl::core;
-using T = checkers;
 
 BOOST_AUTO_TEST_SUITE(RulesCheckers)
+
+using T = checkers;
 
 BOOST_AUTO_TEST_CASE(RuleTraits)
 {
