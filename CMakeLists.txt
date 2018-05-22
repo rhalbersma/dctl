@@ -30,7 +30,7 @@ if(NOT MSVC)
 endif()
 
 target_link_libraries(dctl INTERFACE ${cxx_link_to_file_system})
-#target_compile_features(dctl INTERFACE cxx_std_17)
+target_compile_features(dctl INTERFACE cxx_std_17)
 
 add_subdirectory(example)
 include(CTest)

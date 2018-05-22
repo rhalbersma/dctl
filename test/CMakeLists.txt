@@ -11,8 +11,6 @@ set(cxx_compile_definitions
 set(cxx_compile_options_warnings
     $<$<CXX_COMPILER_ID:MSVC>:
         /W4
-        /std:c++latest
-        /permissive-
     >
     $<$<CXX_COMPILER_ID:Clang>:
         -Weverything
@@ -33,7 +31,6 @@ set(cxx_compile_options_warnings
         -Wsign-promo
     >
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
-        -std=gnu++17
         -Werror
         -pedantic-errors
         -Wno-padded
