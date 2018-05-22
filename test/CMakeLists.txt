@@ -11,6 +11,7 @@ set(cxx_compile_definitions
 set(cxx_compile_options_warnings
     $<$<CXX_COMPILER_ID:MSVC>:
         /W4
+        /std:c++latest
         /permissive-
     >
     $<$<CXX_COMPILER_ID:Clang>:
