@@ -33,6 +33,7 @@ set(cxx_compile_options_warnings
         -Wsign-promo
     >
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
+        -std=gnu++17
         -Werror
         -pedantic-errors
         -Wno-padded
