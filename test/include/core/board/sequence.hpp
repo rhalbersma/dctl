@@ -12,6 +12,7 @@
 
 namespace dctl::core {
 
+// TODO: uncomment checkers, italian, international, frisian
 using Sequence = boost::mpl::vector
 <
         nano,
