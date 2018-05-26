@@ -49,7 +49,7 @@ public:
         constexpr static angle orientation = std::min(
                 { 0_deg, 90_deg, 180_deg, 270_deg },
                 [g = detail::bit_layout{inner_grid, edge}]
-                (auto const lhs, auto const rhs) {
+                (angle const lhs, angle const rhs) {
                         return rotate(g, lhs).size() < rotate(g, rhs).size();
                 }
         );
