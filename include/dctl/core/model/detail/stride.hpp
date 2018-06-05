@@ -61,7 +61,7 @@ template<class Direction, class Set>
 constexpr auto last() noexcept
 {
         if constexpr (is_forward_v<Direction>) {
-                return Set::max_size() - 1;
+                return Set{}.max_size() - 1;
         } else {
                 return 0;
         }
@@ -72,14 +72,14 @@ struct advance
 {
         using set_type = set_t<Board>;
 
-        auto operator()(set_type& s) const
+        auto operator()(set_type& is) const
         {
                 constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
-                static_assert(0 <= n); static_assert(n < set_type::max_size());
+                static_assert(0 <= n); static_assert(n < set_type{}.max_size());
                 if constexpr (!(is_forward_v<Direction> ^ (Distance >= 0))) {
-                        s <<= n;
+                        is <<= n;
                 } else {
-                        s >>= n;
+                        is >>= n;
                 }
         }
 
@@ -97,22 +97,36 @@ struct advance
 template<class Board, class Direction, int Distance = 1>
 struct next
 {
-        template<class InputIterator>
-        constexpr auto operator()(InputIterator it) const
+        using set_type = set_t<Board>;
+
+        auto operator()(set_type is) const
         {
-                advance<Board, Direction, Distance>{}(it);
-                return it;
+                advance<Board, Direction, Distance>{}(is);
+                return is;
+        }
+
+        constexpr auto operator()(int sq) const
+        {
+                advance<Board, Direction, Distance>{}(sq);
+                return sq;
         }
 };
 
 template<class Board, class Direction, int Distance = 1>
 struct prev
 {
-        template<class InputIterator>
-        constexpr auto operator()(InputIterator it) const
+        using set_type = set_t<Board>;
+
+        auto operator()(set_type is) const
         {
-                advance<Board, Direction, -Distance>{}(it);
-                return it;
+                advance<Board, Direction, -Distance>{}(is);
+                return is;
+        }
+
+        constexpr auto operator()(int sq) const
+        {
+                advance<Board, Direction, -Distance>{}(sq);
+                return sq;
         }
 };
 

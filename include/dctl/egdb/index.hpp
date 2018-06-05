@@ -50,7 +50,7 @@ auto colex_unrank_combination(int64_t index, int const N, int const K, UnaryFunc
                 }
                 is.insert(fun(sq));
         }
-        assert(is.count() == K);
+        assert(is.size() == K);
         return is;
 }
 
@@ -64,10 +64,10 @@ public:
         using board_type = core::board_t<Position>;
         using   set_type = core::  set_t<Position>;
 
-        const inline static auto bp_squares = (board_type::squares ^ board_type::promotion(core::black_c)).count();
-        const inline static auto wp_squares = (board_type::squares ^ board_type::promotion(core::white_c)).count();
-        const inline static auto bk_squares =  board_type::squares.count();
-        const inline static auto wk_squares =  board_type::squares.count();
+        const inline static auto bp_squares = (board_type::squares ^ board_type::promotion(core::black_c)).size();
+        const inline static auto wp_squares = (board_type::squares ^ board_type::promotion(core::white_c)).size();
+        const inline static auto bk_squares =  board_type::squares.size();
+        const inline static auto wk_squares =  board_type::squares.size();
 
         int n_count, b_count, w_count;
         int bp_count, wp_count, bk_count, wk_count;
@@ -176,8 +176,8 @@ public:
 private:
         auto count_legal() const
         {
-                auto const b0_squares = board_type::promotion(core::white_c).count();
-                auto const w0_squares = board_type::promotion(core::black_c).count();
+                auto const b0_squares = board_type::promotion(core::white_c).size();
+                auto const w0_squares = board_type::promotion(core::black_c).size();
                 auto const center_squares = board_type::size() - b0_squares - w0_squares;
                 auto n = 0LL;
                 for (auto b0_count  = 0; b0_count <= std::min(b0_squares, bp_count); ++b0_count) {

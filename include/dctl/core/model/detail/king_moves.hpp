@@ -91,7 +91,7 @@ public:
         static auto count(set_type const& kings, set_type const& empty) noexcept
         {
                 return kings.accumulate(0, [&](auto const result, auto const from_sq) {
-                        return result + attacks(from_sq, empty).count();
+                        return result + attacks(from_sq, empty).size();
                 });
         }
 

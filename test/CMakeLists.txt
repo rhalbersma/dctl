@@ -40,11 +40,17 @@ set(cxx_compile_options_warnings
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(cxx_compile_options_coverage
         -g
-        --coverage
+##        --coverage
+        -O3
+        -flto
+        -march=native
+        -mtune=native
     )
 
     set(cxx_linker_options_coverage
-        --coverage
+##        --coverage
+        -flto
+        -fuse-ld=gold
     )
 endif()
 

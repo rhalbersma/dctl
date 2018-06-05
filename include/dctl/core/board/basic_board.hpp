@@ -70,8 +70,8 @@ public:
                 return NumBits;
         }
 
-        using    set_type = xstd::int_set<boost::alignment::align_up(NumBits, xstd::int_set<NumBits>::capacity())>;
-        using square_type = typename boost::uint_value_t<set_type::max_size()>::least;
+        using    set_type = xstd::int_set<static_cast<int>(boost::alignment::align_up(NumBits, sizeof(xstd::int_set<NumBits>) * std::numeric_limits<unsigned char>::digits))>;
+        using square_type = typename boost::uint_value_t<set_type{}.max_size()>::least;
 
         static auto numeric_from_bit(int const n)
         {
@@ -294,7 +294,7 @@ public:
 
         constexpr static auto is_onboard(int const sq) noexcept
         {
-                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type::max_size());
+                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type{}.max_size());
         }
 };
 
