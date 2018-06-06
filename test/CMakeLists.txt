@@ -42,15 +42,15 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         -g
 ##        --coverage
         -O3
-        -flto
+##        -flto
         -march=native
         -mtune=native
     )
 
     set(cxx_linker_options_coverage
 ##        --coverage
-        -flto
-        -fuse-ld=gold
+##        -flto
+##        -fuse-ld=gold
     )
 endif()
 
