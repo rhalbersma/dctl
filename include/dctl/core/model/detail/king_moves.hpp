@@ -11,9 +11,11 @@
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/hana/fold.hpp>                  // fold
 #include <boost/hana/transform.hpp>             // transform
+#include <algorithm>                            // any_of
 #include <array>                                // array
 #include <cstddef>                              // size_t
 #include <functional>                           // bit_or
+#include <numeric>                              // accumulate
 
 namespace dctl::core::model {
 namespace detail {
@@ -46,7 +48,7 @@ class king_moves
 
         inline const static auto attacks_table = []() {
                 std::array<set_type, Board::bits()> result;
-                Board::squares.for_each([&](auto const from_sq) {
+                for (auto const from_sq : Board::squares) {
                         result[static_cast<std::size_t>(from_sq)] =
                                 boost::hana::fold(
                                         boost::hana::transform(king_move_directions, [&](auto const dir) {
@@ -55,7 +57,7 @@ class king_moves
                                         std::bit_or{}
                                 );
                         ;
-                });
+                }
                 return result;
         }();
 
@@ -83,14 +85,14 @@ class king_moves
 public:
         static auto detect(set_type const& kings, set_type const& empty) noexcept
         {
-                return kings.any_of([&](auto const from_sq) {
+                return std::any_of(kings.begin(), kings.end(), [&](auto const from_sq) {
                         return !attacks(from_sq, empty).empty();
                 });
         }
 
         static auto count(set_type const& kings, set_type const& empty) noexcept
         {
-                return kings.accumulate(0, [&](auto const result, auto const from_sq) {
+                return std::accumulate(kings.begin(), kings.end(), 0, [&](auto const result, auto const from_sq) {
                         return result + attacks(from_sq, empty).size();
                 });
         }
@@ -98,11 +100,11 @@ public:
         template<class SequenceContainer>
         static auto generate(set_type const& kings, set_type const& empty, SequenceContainer& seq)
         {
-                kings.for_each([&](auto const from_sq) {
-                        attacks(from_sq, empty).for_each([&](auto const dest_sq) {
+                for (auto const from_sq : kings) {
+                        for (auto const dest_sq : attacks(from_sq, empty)) {
                                 seq.emplace_back(from_sq, dest_sq);
-                        });
-                });
+                        }
+                }
         }
 };
 

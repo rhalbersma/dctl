@@ -19,6 +19,7 @@
 #include <boost/hana/for_each.hpp>              // for_each
 #include <boost/mp11/algorithm.hpp>             // mp_remove_if_q, mp_transform
 #include <boost/mp11/bind.hpp>                  // mp_bind_back
+#include <algorithm>                            // any_of
 #include <cassert>                              // assert
 #include <functional>                           // logical_or
 #include <type_traits>                          // bool_constant
@@ -59,7 +60,7 @@ class king_jumps<Rules, Board, color_<Side>>
 public:
         static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
         {
-                return kings.any_of([&](auto from_sq) {
+                return std::any_of(kings.begin(), kings.end(), [&](auto from_sq) {
                         return boost::hana::fold(
                                 boost::hana::transform(king_jump_directions, [&](auto const dir) {
                                         using direction_t = decltype(dir);
@@ -81,7 +82,7 @@ public:
         static auto generate(Builder& b)
         {
                 raii::set_king_jump g1{b};
-                b.pieces(color_c<Side>, kings_c).for_each([&](auto const from_sq) {
+                for (auto const from_sq : b.pieces(color_c<Side>, kings_c)) {
                         raii::lift guard{from_sq, b};
                         boost::hana::for_each(king_jump_directions, [&](auto const dir) {
                                 using direction_t = decltype(dir);
@@ -96,7 +97,7 @@ public:
                                         capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                                 }
                         });
-                });
+                }
         }
 
         template<class Direction, class Builder>

@@ -140,11 +140,11 @@ private:
         XSTD_PP_CONSTEXPR_INTRINSIC static auto squares_filter(UnaryPredicate pred) noexcept
         {
                 set_type filter;
-                squares.for_each([&](auto const n) {
+                for (auto const n : squares) {
                         if (pred(square_from_bit(n))) {
                                 filter.insert(n);
                         }
-                });
+                }
                 return filter;
         }
 

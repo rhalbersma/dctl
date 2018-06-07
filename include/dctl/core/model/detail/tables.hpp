@@ -55,14 +55,14 @@ class board_scan_sq_dir
 {
         inline const static auto table = []() {
                 std::array<std::array<set_t<Board>, boost::mp11::mp_size<Directions>::value>, Board::bits()> result;
-                Board::squares.for_each([&](auto const sq) {
+                for (auto const sq : Board::squares) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::make_array<Directions>{}([=](auto const dir) {
                                         using direction_t = decltype(dir);
                                         return scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares);
                                 });
                         ;
-                });
+                }
                 return result;
         }();
 public:
@@ -79,11 +79,11 @@ class board_scan_dir_sq
                 return meta::make_array<Directions>{}([](auto const dir) {
                         using direction_t = decltype(dir);
                         std::array<set_t<Board>, Board::bits()> result;
-                        Board::squares.for_each([&](auto const sq) {
+                        for (auto const sq : Board::squares) {
                                 result[static_cast<std::size_t>(sq)] =
                                         scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
                                 ;
-                        });
+                        }
                         return result;
                 });
         }();

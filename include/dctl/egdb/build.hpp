@@ -118,9 +118,9 @@ public:
         auto print_set(IntSet const& is) const
         {
                 std::cout << " { ";
-                is.for_each([&](auto const sq) {
+                for (auto const sq : is) {
                         std::cout << (board_t<State>::square_from_bit(sq)) << ", ";
-                });
+                }
                 std::cout << " } ";
         }
 

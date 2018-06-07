@@ -58,9 +58,9 @@ public:
         {
                 boost::hana::for_each(pawn_move_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
-                        move_squares<Board, direction_t>{}(pawns, empty).for_each([&](auto const dest_sq) {
+                        for(auto const dest_sq : move_squares<Board, direction_t>{}(pawns, empty)) {
                                 seq.emplace_back(prev<Board, direction_t>{}(dest_sq), dest_sq, Board::promotion(Side).contains(dest_sq));
-                        });
+                        }
                 });
         }
 };

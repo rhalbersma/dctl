@@ -10,6 +10,7 @@
 #include <dctl/util/type_traits.hpp>    // board_t, set_t
 #include <cassert>                      // assert
 #include <cstdint>                      // int64_t
+#include <numeric>                      // accumulate
 #include <optional>                     // nullopt, optional
 #include <sstream>                      // stringstream
 #include <iostream>
@@ -23,17 +24,15 @@ namespace dctl::egdb {
 template<class IntSet, class UnaryFunction>
 auto reverse_colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
-        auto index = 0LL;
-        is.reverse_for_each([&, i = 1](auto const sq) mutable {
-                index += choose(fun(sq), i++);
+        return std::accumulate(is.rbegin(), is.rend(), 0LL, [&, i = 1](auto const result, auto const sq) mutable {
+                return result + choose(fun(sq), i++);
         });
-        return index;
 }
 
 template<class IntSet, class UnaryFunction>
 auto colex_rank_combination(IntSet const& is, UnaryFunction fun)
 {
-        return is.accumulate(0LL, [&, i = 1](auto const result, auto const sq) mutable {
+        return std::accumulate(is.begin(), is.end(), 0LL, [&, i = 1](auto const result, auto const sq) mutable {
                 return result + choose(fun(sq), i++);
         });
 }
