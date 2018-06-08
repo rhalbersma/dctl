@@ -54,22 +54,16 @@ public:
                         m_occup ^= a.captured_pieces();
                 }
 
-                m_occup
-                        .erase(a.from())
-                        .insert(a.dest())
-                ;
+                m_occup.erase(a.from());
+                m_occup.insert(a.dest());
                 if constexpr (std::is_same_v<ColorT, color>) {
                         if (c == color::white) {
-                                m_white
-                                        .erase(a.from())
-                                        .insert(a.dest())
-                                ;
+                                m_white.erase(a.from());
+                                m_white.insert(a.dest());
                         }
                 } else if constexpr (std::is_same_v<ColorT, white_>) {
-                        m_white
-                                .erase(a.from())
-                                .insert(a.dest())
-                        ;
+                        m_white.erase(a.from());
+                        m_white.insert(a.dest());
                 }
                 if (a.with() == piece::pawns) {
                         m_pawns.erase(a.from());

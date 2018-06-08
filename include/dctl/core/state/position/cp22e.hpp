@@ -53,10 +53,8 @@ public:
 
                 set_pieces(c, a.with()).erase(a.from());
                 set_pieces(c, a.into()).insert(a.dest());
-                m_empty
-                        .insert(a.from())
-                        .erase(a.dest())
-                ;
+                m_empty.insert(a.from());
+                m_empty.erase(a.dest());
         }
 
         constexpr auto pieces(color const c) const noexcept

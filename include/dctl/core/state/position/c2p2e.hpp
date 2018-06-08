@@ -54,10 +54,8 @@ public:
                         set_pieces(kings_c) -= a.captured_pieces();
                 }
 
-                set_pieces(c)
-                        .erase(a.from())
-                        .insert(a.dest())
-                ;
+                set_pieces(c).erase(a.from());
+                set_pieces(c).insert(a.dest());
                 set_pieces(a.with()).erase(a.from());
                 set_pieces(a.into()).insert(a.dest());
 

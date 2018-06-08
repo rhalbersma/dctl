@@ -53,15 +53,11 @@ public:
                         m_kings -= a.captured_pieces();
                 }
 
-                set_pieces(c)
-                        .erase(a.from())
-                        .insert(a.dest())
-                ;
+                set_pieces(c).erase(a.from());
+                set_pieces(c).insert(a.dest());
                 if (a.with() == piece::kings) {
-                        m_kings
-                                .erase(a.from())
-                                .insert(a.dest())
-                        ;
+                        m_kings.erase(a.from());
+                        m_kings.insert(a.dest());
                 } else if (a.into() == piece::kings) {
                         m_kings.insert(a.dest());
                 }
