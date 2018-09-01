@@ -70,8 +70,6 @@ Clone the `dctl` and the accompanying `xstd` and `hash_append` repositories (con
       cd ~/projects/ 
       git clone https://github.com/rhalbersma/dctl.git
       git clone https://github.com/rhalbersma/xstd.git
-      mkdir ext && cd ext
-      git clone https://github.com/rhalbersma/hash_append.git
 
 ##### Test-suite
 
