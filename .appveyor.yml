@@ -19,17 +19,9 @@ before_build:
     git clone https://github.com/rhalbersma/xstd.git
 
     git clone https://github.com/rhalbersma/int_set.git
-    
-    mkdir ext
-
-    cd ext
-
-    git clone https://github.com/rhalbersma/hash_append.git
-
-    cd ..
-    
+      
     cd %APPVEYOR_BUILD_FOLDER%
-    
+
     mkdir build         
     
     cd build       

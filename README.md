@@ -65,11 +65,12 @@ Installation
 
 ##### Download
 
-Clone the `dctl` and the accompanying `xstd` and `hash_append` repositories (containing C++ Standard Library extensions headers) to a directory of your choice: 
+Clone the `dctl` and the accompanying `xstd` and `int_set` repositories to a directory of your choice:
 
       cd ~/projects/ 
       git clone https://github.com/rhalbersma/dctl.git
       git clone https://github.com/rhalbersma/xstd.git
+      git clone https://github.com/rhalbersma/int_set.git
 
 ##### Test-suite
 

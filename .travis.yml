@@ -48,7 +48,7 @@ install:
   export PATH=${CMAKE_DIR}/bin:${PATH}
 
 ################################################################################
-# Install the dependent GitHub repositories xstd and hash_append
+# Install the dependent GitHub repositories xstd and int_set
 ################################################################################
 - |
   cd ${THIRD_PARTY_DIR}/..
