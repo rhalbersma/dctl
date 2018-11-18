@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-//#include <experimental/array>         // make_array
-#include <dctl/util/make_array.hpp>     // make_array
+#include <experimental/array>         // make_array
+//#include <dctl/util/make_array.hpp>     // make_array
 
 namespace dctl::core {
 namespace meta {
@@ -33,7 +33,7 @@ struct make_array<L<T...>>
         template<class UnaryFunction>
         constexpr auto operator()(UnaryFunction fun) const
         {
-                return xstd::experimental::make_array(fun(T{})...);
+                return std::experimental::make_array(fun(T{})...);
         }
 };
 

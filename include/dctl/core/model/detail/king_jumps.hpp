@@ -56,7 +56,6 @@ class king_jumps<Rules, Board, color_<Side>>
         template<class Direction>
         using king_turn_directions_t = boost::mp11::mp_remove_if_q<king_jump_directions_t, boost::mp11::mp_bind_back<is_forward_or_reverse, Direction>>;
 
-        constexpr static auto GCC7_ICE_WORK_AROUND = is_long_ranged_king_v<rules_type>;
 public:
         static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
         {
