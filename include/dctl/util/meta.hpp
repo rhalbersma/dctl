@@ -6,7 +6,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <experimental/array>         // make_array
-//#include <dctl/util/make_array.hpp>     // make_array
 
 namespace dctl::core {
 namespace meta {
