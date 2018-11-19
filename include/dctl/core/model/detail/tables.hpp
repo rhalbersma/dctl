@@ -9,7 +9,7 @@
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/meta.hpp>                   // make_array, foldl_bit_or, foldl_comma
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <boost/mp11/list.hpp>                  // mp_size
+#include <boost/hana/size.hpp>                  // size
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
@@ -17,6 +17,9 @@
 
 namespace dctl::core::model {
 namespace detail {
+
+template<class Tuple>
+constexpr auto tuple_size = decltype(boost::hana::size(std::declval<Tuple>()))::value;
 
 template<class Board, class Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
 struct scan
@@ -54,7 +57,7 @@ template<class Board, class Directions, bool IsLongRanged, bool IncludesFrom, bo
 class board_scan_sq_dir
 {
         inline const static auto table = []() {
-                std::array<std::array<set_t<Board>, boost::mp11::mp_size<Directions>::value>, Board::bits()> result;
+                std::array<std::array<set_t<Board>, tuple_size<Directions>>, Board::bits()> result;
                 for (auto const sq : Board::squares) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::make_array<Directions>{}([=](auto const dir) {
