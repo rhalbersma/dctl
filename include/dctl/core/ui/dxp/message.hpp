@@ -450,12 +450,12 @@ public:
                 m_registry{{Ts::header(), [](auto const& arg){ return Ts(arg); }}...}
         {}
 
-        auto operator()(std::string const& in) const
+        auto operator()(std::string const& arg) const
         {
-                if (auto const it = m_registry.find(in.substr(0, 1)); it != m_registry.end()) {
-                        return (it->second)(in.substr(1));
+                if (auto const it = m_registry.find(arg.substr(0, 1)); it != m_registry.end()) {
+                        return (it->second)(arg.substr(1));
                 } else {
-                        throw std::invalid_argument(in);
+                        throw std::invalid_argument(arg);
                 }
         }
 };
