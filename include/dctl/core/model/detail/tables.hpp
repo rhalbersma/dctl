@@ -7,7 +7,7 @@
 
 #include <dctl/core/model/detail/stride.hpp>    // find_first, advance, next
 #include <dctl/core/rules/type_traits.hpp>
-#include <dctl/util/meta.hpp>                   // make_array, foldl_bit_or, foldl_comma
+#include <dctl/util/meta.hpp>                   // make_array
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <boost/hana/size.hpp>                  // size
 #include <array>                                // array
