@@ -93,7 +93,7 @@ private:
         template<class Direction, class Builder>
         static auto next_target(int const sq, Builder& b)
         {
-                constexpr static auto is_reverse = [](auto const arg) {
+                constexpr auto is_reverse = [](auto const arg) {
                         return boost::hana::decltype_(arg) == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
                 };
  

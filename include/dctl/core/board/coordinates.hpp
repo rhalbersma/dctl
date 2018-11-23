@@ -8,7 +8,7 @@
 #include <dctl/core/board/angle.hpp>    // angle
 #include <dctl/util/type_traits.hpp>    // value_t
 #include <cassert>                      // assert
-#include <tuple>                        // make_tuple
+#include <tuple>                        // tie
 
 namespace dctl::core {
 
@@ -24,15 +24,10 @@ struct coordinates
 };
 
 template<class Origin>
-constexpr auto as_tuple(coordinates<Origin> const coord) noexcept
-{
-        return std::make_tuple(coord.x, coord.y);
-}
-
-template<class Origin>
 constexpr auto operator==(coordinates<Origin> const lhs, coordinates<Origin> const rhs) noexcept
 {
-        return as_tuple(lhs) == as_tuple(rhs);
+        constexpr auto tied = [](auto const& coord) { return std::tie(coord.x, coord.y); };
+        return tied(lhs) == tied(rhs);
 }
 
 template<class Origin>
