@@ -11,23 +11,10 @@ namespace dctl::core {
 namespace meta {
 
 template<class L>
-struct foldl_bit_or;
+struct transformed_array_from_type_list;
 
 template<template<class...> class L, class... T>
-struct foldl_bit_or<L<T...>>
-{
-        template<class UnaryFunction>
-        constexpr auto operator()(UnaryFunction fun) const
-        {
-                return (... | fun(T{}));
-        }
-};
-
-template<class L>
-struct make_array;
-
-template<template<class...> class L, class... T>
-struct make_array<L<T...>>
+struct transformed_array_from_type_list<L<T...>>
 {
         template<class UnaryFunction>
         constexpr auto operator()(UnaryFunction fun) const

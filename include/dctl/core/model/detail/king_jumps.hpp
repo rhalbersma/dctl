@@ -13,12 +13,11 @@
 #include <dctl/core/state/color_piece.hpp>      // color, color_, king_
 #include <dctl/core/rules/type_traits.hpp>      // is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
-#include <dctl/util/meta.hpp>                   // foldl_logical_or, foldl_comma, foldl_bit_or
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
 #include <boost/hana/fold.hpp>                  // fold
 #include <boost/hana/for_each.hpp>              // for_each
-#include <boost/mp11/algorithm.hpp>             // mp_remove_if_q, mp_transform
-#include <boost/mp11/bind.hpp>                  // mp_bind_back
+#include <boost/hana/or.hpp>                    // or_
+#include <boost/hana/remove_if.hpp>             // remove_if
 #include <algorithm>                            // any_of
 #include <cassert>                              // assert
 #include <functional>                           // logical_or
@@ -38,23 +37,6 @@ class king_jumps<Rules, Board, color_<Side>>
         using   set_type = set_t<Board>;
 
         constexpr static auto king_jump_directions = king_jump_directions_v<rules_type>;
-
-        using king_jump_directions_t = std::decay_t<decltype(king_jump_directions)>;
-
-        template<class Arg, class Direction>
-        using is_forward = std::bool_constant<Arg::value == Direction::value>;
-
-        template<class Arg, class Direction>
-        using is_reverse = std::bool_constant<Arg::value == rotate_v<Direction::value, 180>>;
-
-        template<class Arg, class Direction>
-        using is_forward_or_reverse = std::disjunction<is_forward<Arg, Direction>, is_reverse<Arg, Direction>>;
-
-        template<class Direction>
-        using king_scan_directions_t = boost::mp11::mp_remove_if_q<king_jump_directions_t, boost::mp11::mp_bind_back<is_reverse, Direction>>;
-
-        template<class Direction>
-        using king_turn_directions_t = boost::mp11::mp_remove_if_q<king_jump_directions_t, boost::mp11::mp_bind_back<is_forward_or_reverse, Direction>>;
 
 public:
         static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
@@ -102,10 +84,24 @@ public:
         template<class Direction, class Builder>
         static auto next_target_passing_promotion(int const sq, Builder& b)
         {
+                constexpr static auto hana_is_forward = [](auto const arg) {
+                        return boost::hana::decltype_(arg) == boost::hana::int_c<Direction::value>;
+                };
+
+                constexpr static auto hana_is_reverse = [](auto const arg) {
+                        return boost::hana::decltype_(arg) == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
+                };
+
+                constexpr static auto hana_is_forward_or_reverse = [](auto const arg) {
+                        return boost::hana::or_(hana_is_forward(arg), hana_is_reverse(arg));
+                };
+
+                constexpr auto hana_king_turn_directions = boost::hana::remove_if(king_jump_directions, hana_is_forward_or_reverse);
+
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(b.with() == piece::pawns);
                 b.into(piece::kings);
-                return scan<king_turn_directions_t<Direction>>(sq, b);
+                return scan(hana_king_turn_directions, sq, b);
         }
 private:
         template<class Direction, class Builder>
@@ -143,37 +139,55 @@ private:
         template<class Direction, class Builder>
         static auto next_target(int sq, int n [[maybe_unused]], Builder& b)
         {
+                constexpr static auto hana_is_forward = [](auto const arg) {
+                        return boost::hana::decltype_(arg) == boost::hana::int_c<Direction::value>;
+                };
+
+                constexpr static auto hana_is_reverse = [](auto const arg) {
+                        return boost::hana::decltype_(arg) == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
+                };
+
+                constexpr static auto hana_is_forward_or_reverse = [](auto const arg) {
+                        return boost::hana::or_(hana_is_forward(arg), hana_is_reverse(arg));
+                };
+
+                constexpr auto hana_king_scan_directions [[maybe_unused]] = boost::hana::remove_if(king_jump_directions, hana_is_reverse);
+                constexpr auto hana_king_turn_directions [[maybe_unused]] = boost::hana::remove_if(king_jump_directions, hana_is_forward_or_reverse);
+
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
-                        return scan<king_jump_directions_t>(sq, b);
+                        return scan(king_jump_directions, sq, b);
                 } else if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return scan<king_scan_directions_t<Direction>>(sq, b);
+                        return scan(hana_king_scan_directions, sq, b);
                 } else {
-                        auto found_next = scan<king_scan_directions_t<Direction>>(sq, b);
+                        auto found_next = scan(hana_king_scan_directions, sq, b);
                         while (--n) {
                                 advance<board_type, Direction>{}(sq);
-                                found_next |= scan<king_turn_directions_t<Direction>>(sq, b);
+                                found_next |= scan(hana_king_turn_directions, sq, b);
                         }
                         return found_next;
                 }
         }
 
         template<class Directions, class Builder>
-        static auto scan(int const sq, Builder& b)
+        static auto scan(Directions directions, int const sq, Builder& b)
         {
-                return meta::foldl_bit_or<Directions>{}([&](auto const dir) {
-                        using direction_t = decltype(dir);
-                        if constexpr (is_long_ranged_king_v<rules_type>) {
-                                auto const blockers = king_jump<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
-                                if (blockers.empty()) { return false; }
-                                auto const first = find_first<direction_t>(blockers);
-                                if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
-                                capture<direction_t>(next<board_type, direction_t>{}(first), b);
-                        } else {
-                                if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
-                                capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
-                        }
-                        return true;
-                });
+                return boost::hana::fold(
+                        boost::hana::transform(directions, [&](auto const dir) {
+                                using direction_t = decltype(dir);
+                                if constexpr (is_long_ranged_king_v<rules_type>) {
+                                        auto const blockers = king_jump<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
+                                        if (blockers.empty()) { return false; }
+                                        auto const first = find_first<direction_t>(blockers);
+                                        if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
+                                        capture<direction_t>(next<board_type, direction_t>{}(first), b);
+                                } else {
+                                        if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                                        capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
+                                }
+                                return true;
+                        }),
+                        std::bit_or{}
+                );                
         }
 };
 

@@ -55,7 +55,7 @@ class king_moves
                                                 return king_move_scan<decltype(dir)>(from_sq);
                                         }),
                                         std::bit_or{}
-                                );
+                                )
                         ;
                 }
                 return result;
