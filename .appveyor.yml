@@ -1,15 +1,20 @@
 image:
   - Visual Studio 2017 Preview
- 
+
 environment:
-    generator: "Visual Studio 15 2017 Win64"
-    BOOST_ROOT: C:/Libraries/boost_1_67_0
-    BOOST_LIBRARYDIR: C:/Libraries/boost_1_67_0/lib64-msvc-14.1
-    PATH: "%BOOST_LIBRARYDIR%;%PATH%"
-    
+  BOOST_ROOT: C:/Libraries/boost_1_67_0
+  matrix:
+    - platform: x86
+      GENERATOR: "Visual Studio 15 2017"
+      BOOST_LIBRARYDIR: "%BOOST_ROOT%/lib32-msvc-14.1"
+    - platform: x64
+      GENERATOR: "Visual Studio 15 2017 Win64"
+      BOOST_LIBRARYDIR: "%BOOST_ROOT%/lib64-msvc-14.1"
+
 configuration:
   - Debug
-    
+  - Release
+
 before_build:
 - cmd: >-
     cd %APPVEYOR_BUILD_FOLDER%
@@ -29,9 +34,7 @@ before_build:
     cmake .. -G "%generator%"   
 
 build_script:
-- cmd: >-
-    cmake --build .
-    
+- cmake --build .
+
 test_script:
-- cmd: >-
-    ctest
+- ctest -E "search|traversal"
