@@ -63,10 +63,10 @@ public:
         using board_type = core::board_t<Position>;
         using   set_type = core::  set_t<Position>;
 
-        const inline static auto bp_squares = (board_type::squares ^ board_type::promotion(core::black_c)).size();
-        const inline static auto wp_squares = (board_type::squares ^ board_type::promotion(core::white_c)).size();
-        const inline static auto bk_squares =  board_type::squares.size();
-        const inline static auto wk_squares =  board_type::squares.size();
+        inline const static auto bp_squares = (board_type::squares ^ board_type::promotion(core::black_c)).size();
+        inline const static auto wp_squares = (board_type::squares ^ board_type::promotion(core::white_c)).size();
+        inline const static auto bk_squares =  board_type::squares.size();
+        inline const static auto wk_squares =  board_type::squares.size();
 
         int n_count, b_count, w_count;
         int bp_count, wp_count, bk_count, wk_count;
