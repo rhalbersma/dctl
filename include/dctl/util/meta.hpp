@@ -5,10 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <experimental/array>   // make_array
+#include <array>        // array
 
-namespace dctl::core {
-namespace meta {
+namespace dctl::core::meta {
 
 template<class L>
 struct transformed_array_from_type_list;
@@ -19,9 +18,8 @@ struct transformed_array_from_type_list<L<T...>>
         template<class UnaryFunction>
         constexpr auto operator()(UnaryFunction fun) const
         {
-                return std::experimental::make_array(fun(T{})...);
+                return std::array{fun(T{})...};
         }
 };
 
-}       // namespace meta
-}       // namespace dctl::core
+}       // namespace dctl::core::meta
