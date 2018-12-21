@@ -72,7 +72,8 @@ public:
 
         constexpr static auto xyz = static_cast<int>(boost::alignment::align_up(NumBits, sizeof(xstd::int_set<NumBits>) * std::numeric_limits<unsigned char>::digits));
         using    set_type = xstd::int_set<xyz>;
-        using square_type = typename boost::uint_value_t<set_type{}.max_size()>::least;
+        constexpr static auto abc = set_type::max_size();
+        using square_type = typename boost::uint_value_t<abc>::least;
 
         static auto numeric_from_bit(int const n)
         {
