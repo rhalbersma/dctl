@@ -24,12 +24,19 @@ struct spanish
         constexpr static auto is_quantity_precedence = true;
         constexpr static auto is_contents_precedence = true;
 
-        constexpr static auto precedence = [](auto const& a) {
-                return std::make_tuple(
-                        a.num_captured_pieces(),
-                        a.num_captured_kings()
-                );
+        struct msvc_workaround
+        {
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
+                {
+                        return std::make_tuple(
+                                a.num_captured_pieces(),
+                                a.num_captured_kings()
+                        );
+                }
         };
+
+        constexpr static auto precedence = msvc_workaround{};
 };
 
 }       // namespace block_adl

@@ -34,14 +34,21 @@ struct frisian
         constexpr static auto pawn_jump_directions = boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
         constexpr static auto king_jump_directions = boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
 
-        constexpr static auto precedence = [](auto const& a) {
-                constexpr auto max_captured_pieces = set_t<board_t<std::decay_t<decltype(a)>>>::max_size();
-                auto const num_captured_kings = a.num_captured_kings();
-                return std::make_tuple(
-                        (a.num_captured_pieces() + num_captured_kings) * max_captured_pieces - num_captured_kings,
-                        a.is_with_king()
-                );
+        struct msvc_workaround
+        {
+                template<class Action>
+                constexpr auto operator()(Action const& a) const noexcept
+                {
+                        constexpr auto max_captured_pieces = set_t<board_t<std::decay_t<decltype(a)>>>::max_size();
+                        auto const num_captured_kings = a.num_captured_kings();
+                        return std::make_tuple(
+                                (a.num_captured_pieces() + num_captured_kings) * max_captured_pieces - num_captured_kings,
+                                a.is_with_king()
+                        );
+                }
         };
+
+        constexpr static auto precedence = msvc_workaround{};
 };
 
 }       // namespace block_adl
