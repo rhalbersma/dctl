@@ -49,7 +49,7 @@ public:
         constexpr static auto orientation = std::min(
                 { 0_deg, 90_deg, 180_deg, 270_deg },
                 [g = detail::bit_layout{inner_grid, edge}]
-                (auto const lhs, auto const rhs) {
+                (angle const lhs, angle const rhs) {
                         return rotate(g, lhs).size() < rotate(g, rhs).size();
                 }
         );
@@ -86,8 +86,8 @@ public:
         static auto algebraic_from_bit(int const n)
         {
                 assert(0 <= n); assert(n < NumBits);
-                constexpr auto file_label = [](auto const f) { return static_cast<char>('a' + f); };
-                constexpr auto rank_label = [](auto const r) { return 1 + r;                      };
+                constexpr auto file_label = [](int const f) { return static_cast<char>('a' + f); };
+                constexpr auto rank_label = [](int const r) { return 1 + r;                      };
                 std::stringstream sstr;
                 auto const coord = to_llo(square_from_bit(n), inner_grid);
                 sstr << file_label(coord.x) << rank_label(coord.y);
@@ -155,7 +155,7 @@ private:
                 for (auto&& c : { color::black, color::white }) {
                         for (auto f = 0; f < width; ++f) {
                                 table[xstd::to_underlying_type(c)][static_cast<std::size_t>(f)] =
-                                        squares_filter([=](auto const sq) {
+                                        squares_filter([=](int const sq) {
                                                 return to_llo(sq, inner_grid).x == (c == color::white ? f : width - 1 - f);
                                         })
                                 ;
@@ -169,7 +169,7 @@ private:
                 for (auto&& c : { color::black, color::white }) {
                         for (auto r = 0; r < height; ++r) {
                                 table[xstd::to_underlying_type(c)][static_cast<std::size_t>(r)] =
-                                        squares_filter([=](auto const sq) {
+                                        squares_filter([=](int const sq) {
                                                 return to_llo(sq, inner_grid).y == (c == color::white ? r : height - 1 - r);
                                         })
                                 ;
@@ -185,7 +185,7 @@ private:
         DCTL_PP_CONSTEXPR_INTRINSIC static auto jump_start_table = []() {
                 std::array<set_type, num_segments> table;
                 for (auto segment = 0; segment < num_segments; ++segment) {
-                        table[static_cast<std::size_t>(segment)] = squares_filter([=](auto const sq) {
+                        table[static_cast<std::size_t>(segment)] = squares_filter([=](int const sq) {
                                 auto const alpha = rotate(segment * theta + beta, inverse(orientation));
                                 auto const offset = is_diagonal(alpha) ? 2 : 4;
                                 auto const min_x = is_left(alpha) ? offset : 0;
@@ -205,7 +205,7 @@ private:
         template<int FromSquare>
         XSTD_PP_CONSTEXPR_INTRINSIC static auto init_jump_group() noexcept
         {
-                return squares_filter([](auto const dest_sq) {
+                return squares_filter([](int const dest_sq) {
                         auto const from_coord = to_llo(FromSquare, inner_grid);
                         auto const dest_coord = to_llo(dest_sq   , inner_grid);
                         auto const delta_x = xstd::euclidean_div(from_coord.x - dest_coord.x, 4).rem;
