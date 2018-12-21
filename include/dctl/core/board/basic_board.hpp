@@ -46,10 +46,10 @@ public:
 
         constexpr static auto edge = is_orthogonal_jump ? 2 : 1;
         constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
-        constexpr static angle orientation = std::min(
+        constexpr static auto orientation = std::min(
                 { 0_deg, 90_deg, 180_deg, 270_deg },
                 [g = detail::bit_layout{inner_grid, edge}]
-                (angle const lhs, angle const rhs) {
+                (auto const lhs, auto const rhs) {
                         return rotate(g, lhs).size() < rotate(g, rhs).size();
                 }
         );
@@ -296,7 +296,7 @@ public:
 
         constexpr static auto is_onboard(int const sq) noexcept
         {
-                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type{}.max_size());
+                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type::max_size());
         }
 };
 
