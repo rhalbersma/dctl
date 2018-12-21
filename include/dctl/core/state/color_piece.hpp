@@ -27,8 +27,8 @@ constexpr auto is_color_v = is_any_of_v<ColorT, color, black_, white_>;
 template<color Side>
 constexpr auto color_c = color_<Side>{};
 
-constexpr auto black_c = color_c<color::black>;
-constexpr auto white_c = color_c<color::white>;
+inline constexpr auto black_c = color_c<color::black>;
+inline constexpr auto white_c = color_c<color::white>;
 
 constexpr auto operator!(color const c) noexcept
 {
@@ -58,16 +58,16 @@ constexpr auto is_piece_v = is_any_of_v<PieceT, piece, pawns_, kings_>;
 template<piece Type>
 constexpr auto piece_c = piece_<Type>{};
 
-constexpr auto pawns_c = piece_c<piece::pawns>;
-constexpr auto kings_c = piece_c<piece::kings>;
+inline constexpr auto pawns_c = piece_c<piece::pawns>;
+inline constexpr auto kings_c = piece_c<piece::kings>;
 
 struct occup_ {};
 struct empty_ {};
 
-constexpr auto occup_c = occup_{};
-constexpr auto empty_c = empty_{};
+inline constexpr auto occup_c = occup_{};
+inline constexpr auto empty_c = empty_{};
 
 struct nullmove_t {};
-constexpr auto nullmove = nullmove_t{};
+inline constexpr auto nullmove = nullmove_t{};
 
 }       // namespace dctl::core

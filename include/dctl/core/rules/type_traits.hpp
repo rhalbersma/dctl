@@ -71,7 +71,7 @@ DCTL_PP_TTI_CONSTANT(is_contents_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_modality_precedence, false)
 DCTL_PP_TTI_CONSTANT(is_ordering_precedence, false)
 
-constexpr auto trivial_precedence_c = [](auto&&) {
+inline constexpr auto trivial_precedence_c = [](auto&&) {
         return std::make_tuple();
 };
 
@@ -219,14 +219,14 @@ constexpr auto notation_v =
 
 */
 
-constexpr auto dir_E  =   0;
-constexpr auto dir_NE =  45;
-constexpr auto dir_N  =  90;
-constexpr auto dir_NW = 135;
-constexpr auto dir_W  = 180;
-constexpr auto dir_SW = 225;
-constexpr auto dir_S  = 270;
-constexpr auto dir_SE = 315;
+inline constexpr auto dir_E  =   0;
+inline constexpr auto dir_NE =  45;
+inline constexpr auto dir_N  =  90;
+inline constexpr auto dir_NW = 135;
+inline constexpr auto dir_W  = 180;
+inline constexpr auto dir_SW = 225;
+inline constexpr auto dir_S  = 270;
+inline constexpr auto dir_SE = 315;
 
 DCTL_PP_TTI_CONSTANT(pawn_move_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
 DCTL_PP_TTI_CONSTANT(pawn_jump_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
