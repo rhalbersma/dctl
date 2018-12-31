@@ -7,7 +7,7 @@ set(project_include_dir
 )
 
 set(xstd_include_dir ${PROJECT_SOURCE_DIR}/../xstd/include)
-set(int_set_include_dir ${PROJECT_SOURCE_DIR}/../int_set/include)
+set(bit_set_include_dir ${PROJECT_SOURCE_DIR}/../bit_set/include)
 set(ext_include_dir ${PROJECT_SOURCE_DIR}/../ext)
 
 find_package(Boost 1.66.0 REQUIRED COMPONENTS
@@ -19,7 +19,7 @@ add_library(dctl INTERFACE)
 target_include_directories(dctl INTERFACE
 	${project_include_dir}
 	${xstd_include_dir}
-	${int_set_include_dir}
+	${bit_set_include_dir}
 	${ext_include_dir}
 )
 

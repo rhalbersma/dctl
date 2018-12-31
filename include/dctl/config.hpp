@@ -7,7 +7,7 @@
 
 #if defined(__GNUG__)
 
-#define DCTL_PP_CONSTEXPR_INTRINSIC inline const /* constexpr */
+#define DCTL_PP_CONSTEXPR_INTRINSIC constexpr
 
 #elif defined(_MSC_VER)
 

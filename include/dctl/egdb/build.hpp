@@ -115,7 +115,7 @@ public:
         // for debugging
 
         template<class IntSet>
-        auto print_set(IntSet const& is) const
+        auto prbit_set(IntSet const& is) const
         {
                 std::cout << " { ";
                 for (auto const sq : is) {

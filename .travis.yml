@@ -47,12 +47,12 @@ install:
   export PATH=${CMAKE_DIR}/bin:${PATH}
 
 ################################################################################
-# Install the dependent GitHub repositories xstd and int_set
+# Install the dependent GitHub repositories xstd and bit_set
 ################################################################################
 - |
   cd ${THIRD_PARTY_DIR}/..
   git clone https://github.com/rhalbersma/xstd.git
-  git clone https://github.com/rhalbersma/int_set.git
+  git clone https://github.com/rhalbersma/bit_set.git
 
 before_script:
 - |

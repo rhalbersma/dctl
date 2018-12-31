@@ -11,8 +11,8 @@
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
 #include <dctl/core/rules/type_traits.hpp>              // width_v, height_v, is_inverted_v, is_orthogonal_jump_v
 #include <dctl/core/state/color_piece.hpp>              // black, white
+#include <xstd/bit_set.hpp>                             // bit_set
 #include <xstd/cstdlib.hpp>                             // euclidean_div
-#include <xstd/int_set.hpp>                             // int_set
 #include <boost/align/align_up.hpp>                     // align_up
 #include <boost/integer.hpp>                            // uint_value_t
 #include <algorithm>                                    // min
@@ -70,8 +70,8 @@ public:
                 return NumBits;
         }
 
-        constexpr static auto xyz = static_cast<int>(boost::alignment::align_up(NumBits, sizeof(xstd::int_set<NumBits>) * std::numeric_limits<unsigned char>::digits));
-        using    set_type = xstd::int_set<xyz>;
+        constexpr static auto xyz = static_cast<int>(boost::alignment::align_up(NumBits, sizeof(xstd::bit_set<NumBits>) * std::numeric_limits<unsigned char>::digits));
+        using    set_type = xstd::bit_set<xyz>;
         constexpr static auto abc = set_type::max_size();
         using square_type = typename boost::uint_value_t<abc>::least;
 
@@ -286,7 +286,7 @@ public:
 
         constexpr static auto is_square(coordinates<upper_left> const& coord) noexcept
         {
-                return ((coord.x % 2) ^ (coord.y % 2)) != inner_grid.upper_left_is_square();
+                return static_cast<bool>((coord.x % 2) ^ (coord.y % 2)) != inner_grid.upper_left_is_square();
         }
 
         constexpr static auto to_square(coordinates<upper_left> const& coord) noexcept

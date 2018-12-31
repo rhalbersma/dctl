@@ -67,12 +67,12 @@ Installation
 
 ##### Download
 
-Clone the `dctl` and the accompanying `xstd` and `int_set` repositories to a directory of your choice:
+Clone the `dctl` and the accompanying `xstd` and `bit_set` repositories to a directory of your choice:
 
       cd ~/projects/ 
       git clone https://github.com/rhalbersma/dctl.git
       git clone https://github.com/rhalbersma/xstd.git
-      git clone https://github.com/rhalbersma/int_set.git
+      git clone https://github.com/rhalbersma/bit_set.git
 
 ##### Test-suite
 
