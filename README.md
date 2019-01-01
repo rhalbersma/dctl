@@ -103,6 +103,6 @@ Special thanks to Aart Bik, Ed Gilbert, Walter Thoen and Wieger Wesselink for en
 License
 -------
 
-Copyright Rein Halbersma 2010 - 2018.   
-Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).   
+Copyright Rein Halbersma 2010-2019.  
+Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).  
 (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
