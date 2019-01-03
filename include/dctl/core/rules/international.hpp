@@ -33,16 +33,9 @@ struct international
 
         constexpr static auto pawn_jump_directions = boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
 
-        struct msvc_workaround
-        {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
-                {
-                        return a.num_captured_pieces();
-                }
+        constexpr static auto precedence = [](auto const& a) {
+                return a.num_captured_pieces();
         };
-
-        constexpr static auto precedence = msvc_workaround{};
 
         constexpr static auto is_passing_promotion      = false;        // 4.15 (and 3.5)
 

@@ -78,11 +78,11 @@ class jumps<color_<Side>, DuplicatesPolicy>
         template<class State> using pawn_jumps = detail::pawn_jumps<rules_t<State>, board_t<State>, to_move_>;
 
         template<class State>
-        constexpr auto static msvc_workaround = is_trivial_precedence_v<rules_t<State>> && std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>;
+        constexpr auto static MSVC_WORKAROUND = is_trivial_precedence_v<rules_t<State>> && std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>;
 
         template<class State, class Action>
         using container_type = std::conditional_t<
-                msvc_workaround<State>,
+                MSVC_WORKAROUND<State>,
                 counter_container<Action>,
                 default_container<Action>
         >;

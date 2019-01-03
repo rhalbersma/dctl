@@ -31,21 +31,14 @@ struct italian
         constexpr static auto is_contents_precedence    = true;         // 6.8
         constexpr static auto is_ordering_precedence    = true;         // 6.9
 
-        struct msvc_workaround
-        {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
-                {
-                        return std::make_tuple(
-                                a.num_captured_pieces(),
-                                a.is_with_king(),
-                                a.num_captured_kings(),
-                                a.piece_order()
-                        );
-                }
+        constexpr static auto precedence = [](auto const& a) {
+                return std::make_tuple(
+                        a.num_captured_pieces(),
+                        a.is_with_king(),
+                        a.num_captured_kings(),
+                        a.piece_order()
+                );
         };
-
-        constexpr static auto precedence = msvc_workaround{};
 
         constexpr static auto max_repetitions           = 4;            // 9.3(b1)
         constexpr static auto max_reversible_moves      = 80;           // 10.4

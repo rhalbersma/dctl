@@ -21,16 +21,9 @@ struct czech
         constexpr static auto is_backward_pawn_jump     = false;        // 4.1
         constexpr static auto is_modality_precedence    = true;         // 4.14
 
-        struct msvc_workaround
-        {
-                template<class Action>
-                constexpr auto operator()(Action const& a) const noexcept
-                {
-                        return a.is_with_king();
-                }
+        constexpr static auto precedence = [](auto const& a) {
+                return a.is_with_king();
         };
-
-        constexpr static auto precedence = msvc_workaround{};
 };
 
 }       // namespace block_adl
