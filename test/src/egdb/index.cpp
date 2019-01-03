@@ -35,9 +35,9 @@ BOOST_AUTO_TEST_CASE(NumeralIsInverseOfPosition)
         };
 
         for (auto const& subdb : subdivisions) {
-                for (auto n = 0LL; n < subdb.size(); ++n) {
-                        if (auto const p = subdb.position(n)) {
-                                BOOST_CHECK_EQUAL(subdb.index(p.value()), n);
+                for (auto i = 0LL; i < subdb.size(); ++i) {
+                        if (auto const p = subdb.position(i); p) {
+                                BOOST_CHECK_EQUAL(subdb.index(p.value()), i);
                         }
                 }
         }

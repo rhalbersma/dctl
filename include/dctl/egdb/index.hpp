@@ -42,7 +42,7 @@ auto colex_unrank_combination(int64_t index, int const N, int const K, UnaryFunc
 {
         assert(0 <= K); assert(K <= N);
         assert(0 <= index); assert(index < choose(N, K));
-        IntSet is{};
+        IntSet is;
         for (auto sq = N - 1, i = K; i > 0; index -= choose(sq--, i--)) {
                 while (choose(sq, i) > index) {
                         --sq;
@@ -63,10 +63,15 @@ public:
         using board_type = core::board_t<Position>;
         using   set_type = core::  set_t<Position>;
 
-        inline const static auto bp_squares = (board_type::squares - board_type::promotion(core::black_c)).size();
-        inline const static auto wp_squares = (board_type::squares - board_type::promotion(core::white_c)).size();
-        inline const static auto bk_squares = board_type::squares.size();
-        inline const static auto wk_squares = board_type::squares.size();
+private:
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto CLANG_WORKAROUND_bp_squares = board_type::squares - board_type::promotion(core::black_c);
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto CLANG_WORKAROUND_wp_squares = board_type::squares - board_type::promotion(core::white_c);
+
+public:
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto bp_squares = CLANG_WORKAROUND_bp_squares.size();
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto wp_squares = CLANG_WORKAROUND_wp_squares.size();
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto bk_squares = board_type::squares.size();
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto wk_squares = board_type::squares.size();
 
         int n_count, b_count, w_count;
         int bp_count, wp_count, bk_count, wk_count;

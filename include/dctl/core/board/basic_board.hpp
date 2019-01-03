@@ -5,7 +5,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/config.hpp>
 #include <dctl/core/board/angle.hpp>                    // angle, inverse
 #include <dctl/core/board/coordinates.hpp>              // to_llo, transform
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
@@ -139,7 +138,7 @@ public:
 
 private:
         template<class UnaryPredicate>
-        XSTD_PP_CONSTEXPR_INTRINSIC static auto squares_filter(UnaryPredicate pred) noexcept
+        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto squares_filter(UnaryPredicate pred) noexcept
         {
                 set_type filter;
                 for (auto const n : squares) {
@@ -150,7 +149,7 @@ private:
                 return filter;
         }
 
-        DCTL_PP_CONSTEXPR_INTRINSIC static auto file_table = []() {
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto file_table = []() {
                 std::array<std::array<set_type, width>, 2> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto f = 0; f < width; ++f) {
@@ -164,7 +163,7 @@ private:
                 return table;
         }();
 
-        DCTL_PP_CONSTEXPR_INTRINSIC static auto rank_table = []() {
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto rank_table = []() {
                 std::array<std::array<set_type, height>, 2> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto r = 0; r < height; ++r) {
@@ -182,7 +181,7 @@ private:
         constexpr static auto beta         = is_orthogonal_jump ?  0_deg : 45_deg;
         constexpr static auto num_segments = is_orthogonal_jump ?      8 :      4;
 
-        DCTL_PP_CONSTEXPR_INTRINSIC static auto jump_start_table = []() {
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto jump_start_table = []() {
                 std::array<set_type, num_segments> table;
                 for (auto segment = 0; segment < num_segments; ++segment) {
                         table[static_cast<std::size_t>(segment)] = squares_filter([=](int const sq) {
@@ -203,7 +202,7 @@ private:
         }();
 
         template<int FromSquare>
-        XSTD_PP_CONSTEXPR_INTRINSIC static auto init_jump_group() noexcept
+        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto init_jump_group() noexcept
         {
                 return squares_filter([](int const dest_sq) {
                         auto const from_coord = to_llo(FromSquare, inner_grid);
@@ -217,7 +216,7 @@ private:
                 });
         }
 
-        DCTL_PP_CONSTEXPR_INTRINSIC static auto jump_group_table = std::array<set_type, 4>
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto jump_group_table = std::array<set_type, 4>
         {{
                 init_jump_group<inner_grid.edge_le() + 0>(),
                 init_jump_group<inner_grid.edge_le() + 1>(),
@@ -226,38 +225,38 @@ private:
         }};
 
 public:
-        XSTD_PP_CONSTEXPR_INTRINSIC static auto file(color const c, int const f) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto file(color const c, int const f) // Throws: Nothing.
         {
                 assert(0 <= f); assert(f < width);
                 return file_table[xstd::to_underlying_type(c)][static_cast<std::size_t>(f)];
         }
 
-        XSTD_PP_CONSTEXPR_INTRINSIC static auto rank(color const c, int const r) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto rank(color const c, int const r) // Throws: Nothing.
         {
                 assert(0 <= r); assert(r < height);
                 return rank_table[xstd::to_underlying_type(c)][static_cast<std::size_t>(r)];
         }
 
-        XSTD_PP_CONSTEXPR_INTRINSIC static auto promotion(color const c) noexcept
+        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto promotion(color const c) noexcept
         {
                 return rank(c, height - 1);
         }
 
-        XSTD_PP_CONSTEXPR_INTRINSIC static auto jump_start(angle const alpha) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto jump_start(angle const alpha) // Throws: Nothing.
         {
                 auto const segment = (alpha - beta) / theta;
                 assert(0 <= segment); assert(segment < num_segments);
                 return jump_start_table[static_cast<std::size_t>(segment)];
         }
 
-        XSTD_PP_CONSTEXPR_INTRINSIC static auto jump_group(int const j) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto jump_group(int const j) // Throws: Nothing.
         {
                 assert(0 <= j); assert(j < 4);
                 return jump_group_table[static_cast<std::size_t>(j)];
         }
 
 private:
-        DCTL_PP_CONSTEXPR_INTRINSIC static auto initial_table = []() {
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto initial_table = []() {
                 constexpr auto N = height / 2 + 1;
                 std::array<std::array<set_type, N>, 2> table;
                 for (auto&& c : { color::black, color::white }) {
@@ -275,7 +274,7 @@ private:
         }();
 
 public:
-        XSTD_PP_CONSTEXPR_INTRINSIC static auto initial(color const c, int const separation) // Throws: Nothing.
+        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto initial(color const c, int const separation) // Throws: Nothing.
         {
                 assert((height - separation) % 2 == 0);
                 assert(height % 2 <= separation); assert(separation <= height);
