@@ -55,28 +55,28 @@ public:
         constexpr static auto outer_grid = detail::bit_layout{rotate(inner_grid, orientation), edge};
 
 private:
-        constexpr static auto NumBits = outer_grid.size();
-        constexpr static auto NumSquares = inner_grid.size();
+        constexpr static std::size_t NumBits = outer_grid.size();
+        constexpr static std::size_t NumSquares = inner_grid.size();
 
 public:
         constexpr static auto size() noexcept
         {
-                return NumSquares;
+                return static_cast<int>(NumSquares);
         }
 
         constexpr static auto bits() noexcept
         {
-                return NumBits;
+                return static_cast<int>(NumBits);
         }
 
-        constexpr static auto xyz = static_cast<int>(boost::alignment::align_up(NumBits, sizeof(xstd::bit_set<NumBits>) * std::numeric_limits<unsigned char>::digits));
+        constexpr static auto xyz = boost::alignment::align_up(NumBits, sizeof(xstd::bit_set<NumBits>) * std::numeric_limits<unsigned char>::digits);
         using    set_type = xstd::bit_set<xyz>;
         constexpr static auto abc = set_type::max_ssize();
         using square_type = typename boost::uint_value_t<abc>::least;
 
         static auto numeric_from_bit(int const n)
         {
-                assert(0 <= n); assert(n < NumBits);
+                assert(0 <= n); assert(n < bits());
                 std::stringstream sstr;
                 sstr << std::setfill('0') << std::setw(2) << square_from_bit(n) + 1;
                 return sstr.str();
@@ -84,7 +84,7 @@ public:
 
         static auto algebraic_from_bit(int const n)
         {
-                assert(0 <= n); assert(n < NumBits);
+                assert(0 <= n); assert(n < bits());
                 constexpr auto file_label = [](int const f) { return static_cast<char>('a' + f); };
                 constexpr auto rank_label = [](int const r) { return 1 + r;                      };
                 std::stringstream sstr;
@@ -95,8 +95,8 @@ public:
 
 private:
         constexpr static auto bit_from_square_table = []() {
-                auto table = std::array<int, static_cast<std::size_t>(NumSquares)>{};
-                for (auto sq = 0; sq < NumSquares; ++sq) {
+                auto table = std::array<int, NumSquares>{};
+                for (auto sq = 0; sq < size(); ++sq) {
                         table[static_cast<std::size_t>(sq)] =
                                 transform(sq, inner_grid, outer_grid, inverse(orientation))
                         ;
@@ -105,8 +105,8 @@ private:
         }();
 
         constexpr static auto square_from_bit_table = []() {
-                auto table = std::array<int, static_cast<std::size_t>(NumBits)>{};
-                for (auto n = 0; n < NumBits; ++n) {
+                auto table = std::array<int, NumBits>{};
+                for (auto n = 0; n < bits(); ++n) {
                         table[static_cast<std::size_t>(n)] =
                                 transform(n, outer_grid, inner_grid, orientation)
                         ;
@@ -117,13 +117,13 @@ private:
 public:
         constexpr static auto bit_from_square(int const sq) // Throws: Nothing.
         {
-                assert(0 <= sq); assert(sq < NumSquares);
+                assert(0 <= sq); assert(sq < size());
                 return bit_from_square_table[static_cast<std::size_t>(sq)];
         }
 
         constexpr static auto square_from_bit(int const n) // Throws: Nothing.
         {
-                assert(0 <= n); assert(n < NumBits);
+                assert(0 <= n); assert(n < bits());
                 return square_from_bit_table[static_cast<std::size_t>(n)];
         }
 
