@@ -71,7 +71,7 @@ public:
 
         constexpr static auto xyz = static_cast<int>(boost::alignment::align_up(NumBits, sizeof(xstd::bit_set<NumBits>) * std::numeric_limits<unsigned char>::digits));
         using    set_type = xstd::bit_set<xyz>;
-        constexpr static auto abc = set_type::max_size();
+        constexpr static auto abc = set_type::max_ssize();
         using square_type = typename boost::uint_value_t<abc>::least;
 
         static auto numeric_from_bit(int const n)
@@ -295,7 +295,7 @@ public:
 
         constexpr static auto is_onboard(int const sq) noexcept
         {
-                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type::max_size());
+                return static_cast<unsigned>(sq) < static_cast<unsigned>(set_type::max_ssize());
         }
 };
 

@@ -47,7 +47,7 @@ public:
         {
                 return boost::hana::fold(
                         boost::hana::transform(pawn_move_directions, [&](auto const dir) {
-                                return move_squares<Board, decltype(dir)>{}(pawns, empty).size();
+                                return move_squares<Board, decltype(dir)>{}(pawns, empty).ssize();
                         }), 
                         std::plus{}
                 );

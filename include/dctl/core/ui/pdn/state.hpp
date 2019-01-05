@@ -111,7 +111,7 @@ struct write
                                 sstr << board_type::square_from_bit(sq) + 1;            // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
                                 //        sstr << "^" << p.count(c);
-                                if (++n != bs.size()) {                                 // still pieces remaining
+                                if (++n != bs.ssize()) {                                // still pieces remaining
                                         sstr << Token::comma;                           // comma separator
                                 }
                         }

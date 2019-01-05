@@ -124,7 +124,7 @@ public:
 
         constexpr auto num_captured_pieces() const noexcept
         {
-                return captured_pieces().size();
+                return captured_pieces().ssize();
         }
 
         constexpr auto from(int const sq) // Throws: Nothing.
@@ -250,7 +250,7 @@ private:
 
         constexpr auto reverse_index() const noexcept
         {
-                return set_type::max_size() - 1 - num_captured_pieces();
+                return set_type::max_ssize() - 1 - num_captured_pieces();
         }
 };
 

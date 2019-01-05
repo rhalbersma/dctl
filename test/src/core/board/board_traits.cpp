@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, BoardSequence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresCountEqualsBoardSize, T, BoardSequence)
 {
-        BOOST_CHECK_EQUAL(T::squares.size(), T::size());
+        BOOST_CHECK_EQUAL(T::squares.ssize(), T::size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)

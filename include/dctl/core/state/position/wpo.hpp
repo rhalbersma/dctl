@@ -136,7 +136,7 @@ public:
         auto num_pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
-                return pieces(std::forward<Args>(args)...).size();
+                return pieces(std::forward<Args>(args)...).ssize();
         }
 
         constexpr auto tied() const noexcept

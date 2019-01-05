@@ -61,7 +61,7 @@ template<class Direction, class Set>
 constexpr auto last() noexcept
 {
         if constexpr (is_forward_v<Direction>) {
-                return Set::max_size() - 1;
+                return Set::max_ssize() - 1;
         } else {
                 return 0;
         }
@@ -75,7 +75,7 @@ struct advance
         auto operator()(set_type& is) const
         {
                 constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
-                static_assert(0 <= n); static_assert(n < set_type::max_size());
+                static_assert(0 <= n); static_assert(n < set_type::max_ssize());
                 if constexpr (!(is_forward_v<Direction> ^ (Distance >= 0))) {
                         is <<= n;
                 } else {
