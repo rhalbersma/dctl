@@ -9,7 +9,7 @@
 #include <dctl/core/board/coordinates.hpp>              // to_llo, transform
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
 #include <dctl/core/rules/type_traits.hpp>              // width_v, height_v, is_inverted_v, is_orthogonal_jump_v
-#include <dctl/core/state/color_piece.hpp>              // black, white
+#include <dctl/core/state/color.hpp>                    // black, white
 #include <xstd/bit_set.hpp>                             // bit_set
 #include <xstd/cstdlib.hpp>                             // euclidean_div
 #include <boost/align/align_up.hpp>                     // align_up

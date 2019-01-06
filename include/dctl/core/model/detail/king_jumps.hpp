@@ -10,7 +10,8 @@
 #include <dctl/core/model/detail/pattern.hpp>   // jump_targets
 #include <dctl/core/model/detail/raii.hpp>      // capture, lift, set_king_jump
 #include <dctl/core/model/detail/tables.hpp>    // king_jumps, king_moves
-#include <dctl/core/state/color_piece.hpp>      // color, color_, king_
+#include <dctl/core/state/color.hpp>            // color, color_
+#include <dctl/core/state/piece.hpp>            // king_
 #include <dctl/core/rules/type_traits.hpp>      // is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
@@ -63,7 +64,7 @@ public:
         static auto generate(Builder& b)
         {
                 raii::set_king_jump g1{b};
-                for (auto const from_sq : b.pieces(color_c<Side>, kings_c)) {
+                for (auto const from_sq : b.pieces(color_c<Side>, king_c)) {
                         raii::lift guard{from_sq, b};
                         boost::hana::for_each(king_jump_directions, [&](auto const dir) {
                                 using direction_t = decltype(dir);
@@ -99,8 +100,8 @@ public:
                 constexpr auto hana_king_turn_directions = boost::hana::remove_if(king_jump_directions, hana_is_forward_or_reverse);
 
                 static_assert(is_passing_promotion_v<rules_type>);
-                assert(b.with() == piece::pawns);
-                b.into(piece::kings);
+                assert(b.with() == piece::pawn);
+                b.into(piece::king);
                 return scan(hana_king_turn_directions, sq, b);
         }
 private:
@@ -187,7 +188,7 @@ private:
                                 return true;
                         }),
                         std::bit_or{}
-                );                
+                );
         }
 };
 

@@ -5,7 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/core/state/color.hpp>            // color, black, white
+#include <dctl/core/state/piece.hpp>            // piece, pawn, king, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -55,10 +56,10 @@ public:
 
                 set_pieces(c).erase(a.from());
                 set_pieces(c).insert(a.dest());
-                if (a.with() == piece::kings) {
+                if (a.with() == piece::king) {
                         m_kings.erase(a.from());
                         m_kings.insert(a.dest());
-                } else if (a.into() == piece::kings) {
+                } else if (a.into() == piece::king) {
                         m_kings.insert(a.dest());
                 }
 
@@ -76,10 +77,10 @@ public:
         constexpr auto pieces(PieceT const p) const noexcept
         {
                 if constexpr (std::is_same_v<PieceT, piece>) {
-                        return p == piece::pawns ? pieces(pawns_c) : pieces(kings_c);
+                        return p == piece::pawn ? pieces(pawn_c) : pieces(king_c);
                 } else {
-                        if constexpr (p == pawns_c) { return m_kings ^ pieces(occup_c); }
-                        if constexpr (p == kings_c) { return m_kings;                   }
+                        if constexpr (p == pawn_c) { return m_kings ^ pieces(occup_c); }
+                        if constexpr (p == king_c) { return m_kings;                   }
                 }
         }
 
@@ -89,10 +90,10 @@ public:
         constexpr auto pieces(color const c, PieceT const p) const noexcept
         {
                 if constexpr (std::is_same_v<PieceT, piece>) {
-                        return p == piece::pawns ? pieces(c, pawns_c) : pieces(c, kings_c);
+                        return p == piece::pawn ? pieces(c, pawn_c) : pieces(c, king_c);
                 } else {
-                        if constexpr (p == pawns_c) { return pieces(c) - m_kings; }
-                        if constexpr (p == kings_c) { return pieces(c) & m_kings; }
+                        if constexpr (p == pawn_c) { return pieces(c) - m_kings; }
+                        if constexpr (p == king_c) { return pieces(c) & m_kings; }
                 }
         }
 

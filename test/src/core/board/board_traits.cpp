@@ -8,7 +8,7 @@
 #include <core/board/transform.hpp>             // is_involution, is_idempotent
 #include <dctl/core/board/basic_board.hpp>      // board
 #include <dctl/core/rules/type_traits.hpp>      // is_empty, is_pushable, is_jumpable, invert
-#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/state/color.hpp>
 #include <boost/range/irange.hpp>               // irange
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE

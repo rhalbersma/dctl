@@ -14,7 +14,6 @@
 #include <iostream>
 #include <dctl/core/board.hpp>
 #include <dctl/core/board/bearing.hpp>
-#include <dctl/core/state/color_piece.hpp>
 
 using namespace dctl::core;
 

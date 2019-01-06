@@ -8,7 +8,8 @@
 #include <dctl/core/board/basic_board.hpp>
 #include <dctl/core/board/string.hpp>
 #include <dctl/core/state/basic_state.hpp>
-#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/state/color.hpp>
+#include <dctl/core/state/piece.hpp>
 #include <dctl/core/ui/basic_token_set.hpp>     // basic_token_set
 #include <dctl/core/ui/color.hpp>               // read_color, write_color
 #include <dctl/util/type_traits.hpp>            // set_t
@@ -51,7 +52,7 @@ struct read
                 }
 
                 auto setup_color = p_side;
-                auto setup_piece = piece::pawns;
+                auto setup_piece = piece::pawn;
 
                 std::stringstream sstr(s);
                 char ch;
@@ -67,8 +68,8 @@ struct read
                                 sstr >> ch;
                                 setup_color = read_color<Token>(ch);
                                 break;
-                        case Token::king :                                      // setup kings
-                                setup_piece = piece::kings;
+                        case Token::king :                                      // setup king
+                                setup_piece = piece::king;
                                 break;
                         default:
                                 if (std::isdigit(ch)) {
@@ -78,7 +79,7 @@ struct read
                                         auto b = Board::bit_from_square(sq - 1);     // convert square to bit
                                         by_color_piece[xstd::to_underlying_type(setup_color)][xstd::to_underlying_type(setup_piece)].insert(b);
                                 }
-                                setup_piece = piece::pawns;
+                                setup_piece = piece::pawn;
                                 break;
                         }
                 }
@@ -105,7 +106,7 @@ struct write
                         auto const bs = s.pieces(c);
                         auto n = 0;
                         for (auto const sq : bs) {
-                                if (s.pieces(kings_c).contains(sq)) {
+                                if (s.pieces(king_c).contains(sq)) {
                                         sstr << Token::king;                            // king tag
                                 }
                                 sstr << board_type::square_from_bit(sq) + 1;            // square number

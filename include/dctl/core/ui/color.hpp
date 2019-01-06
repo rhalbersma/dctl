@@ -5,9 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp>      // black, white
-#include <xstd/type_traits.hpp>                 // to_underlying_type
-#include <cassert>                              // assert
+#include <dctl/core/state/color.hpp>    // black, white
+#include <xstd/type_traits.hpp>         // to_underlying_type
+#include <cassert>                      // assert
 
 namespace dctl::core {
 

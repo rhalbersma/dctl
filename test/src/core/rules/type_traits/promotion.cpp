@@ -11,7 +11,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(promotionCategory)
+BOOST_AUTO_TEST_SUITE(PromotionCategory)
 
 using VariantsStoppedpromotionTag = boost::mpl::vector
 <

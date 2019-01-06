@@ -205,17 +205,17 @@ constexpr auto notation_v =
 
 /*
 
-                up == 90
+                 N == 90
                    |
-   135 == left_up  |  right_up == 45
+         135 == NW |  NE == 45
                  \ | /
                   \|/
-  180 == left ----- ----- right == 0
+     180 == W ----- ----- E == 0
                   /|\
                  / | \
- 225 == left_down  |  right_down == 315
+         225 == SW | SE == 315
                    |
-              270 == down
+               270 == S
 
 */
 

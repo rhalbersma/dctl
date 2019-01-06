@@ -8,7 +8,7 @@
 #include <dctl/eval/delta.hpp>
 #include <dctl/eval/feature.hpp>
 #include <dctl/eval/weight.hpp>
-#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/state/color.hpp>
 #include <iomanip>
 #include <iostream>
 

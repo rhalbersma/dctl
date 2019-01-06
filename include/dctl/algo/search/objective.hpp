@@ -16,7 +16,7 @@ namespace search {
 struct NoActionsLeft;
 
 /* first side to get a king, wins */
-struct Kingscourt;
+struct kingscourt;
 
 struct Regular;
 struct Misere;
@@ -39,7 +39,7 @@ struct is_terminal<NoActionsLeft>
 };
 
 template<>
-struct is_terminal<Kingscourt>
+struct is_terminal<kingscourt>
 {
         template<class State>
         bool operator()(State const& s) const

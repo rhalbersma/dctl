@@ -11,7 +11,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(IsBackwardpawn_jump)
+BOOST_AUTO_TEST_SUITE(IsBackwardPawnJump)
 
         using VariantsFalse = boost::mpl::vector
         <
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(Ispawn_jumpKing)
+BOOST_AUTO_TEST_SUITE(IsPawnsJumpKings)
 
         using VariantsTrue = boost::mpl::vector
         <

@@ -5,9 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/board/angle.hpp>            // _deg, rotate
-#include <dctl/core/state/color_piece.hpp>      // white
-#include <type_traits>                          // false_type
+#include <dctl/core/board/angle.hpp>    // _deg, rotate
+#include <dctl/core/state/color.hpp>    // white
+#include <type_traits>                  // false_type
 
 namespace dctl::core {
 

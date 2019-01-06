@@ -8,7 +8,6 @@
 #include <dctl/algo/node.hpp>
 #include <dctl/algo/traversal/transposition.hpp>
 #include <dctl/core.hpp>
-#include <dctl/core/state/color_piece.hpp>
 #include <dctl/util/hash/dual_map.hpp>
 #include <dctl/util/hash/extract.hpp>
 #include <dctl/util/statistics.hpp>

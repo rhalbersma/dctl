@@ -43,7 +43,7 @@ constexpr auto is_legal(Set const black_pawns, Set const white_pawns, Set const 
         return
                 is_onboard_pieces<Board>(black_pawns | white_pawns | black_kings | white_kings) &&
                 !is_promoted_pawns<Board>(black_pawns, white_pawns) &&
-                !is_overlapping_pieces(black_pawns, white_pawns,  black_kings, white_kings)
+                !is_overlapping_pieces(black_pawns, white_pawns, black_kings, white_kings)
         ;
 }
 

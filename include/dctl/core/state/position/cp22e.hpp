@@ -5,7 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/core/state/color.hpp>            // color, black, white
+#include <dctl/core/state/piece.hpp>            // piece, pawn, king, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -46,8 +47,8 @@ public:
         constexpr auto make(color const c, Action const& a) // Throws: Nothing.
         {
                 if (a.is_jump()) {
-                        set_pieces(!c, pawns_c) -= a.captured_pieces();
-                        set_pieces(!c, kings_c) -= a.captured_pieces();
+                        set_pieces(!c, pawn_c) -= a.captured_pieces();
+                        set_pieces(!c, king_c) -= a.captured_pieces();
                         m_empty ^= a.captured_pieces();
                 }
 
@@ -59,7 +60,7 @@ public:
 
         constexpr auto pieces(color const c) const noexcept
         {
-                return pieces(c, pawns_c) | pieces(c, kings_c);
+                return pieces(c, pawn_c) | pieces(c, king_c);
         }
 
         constexpr auto pieces(piece const p) const noexcept

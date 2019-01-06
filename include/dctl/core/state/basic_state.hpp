@@ -6,7 +6,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/rules/type_traits.hpp>
-#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/state/color.hpp>
+#include <dctl/core/state/piece.hpp>
 #include <dctl/core/state/position.hpp>
 #include <dctl/util/conditional_base.hpp>       // conditional_base
 #include <dctl/util/type_traits.hpp>            // set_t
@@ -17,13 +18,17 @@
 #include <utility>                              // forward
 
 namespace dctl::core {
+
+struct nullmove_t {};
+inline constexpr auto nullmove = nullmove_t{};
+
 namespace detail {
 namespace block_adl {
 
 template<class Board>
 struct base_position
 {
-        using position_type = bwk::position<Board>;
+        using position_type = wpo::position<Board>;
         position_type m_position;
 };
 
@@ -33,12 +38,12 @@ struct base_color
 };
 
 template<class Board>
-struct most_recently_pushed_kings {};
+struct most_recently_pushed_king {};
 
 template<class Rules, class Board>
 using conditional_base_mrpk = util::conditional_base<
         is_restricted_king_move_v<Rules>,
-        most_recently_pushed_kings<Board>
+        most_recently_pushed_king<Board>
 >;
 
 }       // namespace block_adl
@@ -131,8 +136,8 @@ public:
         template<color Side, piece Type>
         auto targets(color_<Side>, piece_<Type>) const noexcept
         {
-                if constexpr (Type == piece::pawns && is_superior_rank_jump_v<rules_type>) {
-                        return pieces(color_c<!Side>, pawns_c);
+                if constexpr (Type == piece::pawn && is_superior_rank_jump_v<rules_type>) {
+                        return pieces(color_c<!Side>, pawn_c);
                 } else {
                         return pieces(!color_c<Side>);
                 }

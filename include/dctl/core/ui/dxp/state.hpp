@@ -7,8 +7,9 @@
 
 #include <dctl/core/board/basic_board.hpp>
 #include <dctl/core/board/string.hpp>
-#include <dctl/core/state/color_piece.hpp>
 #include <dctl/core/state/basic_state.hpp>
+#include <dctl/core/state/color.hpp>
+#include <dctl/core/state/piece.hpp>
 #include <dctl/core/ui/basic_token_set.hpp>     // basic_token_set
 #include <dctl/core/ui/color.hpp>               // read_color, write_color
 #include <dctl/core/ui/content.hpp>             // content

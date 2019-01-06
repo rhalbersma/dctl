@@ -5,7 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/core/state/color.hpp>            // color, black, white
+#include <dctl/core/state/piece.hpp>            // piece, pawn, king, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -50,8 +51,8 @@ public:
         {
                 if (a.is_jump()) {
                         set_pieces(!c) ^= a.captured_pieces();
-                        set_pieces(pawns_c) -= a.captured_pieces();
-                        set_pieces(kings_c) -= a.captured_pieces();
+                        set_pieces(pawn_c) -= a.captured_pieces();
+                        set_pieces(king_c) -= a.captured_pieces();
                 }
 
                 set_pieces(c).erase(a.from());

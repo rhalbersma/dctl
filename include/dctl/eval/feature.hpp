@@ -5,10 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/model.hpp>                // count, select::move
-#include <dctl/core/state/color_piece.hpp>      // opposite
-#include <dctl/eval/weight.hpp>                 // Weight
-#include <cstdlib>                              // abs
+#include <dctl/core/model.hpp>          // count, select::move
+#include <dctl/eval/weight.hpp>         // Weight
+#include <cstdlib>                      // abs
 
 namespace dctl::eval {
 
@@ -34,8 +33,8 @@ public:
                 using rules_type = core::rules_t<State>;
                 using board_type = core::board_t<State>;
                 return
-                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(Color{}, core::pawns_c)) +
-                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(Color{}, core::kings_c))
+                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(Color{}, core::pawn_c)) +
+                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(Color{}, core::king_c))
                 ;
         }
 

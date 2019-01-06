@@ -11,7 +11,8 @@
 #include <dctl/core/model/detail/king_jumps.hpp>        // promote_en_passant
 #include <dctl/core/model/detail/pattern.hpp>           // jump_targets
 #include <dctl/core/model/detail/raii.hpp>              // capture, lift
-#include <dctl/core/state/color_piece.hpp>              // color, color_, pawns_, king_
+#include <dctl/core/state/color.hpp>                    // color, color_
+#include <dctl/core/state/piece.hpp>                    // pawn_, king_
 #include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_promotion_en_passant_t
 #include <dctl/util/type_traits.hpp>                    // action_t, board_t, rules_t, set_t
 #include <boost/hana/equal.hpp>                         // ==
@@ -61,7 +62,7 @@ public:
         {
                 boost::hana::for_each(pawn_jump_directions, [&](auto const dir) {
                         using direction_t = decltype(dir);
-                        for(auto const from_sq : jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawns_c), b.targets(), b.pieces(empty_c))) {
+                        for(auto const from_sq : jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawn_c), b.targets(), b.pieces(empty_c))) {
                                 raii::lift guard{from_sq, b};
                                 capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                         }
@@ -77,16 +78,16 @@ private:
                         if (board_type::promotion(Side).contains(sq)) {
                                 if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
                                 if (!king_jumps::template next_target_passing_promotion<Direction>(sq, b)) {
-                                        b.finalize(sq, piece::kings);
+                                        b.finalize(sq, piece::king);
                                 }
                                 if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
                         } else  {
                                 if (next_target<Direction>(sq, b)) { return; }
-                                b.finalize(sq, piece::pawns);
+                                b.finalize(sq, piece::pawn);
                         }
                 } else {
                         if (next_target<Direction>(sq, b)) { return; }
-                        b.finalize(sq, board_type::promotion(Side).contains(sq) ? piece::kings : piece::pawns);
+                        b.finalize(sq, board_type::promotion(Side).contains(sq) ? piece::king : piece::pawn);
                 }
         }
 

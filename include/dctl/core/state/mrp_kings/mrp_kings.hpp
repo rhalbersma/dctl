@@ -5,7 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/state/color.hpp>
+#include <dctl/core/state/piece.hpp>
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>         // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -14,7 +15,7 @@
 namespace dctl::core {
 
 template<class Rules, class Board>
-class MostRecentlyPushedKings
+class MostRecentlyPushedking
 {
 public:
         enum { M = max_same_king_move_v<Rules> };
@@ -27,12 +28,12 @@ private:
 
 public:
         template<class position>
-        explicit constexpr MostRecentlyPushedKings(position const& p)
+        explicit constexpr MostRecentlyPushedking(position const& p)
         :
                 color_piece_
                 {
-                        {p.num_pieces(black_c, pawns_c), p.num_pieces(black_c, kings_c)},
-                        {p.num_pieces(white_c, pawns_c), p.num_pieces(white_c, kings_c)}
+                        {p.num_pieces(black_c, pawn_c), p.num_pieces(black_c, king_c)},
+                        {p.num_pieces(white_c, pawn_c), p.num_pieces(white_c, king_c)}
                 }
         {}
 
@@ -56,7 +57,7 @@ public:
 
         constexpr auto is_tracked(color c) const noexcept
         {
-                return 0 < num_pieces(c, pawns_c) && 0 < num_pieces(c, kings_c);
+                return 0 < num_pieces(c, pawn_c) && 0 < num_pieces(c, king_c);
         }
 
         constexpr auto is_counted(color c) const noexcept
@@ -70,13 +71,13 @@ public:
         }
 
         template<class TabulationHash>
-        friend auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyPushedKings const& mrp_kings)
+        friend auto hash_xor_accumulate(TabulationHash const& h, MostRecentlyPushedking const& mrp_king)
         {
                 return
-                        h.index(black_c)[mrp_kings.index(black_c)] ^
-                        h.index(white_c)[mrp_kings.index(white_c)] ^
-                        h.count(black_c)[mrp_kings.count(black_c)] ^
-                        h.count(white_c)[mrp_kings.count(white_c)]
+                        h.index(black_c)[mrp_king.index(black_c)] ^
+                        h.index(white_c)[mrp_king.index(white_c)] ^
+                        h.count(black_c)[mrp_king.count(black_c)] ^
+                        h.count(white_c)[mrp_king.count(white_c)]
                 ;
         }
 
@@ -106,8 +107,8 @@ private:
                         return;
                 }
 
-                --num_pieces(m.to_move(), pawns_c);
-                ++num_pieces(m.to_move(), kings_c);
+                --num_pieces(m.to_move(), pawn_c);
+                ++num_pieces(m.to_move(), king_c);
         }
 
         template<class Action>
@@ -119,16 +120,16 @@ private:
 
                 if (
                         is_tracked(!m.to_move()) && (
-                                num_pieces(!m.to_move(), pawns_c) == m.num_captured(pawns_c) ||
-                                num_pieces(!m.to_move(), kings_c) == m.num_captured(kings_c) ||
-                                (0 < m.num_captured(kings_c) && m.captured(kings_c).contains(index(!m.to_move())))
+                                num_pieces(!m.to_move(), pawn_c) == m.num_captured(pawn_c) ||
+                                num_pieces(!m.to_move(), king_c) == m.num_captured(king_c) ||
+                                (0 < m.num_captured(king_c) && m.captured(king_c).contains(index(!m.to_move())))
                         )
                 ) {
                         reset(!m.to_move());
                 }
 
-                num_pieces(!m.to_move(), pawns_c) -= m.num_captured(pawns_c);
-                num_pieces(!m.to_move(), kings_c) -= m.num_captured(kings_c);
+                num_pieces(!m.to_move(), pawn_c) -= m.num_captured(pawn_c);
+                num_pieces(!m.to_move(), king_c) -= m.num_captured(king_c);
         }
 
         constexpr void reset(color c)

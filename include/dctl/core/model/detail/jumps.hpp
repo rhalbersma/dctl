@@ -10,7 +10,8 @@
 #include <dctl/core/model/detail/king_jumps.hpp>        // king_jumps
 #include <dctl/core/model/detail/pawn_jumps.hpp>        // pawn_jumps
 #include <dctl/core/action/basic_action.hpp>            // action
-#include <dctl/core/state/color_piece.hpp>              // color, color_, kings_, pawn_
+#include <dctl/core/state/color.hpp>                    // color, color_
+#include <dctl/core/state/piece.hpp>                    // pawn_, king_
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>                    // rules_t, board_t
 #include <cassert>                                      // assert
@@ -91,8 +92,8 @@ public:
         static auto detect(State const& s) noexcept
         {
                 return
-                        pawn_jumps<State>::detect(s.pieces(color_c<Side>, pawns_c), s.targets(color_c<Side>, pawns_c), s.pieces(empty_c)) ||
-                        king_jumps<State>::detect(s.pieces(color_c<Side>, kings_c), s.targets(color_c<Side>, kings_c), s.pieces(empty_c))
+                        pawn_jumps<State>::detect(s.pieces(color_c<Side>, pawn_c), s.targets(color_c<Side>, pawn_c), s.pieces(empty_c)) ||
+                        king_jumps<State>::detect(s.pieces(color_c<Side>, king_c), s.targets(color_c<Side>, king_c), s.pieces(empty_c))
                 ;
         }
 

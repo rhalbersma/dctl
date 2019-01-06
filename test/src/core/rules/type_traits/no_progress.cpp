@@ -11,7 +11,7 @@
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(MaxSameking_move)
+BOOST_AUTO_TEST_SUITE(MaxSameKingMove)
 
 using VariantsZero = boost::mpl::vector
 <

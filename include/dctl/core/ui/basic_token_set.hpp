@@ -16,19 +16,19 @@ struct basic_token_set
         constexpr static auto white = White;
         constexpr static auto empty = Empty;
 
-        inline static char const color[] =
+        inline const static char color[] =
         {
                 black,
                 white
         };
 
-        inline static char const pawns[] =
+        inline const static char pawns[] =
         {
                 static_cast<char>(std::tolower(black)),
                 static_cast<char>(std::tolower(white))
         };
 
-        inline static char const kings[] =
+        inline const static char kings[] =
         {
                static_cast<char>(std::toupper(black)),
                static_cast<char>(std::toupper(white))

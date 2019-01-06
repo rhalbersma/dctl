@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/eval/feature.hpp>                // Feature
-#include <dctl/core/state/color_piece.hpp>      // opposite
+#include <dctl/eval/feature.hpp>        // Feature
+#include <dctl/core/state/color.hpp>    // not_
 
 namespace dctl::eval {
 
@@ -15,7 +15,7 @@ class Delta
 {
 private:
         using Active  = Feature<               Color >;
-        using Passive = Feature<core::opposite<Color>>;
+        using Passive = Feature<core::not_<Color>>;
 
 public:
         template<class State>

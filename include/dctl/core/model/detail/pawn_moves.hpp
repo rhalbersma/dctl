@@ -9,7 +9,7 @@
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/model/detail/pattern.hpp>   // move_squares
 #include <dctl/core/rules/type_traits.hpp>      // pawn_move_directions_v
-#include <dctl/core/state/color_piece.hpp>      // color, color_
+#include <dctl/core/state/color.hpp>            // color, color_
 #include <boost/hana/fold.hpp>                  // fold
 #include <boost/hana/for_each.hpp>              // for_each
 #include <boost/hana/integral_constant.hpp>     // int_c

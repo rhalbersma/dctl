@@ -7,7 +7,7 @@
 
 #include <dctl/core/model/detail/king_moves.hpp>        // king_moves
 #include <dctl/core/model/detail/pawn_moves.hpp>        // pawn_moves
-#include <dctl/core/state/color_piece.hpp>              // color, color_
+#include <dctl/core/state/color.hpp>                    // color, color_
 #include <dctl/util/type_traits.hpp>                    // board_t, rules_t
 
 namespace dctl::core::model {
@@ -26,8 +26,8 @@ public:
         static auto detect(State const& s) noexcept
         {
                 return
-                        pawn_moves<State>::detect(s.pieces(color_c<Side>, pawns_c), s.pieces(empty_c)) ||
-                        king_moves<State>::detect(s.pieces(color_c<Side>, kings_c), s.pieces(empty_c))
+                        pawn_moves<State>::detect(s.pieces(color_c<Side>, pawn_c), s.pieces(empty_c)) ||
+                        king_moves<State>::detect(s.pieces(color_c<Side>, king_c), s.pieces(empty_c))
                 ;
         }
 
@@ -35,16 +35,16 @@ public:
         static auto count(State const& s) noexcept
         {
                 return
-                        pawn_moves<State>::count(s.pieces(color_c<Side>, pawns_c), s.pieces(empty_c)) +
-                        king_moves<State>::count(s.pieces(color_c<Side>, kings_c), s.pieces(empty_c))
+                        pawn_moves<State>::count(s.pieces(color_c<Side>, pawn_c), s.pieces(empty_c)) +
+                        king_moves<State>::count(s.pieces(color_c<Side>, king_c), s.pieces(empty_c))
                 ;
         }
 
         template<class State, class SequenceContainer>
         static auto generate(State const& s, SequenceContainer& seq)
         {
-                pawn_moves<State>::generate(s.pieces(color_c<Side>, pawns_c), s.pieces(empty_c), seq);
-                king_moves<State>::generate(s.pieces(color_c<Side>, kings_c), s.pieces(empty_c), seq);
+                pawn_moves<State>::generate(s.pieces(color_c<Side>, pawn_c), s.pieces(empty_c), seq);
+                king_moves<State>::generate(s.pieces(color_c<Side>, king_c), s.pieces(empty_c), seq);
         }
 };
 

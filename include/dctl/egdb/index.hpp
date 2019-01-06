@@ -122,10 +122,10 @@ public:
 
         auto index(position_type const& p) const
         {
-                auto const bp = p.pieces(core::black_c, core::pawns_c);
-                auto const wp = p.pieces(core::white_c, core::pawns_c);
-                auto const bk = p.pieces(core::black_c, core::kings_c);
-                auto const wk = p.pieces(core::white_c, core::kings_c);
+                auto const bp = p.pieces(core::black_c, core::pawn_c);
+                auto const wp = p.pieces(core::white_c, core::pawn_c);
+                auto const bk = p.pieces(core::black_c, core::king_c);
+                auto const wk = p.pieces(core::white_c, core::king_c);
 
                 auto const bp_digit = reverse_colex_rank_combination(bp, bp_ext);
                 auto const wp_digit =         colex_rank_combination(wp, wp_ext);

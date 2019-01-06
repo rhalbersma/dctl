@@ -5,7 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp>      // color, black, white, piece, pawns, kings, occup, empty
+#include <dctl/core/state/color.hpp>            // color, black, white
+#include <dctl/core/state/piece.hpp>            // piece, pawn, king, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <tuple>                                // tie
@@ -65,10 +66,10 @@ public:
                         m_white.erase(a.from());
                         m_white.insert(a.dest());
                 }
-                if (a.with() == piece::pawns) {
+                if (a.with() == piece::pawn) {
                         m_pawns.erase(a.from());
                 }
-                if (a.into() == piece::pawns) {
+                if (a.into() == piece::pawn) {
                         m_pawns.insert(a.dest());
                 }
         }
@@ -92,10 +93,10 @@ public:
         constexpr auto pieces(PieceT const p) const noexcept
         {
                 if constexpr (std::is_same_v<PieceT, piece>) {
-                        return p == piece::pawns ? pieces(pawns_c) : pieces(kings_c);
+                        return p == piece::pawn ? pieces(pawn_c) : pieces(king_c);
                 } else {
-                        if constexpr (p == pawns_c) { return m_pawns;           }
-                        if constexpr (p == kings_c) { return m_pawns ^ m_occup; }
+                        if constexpr (p == pawn_c) { return m_pawns;           }
+                        if constexpr (p == king_c) { return m_pawns ^ m_occup; }
                 }
         }
 
@@ -107,18 +108,18 @@ public:
         {
                 if constexpr (std::is_same_v<ColorT, color> && std::is_same_v<PieceT, piece>) {
                         return c == color::black ?
-                                (p == piece::pawns ? pieces(black_c, pawns_c) : pieces(black_c, kings_c)) :
-                                (p == piece::pawns ? pieces(white_c, pawns_c) : pieces(white_c, kings_c))
+                                (p == piece::pawn ? pieces(black_c, pawn_c) : pieces(black_c, king_c)) :
+                                (p == piece::pawn ? pieces(white_c, pawn_c) : pieces(white_c, king_c))
                         ;
                 } else if constexpr (std::is_same_v<ColorT, color>) {
                         return c == color::black ? pieces(black_c, p) : pieces(white_c, p);
                 } else if constexpr (std::is_same_v<PieceT, piece>) {
-                        return p == piece::pawns ? pieces(c, pawns_c) : pieces(c, kings_c);
+                        return p == piece::pawn ? pieces(c, pawn_c) : pieces(c, king_c);
                 } else {
-                        if constexpr (c == black_c && p == pawns_c) { return  m_pawns - m_white;            }
-                        if constexpr (c == black_c && p == kings_c) { return (m_white | m_pawns) ^ m_occup; }
-                        if constexpr (c == white_c && p == pawns_c) { return  m_white & m_pawns;            }
-                        if constexpr (c == white_c && p == kings_c) { return  m_white - m_pawns;            }
+                        if constexpr (c == black_c && p == pawn_c) { return  m_pawns - m_white;            }
+                        if constexpr (c == black_c && p == king_c) { return (m_white | m_pawns) ^ m_occup; }
+                        if constexpr (c == white_c && p == pawn_c) { return  m_white & m_pawns;            }
+                        if constexpr (c == white_c && p == king_c) { return  m_white - m_pawns;            }
                 }
         }
 

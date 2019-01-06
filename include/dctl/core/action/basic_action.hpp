@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/rules/type_traits.hpp>      // is_contents_precedence, is_ordering_precedence
-#include <dctl/core/state/color_piece.hpp>      // pawn, king
+#include <dctl/core/state/piece.hpp>            // pawn, king
 #include <dctl/util/conditional_base.hpp>       // conditional_base
 #include <dctl/util/type_traits.hpp>            // set_t, square_t
 #include <cassert>                              // assert
@@ -85,7 +85,7 @@ public:
         :
                 conditional_base_ordering_precedence{},
                 conditional_base_contents_precedence{},
-                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::pawns, is_promotion ? piece::kings : piece::pawns}
+                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::pawn, is_promotion ? piece::king : piece::pawn}
         {
                 assert_invariants();
         }
@@ -94,7 +94,7 @@ public:
         :
                 conditional_base_ordering_precedence{},
                 conditional_base_contents_precedence{},
-                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::kings, piece::kings}
+                base_action{{}, static_cast<square_type>(src), static_cast<square_type>(dst), piece::king, piece::king}
         {
                 assert_invariants();
         }
@@ -171,7 +171,7 @@ public:
 
         constexpr auto is_with_king() const noexcept
         {
-                return with() == piece::kings;
+                return with() == piece::king;
         }
 
         constexpr auto is_jump() const noexcept
@@ -181,7 +181,7 @@ public:
 
         constexpr auto is_promotion() const noexcept
         {
-                return with() == piece::pawns && into() != piece::pawns;
+                return with() == piece::pawn && into() != piece::pawn;
         }
 
         constexpr auto is_reversible() const noexcept
@@ -245,7 +245,7 @@ private:
 
         constexpr auto is_demotion() const noexcept
         {
-                return with() != piece::pawns && into() == piece::pawns;
+                return with() != piece::pawn && into() == piece::pawn;
         }
 
         constexpr auto reverse_index() const noexcept

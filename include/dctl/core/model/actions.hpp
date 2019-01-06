@@ -9,7 +9,7 @@
 #include <dctl/core/model/detail/jumps.hpp>     // jumps
 #include <dctl/core/model/detail/moves.hpp>     // moves
 #include <dctl/core/rules/type_traits.hpp>
-#include <dctl/core/state/color_piece.hpp>      // black, white
+#include <dctl/core/state/color.hpp>            // black, white
 #include <dctl/util/type_traits.hpp>            // value_t
 #include <cassert>                              // assert
 #include <type_traits>                          // false_type, is_same_v

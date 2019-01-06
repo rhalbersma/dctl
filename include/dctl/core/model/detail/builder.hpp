@@ -6,7 +6,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/rules/type_traits.hpp>
-#include <dctl/core/state/color_piece.hpp>
+#include <dctl/core/state/color.hpp>
+#include <dctl/core/state/piece.hpp>
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t, set_t, value_t
 #include <algorithm>                            // none_of
 #include <cassert>                              // assert
@@ -49,7 +50,7 @@ public:
         auto toggle_king_targets() noexcept
         {
                 static_assert(is_superior_rank_jump_v<rules_type>);
-                m_initial_targets ^= m_state.pieces(!to_move_c, kings_c);
+                m_initial_targets ^= m_state.pieces(!to_move_c, king_c);
         }
 
         auto lift(int const sq)
@@ -98,7 +99,7 @@ public:
 
         auto finalize(int const sq)
         {
-                assert(into() == piece::kings);
+                assert(into() == piece::king);
                 m_candidate_action.dest(sq);
                 precedence_duplicates();
         }
@@ -127,7 +128,7 @@ public:
 
         auto is_last_jumped_king(int const sq) const
         {
-                return m_state.pieces(kings_c).contains(sq);
+                return m_state.pieces(king_c).contains(sq);
         }
 
         auto with() const noexcept
@@ -142,7 +143,7 @@ public:
 
         constexpr auto is_promotion() const noexcept
         {
-                return with() == piece::pawns && into() != piece::pawns;
+                return with() == piece::pawn && into() != piece::pawn;
         }
 
         auto to_move() const noexcept
@@ -153,7 +154,7 @@ public:
 private:
         auto is_king(int sq) const
         {
-                return m_state.pieces(kings_c).contains(sq);
+                return m_state.pieces(king_c).contains(sq);
         }
 
         auto precedence_duplicates() const

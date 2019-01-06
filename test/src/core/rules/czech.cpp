@@ -5,7 +5,7 @@
 
 #include <core/rules/precedence.hpp>            // is_consistent
 #include <dctl/core/rules/czech.hpp>            // czech
-#include <dctl/core/state/color_piece.hpp>      // king, pawn
+#include <dctl/core/state/piece.hpp>            // king, pawn
 #include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, jumpsep, is_absolute_modality, equal_to, less
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
 #include <vector>                               // vector
@@ -30,13 +30,13 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
         {
                 using rules_type [[maybe_unused]] = czech;
                 piece m_with;
-                constexpr auto is_with_king() const noexcept { return m_with == piece::kings; }
+                constexpr auto is_with_king() const noexcept { return m_with == piece::king; }
         };
 
         auto const moves = std::vector<Action>
         {
-                { piece::pawns },
-                { piece::kings }
+                { piece::pawn },
+                { piece::king }
         };
 
         BOOST_CHECK(xxx_precedence::is_consistent(moves));

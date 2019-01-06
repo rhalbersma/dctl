@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color_piece.hpp>      // pawn, king
-#include <cassert>                              // assert
+#include <dctl/core/state/piece.hpp>    // pawn, king
+#include <cassert>                      // assert
 
 namespace dctl::core {
 namespace raii {
@@ -76,18 +76,18 @@ class set_king_jump
 public:
         ~set_king_jump() noexcept
         {
-                assert(m_builder.with() == piece::kings); assert(m_builder.into() == piece::kings);
-                m_builder.with(piece::pawns);
-                m_builder.into(piece::pawns);
+                assert(m_builder.with() == piece::king); assert(m_builder.into() == piece::king);
+                m_builder.with(piece::pawn);
+                m_builder.into(piece::pawn);
         }
 
         explicit set_king_jump(Builder& b) noexcept
         :
                 m_builder{b}
         {
-                assert(m_builder.with() == piece::pawns); assert(m_builder.into() == piece::pawns);
-                m_builder.with(piece::kings);
-                m_builder.into(piece::kings);
+                assert(m_builder.with() == piece::pawn); assert(m_builder.into() == piece::pawn);
+                m_builder.with(piece::king);
+                m_builder.into(piece::king);
         }
 };
 
@@ -98,16 +98,16 @@ class promotion
 public:
         ~promotion() noexcept
         {
-                assert(m_builder.with() == piece::pawns); assert(m_builder.into() == piece::kings);
-                m_builder.into(piece::pawns);
+                assert(m_builder.with() == piece::pawn); assert(m_builder.into() == piece::king);
+                m_builder.into(piece::pawn);
         }
 
         explicit promotion(Builder& b) noexcept
         :
                 m_builder{b}
         {
-                assert(m_builder.with() == piece::pawns); assert(m_builder.into() == piece::pawns);
-                m_builder.into(piece::kings);
+                assert(m_builder.with() == piece::pawn); assert(m_builder.into() == piece::pawn);
+                m_builder.into(piece::king);
         }
 };
 

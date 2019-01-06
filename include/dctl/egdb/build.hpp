@@ -127,10 +127,10 @@ public:
         template<class Position>
         auto print_pos(Position const& p) const
         {
-                print_set(p.pieces(black_c, pawns_c));
-                print_set(p.pieces(white_c, pawns_c));
-                print_set(p.pieces(black_c, kings_c));
-                print_set(p.pieces(white_c, kings_c));
+                print_set(p.pieces(black_c, pawn_c));
+                print_set(p.pieces(white_c, pawn_c));
+                print_set(p.pieces(black_c, king_c));
+                print_set(p.pieces(white_c, king_c));
         }
 
         auto print_wld() const
