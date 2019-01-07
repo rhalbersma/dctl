@@ -101,8 +101,7 @@ public:
         }
 
         template<class ColorT, class PieceT, std::enable_if_t<
-                is_color_v<ColorT> &&
-                is_piece_v<PieceT>
+                is_color_v<ColorT> && is_piece_v<PieceT>
         >...>
         constexpr auto pieces(ColorT const c, PieceT const p) const noexcept
         {
@@ -123,14 +122,19 @@ public:
                 }
         }
 
-        constexpr auto pieces(occup_) const noexcept
+        constexpr auto pieces(board_) const noexcept
         {
-                return m_occup;
+                return board_type::squares;
         }
 
         constexpr auto pieces(empty_) const noexcept
         {
                 return board_type::squares ^ m_occup;
+        }
+
+        constexpr auto pieces(occup_) const noexcept
+        {
+                return m_occup;
         }
 
         template<class... Args>

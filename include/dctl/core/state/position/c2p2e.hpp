@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color.hpp>            // color, black, white
-#include <dctl/core/state/piece.hpp>            // piece, pawn, king, occup, empty
+#include <dctl/core/state/color.hpp>            // color, black, white, size
+#include <dctl/core/state/piece.hpp>            // piece, pawn, king, size, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -19,8 +19,8 @@ namespace c2p2e {
 template<class Board>
 class position
 {
-        std::array<set_t<Board>, 2> m_color;
-        std::array<set_t<Board>, 2> m_piece;
+        std::array<set_t<Board>, xstd::to_underlying_type(color::size)> m_color;
+        std::array<set_t<Board>, xstd::to_underlying_type(piece::size)> m_piece;
         set_t<Board> m_empty;
 public:
         using board_type = Board;
@@ -78,14 +78,19 @@ public:
                 return pieces(c) & pieces(p);
         }
 
-        constexpr auto pieces(occup_) const noexcept
+        constexpr auto pieces(board_) const noexcept
         {
-                return board_type::squares ^ m_empty;
+                return board_type::squares;
         }
 
         constexpr auto pieces(empty_) const noexcept
         {
                 return m_empty;
+        }
+
+        constexpr auto pieces(occup_) const noexcept
+        {
+                return board_type::squares ^ m_empty;
         }
 
         template<class... Args>

@@ -10,12 +10,13 @@
 
 namespace dctl::core {
 
-enum struct piece 
-: 
-        unsigned char 
-{ 
-        pawn, 
-        king 
+enum struct piece
+:
+        unsigned char
+{
+        pawn,
+        king,
+        size
 };
 
 template<piece N>
@@ -33,10 +34,12 @@ constexpr auto piece_c = piece_<N>{};
 inline constexpr auto pawn_c = piece_c<piece::pawn>;
 inline constexpr auto king_c = piece_c<piece::king>;
 
-struct occup_ {};
+struct board_ {};
 struct empty_ {};
+struct occup_ {};
 
-inline constexpr auto occup_c = occup_{};
+inline constexpr auto board_c = board_{};
 inline constexpr auto empty_c = empty_{};
+inline constexpr auto occup_c = occup_{};
 
 }       // namespace dctl::core

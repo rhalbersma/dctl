@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color.hpp>            // color, black, white
+#include <dctl/core/state/color.hpp>            // color, black, white, size
 #include <dctl/core/state/piece.hpp>            // piece, pawn, king, occup, empty
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
@@ -19,7 +19,7 @@ namespace bwk {
 template<class Board>
 class position
 {
-        std::array<set_t<Board>, 2> m_color;
+        std::array<set_t<Board>, xstd::to_underlying_type(color::size)> m_color;
         set_t<Board> m_kings;
 public:
         using board_type = Board;
@@ -92,14 +92,19 @@ public:
                 }
         }
 
-        constexpr auto pieces(occup_) const noexcept
+        constexpr auto pieces(board_) const noexcept
         {
-                return pieces(black_c) | pieces(white_c);
+                return board_type::squares;
         }
 
         constexpr auto pieces(empty_) const noexcept
         {
                 return board_type::squares ^ pieces(occup_c);
+        }
+
+        constexpr auto pieces(occup_) const noexcept
+        {
+                return pieces(black_c) | pieces(white_c);
         }
 
         template<class... Args>
