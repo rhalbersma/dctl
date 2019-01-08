@@ -13,8 +13,8 @@
 #include <stdexcept>    // invalid_argument
 #include <sstream>      // stringstream
 #include <string>       // stoi, string
-#include <vector>       // vector
 #include <variant>      // variant
+#include <vector>       // vector
 
 namespace dctl::core {
 namespace dxp {
@@ -256,7 +256,7 @@ public:
 
         auto number_captured() const noexcept
         {
-                return static_cast<int>(m_captured_pieces.size());
+                return static_cast<int>(m_captured_pieces.ssize());
         }
 
         auto captured_pieces() const

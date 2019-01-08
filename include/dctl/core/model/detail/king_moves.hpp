@@ -73,7 +73,7 @@ class king_moves
                                         boost::hana::transform(king_move_directions, [&](auto const dir) {
                                                 using direction_t = decltype(dir);
                                                 auto const blockers = king_move_scan<direction_t>(from_sq) - empty;
-                                                return blockers.empty() ? set_type{} : blocker_and_beyond<direction_t>(find_first<direction_t>(blockers));
+                                                return blockers.empty() ? blockers : blocker_and_beyond<direction_t>(find_first<direction_t>(blockers));
                                         }),
                                         std::bit_or{}
                                 )
