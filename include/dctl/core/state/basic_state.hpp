@@ -13,8 +13,8 @@
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
-#include <type_traits>                          // is_same
 #include <tuple>                                // tie
+#include <type_traits>                          // is_same
 #include <utility>                              // forward
 
 namespace dctl::core {
@@ -28,7 +28,7 @@ namespace block_adl {
 template<class Board>
 struct base_position
 {
-        using position_type = wpo::position<Board>;
+        using position_type = bwk::position<Board>;
         position_type m_position;
 };
 

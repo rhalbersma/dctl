@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/state/color.hpp>            // color, black, white, size
-#include <dctl/core/state/piece.hpp>            // piece, pawn, king, size, occup, empty
+#include <dctl/core/state/color.hpp>            // color, black_c, white_c
+#include <dctl/core/state/piece.hpp>            // piece,  pawn_c,  king_c, board_, empty_, occup_
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // to_underlying_type
@@ -28,7 +28,7 @@ public:
 
         position() = default;
 
-        constexpr position(set_type const black_pawns, set_type const white_pawns, set_type const black_kings, set_type const white_kings) // Throws: Nothing.
+        constexpr position(set_type black_pawns, set_type white_pawns, set_type black_kings, set_type white_kings) // Throws: Nothing.
         :
                 m_color{{black_pawns | black_kings, white_pawns | white_kings}},
                 m_piece{{black_pawns | white_pawns, black_kings | white_kings}},
@@ -37,7 +37,7 @@ public:
                 assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
         }
 
-        constexpr position(set_type const black_pawns, set_type const white_pawns) // Throws: Nothing.
+        constexpr position(set_type black_pawns, set_type white_pawns) // Throws: Nothing.
         :
                 m_color{{black_pawns, white_pawns}},
                 m_piece{{black_pawns | white_pawns, {}}},
@@ -47,7 +47,7 @@ public:
         }
 
         template<class Action>
-        constexpr auto make(color const c, Action const& a) // Throws: Nothing.
+        constexpr auto make(color c, Action const& a) // Throws: Nothing.
         {
                 if (a.is_jump()) {
                         set_pieces(!c) ^= a.captured_pieces();
@@ -63,17 +63,17 @@ public:
                 m_empty = board_type::squares ^ (pieces(black_c) | pieces(white_c));
         }
 
-        constexpr auto pieces(color const c) const noexcept
+        constexpr auto pieces(color c) const noexcept
         {
                 return m_color[xstd::to_underlying_type(c)];
         }
 
-        constexpr auto pieces(piece const p) const noexcept
+        constexpr auto pieces(piece p) const noexcept
         {
                 return m_piece[xstd::to_underlying_type(p)];
         }
 
-        constexpr auto pieces(color const c, piece const p) const noexcept
+        constexpr auto pieces(color c, piece p) const noexcept
         {
                 return pieces(c) & pieces(p);
         }
@@ -106,12 +106,12 @@ public:
         }
 
 private:
-        constexpr auto& set_pieces(color const c) noexcept
+        constexpr auto& set_pieces(color c) noexcept
         {
                 return m_color[xstd::to_underlying_type(c)];
         }
 
-        constexpr auto& set_pieces(piece const p) noexcept
+        constexpr auto& set_pieces(piece p) noexcept
         {
                 return m_piece[xstd::to_underlying_type(p)];
         }
