@@ -13,9 +13,6 @@ using namespace dctl::core;
 
 int main()
 {
-        //auto const s = basic_state<international, basic_board<checkers>>::initial();
-        //traversal::sperft(model::drop_duplicates_gen, s, 17);
-
         using state = basic_state<international, basic_board<international>>;
 
         auto const states = std::vector<state>{
@@ -32,8 +29,7 @@ int main()
 
         auto const depths = std::vector<int>{ 11, 9, 15, 11, 9 };
 
-        for (auto i = std::size_t{0}; i < 3 /*states.size()*/; ++i) {
+        for (auto i = std::size_t{0}; i < 3 ; ++i) {
                 traversal::sperft(model::drop_duplicates_gen, states[i], depths[i]);
         }
-
 }

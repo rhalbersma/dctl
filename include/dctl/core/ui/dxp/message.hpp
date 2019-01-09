@@ -256,7 +256,7 @@ public:
 
         auto number_captured() const noexcept
         {
-                return static_cast<int>(m_captured_pieces.ssize());
+                return static_cast<int>(m_captured_pieces.size());
         }
 
         auto captured_pieces() const

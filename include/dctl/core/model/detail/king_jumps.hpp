@@ -85,24 +85,10 @@ public:
         template<class Direction, class Builder>
         static auto next_target_passing_promotion(int const sq, Builder& b)
         {
-                constexpr static auto hana_is_forward = [](auto const arg) {
-                        return boost::hana::decltype_(arg) == boost::hana::int_c<Direction::value>;
-                };
-
-                constexpr static auto hana_is_reverse = [](auto const arg) {
-                        return boost::hana::decltype_(arg) == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
-                };
-
-                constexpr static auto hana_is_forward_or_reverse = [](auto const arg) {
-                        return boost::hana::or_(hana_is_forward(arg), hana_is_reverse(arg));
-                };
-
-                constexpr auto hana_king_turn_directions = boost::hana::remove_if(king_jump_directions, hana_is_forward_or_reverse);
-
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(b.with() == piece::pawn);
                 b.into(piece::king);
-                return scan(hana_king_turn_directions, sq, b);
+                return scan(king_jump_directions, sq, b);
         }
 private:
         template<class Direction, class Builder>
@@ -140,30 +126,22 @@ private:
         template<class Direction, class Builder>
         static auto next_target(int sq, int n [[maybe_unused]], Builder& b)
         {
-                constexpr static auto hana_is_forward = [](auto const arg) {
-                        return boost::hana::decltype_(arg) == boost::hana::int_c<Direction::value>;
-                };
-
-                constexpr static auto hana_is_reverse = [](auto const arg) {
-                        return boost::hana::decltype_(arg) == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
-                };
-
-                constexpr static auto hana_is_forward_or_reverse = [](auto const arg) {
-                        return boost::hana::or_(hana_is_forward(arg), hana_is_reverse(arg));
-                };
-
-                constexpr auto hana_king_scan_directions [[maybe_unused]] = boost::hana::remove_if(king_jump_directions, hana_is_reverse);
-                constexpr auto hana_king_turn_directions [[maybe_unused]] = boost::hana::remove_if(king_jump_directions, hana_is_forward_or_reverse);
+                constexpr auto king_scan_directions [[maybe_unused]] = boost::hana::remove_if(king_jump_directions, [](auto dir) {
+                        return dir == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
+                });
+                constexpr auto king_turn_directions [[maybe_unused]] = boost::hana::remove_if(king_scan_directions, [](auto dir) {
+                        return dir == boost::hana::int_c<Direction::value>;
+                });
 
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
                         return scan(king_jump_directions, sq, b);
                 } else if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return scan(hana_king_scan_directions, sq, b);
+                        return scan(king_scan_directions, sq, b);
                 } else {
-                        auto found_next = scan(hana_king_scan_directions, sq, b);
+                        auto found_next = scan(king_scan_directions, sq, b);
                         while (--n) {
                                 advance<board_type, Direction>{}(sq);
-                                found_next |= scan(hana_king_turn_directions, sq, b);
+                                found_next |= scan(king_turn_directions, sq, b);
                         }
                         return found_next;
                 }
