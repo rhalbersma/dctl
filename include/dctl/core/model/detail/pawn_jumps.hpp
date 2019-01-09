@@ -11,9 +11,9 @@
 #include <dctl/core/model/detail/king_jumps.hpp>        // promote_en_passant
 #include <dctl/core/model/detail/pattern.hpp>           // jump_targets
 #include <dctl/core/model/detail/raii.hpp>              // capture, lift
+#include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_promotion_en_passant_t
 #include <dctl/core/state/color.hpp>                    // color, color_
 #include <dctl/core/state/piece.hpp>                    // pawn_, king_
-#include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_promotion_en_passant_t
 #include <dctl/util/type_traits.hpp>                    // action_t, board_t, rules_t, set_t
 #include <boost/hana/equal.hpp>                         // ==
 #include <boost/hana/fold.hpp>                          // fold

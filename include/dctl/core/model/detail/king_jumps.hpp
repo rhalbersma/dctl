@@ -11,11 +11,12 @@
 #include <dctl/core/model/detail/pattern.hpp>   // jump_targets
 #include <dctl/core/model/detail/raii.hpp>      // capture, lift, set_king_jump
 #include <dctl/core/model/detail/tables.hpp>    // king_jumps, king_moves
-#include <dctl/core/state/color.hpp>            // color, color_
-#include <dctl/core/state/piece.hpp>            // king_
 #include <dctl/core/rules/type_traits.hpp>      // is_reversible_king_jump_direction_t, is_long_ranged_king_t,
                                                 // is_long_ranged_land_after_piece_t, is_halt_behind_final_king_t
+#include <dctl/core/state/color.hpp>            // color, color_
+#include <dctl/core/state/piece.hpp>            // king_
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
+#include <boost/hana/equal.hpp>                 // ==
 #include <boost/hana/fold.hpp>                  // fold
 #include <boost/hana/for_each.hpp>              // for_each
 #include <boost/hana/integral_constant.hpp>     // bool_c, int_c
