@@ -64,7 +64,7 @@ public:
         static auto generate(Builder& b)
         {
                 raii::set_king_jump g1{b};
-                for (auto const from_sq : b.pieces(color_c<Side>, king_c)) {
+                for (auto from_sq : b.pieces(color_c<Side>, king_c)) {
                         raii::lift guard{from_sq, b};
                         boost::hana::for_each(king_jump_directions, [&](auto dir) {
                                 using direction_t = decltype(dir);
@@ -83,7 +83,7 @@ public:
         }
 
         template<class Direction, class Builder>
-        static auto next_target_passing_promotion(int const sq, Builder& b)
+        static auto next_target_passing_promotion(int sq, Builder& b)
         {
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(b.with() == piece::pawn);
@@ -102,7 +102,7 @@ public:
         }
 private:
         template<class Direction, class Builder>
-        static auto capture(int const sq, Builder& b)
+        static auto capture(int sq, Builder& b)
                 -> void
         {
                 raii::capture guard{prev<board_type, Direction>{}(sq), b};
@@ -157,7 +157,7 @@ private:
         }
 
         template<class Directions, class Builder>
-        static auto scan(Directions directions, int const sq, Builder& b)
+        static auto scan(Directions directions, int sq, Builder& b)
         {
                 return boost::hana::fold(
                         boost::hana::transform(directions, [&](auto dir) {

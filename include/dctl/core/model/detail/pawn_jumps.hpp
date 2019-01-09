@@ -59,7 +59,7 @@ public:
         {
                 boost::hana::for_each(pawn_jump_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
-                        for(auto const from_sq : jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawn_c), b.targets(), b.pieces(empty_c))) {
+                        for (auto from_sq : jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawn_c), b.targets(), b.pieces(empty_c))) {
                                 raii::lift guard{from_sq, b};
                                 capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                         }
@@ -67,7 +67,7 @@ public:
         }
 private:
         template<class Direction, class Builder>
-        static auto capture(int const sq, Builder& b)
+        static auto capture(int sq, Builder& b)
                 -> void
         {
                 raii::capture guard{prev<board_type, Direction>{}(sq), b};
@@ -89,7 +89,7 @@ private:
         }
 
         template<class Direction, class Builder>
-        static auto next_target(int const sq, Builder& b)
+        static auto next_target(int sq, Builder& b)
         {
                 constexpr auto is_reverse = [](auto dir) {
                         return dir == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;

@@ -32,14 +32,14 @@ class king_moves
         using basic_blocker_and_beyond = board_scan_dir_sq<Board, king_move_directions_t, true, true, true>;
 
         template<class Direction>
-        static auto king_move_scan(int const from_sq)
+        static auto king_move_scan(int from_sq)
         {
                 assert(Board::is_onboard(from_sq));
                 return basic_king_move_scan{}(from_sq, move_index<Direction>);
         }
 
         template<class Direction>
-        static auto blocker_and_beyond(int const from_sq)
+        static auto blocker_and_beyond(int from_sq)
         {
                 assert(Board::is_onboard(from_sq));
                 static_assert(is_long_ranged_king_v<Rules>);
@@ -48,7 +48,7 @@ class king_moves
 
         inline const static auto attacks_table = []() {
                 std::array<set_type, Board::bits()> result;
-                for (auto const from_sq : Board::squares) {
+                for (auto from_sq : Board::squares) {
                         result[static_cast<std::size_t>(from_sq)] =
                                 boost::hana::fold(
                                         boost::hana::transform(king_move_directions, [&](auto dir) {
@@ -63,7 +63,7 @@ class king_moves
 
         // Classical Approach In One Run
         // https://chessprogramming.wikispaces.com/Classical+Approach#Piece%20Attacks-In%20one%20Run
-        static auto attacks(int const from_sq, set_type const& empty) // Throws: Nothing.
+        static auto attacks(int from_sq, set_type const& empty) // Throws: Nothing.
         {
                 assert(Board::is_onboard(from_sq));
                 if constexpr (is_long_ranged_king_v<Rules>) {
@@ -85,14 +85,14 @@ class king_moves
 public:
         static auto detect(set_type const& kings, set_type const& empty) noexcept
         {
-                return std::any_of(kings.begin(), kings.end(), [&](auto const from_sq) {
+                return std::any_of(kings.begin(), kings.end(), [&](auto from_sq) {
                         return !attacks(from_sq, empty).empty();
                 });
         }
 
         static auto count(set_type const& kings, set_type const& empty) noexcept
         {
-                return std::accumulate(kings.begin(), kings.end(), 0, [&](auto const result, auto const from_sq) {
+                return std::accumulate(kings.begin(), kings.end(), 0, [&](auto result, auto from_sq) {
                         return result + attacks(from_sq, empty).ssize();
                 });
         }
@@ -100,8 +100,8 @@ public:
         template<class SequenceContainer>
         static auto generate(set_type const& kings, set_type const& empty, SequenceContainer& seq)
         {
-                for (auto const from_sq : kings) {
-                        for (auto const dest_sq : attacks(from_sq, empty)) {
+                for (auto from_sq : kings) {
+                        for (auto dest_sq : attacks(from_sq, empty)) {
                                 seq.emplace_back(from_sq, dest_sq);
                         }
                 }

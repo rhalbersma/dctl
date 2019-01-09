@@ -58,7 +58,7 @@ class board_scan_sq_dir
 {
         inline const static auto table = []() {
                 std::array<std::array<set_t<Board>, tuple_size<Directions>>, Board::bits()> result;
-                for (auto const sq : Board::squares) {
+                for (auto sq : Board::squares) {
                         result[static_cast<std::size_t>(sq)] =
                                 meta::transformed_array_from_type_list<Directions>{}([=](auto dir) {
                                         using direction_t = decltype(dir);
@@ -69,7 +69,7 @@ class board_scan_sq_dir
                 return result;
         }();
 public:
-        auto operator()(int const sq, int const index) const
+        auto operator()(int sq, int index) const
         {
                 return table[static_cast<std::size_t>(sq)][static_cast<std::size_t>(index)];
         }
@@ -82,7 +82,7 @@ class board_scan_dir_sq
                 return meta::transformed_array_from_type_list<Directions>{}([](auto dir) {
                         using direction_t = decltype(dir);
                         std::array<set_t<Board>, Board::bits()> result;
-                        for (auto const sq : Board::squares) {
+                        for (auto sq : Board::squares) {
                                 result[static_cast<std::size_t>(sq)] =
                                         scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
                                 ;
@@ -91,7 +91,7 @@ class board_scan_dir_sq
                 });
         }();
 public:
-        auto operator()(int const sq, int const index) const
+        auto operator()(int sq, int index) const
         {
                 return table[static_cast<std::size_t>(index)][static_cast<std::size_t>(sq)];
         }
@@ -116,20 +116,20 @@ template<class Rules, class Direction>
 constexpr auto jump_index = is_orthogonal_jump_v<Rules> ? Direction::value / 45 : move_index<Direction>;
 
 template<class Rules, class Board, class Direction>
-auto king_slide(int const sq)
+auto king_slide(int sq)
 {
         return basic_king_slide<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
 template<class Rules, class Board, class Direction>
-auto blocker_and_beyond(int const sq)
+auto blocker_and_beyond(int sq)
 {
         static_assert(is_long_ranged_king_v<Rules>);
         return basic_blocker_and_beyond<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
 template<class Rules, class Board, class Direction>
-auto king_slide(int const sq, set_t<Board> const& empty)
+auto king_slide(int sq, set_t<Board> const& empty)
 {
         assert(Board::is_onboard(sq));
         if constexpr (is_long_ranged_king_v<Rules>) {
@@ -144,7 +144,7 @@ auto king_slide(int const sq, set_t<Board> const& empty)
 }
 
 template<class Rules, class Board, class Direction>
-auto king_jump(int const sq, set_t<Board> const& empty)
+auto king_jump(int sq, set_t<Board> const& empty)
 {
         return basic_king_jump<Rules, Board>{}(sq, jump_index<Rules, Direction>) - empty;
 }
