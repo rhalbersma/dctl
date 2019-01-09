@@ -60,7 +60,7 @@ class board_scan_sq_dir
                 std::array<std::array<set_t<Board>, tuple_size<Directions>>, Board::bits()> result;
                 for (auto const sq : Board::squares) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::transformed_array_from_type_list<Directions>{}([=](auto const dir) {
+                                meta::transformed_array_from_type_list<Directions>{}([=](auto dir) {
                                         using direction_t = decltype(dir);
                                         return scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares);
                                 })
@@ -79,7 +79,7 @@ template<class Board, class Directions, bool IsLongRanged, bool IncludesFrom, bo
 class board_scan_dir_sq
 {
         inline const static auto table = []() {
-                return meta::transformed_array_from_type_list<Directions>{}([](auto const dir) {
+                return meta::transformed_array_from_type_list<Directions>{}([](auto dir) {
                         using direction_t = decltype(dir);
                         std::array<set_t<Board>, Board::bits()> result;
                         for (auto const sq : Board::squares) {

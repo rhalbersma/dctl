@@ -51,7 +51,7 @@ class king_moves
                 for (auto const from_sq : Board::squares) {
                         result[static_cast<std::size_t>(from_sq)] =
                                 boost::hana::fold(
-                                        boost::hana::transform(king_move_directions, [&](auto const dir) {
+                                        boost::hana::transform(king_move_directions, [&](auto dir) {
                                                 return king_move_scan<decltype(dir)>(from_sq);
                                         }),
                                         std::bit_or{}
@@ -70,7 +70,7 @@ class king_moves
                         return
                                 attacks_table[static_cast<std::size_t>(from_sq)] ^
                                 boost::hana::fold(
-                                        boost::hana::transform(king_move_directions, [&](auto const dir) {
+                                        boost::hana::transform(king_move_directions, [&](auto dir) {
                                                 using direction_t = decltype(dir);
                                                 auto const blockers = king_move_scan<direction_t>(from_sq) - empty;
                                                 return blockers.empty() ? blockers : blocker_and_beyond<direction_t>(find_first<direction_t>(blockers));

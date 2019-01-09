@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/angle.hpp>            // angle
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/model/detail/builder.hpp>   // builder
 #include <dctl/core/model/detail/pattern.hpp>   // jump_targets
@@ -17,7 +18,7 @@
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
 #include <boost/hana/fold.hpp>                  // fold
 #include <boost/hana/for_each.hpp>              // for_each
-#include <boost/hana/or.hpp>                    // or_
+#include <boost/hana/integral_constant.hpp>     // bool_c, int_c
 #include <boost/hana/remove_if.hpp>             // remove_if
 #include <algorithm>                            // any_of
 #include <cassert>                              // assert
@@ -38,13 +39,12 @@ class king_jumps<Rules, Board, color_<Side>>
         using   set_type = set_t<Board>;
 
         constexpr static auto king_jump_directions = king_jump_directions_v<rules_type>;
-
 public:
         static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
         {
                 return std::any_of(kings.begin(), kings.end(), [&](auto from_sq) {
                         return boost::hana::fold(
-                                boost::hana::transform(king_jump_directions, [&](auto const dir) {
+                                boost::hana::transform(king_jump_directions, [&](auto dir) {
                                         using direction_t = decltype(dir);
                                         if constexpr (is_long_ranged_king_v<rules_type>) {
                                                 auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, empty);
@@ -66,7 +66,7 @@ public:
                 raii::set_king_jump g1{b};
                 for (auto const from_sq : b.pieces(color_c<Side>, king_c)) {
                         raii::lift guard{from_sq, b};
-                        boost::hana::for_each(king_jump_directions, [&](auto const dir) {
+                        boost::hana::for_each(king_jump_directions, [&](auto dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
                                         auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, b.pieces(empty_c));
@@ -88,7 +88,17 @@ public:
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(b.with() == piece::pawn);
                 b.into(piece::king);
-                return scan(king_jump_directions, sq, b);
+                constexpr auto king_scan_directions = boost::hana::remove_if(king_jump_directions, [](auto dir) {
+                        return boost::hana::bool_c<is_up(rotate(angle{decltype(dir)::value}, bearing_v<board_type, color_<Side>>))>;
+                });
+                if constexpr (is_reverse_king_jump_v<rules_type>) {
+                        return scan(king_scan_directions, sq, b);
+                } else {
+                        constexpr auto is_reverse = [](auto dir) {
+                                return dir == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
+                        };
+                        return scan(boost::hana::remove_if(king_scan_directions, is_reverse), sq, b);
+                }
         }
 private:
         template<class Direction, class Builder>
@@ -132,7 +142,6 @@ private:
                 constexpr auto king_turn_directions [[maybe_unused]] = boost::hana::remove_if(king_scan_directions, [](auto dir) {
                         return dir == boost::hana::int_c<Direction::value>;
                 });
-
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
                         return scan(king_jump_directions, sq, b);
                 } else if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
@@ -151,7 +160,7 @@ private:
         static auto scan(Directions directions, int const sq, Builder& b)
         {
                 return boost::hana::fold(
-                        boost::hana::transform(directions, [&](auto const dir) {
+                        boost::hana::transform(directions, [&](auto dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
                                         auto const blockers = king_jump<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
