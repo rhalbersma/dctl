@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>            // angle, rotate
 #include <dctl/core/board/bearing.hpp>          // bearing
-#include <dctl/core/model/detail/pattern.hpp>   // move_squares
+#include <dctl/core/model/detail/pattern.hpp>   // move_dest
 #include <dctl/core/rules/type_traits.hpp>      // pawn_move_directions_v
 #include <dctl/core/state/color.hpp>            // color, color_
 #include <boost/hana/fold.hpp>                  // fold
@@ -35,7 +35,7 @@ public:
         {
                 return boost::hana::fold(
                         boost::hana::transform(pawn_move_directions, [&](auto dir) {
-                                return !move_squares<Board, decltype(dir)>{}(pawns, empty).empty();
+                                return !move_dest<Board, decltype(dir)>{}(pawns, empty).empty();
                         }),
                         std::logical_or{}
                 );
@@ -45,7 +45,7 @@ public:
         {
                 return boost::hana::fold(
                         boost::hana::transform(pawn_move_directions, [&](auto dir) {
-                                return move_squares<Board, decltype(dir)>{}(pawns, empty).ssize();
+                                return move_dest<Board, decltype(dir)>{}(pawns, empty).ssize();
                         }),
                         std::plus{}
                 );
@@ -56,7 +56,7 @@ public:
         {
                 boost::hana::for_each(pawn_move_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
-                        for (auto dest_sq : move_squares<Board, direction_t>{}(pawns, empty)) {
+                        for (auto dest_sq : move_dest<Board, direction_t>{}(pawns, empty)) {
                                 seq.emplace_back(prev<Board, direction_t>{}(dest_sq), dest_sq, Board::promotion(Side).contains(dest_sq));
                         }
                 });

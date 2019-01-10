@@ -6,35 +6,34 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/model/detail/stride.hpp>    // next, prev
-#include <dctl/core/rules/type_traits.hpp>      // short_ranged_tag, long_ranged_tag
 #include <dctl/util/type_traits.hpp>            // set_t
 
 namespace dctl::core {
 
 template<class Board, class Direction>
-struct move_squares
+struct move_dest
 {
         using set_type = set_t<Board>;
 
-        auto operator()(set_type const& sources, set_type const& squares) const noexcept
+        auto operator()(set_type const& from, set_type const& dest) const noexcept
         {
-                return next<Board, Direction>{}(sources) & squares;
+                return next<Board, Direction>{}(from) & dest;
         }
 };
 
 template<class Board, class Direction>
-struct jump_sources
+struct jump_from
 {
         using set_type = set_t<Board>;
 
-        auto operator()(set_type const& sources, set_type const& targets, set_type const& squares) const noexcept
+        auto operator()(set_type const& from, set_type const& targets, set_type const& dest) const noexcept
         {
-                return sources & prev<Board, Direction>{}(targets) & prev<Board, Direction, 2>{}(squares);
+                return from & prev<Board, Direction>{}(targets) & prev<Board, Direction, 2>{}(dest);
         }
 
-        auto operator()(set_type const& targets, set_type const& squares) const noexcept
+        auto operator()(set_type const& targets, set_type const& dest) const noexcept
         {
-                return prev<Board, Direction>{}(targets) & prev<Board, Direction, 2>{}(squares);
+                return prev<Board, Direction>{}(targets) & prev<Board, Direction, 2>{}(dest);
         }
 };
 
@@ -43,14 +42,14 @@ struct jump_targets
 {
         using set_type = set_t<Board>;
 
-        auto operator()(set_type const& sources, set_type const& targets, set_type const& squares) const noexcept
+        auto operator()(set_type const& from, set_type const& targets, set_type const& dest) const noexcept
         {
-                return next<Board, Direction>{}(sources) & targets & prev<Board, Direction>{}(squares);
+                return next<Board, Direction>{}(from) & targets & prev<Board, Direction>{}(dest);
         }
 
-        auto operator()(set_type const& targets, set_type const& squares) const noexcept
+        auto operator()(set_type const& targets, set_type const& dest) const noexcept
         {
-                return targets & prev<Board, Direction>{}(squares);
+                return targets & prev<Board, Direction>{}(dest);
         }
 };
 

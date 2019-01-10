@@ -9,7 +9,7 @@
 #include <dctl/core/board/bearing.hpp>                  // bearing
 #include <dctl/core/model/detail/builder.hpp>           // builder
 #include <dctl/core/model/detail/king_jumps.hpp>        // promote_en_passant
-#include <dctl/core/model/detail/pattern.hpp>           // jump_targets
+#include <dctl/core/model/detail/pattern.hpp>           // jump_from, jump_targets
 #include <dctl/core/model/detail/raii.hpp>              // capture, lift
 #include <dctl/core/rules/type_traits.hpp>              // is_superior_rank_jump_t, is_promotion_en_passant_t
 #include <dctl/core/state/color.hpp>                    // color, color_
@@ -59,7 +59,7 @@ public:
         {
                 boost::hana::for_each(pawn_jump_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
-                        for (auto from_sq : jump_sources<board_type, direction_t>{}(b.pieces(color_c<Side>, pawn_c), b.targets(), b.pieces(empty_c))) {
+                        for (auto from_sq : jump_from<board_type, direction_t>{}(b.pieces(color_c<Side>, pawn_c), b.targets(), b.pieces(empty_c))) {
                                 raii::lift guard{from_sq, b};
                                 capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                         }
@@ -98,7 +98,7 @@ private:
                 return boost::hana::fold(
                         boost::hana::transform(boost::hana::remove_if(pawn_jump_directions, is_reverse), [&](auto dir) {
                                 using direction_t = decltype(dir);
-                                if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                                if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
                                 capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
                                 return true;
                         }),

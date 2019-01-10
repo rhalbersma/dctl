@@ -57,29 +57,19 @@ auto find_first(Set const& s)
         }
 }
 
-template<class Direction, class Set>
-constexpr auto last() noexcept
-{
-        if constexpr (is_forward_v<Direction>) {
-                return Set::max_ssize() - 1;
-        } else {
-                return 0;
-        }
-}
-
 template<class Board, class Direction, int Distance = 1>
 struct advance
 {
         using set_type = set_t<Board>;
 
-        auto operator()(set_type& is) const
+        auto operator()(set_type& bs) const
         {
                 constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
-                static_assert(0 <= n); static_assert(n < set_type::max_ssize());
+                static_assert(0 <= n && n < set_type::max_ssize());
                 if constexpr (!(is_forward_v<Direction> ^ (Distance >= 0))) {
-                        is <<= n;
+                        bs <<= n;
                 } else {
-                        is >>= n;
+                        bs >>= n;
                 }
         }
 
@@ -99,10 +89,10 @@ struct next
 {
         using set_type = set_t<Board>;
 
-        auto operator()(set_type is) const
+        auto operator()(set_type bs) const
         {
-                advance<Board, Direction, Distance>{}(is);
-                return is;
+                advance<Board, Direction, Distance>{}(bs);
+                return bs;
         }
 
         constexpr auto operator()(int sq) const
@@ -117,10 +107,10 @@ struct prev
 {
         using set_type = set_t<Board>;
 
-        auto operator()(set_type is) const
+        auto operator()(set_type bs) const
         {
-                advance<Board, Direction, -Distance>{}(is);
-                return is;
+                advance<Board, Direction, -Distance>{}(bs);
+                return bs;
         }
 
         constexpr auto operator()(int sq) const

@@ -8,7 +8,7 @@
 #include <dctl/core/board/angle.hpp>            // angle
 #include <dctl/core/board/bearing.hpp>          // bearing
 #include <dctl/core/model/detail/builder.hpp>   // builder
-#include <dctl/core/model/detail/pattern.hpp>   // jump_targets
+#include <dctl/core/model/detail/pattern.hpp>   // jump_from, jump_targets
 #include <dctl/core/model/detail/raii.hpp>      // capture, lift, set_king_jump
 #include <dctl/core/model/detail/tables.hpp>    // king_jumps, king_moves
 #include <dctl/core/rules/type_traits.hpp>      // is_reversible_king_jump_direction_t, is_long_ranged_king_t,
@@ -23,7 +23,7 @@
 #include <boost/hana/remove_if.hpp>             // remove_if
 #include <algorithm>                            // any_of
 #include <cassert>                              // assert
-#include <functional>                           // logical_or
+#include <functional>                           // bit_or, logical_or
 #include <type_traits>                          // bool_constant
 
 namespace dctl::core::model {
@@ -53,7 +53,7 @@ public:
                                                 auto const first = find_first<direction_t>(blockers);
                                                 return jump_targets<board_type, direction_t>{}(targets, empty).contains(first);
                                         } else {
-                                                return jump_sources<board_type, direction_t>{}(targets, empty).contains(from_sq);
+                                                return jump_from<board_type, direction_t>{}(targets, empty).contains(from_sq);
                                         }
                                 }),
                                 std::logical_or{}
@@ -76,7 +76,7 @@ public:
                                         if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
                                         capture<direction_t>(next<board_type, direction_t>{}(first), b);
                                 } else {
-                                        if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
+                                        if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
                                         capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                                 }
                         });
@@ -170,7 +170,7 @@ private:
                                         if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
                                         capture<direction_t>(next<board_type, direction_t>{}(first), b);
                                 } else {
-                                        if (!jump_sources<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                                        if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
                                         capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
                                 }
                                 return true;
