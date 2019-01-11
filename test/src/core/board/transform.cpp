@@ -12,9 +12,9 @@
 using namespace dctl::core;
 using namespace literals;
 
-BOOST_AUTO_TEST_SUITE(angleTransform)
+BOOST_AUTO_TEST_SUITE(AngleTransform)
 
-auto angles = boost::irange(-2 * 360, 2 * 360 + 1);
+auto const angles = boost::irange(-2 * 360, 2 * 360 + 1);
 
 BOOST_AUTO_TEST_CASE(AngleConstructorIsIdempotentOnIntegers)
 {
