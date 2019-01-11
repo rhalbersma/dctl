@@ -3,7 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/board/group.hpp>         // action::is_realized, make
+#include <core/board/group.hpp>         // action::is_realized, make_group
 #include <dctl/core/board/angle.hpp>    // angle, _deg, inverse, rotate
 #include <boost/range/irange.hpp>       // irange
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
@@ -14,12 +14,12 @@
 using namespace dctl::core;
 using namespace literals;
 
-BOOST_AUTO_TEST_SUITE(AngleAngle)
+BOOST_AUTO_TEST_SUITE(Angle)
 
-BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllangles)
+BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllAngles)
 {
-        auto const op = [](auto i, auto j) { return rotate(i, j); };
-        auto const inv = [](auto i) { return inverse(i); };
+        constexpr auto op = [](auto i, auto j) { return rotate(i, j); };
+        constexpr auto inv = [](auto i) { return inverse(i); };
 
         auto const C1 = make_group(
                 { 0_deg },
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllangles)
 
         BOOST_CHECK(
                 std::all_of(C_N.begin(), C_N.end(), [=](auto const& g) {
-                        return std::all_of(angles.begin(), angles.end(), [&](auto const a) {
+                        return std::all_of(angles.begin(), angles.end(), [&](auto a) {
                                 return group::action::is_realized(angle{a}, g);
                         });
                 })

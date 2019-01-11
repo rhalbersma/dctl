@@ -7,8 +7,8 @@
 
 #include <dctl/core/model/detail/stride.hpp>    // find_first, advance, next
 #include <dctl/core/rules/type_traits.hpp>
-#include <dctl/util/meta.hpp>                   // transformed_array_from_type_list
 #include <dctl/util/type_traits.hpp>            // set_t
+#include <xstd/array.hpp>                       // array_from_types
 #include <boost/hana/size.hpp>                  // size
 #include <array>                                // array
 #include <cassert>                              // assert
@@ -60,7 +60,7 @@ class board_scan_sq_dir
                 std::array<std::array<set_t<Board>, tuple_size<Directions>>, Board::bits()> result;
                 for (auto sq : Board::squares) {
                         result[static_cast<std::size_t>(sq)] =
-                                meta::transformed_array_from_type_list<Directions>{}([=](auto dir) {
+                                xstd::array_from_types<Directions>{}([=](auto dir) {
                                         using direction_t = decltype(dir);
                                         return scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares);
                                 })
@@ -79,7 +79,7 @@ template<class Board, class Directions, bool IsLongRanged, bool IncludesFrom, bo
 class board_scan_dir_sq
 {
         inline const static auto table = []() {
-                return meta::transformed_array_from_type_list<Directions>{}([](auto dir) {
+                return xstd::array_from_types<Directions>{}([](auto dir) {
                         using direction_t = decltype(dir);
                         std::array<set_t<Board>, Board::bits()> result;
                         for (auto sq : Board::squares) {

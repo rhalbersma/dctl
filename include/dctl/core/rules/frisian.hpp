@@ -5,11 +5,11 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/rules/type_traits.hpp>      // dir_...
-#include <dctl/util/type_traits.hpp>            // board_t, set_t
-#include <boost/hana/tuple.hpp>                 // tuple_c
-#include <tuple>                                // make_tuple
-#include <type_traits>                          // decay_t
+#include <dctl/core/board/angle.hpp>    // dir_...
+#include <dctl/util/type_traits.hpp>    // board_t, set_t
+#include <boost/hana/tuple.hpp>         // tuple_c
+#include <tuple>                        // make_tuple
+#include <type_traits>                  // decay_t
 
 namespace dctl::core {
 namespace block_adl {

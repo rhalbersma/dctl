@@ -9,9 +9,9 @@
 using namespace dctl::core;
 using namespace literals;
 
-BOOST_AUTO_TEST_SUITE(angleLiterals)
+BOOST_AUTO_TEST_SUITE(AngleLiterals)
 
-BOOST_AUTO_TEST_CASE(DegreesLiteralIsangleObject)
+BOOST_AUTO_TEST_CASE(DegreesLiteralIsAngleObject)
 {
         static_assert(  0_deg == angle{  0});
         static_assert( 45_deg == angle{ 45});
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(DegreesLiteralIsangleObject)
         static_assert(360_deg == angle{360});
 }
 
-BOOST_AUTO_TEST_CASE(UnaryPlusAppliesToangleObject)
+BOOST_AUTO_TEST_CASE(UnaryPlusAppliesToAngleObject)
 {
         static_assert(  +0_deg == +angle{  0});
         static_assert( +45_deg == +angle{ 45});
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(UnaryPlusAppliesToangleObject)
         static_assert(+360_deg == +angle{360});
 }
 
-BOOST_AUTO_TEST_CASE(UnaryMinusAppliesToangleObject)
+BOOST_AUTO_TEST_CASE(UnaryMinusAppliesToAngleObject)
 {
         static_assert(  -0_deg == -angle{  0});
         static_assert( -45_deg == -angle{ 45});

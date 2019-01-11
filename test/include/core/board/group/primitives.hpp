@@ -5,18 +5,12 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/util/type_traits.hpp> // value_t
+#include <dctl/util/type_traits.hpp>    // value_t
 #include <initializer_list>             // initializer_list
 #include <tuple>                        // make_tuple, get
 #include <vector>                       // vector
 
 namespace dctl::core {
-
-template<class Set, class Op, class Inv, class Element = value_t<Set>>
-auto make_group(Set elements, Op op, Inv inv, Element id = Element{})
-{
-        return std::make_tuple(elements, op, inv, id);
-}
 
 template<class Element, class Op, class Inv>
 auto make_group(std::initializer_list<Element> elements, Op op, Inv inv, Element id = Element{})

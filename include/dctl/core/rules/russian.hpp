@@ -5,8 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/rules/type_traits.hpp>      // dir_...
-#include <boost/hana/tuple.hpp>                 // tuple_c
+#include <dctl/core/board/angle.hpp>    // dir_...
+#include <boost/hana/tuple.hpp>         // tuple_c
 
 namespace dctl::core {
 namespace block_adl {

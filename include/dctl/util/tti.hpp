@@ -6,7 +6,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <type_traits>  // conditional_t, void_t
-#include <utility>      // declval
 
 #define DCTL_PP_TTI_CONSTANT(NAME, DEFAULT)                     \
                                                                 \
@@ -15,7 +14,7 @@ constexpr static auto has_ ## NAME ## _v = false;               \
                                                                 \
 template<class T>                                               \
 constexpr static auto has_ ## NAME ## _v<                       \
-        T, std::void_t<decltype(std::declval<T>().NAME)>        \
+        T, std::void_t<decltype(T::NAME)>                       \
 > = true;                                                       \
                                                                 \
 struct default_ ## NAME                                         \

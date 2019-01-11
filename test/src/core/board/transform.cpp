@@ -14,40 +14,40 @@ using namespace literals;
 
 BOOST_AUTO_TEST_SUITE(angleTransform)
 
-auto const angles = boost::irange(-2 * 360, 2 * 360 + 1);
+auto angles = boost::irange(-2 * 360, 2 * 360 + 1);
 
-BOOST_AUTO_TEST_CASE(angleConstructorIsIdempotentOnIntegers)
+BOOST_AUTO_TEST_CASE(AngleConstructorIsIdempotentOnIntegers)
 {
         BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto const i) {
-                        return group::is_idempotent{}([](auto const j) { return j; }, angle{i});
+                std::all_of(angles.begin(), angles.end(), [](auto i) {
+                        return group::is_idempotent{}([](auto j) { return j; }, angle{i});
                 })
         );
 }
 
-BOOST_AUTO_TEST_CASE(RotateZeroDegIsIdentityOnAllangles)
+BOOST_AUTO_TEST_CASE(RotateZeroDegIsIdentityOnAllAngles)
 {
         BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto const i) {
-                        return group::is_identity{}([](auto const j) { return rotate(j, 0_deg); }, angle{i});
+                std::all_of(angles.begin(), angles.end(), [](auto i) {
+                        return group::is_identity{}([](auto j) { return rotate(j, 0_deg); }, angle{i});
                 })
         );
 }
 
-BOOST_AUTO_TEST_CASE(ReverseIsInvolutionOnAllangles)
+BOOST_AUTO_TEST_CASE(ReverseIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto const i) {
-                        return group::is_involution{}([](auto const j) { return reverse(j); }, angle{i});
+                std::all_of(angles.begin(), angles.end(), [](auto i) {
+                        return group::is_involution{}([](auto j) { return reverse(j); }, angle{i});
                 })
         );
 }
 
-BOOST_AUTO_TEST_CASE(InverseIsInvolutionOnAllangles)
+BOOST_AUTO_TEST_CASE(InverseIsInvolutionOnAllAngles)
 {
         BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto const i) {
-                        return group::is_involution{}([](auto const j) { return inverse(j); }, angle{i});
+                std::all_of(angles.begin(), angles.end(), [](auto i) {
+                        return group::is_involution{}([](auto j) { return inverse(j); }, angle{i});
                 })
         );
 }
@@ -55,9 +55,9 @@ BOOST_AUTO_TEST_CASE(InverseIsInvolutionOnAllangles)
 BOOST_AUTO_TEST_CASE(MirrorIsInvolutionOnAllanglePairs)
 {
         BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto const i) {
-                        return std::all_of(angles.begin(), angles.end(), [=](auto const j) {
-                                return group::is_involution{}([=](auto const k) { return mirror(k, angle{j}); }, angle{i});
+                std::all_of(angles.begin(), angles.end(), [](auto i) {
+                        return std::all_of(angles.begin(), angles.end(), [=](auto j) {
+                                return group::is_involution{}([=](auto k) { return mirror(k, angle{j}); }, angle{i});
                         });
                 })
         );

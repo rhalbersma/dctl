@@ -9,8 +9,7 @@
 #include <algorithm>                            // all_of, find, find_if
 
 namespace dctl::core {
-namespace group {
-namespace axioms {
+namespace group::axioms {
 
 template<class Group>
 auto is_closure(Group const& g) noexcept
@@ -89,6 +88,5 @@ auto is_realized(Group const& g) noexcept
         ;
 }
 
-}       // namespace axioms
-}       // namespace group
+}       // namespace group::axioms
 }       // namespace dctl::core

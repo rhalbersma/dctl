@@ -20,7 +20,7 @@ class setpushsep
 {
         char m_iword;
 public:
-        explicit setpushsep(char const c) noexcept
+        explicit setpushsep(char c) noexcept
         :
                 m_iword{c}
         {}
@@ -47,7 +47,7 @@ class setjumpsep
 {
         char m_iword;
 public:
-        explicit setjumpsep(char const c) noexcept
+        explicit setjumpsep(char c) noexcept
         :
                 m_iword{c}
         {}

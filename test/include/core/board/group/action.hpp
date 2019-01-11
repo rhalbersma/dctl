@@ -9,8 +9,7 @@
 #include <algorithm>                            // all_of
 
 namespace dctl::core {
-namespace group {
-namespace action {
+namespace group::action {
 
 template<class Object, class Group>
 auto is_associativity(Object const& obj, Group const& g) noexcept
@@ -43,6 +42,5 @@ auto is_realized(Object const& obj, Group const& g) noexcept
         ;
 }
 
-}       // namespace action
-}       // namespace group
+}       // namespace group::action
 }       // namespace dctl::core

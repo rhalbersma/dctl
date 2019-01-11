@@ -12,11 +12,6 @@ namespace dctl::core {
 
 class angle
 {
-        constexpr auto assert_invariants() const noexcept
-        {
-                assert(0 <= m_value); assert(m_value < 360);
-        }
-
         int m_value{};
 public:
         angle() = default;
@@ -25,7 +20,7 @@ public:
         :
                 m_value{xstd::euclidean_div(n, 360).rem}
         {
-                assert_invariants();
+                assert(0 <= m_value && m_value < 360);
         }
 
         constexpr auto value() const noexcept
@@ -55,12 +50,12 @@ constexpr auto operator!=(angle a, angle b) noexcept
         return !(a == b);
 }
 
-constexpr auto operator<(angle a, angle b) noexcept
+constexpr auto operator< (angle a, angle b) noexcept
 {
         return a.value() < b.value();
 }
 
-constexpr auto operator>(angle a, angle b) noexcept
+constexpr auto operator> (angle a, angle b) noexcept
 {
         return b < a;
 }
@@ -142,6 +137,31 @@ constexpr auto mirror(angle a, angle b) noexcept
 {
         return rotate(inverse(rotate(a, inverse(b))), b);
 }
+
+/*
+
+                 N == 90
+                   |
+         135 == NW | NE == 45
+                 \ | /
+                  \|/
+     180 == W ----- ----- E == 0
+                  /|\
+                 / | \
+         225 == SW | SE == 315
+                   |
+               270 == S
+
+*/
+
+inline constexpr auto dir_E  =   0;
+inline constexpr auto dir_NE =  45;
+inline constexpr auto dir_N  =  90;
+inline constexpr auto dir_NW = 135;
+inline constexpr auto dir_W  = 180;
+inline constexpr auto dir_SW = 225;
+inline constexpr auto dir_S  = 270;
+inline constexpr auto dir_SE = 315;
 
 constexpr auto is_orthogonal(angle a) noexcept
 {

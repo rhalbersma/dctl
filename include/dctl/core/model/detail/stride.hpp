@@ -24,7 +24,7 @@ class stride
         constexpr auto left      () const noexcept { return right();                    }
         constexpr auto up        () const noexcept { return down();                     }
 public:
-        constexpr auto operator()(angle const a) const
+        constexpr auto operator()(angle a) const
         {
                 switch (a.value()) {
                 case   0: return right()     ;

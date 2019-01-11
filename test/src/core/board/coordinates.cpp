@@ -22,8 +22,8 @@ BOOST_AUTO_TEST_SUITE(GridCoordinates)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquareCoordinates, T, BoardSequence)
 {
-        auto const op = [](auto i, auto j) { return rotate(i, j); };
-        auto const inv = [](auto i) { return inverse(i); };
+        constexpr auto op = [](auto i, auto j) { return rotate(i, j); };
+        constexpr auto inv = [](auto i) { return inverse(i); };
 
         auto const C1 = make_group(
                 { 0_deg },

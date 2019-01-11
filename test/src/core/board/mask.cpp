@@ -10,7 +10,7 @@
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
 #include <algorithm>                            // all_of
 #include <numeric>                              // accumulate
-#include <vector>                               // vector
+#include <array>                                // array
 
 using namespace dctl::core;
 
@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(TestBoard)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(jump_groupsEquivalencePartitionSquares, T, BoardSequence)
 {
-        auto const jump_groups = std::vector<int>{ 0, 1, 2, 3 };
+        auto const jump_groups = std::array{ 0, 1, 2, 3 };
 
         BOOST_CHECK(
                 std::all_of(jump_groups.begin(), jump_groups.end(), [=](auto i) {

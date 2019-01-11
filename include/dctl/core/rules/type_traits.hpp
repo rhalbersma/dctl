@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/angle.hpp>    // dir_...
 #include <dctl/util/tti.hpp>            // DCTL_PP_TTI_CONSTANT
 #include <dctl/util/type_traits.hpp>    // rules_t
 #include <boost/hana/tuple.hpp>         // tuple_c
@@ -202,31 +203,6 @@ constexpr auto notation_v =
         notation::algebraic :
         notation::numeric
 ;
-
-/*
-
-                 N == 90
-                   |
-         135 == NW |  NE == 45
-                 \ | /
-                  \|/
-     180 == W ----- ----- E == 0
-                  /|\
-                 / | \
-         225 == SW | SE == 315
-                   |
-               270 == S
-
-*/
-
-inline constexpr auto dir_E  =   0;
-inline constexpr auto dir_NE =  45;
-inline constexpr auto dir_N  =  90;
-inline constexpr auto dir_NW = 135;
-inline constexpr auto dir_W  = 180;
-inline constexpr auto dir_SW = 225;
-inline constexpr auto dir_S  = 270;
-inline constexpr auto dir_SE = 315;
 
 DCTL_PP_TTI_CONSTANT(pawn_move_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
 DCTL_PP_TTI_CONSTANT(pawn_jump_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
