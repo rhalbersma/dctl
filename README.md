@@ -98,7 +98,7 @@ Any feature requests, ideas and contributions are much appreciated! The recommen
 
 ##### Acknowledgments
 
-Special thanks to Aart Bik, Ed Gilbert, Walter Thoen and Wieger Wesselink for encouragement, testing, and exchange of ideas.
+Special thanks to Aart Bik, Ed Gilbert, Fabien Letouzey, Walter Thoen and Wieger Wesselink for encouragement, testing, and exchange of ideas.
 
 License
 -------
