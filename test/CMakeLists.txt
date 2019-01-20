@@ -19,6 +19,7 @@ set(cxx_compile_options_warnings
         -Wno-disabled-macro-expansion
         -Wno-global-constructors
         -Wno-range-loop-analysis
+        -Wno-ctad-maybe-unsupported
     >
     $<$<CXX_COMPILER_ID:GNU>:
         -Wall
