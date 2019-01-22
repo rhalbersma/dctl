@@ -16,7 +16,7 @@ matrix:
         apt:
           packages:
             - clang-8
-            - g++-7
+            - g++-8
           sources:
             - ubuntu-toolchain-r-test
             - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-8 main'
