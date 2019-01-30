@@ -228,7 +228,17 @@ public:
                 return static_cast<bool>((coord.x % 2) ^ (coord.y % 2)) != inner_grid.upper_left_is_square();
         }
 
+        constexpr static auto is_square(coordinates<lower_left> const& coord) noexcept
+        {
+                return static_cast<bool>((coord.x % 2) ^ (coord.y % 2)) != inner_grid.lower_left_is_square();
+        }
+
         constexpr static auto to_square(coordinates<upper_left> const& coord) noexcept
+        {
+                return core::to_square(coord, inner_grid);
+        }
+
+        constexpr static auto to_square(coordinates<lower_left> const& coord) noexcept
         {
                 return core::to_square(coord, inner_grid);
         }

@@ -19,9 +19,9 @@ struct diagram
         auto operator()(UnaryFunction fun) const
         {
                 std::stringstream sstr;
-                for (auto y = 0; y < Board::height; ++y) {
-                        for (auto x = 0; x < Board::width; ++x) {
-                                auto const coord = coordinates<upper_left>{x, y};
+                for (auto r = Board::height - 1; r >= 0; --r) {
+                        for (auto f = 0; f < Board::width; ++f) {
+                                auto const coord = coordinates<lower_left>{f, r};
                                 if (Board::is_square(coord)) {
                                         sstr << std::setw(2) << fun(Board::bit_from_square(Board::to_square(coord)));
                                 } else {
