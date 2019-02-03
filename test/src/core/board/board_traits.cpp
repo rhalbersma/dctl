@@ -7,6 +7,7 @@
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, basic_board<12, 10>, canadian, srilankan, dumm
 #include <core/board/transform.hpp>             // is_involution, is_idempotent
 #include <dctl/core/board/basic_board.hpp>      // board
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/rules/type_traits.hpp>      // is_empty, is_pushable, is_jumpable, invert
 #include <dctl/core/state/color.hpp>
 #include <boost/range/irange.hpp>               // irange
@@ -55,56 +56,59 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, BoardSequence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresCountEqualsBoardSize, T, BoardSequence)
 {
-        BOOST_CHECK_EQUAL(T::squares.ssize(), T::size());
+        using mask_type = basic_mask<T>;
+        BOOST_CHECK_EQUAL(mask_type::squares.ssize(), T::size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)
 {
         auto const files = boost::irange(0, T::width);
+        using mask_type = basic_mask<T>;
 
         BOOST_CHECK(
                 std::all_of(files.begin(), files.end(), [=](auto i) {
-                        return T::file(black_c, i) == T::file(white_c, T::width - 1 - i);
+                        return mask_type::file(black_c, i) == mask_type::file(white_c, T::width - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 std::all_of(files.begin(), files.end(), [=](auto i) {
                         return std::all_of(files.begin(), files.end(), [=](auto j) {
-                                return i == j ? true : disjoint(T::file(white_c, i), T::file(white_c, j));
+                                return i == j ? true : disjoint(mask_type::file(white_c, i), mask_type::file(white_c, j));
                         });
                 })
         );
 
         BOOST_CHECK(
-                std::accumulate(files.begin(), files.end(), set_t<T>{}, [](auto result, auto i) {
-                        return result ^ T::file(white_c, i);
-                }) == T::squares
+                std::accumulate(files.begin(), files.end(), set_t<mask_type>{}, [](auto result, auto i) {
+                        return result ^ mask_type::file(white_c, i);
+                }) == mask_type::squares
         );
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 {
         auto const rows = boost::irange(0, T::height);
+        using mask_type = basic_mask<T>;
 
         BOOST_CHECK(
                 std::all_of(rows.begin(), rows.end(), [=](auto i) {
-                        return T::rank(black_c, i) == T::rank(white_c, T::height - 1 - i);
+                        return mask_type::rank(black_c, i) == mask_type::rank(white_c, T::height - 1 - i);
                 })
         );
 
         BOOST_CHECK(
                 std::all_of(rows.begin(), rows.end(), [=](auto i) {
                         return std::all_of(rows.begin(), rows.end(), [=](auto j) {
-                                return i == j ? true : disjoint(T::rank(white_c, i), T::rank(white_c, j));
+                                return i == j ? true : disjoint(mask_type::rank(white_c, i), mask_type::rank(white_c, j));
                         });
                 })
         );
 
         BOOST_CHECK(
-                std::accumulate(rows.begin(), rows.end(), set_t<T>{}, [](auto result, auto i) {
-                        return result ^ T::rank(white_c, i);
-                }) == T::squares
+                std::accumulate(rows.begin(), rows.end(), set_t<mask_type>{}, [](auto result, auto i) {
+                        return result ^ mask_type::rank(white_c, i);
+                }) == mask_type::squares
         );
 }
 

@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/mask.hpp>
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/core/state/color.hpp>
 #include <dctl/core/state/piece.hpp>
@@ -67,8 +68,9 @@ class basic_state
 public:
         using    rules_type = Rules;
         using    board_type = Board;
-        using      set_type = set_t<Board>;
         using position_type = position_t<base_position>;
+        using     mask_type = mask_t<position_type>;
+        using      set_type =  set_t<mask_type>;
 
 private:
         constexpr auto assert_invariants() const noexcept
@@ -89,8 +91,8 @@ public:
         constexpr static auto initial(int const separation = initial_position_gap_v<Rules> + Board::height % 2)
                 -> basic_state
         {
-                auto const black_pawns = board_type::initial(black_c, separation);
-                auto const white_pawns = board_type::initial(white_c, separation);
+                auto const black_pawns = mask_type::initial(black_c, separation);
+                auto const white_pawns = mask_type::initial(white_c, separation);
                 return {{black_pawns, white_pawns}, color::white};
         }
 

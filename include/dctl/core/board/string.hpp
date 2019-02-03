@@ -17,7 +17,7 @@ struct string
         {
                 std::stringstream sstr;
                 for (auto sq = 0; sq < Board::size(); ++sq) {
-                        sstr << fun(Board::bit_from_square(sq));
+                        sstr << fun(Board::embedding0(sq));
                 }
                 return sstr.str();
         }

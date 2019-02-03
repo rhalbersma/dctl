@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/state/color.hpp>            // color, black_c, white_c
 #include <dctl/core/state/piece.hpp>            // piece,  pawn_c,  king_c, board_, empty_, occup_
 #include <dctl/core/state/position/legal.hpp>   // is_legal
@@ -17,13 +18,16 @@ namespace wpo {
 template<class Board>
 class position
 {
-        set_t<Board> m_white;
-        set_t<Board> m_pawns;
-        set_t<Board> m_occup;
 public:
         using board_type = Board;
-        using   set_type = set_t<Board>;
+        using  mask_type = basic_mask<board_type>;
+        using   set_type = set_t<mask_type>;
 
+private:
+        set_type m_white;
+        set_type m_pawns;
+        set_type m_occup;
+public:
         position() = default;
 
         constexpr position(set_type black_pawns, set_type white_pawns, set_type black_kings, set_type white_kings) // Throws: Nothing.

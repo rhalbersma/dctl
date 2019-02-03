@@ -7,6 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>            // angle
 #include <dctl/core/board/bearing.hpp>          // bearing
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/model/detail/builder.hpp>   // builder
 #include <dctl/core/model/detail/pattern.hpp>   // jump_from, jump_targets
 #include <dctl/core/model/detail/raii.hpp>      // capture, lift, set_king_jump
@@ -37,7 +38,8 @@ class king_jumps<Rules, Board, color_<Side>>
 {
         using rules_type = Rules;
         using board_type = Board;
-        using   set_type = set_t<Board>;
+        using  mask_type = basic_mask<board_type>;
+        using   set_type = set_t<mask_type>;
 
         constexpr static auto king_jump_directions = king_jump_directions_v<rules_type>;
 public:
@@ -65,7 +67,7 @@ public:
         static auto generate(Builder& b)
         {
                 raii::set_king_jump g1{b};
-                for (auto from_sq : b.pieces(color_c<Side>, king_c)) {
+                for (int from_sq : b.pieces(color_c<Side>, king_c)) {
                         raii::lift guard{from_sq, b};
                         boost::hana::for_each(king_jump_directions, [&](auto dir) {
                                 using direction_t = decltype(dir);

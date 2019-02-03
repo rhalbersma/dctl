@@ -60,12 +60,11 @@ auto find_first(Set const& s)
 template<class Board, class Direction, int Distance = 1>
 struct advance
 {
-        using set_type = set_t<Board>;
-
-        auto operator()(set_type& bs) const
+        template<class Set>
+        auto operator()(Set& bs) const
         {
                 constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
-                static_assert(0 <= n && n < set_type::max_ssize());
+                static_assert(0 <= n && n < Set::max_ssize());
                 if constexpr (!(is_forward_v<Direction> ^ (Distance >= 0))) {
                         bs <<= n;
                 } else {
@@ -87,9 +86,8 @@ struct advance
 template<class Board, class Direction, int Distance = 1>
 struct next
 {
-        using set_type = set_t<Board>;
-
-        auto operator()(set_type bs) const
+        template<class Set>
+        auto operator()(Set bs) const
         {
                 advance<Board, Direction, Distance>{}(bs);
                 return bs;
@@ -105,9 +103,8 @@ struct next
 template<class Board, class Direction, int Distance = 1>
 struct prev
 {
-        using set_type = set_t<Board>;
-
-        auto operator()(set_type bs) const
+        template<class Set>
+        auto operator()(Set bs) const
         {
                 advance<Board, Direction, -Distance>{}(bs);
                 return bs;

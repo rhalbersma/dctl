@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/model/detail/stride.hpp>    // find_first, advance, next
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>            // set_t
@@ -24,7 +25,8 @@ constexpr auto tuple_size = decltype(boost::hana::size(std::declval<Tuple>()))::
 template<class Board, class Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
 struct scan
 {
-        using   set_type = set_t<Board>;
+        using mask_type = basic_mask<Board>;
+        using  set_type = set_t<mask_type>;
 
         auto operator()(int from, set_type const& propagator) const
         {
@@ -57,12 +59,14 @@ template<class Board, class Directions, bool IsLongRanged, bool IncludesFrom, bo
 class board_scan_sq_dir
 {
         inline const static auto table = []() {
-                std::array<std::array<set_t<Board>, tuple_size<Directions>>, Board::bits()> result;
-                for (auto sq : Board::squares) {
+                using mask_type = basic_mask<Board>;
+                using  set_type = set_t<mask_type>;
+                std::array<std::array<set_type, tuple_size<Directions>>, Board::bits()> result;
+                for (auto sq : mask_type::squares) {
                         result[static_cast<std::size_t>(sq)] =
                                 xstd::array_from_types<Directions>{}([=](auto dir) {
                                         using direction_t = decltype(dir);
-                                        return scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares);
+                                        return scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, mask_type::squares);
                                 })
                         ;
                 }
@@ -81,10 +85,12 @@ class board_scan_dir_sq
         inline const static auto table = []() {
                 return xstd::array_from_types<Directions>{}([](auto dir) {
                         using direction_t = decltype(dir);
-                        std::array<set_t<Board>, Board::bits()> result;
-                        for (auto sq : Board::squares) {
+                        using mask_type = basic_mask<Board>;
+                        using  set_type = set_t<mask_type>;
+                        std::array<set_type, Board::bits()> result;
+                        for (auto sq : mask_type::squares) {
                                 result[static_cast<std::size_t>(sq)] =
-                                        scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, Board::squares)
+                                        scan<Board, direction_t, IsLongRanged, IncludesFrom, IncludesEdge>{}(sq, mask_type::squares)
                                 ;
                         }
                         return result;
@@ -128,8 +134,8 @@ auto blocker_and_beyond(int sq)
         return basic_blocker_and_beyond<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
-template<class Rules, class Board, class Direction>
-auto king_slide(int sq, set_t<Board> const& empty)
+template<class Rules, class Board, class Direction, class Set>
+auto king_slide(int sq, Set const& empty)
 {
         assert(Board::is_onboard(sq));
         if constexpr (is_long_ranged_king_v<Rules>) {
@@ -143,8 +149,8 @@ auto king_slide(int sq, set_t<Board> const& empty)
         }
 }
 
-template<class Rules, class Board, class Direction>
-auto king_jump(int sq, set_t<Board> const& empty)
+template<class Rules, class Board, class Direction, class Set>
+auto king_jump(int sq, Set const& empty)
 {
         return basic_king_jump<Rules, Board>{}(sq, jump_index<Rules, Direction>) - empty;
 }

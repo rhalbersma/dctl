@@ -6,6 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/basic_board.hpp>
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/board/string.hpp>
 #include <dctl/core/state/basic_state.hpp>
 #include <dctl/core/state/color.hpp>
@@ -37,7 +38,7 @@ struct read
         auto operator()(std::string const& s) const
                 -> basic_state<Rules, Board>
         {
-                using set_type = set_t<Board>;
+                using set_type = set_t<basic_mask<Board>>;
                 set_type by_color_piece[2][2];
                 auto p_side = color::black;
 
@@ -76,7 +77,7 @@ struct read
                                         sstr.putback(ch);
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
-                                        auto b = Board::bit_from_square(sq - 1);     // convert square to bit
+                                        auto b = Board::embedding1(sq);         // convert square to bit
                                         by_color_piece[xstd::to_underlying_type(setup_color)][xstd::to_underlying_type(setup_piece)].insert(b);
                                 }
                                 setup_piece = piece::pawn;
@@ -109,7 +110,7 @@ struct write
                                 if (s.pieces(king_c).contains(sq)) {
                                         sstr << Token::king;                            // king tag
                                 }
-                                sstr << board_type::square_from_bit(sq) + 1;            // square number
+                                sstr << board_type::numeric1(sq);                       // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
                                 //        sstr << "^" << p.count(c);
                                 if (++n != bs.ssize()) {                                // still pieces remaining

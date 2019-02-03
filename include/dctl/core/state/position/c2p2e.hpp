@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/state/color.hpp>            // color, black_c, white_c
 #include <dctl/core/state/piece.hpp>            // piece,  pawn_c,  king_c, board_, empty_, occup_
 #include <dctl/core/state/position/legal.hpp>   // is_legal
@@ -19,13 +20,16 @@ namespace c2p2e {
 template<class Board>
 class position
 {
-        std::array<set_t<Board>, xstd::to_underlying_type(color::size)> m_color;
-        std::array<set_t<Board>, xstd::to_underlying_type(piece::size)> m_piece;
-        set_t<Board> m_empty;
 public:
         using board_type = Board;
-        using   set_type = set_t<Board>;
+        using  mask_type = basic_mask<board_type>;
+        using   set_type = set_t<mask_type>;
 
+private:
+        std::array<set_type, xstd::to_underlying_type(color::size)> m_color;
+        std::array<set_type, xstd::to_underlying_type(piece::size)> m_piece;
+        set_type m_empty;
+public:
         position() = default;
 
         constexpr position(set_type black_pawns, set_type white_pawns, set_type black_kings, set_type white_kings) // Throws: Nothing.

@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ActionSize, T, RSequence)
 BOOST_AUTO_TEST_CASE_TEMPLATE(StateSize, T, RSequence)
 {
         using state = basic_state<T, basic_board<international>>;
-        std::cout << "sizeof(state) = " << sizeof(state) << "(" << sizeof(square_t<board_t<state>>) << ")" << "\n";
+        std::cout << "sizeof(state) = " << sizeof(state) << "(" << sizeof(square_t<basic_mask<board_t<state>>>) << ")" << "\n";
 }
 
 BOOST_AUTO_TEST_CASE(Grid)

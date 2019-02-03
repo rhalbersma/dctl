@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(Bit2SquareIsInverseSquare2Bit, T, BoardSequence)
         auto const squares = boost::irange(0, T::size());
         BOOST_CHECK(
                 std::all_of(squares.begin(), squares.end(), [](auto sq) {
-                        return T::square_from_bit(T::bit_from_square(sq)) == sq;
+                        return T::numeric0(T::embedding0(sq)) == sq;
                 })
         );
 }

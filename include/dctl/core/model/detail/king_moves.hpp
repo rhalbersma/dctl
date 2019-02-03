@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/model/detail/stride.hpp>    // find_first
 #include <dctl/core/model/detail/tables.hpp>    // board_scan_sq_dir, board_scan_dir_sq, move_index
 #include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_v, king_move_directions
@@ -23,7 +24,8 @@ namespace detail {
 template<class Rules, class Board>
 class king_moves
 {
-        using set_type = set_t<Board>;
+        using mask_type = basic_mask<Board>;
+        using  set_type = set_t<mask_type>;
 
         constexpr static auto king_move_directions = king_move_directions_v<Rules>;
 
@@ -48,7 +50,7 @@ class king_moves
 
         inline const static auto attacks_table = []() {
                 std::array<set_type, Board::bits()> result;
-                for (auto from_sq : Board::squares) {
+                for (int from_sq : mask_type::squares) {
                         result[static_cast<std::size_t>(from_sq)] =
                                 boost::hana::fold(
                                         boost::hana::transform(king_move_directions, [&](auto dir) {
@@ -100,8 +102,8 @@ public:
         template<class SequenceContainer>
         static auto generate(set_type const& kings, set_type const& empty, SequenceContainer& seq)
         {
-                for (auto from_sq : kings) {
-                        for (auto dest_sq : attacks(from_sq, empty)) {
+                for (int from_sq : kings) {
+                        for (int dest_sq : attacks(from_sq, empty)) {
                                 seq.emplace_back(from_sq, dest_sq);
                         }
                 }

@@ -1,4 +1,5 @@
 #pragma once
+#include <dctl/core/board/mask.hpp>     // basic_mask
 
 //          Copyright Rein Halbersma 2010-2019.
 // Distributed under the Boost Software License, Version 1.0.
@@ -10,15 +11,16 @@ namespace dctl::core {
 template<class Board, class Set>
 constexpr auto is_off_board_pieces(Set const& occupied) noexcept
 {
-        return !(occupied - Board::squares).empty();
+        return !(occupied - basic_mask<Board>::squares).empty();
 }
 
 template<class Board, class Set>
 constexpr auto is_promoted_pawns(Set const& black_pawns, Set const& white_pawns) noexcept
 {
+        using mask_type = basic_mask<Board>;
         return
-                intersects(black_pawns, Board::promotion(black_c)) ||
-                intersects(white_pawns, Board::promotion(white_c))
+                intersects(black_pawns, mask_type::promotion(black_c)) ||
+                intersects(white_pawns, mask_type::promotion(white_c))
         ;
 }
 

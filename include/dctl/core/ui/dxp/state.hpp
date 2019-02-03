@@ -6,6 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/basic_board.hpp>
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/board/string.hpp>
 #include <dctl/core/state/basic_state.hpp>
 #include <dctl/core/state/color.hpp>
@@ -31,7 +32,8 @@ struct read
         auto operator()(std::string const& s) const
                 -> basic_state<Rules, Board>
         {
-                using set_type = set_t<Board>;
+                using mask_type = basic_mask<Board>;
+                using  set_type = set_t<mask_type>;
                 set_type by_color_piece[2][2];
                 auto p_side = color::black;
 
@@ -50,7 +52,7 @@ struct read
                 sstr >> ch;
                 p_side = read_color<Token>(ch);
 
-                for (auto const sq : Board::squares) {
+                for (auto const sq : mask_type::squares) {
                         sstr >> ch;
                         if (std::islower(ch) && ch == std::tolower(Token::black)) {
                                 by_color_piece[0][0].insert(sq);

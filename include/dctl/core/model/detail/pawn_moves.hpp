@@ -7,6 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>            // angle, rotate
 #include <dctl/core/board/bearing.hpp>          // bearing
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/model/detail/pattern.hpp>   // move_dest
 #include <dctl/core/rules/type_traits.hpp>      // pawn_move_directions_v
 #include <dctl/core/state/color.hpp>            // color, color_
@@ -25,7 +26,8 @@ class pawn_moves;
 template<class Rules, class Board, color Side, class ReverseGenerator>
 class pawn_moves<Rules, Board, color_<Side>, ReverseGenerator>
 {
-        using set_type = set_t<Board>;
+        using mask_type = basic_mask<Board>;
+        using  set_type = set_t<mask_type>;
 
         constexpr static auto pawn_move_directions = boost::hana::transform(pawn_move_directions_v<Rules>, [](auto dir) {
                 return boost::hana::int_c<rotate(angle{dir}, bearing_v<Board, color_<Side>, ReverseGenerator>).value()>;
@@ -56,8 +58,8 @@ public:
         {
                 boost::hana::for_each(pawn_move_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
-                        for (auto dest_sq : move_dest<Board, direction_t>{}(pawns, empty)) {
-                                seq.emplace_back(prev<Board, direction_t>{}(dest_sq), dest_sq, Board::promotion(Side).contains(dest_sq));
+                        for (int dest_sq : move_dest<Board, direction_t>{}(pawns, empty)) {
+                                seq.emplace_back(prev<Board, direction_t>{}(dest_sq), dest_sq, mask_type::promotion(Side).contains(dest_sq));
                         }
                 });
         }

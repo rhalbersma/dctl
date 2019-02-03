@@ -5,7 +5,7 @@
 
 #include <core/rules/precedence.hpp>            // is_consistent
 #include <dctl/core/rules/frisian.hpp>          // frisian
-#include <dctl/core/board.hpp>
+#include <dctl/core/board.hpp>                  // basic_board
 #include <dctl/core/state/piece.hpp>            // king, pawn
 #include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, is_orthogonal_jump, equal_to, less
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
@@ -37,8 +37,8 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 int m_num_captured_kings;
                 piece m_with;
 
-                constexpr auto num_captured_pieces() const noexcept { return m_num_captured_pieces;  }
-                constexpr auto num_captured_kings()  const noexcept { return m_num_captured_kings;   }
+                constexpr auto num_captured_pieces() const noexcept { return m_num_captured_pieces; }
+                constexpr auto num_captured_kings()  const noexcept { return m_num_captured_kings;  }
                 constexpr auto is_with_king()        const noexcept { return m_with == piece::king; }
         };
 

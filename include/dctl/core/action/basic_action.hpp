@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/rules/type_traits.hpp>      // is_contents_precedence, is_ordering_precedence
 #include <dctl/core/state/piece.hpp>            // pawn, king
 #include <dctl/util/type_traits.hpp>            // set_t, square_t
@@ -20,9 +21,9 @@ namespace block_adl {
 template<class Board>
 struct base_action
 {
-        set_t<Board> m_captured_pieces;
-        square_t<Board> m_from;
-        square_t<Board> m_dest;
+        set_t<basic_mask<Board>> m_captured_pieces;
+        square_t<basic_mask<Board>> m_from;
+        square_t<basic_mask<Board>> m_dest;
         piece m_with;
         piece m_into;
 };
@@ -30,13 +31,13 @@ struct base_action
 template<class Board>
 struct base_contents_precedence
 {
-        square_t<Board> m_num_captured_kings;
+        square_t<basic_mask<Board>> m_num_captured_kings;
 };
 
 template<class Board>
 struct base_ordering_precedence
 {
-        set_t<Board> m_piece_order;
+        set_t<basic_mask<Board>> m_piece_order;
 };
 
 template<class Rules, class Board>
@@ -78,8 +79,9 @@ class basic_action
 public:
         using  rules_type = Rules;
         using  board_type = Board;
-        using    set_type =    set_t<Board>;
-        using square_type = square_t<Board>;
+        using   mask_type = basic_mask<board_type>;
+        using    set_type =    set_t<mask_type>;
+        using square_type = square_t<mask_type>;
 
         basic_action() = default;
 

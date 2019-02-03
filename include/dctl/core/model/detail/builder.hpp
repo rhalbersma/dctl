@@ -27,9 +27,10 @@ public:
         using to_move_ = color_<Side>;
         constexpr static auto to_move_c = color_c<Side>;
         using action_type = value_t<SequenceContainer>;
-        using  board_type =       board_t<State>;
-        using  rules_type =       rules_t<State>;
-        using    set_type =         set_t<State>;
+        using  board_type = board_t<State>;
+        using  rules_type = rules_t<State>;
+        using   mask_type =  mask_t<State>;
+        using    set_type =   set_t<mask_type>;
 
 private:
         State const& m_state;

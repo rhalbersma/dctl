@@ -61,17 +61,18 @@ class subdivision
 {
 public:
         using board_type = core::board_t<Position>;
+        using  mask_type = core:: mask_t<Position>;
         using   set_type = core::  set_t<Position>;
 
 private:
-        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto CLANG_WORKAROUND_bp_squares = board_type::squares - board_type::promotion(core::black_c);
-        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto CLANG_WORKAROUND_wp_squares = board_type::squares - board_type::promotion(core::white_c);
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto CLANG_WORKAROUND_bp_squares = mask_type::squares - mask_type::promotion(core::black_c);
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto CLANG_WORKAROUND_wp_squares = mask_type::squares - mask_type::promotion(core::white_c);
 
 public:
         XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto bp_squares = CLANG_WORKAROUND_bp_squares.ssize();
         XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto wp_squares = CLANG_WORKAROUND_wp_squares.ssize();
-        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto bk_squares = board_type::squares.ssize();
-        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto wk_squares = board_type::squares.ssize();
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto bk_squares = mask_type::squares.ssize();
+        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto wk_squares = mask_type::squares.ssize();
 
         int n_count, b_count, w_count;
         int bp_count, wp_count, bk_count, wk_count;
@@ -180,8 +181,8 @@ public:
 private:
         auto count_legal() const
         {
-                auto const b0_squares = board_type::promotion(core::white_c).ssize();
-                auto const w0_squares = board_type::promotion(core::black_c).ssize();
+                auto const b0_squares = mask_type::promotion(core::white_c).ssize();
+                auto const w0_squares = mask_type::promotion(core::black_c).ssize();
                 auto const center_squares = board_type::size() - b0_squares - w0_squares;
                 auto n = 0LL;
                 for (auto b0_count  = 0; b0_count <= std::min(b0_squares, bp_count); ++b0_count) {
@@ -199,15 +200,15 @@ private:
                 return n;
         }
 
-        static auto bp_ext(int n) { return -board_type::square_from_bit(n) + bp_squares - 1;          }
-        static auto wp_ext(int n) { return +board_type::square_from_bit(n) - wk_squares + wp_squares; }
-        static auto bk_ext(int n) { return -board_type::square_from_bit(n) + bk_squares - 1;          }
-        static auto wk_ext(int n) { return +board_type::square_from_bit(n);                           }
+        static auto bp_ext(int n) { return -board_type::numeric0(n) + bp_squares - 1;          }
+        static auto wp_ext(int n) { return +board_type::numeric0(n) - wk_squares + wp_squares; }
+        static auto bk_ext(int n) { return -board_type::numeric0(n) + bk_squares - 1;          }
+        static auto wk_ext(int n) { return +board_type::numeric0(n);                           }
 
-        static auto bp_dep(int n) { return board_type::bit_from_square(-n + bp_squares - 1         ); }
-        static auto wp_dep(int n) { return board_type::bit_from_square(+n + wk_squares - wp_squares); }
-        static auto bk_dep(int n) { return board_type::bit_from_square(-n + bk_squares - 1         ); }
-        static auto wk_dep(int n) { return board_type::bit_from_square(+n                          ); }
+        static auto bp_dep(int n) { return board_type::embedding0(-n + bp_squares - 1         ); }
+        static auto wp_dep(int n) { return board_type::embedding0(+n + wk_squares - wp_squares); }
+        static auto bk_dep(int n) { return board_type::embedding0(-n + bk_squares - 1         ); }
+        static auto wk_dep(int n) { return board_type::embedding0(+n                          ); }
 };
 
 }       // namespace dctl::egdb

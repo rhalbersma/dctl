@@ -119,7 +119,7 @@ public:
         {
                 std::cout << " { ";
                 for (auto const sq : is) {
-                        std::cout << (board_t<State>::square_from_bit(sq)) << ", ";
+                        std::cout << (board_t<State>::numeric0(sq)) << ", ";
                 }
                 std::cout << " } ";
         }

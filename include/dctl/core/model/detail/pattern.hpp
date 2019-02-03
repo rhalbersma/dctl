@@ -6,16 +6,14 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/model/detail/stride.hpp>    // next, prev
-#include <dctl/util/type_traits.hpp>            // set_t
 
 namespace dctl::core {
 
 template<class Board, class Direction>
 struct move_dest
 {
-        using set_type = set_t<Board>;
-
-        auto operator()(set_type const& from, set_type const& dest) const noexcept
+        template<class Set>
+        auto operator()(Set const& from, Set const& dest) const noexcept
         {
                 return next<Board, Direction>{}(from) & dest;
         }
@@ -24,14 +22,14 @@ struct move_dest
 template<class Board, class Direction>
 struct jump_from
 {
-        using set_type = set_t<Board>;
-
-        auto operator()(set_type const& from, set_type const& targets, set_type const& dest) const noexcept
+        template<class Set>
+        auto operator()(Set const& from, Set const& targets, Set const& dest) const noexcept
         {
                 return from & prev<Board, Direction>{}(targets) & prev<Board, Direction, 2>{}(dest);
         }
 
-        auto operator()(set_type const& targets, set_type const& dest) const noexcept
+        template<class Set>
+        auto operator()(Set const& targets, Set const& dest) const noexcept
         {
                 return prev<Board, Direction>{}(targets) & prev<Board, Direction, 2>{}(dest);
         }
@@ -40,14 +38,14 @@ struct jump_from
 template<class Board, class Direction>
 struct jump_targets
 {
-        using set_type = set_t<Board>;
-
-        auto operator()(set_type const& from, set_type const& targets, set_type const& dest) const noexcept
+        template<class Set>
+        auto operator()(Set const& from, Set const& targets, Set const& dest) const noexcept
         {
                 return next<Board, Direction>{}(from) & targets & prev<Board, Direction>{}(dest);
         }
 
-        auto operator()(set_type const& targets, set_type const& dest) const noexcept
+        template<class Set>
+        auto operator()(Set const& targets, Set const& dest) const noexcept
         {
                 return targets & prev<Board, Direction>{}(dest);
         }

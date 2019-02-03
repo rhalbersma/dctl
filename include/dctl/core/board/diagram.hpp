@@ -23,7 +23,7 @@ struct diagram
                         for (auto f = 0; f < Board::width; ++f) {
                                 auto const coord = coordinates<lower_left>{f, r};
                                 if (Board::is_square(coord)) {
-                                        sstr << std::setw(2) << fun(Board::bit_from_square(Board::to_square(coord)));
+                                        sstr << std::setw(2) << fun(Board::embedding0(Board::to_square(coord)));
                                 } else {
                                         sstr << std::string(2, ' ');
                                 }
