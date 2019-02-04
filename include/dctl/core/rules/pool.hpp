@@ -16,7 +16,7 @@ struct pool
 {
         constexpr static auto width                     = 8;            // 1
         constexpr static auto height                    = 8;            // 1
-        constexpr static auto is_inverted               = false;        // 2 (and 4)
+        constexpr static auto coloring                  = 1;            // 2 (and 4)
         constexpr static auto initial_position_gap      = 2;            // 5
 
         constexpr static auto is_backward_pawn_jump     = true;         // 14

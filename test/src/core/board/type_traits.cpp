@@ -11,64 +11,14 @@
 using namespace dctl::core;
 using namespace literals;
 
-BOOST_AUTO_TEST_SUITE(angleTraits)
+BOOST_AUTO_TEST_SUITE(AngleTraits)
 
-BOOST_AUTO_TEST_CASE(OrthogonalIsNotDiagonal)
-{
-        auto const angles = std::array{ 0_deg, 90_deg, 180_deg, 270_deg };
-        BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto a) {
-                        return is_orthogonal(a) && !is_diagonal(a);
-                })
-        );
-}
-
-BOOST_AUTO_TEST_CASE(DiagonalIsNotOrthogonal)
-{
-        auto const angles = std::array{ 45_deg, 135_deg, 225_deg, 315_deg };
-        BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto a) {
-                        return is_diagonal(a) && !is_orthogonal(a);
-                })
-        );
-}
-
-BOOST_AUTO_TEST_CASE(UpIsNotDown)
+BOOST_AUTO_TEST_CASE(IsUp)
 {
         auto const angles = std::array{ 45_deg, 90_deg, 135_deg };
         BOOST_CHECK(
                 std::all_of(angles.begin(), angles.end(), [](auto a) {
-                        return is_up(a) && !is_down(a);
-                })
-        );
-}
-
-BOOST_AUTO_TEST_CASE(DownIsNotUp)
-{
-        auto const angles = std::array{ 225_deg, 270_deg, 315_deg };
-        BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto a) {
-                        return is_down(a) && !is_up(a);
-                })
-        );
-}
-
-BOOST_AUTO_TEST_CASE(LeftIsNotRight)
-{
-        auto const angles = std::array{ 135_deg, 180_deg, 225_deg };
-        BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto const& a) {
-                        return is_left(a) && !is_right(a);
-                })
-        );
-}
-
-BOOST_AUTO_TEST_CASE(RightIsNotLeft)
-{
-        auto const angles = std::array{ 315_deg, 0_deg, 45_deg };
-        BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto const& a) {
-                        return is_right(a) && !is_left(a);
+                        return is_up(a);
                 })
         );
 }

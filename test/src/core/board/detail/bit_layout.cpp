@@ -17,9 +17,9 @@
 using namespace dctl::core;
 using namespace literals;
 
-BOOST_AUTO_TEST_SUITE(Griddimensions)
+BOOST_AUTO_TEST_SUITE(GridDimensions)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimensions, T, BoardSequence)
+BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimensions, T, BoardSequence)
 {
         auto const op = [](auto i, auto j) { return rotate(i, j); };
         auto const inv = [](auto i) { return inverse(i); };
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAlldimens
                 C1, C2, C4
         };
 
-        auto const dim = detail::dimensions{ T::width, T::height, T::is_inverted };
+        auto const dim = detail::dimensions{ T::width, T::height, T::coloring };
 
         BOOST_CHECK(
                 std::all_of(C_N.begin(), C_N.begin(), [&](auto const& g) {

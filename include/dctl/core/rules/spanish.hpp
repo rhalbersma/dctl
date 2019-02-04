@@ -14,15 +14,15 @@ namespace block_adl {
 struct spanish
 {
         // 2.1 NOMENCLATURA DO TABULEIRO
-        constexpr static auto width = 8;                        // 2.1.2
-        constexpr static auto height = 8;                       // 2.1.2
-        constexpr static auto is_inverted = true;               // 2.1.5
+        constexpr static auto width                     = 8;    // 2.1.2
+        constexpr static auto height                    = 8;    // 2.1.2
+        constexpr static auto coloring                  = 0;    // 2.1.5
 
-        constexpr static auto is_long_ranged_king = true;
-        constexpr static auto is_backward_pawn_jump = false;
+        constexpr static auto is_long_ranged_king       = true;
+        constexpr static auto is_backward_pawn_jump     = false;
 
-        constexpr static auto is_quantity_precedence = true;
-        constexpr static auto is_contents_precedence = true;
+        constexpr static auto is_quantity_precedence    = true;
+        constexpr static auto is_contents_precedence    = true;
 
         constexpr static auto precedence = [](auto const& a) {
                 return std::make_tuple(

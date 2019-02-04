@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(initial, T, BoardSequence)
 {
         auto const s = basic_state<international, T>::initial();
         std::cout << diag << s;
-        std::cout << "W = " << T::width << ", H = " << T::height << ", P = " << T::is_inverted << ", bits = " << T::bits() << "\n\n";
+        std::cout << "W = " << T::width << ", H = " << T::height << ", P = " << T::coloring << ", bits = " << T::bits() << "\n\n";
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ActionSize, T, RSequence)
@@ -51,11 +51,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(StateSize, T, RSequence)
 
 BOOST_AUTO_TEST_CASE(Grid)
 {
-        auto const d = detail::dimensions{1,1,true};
+        auto const d = detail::dimensions{1,1,0};
         auto const i = detail::InnerGrid{d};
         auto const o = detail::bit_layout{i, 2};
-        std::cout << "W = " << i.width() << ", H = " << i.height() << ", P = " << i.is_inverted() << ", bits = " << i.size() << "\n\n";
-        std::cout << "W = " << o.width() << ", H = " << o.height() << ", P = " << o.is_inverted() << ", bits = " << o.size() << "\n\n";
+        std::cout << "W = " << i.width() << ", H = " << i.height() << ", P = " << i.coloring() << ", bits = " << i.size() << "\n\n";
+        std::cout << "W = " << o.width() << ", H = " << o.height() << ", P = " << o.coloring() << ", bits = " << o.size() << "\n\n";
 }
 
 BOOST_AUTO_TEST_SUITE_END()

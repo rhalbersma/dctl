@@ -3,7 +3,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, is_superior_rank_jump, is_orthogonal_jump, is_passing_capture
+#include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, is_superior_rank_jump, is_orthogonal_jumps, is_passing_capture
 #include <dctl/core/rules.hpp>                  // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_SUITE(IsBackwardPawnJump)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
+BOOST_AUTO_TEST_SUITE(IsOrthogonalJumps)
 
         using VariantsFalse = boost::mpl::vector
         <
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsFalse, T, VariantsFalse)
         {
-                static_assert(!is_orthogonal_jump_v<T>);
+                static_assert(!is_orthogonal_jumps_v<T>);
         }
 
         using VariantsTrue = boost::mpl::vector
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_SUITE(IsOrthogonalJump)
 
         BOOST_AUTO_TEST_CASE_TEMPLATE(IsTrue, T, VariantsTrue)
         {
-                static_assert(is_orthogonal_jump_v<T>);
+                static_assert(is_orthogonal_jumps_v<T>);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -28,7 +28,7 @@ using Sequence = boost::mpl::vector
         ktar<10, 12>,
         rectangular<12, 10>,
         rectangular<12, 12>,
-        rectangular<12, 12, true>,
+        rectangular<12, 12, 0>,
         rectangular<14, 14>,
         rectangular<19, 10>
 >;

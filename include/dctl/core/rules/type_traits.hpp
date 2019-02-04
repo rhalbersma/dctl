@@ -18,17 +18,17 @@ namespace dctl::core {
 
 DCTL_PP_TTI_CONSTANT(width, 8)
 DCTL_PP_TTI_CONSTANT(height, 8)
-DCTL_PP_TTI_CONSTANT(is_inverted, false)
-DCTL_PP_TTI_CONSTANT(is_orthogonal_jump, false)
+DCTL_PP_TTI_CONSTANT(coloring, 1)
+DCTL_PP_TTI_CONSTANT(is_orthogonal_jumps, false)
 
 template<class Geometry>
-constexpr auto is_placeable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 1 && (!is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 1);
+constexpr auto is_placeable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 1 && (coloring_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 1);
 
 template<class Geometry>
 constexpr auto is_pushable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 2;
 
 template<class Geometry>
-constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (!is_inverted_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
+constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (coloring_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
 
 DCTL_PP_TTI_CONSTANT(initial_position_gap, 2)
 
@@ -56,15 +56,15 @@ constexpr auto is_reverse_king_jump_v = is_long_ranged_king_v<Rules> && is_passi
 
 template<class Rules>
 constexpr auto large_jump_v =
-        ((is_orthogonal_jump_v<Rules> && is_backward_pawn_jump_v<Rules>) ||
-         (is_orthogonal_jump_v<Rules> && is_reverse_king_jump_v<Rules>) ||
+        ((is_orthogonal_jumps_v<Rules> && is_backward_pawn_jump_v<Rules>) ||
+         (is_orthogonal_jumps_v<Rules> && is_reverse_king_jump_v<Rules>) ||
          (is_reverse_king_jump_v<Rules> && is_backward_pawn_jump_v<Rules>)) ? 3 : 4
 ;
 
 template<class Rules>
 constexpr auto is_unambiguous_pawn_jump_v =
         !(is_backward_pawn_jump_v<Rules> || is_passing_promotion_v<Rules> ||
-        (is_orthogonal_jump_v<Rules> && is_reverse_king_jump_v<Rules>))
+        (is_orthogonal_jumps_v<Rules> && is_reverse_king_jump_v<Rules>))
 ;
 
 DCTL_PP_TTI_CONSTANT(is_quantity_precedence, false)

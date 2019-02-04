@@ -16,7 +16,7 @@ struct italian
         // Art. 2 - Il materiale
         constexpr static auto width                     = 8;            // 2.1
         constexpr static auto height                    = 8;            // 2.1
-        constexpr static auto is_inverted               = true;         // 2.3
+        constexpr static auto coloring                  = 0;            // 2.3
 
         // Art. 4 - Gli spostamenti semplici
         constexpr static auto is_long_ranged_king       = false;        // 4.7

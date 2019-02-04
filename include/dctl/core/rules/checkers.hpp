@@ -14,7 +14,7 @@ struct checkers
         // THE DRAUGHTBOARD AND ITS ARRANGEMENT
         constexpr static auto width                     = 8;            // 1.1
         constexpr static auto height                    = 8;            // 1.1
-        constexpr static auto is_inverted               = false;        // 1.4
+        constexpr static auto coloring                  = 1;            // 1.4
         constexpr static auto is_algebraic_notation     = false;        // 1.5
 
         // DRAUGHT PIECES AND THEIR ARRANGEMENT

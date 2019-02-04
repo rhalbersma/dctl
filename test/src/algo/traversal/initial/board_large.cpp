@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(Board12x12)
         }
 
         {
-                auto const s = basic_state<srilankan, basic_board<rectangular<12, 12, false>>>::initial();
+                auto const s = basic_state<srilankan, basic_board<rectangular<12, 12, 0>>>::initial();
                 traversal::test(model::drop_duplicates_gen, s, leafs);
         }
 }

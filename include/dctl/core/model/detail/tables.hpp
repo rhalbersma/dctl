@@ -119,7 +119,7 @@ template<class Direction>
 constexpr auto move_index = (Direction::value - 45) / 90;
 
 template<class Rules, class Direction>
-constexpr auto jump_index = is_orthogonal_jump_v<Rules> ? Direction::value / 45 : move_index<Direction>;
+constexpr auto jump_index = is_orthogonal_jumps_v<Rules> ? Direction::value / 45 : move_index<Direction>;
 
 template<class Rules, class Board, class Direction>
 auto king_slide(int sq)

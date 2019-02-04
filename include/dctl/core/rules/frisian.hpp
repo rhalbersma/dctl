@@ -19,12 +19,12 @@ struct frisian
 {
         constexpr static auto width                     = 10;
         constexpr static auto height                    = 10;
-        constexpr static auto is_inverted               = false;
+        constexpr static auto coloring                  = 1;
 
         constexpr static auto is_backward_pawn_jump     = true;
         constexpr static auto is_long_ranged_king       = true;
 
-        constexpr static auto is_orthogonal_jump        = true;
+        constexpr static auto is_orthogonal_jumps       = true;
         constexpr static auto max_same_king_move        = 3;
 
         constexpr static auto is_quantity_precedence    = true;

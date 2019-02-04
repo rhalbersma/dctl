@@ -16,13 +16,13 @@ struct dimensions
 {
         int width;
         int height;
-        bool is_inverted;
+        int coloring;
 };
 
 constexpr auto operator==(dimensions const& lhs, dimensions const& rhs) noexcept
 {
         constexpr auto as_tuple = [](auto const d) {
-                return std::make_tuple(d.width, d.height, d.is_inverted);
+                return std::make_tuple(d.width, d.height, d.coloring);
         };
         return as_tuple(lhs) == as_tuple(rhs);
 }
@@ -43,8 +43,9 @@ constexpr auto height_parity(dimensions const& dim) noexcept
 }
 
 constexpr auto lower_left_is_square(dimensions const& dim) noexcept
+        -> bool
 {
-        return !dim.is_inverted;
+        return dim.coloring;
 }
 
 constexpr auto upper_left_is_square(dimensions const& dim) noexcept
@@ -67,9 +68,9 @@ constexpr auto rotate(dimensions const& dim, angle const& a) noexcept
 {
         switch (a.value()) {
         case   0: return dim;
-        case  90: return { dim.height, dim.width , !upper_left_is_square(dim) };
-        case 180: return { dim.width , dim.height, !upper_right_is_square(dim) };
-        case 270: return { dim.height, dim.width , !lower_right_is_square(dim) };
+        case  90: return { dim.height, dim.width , upper_left_is_square(dim) };
+        case 180: return { dim.width , dim.height, upper_right_is_square(dim) };
+        case 270: return { dim.height, dim.width , lower_right_is_square(dim) };
         default: assert(false); return dim;
         }
 }
@@ -80,9 +81,9 @@ class InnerGrid
 public:
         explicit constexpr InnerGrid(dimensions const& d) noexcept : dim{d} {}
 
-        constexpr auto width()       const noexcept { return dim.width; }
-        constexpr auto height()      const noexcept { return dim.height; }
-        constexpr auto is_inverted() const noexcept { return dim.is_inverted; }
+        constexpr auto width()    const noexcept { return dim.width; }
+        constexpr auto height()   const noexcept { return dim.height; }
+        constexpr auto coloring() const noexcept { return dim.coloring; }
 
         constexpr auto edge()        const noexcept { return 0; }
 
@@ -111,9 +112,9 @@ class bit_layout
 public:
         constexpr bit_layout(InnerGrid const& i, int const e) noexcept : inner_{i}, edge_{e} {}
 
-        constexpr auto width()       const noexcept { return inner_.width(); }
-        constexpr auto height()      const noexcept { return inner_.height(); }
-        constexpr auto is_inverted() const noexcept { return inner_.is_inverted(); }
+        constexpr auto width()    const noexcept { return inner_.width(); }
+        constexpr auto height()   const noexcept { return inner_.height(); }
+        constexpr auto coloring() const noexcept { return inner_.coloring(); }
         constexpr auto edge() const noexcept { return edge_; }
 
         constexpr auto lower_left_is_square() const noexcept { return inner_.lower_left_is_square(); }

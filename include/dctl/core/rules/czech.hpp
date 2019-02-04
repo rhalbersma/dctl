@@ -13,7 +13,7 @@ struct czech
 {
         constexpr static auto width                     = 8;            // 2.1
         constexpr static auto height                    = 8;            // 2.1
-        constexpr static auto is_inverted               = false;        // 2.4
+        constexpr static auto coloring                  = 1;            // 2.4
         constexpr static auto is_algebraic_notation     = true;         // 2.6
         constexpr static auto jumpsep                   = ':';
 

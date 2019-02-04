@@ -17,7 +17,7 @@ struct international
         // 2. The material
         constexpr static auto width                     = 10;           // 2.1
         constexpr static auto height                    = 10;           // 2.1
-        constexpr static auto is_inverted               = false;        // 2.4
+        constexpr static auto coloring                  = 1;            // 2.4
         constexpr static auto initial_position_gap      = 2;            // 2.8
 
         // 3. The movement of the piece

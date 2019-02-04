@@ -45,13 +45,13 @@ template<class Board, class Direction>
 constexpr auto stride_v = stride<Board>{}(angle{Direction::value});
 
 template<class Direction>
-constexpr auto is_forward_v = angle{Direction::value} == 0_deg || 180_deg < angle{Direction::value};
+constexpr auto is_left_shift_v = angle{Direction::value} == 0_deg || 180_deg < angle{Direction::value};
 
 template<class Direction, class Set>
 auto find_first(Set const& s)
         -> int
 {
-        if constexpr (is_forward_v<Direction>) {
+        if constexpr (is_left_shift_v<Direction>) {
                 return s.front();
         } else {
                 return s.back();
@@ -66,7 +66,7 @@ struct advance
         {
                 constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
                 static_assert(0 <= n && n < Set::max_ssize());
-                if constexpr (!(is_forward_v<Direction> ^ (Distance >= 0))) {
+                if constexpr (!(is_left_shift_v<Direction> ^ (Distance >= 0))) {
                         bs <<= n;
                 } else {
                         bs >>= n;
@@ -76,7 +76,7 @@ struct advance
         constexpr auto operator()(int& sq) const
         {
                 constexpr auto n = Distance * stride_v<Board, Direction>;
-                if constexpr (is_forward_v<Direction>) {
+                if constexpr (is_left_shift_v<Direction>) {
                         sq += n;
                 } else {
                         sq -= n;

@@ -163,34 +163,9 @@ inline constexpr auto dir_SW = 225;
 inline constexpr auto dir_S  = 270;
 inline constexpr auto dir_SE = 315;
 
-constexpr auto is_orthogonal(angle a) noexcept
-{
-        return a % 90_deg == 0_deg;
-}
-
-constexpr auto is_diagonal(angle a) noexcept
-{
-        return a % 90_deg == 45_deg;
-}
-
 constexpr auto is_up(angle a) noexcept
 {
         return 0_deg < a && a < 180_deg;
-}
-
-constexpr auto is_down(angle a) noexcept
-{
-        return 180_deg < a;
-}
-
-constexpr auto is_left(angle a) noexcept
-{
-        return 90_deg < a && a < 270_deg;
-}
-
-constexpr auto is_right(angle a) noexcept
-{
-        return 270_deg < a || a < 90_deg;
 }
 
 }       // namespace dctl::core

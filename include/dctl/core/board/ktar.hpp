@@ -13,7 +13,7 @@ struct ktar
 {
         constexpr static auto width = Width;
         constexpr static auto height = Height;
-        constexpr static auto is_inverted = true;
+        constexpr static auto coloring = 0;
 };
 
 }       // namespace block_adl

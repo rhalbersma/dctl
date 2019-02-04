@@ -24,8 +24,8 @@ using namespace dctl::core;
 BOOST_AUTO_TEST_CASE(IsEmpty)
 {
         static_assert( is_placeable_v<basic_board<rectangular<1, 1>>>);
-        static_assert( is_placeable_v<basic_board<rectangular<2, 1, true>>>);
-        static_assert( is_placeable_v<basic_board<rectangular<1, 2, true>>>);
+        static_assert( is_placeable_v<basic_board<rectangular<2, 1, 0>>>);
+        static_assert( is_placeable_v<basic_board<rectangular<1, 2, 0>>>);
 }
 
 BOOST_AUTO_TEST_CASE(IsPushable)
@@ -41,10 +41,10 @@ BOOST_AUTO_TEST_CASE(IsJumpable)
         static_assert(!is_jumpable_v<basic_board<rectangular<2, 2>>>);
         static_assert(!is_jumpable_v<basic_board<rectangular<3, 2>>>);
         static_assert(!is_jumpable_v<basic_board<rectangular<2, 3>>>);
-        static_assert(!is_jumpable_v<basic_board<rectangular<3, 3, true>>>);
+        static_assert(!is_jumpable_v<basic_board<rectangular<3, 3, 0>>>);
         static_assert(    is_jumpable_v<basic_board<rectangular<3, 3>>>);
-        static_assert(    is_jumpable_v<basic_board<rectangular<4, 3, true>>>);
-        static_assert(    is_jumpable_v<basic_board<rectangular<3, 4, true>>>);
+        static_assert(    is_jumpable_v<basic_board<rectangular<4, 3, 0>>>);
+        static_assert(    is_jumpable_v<basic_board<rectangular<3, 4, 0>>>);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, BoardSequence)

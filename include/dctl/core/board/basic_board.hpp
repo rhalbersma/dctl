@@ -8,7 +8,7 @@
 #include <dctl/core/board/angle.hpp>                    // angle, inverse
 #include <dctl/core/board/coordinates.hpp>              // to_llo, transform
 #include <dctl/core/board/detail/bit_layout.hpp>        // dimensions, InnerGrid, bit_layout
-#include <dctl/core/rules/type_traits.hpp>              // width_v, height_v, is_inverted_v, is_orthogonal_jump_v
+#include <dctl/core/rules/type_traits.hpp>              // width_v, height_v, coloring_v, is_orthogonal_jumps_v
 #include <dctl/core/state/color.hpp>                    // black, white
 #include <xstd/cstdlib.hpp>                             // euclidean_div
 #include <algorithm>                                    // min
@@ -21,13 +21,13 @@
 namespace dctl::core {
 namespace block_adl {
 
-template<int Width, int Height, bool IsInverted = false, bool IsOrthogonalJump = false>
+template<int Width, int Height, int Coloring = 1, bool IsOrthogonalJumps = false>
 struct rectangular
 {
         constexpr static auto width = Width;
         constexpr static auto height = Height;
-        constexpr static auto is_inverted = IsInverted;
-        constexpr static auto is_orthogonal_jump = IsOrthogonalJump;
+        constexpr static auto coloring = Coloring;
+        constexpr static auto is_orthogonal_jumps = IsOrthogonalJumps;
 };
 
 template<class Geometry>
@@ -35,13 +35,13 @@ class basic_board
 {
 public:
         using type = basic_board;
-        constexpr static auto width              = width_v<Geometry>;
-        constexpr static auto height             = height_v<Geometry>;
-        constexpr static auto is_inverted        = is_inverted_v<Geometry>;
-        constexpr static auto is_orthogonal_jump = is_orthogonal_jump_v<Geometry>;
+        constexpr static auto width               = width_v<Geometry>;
+        constexpr static auto height              = height_v<Geometry>;
+        constexpr static auto coloring            = coloring_v<Geometry>;
+        constexpr static auto is_orthogonal_jumps = is_orthogonal_jumps_v<Geometry>;
 
-        constexpr static auto edge = is_orthogonal_jump ? 2 : 1;
-        constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, is_inverted}};
+        constexpr static auto edge = is_orthogonal_jumps ? 2 : 1;
+        constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, coloring}};
         constexpr static auto orientation = std::min(
                 { 0_deg, 90_deg, 180_deg, 270_deg },
                 [g = detail::bit_layout{inner_grid, edge}]
