@@ -67,7 +67,7 @@ public:
         static auto generate(Builder& b)
         {
                 raii::set_king_jump g1{b};
-                for (int from_sq : b.pieces(color_c<Side>, king_c)) {
+                for (auto from_sq : b.pieces(color_c<Side>, king_c)) {
                         raii::lift guard{from_sq, b};
                         boost::hana::for_each(king_jump_directions, [&](auto dir) {
                                 using direction_t = decltype(dir);

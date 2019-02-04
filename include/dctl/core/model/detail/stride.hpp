@@ -9,6 +9,7 @@
 #include <dctl/util/type_traits.hpp>
 #include <xstd/cstdlib.hpp>
 #include <cassert>
+#include <type_traits>                  // is_convertible_v
 
 namespace dctl::core {
 
@@ -86,34 +87,38 @@ struct advance
 template<class Board, class Direction, int Distance = 1>
 struct next
 {
-        template<class Set>
-        auto operator()(Set bs) const
+        template<class Arg, std::enable_if_t<
+                !std::is_convertible_v<Arg, int>
+        >...>
+        auto operator()(Arg arg) const
         {
-                advance<Board, Direction, Distance>{}(bs);
-                return bs;
+                advance<Board, Direction, Distance>{}(arg);
+                return arg;
         }
 
-        constexpr auto operator()(int sq) const
+        constexpr auto operator()(int arg) const
         {
-                advance<Board, Direction, Distance>{}(sq);
-                return sq;
+                advance<Board, Direction, Distance>{}(arg);
+                return arg;
         }
 };
 
 template<class Board, class Direction, int Distance = 1>
 struct prev
 {
-        template<class Set>
-        auto operator()(Set bs) const
+        template<class Arg, std::enable_if_t<
+                !std::is_convertible_v<Arg, int>
+        >...>
+        auto operator()(Arg arg) const
         {
-                advance<Board, Direction, -Distance>{}(bs);
-                return bs;
+                advance<Board, Direction, -Distance>{}(arg);
+                return arg;
         }
 
-        constexpr auto operator()(int sq) const
+        constexpr auto operator()(int arg) const
         {
-                advance<Board, Direction, -Distance>{}(sq);
-                return sq;
+                advance<Board, Direction, -Distance>{}(arg);
+                return arg;
         }
 };
 

@@ -61,7 +61,7 @@ public:
         {
                 boost::hana::for_each(pawn_jump_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
-                        for (int from_sq : jump_from<board_type, direction_t>{}(b.pieces(color_c<Side>, pawn_c), b.targets(), b.pieces(empty_c))) {
+                        for (auto from_sq : jump_from<board_type, direction_t>{}(b.pieces(color_c<Side>, pawn_c), b.targets(), b.pieces(empty_c))) {
                                 raii::lift guard{from_sq, b};
                                 capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
                         }

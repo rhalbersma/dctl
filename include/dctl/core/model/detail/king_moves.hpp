@@ -50,7 +50,7 @@ class king_moves
 
         inline const static auto attacks_table = []() {
                 std::array<set_type, Board::bits()> result;
-                for (int from_sq : mask_type::squares) {
+                for (auto from_sq : mask_type::squares) {
                         result[static_cast<std::size_t>(from_sq)] =
                                 boost::hana::fold(
                                         boost::hana::transform(king_move_directions, [&](auto dir) {
@@ -102,8 +102,8 @@ public:
         template<class SequenceContainer>
         static auto generate(set_type const& kings, set_type const& empty, SequenceContainer& seq)
         {
-                for (int from_sq : kings) {
-                        for (int dest_sq : attacks(from_sq, empty)) {
+                for (auto from_sq : kings) {
+                        for (auto dest_sq : attacks(from_sq, empty)) {
                                 seq.emplace_back(from_sq, dest_sq);
                         }
                 }
