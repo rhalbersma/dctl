@@ -1,7 +1,9 @@
+set(Boost_USE_STATIC_LIBS  ON)
+
 set(cxx_compile_definitions
     BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
     BOOST_ALL_NO_LIB
-    BOOST_ALL_DYN_LINK
+#    BOOST_ALL_DYN_LINK
     BOOST_TEST_MAIN
     $<$<CXX_COMPILER_ID:MSVC>:
         _SCL_SECURE_NO_WARNINGS
@@ -69,7 +71,7 @@ foreach(t ${targets})
     )
 
     target_include_directories(${target_id} PRIVATE
-        src/${t}
+        ${test_include_dir}
     )
 
     target_compile_definitions(${target_id} PRIVATE

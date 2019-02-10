@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.12)
 project(dctl CXX)
 
 set(project_include_dir
@@ -8,9 +8,9 @@ set(project_include_dir
 
 set(xstd_include_dir ${PROJECT_SOURCE_DIR}/../xstd/include)
 set(bit_set_include_dir ${PROJECT_SOURCE_DIR}/../bit_set/include)
-set(ext_include_dir ${PROJECT_SOURCE_DIR}/../ext)
 
-find_package(Boost 1.66.0 REQUIRED COMPONENTS
+find_package(Boost 1.67.0 REQUIRED COMPONENTS
+	filesystem
 	program_options
 	unit_test_framework
 )
@@ -20,16 +20,8 @@ target_include_directories(dctl INTERFACE
 	${project_include_dir}
 	${xstd_include_dir}
 	${bit_set_include_dir}
-	${ext_include_dir}
 )
 
-if(NOT MSVC)
-    set(cxx_link_to_file_system
-        -lstdc++fs
-    )
-endif()
-
-target_link_libraries(dctl INTERFACE ${cxx_link_to_file_system})
 target_compile_features(dctl INTERFACE cxx_std_17)
 
 add_subdirectory(example)

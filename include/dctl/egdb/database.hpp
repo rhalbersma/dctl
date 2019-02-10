@@ -5,8 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <boost/filesystem.hpp>
 #include <algorithm>    // copy, sort
-#include <filesystem>   // exists, is_directory, directory_iterator
+//#include <filesystem>   // exists, is_directory, directory_iterator
 #include <iostream>     // ostream_iterator
 #include <iterator>     // back_inserter
 #include <numeric>      // accumulate
@@ -18,8 +19,8 @@ namespace dctl::egdb {
 
 class database
 {
-        std::filesystem::path m_dir_path;
-        std::vector<std::filesystem::path> m_files;
+        boost::filesystem::path m_dir_path;
+        std::vector<boost::filesystem::path> m_files;
 public:
         explicit database(std::string dir_path)
         :
@@ -42,7 +43,7 @@ public:
 
         auto scan_directory()
         {
-                namespace fs = std::filesystem;
+                namespace fs = boost::filesystem;
                 try {
                         if (fs::exists(m_dir_path) && fs::is_directory(m_dir_path))
                         {
@@ -50,7 +51,7 @@ public:
                                 std::copy(fs::directory_iterator(m_dir_path), fs::directory_iterator(), std::back_inserter(m_files));
                                 std::sort(m_files.begin(), m_files.end());
                                 std::cout << m_dir_path << " is a directory containing: " << m_files.size() << " files\n";
-                                std::copy(m_files.begin(), m_files.end(), std::ostream_iterator<std::filesystem::path>(std::cout, "\n"));
+                                std::copy(m_files.begin(), m_files.end(), std::ostream_iterator<fs::path>(std::cout, "\n"));
                                 auto const s = static_cast<double>(std::accumulate(m_files.begin(), m_files.end(), 0ULL, [](auto sum, auto const& f) {
                                         return sum + fs::file_size(f);
                                 })) / static_cast<double>(1ULL << 30);
