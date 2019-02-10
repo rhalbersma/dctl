@@ -1,9 +1,6 @@
-set(Boost_USE_STATIC_LIBS  ON)
-
 set(cxx_compile_definitions
     BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
     BOOST_ALL_NO_LIB
-#    BOOST_ALL_DYN_LINK
     BOOST_TEST_MAIN
     $<$<CXX_COMPILER_ID:MSVC>:
         _SCL_SECURE_NO_WARNINGS
@@ -43,6 +40,7 @@ set(cxx_compile_options_warnings
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(cxx_compile_options_coverage
+#	--coverage
         -g
         -O3
         -march=native
@@ -50,7 +48,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     )
 
     set(cxx_linker_options_coverage
-#	-flto
+#	--coverage
     )
 endif()
 
