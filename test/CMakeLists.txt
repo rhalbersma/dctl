@@ -38,23 +38,19 @@ set(cxx_compile_options_warnings
     >
 )
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set(cxx_compile_options_coverage
+set(cxx_compile_options_debugsym
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
         -g
+    >
+)
+
+set(cxx_compile_options_optimize
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
         -O3
         -march=native
         -mtune=native
-#	--coverage
-#	-fprofile-generate
-#	-fprofile-use
-    )
-
-    set(cxx_linker_options_coverage
-#	--coverage
-#	-fprofile-generate
-#	-fprofile-use
-    )
-endif()
+    >
+)
 
 set(test_include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(test_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -70,9 +66,8 @@ foreach(t ${targets})
 
     target_link_libraries(${target_id} PRIVATE
         dctl
-	Boost::filesystem
+	    Boost::filesystem
         Boost::unit_test_framework
-        ${cxx_linker_options_coverage}
     )
 
     target_include_directories(${target_id} PRIVATE
@@ -85,7 +80,8 @@ foreach(t ${targets})
 
     target_compile_options(${target_id} PRIVATE
         ${cxx_compile_options_warnings}
-        ${cxx_compile_options_coverage}
+        ${cxx_compile_options_debugsym}
+        ${cxx_compile_options_optimize}
     )
 
     add_test(${target_id} ${target_id})

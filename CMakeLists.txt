@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.13)
 project(dctl CXX)
 
 set(project_include_dir
@@ -9,7 +9,9 @@ set(project_include_dir
 set(xstd_include_dir ${PROJECT_SOURCE_DIR}/../xstd/include)
 set(bit_set_include_dir ${PROJECT_SOURCE_DIR}/../bit_set/include)
 
-find_package(Boost 1.67.0 REQUIRED COMPONENTS
+set(Boost_USE_STATIC_LIBS ON)
+
+find_package(Boost 1.69.0 REQUIRED COMPONENTS
 	filesystem
 	program_options
 	unit_test_framework
@@ -22,7 +24,7 @@ target_include_directories(dctl INTERFACE
 	${bit_set_include_dir}
 )
 
-target_compile_features(dctl INTERFACE cxx_std_17)
+target_compile_features(dctl INTERFACE cxx_std_20)
 
 add_subdirectory(example)
 include(CTest)

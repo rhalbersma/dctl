@@ -1,4 +1,10 @@
 #pragma once
+
+//          Copyright Rein Halbersma 2010-2019.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
 #include <dctl/core/board/coordinates.hpp>      // to_llo, transform
 #include <dctl/core/state/color.hpp>            // black, white
 #include <xstd/bit_set.hpp>                     // bit_set
@@ -6,18 +12,13 @@
 #include <boost/integer.hpp>                    // uint_value_t
 #include <array>                                // array
 
-//          Copyright Rein Halbersma 2010-2019.
-// Distributed under the Boost Software License, Version 1.0.
-//    (See accompanying file LICENSE_1_0.txt or copy at
-//          http://www.boost.org/LICENSE_1_0.txt)
-
 namespace dctl::core {
 
 template<class Board>
 class basic_mask
 {
 public:
-        using    set_type = xstd::bit_set<xstd::bit_set<static_cast<std::size_t>(Board::bits())>::capacity()>;
+        using    set_type = xstd::bit_set<xstd::bit_set<Board::bits()>::capacity()>;
         using square_type = typename boost::uint_value_t<set_type::max_ssize()>::least;
 
         constexpr static auto squares = []() {

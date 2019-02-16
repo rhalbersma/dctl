@@ -1,29 +1,28 @@
 language: cpp
 os: linux
-dist: trusty
-sudo: false
+dist: xenial
 
 matrix:
   include:
     - env: CXX_COMPILER=clang++-6.0 CXX=g++-8
-      addons: { apt: { packages: ["clang-6.0", "g++-8"], sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-6.0"] } }
+      addons: { apt: { packages: ["clang-6.0", "g++-8"], sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-xenial-6.0"] } }
 
     - env: CXX_COMPILER=clang++-7 CXX=g++-8
-      addons: { apt: { packages: ["clang-7", "g++-8"], sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty-7"] } }
+      addons: { apt: { packages: ["clang-7", "g++-8"], sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-xenial-7"] } }
 
     - env: CXX_COMPILER=clang++-8 CXX=g++-8
+      addons: { apt: { packages: ["clang-8", "g++-8"], sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-xenial-8"] } }
+
+    - env: CXX_COMPILER=clang++-9 CXX=g++-8
       addons:
         apt:
           packages:
-            - clang-8
+            - clang-9
             - g++-8
           sources:
             - ubuntu-toolchain-r-test
-            - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-8 main'
+            - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
-
-    - env: CXX_COMPILER=clang++-9 CXX=g++-8
-      addons: { apt: { packages: ["clang-9", "g++-8"], sources: ["ubuntu-toolchain-r-test", "llvm-toolchain-trusty"] } }
 
     - env: CXX_COMPILER=g++-8
       addons: { apt: { packages: ["g++-8"], sources: ["ubuntu-toolchain-r-test"] } }
@@ -45,7 +44,7 @@ install:
   BOOST_DIR=${THIRD_PARTY_DIR}/boost-${BOOST_VERSION}
   BOOST_URL="https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION//\./_}.tar.bz2"
   mkdir -p ${BOOST_DIR} && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C ${BOOST_DIR}
-  cd ${BOOST_DIR} && ./bootstrap.sh --with-libraries=filesystem,program_options,test && ./b2 -d0 link=static runtime-link=static threading=multi variant=release
+  cd ${BOOST_DIR} && ./bootstrap.sh --with-libraries=filesystem,program_options,test && sudo ./b2 install -d0 link=static runtime-link=static threading=multi variant=release
 
 ################################################################################
 # Install the latest CMake
