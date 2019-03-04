@@ -49,6 +49,8 @@ set(cxx_compile_options_optimize
         -O3
         -march=native
         -mtune=native
+        #-fprofile-generate
+        #-fprofile-use
     >
 )
 
@@ -68,6 +70,8 @@ foreach(t ${targets})
         dctl
 	    Boost::filesystem
         Boost::unit_test_framework
+        #-fprofile-generate
+        #-fprofile-use
     )
 
     target_include_directories(${target_id} PRIVATE
