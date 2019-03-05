@@ -49,7 +49,7 @@ public:
         }
 
         template<class ColorT, class Action, std::enable_if_t<
-                is_color_v<ColorT>
+                is_color<ColorT>
         >...>
         constexpr auto make(ColorT c, Action const& a) // Throws: Nothing.
         {
@@ -79,7 +79,7 @@ public:
         }
 
         template<class ColorT, std::enable_if_t<
-                is_color_v<ColorT>
+                is_color<ColorT>
         >...>
         constexpr auto pieces(ColorT c) const noexcept
         {
@@ -92,7 +92,7 @@ public:
         }
 
         template<class PieceT, std::enable_if_t<
-                is_piece_v<PieceT>
+                is_piece<PieceT>
         >...>
         constexpr auto pieces(PieceT p) const noexcept
         {
@@ -105,7 +105,7 @@ public:
         }
 
         template<class ColorT, class PieceT, std::enable_if_t<
-                is_color_v<ColorT> && is_piece_v<PieceT>
+                is_color<ColorT> && is_piece<PieceT>
         >...>
         constexpr auto pieces(ColorT c, PieceT p) const noexcept
         {

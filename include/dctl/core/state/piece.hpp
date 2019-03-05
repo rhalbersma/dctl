@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <xstd/type_traits.hpp> // is_any_of_v, to_underlying_type
+#include <xstd/type_traits.hpp> // is_any_of, to_underlying_type
 #include <type_traits>          // integral_constant
 
 namespace dctl::core {
@@ -26,7 +26,7 @@ using pawn_ = piece_<piece::pawn>;
 using king_ = piece_<piece::king>;
 
 template<class T>
-constexpr auto is_piece_v = xstd::is_any_of_v<T, piece, pawn_, king_>;
+constexpr auto is_piece = xstd::is_any_of<T, piece, pawn_, king_>;
 
 template<piece N>
 constexpr auto piece_c = piece_<N>{};

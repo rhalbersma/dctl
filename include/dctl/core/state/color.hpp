@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <xstd/type_traits.hpp> // is_any_of_v, to_underlying_type
+#include <xstd/type_traits.hpp> // is_any_of, to_underlying_type
 #include <type_traits>          // integral_constant
 
 namespace dctl::core {
@@ -34,7 +34,7 @@ template<class T>
 using not_ = color_<!T::value>;
 
 template<class T>
-constexpr auto is_color_v = xstd::is_any_of_v<T, color, black_, white_>;
+constexpr auto is_color = xstd::is_any_of<T, color, black_, white_>;
 
 template<color N>
 constexpr auto color_c = color_<N>{};

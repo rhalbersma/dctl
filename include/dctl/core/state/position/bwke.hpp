@@ -76,7 +76,7 @@ public:
         }
 
         template<class PieceT, std::enable_if_t<
-                is_piece_v<PieceT>
+                is_piece<PieceT>
         >...>
         constexpr auto pieces(PieceT p) const noexcept
         {
@@ -89,7 +89,7 @@ public:
         }
 
         template<class PieceT, std::enable_if_t<
-                is_piece_v<PieceT>
+                is_piece<PieceT>
         >...>
         constexpr auto pieces(color c, PieceT p) const noexcept
         {
