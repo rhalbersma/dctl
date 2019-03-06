@@ -88,8 +88,8 @@ install:
   mkdir -p ${BOOST_DIR} && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C ${BOOST_DIR}
   cd ${BOOST_DIR}
   if [[ "${STDLIB}" == "libc++" ]]; then
-    sudo update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-9   10
-    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 10
+    sudo update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-9   90
+    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 90
     ./bootstrap.sh --with-toolset=clang --with-libraries=${BOOST_LIBS}
     sudo ./b2 -d0 -j10 install toolset=clang ${BOOST_BUILD_TYPE} cxxflags="-stdlib=libc++" linkflags="-stdlib=libc++ -lc++abi"
   else
@@ -136,7 +136,7 @@ script:
 
 after_success:
 - |
-  if [[ "${CXX_COMPILER}" == "g++-8" ]]; then
+  if [[ "${CODE_COVERAGE}" == "true" ]]; then
     bash <(curl -s https://codecov.io/bash)
   fi
 
