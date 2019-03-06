@@ -10,7 +10,6 @@ matrix:
           packages:
             - clang-6.0
             - g++-8
-            - libboost-test-dev
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main'
@@ -22,7 +21,6 @@ matrix:
           packages:
             - clang-7
             - g++-8
-            - libboost-test-dev
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main'
@@ -34,7 +32,6 @@ matrix:
           packages:
             - clang-8
             - g++-8
-            - libboost-test-dev
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-8 main'
@@ -46,9 +43,19 @@ matrix:
           packages:
             - clang-9
             - g++-8
-            - libboost-test-dev
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
+            - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+
+    - env: CXX_COMPILER=clang++-9 STDLIB=libc++
+      addons:
+        apt:
+          packages:
+            - clang-9
+            - libc++-9-dev
+            - libc++abi-9-dev
+          sources:
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
@@ -57,7 +64,6 @@ matrix:
         apt:
           packages:
             - g++-8
-            - libboost-test-dev
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
 
@@ -69,7 +75,7 @@ install:
 - |
   THIRD_PARTY_DIR="${TRAVIS_BUILD_DIR}/../third_party"
   mkdir -p ${THIRD_PARTY_DIR}
-  
+
 ################################################################################
 # Install the latest Boost and build Boost.Test (compiled with g++-8)
 ################################################################################
@@ -77,8 +83,17 @@ install:
   BOOST_VERSION=1.69.0
   BOOST_DIR=${THIRD_PARTY_DIR}/boost-${BOOST_VERSION}
   BOOST_URL="https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION//\./_}.tar.bz2"
+  BOOST_LIBS="filesystem,program_options,test"
+  BOOST_BUILD_TYPE="link=static variant=release"
   mkdir -p ${BOOST_DIR} && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C ${BOOST_DIR}
-  cd ${BOOST_DIR} && ./bootstrap.sh --with-libraries=filesystem,program_options,test && sudo ./b2 install -d0 link=static runtime-link=static threading=multi variant=release
+  cd ${BOOST_DIR}
+  if [[ "${STDLIB}" == "libc++" ]]; then
+    ./bootstrap.sh --with-toolset=clang --with-libraries=${BOOST_LIBS}
+    sudo ./b2 -d0 -j10 toolset=clang ${BOOST_BUILD_TYPE} cxxflags="-stdlib=libc++" linkflags="-stdlib=libc++ -lc++abi"
+  else
+    ./bootstrap.sh --with-toolset=gcc   --with-libraries=${BOOST_LIBS}
+    sudo ./b2 -d0 -j10 toolset=gcc   ${BOOST_BUILD_TYPE}
+  fi
 
 ################################################################################
 # Install the latest CMake
@@ -102,9 +117,21 @@ before_script:
 - |
   cd ${TRAVIS_BUILD_DIR}
   mkdir build && cd build
-  cmake .. -DCMAKE_CXX_COMPILER=${CXX_COMPILER} -DBOOST_ROOT="${BOOST_DIR}" -DBOOST_LIBRARYDIR="${BOOST_DIR}/stage/lib"
- 
-script: 
+  if [[ "${STDLIB}" == "libc++" ]]; then
+    cmake .. \
+      -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
+      -DBOOST_ROOT="${BOOST_DIR}" \
+      -DBOOST_LIBRARYDIR="${BOOST_DIR}/stage/lib" \
+      -DCMAKE_CXX_FLAGS="-stdlib=libc++" \
+      -DCMAKE_CXX_EXE_LINKER_FLAGS="-stdlib=libc++ -lc++abi"
+  else
+    cmake .. \
+      -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
+      -DBOOST_ROOT="${BOOST_DIR}" \
+      -DBOOST_LIBRARYDIR="${BOOST_DIR}/stage/lib"
+  fi
+
+script:
 - |
   cmake --build .
   ctest -E "search|traversal"
