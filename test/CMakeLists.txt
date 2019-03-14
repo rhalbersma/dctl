@@ -16,10 +16,10 @@ set(cxx_compile_options_warnings
         -Wno-unknown-warning-option
         -Wno-c++98-compat
         -Wno-c++98-compat-pedantic
+        -Wno-ctad-maybe-unsupported
         -Wno-disabled-macro-expansion
         -Wno-global-constructors
         -Wno-range-loop-analysis
-        -Wno-ctad-maybe-unsupported
     >
     $<$<CXX_COMPILER_ID:GNU>:
         -Wall
