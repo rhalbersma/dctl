@@ -1,12 +1,12 @@
 image:
-  - Visual Studio 2017
+  - Visual Studio 2019 Preview
 
 environment:
   matrix:
     - platform: x86
-      GENERATOR: "Visual Studio 15 2017"
+      GENERATOR: "Visual Studio 16 2019"
     - platform: x64
-      GENERATOR: "Visual Studio 15 2017 Win64"
+      GENERATOR: "Visual Studio 16 2019 Win64"
 
 configuration:
   - Debug
@@ -16,28 +16,28 @@ cache:
 - c:\tools\vcpkg\installed\
 
 install:
-- cmd: >-
-    vcpkg upgrade
+- vcpkg upgrade
+- vcpkg install --triplet "%platform%"-windows boost
 
-    vcpkg install --triplet "%platform%"-windows boost
+############################################################################
+# Install a recent CMake
+############################################################################
+- set CMAKE_URL="https://cmake.org/files/v3.14/cmake-3.14.0-win64-x64.zip"
+- appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
+- 7z x cmake.zip -oC:\projects\deps > nul
+- move C:\projects\deps\cmake-* C:\projects\deps\cmake # Move to a version-agnostic directory
+- set PATH=C:\projects\deps\cmake\bin;%PATH%
+- cmake --version
 
 before_build:
-- cmd: >-
-    cd %APPVEYOR_BUILD_FOLDER%
-
-    cd ..
-
-    git clone https://github.com/rhalbersma/xstd.git
-
-    git clone https://github.com/rhalbersma/bit_set.git
-      
-    cd %APPVEYOR_BUILD_FOLDER%
-
-    mkdir build
-
-    cd build
-
-    cmake .. -G "%GENERATOR%" -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake
+- cd %APPVEYOR_BUILD_FOLDER%
+- cd ..
+- git clone https://github.com/rhalbersma/xstd.git
+- git clone https://github.com/rhalbersma/bit_set.git
+- cd %APPVEYOR_BUILD_FOLDER%
+- mkdir build
+- cd build
+- cmake .. -G "%GENERATOR%" -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 build_script:
 - cmake --build . --config "%configuration%"
