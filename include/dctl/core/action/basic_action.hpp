@@ -9,7 +9,7 @@
 #include <dctl/core/rules/type_traits.hpp>      // is_contents_precedence, is_ordering_precedence
 #include <dctl/core/state/piece.hpp>            // pawn, king
 #include <dctl/util/type_traits.hpp>            // set_t, square_t
-#include <xstd/type_traits.hpp>                 // conditional_empty
+#include <xstd/type_traits.hpp>                 // or_empty
 #include <cassert>                              // assert
 #include <tuple>                                // tie
 #include <type_traits>                          // enable_if, is_same
@@ -41,13 +41,13 @@ struct base_ordering_precedence
 };
 
 template<class Rules, class Board>
-using conditional_base_contents_precedence = xstd::conditional_empty<
+using conditional_base_contents_precedence = xstd::or_empty<
         is_contents_precedence_v<Rules>,
         base_contents_precedence<Board>
 >;
 
 template<class Rules, class Board>
-using conditional_base_ordering_precedence = xstd::conditional_empty<
+using conditional_base_ordering_precedence = xstd::or_empty<
         is_ordering_precedence_v<Rules>,
         base_ordering_precedence<Board>
 >;

@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/state/color.hpp>    // black, white
-#include <xstd/type_traits.hpp>         // to_underlying_type
+#include <xstd/type_traits.hpp>         // to_utype
 #include <cassert>                      // assert
 
 namespace dctl::core {
@@ -24,7 +24,7 @@ auto read_color(char const c)
 template<class Token>
 char write_color(color const c)
 {
-        return Token::color[xstd::to_underlying_type(c)];
+        return Token::color[xstd::to_utype(c)];
 }
 
 }       // namespace dctl::core

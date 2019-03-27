@@ -14,7 +14,7 @@
 #include <dctl/core/ui/basic_token_set.hpp>     // basic_token_set
 #include <dctl/core/ui/color.hpp>               // read_color, write_color
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <xstd/type_traits.hpp>                 // to_utype
 #include <cassert>                              // assert
 #include <cctype>                               // isdigit
 #include <sstream>                              // stringstream
@@ -78,7 +78,7 @@ struct read
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::embedding1(sq);         // convert square to bit
-                                        by_color_piece[xstd::to_underlying_type(setup_color)][xstd::to_underlying_type(setup_piece)].insert(b);
+                                        by_color_piece[xstd::to_utype(setup_color)][xstd::to_utype(setup_piece)].insert(b);
                                 }
                                 setup_piece = piece::pawn;
                                 break;
@@ -102,7 +102,7 @@ struct write
                         auto c = i ? color::white : color::black;
                         if (!s.pieces(c).empty()) {
                                 sstr << Token::colon;                                   // colon
-                                sstr << Token::color[xstd::to_underlying_type(c)];      // color tag
+                                sstr << Token::color[xstd::to_utype(c)];      // color tag
                         }
                         auto const bs = s.pieces(c);
                         auto n = 0;

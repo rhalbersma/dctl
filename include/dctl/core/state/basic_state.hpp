@@ -11,7 +11,7 @@
 #include <dctl/core/state/piece.hpp>
 #include <dctl/core/state/position.hpp>
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/type_traits.hpp>                 // conditional_empty
+#include <xstd/type_traits.hpp>                 // or_empty
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
 #include <tuple>                                // tie
@@ -42,7 +42,7 @@ template<class Board>
 struct most_recently_pushed_king {};
 
 template<class Rules, class Board>
-using conditional_base_mrpk = xstd::conditional_empty<
+using conditional_base_mrpk = xstd::or_empty<
         is_restricted_king_move_v<Rules>,
         most_recently_pushed_king<Board>
 >;

@@ -8,7 +8,7 @@
 #include <dctl/core/action/basic_action.hpp>    // basic_action
 #include <dctl/core/rules/type_traits.hpp>      // pushsep_v, jumpsep_v, notation_v
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t
-#include <xstd/type_traits.hpp>                 // to_underlying_type
+#include <xstd/type_traits.hpp>                 // to_utype
 #include <cassert>                              // assert
 #include <ios>                                  // ios_base
 #include <ostream>                              // basic_ostream
@@ -155,13 +155,13 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_action<Rules, Bo
 
 inline auto& algebraic(std::ios_base& str)
 {
-        str.iword(detail::setnotation()) = xstd::to_underlying_type(notation::algebraic);
+        str.iword(detail::setnotation()) = xstd::to_utype(notation::algebraic);
         return str;
 }
 
 inline auto& numeric(std::ios_base& str)
 {
-        str.iword(detail::setnotation()) = xstd::to_underlying_type(notation::numeric);
+        str.iword(detail::setnotation()) = xstd::to_utype(notation::numeric);
         return str;
 }
 
