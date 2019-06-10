@@ -10,7 +10,7 @@
 #include <dctl/core/state/piece.hpp>            // piece,  pawn_c,  king_c, board_, empty_, occup_
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/type_traits.hpp>                 // to_utype
+#include <xstd/utility.hpp>                     // to_underlying
 #include <array>                                // array
 #include <tuple>                                // tie
 
@@ -26,7 +26,7 @@ public:
         using   set_type = set_t<mask_type>;
 
 private:
-        std::array<std::array<set_type, xstd::to_utype(piece::size)>, xstd::to_utype(color::size)> m_color_piece;
+        std::array<std::array<set_type, xstd::to_underlying(piece::size)>, xstd::to_underlying(color::size)> m_color_piece;
         set_type m_empty;
 public:
         position() = default;
@@ -74,7 +74,7 @@ public:
 
         constexpr auto pieces(color c, piece p) const noexcept
         {
-                return m_color_piece[xstd::to_utype(c)][xstd::to_utype(p)];
+                return m_color_piece[xstd::to_underlying(c)][xstd::to_underlying(p)];
         }
 
         constexpr auto pieces(board_) const noexcept
@@ -107,7 +107,7 @@ public:
 private:
         constexpr auto& set_pieces(color c, piece p) noexcept
         {
-                return m_color_piece[xstd::to_utype(c)][xstd::to_utype(p)];
+                return m_color_piece[xstd::to_underlying(c)][xstd::to_underlying(p)];
         }
 };
 

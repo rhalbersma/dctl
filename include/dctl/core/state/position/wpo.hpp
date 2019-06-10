@@ -11,6 +11,7 @@
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <tuple>                                // tie
+#include <type_traits>                          // enable_if_t
 
 namespace dctl::core {
 namespace wpo {

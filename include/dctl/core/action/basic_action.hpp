@@ -12,7 +12,7 @@
 #include <xstd/type_traits.hpp>                 // or_empty
 #include <cassert>                              // assert
 #include <tuple>                                // tie
-#include <type_traits>                          // enable_if, is_same
+#include <type_traits>                          // enable_if_t, is_same_v
 
 namespace dctl::core {
 namespace detail {

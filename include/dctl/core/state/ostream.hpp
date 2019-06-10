@@ -52,13 +52,13 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_state<Rules, Boa
 
 inline auto& diag(std::ios_base& str)
 {
-        str.iword(detail::setstateformat()) = xstd::to_utype(detail::stateformat::diag);
+        str.iword(detail::setstateformat()) = xstd::to_underlying(detail::stateformat::diag);
         return str;
 }
 
 inline auto& fen(std::ios_base& str)
 {
-        str.iword(detail::setstateformat()) = xstd::to_utype(detail::stateformat::fen);
+        str.iword(detail::setstateformat()) = xstd::to_underlying(detail::stateformat::fen);
         return str;
 }
 

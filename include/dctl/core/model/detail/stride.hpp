@@ -9,7 +9,7 @@
 #include <dctl/util/type_traits.hpp>
 #include <xstd/cstdlib.hpp>
 #include <cassert>
-#include <type_traits>                  // is_convertible_v
+#include <type_traits>                  // enable_if_t, is_convertible_v
 
 namespace dctl::core {
 

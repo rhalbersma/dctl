@@ -8,7 +8,7 @@
 #include <dctl/core/board/coordinates.hpp>      // to_llo, transform
 #include <dctl/core/state/color.hpp>            // black, white
 #include <xstd/bit_set.hpp>                     // bit_set
-#include <xstd/type_traits.hpp>                 // to_utype
+#include <xstd/utility.hpp>                     // to_underlying
 #include <boost/integer.hpp>                    // uint_value_t
 #include <array>                                // array
 
@@ -43,10 +43,10 @@ private:
         }
 
         XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto file_table = []() {
-                std::array<std::array<set_type, Board::width>, xstd::to_utype(color::size)> table;
+                std::array<std::array<set_type, Board::width>, xstd::to_underlying(color::size)> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto f = 0; f < Board::width; ++f) {
-                                table[xstd::to_utype(c)][static_cast<std::size_t>(f)] =
+                                table[xstd::to_underlying(c)][static_cast<std::size_t>(f)] =
                                         squares_filter([=](int const sq) {
                                                 return to_llo(sq, Board::inner_grid).x == (c == color::white ? f : Board::width - 1 - f);
                                         })
@@ -57,10 +57,10 @@ private:
         }();
 
         XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto rank_table = []() {
-                std::array<std::array<set_type, Board::height>, xstd::to_utype(color::size)> table;
+                std::array<std::array<set_type, Board::height>, xstd::to_underlying(color::size)> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto r = 0; r < Board::height; ++r) {
-                                table[xstd::to_utype(c)][static_cast<std::size_t>(r)] =
+                                table[xstd::to_underlying(c)][static_cast<std::size_t>(r)] =
                                         squares_filter([=](int const sq) {
                                                 return to_llo(sq, Board::inner_grid).y == (c == color::white ? r : Board::height - 1 - r);
                                         })
@@ -74,13 +74,13 @@ public:
         XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto file(color const c, int const f) // Throws: Nothing.
         {
                 assert(0 <= f); assert(f < Board::width);
-                return file_table[xstd::to_utype(c)][static_cast<std::size_t>(f)];
+                return file_table[xstd::to_underlying(c)][static_cast<std::size_t>(f)];
         }
 
         XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto rank(color const c, int const r) // Throws: Nothing.
         {
                 assert(0 <= r); assert(r < Board::height);
-                return rank_table[xstd::to_utype(c)][static_cast<std::size_t>(r)];
+                return rank_table[xstd::to_underlying(c)][static_cast<std::size_t>(r)];
         }
 
         XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto promotion(color const c) noexcept
@@ -91,10 +91,10 @@ public:
 private:
         XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto initial_table = []() {
                 constexpr auto N = Board::height / 2 + 1;
-                std::array<std::array<set_type, N>, xstd::to_utype(color::size)> table;
+                std::array<std::array<set_type, N>, xstd::to_underlying(color::size)> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto d = 0; d < N; ++d) {
-                                table[xstd::to_utype(c)][static_cast<std::size_t>(d)] = [=]() {
+                                table[xstd::to_underlying(c)][static_cast<std::size_t>(d)] = [=]() {
                                         set_type accum;
                                         for (auto r = 0; r < d; ++r) {
                                                 accum ^= rank(c, r);
@@ -113,7 +113,7 @@ public:
                 assert(Board::height % 2 <= separation); assert(separation <= Board::height);
                 auto const d = (Board::height - separation) / 2;
                 assert(d <= Board::height / 2);
-                return initial_table[xstd::to_utype(c)][static_cast<std::size_t>(d)];
+                return initial_table[xstd::to_underlying(c)][static_cast<std::size_t>(d)];
         }
 };
 
