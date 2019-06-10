@@ -10,10 +10,10 @@
 #define DCTL_PP_TTI_CONSTANT(NAME, DEFAULT)                     \
                                                                 \
 template<class T, class = void>                                 \
-constexpr static auto has_ ## NAME ## _v = false;               \
+inline constexpr static auto has_ ## NAME ## _v = false;        \
                                                                 \
 template<class T>                                               \
-constexpr static auto has_ ## NAME ## _v<                       \
+inline constexpr static auto has_ ## NAME ## _v<                \
         T, std::void_t<decltype(T::NAME)>                       \
 > = true;                                                       \
                                                                 \
@@ -23,7 +23,7 @@ struct default_ ## NAME                                         \
 };                                                              \
                                                                 \
 template<class T>                                               \
-constexpr auto NAME ## _v = std::conditional_t<                 \
+inline constexpr auto NAME ## _v = std::conditional_t<          \
         has_ ## NAME ## _v<T>, T, default_ ## NAME              \
 >::NAME;                                                        \
 

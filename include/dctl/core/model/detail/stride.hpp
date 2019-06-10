@@ -42,10 +42,10 @@ public:
 };
 
 template<class Board, class Direction>
-constexpr auto stride_v = stride<Board>{}(angle{Direction::value});
+inline constexpr auto stride_v = stride<Board>{}(angle{Direction::value});
 
 template<class Direction>
-constexpr auto is_left_shift_v = angle{Direction::value} == 0_deg || 180_deg < angle{Direction::value};
+inline constexpr auto is_left_shift_v = angle{Direction::value} == 0_deg || 180_deg < angle{Direction::value};
 
 template<class Direction, class Set>
 auto find_first(Set const& s)

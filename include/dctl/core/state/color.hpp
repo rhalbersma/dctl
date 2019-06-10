@@ -35,10 +35,10 @@ template<class T>
 using not_ = color_<!T::value>;
 
 template<class T>
-constexpr auto is_color = xstd::any_of<T, color, black_, white_>;
+inline constexpr auto is_color = xstd::any_of<T, color, black_, white_>;
 
 template<color N>
-constexpr auto color_c = color_<N>{};
+inline constexpr auto color_c = color_<N>{};
 
 inline constexpr auto black_c = color_c<color::black>;
 inline constexpr auto white_c = color_c<color::white>;

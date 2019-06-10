@@ -20,7 +20,7 @@ namespace dctl::core::model {
 namespace detail {
 
 template<class Tuple>
-constexpr auto tuple_size = decltype(boost::hana::size(std::declval<Tuple>()))::value;
+inline constexpr auto tuple_size = decltype(boost::hana::size(std::declval<Tuple>()))::value;
 
 template<class Board, class Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
 struct scan
@@ -116,10 +116,10 @@ template<class Rules, class Board>
 using basic_blocker_and_beyond = board_scan_dir_sq<Board, king_jump_directions_t<Rules>, true, true, true>;
 
 template<class Direction>
-constexpr auto move_index = (Direction::value - 45) / 90;
+inline constexpr auto move_index = (Direction::value - 45) / 90;
 
 template<class Rules, class Direction>
-constexpr auto jump_index = is_orthogonal_jumps_v<Rules> ? Direction::value / 45 : move_index<Direction>;
+inline constexpr auto jump_index = is_orthogonal_jumps_v<Rules> ? Direction::value / 45 : move_index<Direction>;
 
 template<class Rules, class Board, class Direction>
 auto king_slide(int sq)

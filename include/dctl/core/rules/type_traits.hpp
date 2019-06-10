@@ -22,13 +22,13 @@ DCTL_PP_TTI_CONSTANT(coloring, 1)
 DCTL_PP_TTI_CONSTANT(is_orthogonal_jumps, false)
 
 template<class Geometry>
-constexpr auto is_placeable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 1 && (coloring_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 1);
+inline constexpr auto is_placeable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 1 && (coloring_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 1);
 
 template<class Geometry>
-constexpr auto is_pushable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 2;
+inline constexpr auto is_pushable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 2;
 
 template<class Geometry>
-constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (coloring_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
+inline constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (coloring_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
 
 DCTL_PP_TTI_CONSTANT(initial_position_gap, 2)
 
@@ -52,17 +52,17 @@ DCTL_PP_TTI_CONSTANT(is_passing_promotion, false)
 DCTL_PP_TTI_CONSTANT(is_passing_capture, false)
 
 template<class Rules>
-constexpr auto is_reverse_king_jump_v = is_long_ranged_king_v<Rules> && is_passing_capture_v<Rules>;
+inline constexpr auto is_reverse_king_jump_v = is_long_ranged_king_v<Rules> && is_passing_capture_v<Rules>;
 
 template<class Rules>
-constexpr auto large_jump_v =
+inline constexpr auto large_jump_v =
         ((is_orthogonal_jumps_v<Rules> && is_backward_pawn_jump_v<Rules>) ||
          (is_orthogonal_jumps_v<Rules> && is_reverse_king_jump_v<Rules>) ||
          (is_reverse_king_jump_v<Rules> && is_backward_pawn_jump_v<Rules>)) ? 3 : 4
 ;
 
 template<class Rules>
-constexpr auto is_unambiguous_pawn_jump_v =
+inline constexpr auto is_unambiguous_pawn_jump_v =
         !(is_backward_pawn_jump_v<Rules> || is_passing_promotion_v<Rules> ||
         (is_orthogonal_jumps_v<Rules> && is_reverse_king_jump_v<Rules>))
 ;
@@ -79,7 +79,7 @@ inline constexpr auto trivial_precedence_c = [](auto&&) {
 DCTL_PP_TTI_CONSTANT(precedence, trivial_precedence_c)
 
 template<class Rules>
-constexpr auto is_trivial_precedence_v = std::is_same_v<
+inline constexpr auto is_trivial_precedence_v = std::is_same_v<
         decltype(precedence_v<Rules>),
         decltype(trivial_precedence_c)
 >;
@@ -178,12 +178,12 @@ struct drop_duplicates_tag : std:: true_type {};
 DCTL_PP_TTI_CONSTANT(max_same_king_move, 0)
 
 template<class Rules>
-constexpr auto is_restricted_king_move_v = max_same_king_move_v<Rules> != 0;
+inline constexpr auto is_restricted_king_move_v = max_same_king_move_v<Rules> != 0;
 
 DCTL_PP_TTI_CONSTANT(max_reversible_moves, 0)
 
 template<class Rules>
-constexpr auto is_restricted_reversible_moves_v = max_reversible_moves_v<Rules> != 0;
+inline constexpr auto is_restricted_reversible_moves_v = max_reversible_moves_v<Rules> != 0;
 
 DCTL_PP_TTI_CONSTANT(pushsep, '-')
 DCTL_PP_TTI_CONSTANT(jumpsep, 'x')
@@ -198,7 +198,7 @@ enum class notation
 };
 
 template<class Rules>
-constexpr auto notation_v =
+inline constexpr auto notation_v =
         is_algebraic_notation_v<Rules> ?
         notation::algebraic :
         notation::numeric

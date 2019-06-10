@@ -27,10 +27,10 @@ using pawn_ = piece_<piece::pawn>;
 using king_ = piece_<piece::king>;
 
 template<class T>
-constexpr auto is_piece = xstd::any_of<T, piece, pawn_, king_>;
+inline constexpr auto is_piece = xstd::any_of<T, piece, pawn_, king_>;
 
 template<piece N>
-constexpr auto piece_c = piece_<N>{};
+inline constexpr auto piece_c = piece_<N>{};
 
 inline constexpr auto pawn_c = piece_c<piece::pawn>;
 inline constexpr auto king_c = piece_c<piece::king>;
