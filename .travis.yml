@@ -4,51 +4,51 @@ dist: xenial
 
 matrix:
   include:
-    - env: CXX_COMPILER=clang++-6.0 CXX=g++-8
+    - env: CXX_COMPILER=clang++-6.0 CXX_STDLIB=g++-9
       addons:
         apt:
           packages:
             - clang-6.0
-            - g++-8
+            - g++-9
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
-    - env: CXX_COMPILER=clang++-7 CXX=g++-8
+    - env: CXX_COMPILER=clang++-7 CXX_STDLIB=g++-9
       addons:
         apt:
           packages:
             - clang-7
-            - g++-8
+            - g++-9
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
-    - env: CXX_COMPILER=clang++-8 CXX=g++-8
+    - env: CXX_COMPILER=clang++-8 CXX_STDLIB=g++-9
       addons:
         apt:
           packages:
             - clang-8
-            - g++-8
+            - g++-9
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-8 main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
-    - env: CXX_COMPILER=clang++-9 CXX=g++-8
+    - env: CXX_COMPILER=clang++-9 CXX_STDLIB=g++-9
       addons:
         apt:
           packages:
             - clang-9
-            - g++-8
+            - g++-9
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
-    - env: CXX_COMPILER=clang++-9 STDLIB=libc++
+    - env: CXX_COMPILER=clang++-9 CXX_STDLIB=libc++
       addons:
         apt:
           packages:
@@ -59,7 +59,7 @@ matrix:
             - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
-    - env: CXX_COMPILER=g++-8 CXX=g++-8
+    - env: CXX_COMPILER=g++-8 CXX_STDLIB=g++-8
       addons:
         apt:
           packages:
@@ -67,7 +67,15 @@ matrix:
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
 
-    - env: CXX_COMPILER=g++-9 CXX=g++-9
+    - env: CXX_COMPILER=g++-9 CXX_STDLIB=g++-9
+      addons:
+        apt:
+          packages:
+            - g++-9
+          sources:
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+
+    - env: CXX_COMPILER=g++-10 CXX_STDLIB=g++-10
 
 install:
 
@@ -80,33 +88,46 @@ install:
   cd ${THIRD_PARTY_DIR}
 
 ################################################################################
-# Install the latest gcc
+# Install g++-10
 ################################################################################
 
 - |
-  if [[ "${CXX_COMPILER}" == "g++-9" ]]; then
+  if [[ "${CXX_COMPILER}" == "g++-10" ]]; then
     wget http://kayari.org/gcc-latest/gcc-latest.deb
     sudo dpkg -i gcc-latest.deb
-    sudo ln -s /opt/gcc-latest/bin/gcc /usr/bin/gcc-9
-    sudo ln -s /opt/gcc-latest/bin/g++ /usr/bin/g++-9
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+    sudo ln -s /opt/gcc-latest/bin/gcc /usr/bin/gcc-10
+    sudo ln -s /opt/gcc-latest/bin/g++ /usr/bin/g++-10
     sudo ldconfig /opt/gcc-latest/lib64
   fi
 
 ################################################################################
-# Install the latest Boost and build Boost.Test (compiled with g++-8)
+# Set gcc to latest version that is installed
+################################################################################
+
+- |
+  if [[ "${CXX_STDLIB}" == "g++-8" ]]; then
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+  elif [[ "${CXX_STDLIB}" == "g++-9" ]]; then
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+  elif [[ "${CXX_STDLIB}" == "g++-10" ]]; then
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10
+  fi
+  gcc --version
+  g++ --version
+
+################################################################################
+# Install the latest Boost and build Boost.Test (compiled with the latest gcc)
 ################################################################################
 - |
   BOOST_VERSION=1.70.0
   BOOST_DIR=${THIRD_PARTY_DIR}/boost-${BOOST_VERSION}
   BOOST_URL="https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION//\./_}.tar.bz2"
-  BOOST_LIBS="filesystem,program_options,test"
+  BOOST_LIBS="test"
   BOOST_BUILD_TYPE="link=static variant=release"
   mkdir -p ${BOOST_DIR} && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C ${BOOST_DIR}
   cd ${BOOST_DIR}
-  if [[ "${STDLIB}" == "libc++" ]]; then
-    sudo update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-9   90
-    sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 90
+  if [[ "${CXX_STDLIB}" == "libc++" ]]; then
+    sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 90 --slave /usr/bin/clang++ clang++ /usr/bin/clang++-9
     ./bootstrap.sh --with-toolset=clang --with-libraries=${BOOST_LIBS}
     sudo ./b2 -d0 -j10 install toolset=clang ${BOOST_BUILD_TYPE} cxxflags="-stdlib=libc++"
   else
@@ -118,7 +139,7 @@ install:
 # Install the latest CMake
 ################################################################################
 - |
-  CMAKE_VERSION=3.14.0
+  CMAKE_VERSION=3.14.5
   CMAKE_DIR=${THIRD_PARTY_DIR}/cmake-${CMAKE_VERSION}
   CMAKE_URL="http://www.cmake.org/files/v${CMAKE_VERSION%.[0-9]}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
   mkdir -p ${CMAKE_DIR} && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${CMAKE_DIR}
@@ -136,10 +157,15 @@ before_script:
 - |
   cd ${TRAVIS_BUILD_DIR}
   mkdir build && cd build
-  if [[ "${STDLIB}" == "libc++" ]]; then
+  if [[ "${CXX_STDLIB}" == "libc++" ]]; then
     cmake .. \
       -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
       -DCMAKE_CXX_FLAGS="-stdlib=libc++"
+  elif [[ "${CODE_COVERAGE}" == "true" ]]; then
+    cmake .. \
+      -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
+      -DCMAKE_CXX_FLAGS="--coverage" \
+      -DCMAKE_EXE_LINKER_FLAGS="--coverage"
   else
     cmake .. \
       -DCMAKE_CXX_COMPILER=${CXX_COMPILER}

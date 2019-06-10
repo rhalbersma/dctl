@@ -24,7 +24,7 @@ target_include_directories(dctl INTERFACE
 	${bit_set_include_dir}
 )
 
-target_compile_features(dctl INTERFACE cxx_std_20)
+target_compile_features(dctl INTERFACE cxx_std_17)
 
 add_subdirectory(example)
 include(CTest)
