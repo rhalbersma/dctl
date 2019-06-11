@@ -4,7 +4,7 @@ dist: xenial
 
 matrix:
   include:
-    - env: CXX_COMPILER=clang++-6.0 CXX_STDLIB=g++-9
+    - env: CXX_COMPILER=clang++-6.0 CXX_STDLIB=g++-8
       addons:
         apt:
           packages:
