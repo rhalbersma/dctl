@@ -254,7 +254,7 @@ private:
 
         constexpr auto reverse_index() const noexcept
         {
-                return set_type::max_ssize() - 1 - num_captured_pieces();
+                return static_cast<int>(set_type::max_size()) - 1 - num_captured_pieces();
         }
 };
 

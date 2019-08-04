@@ -65,7 +65,7 @@ struct advance
         auto operator()(Set& bs) const
         {
                 constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
-                static_assert(0 <= n && n < Set::max_ssize());
+                static_assert(0 <= n && n < Set::max_size());
                 if constexpr (!(is_left_shift_v<Direction> ^ (Distance >= 0))) {
                         bs <<= n;
                 } else {
