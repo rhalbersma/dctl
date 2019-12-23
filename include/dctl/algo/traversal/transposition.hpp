@@ -5,15 +5,15 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cstddef>      // size_t
+#include <cstdint>      // uint64_t
 
 namespace dctl::algo {
 namespace traversal {
 
 class Transposition
 {
-        std::size_t nodes_ : 59;        // 5.8e17 nodes
-        std::size_t depth_ :  5;        // 32 ply
+        uint64_t nodes_ : 59;        // 5.8e17 nodes
+        uint64_t depth_ :  5;        // 32 ply
 
 public:
         constexpr Transposition() noexcept

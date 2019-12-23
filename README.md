@@ -53,12 +53,12 @@ These header-only libraries are continuously being tested with the following con
 
 | Platform | Compiler | Versions | Build |
 | :------- | :------- | :------- | :---- |
-| Linux    | Clang <br> GCC | 7, 8, 9, 10-SVN<br> 8, 9, 10-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/xstd) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
+| Linux    | Clang <br> GCC | 7, 8, 9, 10-SVN<br> 8, 9, 10-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
 | Windows  | Visual Studio  | 2019 (16.4)                      | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
 
 ##### Boost library
 
-The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.68.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_66_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
+The DCTL uses several of the popular [Boost C++ libraries](http://www.boost.org). Current development takes place with Boost 1.72.0. Boost is a collection of header-only libraries, and you simply have to point your compiler to the Boost include directory. Consult the [Boost documentation](http://www.boost.org/doc/libs/1_72_0/more/getting_started/index.html) on how to do this on your system. After that, you can continue to use your regular build process.
 
 Installation
 ------------

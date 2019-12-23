@@ -19,6 +19,7 @@ set(cxx_compile_options_warnings
         /W4
         /permissive-
         /WX
+        /wd4805                         # triggered by bit-wise XOR on booleans
     >
     $<$<CXX_COMPILER_ID:Clang>:
         -Weverything
