@@ -22,7 +22,7 @@ public:
                 depth_{0}
         {}
 
-        constexpr Transposition(std::size_t const n, std::size_t const d) noexcept
+        constexpr Transposition(uint64_t const n, uint64_t const d) noexcept
         :
                 nodes_{n & ((1ULL << 59) - 1)},
                 depth_{d & ((1ULL <<  5) - 1)}
