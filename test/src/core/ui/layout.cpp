@@ -5,12 +5,11 @@
 
 #include <core/board/sequence.hpp>
 #include <dctl/core/action.hpp>
-#include <dctl/core/board.hpp>                  // international
+#include <dctl/core/board.hpp>          // international
 #include <dctl/core/rules.hpp>
 #include <dctl/core/state.hpp>
-#include <boost/mpl/vector.hpp>                 // vector
-#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
+#include <boost/mpl/vector.hpp>         // vector
+#include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <iostream>
 
 using namespace dctl::core;

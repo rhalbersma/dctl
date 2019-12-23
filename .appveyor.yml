@@ -1,46 +1,46 @@
 image:
-  - Visual Studio 2017
+  - Visual Studio 2019
+  - Visual Studio 2019 Preview
 
 environment:
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  GENERATOR_NAME: "Visual Studio 16 2019"
   matrix:
     - platform: x86
-      GENERATOR: "Visual Studio 15 2017"
+      PLATFORM_NAME: "Win32"
     - platform: x64
-      GENERATOR: "Visual Studio 15 2017 Win64"
+      PLATFORM_NAME: "x64"
 
 configuration:
   - Debug
   - Release
 
+shallow_clone: true
+
+build:
+  verbosity: detailed
+
 cache:
-- c:\tools\vcpkg\installed\
+  - c:\tools\vcpkg\installed\
 
 install:
-- vcpkg upgrade
-- vcpkg install --triplet "%platform%"-windows boost
-
-############################################################################
-# Install a recent CMake
-############################################################################
-- set CMAKE_URL="https://cmake.org/files/v3.14/cmake-3.14.0-win64-x64.zip"
-- appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
-- 7z x cmake.zip -oC:\projects\deps > nul
-- move C:\projects\deps\cmake-* C:\projects\deps\cmake # Move to a version-agnostic directory
-- set PATH=C:\projects\deps\cmake\bin;%PATH%
-- cmake --version
+  - vcpkg install --triplet "%platform%"-windows
+    boost
 
 before_build:
-- cd %APPVEYOR_BUILD_FOLDER%
-- cd ..
-- git clone https://github.com/rhalbersma/xstd.git
-- git clone https://github.com/rhalbersma/bit_set.git
-- cd %APPVEYOR_BUILD_FOLDER%
-- mkdir build
-- cd build
-- cmake .. -G "%GENERATOR%" -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - cd ..
+  - git clone https://github.com/rhalbersma/xstd.git
+  - git clone https://github.com/rhalbersma/bit_set.git
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - mkdir build
+  - cd build
+  - cmake --version
+  - cmake .. -G "%GENERATOR_NAME%" -A %PLATFORM_NAME%
+    "-DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
 build_script:
-- cmake --build . --config "%configuration%"
+  - cmake --build . --config %configuration%
 
 test_script:
-- ctest -E "search|traversal"
+  - ctest -E "search|traversal"

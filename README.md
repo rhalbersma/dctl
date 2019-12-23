@@ -9,7 +9,7 @@ DCTL: Draughts and Checkers Template Library
 A [C++](http://isocpp.org) template library for the games of [draughts](http://en.wikipedia.org/wiki/Draughts) and [checkers](http://en.wikipedia.org/wiki/Checkers_(disambiguation)), supporting almost all known rules variations, board sizes and game objectives.
 
 > #### Disclaimer
-> This library is currently in a [pre-alpha](https://en.wikipedia.org/wiki/Software_release_life_cycle#Pre-alpha) stage. All code is subject to change without prior notice. 
+> This library is currently in a [pre-alpha](https://en.wikipedia.org/wiki/Software_release_life_cycle#Pre-alpha) stage. All code is subject to change without prior notice.
 
 Introduction
 ------------
@@ -32,19 +32,19 @@ Usage
 
 The DCTL provides a series of [C++ templates](http://en.wikipedia.org/wiki/Template_(C%2B%2B)) to define the board geometry and game rules of draughts variants. With these templates, one can read and write draughts positions from so-called FEN strings using [Portable Draughts Notation](http://www.10x10.dse.nl/pdn/introduction.html). Once a position variable has been initialized with such a FEN string, the DCTL provides further templates to analyze them using a search algorithm, which is supported by a typical board game [engine infrastructure](http://chessprogramming.wikispaces.com/) of e.g. a move generator, evaluation function and hash table.
 
-> #### Tip 
+> #### Tip
 > Consult the test-suite sources (under the `dctl/test` directory) for concrete usage examples.
 
 Road-map
 -------
 
-The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. It is currently not possible to play a game against a program based on the DCTL. Functionality being planned includes:   
+The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. It is currently not possible to play a game against a program based on the DCTL. Functionality being planned includes:
 
 - [ ] a generic engine class template
 - [ ] support for the [Checkerboard GUI](http://www.fierz.ch/cbdeveloper.php)
-- [ ] support for the [GUIDE protocol](http://laatste.info/bb3/download/file.php?id=864)   
+- [ ] support for the [GUIDE protocol](http://laatste.info/bb3/download/file.php?id=864)
 - [ ] support for the [DamExchange protocol](http://www.mesander.nl/damexchange/edxpmain.htm)
-- [ ] endgame database generation   
+- [ ] endgame database generation
 
 Requirements
 ------------
@@ -53,8 +53,8 @@ These header-only libraries are continuously being tested with the following con
 
 | Platform | Compiler | Versions | Build |
 | :------- | :------- | :------- | :---- |
-| Linux    | Clang <br> GCC | 6.0, 7, 8, 9-SVN<br> 8.3, 9-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/xstd) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
-| Windows  | Visual Studio  |                         15.9.14 | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
+| Linux    | Clang <br> GCC | 7, 8, 9, 10-SVN<br> 8, 9, 10-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/xstd) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
+| Windows  | Visual Studio  | 2019 (16.4)                      | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
 
 ##### Boost library
 

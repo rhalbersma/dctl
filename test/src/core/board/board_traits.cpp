@@ -11,8 +11,7 @@
 #include <dctl/core/rules/type_traits.hpp>      // is_empty, is_pushable, is_jumpable, invert
 #include <dctl/core/state/color.hpp>
 #include <boost/range/irange.hpp>               // irange
-#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <algorithm>                            // all_of
 #include <numeric>                              // accumulate
 #include <type_traits>                          // is_same

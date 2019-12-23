@@ -1,3 +1,10 @@
+set(Boost_USE_STATIC_LIBS ON)
+
+find_package(
+    Boost REQUIRED COMPONENTS
+    unit_test_framework
+)
+
 set(cxx_compile_definitions
     BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
     BOOST_ALL_NO_LIB
@@ -11,17 +18,18 @@ set(cxx_compile_options_warnings
     $<$<CXX_COMPILER_ID:MSVC>:
         /W4
         /permissive-
+        /WX
     >
     $<$<CXX_COMPILER_ID:Clang>:
         -Weverything
-        -Wno-unknown-warning-option
+        -Wno-unknown-warning-option     # forward compatibility for new Clang warnings
         -Wno-c++98-compat
         -Wno-c++98-compat-pedantic
-        -Wno-ctad-maybe-unsupported
-        -Wno-disabled-macro-expansion
-        -Wno-global-constructors
-        -Wno-range-loop-analysis
-        -Wno-used-but-marked-unused
+        -Wno-disabled-macro-expansion   # triggered by Boost.Test
+        -Wno-global-constructors        # triggered by Boost.Test
+        -Wno-used-but-marked-unused     # triggered by Boost.Test
+        -Wno-ctad-maybe-unsupported     # triggered by <> elision for <functional> operators
+        -Wno-padded                     # only affects performance
     >
     $<$<CXX_COMPILER_ID:GNU>:
         -Wall
@@ -36,7 +44,6 @@ set(cxx_compile_options_warnings
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
         -Werror
         -pedantic-errors
-        -Wno-padded
     >
 )
 
@@ -46,19 +53,15 @@ set(cxx_compile_options_debugsym
     >
 )
 
-set(cxx_compile_options_optimize
-    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
-        -O3
-        -march=native
-        -mtune=native
-        #-fprofile-generate
-        #-fprofile-use
+set(cxx_compile_options_mbig_obj
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<PLATFORM_ID:Windows>>:
+	    -Wa,-mbig-obj
     >
 )
 
-set(test_include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(test_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/src)
-file(GLOB_RECURSE targets RELATIVE ${test_source_dir} *.cpp)
+set(current_include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(current_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/src)
+file(GLOB_RECURSE targets RELATIVE ${current_source_dir} *.cpp)
 
 foreach(t ${targets})
     get_filename_component(target_path ${t} PATH)
@@ -68,26 +71,27 @@ foreach(t ${targets})
 
     add_executable(${target_id} src/${t})
 
-    target_link_libraries(${target_id} PRIVATE
-        dctl
-	    Boost::filesystem
+    target_link_libraries(
+        ${target_id} PRIVATE
+        ${CMAKE_PROJECT_NAME}
         Boost::unit_test_framework
-        #-fprofile-generate
-        #-fprofile-use
     )
 
-    target_include_directories(${target_id} PRIVATE
-        ${test_include_dir}
+    target_include_directories(
+        ${target_id} PRIVATE
+        ${current_include_dir}
     )
 
-    target_compile_definitions(${target_id} PRIVATE
+    target_compile_definitions(
+        ${target_id} PRIVATE
         ${cxx_compile_definitions}
     )
 
-    target_compile_options(${target_id} PRIVATE
+    target_compile_options(
+        ${target_id} PRIVATE
         ${cxx_compile_options_warnings}
         ${cxx_compile_options_debugsym}
-        ${cxx_compile_options_optimize}
+        ${cxx_compile_options_mbig_obj}
     )
 
     add_test(${target_id} ${target_id})

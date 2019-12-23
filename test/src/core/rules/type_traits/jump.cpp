@@ -6,8 +6,7 @@
 #include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, is_superior_rank_jump, is_orthogonal_jumps, is_passing_capture
 #include <dctl/core/rules.hpp>                  // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
-#include <boost/test/test_case_template.hpp>    // BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END
+#include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE_TEMPLATE
 
 using namespace dctl::core;
 

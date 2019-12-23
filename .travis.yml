@@ -1,20 +1,9 @@
 language: cpp
 os: linux
-dist: xenial
+dist: bionic
 
 matrix:
   include:
-    - env: CXX_COMPILER=clang++-6.0 CXX_STDLIB=g++-8
-      addons:
-        apt:
-          packages:
-            - clang-6.0
-            - g++-8
-          sources:
-            - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main'
-              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
-
     - env: CXX_COMPILER=clang++-7 CXX_STDLIB=g++-9
       addons:
         apt:
@@ -23,7 +12,7 @@ matrix:
             - g++-9
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-7 main'
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-7 main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
     - env: CXX_COMPILER=clang++-8 CXX_STDLIB=g++-9
@@ -34,7 +23,7 @@ matrix:
             - g++-9
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-8 main'
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
     - env: CXX_COMPILER=clang++-9 CXX_STDLIB=g++-9
@@ -45,18 +34,29 @@ matrix:
             - g++-9
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
-            - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial main'
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
-    - env: CXX_COMPILER=clang++-9 CXX_STDLIB=libc++
+    - env: CXX_COMPILER=clang++-10 CXX_STDLIB=g++-9
       addons:
         apt:
           packages:
-            - clang-9
-            - libc++-9-dev
-            - libc++abi-9-dev
+            - clang-10
+            - g++-9
           sources:
-            - sourceline: 'deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial main'
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+
+    - env: CXX_COMPILER=clang++-10 CXX_STDLIB=libc++
+      addons:
+        apt:
+          packages:
+            - clang-10
+            - libc++-10-dev
+            - libc++abi-10-dev
+          sources:
+            - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
 
     - env: CXX_COMPILER=g++-8 CXX_STDLIB=g++-8
@@ -119,15 +119,15 @@ install:
 # Install the latest Boost and build Boost.Test (compiled with the latest gcc)
 ################################################################################
 - |
-  BOOST_VERSION=1.70.0
+  BOOST_VERSION=1.72.0
   BOOST_DIR=${THIRD_PARTY_DIR}/boost-${BOOST_VERSION}
   BOOST_URL="https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION//\./_}.tar.bz2"
-  BOOST_LIBS="filesystem,program_options,test"
+  BOOST_LIBS="test"
   BOOST_BUILD_TYPE="link=static variant=release"
   mkdir -p ${BOOST_DIR} && travis_retry wget --quiet -O - ${BOOST_URL} | tar --strip-components=1 -xj -C ${BOOST_DIR}
   cd ${BOOST_DIR}
   if [[ "${CXX_STDLIB}" == "libc++" ]]; then
-    sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 90 --slave /usr/bin/clang++ clang++ /usr/bin/clang++-9
+    sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100 --slave /usr/bin/clang++ clang++ /usr/bin/clang++-10
     ./bootstrap.sh --with-toolset=clang --with-libraries=${BOOST_LIBS}
     sudo ./b2 -d0 -j10 install toolset=clang ${BOOST_BUILD_TYPE} cxxflags="-stdlib=libc++"
   else
@@ -139,11 +139,12 @@ install:
 # Install the latest CMake
 ################################################################################
 - |
-  CMAKE_VERSION=3.14.5
+  CMAKE_VERSION=3.16.2
   CMAKE_DIR=${THIRD_PARTY_DIR}/cmake-${CMAKE_VERSION}
   CMAKE_URL="http://www.cmake.org/files/v${CMAKE_VERSION%.[0-9]}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
   mkdir -p ${CMAKE_DIR} && travis_retry wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${CMAKE_DIR}
   export PATH=${CMAKE_DIR}/bin:${PATH}
+  cmake --version
 
 ################################################################################
 # Install the dependent GitHub repositories xstd and bit_set
@@ -160,15 +161,18 @@ before_script:
   if [[ "${CXX_STDLIB}" == "libc++" ]]; then
     cmake .. \
       -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
-      -DCMAKE_CXX_FLAGS="-stdlib=libc++"
+      -DCMAKE_CXX_FLAGS="-stdlib=libc++" \
+      -DBoost_NO_BOOST_CMAKE=ON
   elif [[ "${CODE_COVERAGE}" == "true" ]]; then
     cmake .. \
       -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
       -DCMAKE_CXX_FLAGS="--coverage" \
-      -DCMAKE_EXE_LINKER_FLAGS="--coverage"
+      -DCMAKE_EXE_LINKER_FLAGS="--coverage" \
+      -DBoost_NO_BOOST_CMAKE=ON
   else
     cmake .. \
-      -DCMAKE_CXX_COMPILER=${CXX_COMPILER}
+      -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
+      -DBoost_NO_BOOST_CMAKE=ON
   fi
 
 script:
