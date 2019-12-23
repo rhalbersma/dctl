@@ -21,6 +21,7 @@ set(cxx_compile_options_warnings
         /WX
         /wd4244                         # triggered by 32/64 bit incompatibilities
         /wd4458                         # triggered by types hiding data members
+        /wd4459                         # triggered by Boost.Accumulators
         /wd4805                         # triggered by bit-wise XOR on booleans
     >
     $<$<CXX_COMPILER_ID:Clang>:
