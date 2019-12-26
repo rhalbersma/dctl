@@ -59,10 +59,10 @@ public:
                         } else {
                                 std::cout << m_dir_path << " is not a valid path\n";
                         }
-                }
-
-                catch (fs::filesystem_error const& ex) {
+                } catch (fs::filesystem_error const& ex) {
                         std::cout << ex.what() << '\n';
+                } catch(...) {  // catching Windows specific exceptions not caught by the previous catch-clause
+                        std::cout << "I'm not even here!" << '\n';
                 }
         }
 };
