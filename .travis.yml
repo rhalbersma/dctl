@@ -67,7 +67,7 @@ matrix:
           sources:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
 
-    - env: CXX_COMPILER=g++-9 CXX_STDLIB=g++-9
+    - env: CXX_COMPILER=g++-9 CXX_STDLIB=g++-9 CODE_COVERAGE=true
       addons:
         apt:
           packages:
@@ -95,25 +95,36 @@ install:
   if [[ "${CXX_COMPILER}" == "g++-10" ]]; then
     wget http://kayari.org/gcc-latest/gcc-latest.deb
     sudo dpkg -i gcc-latest.deb
-    sudo ln -s /opt/gcc-latest/bin/gcc /usr/bin/gcc-10
-    sudo ln -s /opt/gcc-latest/bin/g++ /usr/bin/g++-10
+    sudo ln -s /opt/gcc-latest/bin/gcc  /usr/bin/gcc-10
+    sudo ln -s /opt/gcc-latest/bin/g++  /usr/bin/g++-10
+    sudo ln -s /opt/gcc-latest/bin/gcov /usr/bin/gcov-10
     sudo ldconfig /opt/gcc-latest/lib64
   fi
 
 ################################################################################
-# Set gcc to latest version that is installed
+# Set gcc, g++ and gcov to latest versions that are installed
 ################################################################################
 
 - |
   if [[ "${CXX_STDLIB}" == "g++-8" ]]; then
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+    sudo update-alternatives \
+    --install /usr/bin/gcc  gcc  /usr/bin/gcc-8 80 \
+    --slave   /usr/bin/g++  g++  /usr/bin/g++-8 \
+    --slave   /usr/bin/gcov gcov /usr/bin/gcov-8
   elif [[ "${CXX_STDLIB}" == "g++-9" ]]; then
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+    sudo update-alternatives \
+    --install /usr/bin/gcc  gcc  /usr/bin/gcc-9 90 \
+    --slave   /usr/bin/g++  g++  /usr/bin/g++-9 \
+    --slave   /usr/bin/gcov gcov /usr/bin/gcov-9
   elif [[ "${CXX_STDLIB}" == "g++-10" ]]; then
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10
+    sudo update-alternatives \
+    --install /usr/bin/gcc  gcc  /usr/bin/gcc-10 100 \
+    --slave   /usr/bin/g++  g++  /usr/bin/g++-10 \
+    --slave   /usr/bin/gcov gcov /usr/bin/gcov-10
   fi
   gcc --version
   g++ --version
+  gcov --version
 
 ################################################################################
 # Install the latest Boost and build Boost.Test (compiled with the latest gcc)
@@ -166,8 +177,7 @@ before_script:
   elif [[ "${CODE_COVERAGE}" == "true" ]]; then
     cmake .. \
       -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
-      -DCMAKE_CXX_FLAGS="--coverage" \
-      -DCMAKE_EXE_LINKER_FLAGS="--coverage" \
+      -DCMAKE_CXX_FLAGS="-g -O0 --coverage" \
       -DBoost_NO_BOOST_CMAKE=ON
   else
     cmake .. \
@@ -177,7 +187,7 @@ before_script:
 
 script:
 - |
-  cmake --build .
+  cmake --build . -v
   ctest -E "search|traversal"
 
 after_success:

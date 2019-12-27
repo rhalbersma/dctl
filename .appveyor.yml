@@ -23,7 +23,7 @@ cache:
   - c:\tools\vcpkg\installed\
 
 install:
-  - vcpkg install --triplet "%platform%"-windows
+  - vcpkg install --triplet %platform%-windows
     boost
 
 before_build:
@@ -39,7 +39,7 @@ before_build:
     "-DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
 build_script:
-  - cmake --build . --config %configuration%
+  - cmake --build . --config %configuration% -v
 
 test_script:
   - ctest -E "search|traversal"
