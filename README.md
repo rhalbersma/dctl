@@ -54,7 +54,7 @@ These header-only libraries are continuously being tested with the following con
 | Platform | Compiler | Versions | Build |
 | :------- | :------- | :------- | :---- |
 | Linux    | Clang <br> GCC | 7, 8, 9, 10-SVN<br> 8, 9, 10-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
-| Windows  | Visual Studio  | 2019 (16.4)                      | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
+| Windows  | Visual Studio  | 2019                             | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
 
 ##### Boost library
 
