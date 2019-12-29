@@ -212,7 +212,7 @@ before_script:
 script:
 - |
   cmake --build . -v
-  ctest
+  ctest -E "search|traversal"
 
 after_success:
 - |
