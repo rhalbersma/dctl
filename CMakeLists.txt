@@ -14,13 +14,10 @@ add_library(
     ${PROJECT_NAME} INTERFACE
 )
 
-find_package(
-    Boost REQUIRED COMPONENTS
-    filesystem
-)
 target_link_libraries(
     ${PROJECT_NAME} INTERFACE
-    Boost::filesystem
+    # https://gitlab.kitware.com/cmake/cmake/issues/17834
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
 )
 
 set(project_include_dir

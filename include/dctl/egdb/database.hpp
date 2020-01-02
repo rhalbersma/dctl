@@ -5,9 +5,8 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/filesystem.hpp>
 #include <algorithm>    // copy, sort
-//#include <filesystem>   // exists, is_directory, directory_iterator
+#include <filesystem>   // exists, is_directory, directory_iterator
 #include <iostream>     // ostream_iterator
 #include <iterator>     // back_inserter
 #include <numeric>      // accumulate
@@ -19,8 +18,8 @@ namespace dctl::egdb {
 
 class database
 {
-        boost::filesystem::path m_dir_path;
-        std::vector<boost::filesystem::path> m_files;
+        std::filesystem::path m_dir_path;
+        std::vector<std::filesystem::path> m_files;
 public:
         explicit database(std::string dir_path)
         :
@@ -43,10 +42,9 @@ public:
 
         auto scan_directory()
         {
-                namespace fs = boost::filesystem;
+                namespace fs = std::filesystem;
                 try {
-                        if (fs::exists(m_dir_path) && fs::is_directory(m_dir_path))
-                        {
+                        if (fs::exists(m_dir_path) && fs::is_directory(m_dir_path)) {
                                 // TODO: skip directories (should not be present, though)
                                 std::copy(fs::directory_iterator(m_dir_path), fs::directory_iterator(), std::back_inserter(m_files));
                                 std::sort(m_files.begin(), m_files.end());
