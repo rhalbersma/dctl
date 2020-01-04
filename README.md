@@ -36,7 +36,7 @@ The DCTL provides a series of [C++ templates](http://en.wikipedia.org/wiki/Templ
 > Consult the test-suite sources (under the `dctl/test` directory) for concrete usage examples.
 
 Road-map
--------
+--------
 
 The DCTL does not yet provide a fully functioning game engine that can be plugged into a GUI. It is currently not possible to play a game against a program based on the DCTL. Functionality being planned includes:
 
@@ -53,8 +53,8 @@ These header-only libraries are continuously being tested with the following con
 
 | Platform | Compiler | Versions | Build |
 | :------- | :------- | :------- | :---- |
-| Linux    | Clang <br> GCC | 7, 8, 9, 10-SVN<br> 8, 9, 10-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
-| Windows  | Visual Studio  | 2019                             | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
+| Linux    | Clang <br> GCC | 8, 9, 10-SVN<br> 8, 9, 10-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
+| Windows  | Visual Studio  | 2019                          | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
 
 ##### Boost library
 
