@@ -3,7 +3,7 @@
 #    (See accompanying file LICENSE_1_0.txt or copy at
 #          http://www.boost.org/LICENSE_1_0.txt)
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.16)
 project(
     dctl
     HOMEPAGE_URL https://github.com/rhalbersma/${PROJECT_NAME}
@@ -18,8 +18,6 @@ find_package(Boost REQUIRED)
 target_link_libraries(
     ${PROJECT_NAME} INTERFACE
     Boost::boost
-    # https://gitlab.kitware.com/cmake/cmake/issues/17834
-    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
 )
 
 set(project_include_dir
@@ -36,7 +34,7 @@ target_include_directories(
 
 target_compile_features(
     ${PROJECT_NAME} INTERFACE
-    cxx_std_17
+    cxx_std_20
 )
 
 include(CTest)
