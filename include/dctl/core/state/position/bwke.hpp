@@ -32,6 +32,7 @@ private:
         set_type m_empty;
 public:
         position() = default;
+        bool operator==(position const&) const = default;
 
         constexpr position(set_type black_pawns, set_type white_pawns, set_type black_kings, set_type white_kings) // Throws: Nothing.
         :
@@ -118,15 +119,10 @@ public:
         }
 
         template<class... Args>
-        auto num_pieces(Args&&... args) const noexcept
+        constexpr auto num_pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
                 return pieces(std::forward<Args>(args)...).ssize();
-        }
-
-        constexpr auto tied() const noexcept
-        {
-                return std::tie(m_color, m_kings);
         }
 
 private:
@@ -135,42 +131,6 @@ private:
                 return m_color[xstd::to_underlying(c)];
         }
 };
-
-template<class Board>
-constexpr auto operator==(position<Board> const& lhs, position<Board> const& rhs) noexcept
-{
-        return lhs.tied() == rhs.tied();
-}
-
-template<class Board>
-constexpr auto operator!=(position<Board> const& lhs, position<Board> const& rhs) noexcept
-{
-        return !(lhs == rhs);
-}
-
-template<class Board>
-constexpr auto operator< (position<Board> const& lhs, position<Board> const& rhs) noexcept
-{
-        return lhs.tied() < rhs.tied();
-}
-
-template<class Board>
-constexpr auto operator> (position<Board> const& lhs, position<Board> const& rhs) noexcept
-{
-        return rhs < lhs;
-}
-
-template<class Board>
-constexpr auto operator>=(position<Board> const& lhs, position<Board> const& rhs) noexcept
-{
-        return !(lhs < rhs);
-}
-
-template<class Board>
-constexpr auto operator<=(position<Board> const& lhs, position<Board> const& rhs) noexcept
-{
-        return !(rhs < lhs);
-}
 
 }       // namespace bwke
 }       // namespace dctl::core

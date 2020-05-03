@@ -31,7 +31,7 @@ public:
 
 private:
         template<class UnaryPredicate>
-        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto squares_filter(UnaryPredicate pred) noexcept
+        constexpr static auto squares_filter(UnaryPredicate pred) noexcept
         {
                 set_type filter;
                 for (auto const n : squares) {
@@ -42,7 +42,7 @@ private:
                 return filter;
         }
 
-        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto file_table = []() {
+        constexpr static auto file_table = []() {
                 std::array<std::array<set_type, Board::width>, xstd::to_underlying(color::size)> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto f = 0; f < Board::width; ++f) {
@@ -56,7 +56,7 @@ private:
                 return table;
         }();
 
-        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto rank_table = []() {
+        constexpr static auto rank_table = []() {
                 std::array<std::array<set_type, Board::height>, xstd::to_underlying(color::size)> table;
                 for (auto&& c : { color::black, color::white }) {
                         for (auto r = 0; r < Board::height; ++r) {
@@ -71,25 +71,25 @@ private:
          }();
 
 public:
-        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto file(color const c, int const f) // Throws: Nothing.
+        constexpr static auto file(color const c, int const f) // Throws: Nothing.
         {
                 assert(0 <= f); assert(f < Board::width);
                 return file_table[xstd::to_underlying(c)][static_cast<std::size_t>(f)];
         }
 
-        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto rank(color const c, int const r) // Throws: Nothing.
+        constexpr static auto rank(color const c, int const r) // Throws: Nothing.
         {
                 assert(0 <= r); assert(r < Board::height);
                 return rank_table[xstd::to_underlying(c)][static_cast<std::size_t>(r)];
         }
 
-        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto promotion(color const c) noexcept
+        constexpr static auto promotion(color const c) noexcept
         {
                 return rank(c, Board::height - 1);
         }
 
 private:
-        XSTD_PP_CONSTEXPR_INTRINSIC_MEM static auto initial_table = []() {
+        constexpr static auto initial_table = []() {
                 constexpr auto N = Board::height / 2 + 1;
                 std::array<std::array<set_type, N>, xstd::to_underlying(color::size)> table;
                 for (auto&& c : { color::black, color::white }) {
@@ -107,7 +107,7 @@ private:
         }();
         
 public:
-        XSTD_PP_CONSTEXPR_INTRINSIC_FUN static auto initial(color const c, int const separation) // Throws: Nothing.
+        constexpr static auto initial(color const c, int const separation) // Throws: Nothing.
         {
                 assert((Board::height - separation) % 2 == 0);
                 assert(Board::height % 2 <= separation); assert(separation <= Board::height);

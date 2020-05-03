@@ -88,6 +88,14 @@ public:
                 assert_invariants();
         }
 
+        constexpr bool operator==(basic_state const& other) const noexcept
+        {
+                constexpr auto tied = [](auto const& s) {
+                        return std::tie(s.m_position, s.m_color);
+                };
+                return tied(*this) == tied(other);
+        }
+
         constexpr static auto initial(int const separation = initial_position_gap_v<Rules> + Board::height % 2)
                 -> basic_state
         {
@@ -129,14 +137,14 @@ public:
         }
 
         template<class... Args>
-        auto pieces(Args&&... args) const noexcept
+        constexpr auto pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
                 return this->m_position.pieces(std::forward<Args>(args)...);
         }
 
         template<color Side, piece Type>
-        auto targets(color_<Side>, piece_<Type>) const noexcept
+        constexpr auto targets(color_<Side>, piece_<Type>) const noexcept
         {
                 if constexpr (Type == piece::pawn && is_superior_rank_jump_v<rules_type>) {
                         return pieces(color_c<!Side>, pawn_c);
@@ -146,20 +154,15 @@ public:
         }
 
         template<class... Args>
-        auto num_pieces(Args&&... args) const noexcept
+        constexpr auto num_pieces(Args&&... args) const noexcept
         {
                 static_assert(sizeof...(Args) <= 2);
                 return this->m_position.num_pieces(std::forward<Args>(args)...);
         }
 
-        auto to_move() const noexcept
+        constexpr auto to_move() const noexcept
         {
                 return m_color;
-        }
-
-        auto tied() const
-        {
-                return std::tie(this->m_position, m_color);
         }
 
 private:
@@ -168,41 +171,5 @@ private:
                 m_color = !m_color;
         }
 };
-
-template<class Rules, class Board>
-constexpr auto operator==(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
-{
-        return lhs.tied() == rhs.tied();
-}
-
-template<class Rules, class Board>
-constexpr auto operator!=(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
-{
-        return !(lhs == rhs);
-}
-
-template<class Rules, class Board>
-constexpr auto operator< (basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
-{
-        return lhs.tied() < rhs.tied();
-}
-
-template<class Rules, class Board>
-constexpr auto operator> (basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
-{
-        return rhs < lhs;
-}
-
-template<class Rules, class Board>
-constexpr auto operator>=(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
-{
-        return !(lhs < rhs);
-}
-
-template<class Rules, class Board>
-constexpr auto operator<=(basic_state<Rules, Board> const& lhs, basic_state<Rules, Board> const& rhs) noexcept
-{
-        return !(rhs < lhs);
-}
 
 }       // namespace dctl::core

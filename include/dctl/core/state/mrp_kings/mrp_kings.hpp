@@ -38,7 +38,7 @@ public:
         {}
 
         template<class Action>
-        void make(Action const& m)
+        constexpr void make(Action const& m)
         {
                 make_advance(m);
                 make_promote(m);
