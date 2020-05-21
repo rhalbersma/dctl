@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>    // dir_...
-#include <boost/hana/tuple.hpp>         // tuple_c
+#include <tabula/tuple.hpp>             // tuple_c
 
 namespace dctl::core {
 namespace block_adl {
@@ -31,7 +31,7 @@ struct international
         constexpr static auto is_contents_precedence    = false;        // 4.13
         constexpr static auto is_modality_precedence    = false;        // 4.14
 
-        constexpr static auto pawn_jump_directions = boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
+        constexpr static auto pawn_jump_directions = tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
 
         constexpr static auto precedence = [](auto const& a) {
                 return a.num_captured_pieces();

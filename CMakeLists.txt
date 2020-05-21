@@ -28,8 +28,9 @@ set(project_include_dir
 target_include_directories(
     ${PROJECT_NAME} INTERFACE
     ${project_include_dir}
-    ${PROJECT_SOURCE_DIR}/../xstd/include
     ${PROJECT_SOURCE_DIR}/../bit_set/include
+    ${PROJECT_SOURCE_DIR}/../tabula/include
+    ${PROJECT_SOURCE_DIR}/../xstd/include
 )
 
 target_compile_features(

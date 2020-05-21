@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/rules/type_traits.hpp>      // dir_...
-#include <boost/hana/tuple.hpp>                 // tuple_c
+#include <tabula/tuple.hpp>                     // tuple_c
 
 namespace dctl::core {
 namespace block_adl {
@@ -26,7 +26,7 @@ struct pool
         constexpr static auto is_passing_capture        = false;        // 19 (and 17 and 18)
         constexpr static auto is_quantity_precedence    = false;        // 20
 
-        constexpr static auto pawn_jump_directions = boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
+        constexpr static auto pawn_jump_directions = tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
 
         constexpr static auto max_repetitions           = 3;            // 26
         constexpr static auto max_reversible_moves      = 30;           // 26

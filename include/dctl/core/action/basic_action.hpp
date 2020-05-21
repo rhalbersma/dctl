@@ -9,7 +9,7 @@
 #include <dctl/core/rules/type_traits.hpp>      // is_contents_precedence, is_ordering_precedence
 #include <dctl/core/state/piece.hpp>            // pawn, king
 #include <dctl/util/type_traits.hpp>            // set_t, square_t
-#include <xstd/type_traits.hpp>                 // or_empty
+#include <xstd/array.hpp>                 // or_empty
 #include <cassert>                              // assert
 #include <tuple>                                // tie
 #include <type_traits>                          // enable_if_t, is_same_v

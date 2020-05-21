@@ -17,11 +17,7 @@
 #include <dctl/core/state/color.hpp>            // color, color_
 #include <dctl/core/state/piece.hpp>            // king_
 #include <dctl/util/type_traits.hpp>            // action_t, board_t, rules_t, set_t
-#include <boost/hana/equal.hpp>                 // ==
-#include <boost/hana/fold.hpp>                  // fold
-#include <boost/hana/for_each.hpp>              // for_each
-#include <boost/hana/integral_constant.hpp>     // bool_c, int_c
-#include <boost/hana/remove_if.hpp>             // remove_if
+#include <tabula/tuple.hpp>
 #include <algorithm>                            // any_of
 #include <cassert>                              // assert
 #include <functional>                           // bit_or, logical_or
@@ -46,20 +42,17 @@ public:
         static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
         {
                 return std::any_of(kings.begin(), kings.end(), [&](auto from_sq) {
-                        return boost::hana::fold(
-                                boost::hana::transform(king_jump_directions, [&](auto dir) {
-                                        using direction_t = decltype(dir);
-                                        if constexpr (is_long_ranged_king_v<rules_type>) {
-                                                auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, empty);
-                                                if (blockers.empty()) { return false; }
-                                                auto const first = find_first<direction_t>(blockers);
-                                                return jump_targets<board_type, direction_t>{}(targets, empty).contains(first);
-                                        } else {
-                                                return jump_from<board_type, direction_t>{}(targets, empty).contains(from_sq);
-                                        }
-                                }),
-                                std::logical_or{}
-                        );
+                        return tabula::any_of(king_jump_directions, [&](auto dir) {
+                                using direction_t = decltype(dir);
+                                if constexpr (is_long_ranged_king_v<rules_type>) {
+                                        auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, empty);
+                                        if (blockers.empty()) { return false; }
+                                        auto const first = find_first<direction_t>(blockers);
+                                        return jump_targets<board_type, direction_t>{}(targets, empty).contains(first);
+                                } else {
+                                        return jump_from<board_type, direction_t>{}(targets, empty).contains(from_sq);
+                                }
+                        });
                 });
         }
 
@@ -69,7 +62,7 @@ public:
                 raii::set_king_jump g1{b};
                 for (auto from_sq : b.pieces(color_c<Side>, king_c)) {
                         raii::lift guard{from_sq, b};
-                        boost::hana::for_each(king_jump_directions, [&](auto dir) {
+                        tabula::for_each(king_jump_directions, [&](auto dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
                                         auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, b.pieces(empty_c));
@@ -91,16 +84,16 @@ public:
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(b.with() == piece::pawn);
                 b.into(piece::king);
-                constexpr auto king_scan_directions = boost::hana::remove_if(king_jump_directions, [](auto dir) {
-                        return boost::hana::bool_c<is_up(rotate(angle{decltype(dir)::value}, bearing_v<board_type, color_<Side>>))>;
+                constexpr auto king_scan_directions = tabula::remove_if(king_jump_directions, [](auto dir) {
+                        return tabula::bool_c<is_up(rotate(angle{decltype(dir)::value}, bearing_v<board_type, color_<Side>>))>;
                 });
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
                         return scan(king_scan_directions, sq, b);
                 } else {
                         constexpr auto is_reverse = [](auto dir) {
-                                return dir == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
+                                return dir == tabula::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
                         };
-                        return scan(boost::hana::remove_if(king_scan_directions, is_reverse), sq, b);
+                        return scan(tabula::remove_if(king_scan_directions, is_reverse), sq, b);
                 }
         }
 private:
@@ -139,11 +132,11 @@ private:
         template<class Direction, class Builder>
         static auto next_target(int sq, int n [[maybe_unused]], Builder& b)
         {
-                constexpr auto king_scan_directions [[maybe_unused]] = boost::hana::remove_if(king_jump_directions, [](auto dir) {
-                        return dir == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
+                constexpr auto king_scan_directions [[maybe_unused]] = tabula::remove_if(king_jump_directions, [](auto dir) {
+                        return dir == tabula::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
                 });
-                constexpr auto king_turn_directions [[maybe_unused]] = boost::hana::remove_if(king_scan_directions, [](auto dir) {
-                        return dir == boost::hana::int_c<Direction::value>;
+                constexpr auto king_turn_directions [[maybe_unused]] = tabula::remove_if(king_scan_directions, [](auto dir) {
+                        return dir == tabula::int_c<Direction::value>;
                 });
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
                         return scan(king_jump_directions, sq, b);
@@ -162,23 +155,20 @@ private:
         template<class Directions, class Builder>
         static auto scan(Directions directions, int sq, Builder& b)
         {
-                return boost::hana::fold(
-                        boost::hana::transform(directions, [&](auto dir) {
-                                using direction_t = decltype(dir);
-                                if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jump<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
-                                        if (blockers.empty()) { return false; }
-                                        auto const first = find_first<direction_t>(blockers);
-                                        if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
-                                        capture<direction_t>(next<board_type, direction_t>{}(first), b);
-                                } else {
-                                        if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
-                                        capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
-                                }
-                                return true;
-                        }),
-                        std::bit_or{}
-                );
+                return tabula::any_of_all(directions, [&](auto dir) {
+                        using direction_t = decltype(dir);
+                        if constexpr (is_long_ranged_king_v<rules_type>) {
+                                auto const blockers = king_jump<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
+                                if (blockers.empty()) { return false; }
+                                auto const first = find_first<direction_t>(blockers);
+                                if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
+                                capture<direction_t>(next<board_type, direction_t>{}(first), b);
+                        } else {
+                                if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                                capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
+                        }
+                        return true;
+                });
         }
 };
 

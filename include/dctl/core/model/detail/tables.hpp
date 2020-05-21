@@ -10,17 +10,14 @@
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/array.hpp>                       // array_from_types
-#include <boost/hana/size.hpp>                  // size
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
 #include <type_traits>                          // bool_constant
+#include <tuple>
 
 namespace dctl::core::model {
 namespace detail {
-
-template<class Tuple>
-inline constexpr auto tuple_size = decltype(boost::hana::size(std::declval<Tuple>()))::value;
 
 template<class Board, class Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
 struct scan
@@ -61,7 +58,7 @@ class board_scan_sq_dir
         inline const static auto table = []() {
                 using mask_type = basic_mask<Board>;
                 using  set_type = set_t<mask_type>;
-                std::array<std::array<set_type, tuple_size<Directions>>, Board::bits()> result;
+                std::array<std::array<set_type, std::tuple_size_v<Directions>>, Board::bits()> result;
                 for (auto sq : mask_type::squares) {
                         result[static_cast<std::size_t>(sq)] =
                                 xstd::array_from_types<Directions>{}([=](auto dir) {

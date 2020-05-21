@@ -11,11 +11,7 @@
 #include <dctl/core/model/detail/pattern.hpp>   // move_dest
 #include <dctl/core/rules/type_traits.hpp>      // pawn_move_directions_v
 #include <dctl/core/state/color.hpp>            // color, color_
-#include <boost/hana/fold.hpp>                  // fold
-#include <boost/hana/for_each.hpp>              // for_each
-#include <boost/hana/integral_constant.hpp>     // int_c
-#include <boost/hana/transform.hpp>             // transform
-#include <functional>                           // logical_or, plus
+#include <tabula/tuple.hpp>                     // accumulate, any_of, for_each
 
 namespace dctl::core::model {
 namespace detail {
@@ -29,34 +25,30 @@ class pawn_moves<Rules, Board, color_<Side>, ReverseGenerator>
         using mask_type = basic_mask<Board>;
         using  set_type = set_t<mask_type>;
 
-        constexpr static auto pawn_move_directions = boost::hana::transform(pawn_move_directions_v<Rules>, [](auto dir) {
-                return boost::hana::int_c<rotate(angle{dir}, bearing_v<Board, color_<Side>, ReverseGenerator>).value()>;
+        constexpr static auto pawn_move_directions = tabula::transform(pawn_move_directions_v<Rules>, [](auto dir) {
+                return tabula::int_c<rotate(angle{dir}, bearing_v<Board, color_<Side>, ReverseGenerator>).value()>;
         });
 public:
         static auto detect(set_type const& pawns, set_type const& empty) noexcept
         {
-                return boost::hana::fold(
-                        boost::hana::transform(pawn_move_directions, [&](auto dir) {
-                                return !move_dest<Board, decltype(dir)>{}(pawns, empty).empty();
-                        }),
-                        std::logical_or{}
-                );
+                return tabula::any_of(pawn_move_directions, [&](auto dir) {
+                        return !move_dest<Board, decltype(dir)>{}(pawns, empty).empty();
+                });
         }
 
         static auto count(set_type const& pawns, set_type const& empty) noexcept
         {
-                return boost::hana::fold(
-                        boost::hana::transform(pawn_move_directions, [&](auto dir) {
+                return tabula::accumulate(
+                        tabula::transform(pawn_move_directions, [&](auto dir) {
                                 return move_dest<Board, decltype(dir)>{}(pawns, empty).ssize();
-                        }),
-                        std::plus{}
+                        })
                 );
         }
 
         template<class SequenceContainer>
         static auto generate(set_type const& pawns, set_type const& empty, SequenceContainer& seq)
         {
-                boost::hana::for_each(pawn_move_directions, [&](auto dir) {
+                tabula::for_each(pawn_move_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
                         for (auto dest_sq : move_dest<Board, direction_t>{}(pawns, empty)) {
                                 seq.emplace_back(prev<Board, direction_t>{}(dest_sq), dest_sq, mask_type::promotion(Side).contains(dest_sq));

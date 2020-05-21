@@ -16,12 +16,7 @@
 #include <dctl/core/state/color.hpp>                    // color, color_
 #include <dctl/core/state/piece.hpp>                    // pawn_, king_
 #include <dctl/util/type_traits.hpp>                    // action_t, board_t, rules_t, set_t
-#include <boost/hana/equal.hpp>                         // ==
-#include <boost/hana/fold.hpp>                          // fold
-#include <boost/hana/for_each.hpp>                      // for_each
-#include <boost/hana/integral_constant.hpp>             // int_c
-#include <boost/hana/remove_if.hpp>                     // remove_if
-#include <boost/hana/transform.hpp>                     // transform
+#include <tabula/tuple.hpp>
 #include <cassert>                                      // assert
 #include <functional>                                   // bit_or, logical_or
 #include <iterator>                                     // next
@@ -42,24 +37,21 @@ class pawn_jumps<Rules, Board, color_<Side>>
         using   set_type = set_t<mask_type>;
         using king_jumps = detail::king_jumps<rules_type, board_type, color_<Side>>;
 
-        constexpr static auto pawn_jump_directions = boost::hana::transform(pawn_jump_directions_v<rules_type>, [](auto dir) {
-                return boost::hana::int_c<rotate(angle{dir}, bearing_v<board_type, color_<Side>>).value()>;
+        constexpr static auto pawn_jump_directions = tabula::transform(pawn_jump_directions_v<rules_type>, [](auto dir) {
+                return tabula::int_c<rotate(angle{dir}, bearing_v<board_type, color_<Side>>).value()>;
         });
 public:
         static auto detect(set_type const& pawns, set_type const& targets, set_type const& empty) noexcept
         {
-                return boost::hana::fold(
-                        boost::hana::transform(pawn_jump_directions, [&](auto dir) {
-                                return !jump_targets<board_type, decltype(dir)>{}(pawns, targets, empty).empty();
-                        }),
-                        std::logical_or{}
-                );
+                return tabula::any_of(pawn_jump_directions, [&](auto dir) {
+                        return !jump_targets<board_type, decltype(dir)>{}(pawns, targets, empty).empty();
+                });
         }
 
         template<class Builder>
         static auto generate(Builder& b)
         {
-                boost::hana::for_each(pawn_jump_directions, [&](auto dir) {
+                tabula::for_each(pawn_jump_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
                         for (auto from_sq : jump_from<board_type, direction_t>{}(b.pieces(color_c<Side>, pawn_c), b.targets(), b.pieces(empty_c))) {
                                 raii::lift guard{from_sq, b};
@@ -94,18 +86,15 @@ private:
         static auto next_target(int sq, Builder& b)
         {
                 constexpr auto is_reverse = [](auto dir) {
-                        return dir == boost::hana::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
+                        return dir == tabula::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
                 };
 
-                return boost::hana::fold(
-                        boost::hana::transform(boost::hana::remove_if(pawn_jump_directions, is_reverse), [&](auto dir) {
-                                using direction_t = decltype(dir);
-                                if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
-                                capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
-                                return true;
-                        }),
-                        std::bit_or{}
-                );
+                return tabula::any_of_all(tabula::remove_if(pawn_jump_directions, is_reverse), [&](auto dir) {
+                        using direction_t = decltype(dir);
+                        if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
+                        capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
+                        return true;
+                });
         }
 };
 

@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>
 #include <dctl/util/type_traits.hpp>
-#include <xstd/cstdlib.hpp>
+#include <xstd/cstdlib.hpp>             // abs
 #include <cassert>
 #include <type_traits>                  // enable_if_t, is_convertible_v
 

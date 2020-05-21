@@ -10,8 +10,7 @@
 #include <dctl/core/model/detail/tables.hpp>    // board_scan_sq_dir, board_scan_dir_sq, move_index
 #include <dctl/core/rules/type_traits.hpp>      // is_long_ranged_king_v, king_move_directions
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <boost/hana/fold.hpp>                  // fold
-#include <boost/hana/transform.hpp>             // transform
+#include <tabula/tuple.hpp>                     // any_of_all
 #include <algorithm>                            // any_of
 #include <array>                                // array
 #include <cstddef>                              // size_t
@@ -52,12 +51,9 @@ class king_moves
                 std::array<set_type, Board::bits()> result;
                 for (auto from_sq : mask_type::squares) {
                         result[static_cast<std::size_t>(from_sq)] =
-                                boost::hana::fold(
-                                        boost::hana::transform(king_move_directions, [&](auto dir) {
-                                                return king_move_scan<decltype(dir)>(from_sq);
-                                        }),
-                                        std::bit_or{}
-                                )
+                                tabula::any_of_all(king_move_directions, [&](auto dir) {
+                                        return king_move_scan<decltype(dir)>(from_sq);
+                                })
                         ;
                 }
                 return result;
@@ -71,14 +67,11 @@ class king_moves
                 if constexpr (is_long_ranged_king_v<Rules>) {
                         return
                                 attacks_table[static_cast<std::size_t>(from_sq)] ^
-                                boost::hana::fold(
-                                        boost::hana::transform(king_move_directions, [&](auto dir) {
-                                                using direction_t = decltype(dir);
-                                                auto const blockers = king_move_scan<direction_t>(from_sq) - empty;
-                                                return blockers.empty() ? blockers : blocker_and_beyond<direction_t>(find_first<direction_t>(blockers));
-                                        }),
-                                        std::bit_or{}
-                                )
+                                tabula::any_of_all(king_move_directions, [&](auto dir) {
+                                        using direction_t = decltype(dir);
+                                        auto const blockers = king_move_scan<direction_t>(from_sq) - empty;
+                                        return blockers.empty() ? blockers : blocker_and_beyond<direction_t>(find_first<direction_t>(blockers));
+                                })
                         ;
                 } else {
                         return attacks_table[static_cast<std::size_t>(from_sq)] & empty;

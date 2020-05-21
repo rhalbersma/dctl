@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>    // dir_...
 #include <dctl/util/type_traits.hpp>    // board_t, set_t
-#include <boost/hana/tuple.hpp>         // tuple_c
+#include <tabula/tuple.hpp>         // tuple_c
 #include <tuple>                        // make_tuple
 #include <type_traits>                  // decay_t
 
@@ -31,8 +31,8 @@ struct frisian
         constexpr static auto is_contents_precedence    = true;
         constexpr static auto is_modality_precedence    = true;
 
-        constexpr static auto pawn_jump_directions = boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
-        constexpr static auto king_jump_directions = boost::hana::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
+        constexpr static auto pawn_jump_directions = tabula::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
+        constexpr static auto king_jump_directions = tabula::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
 
         constexpr static auto precedence = [](auto const& a) {
                 constexpr auto max_captured_pieces = board_t<std::decay_t<decltype(a)>>::bits();

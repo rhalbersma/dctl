@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>    // dir_...
-#include <boost/hana/tuple.hpp>         // tuple_c
+#include <tabula/tuple.hpp>             // tuple_c
 
 namespace dctl::core {
 namespace block_adl {
@@ -19,7 +19,7 @@ struct russian
         constexpr static auto is_backward_pawn_jump = true;     // 1.5.3
         constexpr static auto is_passing_promotion = true;      // 1.5.15
 
-        constexpr static auto pawn_jump_directions = boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
+        constexpr static auto pawn_jump_directions = tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>;
 
         constexpr static auto is_algebraic_notation = true;
         constexpr static auto jumpsep = ':';

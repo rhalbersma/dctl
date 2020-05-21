@@ -19,8 +19,8 @@ constexpr auto is_promoted_pawns(Set const& black_pawns, Set const& white_pawns)
 {
         using mask_type = basic_mask<Board>;
         return
-                intersects(black_pawns, mask_type::promotion(black_c)) ||
-                intersects(white_pawns, mask_type::promotion(white_c))
+                black_pawns.intersects(mask_type::promotion(black_c)) ||
+                white_pawns.intersects(mask_type::promotion(white_c))
         ;
 }
 
@@ -28,15 +28,15 @@ template<class Set>
 constexpr auto is_overlapping_pieces(Set const& black_pawns, Set const& white_pawns, Set const& black_kings, Set const& white_kings) noexcept
 {
         return
-                intersects(black_pawns | black_kings, white_pawns | white_kings) ||
-                intersects(black_pawns | white_pawns, black_kings | white_kings)
+                (black_pawns | black_kings).intersects(white_pawns | white_kings) ||
+                (black_pawns | white_pawns).intersects(black_kings | white_kings)
         ;
 }
 
 template<class Set>
 constexpr auto is_overlapping_pieces(Set const& black_pawns, Set const& white_pawns) noexcept
 {
-        return intersects(black_pawns, white_pawns);
+        return black_pawns.intersects(white_pawns);
 }
 
 template<class Board, class Set>

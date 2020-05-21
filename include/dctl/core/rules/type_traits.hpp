@@ -8,7 +8,7 @@
 #include <dctl/core/board/angle.hpp>    // dir_...
 #include <dctl/util/tti.hpp>            // DCTL_PP_TTI_CONSTANT
 #include <dctl/util/type_traits.hpp>    // rules_t
-#include <boost/hana/tuple.hpp>         // tuple_c
+#include <tabula/tuple.hpp>             // tuple_c
 #include <algorithm>                    // min, max
 #include <tuple>                        // make_tuple
 #include <type_traits>                  // conditional_t, decay_t, is_same_v, false_type, true_type
@@ -204,9 +204,9 @@ inline constexpr auto notation_v =
         notation::numeric
 ;
 
-DCTL_PP_TTI_CONSTANT(pawn_move_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
-DCTL_PP_TTI_CONSTANT(pawn_jump_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW>))
-DCTL_PP_TTI_CONSTANT(king_move_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
-DCTL_PP_TTI_CONSTANT(king_jump_directions, (boost::hana::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
+DCTL_PP_TTI_CONSTANT(pawn_move_directions, (tabula::tuple_c<int, dir_NE, dir_NW>))
+DCTL_PP_TTI_CONSTANT(pawn_jump_directions, (tabula::tuple_c<int, dir_NE, dir_NW>))
+DCTL_PP_TTI_CONSTANT(king_move_directions, (tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
+DCTL_PP_TTI_CONSTANT(king_jump_directions, (tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
 
 }       // namespace dctl::core

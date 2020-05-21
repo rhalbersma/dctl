@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
         BOOST_CHECK(
                 std::all_of(files.begin(), files.end(), [=](auto i) {
                         return std::all_of(files.begin(), files.end(), [=](auto j) {
-                                return i == j ? true : disjoint(mask_type::file(white_c, i), mask_type::file(white_c, j));
+                                return i == j ? true : is_disjoint(mask_type::file(white_c, i), mask_type::file(white_c, j));
                         });
                 })
         );
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
         BOOST_CHECK(
                 std::all_of(rows.begin(), rows.end(), [=](auto i) {
                         return std::all_of(rows.begin(), rows.end(), [=](auto j) {
-                                return i == j ? true : disjoint(mask_type::rank(white_c, i), mask_type::rank(white_c, j));
+                                return i == j ? true : is_disjoint(mask_type::rank(white_c, i), mask_type::rank(white_c, j));
                         });
                 })
         );
