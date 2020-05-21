@@ -58,12 +58,13 @@ Note that this library makes liberal use of C++20 features, in particular Concep
 
 ### Download
 
-Clone the `dctl` and the accompanying `xstd` and `bit_set` repositories to a directory of your choice:
+Clone the `dctl` and the `bit_set`, `tabula` and `xstd` repositories as dependencies to a directory of your choice:
 
       cd ~/projects/ 
       git clone https://github.com/rhalbersma/dctl.git
-      git clone https://github.com/rhalbersma/xstd.git
       git clone https://github.com/rhalbersma/bit_set.git
+      git clone https://github.com/rhalbersma/tabula.git
+      git clone https://github.com/rhalbersma/xstd.git
 
 ### Test-suite
 

@@ -34,8 +34,9 @@ install:
 before_build:
   - cd %APPVEYOR_BUILD_FOLDER%
   - cd ..
-  - git clone https://github.com/rhalbersma/xstd.git
   - git clone https://github.com/rhalbersma/bit_set.git
+  - git clone https://github.com/rhalbersma/tabula.git
+  - git clone https://github.com/rhalbersma/xstd.git
   - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build
