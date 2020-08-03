@@ -11,7 +11,7 @@
 #include <dctl/core/state/piece.hpp>
 #include <dctl/core/state/position.hpp>
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/array.hpp>                 // or_empty
+#include <xstd/array.hpp>                       // or_empty
 #include <cassert>                              // assert
 #include <cstdint>                              // uint64_t
 #include <tuple>                                // tie

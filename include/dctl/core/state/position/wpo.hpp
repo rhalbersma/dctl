@@ -130,12 +130,12 @@ public:
 
         constexpr auto pieces(board_) const noexcept
         {
-                return board_type::squares;
+                return mask_type::squares;
         }
 
         constexpr auto pieces(empty_) const noexcept
         {
-                return board_type::squares ^ m_occup;
+                return mask_type::squares ^ m_occup;
         }
 
         constexpr auto pieces(occup_) const noexcept

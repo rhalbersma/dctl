@@ -5,9 +5,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <xstd/type_traits.hpp> // any_of
+#include <xstd/type_traits.hpp> // is_integral_constant_v
 #include <xstd/utility.hpp>     // to_underlying
-#include <type_traits>          // integral_constant
+#include <type_traits>          // integral_constant, is_same_v
 
 namespace dctl::core {
 
@@ -35,10 +35,10 @@ template<class T>
 using not_ = color_<!T::value>;
 
 template<class T>
-inline constexpr auto is_color = xstd::any_of<T, color, black_, white_>;
+inline constexpr auto is_color = std::is_same_v<T, color> || xstd::is_integral_constant_v<T, color>;
 
 template<color N>
-inline constexpr auto color_c = color_<N>{};
+inline constexpr auto color_c = color_<N>();
 
 inline constexpr auto black_c = color_c<color::black>;
 inline constexpr auto white_c = color_c<color::white>;

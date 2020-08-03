@@ -37,7 +37,7 @@ public:
         :
                 m_color{{black_pawns | black_kings, white_pawns | white_kings}},
                 m_piece{{black_pawns | white_pawns, black_kings | white_kings}},
-                m_empty{board_type::squares ^ (m_color[0] | m_color[1])}
+                m_empty{mask_type::squares ^ (m_color[0] | m_color[1])}
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
         }
@@ -46,7 +46,7 @@ public:
         :
                 m_color{{black_pawns, white_pawns}},
                 m_piece{{black_pawns | white_pawns, {}}},
-                m_empty{board_type::squares ^ (m_color[0] | m_color[1])}
+                m_empty{mask_type::squares ^ (m_color[0] | m_color[1])}
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns));
         }
@@ -65,7 +65,7 @@ public:
                 set_pieces(a.with()).erase(a.from());
                 set_pieces(a.into()).insert(a.dest());
 
-                m_empty = board_type::squares ^ (pieces(black_c) | pieces(white_c));
+                m_empty = mask_type::squares ^ (pieces(black_c) | pieces(white_c));
         }
 
         constexpr auto pieces(color c) const noexcept
@@ -85,7 +85,7 @@ public:
 
         constexpr auto pieces(board_) const noexcept
         {
-                return board_type::squares;
+                return mask_type::squares;
         }
 
         constexpr auto pieces(empty_) const noexcept
@@ -95,7 +95,7 @@ public:
 
         constexpr auto pieces(occup_) const noexcept
         {
-                return board_type::squares ^ m_empty;
+                return mask_type::squares ^ m_empty;
         }
 
         template<class... Args>
