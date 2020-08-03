@@ -49,10 +49,9 @@ These header-only libraries depend on the C++ Standard Library and [Boost](http:
 
 | Platform | Compiler | Versions | Build |
 | :------- | :------- | :------- | :---- |
-| Linux    | Clang <br> GCC | 10, 11-SVN<br> 10, 11-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
-| Windows  | Visual Studio  | 2019                      | [![Build status](https://ci.appveyor.com/api/projects/status/3pf9sx7giutm2wtx?svg=true)](https://ci.appveyor.com/project/rhalbersma/dctl) |
+| Linux    | GCC | 10, 11-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
 
-Note that this library makes liberal use of C++20 features, in particular Concepts, `constexpr` algorithms and the `<=>` operator for comparisons. Not all compilers and Standard Libraries support these yet. Libc++ does not yet support most of the mentioned C++20 features, so the Clang compiler is only tested with libstdc++. Visual Studio 2019 supports these features as of version 16.7, but on AppVeyor only version 16.5 is available so far.
+Note that this library makes liberal use of C++20 features. Only GCC >= 10 is supported at the moment. Clang and Visual Studio are catching up fast, and will be added as soon as possible.
 
 ## Installation
 
