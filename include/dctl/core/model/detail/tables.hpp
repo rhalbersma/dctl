@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -40,12 +40,12 @@ struct scan
                 set_type targets;
                 if constexpr (IsLongRanged) {
                         while (is_valid(from)) {
-                                targets.insert(from);
+                                targets.add(from);
                                 advance<Board, Direction>{}(from);
                         }
                 } else {
                         if (is_valid(from)) {
-                                targets.insert(from);
+                                targets.add(from);
                         }
                 }
                 return targets;

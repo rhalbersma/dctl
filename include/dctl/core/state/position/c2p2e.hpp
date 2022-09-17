@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -60,10 +60,10 @@ public:
                         set_pieces(king_c) -= a.captured_pieces();
                 }
 
-                set_pieces(c).erase(a.from());
-                set_pieces(c).insert(a.dest());
-                set_pieces(a.with()).erase(a.from());
-                set_pieces(a.into()).insert(a.dest());
+                set_pieces(c).pop(a.from());
+                set_pieces(c).add(a.dest());
+                set_pieces(a.with()).pop(a.from());
+                set_pieces(a.into()).add(a.dest());
 
                 m_empty = mask_type::squares ^ (pieces(black_c) | pieces(white_c));
         }

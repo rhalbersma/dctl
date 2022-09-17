@@ -1,4 +1,4 @@
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(Checkers)
 BOOST_AUTO_TEST_CASE(Czech)
 {
         // The "Perft for all recognized draughts variants thread" on the FMJD forum
-        // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+        // http://damforum.nl/bb3/viewtopic.php?f=53&t=2822
 
         auto const s = basic_state<czech, basic_board<rectangular<8, 8>>>::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(Czech)
 BOOST_AUTO_TEST_CASE(Spanish)
 {
         // The "Perft for all recognized draughts variants thread" on the FMJD forum
-        // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+        // http://damforum.nl/bb3/viewtopic.php?f=53&t=2822
 
         auto const s = basic_state<spanish, basic_board<rectangular<8, 8, true>>>::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(Spanish)
 BOOST_AUTO_TEST_CASE(Italian)
 {
         // The "Perft for all recognized draughts variants thread" on the FMJD forum
-        // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+        // http://damforum.nl/bb3/viewtopic.php?f=53&t=2822
 
         auto const s = basic_state<italian, basic_board<rectangular<8, 8, true>>>::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(Italian)
 BOOST_AUTO_TEST_CASE(Thai)
 {
         // The "Perft for all recognized draughts variants thread" on the FMJD forum
-        // http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+        // http://damforum.nl/bb3/viewtopic.php?f=53&t=2822
 
         auto const s = basic_state<thai, basic_board<rectangular<8, 8>>>::initial(2);
         auto const leafs = std::vector<std::vector<int64_t>> {

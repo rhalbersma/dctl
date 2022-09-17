@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -24,7 +24,7 @@ public:
         constexpr static auto squares = []() {
                 set_type table;
                 for (auto sq = 0; sq < Board::size(); ++sq) {
-                        table.insert(Board::embedding0(sq));
+                        table.add(Board::embedding0(sq));
                 }
                 return table;
         }();
@@ -36,7 +36,7 @@ private:
                 set_type filter;
                 for (auto const n : squares) {
                         if (pred(Board::numeric0(n))) {
-                                filter.insert(n);
+                                filter.add(n);
                         }
                 }
                 return filter;
@@ -105,7 +105,7 @@ private:
                 }
                 return table;
         }();
-        
+
 public:
         constexpr static auto initial(color const c, int const separation) // Throws: Nothing.
         {

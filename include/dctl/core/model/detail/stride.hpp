@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -49,7 +49,6 @@ inline constexpr auto is_left_shift_v = angle{Direction::value} == 0_deg || 180_
 
 template<class Direction, class Set>
 auto find_first(Set const& s)
-        -> int
 {
         if constexpr (is_left_shift_v<Direction>) {
                 return s.front();

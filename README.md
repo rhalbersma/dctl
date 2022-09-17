@@ -39,7 +39,7 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 
 * [ ] a generic engine class template
 * [ ] support for the [Checkerboard GUI](http://www.fierz.ch/cbdeveloper.php)
-* [ ] support for the [GUIDE protocol](http://laatste.info/bb3/download/file.php?id=864)
+* [ ] support for the [GUIDE protocol](http://damforum.nl/bb3/download/file.php?id=864)
 * [ ] support for the [DamExchange protocol](http://www.mesander.nl/damexchange/edxpmain.htm)
 * [ ] endgame database generation
 
@@ -59,7 +59,7 @@ Note that this library makes liberal use of C++20 features. Only GCC >= 10 is su
 
 Clone the `dctl` and the `bit_set`, `tabula` and `xstd` repositories as dependencies to a directory of your choice:
 
-      cd ~/projects/ 
+      cd ~/projects/
       git clone https://github.com/rhalbersma/dctl.git
       git clone https://github.com/rhalbersma/bit_set.git
       git clone https://github.com/rhalbersma/tabula.git
@@ -86,6 +86,6 @@ Special thanks to Aart Bik, Ed Gilbert, Fabien Letouzey, Walter Thoen and Wieger
 
 ## License
 
-Copyright Rein Halbersma 2010-2021.  
-Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).  
+Copyright Rein Halbersma 2010-2022.
+Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).
 (See accompanying file LICENSE_1_0.txt or copy at [http://www.boost.org/LICENSE_1_0.txt](http://www.boost.org/LICENSE_1_0.txt))

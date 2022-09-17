@@ -1,4 +1,4 @@
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -42,8 +42,7 @@ BOOST_AUTO_TEST_CASE(Woldouby)
         auto const s = pdn::read<killer<international>>{}(
                 "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
         );
-        auto const leafs = std::vector<int64_t>
-        {
+        auto const leafs = std::vector<int64_t>{
                              6,
                             12,
                             30,

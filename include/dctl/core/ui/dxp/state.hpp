@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -55,13 +55,13 @@ struct read
                 for (auto const sq : mask_type::squares) {
                         sstr >> ch;
                         if (std::islower(ch) && ch == std::tolower(Token::black)) {
-                                by_color_piece[0][0].insert(sq);
+                                by_color_piece[0][0].add(sq);
                         } else if (std::isupper(ch) && ch == std::toupper(Token::black)) {
-                                by_color_piece[0][1].insert(sq);
+                                by_color_piece[0][1].add(sq);
                         } else if (std::islower(ch) && ch == std::tolower(Token::white)) {
-                                by_color_piece[1][0].insert(sq);
+                                by_color_piece[1][0].add(sq);
                         } else if (std::isupper(ch) && ch == std::toupper(Token::white)) {
-                                by_color_piece[1][1].insert(sq);
+                                by_color_piece[1][1].add(sq);
                         } else if (ch != Token::empty) {
                                 assert(false);
                         }

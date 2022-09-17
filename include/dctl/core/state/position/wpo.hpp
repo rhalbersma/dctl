@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -61,22 +61,22 @@ public:
                         m_occup ^= a.captured_pieces();
                 }
 
-                m_occup.erase(a.from());
-                m_occup.insert(a.dest());
+                m_occup.pop(a.from());
+                m_occup.add(a.dest());
                 if constexpr (std::is_same_v<ColorT, color>) {
                         if (c == color::white) {
-                                m_white.erase(a.from());
-                                m_white.insert(a.dest());
+                                m_white.pop(a.from());
+                                m_white.add(a.dest());
                         }
                 } else if constexpr (std::is_same_v<ColorT, white_>) {
-                        m_white.erase(a.from());
-                        m_white.insert(a.dest());
+                        m_white.pop(a.from());
+                        m_white.add(a.dest());
                 }
                 if (a.with() == piece::pawn) {
-                        m_pawns.erase(a.from());
+                        m_pawns.pop(a.from());
                 }
                 if (a.into() == piece::pawn) {
-                        m_pawns.insert(a.dest());
+                        m_pawns.add(a.dest());
                 }
         }
 

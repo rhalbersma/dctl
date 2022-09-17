@@ -1,4 +1,4 @@
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(TraversalInitialBoard10x10)
 // http://shashki.com/PNphpBB2-viewtopic-t-627-start-69.html
 
 // The "Perft" thread on the FMJD forum (results until depth=11)
-// http://laatste.info/bb3/viewtopic.php?f=53&t=2308&start=4
+// http://damforum.nl/bb3/viewtopic.php?f=53&t=2308&start=4
 
 BOOST_AUTO_TEST_CASE(International)
 {
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(Killer)
         traversal::test(model::drop_duplicates_gen, s, leafs[1]);
 }
 
-// http://laatste.info/bb3/viewtopic.php?f=53&t=2822&start=15
+// http://damforum.nl/bb3/viewtopic.php?f=53&t=2822&start=15
 
 BOOST_AUTO_TEST_CASE(Frisian)
 {

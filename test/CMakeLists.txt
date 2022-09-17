@@ -1,4 +1,4 @@
-#          Copyright Rein Halbersma 2010-2021.
+#          Copyright Rein Halbersma 2010-2022.
 # Distributed under the Boost Software License, Version 1.0.
 #    (See accompanying file LICENSE_1_0.txt or copy at
 #          http://www.boost.org/LICENSE_1_0.txt)
@@ -46,6 +46,7 @@ set(cxx_compile_options_warnings
         -Wextra
         -Wpedantic
         -Wconversion
+        -Wno-maybe-unitialized              # triggered by Boost.Graph
         -Wshadow
         -Wsign-compare
         -Wsign-conversion

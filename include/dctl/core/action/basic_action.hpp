@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -109,13 +109,13 @@ public:
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         capture_contents_ordering(is_king);
                 }
-                this->m_captured_pieces.insert(sq);
+                this->m_captured_pieces.add(sq);
         }
 
         constexpr auto release(int sq, bool is_king [[maybe_unused]]) // Throws: Nothing.
         {
                 assert(board_type::is_onboard(sq));
-                this->m_captured_pieces.erase(sq);
+                this->m_captured_pieces.pop(sq);
                 if constexpr (is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>) {
                         release_contents_ordering(is_king);
                 }
@@ -229,7 +229,7 @@ private:
                                 ++this->m_num_captured_kings;
                         }
                         if constexpr (is_ordering_precedence_v<rules_type>) {
-                                this->m_piece_order.insert(reverse_index());
+                                this->m_piece_order.add(reverse_index());
                         }
                 }
         }
@@ -239,7 +239,7 @@ private:
                 static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
                         if constexpr (is_ordering_precedence_v<rules_type>) {
-                                this->m_piece_order.erase(reverse_index());
+                                this->m_piece_order.pop(reverse_index());
                         }
                         if constexpr (is_contents_precedence_v<rules_type>) {
                                 --this->m_num_captured_kings;

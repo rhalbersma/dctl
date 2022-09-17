@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -78,7 +78,7 @@ struct read
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::embedding1(sq);         // convert square to bit
-                                        by_color_piece[xstd::to_underlying(setup_color)][xstd::to_underlying(setup_piece)].insert(b);
+                                        by_color_piece[xstd::to_underlying(setup_color)][xstd::to_underlying(setup_piece)].add(b);
                                 }
                                 setup_piece = piece::pawn;
                                 break;

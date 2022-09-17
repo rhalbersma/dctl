@@ -1,6 +1,6 @@
 #pragma once
 
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -57,26 +57,26 @@ public:
         auto lift(int const sq)
         {
                 m_candidate_action.from(sq);
-                m_empty.insert(sq);
+                m_empty.add(sq);
         }
 
         auto drop(int const sq)
         {
-                m_empty.erase(sq);
+                m_empty.pop(sq);
         }
 
         auto capture(int const sq)
         {
                 m_candidate_action.capture(sq, is_king(sq));
                 if constexpr (is_passing_capture_v<rules_type>) {
-                        m_empty.insert(sq);
+                        m_empty.add(sq);
                 }
         }
 
         auto release(int const sq)
         {
                 if constexpr (is_passing_capture_v<rules_type>) {
-                        m_empty.erase(sq);
+                        m_empty.pop(sq);
                 }
                 m_candidate_action.release(sq, is_king(sq));
         }

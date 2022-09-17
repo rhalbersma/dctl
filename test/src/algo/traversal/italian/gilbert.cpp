@@ -1,4 +1,4 @@
-//          Copyright Rein Halbersma 2010-2021.
+//          Copyright Rein Halbersma 2010-2022.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -15,15 +15,14 @@ using namespace dctl::core;
 BOOST_AUTO_TEST_SUITE(TraversalItalianGilbert)
 
 // The alternative game rules thread on the FMJD forum
-// http://laatste.info/bb3/viewtopic.php?f=53&t=2822
+// http://damforum.nl/bb3/viewtopic.php?f=53&t=2822
 
 BOOST_AUTO_TEST_CASE(Position1)
 {
         auto const s = pdn::read<italian>{}(
                 "W:W30,26,27,22,23,24,17,18,20:B14,15,16,9,11,5,6,1,3"
         );
-        auto const leafs = std::vector<int64_t>
-        {
+        auto const leafs = std::vector<int64_t>{
                             5,
                            13,
                            42,
@@ -49,8 +48,7 @@ BOOST_AUTO_TEST_CASE(Position2)
         auto const s = pdn::read<italian>{}(
                 "B:W30,21,22,17,20,K6:B25,28,9,5,1,3"
         );
-        auto const leafs = std::vector<int64_t>
-        {
+        auto const leafs = std::vector<int64_t>{
                             6,
                            47,
                           271,
@@ -72,8 +70,7 @@ BOOST_AUTO_TEST_CASE(Position3)
         auto const s = pdn::read<italian>{}(
                 "W:WK27,K28,17,20,9,K12,8:B21,24,K19,K13,14,K11,4"
         );
-        auto const leafs = std::vector<int64_t>
-        {
+        auto const leafs = std::vector<int64_t>{
                            13,
                           112,
                           828,
