@@ -16,6 +16,8 @@ class angle
 public:
         angle() = default;
 
+        auto operator<=>(angle const&) const = default;
+
         explicit constexpr angle(int n) noexcept
         :
                 m_value{xstd::euclidean_div(n, 360).rem}
@@ -39,36 +41,6 @@ constexpr auto operator"" _deg(unsigned long long n) noexcept
 
 }       // namespace angle_literals
 }       // namespace literals
-
-constexpr auto operator==(angle a, angle b) noexcept
-{
-        return a.value() == b.value();
-}
-
-constexpr auto operator!=(angle a, angle b) noexcept
-{
-        return !(a == b);
-}
-
-constexpr auto operator< (angle a, angle b) noexcept
-{
-        return a.value() < b.value();
-}
-
-constexpr auto operator> (angle a, angle b) noexcept
-{
-        return b < a;
-}
-
-constexpr auto operator>=(angle a, angle b) noexcept
-{
-        return !(a < b);
-}
-
-constexpr auto operator<=(angle a, angle b) noexcept
-{
-        return !(b < a);
-}
 
 constexpr auto operator+(angle a) noexcept
 {

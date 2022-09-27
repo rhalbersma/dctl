@@ -85,6 +85,16 @@ public:
 
         basic_action() = default;
 
+        bool operator==(basic_action const& other) const noexcept
+        {
+                return this->tied() == other.tied();
+        }
+
+        auto operator<=>(basic_action const& other) const noexcept
+        {
+                return this->tied() <=> other.tied();
+        }
+
         constexpr basic_action(int src, int dst, bool is_promotion) noexcept
         :
                 conditional_base_ordering_precedence{},
@@ -257,41 +267,5 @@ private:
                 return static_cast<int>(set_type::max_size()) - 1 - num_captured_pieces();
         }
 };
-
-template<class Rules, class Board>
-constexpr auto operator==(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
-{
-        return lhs.tied() == rhs.tied();
-}
-
-template<class Rules, class Board>
-constexpr auto operator!=(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
-{
-        return !(lhs == rhs);
-}
-
-template<class Rules, class Board>
-constexpr auto operator< (basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
-{
-        return lhs.tied() < rhs.tied();
-}
-
-template<class Rules, class Board>
-constexpr auto operator> (basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
-{
-        return rhs < lhs;
-}
-
-template<class Rules, class Board>
-constexpr auto operator>=(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
-{
-        return !(lhs < rhs);
-}
-
-template<class Rules, class Board>
-constexpr auto operator<=(basic_action<Rules, Board> const& lhs, basic_action<Rules, Board> const& rhs) noexcept
-{
-        return !(rhs < lhs);
-}
 
 }       // namespace dctl::core

@@ -19,22 +19,11 @@ struct screen_centered {};
 template<class Origin>
 struct coordinates
 {
-        int const x;
-        int const y;
+        int x;
+        int y;
+
+        bool operator==(coordinates const&) const = default;
 };
-
-template<class Origin>
-constexpr auto operator==(coordinates<Origin> const lhs, coordinates<Origin> const rhs) noexcept
-{
-        constexpr auto tied = [](auto const& coord) { return std::tie(coord.x, coord.y); };
-        return tied(lhs) == tied(rhs);
-}
-
-template<class Origin>
-constexpr auto operator!=(coordinates<Origin> const lhs, coordinates<Origin> const rhs) noexcept
-{
-        return !(lhs == rhs);
-}
 
 constexpr auto rotate(coordinates<screen_centered> const coord, angle const a) noexcept
         -> coordinates<screen_centered>
