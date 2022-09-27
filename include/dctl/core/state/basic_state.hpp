@@ -13,9 +13,9 @@
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/array.hpp>                       // or_empty
 #include <cassert>                              // assert
+#include <concepts>                             // same_as
 #include <cstdint>                              // uint64_t
 #include <tuple>                                // tie
-#include <type_traits>                          // is_same
 #include <utility>                              // forward
 
 namespace dctl::core {
@@ -107,8 +107,8 @@ public:
         template<class Action>
         auto make(Action const& a)
         {
-                static_assert(std::is_same_v<rules_type, rules_t<Action>>);
-                static_assert(std::is_same_v<board_type, board_t<Action>>);
+                static_assert(std::same_as<rules_type, rules_t<Action>>);
+                static_assert(std::same_as<board_type, board_t<Action>>);
                 this->m_position.make(to_move(), a);
                 pass_turn();
                 assert_invariants();
@@ -123,8 +123,8 @@ public:
         template<class Action>
         auto undo(Action const& a)
         {
-                static_assert(std::is_same_v<rules_type, rules_t<Action>>);
-                static_assert(std::is_same_v<board_type, board_t<Action>>);
+                static_assert(std::same_as<rules_type, rules_t<Action>>);
+                static_assert(std::same_as<board_type, board_t<Action>>);
                 pass_turn();
                 this->m_position.undo(to_move(), a);
                 assert_invariants();
@@ -137,9 +137,9 @@ public:
         }
 
         template<class... Args>
+                requires (sizeof...(Args) <= 2)
         constexpr auto pieces(Args&&... args) const noexcept
         {
-                static_assert(sizeof...(Args) <= 2);
                 return this->m_position.pieces(std::forward<Args>(args)...);
         }
 
@@ -154,9 +154,9 @@ public:
         }
 
         template<class... Args>
+                requires (sizeof...(Args) <= 2)
         constexpr auto num_pieces(Args&&... args) const noexcept
         {
-                static_assert(sizeof...(Args) <= 2);
                 return this->m_position.num_pieces(std::forward<Args>(args)...);
         }
 

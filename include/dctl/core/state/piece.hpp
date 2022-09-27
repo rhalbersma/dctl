@@ -7,6 +7,7 @@
 
 #include <xstd/type_traits.hpp> // is_integral_constant_v
 #include <xstd/utility.hpp>     // to_underlying
+#include <concepts>             // same_as
 #include <type_traits>          // integral_constant
 
 namespace dctl::core {
@@ -27,7 +28,7 @@ using pawn_ = piece_<piece::pawn>;
 using king_ = piece_<piece::king>;
 
 template<class T>
-inline constexpr auto is_piece = std::is_same_v<T, piece> || xstd::is_integral_constant_v<T, piece>;
+inline constexpr auto is_piece = std::same_as<T, piece> || xstd::is_integral_constant_v<T, piece>;
 
 template<piece N>
 inline constexpr auto piece_c = piece_<N>();

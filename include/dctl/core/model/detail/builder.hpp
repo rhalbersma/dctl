@@ -11,8 +11,8 @@
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t, set_t, value_t
 #include <algorithm>                            // none_of
 #include <cassert>                              // assert
+#include <concepts>                             // same_as
 #include <iterator>                             // begin, end, prev
-#include <type_traits>                          // is_same
 
 namespace dctl::core::model {
 namespace detail {
@@ -49,8 +49,8 @@ public:
         {}
 
         auto toggle_king_targets() noexcept
+                requires is_superior_rank_jump_v<rules_type>
         {
-                static_assert(is_superior_rank_jump_v<rules_type>);
                 m_initial_targets ^= m_state.pieces(!to_move_c, king_c);
         }
 
@@ -106,9 +106,9 @@ public:
         }
 
         template<class... Args>
+                requires (sizeof...(Args) <= 2)
         auto pieces(Args&&... args) const noexcept
         {
-                static_assert(sizeof...(Args) <= 2);
                 return m_state.pieces(std::forward<Args>(args)...);
         }
 
@@ -162,14 +162,14 @@ private:
         {
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
-                        std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
+                        std::same_as<DuplicatesPolicy, keep_duplicates_tag>
                 ) {
                         assert(m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
-                        std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
+                        std::same_as<DuplicatesPolicy, drop_duplicates_tag>
                 ) {
                         assert(m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
                         if (m_actions.empty() || is_small() || is_unique()) {
@@ -178,7 +178,7 @@ private:
                 }
                 if constexpr (
                         !is_trivial_precedence_v<rules_type> &&
-                        std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>
+                        std::same_as<DuplicatesPolicy, keep_duplicates_tag>
                 ) {
                         if (m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back())) {
                                 return m_actions.push_back(m_candidate_action);
@@ -192,7 +192,7 @@ private:
                 }
                 if constexpr (
                         !is_trivial_precedence_v<rules_type> &&
-                        std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>
+                        std::same_as<DuplicatesPolicy, drop_duplicates_tag>
                 ) {
                         if (m_actions.empty()) {
                                 return m_actions.push_back(m_candidate_action);
@@ -218,8 +218,8 @@ private:
         }
 
         auto is_unique() const // Throws: Nothing.
+                requires std::same_as<DuplicatesPolicy, drop_duplicates_tag>
         {
-                static_assert(std::is_same_v<DuplicatesPolicy, drop_duplicates_tag>);
                 assert(!m_actions.empty());
                 assert(xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
                 return std::none_of(m_actions.cbegin(), m_actions.cend(), [&](auto const& a) { return a == m_candidate_action; });

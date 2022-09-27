@@ -12,7 +12,8 @@
 #include <dctl/core/state/color.hpp>            // black, white
 #include <dctl/util/type_traits.hpp>            // value_t
 #include <cassert>                              // assert
-#include <type_traits>                          // false_type, is_same_v
+#include <concepts>                             // same_as
+#include <type_traits>                          // false_type
 
 namespace dctl::core::model {
 
@@ -85,8 +86,8 @@ public:
         auto generate(State const& s, SequenceContainer& seq) const
         {
                 using action_type = value_t<SequenceContainer>;
-                static_assert(std::is_same_v<rules_t<State>, rules_t<action_type>>);
-                static_assert(std::is_same_v<board_t<State>, board_t<action_type>>);
+                static_assert(std::same_as<rules_t<State>, rules_t<action_type>>);
+                static_assert(std::same_as<board_t<State>, board_t<action_type>>);
                 if (jumps<Color>::generate(s, seq); seq.empty()) {
                         moves<Color>::generate(s, seq);
                 }

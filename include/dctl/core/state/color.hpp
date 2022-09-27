@@ -7,7 +7,8 @@
 
 #include <xstd/type_traits.hpp> // is_integral_constant_v
 #include <xstd/utility.hpp>     // to_underlying
-#include <type_traits>          // integral_constant, is_same_v
+#include <concepts>             // same_as
+#include <type_traits>          // integral_constant
 
 namespace dctl::core {
 
@@ -35,7 +36,7 @@ template<class T>
 using not_ = color_<!T::value>;
 
 template<class T>
-inline constexpr auto is_color = std::is_same_v<T, color> || xstd::is_integral_constant_v<T, color>;
+inline constexpr auto is_color = std::same_as<T, color> || xstd::is_integral_constant_v<T, color>;
 
 template<color N>
 inline constexpr auto color_c = color_<N>();

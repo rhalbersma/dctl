@@ -15,7 +15,7 @@
 #include <dctl/core/rules/type_traits.hpp>
 #include <dctl/util/type_traits.hpp>                    // rules_t, board_t
 #include <cassert>                                      // assert
-#include <type_traits>
+#include <concepts>                                     // same_as
 
 namespace dctl::core::model {
 namespace detail {
@@ -79,7 +79,7 @@ class jumps<color_<Side>, DuplicatesPolicy>
         template<class State> using pawn_jumps = detail::pawn_jumps<rules_t<State>, board_t<State>, to_move_>;
 
         template<class State>
-        static constexpr bool MSVC_WORKAROUND = is_trivial_precedence_v<rules_t<State>> && std::is_same_v<DuplicatesPolicy, keep_duplicates_tag>;
+        static constexpr bool MSVC_WORKAROUND = is_trivial_precedence_v<rules_t<State>> && std::same_as<DuplicatesPolicy, keep_duplicates_tag>;
 
         template<class State, class Action>
         using container_type = std::conditional_t<

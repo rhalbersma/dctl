@@ -10,8 +10,8 @@
 #include <dctl/core/state/piece.hpp>            // piece,  pawn_c,  king_c, board_, empty_, occup_
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
+#include <concepts>                             // same_as
 #include <tuple>                                // tie
-#include <type_traits>                          // enable_if_t
 
 namespace dctl::core {
 namespace wpo {
@@ -50,9 +50,8 @@ public:
                 assert(is_legal<board_type>(black_pawns, white_pawns));
         }
 
-        template<class ColorT, class Action, std::enable_if_t<
-                is_color<ColorT>
-        >...>
+        template<class ColorT, class Action>
+                requires is_color<ColorT>
         constexpr auto make(ColorT c, Action const& a) // Throws: Nothing.
         {
                 if (a.is_jump()) {
@@ -63,12 +62,12 @@ public:
 
                 m_occup.pop(a.from());
                 m_occup.add(a.dest());
-                if constexpr (std::is_same_v<ColorT, color>) {
+                if constexpr (std::same_as<ColorT, color>) {
                         if (c == color::white) {
                                 m_white.pop(a.from());
                                 m_white.add(a.dest());
                         }
-                } else if constexpr (std::is_same_v<ColorT, white_>) {
+                } else if constexpr (std::same_as<ColorT, white_>) {
                         m_white.pop(a.from());
                         m_white.add(a.dest());
                 }
@@ -80,12 +79,11 @@ public:
                 }
         }
 
-        template<class ColorT, std::enable_if_t<
-                is_color<ColorT>
-        >...>
+        template<class ColorT>
+                requires is_color<ColorT>
         constexpr auto pieces(ColorT c) const noexcept
         {
-                if constexpr (std::is_same_v<ColorT, color>) {
+                if constexpr (std::same_as<ColorT, color>) {
                         return c == color::black ? pieces(black_c) : pieces(white_c);
                 } else {
                         if constexpr (c == black_c) { return m_white ^ m_occup; }
@@ -93,12 +91,11 @@ public:
                 }
         }
 
-        template<class PieceT, std::enable_if_t<
-                is_piece<PieceT>
-        >...>
+        template<class PieceT>
+                requires is_piece<PieceT>
         constexpr auto pieces(PieceT p) const noexcept
         {
-                if constexpr (std::is_same_v<PieceT, piece>) {
+                if constexpr (std::same_as<PieceT, piece>) {
                         return p == piece::pawn ? pieces(pawn_c) : pieces(king_c);
                 } else {
                         if constexpr (p == pawn_c) { return m_pawns;           }
@@ -106,19 +103,18 @@ public:
                 }
         }
 
-        template<class ColorT, class PieceT, std::enable_if_t<
-                is_color<ColorT> && is_piece<PieceT>
-        >...>
+        template<class ColorT, class PieceT>
+                requires is_color<ColorT> && is_piece<PieceT>
         constexpr auto pieces(ColorT c, PieceT p) const noexcept
         {
-                if constexpr (std::is_same_v<ColorT, color> && std::is_same_v<PieceT, piece>) {
+                if constexpr (std::same_as<ColorT, color> && std::same_as<PieceT, piece>) {
                         return c == color::black ?
                                 (p == piece::pawn ? pieces(black_c, pawn_c) : pieces(black_c, king_c)) :
                                 (p == piece::pawn ? pieces(white_c, pawn_c) : pieces(white_c, king_c))
                         ;
-                } else if constexpr (std::is_same_v<ColorT, color>) {
+                } else if constexpr (std::same_as<ColorT, color>) {
                         return c == color::black ? pieces(black_c, p) : pieces(white_c, p);
-                } else if constexpr (std::is_same_v<PieceT, piece>) {
+                } else if constexpr (std::same_as<PieceT, piece>) {
                         return p == piece::pawn ? pieces(c, pawn_c) : pieces(c, king_c);
                 } else {
                         if constexpr (c == black_c && p == pawn_c) { return  m_pawns - m_white;            }
@@ -144,9 +140,9 @@ public:
         }
 
         template<class... Args>
+                requires (sizeof...(Args) <= 2)
         constexpr auto num_pieces(Args&&... args) const noexcept
         {
-                static_assert(sizeof...(Args) <= 2);
                 return pieces(std::forward<Args>(args)...).ssize();
         }
 };

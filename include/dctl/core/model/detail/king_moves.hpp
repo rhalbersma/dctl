@@ -41,9 +41,9 @@ class king_moves
 
         template<class Direction>
         static auto blocker_and_beyond(int from_sq)
+                requires is_long_ranged_king_v<Rules>
         {
                 assert(Board::is_onboard(from_sq));
-                static_assert(is_long_ranged_king_v<Rules>);
                 return basic_blocker_and_beyond{}(from_sq, move_index<Direction>);
         }
 

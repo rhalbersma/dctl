@@ -12,8 +12,8 @@
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/utility.hpp>                     // to_underlying
 #include <array>                                // array
+#include <concepts>                             // same_as
 #include <tuple>                                // tie
-#include <type_traits>                          // enable_if_t
 
 namespace dctl::core {
 namespace bwk {
@@ -73,12 +73,11 @@ public:
                 return m_color[xstd::to_underlying(c)];
         }
 
-        template<class PieceT, std::enable_if_t<
-                is_piece<PieceT>
-        >...>
+        template<class PieceT>
+                requires is_piece<PieceT>
         constexpr auto pieces(PieceT p) const noexcept
         {
-                if constexpr (std::is_same_v<PieceT, piece>) {
+                if constexpr (std::same_as<PieceT, piece>) {
                         return p == piece::pawn ? pieces(pawn_c) : pieces(king_c);
                 } else {
                         if constexpr (p == pawn_c) { return m_kings ^ pieces(occup_c); }
@@ -86,12 +85,11 @@ public:
                 }
         }
 
-        template<class PieceT, std::enable_if_t<
-                is_piece<PieceT>
-        >...>
+        template<class PieceT>
+                requires is_piece<PieceT>
         constexpr auto pieces(color c, PieceT p) const noexcept
         {
-                if constexpr (std::is_same_v<PieceT, piece>) {
+                if constexpr (std::same_as<PieceT, piece>) {
                         return p == piece::pawn ? pieces(c, pawn_c) : pieces(c, king_c);
                 } else {
                         if constexpr (p == pawn_c) { return pieces(c) - m_kings; }
@@ -115,9 +113,9 @@ public:
         }
 
         template<class... Args>
+                requires (sizeof...(Args) <= 2)
         constexpr auto num_pieces(Args&&... args) const noexcept
         {
-                static_assert(sizeof...(Args) <= 2);
                 return pieces(std::forward<Args>(args)...).ssize();
         }
 

@@ -6,8 +6,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <algorithm>    // min_element
+#include <concepts>     // same_as
 #include <iterator>     // iterator_traits
-#include <type_traits>  // is_same
 
 namespace dctl {
 namespace hash {
@@ -16,9 +16,9 @@ template<class Predicate>
 struct EmptyOldMin
 {
         template<class ForwardIterator, class Value>
+                requires std::same_as<typename std::iterator_traits<ForwardIterator>::value_type, Value>
         bool operator()(ForwardIterator first, ForwardIterator last, Value const& value) const
         {
-                static_assert(std::is_same_v<typename std::iterator_traits<ForwardIterator>::value_type, Value>);
                 using tag_type = typename Value::first_type;
 
                 // 1) fill an empty slot or replace an existing entry with the same tag

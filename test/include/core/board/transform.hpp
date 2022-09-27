@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <type_traits>  // is_same
+#include <concepts>     // same_as
 
 namespace dctl::core {
 namespace detail {
@@ -25,19 +25,19 @@ struct iterate : UnaryMetaFunction<iterate_t<UnaryMetaFunction, Arg, N - 1>> {};
 }       // namespace detail
 
 template<template<class> class UnaryMetaFunction, class Arg>
-constexpr auto is_identity_v = std::is_same_v<
+constexpr auto is_identity_v = std::same_as<
         detail::iterate_t<UnaryMetaFunction, Arg, 1>,
         detail::iterate_t<UnaryMetaFunction, Arg, 0>
 >;
 
 template<template<class> class UnaryMetaFunction, class Arg>
-constexpr auto is_involution_v = std::is_same_v<
+constexpr auto is_involution_v = std::same_as<
         detail::iterate_t<UnaryMetaFunction, Arg, 2>,
         detail::iterate_t<UnaryMetaFunction, Arg, 0>
 >;
 
 template<template<class> class UnaryMetaFunction, class Arg>
-constexpr auto is_idempotent_v = std::is_same_v<
+constexpr auto is_idempotent_v = std::same_as<
         detail::iterate_t<UnaryMetaFunction, Arg, 2>,
         detail::iterate_t<UnaryMetaFunction, Arg, 1>
 >;

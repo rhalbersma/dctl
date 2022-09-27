@@ -99,9 +99,9 @@ public:
         }
 
         template<class... Args>
+                requires (sizeof...(Args) <= 2)
         constexpr auto num_pieces(Args&&... args) const noexcept
         {
-                static_assert(sizeof...(Args) <= 2);
                 return pieces(std::forward<Args>(args)...).ssize();
         }
 

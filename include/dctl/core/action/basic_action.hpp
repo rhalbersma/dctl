@@ -9,10 +9,10 @@
 #include <dctl/core/rules/type_traits.hpp>      // is_contents_precedence, is_ordering_precedence
 #include <dctl/core/state/piece.hpp>            // pawn, king
 #include <dctl/util/type_traits.hpp>            // set_t, square_t
-#include <xstd/array.hpp>                 // or_empty
+#include <xstd/array.hpp>                       // or_empty
 #include <cassert>                              // assert
+#include <concepts>                             // same_as
 #include <tuple>                                // tie
-#include <type_traits>                          // enable_if_t, is_same_v
 
 namespace dctl::core {
 namespace detail {
@@ -85,12 +85,12 @@ public:
 
         basic_action() = default;
 
-        bool operator==(basic_action const& other) const noexcept
+        constexpr auto operator==(basic_action const& other) const noexcept
         {
                 return this->tied() == other.tied();
         }
 
-        auto operator<=>(basic_action const& other) const noexcept
+        constexpr auto operator<=>(basic_action const& other) const noexcept
         {
                 return this->tied() <=> other.tied();
         }
@@ -203,20 +203,14 @@ public:
                 return is_with_king() && !is_jump();
         }
 
-        template<class RulesType = rules_type, std::enable_if_t<
-                std::is_same_v<RulesType, rules_type> &&
-                is_contents_precedence_v<RulesType>
-        >...>
         constexpr auto num_captured_kings() const noexcept
+                requires is_contents_precedence_v<Rules>
         {
                 return this->m_num_captured_kings;
         }
 
-        template<class RulesType = rules_type, std::enable_if_t<
-                std::is_same_v<RulesType, rules_type> &&
-                is_ordering_precedence_v<RulesType>
-        >...>
         constexpr auto piece_order() const noexcept
+                requires is_ordering_precedence_v<Rules>
         {
                 return this->m_piece_order;
         }
@@ -232,26 +226,26 @@ public:
 
 private:
         constexpr auto capture_contents_ordering(bool is_king)
+                requires (is_contents_precedence_v<Rules> || is_ordering_precedence_v<Rules>)
         {
-                static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
-                        if constexpr (is_contents_precedence_v<rules_type>) {
+                        if constexpr (is_contents_precedence_v<Rules>) {
                                 ++this->m_num_captured_kings;
                         }
-                        if constexpr (is_ordering_precedence_v<rules_type>) {
+                        if constexpr (is_ordering_precedence_v<Rules>) {
                                 this->m_piece_order.add(reverse_index());
                         }
                 }
         }
 
         constexpr auto release_contents_ordering(bool is_king)
+                requires (is_contents_precedence_v<Rules> || is_ordering_precedence_v<Rules>)
         {
-                static_assert(is_contents_precedence_v<rules_type> || is_ordering_precedence_v<rules_type>);
                 if (is_king) {
-                        if constexpr (is_ordering_precedence_v<rules_type>) {
+                        if constexpr (is_ordering_precedence_v<Rules>) {
                                 this->m_piece_order.pop(reverse_index());
                         }
-                        if constexpr (is_contents_precedence_v<rules_type>) {
+                        if constexpr (is_contents_precedence_v<Rules>) {
                                 --this->m_num_captured_kings;
                         }
                 }

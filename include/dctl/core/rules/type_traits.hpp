@@ -10,8 +10,9 @@
 #include <dctl/util/type_traits.hpp>    // rules_t
 #include <tabula/tuple.hpp>             // tuple_c
 #include <algorithm>                    // min, max
+#include <concepts>                     // same_as
 #include <tuple>                        // make_tuple
-#include <type_traits>                  // conditional_t, decay_t, is_same_v, false_type, true_type
+#include <type_traits>                  // conditional_t, decay_t, false_type, true_type
 #include <utility>                      // forward
 
 namespace dctl::core {
@@ -79,7 +80,7 @@ inline constexpr auto trivial_precedence_c = [](auto&&) {
 DCTL_PP_TTI_CONSTANT(precedence, trivial_precedence_c)
 
 template<class Rules>
-inline constexpr auto is_trivial_precedence_v = std::is_same_v<
+inline constexpr auto is_trivial_precedence_v = std::same_as<
         decltype(precedence_v<Rules>),
         decltype(trivial_precedence_c)
 >;
@@ -93,7 +94,7 @@ struct equal_to
         {
                 using rules_type1 = rules_t<std::decay_t<Action1>>;
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::is_same_v<rules_type1, rules_type2>);
+                static_assert(std::same_as<rules_type1, rules_type2>);
                 return
                         precedence_v<rules_type1>(std::forward<Action1>(a1)) ==
                         precedence_v<rules_type2>(std::forward<Action2>(a2))
@@ -108,7 +109,7 @@ struct less
         {
                 using rules_type1 = rules_t<std::decay_t<Action1>>;
                 using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::is_same_v<rules_type1, rules_type2>);
+                static_assert(std::same_as<rules_type1, rules_type2>);
                 return
                         precedence_v<rules_type1>(std::forward<Action1>(a1)) <
                         precedence_v<rules_type2>(std::forward<Action2>(a2))
