@@ -33,6 +33,7 @@ set(cxx_compile_options_warnings
         -Wextra
         -Wpedantic
         -Wconversion
+        -Wno-maybe-uninitialized        # triggered by Boost.Graph
         -Wshadow
         -Wsign-compare
         -Wsign-conversion
