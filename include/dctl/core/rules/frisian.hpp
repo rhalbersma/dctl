@@ -7,7 +7,7 @@
 
 #include <dctl/core/board/angle.hpp>    // dir_...
 #include <dctl/util/type_traits.hpp>    // board_t, set_t
-#include <tabula/tuple.hpp>         // tuple_c
+#include <tabula/tuple.hpp>             // tuple_c
 #include <tuple>                        // make_tuple
 #include <type_traits>                  // decay_t
 

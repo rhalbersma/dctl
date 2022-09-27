@@ -13,8 +13,8 @@
 #include <array>                                // array
 #include <cassert>                              // assert
 #include <cstddef>                              // size_t
-#include <type_traits>                          // bool_constant
 #include <tuple>
+#include <type_traits>                          // bool_constant
 
 namespace dctl::core::model {
 namespace detail {

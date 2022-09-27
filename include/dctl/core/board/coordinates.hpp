@@ -19,8 +19,8 @@ struct screen_centered {};
 template<class Origin>
 struct coordinates
 {
-        int x;
-        int y;
+        int const x;
+        int const y;
 
         bool operator==(coordinates const&) const = default;
 };
