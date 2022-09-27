@@ -64,6 +64,16 @@ public:
                 assert(is_child());
         }
 
+        constexpr auto operator==(node const& other) const noexcept
+        {
+                return this->tied() == other.tied();
+        }
+
+        constexpr auto operator<=>(node const& other) const noexcept
+        {
+                return this->tied() <=> other.tied();
+        }
+
         constexpr auto const& state() const noexcept { return m_state; }
         auto cost() const { return m_cost; }
         auto hash() const { return 0ull; }// m_hash; }
@@ -84,42 +94,6 @@ template<class Node, class Action>
 constexpr auto child(Node const& n, Action const& a) noexcept
 {
         return Node{n, a};
-}
-
-template<class State, class Action>
-constexpr auto operator==(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
-{
-        return lhs.tied() == rhs.tied();
-}
-
-template<class State, class Action>
-constexpr auto operator< (node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
-{
-        return lhs.tied() < rhs.tied();
-}
-
-template<class State, class Action>
-constexpr auto operator!=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
-{
-        return !(lhs == rhs);
-}
-
-template<class State, class Action>
-constexpr auto operator> (node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
-{
-        return rhs < lhs;
-}
-
-template<class State, class Action>
-constexpr auto operator>=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
-{
-        return !(lhs < rhs);
-}
-
-template<class State, class Action>
-constexpr auto operator<=(node<State, Action> const& lhs, node<State, Action> const& rhs) noexcept
-{
-        return !(rhs < lhs);
 }
 
 /*
