@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ReverseAngleSymmetryForAllDirections, T, BoardSequ
         };
 
         BOOST_CHECK(
-                std::all_of(directions.begin(), directions.end(), [](auto dir) {
+                std::ranges::all_of(directions, [](auto dir) {
                         return stride<T>{}(dir) == stride<T>{}(reverse(dir));
                 })
         );

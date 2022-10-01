@@ -47,7 +47,7 @@ public:
                         if (fs::exists(m_dir_path) && fs::is_directory(m_dir_path)) {
                                 // TODO: skip directories (should not be present, though)
                                 std::copy(fs::directory_iterator(m_dir_path), fs::directory_iterator(), std::back_inserter(m_files));
-                                std::sort(m_files.begin(), m_files.end());
+                                std::ranges::sort(m_files);
                                 std::cout << m_dir_path << " is a directory containing: " << m_files.size() << " files\n";
                                 std::copy(m_files.begin(), m_files.end(), std::ostream_iterator<fs::path>(std::cout, "\n"));
                                 auto const s = static_cast<double>(std::accumulate(m_files.begin(), m_files.end(), 0ULL, [](auto sum, auto const& f) {

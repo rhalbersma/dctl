@@ -10,10 +10,10 @@
 #include <dctl/core/board/mask.hpp>             // basic_mask
 #include <dctl/core/rules/type_traits.hpp>      // is_empty, is_pushable, is_jumpable, invert
 #include <dctl/core/state/color.hpp>
-#include <boost/range/irange.hpp>               // irange
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <algorithm>                            // all_of
 #include <numeric>                              // accumulate
+#include <ranges>                               // iota
 #include <type_traits>                          // is_same
 
 BOOST_AUTO_TEST_SUITE(BoardTraits)
@@ -61,18 +61,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresCountEqualsBoardSize, T, BoardSequence)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)
 {
-        auto const files = boost::irange(0, T::width);
+        auto const files = std::views::iota(0, T::width);
         using mask_type = basic_mask<T>;
 
         BOOST_CHECK(
-                std::all_of(files.begin(), files.end(), [=](auto i) {
+                std::ranges::all_of(files, [=](auto i) {
                         return mask_type::file(black_c, i) == mask_type::file(white_c, T::width - 1 - i);
                 })
         );
 
         BOOST_CHECK(
-                std::all_of(files.begin(), files.end(), [=](auto i) {
-                        return std::all_of(files.begin(), files.end(), [=](auto j) {
+                std::ranges::all_of(files, [=](auto i) {
+                        return std::ranges::all_of(files, [=](auto j) {
                                 return i == j ? true : !mask_type::file(white_c, i).intersects(mask_type::file(white_c, j));
                         });
                 })
@@ -87,18 +87,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequen
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(RowsEquivalencePartitionSquares, T, BoardSequence)
 {
-        auto const rows = boost::irange(0, T::height);
+        auto const rows = std::views::iota(0, T::height);
         using mask_type = basic_mask<T>;
 
         BOOST_CHECK(
-                std::all_of(rows.begin(), rows.end(), [=](auto i) {
+                std::ranges::all_of(rows, [=](auto i) {
                         return mask_type::rank(black_c, i) == mask_type::rank(white_c, T::height - 1 - i);
                 })
         );
 
         BOOST_CHECK(
-                std::all_of(rows.begin(), rows.end(), [=](auto i) {
-                        return std::all_of(rows.begin(), rows.end(), [=](auto j) {
+                std::ranges::all_of(rows, [=](auto i) {
+                        return std::ranges::all_of(rows, [=](auto j) {
                                 return i == j ? true : !mask_type::rank(white_c, i).intersects(mask_type::rank(white_c, j));
                         });
                 })

@@ -139,7 +139,7 @@ auto divide(Actions successor, State const& s, int depth)
         int64_t leaf_nodes = 0;
 
         auto moves = successor.generate(s);
-        std::sort(moves.begin(), moves.end(), [](auto const& lhs, auto const& rhs) {
+        std::ranges::sort(moves, [](auto const& lhs, auto const& rhs) {
                 return str_numeric(lhs) < str_numeric(rhs);
         });
 

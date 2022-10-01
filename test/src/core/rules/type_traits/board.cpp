@@ -7,15 +7,10 @@
 #include <dctl/core/rules.hpp>                  // checkers, czech, frisian, international, italian, pool, russian, spanish, thai
 #include <boost/mpl/vector.hpp>                 // vector
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE_TEMPLATE
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <dctl/core/board.hpp>
-#include <dctl/core/board/bearing.hpp>
 
 using namespace dctl::core;
 
-BOOST_AUTO_TEST_SUITE(initialStateGap)
+BOOST_AUTO_TEST_SUITE(InitialStateGap)
 
 using VariantsTwo = boost::mpl::vector
 <

@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(GroupAxiomsAreRealizedOnCyclicGroups)
         };
 
         BOOST_CHECK(
-                std::all_of(C_N.begin(), C_N.end(), [](auto const& g) {
+                std::ranges::all_of(C_N, [](auto const& g) {
                         return group::axioms::is_realized(g);
                 })
         );

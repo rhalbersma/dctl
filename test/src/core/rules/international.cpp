@@ -7,7 +7,7 @@
 #include <dctl/core/rules/international.hpp>    // international
 #include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, capture_precedence
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
-#include <ranges>                               // views::transform
+#include <ranges>                               // transform
 #include <vector>                               // vector
 
 using namespace dctl::core;

@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(IsUp)
 {
         auto const angles = std::array{ 45_deg, 90_deg, 135_deg };
         BOOST_CHECK(
-                std::all_of(angles.begin(), angles.end(), [](auto a) {
+                std::ranges::all_of(angles, [](auto a) {
                         return is_up(a);
                 })
         );

@@ -17,8 +17,8 @@ auto is_associativity(Object const& obj, Group const& g) noexcept
         auto const set = group::set(g);
         auto const op = group::op(g);
 
-        return std::all_of(set.begin(), set.end(), [&](auto const& a) {
-                return std::all_of(set.begin(), set.end(), [&](auto const& b) {
+        return std::ranges::all_of(set, [&](auto const& a) {
+                return std::ranges::all_of(set, [&](auto const& b) {
                         return op(obj, op(a, b)) == op(op(obj, a), b);
                 });
         });

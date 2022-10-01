@@ -32,11 +32,11 @@ struct Fixture
 
                 auto const move_str = [](auto const& m) { return str_numeric(m); };
                 std::vector<std::string> notations;
-                std::transform(moves.begin(), moves.end(), std::back_inserter(notations), std::cref(move_str));
+                std::ranges::transform(moves, std::back_inserter(notations), std::cref(move_str));
 
                 BOOST_CHECK(
-                        std::is_permutation(
-                                rng.begin(), rng.end(), notations.begin(), [](auto const& lhs, auto const& rhs) {
+                        std::ranges::is_permutation(
+                                rng, notations, [](auto const& lhs, auto const& rhs) {
                                 return
                                         boost::algorithm::trim_copy(lhs) ==
                                         boost::algorithm::trim_copy(rhs)

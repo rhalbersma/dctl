@@ -32,7 +32,7 @@ int main()
                 //std::cout << "[" << p.reversible_actions() << "]\n";
 
                 auto actions = model::drop_duplicates_gen.generate(state);
-                std::sort(actions.begin(), actions.end(), [](auto const& lhs, auto const& rhs) {
+                std::ranges::sort(actions, [](auto const& lhs, auto const& rhs) {
                         return str_numeric(lhs) < str_numeric(rhs);
                 });
 
@@ -49,7 +49,7 @@ int main()
                 int choice = 0;
 
                 for (std::string input; std::getline(std::cin, input);) {
-                        std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+                        std::ranges::transform(input, input.begin(), ::tolower);
 
                         if (actions.empty()) {
                                 if (input.empty() || input == "u") {

@@ -100,7 +100,7 @@ public:
                 std::vector<unsigned> ordered;
                 boost::topological_sort(m_graph, std::back_inserter(ordered));
                 std::cout << "Topologically sorted = ";
-                std::cout << std::boolalpha << std::is_sorted(ordered.begin(), ordered.end()) << "\n";
+                std::cout << std::boolalpha << std::ranges::is_sorted(ordered) << "\n";
         }
 private:
         void subdivide(int n)
@@ -148,7 +148,7 @@ private:
                         return lhs.size() < rhs.size();
                 })).size();
 
-                std::sort(m_subdivisions.begin(), m_subdivisions.end(), [](auto const& lhs, auto const& rhs) {
+                std::ranges::sort(m_subdivisions, [](auto const& lhs, auto const& rhs) {
                         return lhs.size() < rhs.size();
                 });
 

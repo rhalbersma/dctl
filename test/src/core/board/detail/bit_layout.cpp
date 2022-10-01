@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllDimens
         auto const dim = detail::dimensions{ T::width, T::height, T::coloring };
 
         BOOST_CHECK(
-                std::all_of(C_N.begin(), C_N.begin(), [&](auto const& g) {
+                std::ranges::all_of(C_N, [&](auto const& g) {
                         return group::action::is_realized(dim, g);
                 })
         );

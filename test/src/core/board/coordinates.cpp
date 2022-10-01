@@ -8,9 +8,9 @@
                                                 // ktar<10, 12>, Compact_10_12, Compact_12_10, basic_board<12, 10>, canadian, srilankan, dumm
 #include <dctl/core/board/angle.hpp>            // _deg, inverse, rotate
 #include <dctl/core/board/coordinates.hpp>      // operator==, rotate, to_sco
-#include <boost/range/irange.hpp>               // irange
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE_TEMPLATE, BOOST_CHECK
 #include <algorithm>                            // all_of
+#include <ranges>                               // iota
 #include <type_traits>                          // common_type
 #include <vector>                               // vector
 
@@ -46,10 +46,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GroupActionIsRealizedForAllCyclicGroupsOnAllSquare
                 C1, C2, C4
         };
 
-        auto const squares = boost::irange(0, T::size());
+        auto const squares = std::views::iota(0, T::size());
         BOOST_CHECK(
-                std::all_of(C_N.begin(), C_N.end(), [=](auto const& g) {
-                        return std::all_of(squares.begin(), squares.end(), [&](auto i) {
+                std::ranges::all_of(C_N, [=](auto const& g) {
+                        return std::ranges::all_of(squares, [&](auto i) {
                                 auto const coord = to_sco(i, T::inner_grid);
                                 return group::action::is_realized(coord, g);
                         });

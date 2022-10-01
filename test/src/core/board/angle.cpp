@@ -5,9 +5,9 @@
 
 #include <core/board/group.hpp>         // action::is_realized, make_group
 #include <dctl/core/board/angle.hpp>    // angle, _deg, inverse, rotate
-#include <boost/range/irange.hpp>       // irange
 #include <boost/test/unit_test.hpp>     // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_CHECK
 #include <algorithm>                    // all_of
+#include <ranges>                       // iota
 #include <type_traits>                  // common_type
 #include <vector>                       // vector
 
@@ -49,11 +49,11 @@ BOOST_AUTO_TEST_CASE(GroupActionIsRealizedForRegularCyclicGroupsOnAllAngles)
                 C1, C2, C4, C8
         };
 
-        auto const angles = boost::irange(0, 360);
+        auto const angles = std::views::iota(0, 360);
 
         BOOST_CHECK(
-                std::all_of(C_N.begin(), C_N.end(), [=](auto const& g) {
-                        return std::all_of(angles.begin(), angles.end(), [&](auto a) {
+                std::ranges::all_of(C_N, [=](auto const& g) {
+                        return std::ranges::all_of(angles, [&](auto a) {
                                 return group::action::is_realized(angle{a}, g);
                         });
                 })
