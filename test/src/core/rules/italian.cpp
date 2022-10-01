@@ -3,11 +3,12 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/rules/precedence.hpp>            // is_consistent
+#include <core/rules/precedence.hpp>            // is_strictly_sorted
 #include <dctl/core/rules/italian.hpp>          // italian
 #include <dctl/core/state/piece.hpp>            // king, pawn
-#include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, is_superior_rank_jump, is_ordering, equal_to, less
+#include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, is_superior_rank_jump, is_ordering, capture_precedence
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
+#include <ranges>                               // views::transform
 #include <vector>                               // vector
 
 using namespace dctl::core;
@@ -43,7 +44,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 auto const& piece_order()  const noexcept { return m_piece_order;          }
         };
 
-        auto const moves = std::vector<Action>
+        auto const captures = std::vector<Action>
         {
                 { 1, 0, piece::pawn, {      } },
                 { 1, 0, piece::king, {      } },
@@ -61,9 +62,9 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 { 3, 2, piece::king, { 0, 1 } },
                 { 3, 2, piece::king, { 0, 2 } },
                 { 3, 2, piece::king, { 1, 2 } }
-        };
+        } | std::views::transform([](auto const& action) { return capture_precedence(action); });
 
-        BOOST_CHECK(xxx_precedence::is_consistent(moves));
+        BOOST_CHECK(is_strictly_sorted(captures));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

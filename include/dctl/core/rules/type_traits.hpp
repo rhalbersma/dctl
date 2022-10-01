@@ -6,10 +6,11 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/board/angle.hpp>    // dir_...
-#include <dctl/util/tti.hpp>            // DCTL_PP_TTI_CONSTANT
+#include <dctl/util/tti.hpp>            // PP_TTI_STATIC_MEMBER
 #include <dctl/util/type_traits.hpp>    // rules_t
 #include <tabula/tuple.hpp>             // tuple_c
 #include <algorithm>                    // min, max
+#include <compare>                      // strong_ordering
 #include <concepts>                     // same_as
 #include <tuple>                        // make_tuple
 #include <type_traits>                  // conditional_t, decay_t, false_type, true_type
@@ -17,10 +18,10 @@
 
 namespace dctl::core {
 
-DCTL_PP_TTI_CONSTANT(width, 8)
-DCTL_PP_TTI_CONSTANT(height, 8)
-DCTL_PP_TTI_CONSTANT(coloring, 1)
-DCTL_PP_TTI_CONSTANT(is_orthogonal_jumps, false)
+PP_TTI_STATIC_MEMBER(width, 8)
+PP_TTI_STATIC_MEMBER(height, 8)
+PP_TTI_STATIC_MEMBER(coloring, 1)
+PP_TTI_STATIC_MEMBER(is_orthogonal_jumps, false)
 
 template<class Geometry>
 inline constexpr auto is_placeable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 1 && (coloring_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 1);
@@ -31,9 +32,9 @@ inline constexpr auto is_pushable_v = std::min(width_v<Geometry>, height_v<Geome
 template<class Geometry>
 inline constexpr auto is_jumpable_v = std::min(width_v<Geometry>, height_v<Geometry>) >= 3 && (coloring_v<Geometry> || std::max(width_v<Geometry>, height_v<Geometry>) > 3);
 
-DCTL_PP_TTI_CONSTANT(initial_position_gap, 2)
+PP_TTI_STATIC_MEMBER(initial_position_gap, 2)
 
-DCTL_PP_TTI_CONSTANT(is_long_ranged_king, false)
+PP_TTI_STATIC_MEMBER(is_long_ranged_king, false)
 
 struct short_ranged_tag : std::false_type {};
 struct  long_ranged_tag : std:: true_type {};
@@ -45,12 +46,12 @@ using king_range_category_t = std::conditional_t<
         short_ranged_tag
 >;
 
-DCTL_PP_TTI_CONSTANT(is_land_behind_piece, false)
-DCTL_PP_TTI_CONSTANT(is_halt_behind_king, false)
-DCTL_PP_TTI_CONSTANT(is_backward_pawn_jump, false)
-DCTL_PP_TTI_CONSTANT(is_superior_rank_jump, false)
-DCTL_PP_TTI_CONSTANT(is_passing_promotion, false)
-DCTL_PP_TTI_CONSTANT(is_passing_capture, false)
+PP_TTI_STATIC_MEMBER(is_land_behind_piece, false)
+PP_TTI_STATIC_MEMBER(is_halt_behind_king, false)
+PP_TTI_STATIC_MEMBER(is_backward_pawn_jump, false)
+PP_TTI_STATIC_MEMBER(is_superior_rank_jump, false)
+PP_TTI_STATIC_MEMBER(is_passing_promotion, false)
+PP_TTI_STATIC_MEMBER(is_passing_capture, false)
 
 template<class Rules>
 inline constexpr auto is_reverse_king_jump_v = is_long_ranged_king_v<Rules> && is_passing_capture_v<Rules>;
@@ -68,16 +69,16 @@ inline constexpr auto is_unambiguous_pawn_jump_v =
         (is_orthogonal_jumps_v<Rules> && is_reverse_king_jump_v<Rules>))
 ;
 
-DCTL_PP_TTI_CONSTANT(is_quantity_precedence, false)
-DCTL_PP_TTI_CONSTANT(is_contents_precedence, false)
-DCTL_PP_TTI_CONSTANT(is_modality_precedence, false)
-DCTL_PP_TTI_CONSTANT(is_ordering_precedence, false)
+PP_TTI_STATIC_MEMBER(is_quantity_precedence, false)
+PP_TTI_STATIC_MEMBER(is_contents_precedence, false)
+PP_TTI_STATIC_MEMBER(is_modality_precedence, false)
+PP_TTI_STATIC_MEMBER(is_ordering_precedence, false)
 
 inline constexpr auto trivial_precedence_c = [](auto&&) {
         return std::make_tuple();
 };
 
-DCTL_PP_TTI_CONSTANT(precedence, trivial_precedence_c)
+PP_TTI_STATIC_MEMBER(precedence, trivial_precedence_c)
 
 template<class Rules>
 inline constexpr auto is_trivial_precedence_v = std::same_as<
@@ -85,111 +86,38 @@ inline constexpr auto is_trivial_precedence_v = std::same_as<
         decltype(trivial_precedence_c)
 >;
 
-namespace xxx_precedence {
-
-struct equal_to
+template<class Action>
+struct capture_precedence
 {
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
+        Action const& action;
+
+        constexpr auto operator<=>(capture_precedence const& other) const noexcept
         {
-                using rules_type1 = rules_t<std::decay_t<Action1>>;
-                using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::same_as<rules_type1, rules_type2>);
+                using rules_type = rules_t<Action>;
                 return
-                        precedence_v<rules_type1>(std::forward<Action1>(a1)) ==
-                        precedence_v<rules_type2>(std::forward<Action2>(a2))
+                        precedence_v<rules_type>(this->action) <=>
+                        precedence_v<rules_type>(other.action)
                 ;
         }
 };
-
-struct less
-{
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
-        {
-                using rules_type1 = rules_t<std::decay_t<Action1>>;
-                using rules_type2 = rules_t<std::decay_t<Action2>>;
-                static_assert(std::same_as<rules_type1, rules_type2>);
-                return
-                        precedence_v<rules_type1>(std::forward<Action1>(a1)) <
-                        precedence_v<rules_type2>(std::forward<Action2>(a2))
-                ;
-        }
-};
-
-struct not_equal_to
-{
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
-        {
-                return !equal_to{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
-        }
-};
-
-struct greater
-{
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
-        {
-                return less{}(std::forward<Action1>(a2), std::forward<Action1>(a1));
-        }
-};
-
-struct greater_equal
-{
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
-        {
-                return !less{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
-        }
-};
-
-struct less_equal
-{
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
-        {
-                return !less{}(std::forward<Action1>(a2), std::forward<Action1>(a1));
-        }
-};
-
-struct equivalent_to
-{
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1 const& a1, Action2 const& a2) const noexcept
-        {
-                return !(less{}(a1, a2) || less{}(a2, a1));
-        }
-};
-
-struct not_equivalent_to
-{
-        template<class Action1, class Action2>
-        constexpr auto operator()(Action1&& a1, Action2&& a2) const noexcept
-        {
-                return !equivalent_to{}(std::forward<Action1>(a1), std::forward<Action1>(a2));
-        }
-};
-
-}       // namespace xxx_precedence
 
 struct keep_duplicates_tag : std::false_type {};
 struct drop_duplicates_tag : std:: true_type {};
 
-DCTL_PP_TTI_CONSTANT(max_same_king_move, 0)
+PP_TTI_STATIC_MEMBER(max_same_king_move, 0)
 
 template<class Rules>
 inline constexpr auto is_restricted_king_move_v = max_same_king_move_v<Rules> != 0;
 
-DCTL_PP_TTI_CONSTANT(max_reversible_moves, 0)
+PP_TTI_STATIC_MEMBER(max_reversible_moves, 0)
 
 template<class Rules>
 inline constexpr auto is_restricted_reversible_moves_v = max_reversible_moves_v<Rules> != 0;
 
-DCTL_PP_TTI_CONSTANT(pushsep, '-')
-DCTL_PP_TTI_CONSTANT(jumpsep, 'x')
+PP_TTI_STATIC_MEMBER(pushsep, '-')
+PP_TTI_STATIC_MEMBER(jumpsep, 'x')
 
-DCTL_PP_TTI_CONSTANT(is_algebraic_notation, false)
+PP_TTI_STATIC_MEMBER(is_algebraic_notation, false)
 
 enum class notation
 {
@@ -205,9 +133,9 @@ inline constexpr auto notation_v =
         notation::numeric
 ;
 
-DCTL_PP_TTI_CONSTANT(pawn_move_directions, (tabula::tuple_c<int, dir_NE, dir_NW>))
-DCTL_PP_TTI_CONSTANT(pawn_jump_directions, (tabula::tuple_c<int, dir_NE, dir_NW>))
-DCTL_PP_TTI_CONSTANT(king_move_directions, (tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
-DCTL_PP_TTI_CONSTANT(king_jump_directions, (tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
+PP_TTI_STATIC_MEMBER(pawn_move_directions, (tabula::tuple_c<int, dir_NE, dir_NW>))
+PP_TTI_STATIC_MEMBER(pawn_jump_directions, (tabula::tuple_c<int, dir_NE, dir_NW>))
+PP_TTI_STATIC_MEMBER(king_move_directions, (tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
+PP_TTI_STATIC_MEMBER(king_jump_directions, (tabula::tuple_c<int, dir_NE, dir_NW, dir_SW, dir_SE>))
 
 }       // namespace dctl::core

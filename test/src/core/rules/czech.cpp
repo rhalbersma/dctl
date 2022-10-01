@@ -3,11 +3,12 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <core/rules/precedence.hpp>            // is_consistent
+#include <core/rules/precedence.hpp>            // is_strictly_sorted
 #include <dctl/core/rules/czech.hpp>            // czech
 #include <dctl/core/state/piece.hpp>            // king, pawn
-#include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, jumpsep, is_absolute_modality, equal_to, less
+#include <dctl/core/rules/type_traits.hpp>      // is_backward_pawn_jump, king_range_category, long_ranged_tag, is_trivial_precedence, jumpsep, is_absolute_modality, capture_precedence
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_SUITE_END
+#include <ranges>                               // views::transform
 #include <vector>                               // vector
 
 using namespace dctl::core;
@@ -33,13 +34,13 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
                 constexpr auto is_with_king() const noexcept { return m_with == piece::king; }
         };
 
-        auto const moves = std::vector<Action>
+        auto const captures = std::vector<Action>
         {
                 { piece::pawn },
                 { piece::king }
-        };
+        } | std::views::transform([](auto const& action) { return capture_precedence(action); });
 
-        BOOST_CHECK(xxx_precedence::is_consistent(moves));
+        BOOST_CHECK(is_strictly_sorted(captures));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
