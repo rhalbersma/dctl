@@ -85,18 +85,22 @@ inline constexpr auto is_trivial_precedence_v = std::same_as<
         decltype(trivial_precedence_c)
 >;
 
-template<class Action, class Rules = rules_t<Action>>
-struct capture_precedence
+template<class Action, class Rules = rules_t<Action>, auto Order = precedence_v<Rules>>
+struct precedence
 {
-        Action const& action;
+        Action const& m_action;
 
-        constexpr auto operator<=>(capture_precedence const& other) const noexcept
+        constexpr auto operator<=>(precedence const& other) const noexcept
         {
                 return
-                        precedence_v<Rules>(this->action) <=>
-                        precedence_v<Rules>(other.action)
+                        Order(this->m_action) <=>
+                        Order(other.m_action)
                 ;
         }
+};
+
+inline constexpr auto to_precedence = [](auto&& action) {
+        return precedence(std::forward<decltype(action)>(action));
 };
 
 struct keep_duplicates_tag : std::false_type {};

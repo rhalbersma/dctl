@@ -164,14 +164,14 @@ private:
                         is_trivial_precedence_v<rules_type> &&
                         std::same_as<DuplicatesPolicy, keep_duplicates_tag>
                 ) {
-                        assert(m_actions.empty() || (capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back())) == 0);
+                        assert(m_actions.empty() || (precedence(m_candidate_action) <=> precedence(m_actions.back())) == 0);
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
                         std::same_as<DuplicatesPolicy, drop_duplicates_tag>
                 ) {
-                        assert(m_actions.empty() || (capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back())) == 0);
+                        assert(m_actions.empty() || (precedence(m_candidate_action) <=> precedence(m_actions.back())) == 0);
                         if (m_actions.empty() || is_small() || is_unique()) {
                                 m_actions.push_back(m_candidate_action);
                         }
@@ -183,7 +183,7 @@ private:
                         if (m_actions.empty()) {
                                 return m_actions.push_back(m_candidate_action);
                         }
-                        auto const order = capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back());
+                        auto const order = precedence(m_candidate_action) <=> precedence(m_actions.back());
                         if (order >= 0) {
                                 if (order > 0) {
                                         m_actions.clear();
@@ -198,7 +198,7 @@ private:
                         if (m_actions.empty()) {
                                 return m_actions.push_back(m_candidate_action);
                         }
-                        auto const order = capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back());
+                        auto const order = precedence(m_candidate_action) <=> precedence(m_actions.back());
                         if (order >= 0) {
                                 if (order > 0) {
                                         m_actions.clear();
@@ -219,7 +219,7 @@ private:
                 requires std::same_as<DuplicatesPolicy, drop_duplicates_tag>
         {
                 assert(!m_actions.empty());
-                assert((capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back())) == 0);
+                assert((precedence(m_candidate_action) <=> precedence(m_actions.back())) == 0);
                 return std::ranges::none_of(m_actions, [&](auto const& a) { return a == m_candidate_action; });
         }
 };
