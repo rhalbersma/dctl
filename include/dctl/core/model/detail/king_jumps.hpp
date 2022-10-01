@@ -41,7 +41,7 @@ class king_jumps<Rules, Board, color_<Side>>
 public:
         static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
         {
-                return std::any_of(kings.begin(), kings.end(), [&](auto from_sq) {
+                return std::ranges::any_of(kings, [&](auto from_sq) {
                         return tabula::any_of(king_jump_directions, [&](auto dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {

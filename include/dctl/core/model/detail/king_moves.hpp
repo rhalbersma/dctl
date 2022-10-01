@@ -80,15 +80,15 @@ class king_moves
 public:
         static auto detect(set_type const& kings, set_type const& empty) noexcept
         {
-                return std::any_of(kings.begin(), kings.end(), [&](auto from_sq) {
+                return std::ranges::any_of(kings, [&](auto from_sq) {
                         return !attacks(from_sq, empty).empty();
                 });
         }
 
         static auto count(set_type const& kings, set_type const& empty) noexcept
         {
-                return std::accumulate(kings.begin(), kings.end(), 0, [&](auto result, auto from_sq) {
-                        return result + attacks(from_sq, empty).ssize();
+                return std::accumulate(kings.begin(), kings.end(), 0, [&](auto sum, auto from_sq) {
+                        return sum + attacks(from_sq, empty).ssize();
                 });
         }
 
