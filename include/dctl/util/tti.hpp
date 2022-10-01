@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#define DCTL_PP_TTI_CONSTANT(NAME, DEFAULT)     \
+#define PP_TTI_STATIC_MEMBER(NAME, DEFAULT)     \
                                                 \
 template<class T>                               \
 inline constexpr auto NAME ## _v = []() {       \
