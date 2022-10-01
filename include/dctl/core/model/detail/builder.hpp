@@ -164,14 +164,14 @@ private:
                         is_trivial_precedence_v<rules_type> &&
                         std::same_as<DuplicatesPolicy, keep_duplicates_tag>
                 ) {
-                        assert(m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
+                        assert(m_actions.empty() || (capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back())) == 0);
                         m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
                         std::same_as<DuplicatesPolicy, drop_duplicates_tag>
                 ) {
-                        assert(m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
+                        assert(m_actions.empty() || (capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back())) == 0);
                         if (m_actions.empty() || is_small() || is_unique()) {
                                 m_actions.push_back(m_candidate_action);
                         }
@@ -180,15 +180,16 @@ private:
                         !is_trivial_precedence_v<rules_type> &&
                         std::same_as<DuplicatesPolicy, keep_duplicates_tag>
                 ) {
-                        if (m_actions.empty() || xxx_precedence::equal_to{}(m_candidate_action, m_actions.back())) {
+                        if (m_actions.empty()) {
                                 return m_actions.push_back(m_candidate_action);
                         }
-                        if (xxx_precedence::less{}(m_candidate_action, m_actions.back())) {
-                                return;
+                        auto const order = capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back());
+                        if (order >= 0) {
+                                if (order > 0) {
+                                        m_actions.clear();
+                                }
+                                m_actions.push_back(m_candidate_action);
                         }
-                        assert(xxx_precedence::greater{}(m_candidate_action, m_actions.back()));
-                        m_actions.clear();
-                        m_actions.push_back(m_candidate_action);
                 }
                 if constexpr (
                         !is_trivial_precedence_v<rules_type> &&
@@ -197,18 +198,15 @@ private:
                         if (m_actions.empty()) {
                                 return m_actions.push_back(m_candidate_action);
                         }
-                        if (xxx_precedence::equal_to{}(m_candidate_action, m_actions.back())) {
-                                if (is_small() || is_unique()) {
+                        auto const order = capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back());
+                        if (order >= 0) {
+                                if (order > 0) {
+                                        m_actions.clear();
+                                        m_actions.push_back(m_candidate_action);
+                                } else if (is_small() || is_unique()) {
                                         m_actions.push_back(m_candidate_action);
                                 }
-                                return;
                         }
-                        if (xxx_precedence::less{}(m_candidate_action, m_actions.back())) {
-                                return;
-                        }
-                        assert(xxx_precedence::greater{}(m_candidate_action, m_actions.back()));
-                        m_actions.clear();
-                        m_actions.push_back(m_candidate_action);
                 }
         }
 
@@ -217,12 +215,12 @@ private:
                 return m_candidate_action.num_captured_pieces() < large_jump_v<rules_type>;
         }
 
-        auto is_unique() const // Throws: Nothing.
+        auto is_unique() const noexcept
                 requires std::same_as<DuplicatesPolicy, drop_duplicates_tag>
         {
                 assert(!m_actions.empty());
-                assert(xxx_precedence::equal_to{}(m_candidate_action, m_actions.back()));
-                return std::none_of(m_actions.cbegin(), m_actions.cend(), [&](auto const& a) { return a == m_candidate_action; });
+                assert((capture_precedence(m_candidate_action) <=> capture_precedence(m_actions.back())) == 0);
+                return std::ranges::none_of(m_actions, [&](auto const& a) { return a == m_candidate_action; });
         }
 };
 
