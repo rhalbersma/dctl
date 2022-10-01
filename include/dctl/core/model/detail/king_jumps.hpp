@@ -37,7 +37,7 @@ class king_jumps<Rules, Board, color_<Side>>
         using  mask_type = basic_mask<board_type>;
         using   set_type = set_t<mask_type>;
 
-        constexpr static auto king_jump_directions = king_jump_directions_v<rules_type>;
+        static constexpr auto king_jump_directions = king_jump_directions_v<rules_type>;
 public:
         static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
         {

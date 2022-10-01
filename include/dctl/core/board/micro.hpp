@@ -12,8 +12,8 @@ namespace block_adl {
 // http://www.dvuhhodki.narod.ru/simple30.html
 struct micro
 {
-        constexpr static auto width = 6;
-        constexpr static auto height = 6;
+        static constexpr auto width = 6;
+        static constexpr auto height = 6;
 };
 
 }       // namespace block_adl

@@ -10,7 +10,6 @@
 #include <dctl/util/type_traits.hpp>    // rules_t
 #include <tabula/tuple.hpp>             // tuple_c
 #include <algorithm>                    // min, max
-#include <compare>                      // strong_ordering
 #include <concepts>                     // same_as
 #include <tuple>                        // make_tuple
 #include <type_traits>                  // conditional_t, decay_t, false_type, true_type
@@ -86,17 +85,16 @@ inline constexpr auto is_trivial_precedence_v = std::same_as<
         decltype(trivial_precedence_c)
 >;
 
-template<class Action>
+template<class Action, class Rules = rules_t<Action>>
 struct capture_precedence
 {
         Action const& action;
 
         constexpr auto operator<=>(capture_precedence const& other) const noexcept
         {
-                using rules_type = rules_t<Action>;
                 return
-                        precedence_v<rules_type>(this->action) <=>
-                        precedence_v<rules_type>(other.action)
+                        precedence_v<Rules>(this->action) <=>
+                        precedence_v<Rules>(other.action)
                 ;
         }
 };

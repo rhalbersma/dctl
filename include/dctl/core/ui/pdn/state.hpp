@@ -27,9 +27,9 @@ struct token_set
 :
         public basic_token_set<'B', 'W', '.'>
 {
-        constexpr static auto king  = 'K';
-        constexpr static auto colon = ':';
-        constexpr static auto comma = ',';
+        static constexpr auto king  = 'K';
+        static constexpr auto colon = ':';
+        static constexpr auto comma = ',';
 };
 
 template<class Rules, class Board = basic_board<Rules>, class Token = token_set>

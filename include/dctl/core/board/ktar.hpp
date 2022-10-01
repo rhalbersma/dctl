@@ -11,9 +11,9 @@ namespace block_adl {
 template<int Width, int Height>
 struct ktar
 {
-        constexpr static auto width = Width;
-        constexpr static auto height = Height;
-        constexpr static auto coloring = 0;
+        static constexpr auto width = Width;
+        static constexpr auto height = Height;
+        static constexpr auto coloring = 0;
 };
 
 }       // namespace block_adl

@@ -17,24 +17,24 @@ namespace block_adl {
 // http://www.friesdammen.nl/dam/pagefr.php?articleID=20
 struct frisian
 {
-        constexpr static auto width                     = 10;
-        constexpr static auto height                    = 10;
-        constexpr static auto coloring                  = 1;
+        static constexpr auto width                     = 10;
+        static constexpr auto height                    = 10;
+        static constexpr auto coloring                  = 1;
 
-        constexpr static auto is_backward_pawn_jump     = true;
-        constexpr static auto is_long_ranged_king       = true;
+        static constexpr auto is_backward_pawn_jump     = true;
+        static constexpr auto is_long_ranged_king       = true;
 
-        constexpr static auto is_orthogonal_jumps       = true;
-        constexpr static auto max_same_king_move        = 3;
+        static constexpr auto is_orthogonal_jumps       = true;
+        static constexpr auto max_same_king_move        = 3;
 
-        constexpr static auto is_quantity_precedence    = true;
-        constexpr static auto is_contents_precedence    = true;
-        constexpr static auto is_modality_precedence    = true;
+        static constexpr auto is_quantity_precedence    = true;
+        static constexpr auto is_contents_precedence    = true;
+        static constexpr auto is_modality_precedence    = true;
 
-        constexpr static auto pawn_jump_directions = tabula::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
-        constexpr static auto king_jump_directions = tabula::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
+        static constexpr auto pawn_jump_directions = tabula::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
+        static constexpr auto king_jump_directions = tabula::tuple_c<int, dir_E, dir_NE, dir_N, dir_NW, dir_W, dir_SW, dir_S, dir_SE>;
 
-        constexpr static auto precedence = [](auto const& a) {
+        static constexpr auto precedence = [](auto const& a) {
                 constexpr auto max_captured_pieces = board_t<std::decay_t<decltype(a)>>::bits();
                 auto const num_captured_kings = a.num_captured_kings();
                 return std::make_tuple(

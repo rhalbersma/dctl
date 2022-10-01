@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct Action
         {
-                using rules_type [[maybe_unused]] = italian;
+                using rules_type [[maybe_unused]] = T;
                 int m_num_captured_pieces;
                 int m_num_captured_kings;
                 piece m_with;

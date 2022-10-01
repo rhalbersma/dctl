@@ -10,8 +10,8 @@ namespace block_adl {
 
 struct nano
 {
-        constexpr static auto width = 4;
-        constexpr static auto height = 4;
+        static constexpr auto width = 4;
+        static constexpr auto height = 4;
 };
 
 }       // namespace block_adl

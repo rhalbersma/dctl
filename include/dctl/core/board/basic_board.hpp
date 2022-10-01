@@ -24,10 +24,10 @@ namespace block_adl {
 template<int Width, int Height, int Coloring = 1, bool IsOrthogonalJumps = false>
 struct rectangular
 {
-        constexpr static auto width = Width;
-        constexpr static auto height = Height;
-        constexpr static auto coloring = Coloring;
-        constexpr static auto is_orthogonal_jumps = IsOrthogonalJumps;
+        static constexpr auto width = Width;
+        static constexpr auto height = Height;
+        static constexpr auto coloring = Coloring;
+        static constexpr auto is_orthogonal_jumps = IsOrthogonalJumps;
 };
 
 template<class Geometry>
@@ -35,33 +35,33 @@ class basic_board
 {
 public:
         using type = basic_board;
-        constexpr static auto width               = width_v<Geometry>;
-        constexpr static auto height              = height_v<Geometry>;
-        constexpr static auto coloring            = coloring_v<Geometry>;
-        constexpr static auto is_orthogonal_jumps = is_orthogonal_jumps_v<Geometry>;
+        static constexpr auto width               = width_v<Geometry>;
+        static constexpr auto height              = height_v<Geometry>;
+        static constexpr auto coloring            = coloring_v<Geometry>;
+        static constexpr auto is_orthogonal_jumps = is_orthogonal_jumps_v<Geometry>;
 
-        constexpr static auto edge = is_orthogonal_jumps ? 2 : 1;
-        constexpr static auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, coloring}};
-        constexpr static auto orientation = std::min(
+        static constexpr auto edge = is_orthogonal_jumps ? 2 : 1;
+        static constexpr auto inner_grid = detail::InnerGrid{detail::dimensions{width, height, coloring}};
+        static constexpr auto orientation = std::min(
                 { 0_deg, 90_deg, 180_deg, 270_deg },
                 [g = detail::bit_layout{inner_grid, edge}]
                 (angle const lhs, angle const rhs) {
                         return rotate(g, lhs).size() < rotate(g, rhs).size();
                 }
         );
-        constexpr static auto outer_grid = detail::bit_layout{rotate(inner_grid, orientation), edge};
+        static constexpr auto outer_grid = detail::bit_layout{rotate(inner_grid, orientation), edge};
 
 private:
-        constexpr static std::size_t NumBits = outer_grid.size();
-        constexpr static std::size_t NumSquares = inner_grid.size();
+        static constexpr std::size_t NumBits = outer_grid.size();
+        static constexpr std::size_t NumSquares = inner_grid.size();
 
 public:
-        constexpr static auto size() noexcept
+        static constexpr auto size() noexcept
         {
                 return static_cast<int>(NumSquares);
         }
 
-        constexpr static auto bits() noexcept
+        static constexpr auto bits() noexcept
         {
                 return static_cast<int>(NumBits);
         }
@@ -86,7 +86,7 @@ public:
         }
 
 private:
-        constexpr static auto numeric0_table = []() {
+        static constexpr auto numeric0_table = []() {
                 auto table = std::array<int, NumBits>{};
                 for (auto n = 0; n < bits(); ++n) {
                         table[static_cast<std::size_t>(n)] =
@@ -96,7 +96,7 @@ private:
                 return table;
         }();
 
-        constexpr static auto embedding0_table = []() {
+        static constexpr auto embedding0_table = []() {
                 auto table = std::array<int, NumSquares>{};
                 for (auto sq = 0; sq < size(); ++sq) {
                         table[static_cast<std::size_t>(sq)] =
@@ -107,51 +107,51 @@ private:
         }();
 
 public:
-        constexpr static auto numeric0(int const n) // Throws: Nothing.
+        static constexpr auto numeric0(int const n) // Throws: Nothing.
         {
                 assert(0 <= n); assert(n < bits());
                 return numeric0_table[static_cast<std::size_t>(n)];
         }
 
-        constexpr static auto numeric1(int const n) // Throws: Nothing.
+        static constexpr auto numeric1(int const n) // Throws: Nothing.
         {
                 assert(0 <= n); assert(n < bits());
                 return numeric0(n) + 1;
         }
 
-        constexpr static auto embedding0(int const sq) // Throws: Nothing.
+        static constexpr auto embedding0(int const sq) // Throws: Nothing.
         {
                 assert(0 <= sq); assert(sq < size());
                 return embedding0_table[static_cast<std::size_t>(sq)];
         }
 
-        constexpr static auto embedding1(int const sq) // Throws: Nothing.
+        static constexpr auto embedding1(int const sq) // Throws: Nothing.
         {
                 assert(1 <= sq); assert(sq <= size());
                 return embedding0(sq - 1);
         }
 
-        constexpr static auto is_square(coordinates<upper_left> const& coord) noexcept
+        static constexpr auto is_square(coordinates<upper_left> const& coord) noexcept
         {
                 return static_cast<bool>((coord.x % 2) ^ (coord.y % 2)) != inner_grid.upper_left_is_square();
         }
 
-        constexpr static auto is_square(coordinates<lower_left> const& coord) noexcept
+        static constexpr auto is_square(coordinates<lower_left> const& coord) noexcept
         {
                 return static_cast<bool>((coord.x % 2) ^ (coord.y % 2)) != inner_grid.lower_left_is_square();
         }
 
-        constexpr static auto to_square(coordinates<upper_left> const& coord) noexcept
+        static constexpr auto to_square(coordinates<upper_left> const& coord) noexcept
         {
                 return core::to_square(coord, inner_grid);
         }
 
-        constexpr static auto to_square(coordinates<lower_left> const& coord) noexcept
+        static constexpr auto to_square(coordinates<lower_left> const& coord) noexcept
         {
                 return core::to_square(coord, inner_grid);
         }
 
-        constexpr static auto is_onboard(int const sq) noexcept
+        static constexpr auto is_onboard(int const sq) noexcept
         {
                 return static_cast<unsigned>(sq) < static_cast<unsigned>(NumBits);
         }

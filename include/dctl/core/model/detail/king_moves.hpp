@@ -26,7 +26,7 @@ class king_moves
         using mask_type = basic_mask<Board>;
         using  set_type = set_t<mask_type>;
 
-        constexpr static auto king_move_directions = king_move_directions_v<Rules>;
+        static constexpr auto king_move_directions = king_move_directions_v<Rules>;
 
         using king_move_directions_t = std::decay_t<decltype(king_move_directions)>;
         using basic_king_move_scan = board_scan_sq_dir<Board, king_move_directions_t, is_long_ranged_king_v<Rules>, false, true>;

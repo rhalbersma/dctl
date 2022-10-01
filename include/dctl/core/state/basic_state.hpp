@@ -96,7 +96,7 @@ public:
                 return tied(*this) == tied(other);
         }
 
-        constexpr static auto initial(int const separation = initial_position_gap_v<Rules> + Board::height % 2)
+        static constexpr auto initial(int const separation = initial_position_gap_v<Rules> + Board::height % 2)
                 -> basic_state
         {
                 auto const black_pawns = mask_type::initial(black_c, separation);

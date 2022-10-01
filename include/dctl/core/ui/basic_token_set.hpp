@@ -12,9 +12,9 @@ namespace dctl::core {
 template<char Black, char White, char Empty>
 struct basic_token_set
 {
-        constexpr static auto black = Black;
-        constexpr static auto white = White;
-        constexpr static auto empty = Empty;
+        static constexpr auto black = Black;
+        static constexpr auto white = White;
+        static constexpr auto empty = Empty;
 
         inline const static char color[] =
         {

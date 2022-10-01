@@ -22,7 +22,7 @@ class binomial
         static_assert(std::is_integral_v<IntegralType>);
 
         // https://en.wikipedia.org/wiki/Pascal's_triangle
-        constexpr static auto pascal_triangle = []() {
+        static constexpr auto pascal_triangle = []() {
                 auto choose = std::array<std::array<IntegralType, static_cast<std::size_t>(K + 1)>, static_cast<std::size_t>(N + 1)>{};
 
                 /*
@@ -74,7 +74,7 @@ class binomial
         }();
 
 public:
-        constexpr static auto coefficient(int n, int k) // Throws: Nothing.
+        static constexpr auto coefficient(int n, int k) // Throws: Nothing.
                 -> IntegralType
         {
                 if (k > n - k) {

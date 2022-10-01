@@ -10,8 +10,8 @@ namespace block_adl {
 
 struct spantsiretti
 {
-        constexpr static auto width = 10;
-        constexpr static auto height = 8;
+        static constexpr auto width = 10;
+        static constexpr auto height = 8;
 };
 
 }       // namespace block_adl

@@ -28,10 +28,10 @@ class gamereq
         // The format and semantics of the GAMEREQ message type can be found at:
         // http://www.mesander.nl/damexchange/egamereq.htm
 
-        constexpr static auto s_header = "R";
-        constexpr static auto s_version = 1;
-        constexpr static auto s_color_to_move_first = 'W';
-        constexpr static auto s_starting_position = "\
+        static constexpr auto s_header = "R";
+        static constexpr auto s_version = 1;
+        static constexpr auto s_color_to_move_first = 'W';
+        static constexpr auto s_starting_position = "\
                   z   z   z   z   z \
                 z   z   z   z   z   \
                   z   z   z   z   z \
@@ -94,7 +94,7 @@ public:
                 m_position{p}
         {}
 
-        constexpr static auto header() noexcept
+        static constexpr auto header() noexcept
         {
                 return s_header;
         }
@@ -162,7 +162,7 @@ class gameacc
         // The format and semantics of the GAMEACC message type can be found at:
         // http://www.mesander.nl/damexchange/egameacc.htm
 
-        constexpr static auto s_header = "A";
+        static constexpr auto s_header = "A";
         std::string m_follower_name;
         int m_acceptance_code;
 public:
@@ -178,7 +178,7 @@ public:
                 m_acceptance_code{ac}
         {}
 
-        constexpr static auto header() noexcept
+        static constexpr auto header() noexcept
         {
                 return s_header;
         }
@@ -208,7 +208,7 @@ class move
         // The format and semantics of the MOVE message type can be found at:
         // http://www.mesander.nl/damexchange/emove.htm
 
-        constexpr static auto s_header = "M";
+        static constexpr auto s_header = "M";
         std::chrono::seconds m_time;
         int m_from_field;
         int m_to_field;
@@ -234,7 +234,7 @@ public:
                 m_captured_pieces{cp}
         {}
 
-        constexpr static auto header() noexcept
+        static constexpr auto header() noexcept
         {
                 return s_header;
         }
@@ -284,7 +284,7 @@ class gameend
         // The format and semantics of the GAMEEND message type can be found at:
         // http://www.mesander.nl/damexchange/egameend.htm
 
-        constexpr static auto s_header = "E";
+        static constexpr auto s_header = "E";
         int m_reason;
         int m_stop_code;
 public:
@@ -300,7 +300,7 @@ public:
                 m_stop_code{sc}
         {}
 
-        constexpr static auto header() noexcept
+        static constexpr auto header() noexcept
         {
                 return s_header;
         }
@@ -330,7 +330,7 @@ class chat
         // The format and semantics of the CHAT message type can be found at:
         // http://www.mesander.nl/damexchange/echat.htm
 
-        constexpr static auto s_header = "C";
+        static constexpr auto s_header = "C";
         std::string m_text;
 public:
         explicit chat(std::string const& message)
@@ -338,7 +338,7 @@ public:
                 m_text{message}
         {}
 
-        constexpr static auto header() noexcept
+        static constexpr auto header() noexcept
         {
                 return s_header;
         }
@@ -362,7 +362,7 @@ class backreq
         // The format and semantics of the BACKREQ message type can be found at:
         // http://www.mesander.nl/damexchange/ebackreq.htm
 
-        constexpr static auto s_header = "B";
+        static constexpr auto s_header = "B";
         int m_move_number;
         char m_color_to_move;
 public:
@@ -378,7 +378,7 @@ public:
                 m_color_to_move{ctm}
         {}
 
-        constexpr static auto header() noexcept
+        static constexpr auto header() noexcept
         {
                 return s_header;
         }
@@ -408,7 +408,7 @@ class backacc
         // The format and semantics of the BACKACC message type can be found at:
         // http://www.mesander.nl/damexchange/ebackacc.htm
 
-        constexpr static auto s_header = "K";
+        static constexpr auto s_header = "K";
         int m_acceptance_code;
 public:
         explicit backacc(std::string const& message)
@@ -421,7 +421,7 @@ public:
                 m_acceptance_code{ac}
         {}
 
-        constexpr static auto header() noexcept
+        static constexpr auto header() noexcept
         {
                 return s_header;
         }

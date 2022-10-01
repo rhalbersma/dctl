@@ -25,7 +25,7 @@ class pawn_moves<Rules, Board, color_<Side>, ReverseGenerator>
         using mask_type = basic_mask<Board>;
         using  set_type = set_t<mask_type>;
 
-        constexpr static auto pawn_move_directions = tabula::transform(pawn_move_directions_v<Rules>, [](auto dir) {
+        static constexpr auto pawn_move_directions = tabula::transform(pawn_move_directions_v<Rules>, [](auto dir) {
                 return tabula::int_c<rotate(angle{dir}, bearing_v<Board, color_<Side>, ReverseGenerator>).value()>;
         });
 public:

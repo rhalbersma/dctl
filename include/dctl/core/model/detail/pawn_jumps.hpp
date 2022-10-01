@@ -37,7 +37,7 @@ class pawn_jumps<Rules, Board, color_<Side>>
         using   set_type = set_t<mask_type>;
         using king_jumps = detail::king_jumps<rules_type, board_type, color_<Side>>;
 
-        constexpr static auto pawn_jump_directions = tabula::transform(pawn_jump_directions_v<rules_type>, [](auto dir) {
+        static constexpr auto pawn_jump_directions = tabula::transform(pawn_jump_directions_v<rules_type>, [](auto dir) {
                 return tabula::int_c<rotate(angle{dir}, bearing_v<board_type, color_<Side>>).value()>;
         });
 public:

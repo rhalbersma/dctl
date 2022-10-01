@@ -65,14 +65,14 @@ public:
         using   set_type = core::  set_t<Position>;
 
 private:
-        constexpr static auto CLANG_WORKAROUND_bp_squares = mask_type::squares - mask_type::promotion(core::black_c);
-        constexpr static auto CLANG_WORKAROUND_wp_squares = mask_type::squares - mask_type::promotion(core::white_c);
+        static constexpr auto CLANG_WORKAROUND_bp_squares = mask_type::squares - mask_type::promotion(core::black_c);
+        static constexpr auto CLANG_WORKAROUND_wp_squares = mask_type::squares - mask_type::promotion(core::white_c);
 
 public:
-        constexpr static auto bp_squares = CLANG_WORKAROUND_bp_squares.ssize();
-        constexpr static auto wp_squares = CLANG_WORKAROUND_wp_squares.ssize();
-        constexpr static auto bk_squares = mask_type::squares.ssize();
-        constexpr static auto wk_squares = mask_type::squares.ssize();
+        static constexpr auto bp_squares = CLANG_WORKAROUND_bp_squares.ssize();
+        static constexpr auto wp_squares = CLANG_WORKAROUND_wp_squares.ssize();
+        static constexpr auto bk_squares = mask_type::squares.ssize();
+        static constexpr auto wk_squares = mask_type::squares.ssize();
 
         int n_count, b_count, w_count;
         int bp_count, wp_count, bk_count, wk_count;

@@ -32,8 +32,8 @@ BOOST_AUTO_TEST_CASE(RuleTraits)
 
         struct action
         {
-                using rules_type [[maybe_unused]] = frisian;
-                using board_type [[maybe_unused]] = basic_board<frisian>;
+                using rules_type [[maybe_unused]] = T;
+                using board_type [[maybe_unused]] = basic_board<T>;
                 int m_num_captured_pieces;
                 int m_num_captured_kings;
                 piece m_with;
