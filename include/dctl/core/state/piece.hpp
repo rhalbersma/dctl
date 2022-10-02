@@ -5,10 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <xstd/type_traits.hpp> // is_integral_constant_v
-#include <xstd/utility.hpp>     // to_underlying
-#include <concepts>             // same_as
-#include <type_traits>          // integral_constant
+#include <type_traits>  // integral_constant
 
 namespace dctl::core {
 
@@ -26,9 +23,6 @@ using piece_ = std::integral_constant<piece, N>;
 
 using pawn_ = piece_<piece::pawn>;
 using king_ = piece_<piece::king>;
-
-template<class T>
-inline constexpr auto is_piece = std::same_as<T, piece> || xstd::is_integral_constant_v<T, piece>;
 
 template<piece N>
 inline constexpr auto piece_c = piece_<N>();

@@ -10,13 +10,12 @@
 #include <dctl/core/state/piece.hpp>            // piece,  pawn_c,  king_c, board_, empty_, occup_
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
+#include <xstd/type_traits.hpp>                 // is_integral_constant
 #include <xstd/utility.hpp>                     // to_underlying
 #include <array>                                // array
-#include <concepts>                             // same_as
-#include <tuple>                                // tie
+#include <utility>                              // forward
 
-namespace dctl::core {
-namespace bwke {
+namespace dctl::core::bwke {
 
 template<class Board>
 class position
@@ -30,38 +29,38 @@ private:
         std::array<set_type, xstd::to_underlying(color::size)> m_color;
         set_type m_kings;
         set_type m_empty;
+
 public:
         position() = default;
-        bool operator==(position const&) const = default;
+        //auto operator<=>(position const&) const = default;
 
-        constexpr position(set_type black_pawns, set_type white_pawns, set_type black_kings, set_type white_kings) // Throws: Nothing.
+        [[nodiscard]] constexpr position(set_type black_pawns, set_type white_pawns, set_type black_kings, set_type white_kings) noexcept
         :
-                m_color{{black_pawns | black_kings, white_pawns | white_kings}},
-                m_kings{black_kings | white_kings},
-                m_empty{mask_type::squares ^ (m_color[0] | m_color[1])}
+                m_color({black_pawns | black_kings, white_pawns | white_kings}),
+                m_kings(black_kings | white_kings),
+                m_empty(mask_type::squares ^ (m_color[0] | m_color[1]))
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns, black_kings, white_kings));
         }
 
-        constexpr position(set_type black_pawns, set_type white_pawns) // Throws: Nothing.
+        [[nodiscard]] constexpr position(set_type black_pawns, set_type white_pawns) noexcept
         :
-                m_color{{black_pawns, white_pawns}},
-                m_kings{},
-                m_empty{mask_type::squares ^ (m_color[0] | m_color[1])}
+                m_color({black_pawns, white_pawns}),
+                m_kings(),
+                m_empty(mask_type::squares ^ (m_color[0] | m_color[1]))
         {
                 assert(is_legal<board_type>(black_pawns, white_pawns));
         }
 
-        template<class Action>
-        constexpr auto make(color c, Action const& a) // Throws: Nothing.
+        [[nodiscard]] constexpr auto make(color c, auto const& a) noexcept
         {
                 if (a.is_jump()) {
-                        set_pieces(!c) ^= a.captured_pieces();
+                        pieces(!c) ^= a.captured_pieces();
                         m_kings -= a.captured_pieces();
                 }
 
-                set_pieces(c).pop(a.from());
-                set_pieces(c).add(a.dest());
+                pieces(c).pop(a.from());
+                pieces(c).add(a.dest());
                 if (a.with() == piece::king) {
                         m_kings.pop(a.from());
                         m_kings.add(a.dest());
@@ -72,63 +71,62 @@ public:
                 m_empty = mask_type::squares ^ (pieces(black_c) | pieces(white_c));
         }
 
-        constexpr auto pieces(color c) const noexcept
+private:
+        [[nodiscard]] constexpr auto& pieces(color c) noexcept
         {
                 return m_color[xstd::to_underlying(c)];
         }
 
-        template<class PieceT>
-                requires is_piece<PieceT>
-        constexpr auto pieces(PieceT p) const noexcept
+public:
+        [[nodiscard]] constexpr auto pieces(color c) const noexcept
         {
-                if constexpr (std::same_as<PieceT, piece>) {
-                        return p == piece::pawn ? pieces(pawn_c) : pieces(king_c);
-                } else {
-                        if constexpr (p == pawn_c) { return m_kings ^ pieces(occup_c); }
-                        if constexpr (p == king_c) { return m_kings;                   }
-                }
+                return m_color[xstd::to_underlying(c)];
         }
 
-        template<class PieceT>
-                requires is_piece<PieceT>
-        constexpr auto pieces(color c, PieceT p) const noexcept
+        [[nodiscard]] constexpr auto pieces(piece p) const noexcept
         {
-                if constexpr (std::same_as<PieceT, piece>) {
-                        return p == piece::pawn ? pieces(c, pawn_c) : pieces(c, king_c);
-                } else {
-                        if constexpr (p == pawn_c) { return pieces(c) - m_kings; }
-                        if constexpr (p == king_c) { return pieces(c) & m_kings; }
-                }
+                return p == piece::pawn ? pieces(pawn_c) : pieces(king_c);
         }
 
-        constexpr auto pieces(board_) const noexcept
+        [[nodiscard]] constexpr auto pieces(auto p) const noexcept
+                requires xstd::is_integral_constant_v<decltype(p), piece>
         {
-                return board_type::squares;
+                if constexpr (p == pawn_c) { return m_kings ^ pieces(occup_c); }
+                if constexpr (p == king_c) { return m_kings;                   }
         }
 
-        constexpr auto pieces(empty_) const noexcept
+        [[nodiscard]] constexpr auto pieces(color c, piece p) const noexcept
+        {
+                return p == piece::pawn ? pieces(c, pawn_c) : pieces(c, king_c);
+        }
+
+        [[nodiscard]] constexpr auto pieces(color c, auto p) const noexcept
+                requires xstd::is_integral_constant_v<decltype(p), piece>
+        {
+                if constexpr (p == pawn_c) { return pieces(c) - m_kings; }
+                if constexpr (p == king_c) { return pieces(c) & m_kings; }
+        }
+
+        [[nodiscard]] constexpr auto pieces(board_) const noexcept
+        {
+                return mask_type::squares;
+        }
+
+        [[nodiscard]] constexpr auto pieces(empty_) const noexcept
         {
                 return m_empty;
         }
 
-        constexpr auto pieces(occup_) const noexcept
+        [[nodiscard]] constexpr auto pieces(occup_) const noexcept
         {
                 return mask_type::squares ^ m_empty;
         }
 
-        template<class... Args>
-                requires (sizeof...(Args) <= 2)
-        constexpr auto num_pieces(Args&&... args) const noexcept
+        [[nodiscard]] constexpr auto num_pieces(auto&&... args) const noexcept
+                requires (sizeof...(args) <= 2)
         {
-                return pieces(std::forward<Args>(args)...).ssize();
-        }
-
-private:
-        constexpr auto& set_pieces(color c) noexcept
-        {
-                return m_color[xstd::to_underlying(c)];
+                return pieces(std::forward<decltype(args)>(args)...).ssize();
         }
 };
 
-}       // namespace bwke
-}       // namespace dctl::core
+}       // namespace dctl::core::bwke
