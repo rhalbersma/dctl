@@ -17,8 +17,7 @@
 #include <functional>                           // bit_or
 #include <numeric>                              // accumulate
 
-namespace dctl::core::model {
-namespace detail {
+namespace dctl::core::detail {
 
 template<class Rules, class Board>
 class king_moves
@@ -33,14 +32,14 @@ class king_moves
         using basic_blocker_and_beyond = board_scan_dir_sq<Board, king_move_directions_t, true, true, true>;
 
         template<class Direction>
-        static auto king_move_scan(int from_sq)
+        [[nodiscard]] static constexpr auto king_move_scan(int from_sq) noexcept
         {
                 assert(Board::is_onboard(from_sq));
                 return basic_king_move_scan{}(from_sq, move_index<Direction>);
         }
 
         template<class Direction>
-        static auto blocker_and_beyond(int from_sq)
+        [[nodiscard]] static constexpr auto blocker_and_beyond(int from_sq) noexcept
                 requires is_long_ranged_king_v<Rules>
         {
                 assert(Board::is_onboard(from_sq));
@@ -61,7 +60,7 @@ class king_moves
 
         // Classical Approach In One Run
         // https://chessprogramming.wikispaces.com/Classical+Approach#Piece%20Attacks-In%20one%20Run
-        static auto attacks(int from_sq, set_type const& empty) // Throws: Nothing.
+        [[nodiscard]] static constexpr auto attacks(int from_sq, set_type const& empty) noexcept
         {
                 assert(Board::is_onboard(from_sq));
                 if constexpr (is_long_ranged_king_v<Rules>) {
@@ -78,30 +77,28 @@ class king_moves
                 }
         }
 public:
-        static auto detect(set_type const& kings, set_type const& empty) noexcept
+        [[nodiscard]] static constexpr auto detect(set_type const& kings, set_type const& empty) noexcept
         {
                 return std::ranges::any_of(kings, [&](auto from_sq) {
                         return !attacks(from_sq, empty).empty();
                 });
         }
 
-        static auto count(set_type const& kings, set_type const& empty) noexcept
+        [[nodiscard]] static constexpr auto count(set_type const& kings, set_type const& empty) noexcept
         {
                 return std::accumulate(kings.begin(), kings.end(), 0, [&](auto sum, auto from_sq) {
                         return sum + attacks(from_sq, empty).ssize();
                 });
         }
 
-        template<class SequenceContainer>
-        static auto generate(set_type const& kings, set_type const& empty, SequenceContainer& seq)
+        static constexpr auto generate(set_type const& kings, set_type const& empty, auto& actions) noexcept
         {
                 for (auto from_sq : kings) {
                         for (auto dest_sq : attacks(from_sq, empty)) {
-                                seq.emplace_back(from_sq, dest_sq);
+                                actions.emplace_back(from_sq, dest_sq);
                         }
                 }
         }
 };
 
-}       // namespace detail
-}       // namespace dctl::core::model
+}       // namespace dctl::core::detail

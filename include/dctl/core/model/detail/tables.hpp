@@ -16,8 +16,7 @@
 #include <tuple>
 #include <type_traits>                          // bool_constant
 
-namespace dctl::core::model {
-namespace detail {
+namespace dctl::core::detail {
 
 template<class Board, class Direction, bool IsLongRanged, bool IncludesFrom, bool IncludesEdge>
 struct scan
@@ -25,7 +24,7 @@ struct scan
         using mask_type = basic_mask<Board>;
         using  set_type = set_t<mask_type>;
 
-        auto operator()(int from, set_type const& propagator) const
+        constexpr auto operator()(int from, set_type const& propagator) const noexcept
         {
                 assert(Board::is_onboard(from));
                 auto const is_within = [&](auto sq) {
@@ -70,7 +69,7 @@ class board_scan_sq_dir
                 return result;
         }();
 public:
-        auto operator()(int sq, int index) const
+        constexpr auto operator()(int sq, int index) const noexcept
         {
                 return table[static_cast<std::size_t>(sq)][static_cast<std::size_t>(index)];
         }
@@ -94,7 +93,7 @@ class board_scan_dir_sq
                 });
         }();
 public:
-        auto operator()(int sq, int index) const
+        constexpr auto operator()(int sq, int index) const noexcept
         {
                 return table[static_cast<std::size_t>(index)][static_cast<std::size_t>(sq)];
         }
@@ -119,20 +118,20 @@ template<class Rules, class Direction>
 inline constexpr auto jump_index = is_orthogonal_jumps_v<Rules> ? Direction::value / 45 : move_index<Direction>;
 
 template<class Rules, class Board, class Direction>
-auto king_slide(int sq)
+constexpr auto king_slide(int sq) noexcept
 {
         return basic_king_slide<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
 template<class Rules, class Board, class Direction>
-auto blocker_and_beyond(int sq)
+constexpr auto blocker_and_beyond(int sq) noexcept
 {
         static_assert(is_long_ranged_king_v<Rules>);
         return basic_blocker_and_beyond<Rules, Board>{}(sq, jump_index<Rules, Direction>);
 }
 
 template<class Rules, class Board, class Direction, class Set>
-auto king_slide(int sq, Set const& empty)
+constexpr auto king_slide(int sq, Set const& empty) noexcept
 {
         assert(Board::is_onboard(sq));
         if constexpr (is_long_ranged_king_v<Rules>) {
@@ -147,10 +146,9 @@ auto king_slide(int sq, Set const& empty)
 }
 
 template<class Rules, class Board, class Direction, class Set>
-auto king_jump(int sq, Set const& empty)
+constexpr auto king_jump(int sq, Set const& empty) noexcept
 {
         return basic_king_jump<Rules, Board>{}(sq, jump_index<Rules, Direction>) - empty;
 }
 
-}       // namespace detail
-}       // namespace dctl::core::model
+}       // namespace dctl::core::detail

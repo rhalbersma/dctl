@@ -5,4 +5,5 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/model/actions.hpp>
+#include <dctl/core/model/basic_model.hpp>
+#include <dctl/core/model/result.hpp>

@@ -23,8 +23,7 @@
 #include <functional>                           // bit_or, logical_or
 #include <type_traits>                          // bool_constant
 
-namespace dctl::core::model {
-namespace detail {
+namespace dctl::core::detail {
 
 template<class...>
 class king_jumps;
@@ -39,7 +38,7 @@ class king_jumps<Rules, Board, color_<Side>>
 
         static constexpr auto king_jump_directions = king_jump_directions_v<rules_type>;
 public:
-        static auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
+        [[nodiscard]] static constexpr auto detect(set_type const& kings, set_type const& targets, set_type const& empty) noexcept
         {
                 return std::ranges::any_of(kings, [&](auto from_sq) {
                         return tabula::any_of(king_jump_directions, [&](auto dir) {
@@ -56,81 +55,80 @@ public:
                 });
         }
 
-        template<class Builder>
-        static auto generate(Builder& b)
+        static constexpr auto generate(auto& builder) noexcept
         {
-                raii::set_king_jump g1{b};
-                for (auto from_sq : b.pieces(color_c<Side>, king_c)) {
-                        raii::lift guard{from_sq, b};
+                raii::set_king_jump g1{builder};
+                for (auto from_sq : builder.pieces(color_c<Side>, king_c)) {
+                        raii::lift guard{from_sq, builder};
                         tabula::for_each(king_jump_directions, [&](auto dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
-                                        auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, b.pieces(empty_c));
+                                        auto const blockers = king_jump<rules_type, board_type, direction_t>(from_sq, builder.pieces(empty_c));
                                         if (blockers.empty()) { return; }
                                         auto const first = find_first<direction_t>(blockers);
-                                        if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return; }
-                                        capture<direction_t>(next<board_type, direction_t>{}(first), b);
+                                        if (!jump_targets<board_type, direction_t>{}(builder.targets(), builder.pieces(empty_c)).contains(first)) { return; }
+                                        capture<direction_t>(next<board_type, direction_t>{}(first), builder);
                                 } else {
-                                        if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(from_sq)) { return; }
-                                        capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), b);
+                                        if (!jump_from<board_type, direction_t>{}(builder.targets(), builder.pieces(empty_c)).contains(from_sq)) { return; }
+                                        capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), builder);
                                 }
                         });
                 }
         }
 
-        template<class Direction, class Builder>
-        static auto next_target_passing_promotion(int sq, Builder& b)
+        template<class Direction>
+        [[nodiscard]] static constexpr auto next_target_passing_promotion(int sq, auto& builder) noexcept
         {
                 static_assert(is_passing_promotion_v<rules_type>);
-                assert(b.with() == piece::pawn);
-                b.into(piece::king);
+                assert(builder.with() == piece::pawn);
+                builder.into(piece::king);
                 constexpr auto king_scan_directions = tabula::remove_if(king_jump_directions, [](auto dir) {
                         return tabula::bool_c<is_up(rotate(angle{decltype(dir)::value}, bearing_v<board_type, color_<Side>>))>;
                 });
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
-                        return scan(king_scan_directions, sq, b);
+                        return scan(king_scan_directions, sq, builder);
                 } else {
                         constexpr auto is_reverse = [](auto dir) {
                                 return dir == tabula::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
                         };
-                        return scan(tabula::remove_if(king_scan_directions, is_reverse), sq, b);
+                        return scan(tabula::remove_if(king_scan_directions, is_reverse), sq, builder);
                 }
         }
 private:
-        template<class Direction, class Builder>
-        static auto capture(int sq, Builder& b)
+        template<class Direction>
+        static constexpr auto capture(int sq, auto& builder) noexcept
                 -> void
         {
-                raii::capture guard{prev<board_type, Direction>{}(sq), b};
-                auto const n [[maybe_unused]] = king_slide<rules_type, board_type, Direction>(prev<board_type, Direction>{}(sq), b.pieces(empty_c)).ssize();
-                if (!next_target<Direction>(sq, n, b)) {
+                raii::capture guard{prev<board_type, Direction>{}(sq), builder};
+                auto const n [[maybe_unused]] = king_slide<rules_type, board_type, Direction>(prev<board_type, Direction>{}(sq), builder.pieces(empty_c)).ssize();
+                if (!next_target<Direction>(sq, n, builder)) {
                         if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
-                                if (b.is_last_jumped_king(prev<board_type, Direction>{}(sq))) {
-                                        return b.finalize(sq);
+                                if (builder.is_last_jumped_king(prev<board_type, Direction>{}(sq))) {
+                                        return builder.finalize(sq);
                                 } else {
-                                        return add_sliding_jumps<Direction>(sq, n, b);
+                                        return add_sliding_jumps<Direction>(sq, n, builder);
                                 }
                         }
                         if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && !is_halt_behind_king_v<rules_type>) {
-                                return add_sliding_jumps<Direction>(sq, n, b);
+                                return add_sliding_jumps<Direction>(sq, n, builder);
                         }
                         if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                                return b.finalize(sq);
+                                return builder.finalize(sq);
                         }
                 }
         }
 
-        template<class Direction, class Builder>
-        static auto add_sliding_jumps(int sq, int n, Builder& b)
+        template<class Direction>
+        [[nodiscard]] static constexpr auto add_sliding_jumps(int sq, int n, auto& builder) noexcept
         {
                 do {
-                        b.finalize(sq);
+                        builder.finalize(sq);
                         advance<board_type, Direction>{}(sq);
                 } while (--n);
         }
 
-        template<class Direction, class Builder>
-        static auto next_target(int sq, int n [[maybe_unused]], Builder& b)
+        template<class Direction>
+        [[nodiscard]] static constexpr auto next_target(int sq, int n [[maybe_unused]], auto& builder) noexcept
         {
                 constexpr auto king_scan_directions [[maybe_unused]] = tabula::remove_if(king_jump_directions, [](auto dir) {
                         return dir == tabula::int_c<rotate(angle{Direction::value}, 180_deg).value()>;
@@ -139,38 +137,37 @@ private:
                         return dir == tabula::int_c<Direction::value>;
                 });
                 if constexpr (is_reverse_king_jump_v<rules_type>) {
-                        return scan(king_jump_directions, sq, b);
+                        return scan(king_jump_directions, sq, builder);
                 } else if constexpr (!is_long_ranged_king_v<rules_type> || is_land_behind_piece_v<rules_type>) {
-                        return scan(king_scan_directions, sq, b);
+                        return scan(king_scan_directions, sq, builder);
                 } else {
-                        auto found_next = scan(king_scan_directions, sq, b);
+                        auto found_next = scan(king_scan_directions, sq, builder);
                         while (--n) {
                                 advance<board_type, Direction>{}(sq);
-                                found_next |= scan(king_turn_directions, sq, b);
+                                found_next |= scan(king_turn_directions, sq, builder);
                         }
                         return found_next;
                 }
         }
 
-        template<class Directions, class Builder>
-        static auto scan(Directions directions, int sq, Builder& b)
+        template<class Directions>
+        [[nodiscard]] static constexpr auto scan(Directions directions, int sq, auto& builder) noexcept
         {
                 return tabula::any_of_all(directions, [&](auto dir) {
                         using direction_t = decltype(dir);
                         if constexpr (is_long_ranged_king_v<rules_type>) {
-                                auto const blockers = king_jump<rules_type, board_type, direction_t>(sq, b.pieces(empty_c));
+                                auto const blockers = king_jump<rules_type, board_type, direction_t>(sq, builder.pieces(empty_c));
                                 if (blockers.empty()) { return false; }
                                 auto const first = find_first<direction_t>(blockers);
-                                if (!jump_targets<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(first)) { return false; }
-                                capture<direction_t>(next<board_type, direction_t>{}(first), b);
+                                if (!jump_targets<board_type, direction_t>{}(builder.targets(), builder.pieces(empty_c)).contains(first)) { return false; }
+                                capture<direction_t>(next<board_type, direction_t>{}(first), builder);
                         } else {
-                                if (!jump_from<board_type, direction_t>{}(b.targets(), b.pieces(empty_c)).contains(sq)) { return false; }
-                                capture<direction_t>(next<board_type, direction_t, 2>{}(sq), b);
+                                if (!jump_from<board_type, direction_t>{}(builder.targets(), builder.pieces(empty_c)).contains(sq)) { return false; }
+                                capture<direction_t>(next<board_type, direction_t, 2>{}(sq), builder);
                         }
                         return true;
                 });
         }
 };
 
-}       // namespace detail
-}       // namespace dctl::core::model
+}       // namespace dctl::core::detail

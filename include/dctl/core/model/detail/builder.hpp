@@ -14,8 +14,7 @@
 #include <concepts>                             // same_as
 #include <iterator>                             // begin, end, prev
 
-namespace dctl::core::model {
-namespace detail {
+namespace dctl::core::detail {
 
 template<class...>
 class builder;
@@ -40,32 +39,32 @@ private:
         action_type m_candidate_action{};
 
 public:
-        builder(State const& s, SequenceContainer& seq)
+        constexpr builder(State const& s, SequenceContainer& actions)
         :
                 m_state{s},
                 m_initial_targets(m_state.pieces(!to_move_c)),
                 m_empty(m_state.pieces(empty_c)),
-                m_actions{seq}
+                m_actions{actions}
         {}
 
-        auto toggle_king_targets() noexcept
+        constexpr auto toggle_king_targets() noexcept
                 requires is_superior_rank_jump_v<rules_type>
         {
                 m_initial_targets ^= m_state.pieces(!to_move_c, king_c);
         }
 
-        auto lift(int const sq)
+        constexpr auto lift(int const sq) noexcept
         {
                 m_candidate_action.from(sq);
                 m_empty.add(sq);
         }
 
-        auto drop(int const sq)
+        constexpr auto drop(int const sq) noexcept
         {
                 m_empty.pop(sq);
         }
 
-        auto capture(int const sq)
+        constexpr auto capture(int const sq) noexcept
         {
                 m_candidate_action.capture(sq, is_king(sq));
                 if constexpr (is_passing_capture_v<rules_type>) {
@@ -73,7 +72,7 @@ public:
                 }
         }
 
-        auto release(int const sq)
+        constexpr auto release(int const sq)
         {
                 if constexpr (is_passing_capture_v<rules_type>) {
                         m_empty.pop(sq);
@@ -81,63 +80,62 @@ public:
                 m_candidate_action.release(sq, is_king(sq));
         }
 
-        auto with(piece const p) noexcept
+        constexpr auto with(piece const p) noexcept
         {
                 m_candidate_action.with(p);
         }
 
-        auto into(piece const p) noexcept
+        constexpr auto into(piece const p) noexcept
         {
                 m_candidate_action.into(p);
         }
 
-        auto finalize(int const sq, piece const p)
+        constexpr auto finalize(int const sq, piece const p) noexcept
         {
                 m_candidate_action.into(p);
                 m_candidate_action.dest(sq);
                 precedence_duplicates();
         }
 
-        auto finalize(int const sq)
+        constexpr auto finalize(int const sq) noexcept
         {
                 assert(into() == piece::king);
                 m_candidate_action.dest(sq);
                 precedence_duplicates();
         }
 
-        template<class... Args>
-                requires (sizeof...(Args) <= 2)
-        auto pieces(Args&&... args) const noexcept
+        constexpr auto pieces(auto&&... args) const noexcept
+                requires (sizeof...(args) <= 2)
         {
-                return m_state.pieces(std::forward<Args>(args)...);
+                return m_state.pieces(std::forward<decltype(args)>(args)...);
         }
 
-        auto pieces(empty_) const noexcept
+        constexpr auto pieces(empty_) const noexcept
         {
                 return m_empty;
         }
 
-        auto pieces(occup_) const noexcept
+        constexpr auto pieces(occup_) const noexcept
         {
                 return board_type::squares ^ m_empty;
         }
 
-        auto targets() const noexcept
+        constexpr auto targets() const noexcept
         {
                 return m_initial_targets - m_candidate_action.captured_pieces();
         }
 
-        auto is_last_jumped_king(int const sq) const
+        constexpr auto is_last_jumped_king(int const sq) const noexcept
         {
                 return m_state.pieces(king_c).contains(sq);
         }
 
-        auto with() const noexcept
+        constexpr auto with() const noexcept
         {
                 return m_candidate_action.with();
         }
 
-        auto into() const noexcept
+        constexpr auto into() const noexcept
         {
                 return m_candidate_action.into();
         }
@@ -147,18 +145,18 @@ public:
                 return with() == piece::pawn && into() != piece::pawn;
         }
 
-        auto to_move() const noexcept
+        constexpr auto to_move() const noexcept
         {
                 return m_state.to_move();
         }
 
 private:
-        auto is_king(int sq) const
+        constexpr auto is_king(int sq) const noexcept
         {
                 return m_state.pieces(king_c).contains(sq);
         }
 
-        auto precedence_duplicates() const
+        constexpr auto precedence_duplicates() const noexcept
         {
                 if constexpr (
                         is_trivial_precedence_v<rules_type> &&
@@ -210,12 +208,12 @@ private:
                 }
         }
 
-        auto is_small() const noexcept
+        constexpr auto is_small() const noexcept
         {
                 return m_candidate_action.num_captured_pieces() < large_jump_v<rules_type>;
         }
 
-        auto is_unique() const noexcept
+        constexpr auto is_unique() const noexcept
                 requires std::same_as<DuplicatesPolicy, drop_duplicates_tag>
         {
                 assert(!m_actions.empty());
@@ -224,5 +222,4 @@ private:
         }
 };
 
-}       // namespace detail
-}       // namespace dctl::core::model
+}       // namespace dctl::core::detail

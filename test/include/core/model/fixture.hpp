@@ -7,7 +7,7 @@
 
 #include <dctl/core/action.hpp>
 #include <dctl/core/board.hpp>
-#include <dctl/core/model.hpp>                  // generate
+#include <dctl/core/model.hpp>                  // drop_duplicates_gen
 #include <dctl/core/state.hpp>
 #include <boost/algorithm/string.hpp>           // trim_copy
 #include <boost/test/unit_test.hpp>             // BOOST_CHECK, BOOST_CHECK_EQUAL
@@ -24,15 +24,15 @@ struct Fixture
         template<class Range>
         void test(std::string const& fen, Range const& rng)
         {
-                auto const s = pdn::read<Rules, Board>{}(fen);
-                std::vector<basic_action<Rules, Board>> moves;
-                model::actions{}.generate(s, moves);
+                auto const state = pdn::read<Rules, Board>{}(fen);
+                std::vector<basic_action<Rules, Board>> actions;
+                drop_duplicates_gen.generate(state, actions);
 
-                BOOST_CHECK_EQUAL(moves.size(), rng.size());
+                BOOST_CHECK_EQUAL(actions.size(), rng.size());
 
-                auto const move_str = [](auto const& m) { return str_numeric(m); };
+                auto const action_str = [](auto const& action) { return str_numeric(action); };
                 std::vector<std::string> notations;
-                std::ranges::transform(moves, std::back_inserter(notations), std::cref(move_str));
+                std::ranges::transform(actions, std::back_inserter(notations), std::cref(action_str));
 
                 BOOST_CHECK(
                         std::ranges::is_permutation(

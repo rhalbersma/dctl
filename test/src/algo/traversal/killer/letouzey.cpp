@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(TraversalKillerLetouzey)
 
 BOOST_AUTO_TEST_CASE(Random178)
 {
-        auto const s = pdn::read<killer<international>>{}(
+        auto const state = pdn::read<killer<international>>{}(
                 "B:BK17,K24:W6,9,10,11,20,21,22,23,30,K31,33,37,41,42,43,44,46"
         );
         auto const leafs = std::vector<int64_t>
@@ -34,12 +34,12 @@ BOOST_AUTO_TEST_CASE(Random178)
                  1'133'545'351,
                 12'070'611'997
         };
-        traversal::test(model::drop_duplicates_gen, s, leafs);
+        traversal::test(state, leafs, drop_duplicates_gen);
 }
 
 BOOST_AUTO_TEST_CASE(Woldouby)
 {
-        auto const s = pdn::read<killer<international>>{}(
+        auto const state = pdn::read<killer<international>>{}(
                 "W:B12,13,14,16,18,19,21,23,24,26:W25,27,28,30,32,33,34,35,37,38"
         );
         auto const leafs = std::vector<int64_t>{
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(Woldouby)
                  2'251'657'424,
                 14'783'093'851
         };
-        traversal::test(model::drop_duplicates_gen, s, leafs);
+        traversal::test(state, leafs, drop_duplicates_gen);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

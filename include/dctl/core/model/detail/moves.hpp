@@ -10,8 +10,7 @@
 #include <dctl/core/state/color.hpp>                    // color, color_
 #include <dctl/util/type_traits.hpp>                    // board_t, rules_t
 
-namespace dctl::core::model {
-namespace detail {
+namespace dctl::core::detail {
 
 template<class...>
 class moves;
@@ -23,7 +22,7 @@ class moves<color_<Side>, ReverseGenerator>
         template<class State> using king_moves = detail::king_moves<rules_t<State>, board_t<State>                                >;
 public:
         template<class State>
-        static auto detect(State const& s) noexcept
+        [[nodiscard]] static constexpr auto detect(State const& s) noexcept
         {
                 return
                         pawn_moves<State>::detect(s.pieces(color_c<Side>, pawn_c), s.pieces(empty_c)) ||
@@ -32,7 +31,7 @@ public:
         }
 
         template<class State>
-        static auto count(State const& s) noexcept
+        [[nodiscard]] static constexpr auto count(State const& s) noexcept
         {
                 return
                         pawn_moves<State>::count(s.pieces(color_c<Side>, pawn_c), s.pieces(empty_c)) +
@@ -40,13 +39,12 @@ public:
                 ;
         }
 
-        template<class State, class SequenceContainer>
-        static auto generate(State const& s, SequenceContainer& seq)
+        template<class State>
+        static constexpr auto generate(State const& s, auto& actions) noexcept
         {
-                pawn_moves<State>::generate(s.pieces(color_c<Side>, pawn_c), s.pieces(empty_c), seq);
-                king_moves<State>::generate(s.pieces(color_c<Side>, king_c), s.pieces(empty_c), seq);
+                pawn_moves<State>::generate(s.pieces(color_c<Side>, pawn_c), s.pieces(empty_c), actions);
+                king_moves<State>::generate(s.pieces(color_c<Side>, king_c), s.pieces(empty_c), actions);
         }
 };
 
-}       // namespace detail
-}       // namespace dctl::core::model
+}       // namespace dctl::core::detail

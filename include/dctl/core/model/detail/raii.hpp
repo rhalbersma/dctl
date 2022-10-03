@@ -8,8 +8,7 @@
 #include <dctl/core/state/piece.hpp>    // pawn, king
 #include <cassert>                      // assert
 
-namespace dctl::core {
-namespace raii {
+namespace dctl::core::raii {
 
 template<class Builder>
 class lift
@@ -17,12 +16,12 @@ class lift
         Builder& m_builder;
         int const m_square;
 public:
-        ~lift() // Throws: Nothing.
+        constexpr ~lift() // Throws: Nothing.
         {
                 m_builder.drop(m_square);
         }
 
-        lift(int const sq, Builder& b) // Throws: Nothing.
+        constexpr lift(int const sq, Builder& b) // Throws: Nothing.
         :
                 m_builder{b},
                 m_square{sq}
@@ -37,12 +36,12 @@ class capture
         Builder& m_builder;
         int const m_square;
 public:
-        ~capture() // Throws: Nothing.
+        constexpr ~capture() // Throws: Nothing.
         {
                 m_builder.release(m_square);
         }
 
-        capture(int const sq, Builder& b) // Throws: Nothing.
+        constexpr capture(int const sq, Builder& b) // Throws: Nothing.
         :
                 m_builder{b},
                 m_square{sq}
@@ -56,12 +55,12 @@ class Visit
 {
         Builder& m_builder;
 public:
-        ~Visit()
+        constexpr ~Visit()
         {
                 m_builder.leave();
         }
 
-        Visit(Builder& b, int sq)
+        constexpr Visit(Builder& b, int sq)
         :
                 m_builder{b}
         {
@@ -74,18 +73,20 @@ class set_king_jump
 {
         Builder& m_builder;
 public:
-        ~set_king_jump() noexcept
+        constexpr ~set_king_jump() noexcept
         {
-                assert(m_builder.with() == piece::king); assert(m_builder.into() == piece::king);
+                assert(m_builder.with() == piece::king);
+                assert(m_builder.into() == piece::king);
                 m_builder.with(piece::pawn);
                 m_builder.into(piece::pawn);
         }
 
-        explicit set_king_jump(Builder& b) noexcept
+        explicit constexpr set_king_jump(Builder& b) noexcept
         :
                 m_builder{b}
         {
-                assert(m_builder.with() == piece::pawn); assert(m_builder.into() == piece::pawn);
+                assert(m_builder.with() == piece::pawn);
+                assert(m_builder.into() == piece::pawn);
                 m_builder.with(piece::king);
                 m_builder.into(piece::king);
         }
@@ -96,20 +97,21 @@ class promotion
 {
         Builder& m_builder;
 public:
-        ~promotion() noexcept
+        constexpr ~promotion() noexcept
         {
-                assert(m_builder.with() == piece::pawn); assert(m_builder.into() == piece::king);
+                assert(m_builder.with() == piece::pawn);
+                assert(m_builder.into() == piece::king);
                 m_builder.into(piece::pawn);
         }
 
-        explicit promotion(Builder& b) noexcept
+        explicit constexpr promotion(Builder& b) noexcept
         :
                 m_builder{b}
         {
-                assert(m_builder.with() == piece::pawn); assert(m_builder.into() == piece::pawn);
+                assert(m_builder.with() == piece::pawn);
+                assert(m_builder.into() == piece::pawn);
                 m_builder.into(piece::king);
         }
 };
 
-}       // namespace raii
-}       // namespace dctl::core
+}       // namespace dctl::core::raii

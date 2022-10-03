@@ -5,13 +5,11 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/container/small_vector.hpp>
-#include <boost/container/static_vector.hpp>
-#include <vector>
-
 namespace dctl::core {
 
-template<class Action>
-using default_container = boost::container::static_vector<Action, 128>;
+[[nodiscard]] constexpr auto result(auto const& state, auto const& action) noexcept
+{
+        auto nrv(state); nrv.make(action); return nrv;
+}
 
 }       // namespace dctl::core

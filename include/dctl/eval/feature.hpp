@@ -5,9 +5,10 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <dctl/core/model.hpp>          // count, select::move
-#include <dctl/eval/weight.hpp>         // Weight
-#include <cstdlib>                      // abs
+#include <dctl/core/model.hpp>  // count, select::move
+#include <dctl/eval/weight.hpp> // Weight
+#include <cstdlib>              // abs
+#include <type_traits>          // remove_cvref_t
 
 namespace dctl::eval {
 
@@ -15,82 +16,81 @@ template<class Color>
 class Feature
 {
 public:
-        template<class State>
-        static auto value(State const& s)
+        static auto value(auto const& state)
         {
                 auto score = 0;
-                score += material(s);
-                score += tempo(s);
-                score += center(s);
-                score += balance(s);
-                score += mobility(s);
+                score += material(state);
+                score += tempo(state);
+                score += center(state);
+                score += balance(state);
+                score += mobility(state);
                 return score;
         }
 
-        template<class State>
-        static auto material(State const& s)
+        static auto material(auto const& state)
         {
-                using rules_type = core::rules_t<State>;
-                using board_type = core::board_t<State>;
+                using state_type = std::remove_cvref_t<decltype(state)>;
+                using rules_type = core::rules_t<state_type>;
+                using board_type = core::board_t<state_type>;
                 return
-                        Weight<rules_type, board_type>::material[0] * static_cast<int>(s.num_pieces(Color{}, core::pawn_c)) +
-                        Weight<rules_type, board_type>::material[1] * static_cast<int>(s.num_pieces(Color{}, core::king_c))
+                        Weight<rules_type, board_type>::material[0] * static_cast<int>(state.num_pieces(Color{}, core::pawn_c)) +
+                        Weight<rules_type, board_type>::material[1] * static_cast<int>(state.num_pieces(Color{}, core::king_c))
                 ;
         }
 
-        template<class State>
-        static auto tempo(State const& s)
+        static auto tempo(auto const& state)
         {
-                using rules_type = core::rules_t<State>;
-                using board_type = core::board_t<State>;
-                using  mask_type = core:: mask_t<State>;
+                using state_type = std::remove_cvref_t<decltype(state)>;
+                using rules_type = core::rules_t<state_type>;
+                using board_type = core::board_t<state_type>;
+                using  mask_type = core:: mask_t<state_type>;
                 auto score = 0;
                 for (auto i = 1; i < board_type::height; ++i) {
-                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((s.pieces(Color{}) & mask_type::rank(Color{}, i)).ssize());
+                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((state.pieces(Color{}) & mask_type::rank(Color{}, i)).ssize());
                 }
                 return score;
         }
 
-        template<class State>
-        static auto center(State const& s)
+        static auto center(auto const& state)
         {
-                using rules_type = core::rules_t<State>;
-                using board_type = core::board_t<State>;
-                using  mask_type = core:: mask_t<State>;
+                using state_type = std::remove_cvref_t<decltype(state)>;
+                using rules_type = core::rules_t<state_type>;
+                using board_type = core::board_t<state_type>;
+                using  mask_type = core:: mask_t<state_type>;
                 auto score = 0;
                 for (auto i = 1; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::center[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & mask_type::file( Color{}, i)).ssize()) +
-                                static_cast<int>((s.pieces(Color{}) & mask_type::file(!Color{}, i)).ssize())
+                                static_cast<int>((state.pieces(Color{}) & mask_type::file( Color{}, i)).ssize()) +
+                                static_cast<int>((state.pieces(Color{}) & mask_type::file(!Color{}, i)).ssize())
                         );
                 }
                 return score;
         }
 
-        template<class State>
-        static auto balance(State const& s)
+        static auto balance(auto const& state)
         {
-                using rules_type = core::rules_t<State>;
-                using board_type = core::board_t<State>;
-                using  mask_type = core:: mask_t<State>;
+                using state_type = std::remove_cvref_t<decltype(state)>;
+                using rules_type = core::rules_t<state_type>;
+                using board_type = core::board_t<state_type>;
+                using  mask_type = core:: mask_t<state_type>;
                 auto score = 0;
                 for (auto i = 0; i < board_type::width / 2; ++i) {
                         score += Weight<rules_type, board_type>::balance[i] *
                         (
-                                static_cast<int>((s.pieces(Color{}) & mask_type::file( Color{}, i)).ssize()) -
-                                static_cast<int>((s.pieces(Color{}) & mask_type::file(!Color{}, i)).ssize())
+                                static_cast<int>((state.pieces(Color{}) & mask_type::file( Color{}, i)).ssize()) -
+                                static_cast<int>((state.pieces(Color{}) & mask_type::file(!Color{}, i)).ssize())
                         );
                 }
                 return -abs(score);
         }
 
-        template<class State>
-        static auto mobility(State const& s)
+        static auto mobility(auto const& state)
         {
-                using rules_type = core::rules_t<State>;
-                using board_type = core::board_t<State>;
-                return Weight<rules_type, board_type>::mobility * static_cast<int>(core::model::actions{}.template count<Color>(s));
+                using state_type = std::remove_cvref_t<decltype(state)>;
+                using rules_type = core::rules_t<state_type>;
+                using board_type = core::board_t<state_type>;
+                return Weight<rules_type, board_type>::mobility * static_cast<int>(core::drop_duplicates_gen.template count<Color>(state));
         }
 };
 

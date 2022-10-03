@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_SUITE(TraversalInternationalShashki)
 
 BOOST_AUTO_TEST_CASE(FrontRows)
 {
-        auto const s = pdn::read<international>{}(
+        auto const state = pdn::read<international>{}(
                 "W:B16,17,18,19,20:W31,32,33,34,35"
         );
         auto const leafs = std::vector<int64_t>{
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(FrontRows)
                   462'333'827,
                 1'824'763'597
         };
-        traversal::test(model::keep_duplicates_gen, s, leafs);
+        traversal::test(state, leafs, keep_duplicates_gen);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

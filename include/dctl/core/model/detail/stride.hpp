@@ -47,13 +47,13 @@ inline constexpr auto stride_v = stride<Board>{}(angle{Direction::value});
 template<class Direction>
 inline constexpr auto is_left_shift_v = angle{Direction::value} == 0_deg || 180_deg < angle{Direction::value};
 
-template<class Direction, class Set>
-auto find_first(Set const& s)
+template<class Direction>
+[[nodiscard]] constexpr auto find_first(auto const& set) noexcept
 {
         if constexpr (is_left_shift_v<Direction>) {
-                return s.front();
+                return set.front();
         } else {
-                return s.back();
+                return set.back();
         }
 }
 
@@ -61,7 +61,7 @@ template<class Board, class Direction, int Distance = 1>
 struct advance
 {
         template<class Set>
-        auto operator()(Set& bs) const
+        constexpr auto operator()(Set& bs) const noexcept
         {
                 constexpr auto n = xstd::abs(Distance) * stride_v<Board, Direction>;
                 static_assert(0 <= n && n < Set::max_size());
@@ -72,7 +72,7 @@ struct advance
                 }
         }
 
-        constexpr auto operator()(int& sq) const
+        constexpr auto operator()(int& sq) const noexcept
         {
                 constexpr auto n = Distance * stride_v<Board, Direction>;
                 if constexpr (is_left_shift_v<Direction>) {
@@ -88,13 +88,13 @@ struct next
 {
         template<class Arg>
                 requires (!std::convertible_to<Arg, int>)
-        auto operator()(Arg arg) const
+        [[nodiscard]] constexpr auto operator()(Arg arg) const noexcept
         {
                 advance<Board, Direction, Distance>{}(arg);
                 return arg;
         }
 
-        constexpr auto operator()(int arg) const
+        [[nodiscard]] constexpr auto operator()(int arg) const noexcept
         {
                 advance<Board, Direction, Distance>{}(arg);
                 return arg;
@@ -106,13 +106,13 @@ struct prev
 {
         template<class Arg>
                 requires (!std::convertible_to<Arg, int>)
-        auto operator()(Arg arg) const
+        [[nodiscard]] constexpr auto operator()(Arg arg) const noexcept
         {
                 advance<Board, Direction, -Distance>{}(arg);
                 return arg;
         }
 
-        constexpr auto operator()(int arg) const
+        [[nodiscard]] constexpr auto operator()(int arg) const noexcept
         {
                 advance<Board, Direction, -Distance>{}(arg);
                 return arg;

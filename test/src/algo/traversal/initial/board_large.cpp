@@ -24,13 +24,13 @@ BOOST_AUTO_TEST_CASE(Board12x12)
                 { 11, 121, 1'222, 10'053, 79'049, 584'100, 4'369'366, 31'839'056, 237'209'258, 1'761'652'936 };
 
         {
-                auto const s = basic_state<canadian, basic_board<rectangular<12, 12>>>::initial();
-                traversal::test(model::drop_duplicates_gen, s, leafs);
+                auto const state = basic_state<canadian, basic_board<rectangular<12, 12>>>::initial();
+                traversal::test(state, leafs, drop_duplicates_gen);
         }
 
         {
-                auto const s = basic_state<srilankan, basic_board<rectangular<12, 12, 0>>>::initial();
-                traversal::test(model::drop_duplicates_gen, s, leafs);
+                auto const state = basic_state<srilankan, basic_board<rectangular<12, 12, 0>>>::initial();
+                traversal::test(state, leafs, drop_duplicates_gen);
         }
 }
 
@@ -39,11 +39,11 @@ BOOST_AUTO_TEST_CASE(Board14x14)
         // The "Perft on large boards" thread on the FMJD forum (results until depth=9)
         // http://damforum.nl/bb3/viewtopic.php?f=53&t=4563&start=5
 
-        auto const s = basic_state<international, basic_board<rectangular<14, 14>>>::initial();
+        auto const state = basic_state<international, basic_board<rectangular<14, 14>>>::initial();
         auto const leafs = std::vector<int64_t>
                 { 13, 169, 2'042, 20'513, 195'333, 1'710'812, 15'007'858, 127'249'292, 1'093'968'733 };
 
-        traversal::test(model::drop_duplicates_gen, s, leafs);
+        traversal::test(state, leafs, drop_duplicates_gen);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

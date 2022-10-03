@@ -27,7 +27,7 @@ using cache = std::map<state_type, count_type>;
 using layer = std::list<cache>;
 using trans = std::map<std::pair<state_type, std::size_t>, count_type>;
 
-auto const successor = model::keep_duplicates_gen;
+auto const successor = keep_duplicates_gen;
 auto const memory_bound = std::size_t{16};
 auto const depth = std::size_t{28};
 

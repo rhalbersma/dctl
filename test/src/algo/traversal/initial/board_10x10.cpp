@@ -22,37 +22,37 @@ BOOST_AUTO_TEST_SUITE(TraversalInitialBoard10x10)
 
 BOOST_AUTO_TEST_CASE(International)
 {
-        auto const s = basic_state<international, basic_board<international>>::initial();
+        auto const state = basic_state<international, basic_board<international>>::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
                 { 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'971, 41'022'614, 258'935'682, 1'666'207'133, 10'752'899'471 },
                 { 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'961, 41'022'423, 258'895'763, 1'665'861'398                 }
         };
-        traversal::test(model::keep_duplicates_gen, s, leafs[0]);
-        traversal::test(model::drop_duplicates_gen, s, leafs[1]);
+        traversal::test(state, leafs[0], keep_duplicates_gen);
+        traversal::test(state, leafs[1], drop_duplicates_gen);
 }
 
 BOOST_AUTO_TEST_CASE(Killer)
 {
-        auto const s = basic_state<killer<international>, basic_board<killer<international>>>::initial();
+        auto const state = basic_state<killer<international>, basic_board<killer<international>>>::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
                 { 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'971, 41'022'614, 258'935'682, 1'666'207'133, 10'752'899'471 },
                 { 9, 81, 658, 4'265, 27'117, 167'140, 1'049'442, 6'483'961, 41'022'423, 258'895'763, 1'665'861'398                 }
         };
-        traversal::test(model::keep_duplicates_gen, s, leafs[0]);
-        traversal::test(model::drop_duplicates_gen, s, leafs[1]);
+        traversal::test(state, leafs[0], keep_duplicates_gen);
+        traversal::test(state, leafs[1], drop_duplicates_gen);
 }
 
 // http://damforum.nl/bb3/viewtopic.php?f=53&t=2822&start=15
 
 BOOST_AUTO_TEST_CASE(Frisian)
 {
-        auto const s = basic_state<frisian, basic_board<frisian>>::initial();
+        auto const state = basic_state<frisian, basic_board<frisian>>::initial();
         auto const leafs = std::vector<std::vector<int64_t>> {
                 { 9, 81, 658, 3'880, 21'345, 103'584, 550'314, 2'907'905, 16'204'497, 90'161'025, 521'287'205 },
                 { 9, 81, 658, 3'874, 21'265, 102'431, 540'126, 2'825'779, 15'605'069, 85'817'725, 491'186'430 }
         };
-        traversal::test(model::keep_duplicates_gen, s, leafs[0]);
-        traversal::test(model::drop_duplicates_gen, s, leafs[1]);
+        traversal::test(state, leafs[0], keep_duplicates_gen);
+        traversal::test(state, leafs[1], drop_duplicates_gen);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

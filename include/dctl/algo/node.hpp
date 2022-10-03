@@ -13,12 +13,6 @@
 namespace dctl::algo {
 
 template<class State, class Action>
-constexpr auto result(State const& s, Action const& a) noexcept
-{
-        auto nrv{s}; nrv.make(a); return nrv;
-}
-
-template<class State, class Action>
 class node
 {
         constexpr auto is_root() const noexcept

@@ -17,8 +17,7 @@
 #include <cassert>                                      // assert
 #include <concepts>                                     // same_as
 
-namespace dctl::core::model {
-namespace detail {
+namespace dctl::core::detail {
 
 template<class Action>
 class counter_container
@@ -30,39 +29,32 @@ public:
 
         counter_container() = default;
 
-        auto& back() const
+        constexpr auto& back() const
         {
                 return m_action;
         }
 
-        auto empty() const
+        constexpr auto empty() const
         {
                 return m_count == 0;
         }
 
-        auto size() const
+        constexpr auto size() const
         {
                 return m_count;
         }
 
-        auto push_back(Action const&)
+        constexpr auto push_back(Action const&)
         {
                 ++m_count;
         }
 
-        auto push_back(Action&&)
+        constexpr auto push_back(Action&&)
         {
                 ++m_count;
         }
 
-        template<class... Args>
-        auto emplace_back(Args const&...)
-        {
-                ++m_count;
-        }
-
-        template<class... Args>
-        auto emplace_back(Args&&...)
+        constexpr auto emplace_back(auto&&...)
         {
                 ++m_count;
         }
@@ -89,35 +81,35 @@ class jumps<color_<Side>, DuplicatesPolicy>
         >;
 public:
         template<class State>
-        static auto detect(State const& s) noexcept
+        [[nodiscard]] static constexpr auto detect(State const& state) noexcept
         {
                 return
-                        pawn_jumps<State>::detect(s.pieces(color_c<Side>, pawn_c), s.targets(color_c<Side>, pawn_c), s.pieces(empty_c)) ||
-                        king_jumps<State>::detect(s.pieces(color_c<Side>, king_c), s.targets(color_c<Side>, king_c), s.pieces(empty_c))
+                        pawn_jumps<State>::detect(state.pieces(color_c<Side>, pawn_c), state.targets(color_c<Side>, pawn_c), state.pieces(empty_c)) ||
+                        king_jumps<State>::detect(state.pieces(color_c<Side>, king_c), state.targets(color_c<Side>, king_c), state.pieces(empty_c))
                 ;
         }
 
         template<class State>
-        static auto count(State const& s)
+        [[nodiscard]] static constexpr auto count(State const& state) noexcept
         {
-                container_type<State, basic_action<rules_t<State>, board_t<State>>> seq;
-                generate(s, seq);
-                return static_cast<int>(seq.size());
+                container_type<State, basic_action<rules_t<State>, board_t<State>>> actions;
+                generate(state, actions);
+                return static_cast<int>(actions.size());
         }
 
         template<class State, class SequenceContainer = default_container<basic_action<rules_t<State>, board_t<State>>>>
-        static auto generate(State const& s)
+        [[nodiscard]] static constexpr auto generate(State const& state) noexcept
         {
-                SequenceContainer seq;
-                generate(s, seq);
-                return seq;
+                SequenceContainer actions;
+                generate(state, actions);
+                return actions;
         }
 
         template<class State, class SequenceContainer>
-        static auto generate(State const& s, SequenceContainer& seq)
+        static constexpr auto generate(State const& state, SequenceContainer& actions) noexcept
         {
                 using rules_type = rules_t<State>;
-                auto b = builder<to_move_, DuplicatesPolicy, State, SequenceContainer>{s, seq};
+                auto b = builder<to_move_, DuplicatesPolicy, State, SequenceContainer>{state, actions};
                 king_jumps<State>::generate(b);
                 if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
                 pawn_jumps<State>::generate(b);
@@ -125,5 +117,4 @@ public:
         }
 };
 
-}       // namespace detail
-}       // namespace dctl::core::model
+}       // namespace dctl::core::detail

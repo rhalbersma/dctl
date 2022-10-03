@@ -13,8 +13,7 @@
 #include <dctl/core/state/color.hpp>            // color, color_
 #include <tabula/tuple.hpp>                     // accumulate, any_of, for_each
 
-namespace dctl::core::model {
-namespace detail {
+namespace dctl::core::detail {
 
 template<class...>
 class pawn_moves;
@@ -29,14 +28,14 @@ class pawn_moves<Rules, Board, color_<Side>, ReverseGenerator>
                 return tabula::int_c<rotate(angle{dir}, bearing_v<Board, color_<Side>, ReverseGenerator>).value()>;
         });
 public:
-        static auto detect(set_type const& pawns, set_type const& empty) noexcept
+        [[nodiscard]] static constexpr auto detect(set_type const& pawns, set_type const& empty) noexcept
         {
                 return tabula::any_of(pawn_move_directions, [&](auto dir) {
                         return !move_dest<Board, decltype(dir)>{}(pawns, empty).empty();
                 });
         }
 
-        static auto count(set_type const& pawns, set_type const& empty) noexcept
+        [[nodiscard]] static constexpr auto count(set_type const& pawns, set_type const& empty) noexcept
         {
                 return tabula::accumulate(
                         tabula::transform(pawn_move_directions, [&](auto dir) {
@@ -45,17 +44,15 @@ public:
                 );
         }
 
-        template<class SequenceContainer>
-        static auto generate(set_type const& pawns, set_type const& empty, SequenceContainer& seq)
+        static constexpr auto generate(set_type const& pawns, set_type const& empty, auto& actions) noexcept
         {
                 tabula::for_each(pawn_move_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
                         for (auto dest_sq : move_dest<Board, direction_t>{}(pawns, empty)) {
-                                seq.emplace_back(prev<Board, direction_t>{}(dest_sq), dest_sq, mask_type::promotion(Side).contains(dest_sq));
+                                actions.emplace_back(prev<Board, direction_t>{}(dest_sq), dest_sq, mask_type::promotion(Side).contains(dest_sq));
                         }
                 });
         }
 };
 
-}       // namespace detail
-}       // namespace dctl::core::model
+}       // namespace dctl::core::detail
