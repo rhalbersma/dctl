@@ -3,6 +3,7 @@
 #    (See accompanying file LICENSE_1_0.txt or copy at
 #          http://www.boost.org/LICENSE_1_0.txt)
 
+
 set(cxx_compile_definitions
     $<$<CXX_COMPILER_ID:MSVC>:
         _SCL_SECURE_NO_WARNINGS
@@ -14,26 +15,29 @@ set(cxx_compile_options_warnings
         /W4
         /permissive-
         /WX
-        /wd4244                         # triggered by 32/64 bit incompatibilities
-        /wd4458                         # triggered by types hiding data members
-        /wd4459                         # triggered by Boost.Accumulators
-        /wd4805                         # triggered by bit-wise XOR on booleans
+        /wd4244                             # triggered by 32/64 bit incompatibilities
+        /wd4458                             # triggered by types hiding data members
+        /wd4459                             # triggered by Boost.Accumulators
+        /wd4805                             # triggered by bit-wise XOR on booleans
     >
     $<$<CXX_COMPILER_ID:Clang>:
         -Weverything
-        -Wno-unknown-warning-option     # forward compatibility for new Clang warnings
+        -Wno-unknown-warning-option         # forward compatibility for new Clang warnings
         -Wno-c++98-compat
         -Wno-c++98-compat-pedantic
-        -Wno-ctad-maybe-unsupported     # triggered by <> elision for <functional> operators
-        -Wno-global-constructors        # triggered by immediately invoked lambda tables
-        -Wno-padded                     # only affects performance
+        -Wno-disabled-macro-expansion       # triggered by Boost.Test
+        -Wno-global-constructors            # triggered by Boost.Test
+        -Wno-used-but-marked-unused         # triggered by Boost.Test
+        -Wno-zero-as-null-pointer-constant  # triggered by Boost.Test
+        -Wno-ctad-maybe-unsupported         # triggered by <> elision for <functional> operators
+        -Wno-padded                         # only affects performance
     >
     $<$<CXX_COMPILER_ID:GNU>:
         -Wall
         -Wextra
         -Wpedantic
         -Wconversion
-        -Wno-maybe-uninitialized        # triggered by Boost.Graph
+        -Wno-maybe-uninitialized            # triggered by Boost.Graph
         -Wshadow
         -Wsign-compare
         -Wsign-conversion

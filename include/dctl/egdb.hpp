@@ -6,7 +6,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/egdb/binomial.hpp>
-#include <dctl/egdb/build.hpp>
+// #include <dctl/egdb/build.hpp>
 #include <dctl/egdb/database.hpp>
 #include <dctl/egdb/divide.hpp>
 #include <dctl/egdb/index.hpp>

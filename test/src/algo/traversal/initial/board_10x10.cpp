@@ -6,6 +6,7 @@
 #include <algo/traversal/fixture.hpp>
 #include <dctl/core.hpp>
 #include <boost/test/unit_test.hpp>
+#include <array>
 #include <cstdint>                      // int64_t
 #include <vector>
 

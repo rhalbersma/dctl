@@ -35,7 +35,7 @@ struct token_set
 template<class Rules, class Board = basic_board<Rules>, class Token = token_set>
 struct read
 {
-        auto operator()(std::string const& s) const
+        constexpr auto operator()(std::string const& s) const noexcept
                 -> basic_state<Rules, Board>
         {
                 using set_type = set_t<basic_mask<Board>>;
@@ -92,7 +92,7 @@ template<class Token = token_set>
 struct write
 {
         template<class State>
-        auto operator()(State const& s) const
+        constexpr auto operator()(State const& s) const noexcept
         {
                 using board_type = board_t<State>;
 

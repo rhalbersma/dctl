@@ -12,7 +12,7 @@
 namespace dctl::core {
 
 template<class Token>
-auto read_color(char const c)
+constexpr auto read_color(char const c) noexcept
 {
         switch (c) {
         case Token::black: return color::black;
@@ -22,7 +22,7 @@ auto read_color(char const c)
 }
 
 template<class Token>
-char write_color(color const c)
+constexpr char write_color(color const c) noexcept
 {
         return Token::color[xstd::to_underlying(c)];
 }

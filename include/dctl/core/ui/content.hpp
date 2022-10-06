@@ -12,7 +12,7 @@
 namespace dctl::core {
 
 template<class Token, class Position>
-auto content(Position const& p, int const n) // Throws: Nothing.
+constexpr auto content(Position const& p, int const n) noexcept
 {
         if (p.pieces(black_c).contains(n)) {
                 if (p.pieces(king_c).contains(n)) {

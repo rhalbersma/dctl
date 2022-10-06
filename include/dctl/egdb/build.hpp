@@ -15,7 +15,7 @@ template<class State, class Successor>
 class build
 {
         using position_type = position_t<State>;
-        using subdb_type = subdatabase<position_type>;
+        using subdb_type = subdivision<position_type>;
         subdb_type m_subdb;
 
         std::vector<int> btm_dtm, wtm_dtm;
