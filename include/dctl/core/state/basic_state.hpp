@@ -21,7 +21,10 @@ struct nullmove_t {};
 inline constexpr auto nullmove = nullmove_t{};
 
 template<class Board>
-struct most_recently_pushed_king {};
+struct most_recently_pushed_king
+{
+        bool operator==(most_recently_pushed_king const&) const = default;
+};
 
 template<class Rules, class Board>
 class basic_state
@@ -61,7 +64,7 @@ public:
                 assert_invariants();
         }
 
-        //auto operator<=>(basic_state const&) const = default;
+        bool operator==(basic_state const&) const = default;
 
         [[nodiscard]] static constexpr auto initial(int separation = initial_position_gap_v<Rules> + Board::height % 2) noexcept
                 -> basic_state

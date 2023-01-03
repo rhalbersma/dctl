@@ -36,7 +36,7 @@ private:
 
 public:
         position() = default;
-        //auto operator<=>(position const&) const = default;
+        bool operator==(position const&) const = default;
 
         [[nodiscard]] constexpr position(set_type black_pawns, set_type white_pawns, set_type black_kings, set_type white_kings) noexcept
         :

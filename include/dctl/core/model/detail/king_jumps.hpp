@@ -57,9 +57,10 @@ public:
 
         static constexpr auto generate(auto& builder) noexcept
         {
-                raii::set_king_jump g1{builder};
+                builder.with(piece::king);
+                builder.into(piece::king);
                 for (auto from_sq : builder.pieces(color_c<Side>, king_c)) {
-                        raii::lift guard{from_sq, builder};
+                        raii::lift lift_guard{from_sq, builder};
                         tabula::for_each(king_jump_directions, [&](auto dir) {
                                 using direction_t = decltype(dir);
                                 if constexpr (is_long_ranged_king_v<rules_type>) {
@@ -81,7 +82,6 @@ public:
         {
                 static_assert(is_passing_promotion_v<rules_type>);
                 assert(builder.with() == piece::pawn);
-                builder.into(piece::king);
                 constexpr auto king_scan_directions = tabula::remove_if(king_jump_directions, [](auto dir) {
                         return tabula::bool_c<is_up(rotate(angle{decltype(dir)::value}, bearing_v<board_type, color_<Side>>))>;
                 });

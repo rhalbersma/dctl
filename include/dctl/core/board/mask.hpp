@@ -18,7 +18,7 @@ template<class Board>
 class basic_mask
 {
 public:
-        using    set_type = xstd::bit_set<xstd::bit_set<Board::bits()>::capacity()>;
+        using    set_type = xstd::bit_set_fast<Board::bits()>;
         using square_type = typename boost::uint_value_t<set_type::max_size()>::least;
 
         static constexpr auto squares = []() {

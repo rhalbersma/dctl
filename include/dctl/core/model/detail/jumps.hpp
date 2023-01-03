@@ -108,12 +108,9 @@ public:
         template<class State, class SequenceContainer>
         static constexpr auto generate(State const& state, SequenceContainer& actions) noexcept
         {
-                using rules_type = rules_t<State>;
                 auto b = builder<to_move_, DuplicatesPolicy, State, SequenceContainer>{state, actions};
                 king_jumps<State>::generate(b);
-                if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
                 pawn_jumps<State>::generate(b);
-                if constexpr (is_superior_rank_jump_v<rules_type>) { b.toggle_king_targets(); }
         }
 };
 

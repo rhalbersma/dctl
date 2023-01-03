@@ -24,9 +24,9 @@ class basic_model
         template<class Color> using moves = detail::moves<Color, ReverseGenerator>;
 
         template<class Color>
-        [[nodiscard]] static constexpr auto assert_invariants(auto const& state [[maybe_unused]], auto const& actions [[maybe_unused]]) noexcept
+        static constexpr auto assert_invariants(auto const& state [[maybe_unused]], auto const& actions [[maybe_unused]]) noexcept
         {
-                return count<Color>(state) == actions.size() && detect<Color>(state) == (actions.size() > 0);
+                assert(count<Color>(state) == static_cast<int>(actions.size()) && detect<Color>(state) == (actions.size() > 0));
         }
 
 public:
@@ -83,7 +83,7 @@ public:
                 if (jumps<Color>::generate(state, actions); actions.empty()) {
                         moves<Color>::generate(state, actions);
                 }
-                assert(invariants<Color>(state, actions));
+                assert_invariants<Color>(state, actions);
         }
 };
 

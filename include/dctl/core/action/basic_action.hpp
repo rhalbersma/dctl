@@ -33,11 +33,11 @@ private:
         xstd::or_empty<
                 is_contents_precedence_v<Rules>,
                 square_type
-        > m_num_captured_kings [[no_unique_address]] = {};
+        > m_num_captured_kings [[no_unique_address]] {};
         xstd::or_empty<
                 is_ordering_precedence_v<Rules>,
                 set_type
-        > m_piece_order [[no_unique_address]] = {};
+        > m_piece_order [[no_unique_address]];
 
         [[nodiscard]] constexpr auto is_demotion() const noexcept
         {

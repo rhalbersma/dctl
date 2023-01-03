@@ -50,10 +50,12 @@ public:
 
         [[nodiscard]] static constexpr auto generate(auto& builder) noexcept
         {
+                builder.with(piece::pawn);
+                raii::king_targets guard1{&builder};
                 tabula::for_each(pawn_jump_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
                         for (auto from_sq : jump_from<board_type, direction_t>{}(builder.pieces(color_c<Side>, pawn_c), builder.targets(), builder.pieces(empty_c))) {
-                                raii::lift guard{from_sq, builder};
+                                raii::lift guard2{from_sq, builder};
                                 capture<direction_t>(next<board_type, direction_t, 2>{}(from_sq), builder);
                         }
                 });
@@ -63,14 +65,13 @@ private:
         static constexpr auto capture(int sq, auto& builder) noexcept
                 -> void
         {
-                raii::capture guard{prev<board_type, Direction>{}(sq), builder};
+                raii::capture guard1{prev<board_type, Direction>{}(sq), builder};
                 if constexpr (is_passing_promotion_v<rules_type>) {
                         if (mask_type::promotion(Side).contains(sq)) {
-                                if constexpr (is_superior_rank_jump_v<rules_type>) { builder.toggle_king_targets(); }
+                                raii::king_targets guard2{&builder};
                                 if (!king_jumps::template next_target_passing_promotion<Direction>(sq, builder)) {
                                         builder.finalize(sq, piece::king);
                                 }
-                                if constexpr (is_superior_rank_jump_v<rules_type>) { builder.toggle_king_targets(); }
                         } else  {
                                 if (next_target<Direction>(sq, builder)) { return; }
                                 builder.finalize(sq, piece::pawn);
