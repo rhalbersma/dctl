@@ -7,7 +7,7 @@
 
 #include <dctl/core/state/color.hpp>    // black_c, white_c
 #include <dctl/core/state/piece.hpp>    // king_c
-#include <xstd/utility.hpp>             // to_underlying
+#include <utility>                      // to_underlying
 
 namespace dctl::core {
 
@@ -16,15 +16,15 @@ constexpr auto content(Position const& p, int const n) noexcept
 {
         if (p.pieces(black_c).contains(n)) {
                 if (p.pieces(king_c).contains(n)) {
-                        return Token::kings[xstd::to_underlying(black_c)]; // black king
+                        return Token::kings[std::to_underlying(black_c())];     // black king
                 } else {
-                        return Token::pawns[xstd::to_underlying(black_c)]; // black pawn
+                        return Token::pawns[std::to_underlying(black_c())];     // black pawn
                 }
         } else if (p.pieces(white_c).contains(n)) {
                 if (p.pieces(king_c).contains(n)) {
-                        return Token::kings[xstd::to_underlying(white_c)]; // white king
+                        return Token::kings[std::to_underlying(white_c())];     // white king
                 } else {
-                        return Token::pawns[xstd::to_underlying(white_c)]; // white pawn
+                        return Token::pawns[std::to_underlying(white_c())];     // white pawn
                 }
         } else {
                 return Token::empty;                                            // empty square

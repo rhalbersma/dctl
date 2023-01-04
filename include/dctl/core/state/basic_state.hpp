@@ -11,7 +11,7 @@
 #include <dctl/core/state/piece.hpp>
 #include <dctl/core/state/position.hpp>
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/array.hpp>                       // or_empty
+#include <xstd/type_traits.hpp>                 // optional_type
 #include <cassert>                              // assert
 #include <utility>                              // forward
 
@@ -38,7 +38,7 @@ public:
 
 private:
         position_type m_position;
-        xstd::or_empty<
+        xstd::optional_type<
                 is_restricted_king_move_v<Rules>,
                 most_recently_pushed_king<Board>
         > m_mrpk [[no_unique_address]];

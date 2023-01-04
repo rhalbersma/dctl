@@ -152,6 +152,7 @@ private:
 
         template<class Directions>
         [[nodiscard]] static constexpr auto scan(Directions directions, int sq, auto& builder) noexcept
+                -> bool
         {
                 return tabula::any_of_all(directions, [&](auto dir) {
                         using direction_t = decltype(dir);

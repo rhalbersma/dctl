@@ -14,11 +14,11 @@
 #include <dctl/core/ui/basic_token_set.hpp>     // basic_token_set
 #include <dctl/core/ui/color.hpp>               // read_color, write_color
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/utility.hpp>                     // to_underlying
 #include <cassert>                              // assert
 #include <cctype>                               // isdigit
 #include <sstream>                              // stringstream
 #include <string>                               // string
+#include <utility>                              // to_underlying
 
 namespace dctl::core {
 namespace pdn {
@@ -78,7 +78,7 @@ struct read
                                         sstr >> sq;                             // read square
                                         //assert(Board::is_valid(sq - 1));
                                         auto b = Board::embedding1(sq);         // convert square to bit
-                                        by_color_piece[xstd::to_underlying(setup_color)][xstd::to_underlying(setup_piece)].add(b);
+                                        by_color_piece[std::to_underlying(setup_color)][std::to_underlying(setup_piece)].add(b);
                                 }
                                 setup_piece = piece::pawn;
                                 break;
@@ -102,7 +102,7 @@ struct write
                         auto c = i ? color::white : color::black;
                         if (!s.pieces(c).empty()) {
                                 sstr << Token::colon;                                   // colon
-                                sstr << Token::color[xstd::to_underlying(c)];      // color tag
+                                sstr << Token::color[std::to_underlying(c)];      // color tag
                         }
                         auto const bs = s.pieces(c);
                         auto n = 0;

@@ -11,9 +11,8 @@
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <xstd/type_traits.hpp>                 // is_integral_constant
-#include <xstd/utility.hpp>                     // to_underlying
 #include <array>                                // array
-#include <utility>                              // forward
+#include <utility>                              // forward, to_underlying
 
 namespace dctl::core::bwk {
 
@@ -26,7 +25,7 @@ public:
         using   set_type = set_t<mask_type>;
 
 private:
-        std::array<set_type, xstd::to_underlying(color::size)> m_color;
+        std::array<set_type, std::to_underlying(color::size)> m_color;
         set_type m_kings;
 
 public:
@@ -69,13 +68,13 @@ public:
 private:
         [[nodiscard]] constexpr auto& pieces(color c) noexcept
         {
-                return m_color[xstd::to_underlying(c)];
+                return m_color[std::to_underlying(c)];
         }
 
 public:
         [[nodiscard]] constexpr auto pieces(color c) const noexcept
         {
-                return m_color[xstd::to_underlying(c)];
+                return m_color[std::to_underlying(c)];
         }
 
         [[nodiscard]] constexpr auto pieces(piece p) const noexcept
@@ -107,14 +106,14 @@ public:
                 return mask_type::squares;
         }
 
+        [[nodiscard]] constexpr auto pieces(empty_) const noexcept
+        {
+                return pieces(board_c) ^ pieces(occup_c);
+        }
+
         [[nodiscard]] constexpr auto pieces(occup_) const noexcept
         {
                 return pieces(black_c) | pieces(white_c);
-        }
-
-        [[nodiscard]] constexpr auto pieces(empty_) const noexcept
-        {
-                return mask_type::squares ^ pieces(occup_c);
         }
 
         [[nodiscard]] constexpr auto num_pieces(auto&&... args) const noexcept

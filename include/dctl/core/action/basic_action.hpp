@@ -9,7 +9,7 @@
 #include <dctl/core/rules/type_traits.hpp>      // is_contents_precedence, is_ordering_precedence
 #include <dctl/core/state/piece.hpp>            // pawn, king
 #include <dctl/util/type_traits.hpp>            // set_t, square_t
-#include <xstd/array.hpp>                       // or_empty
+#include <xstd/type_traits.hpp>                 // optional_type
 #include <cassert>                              // assert
 
 namespace dctl::core {
@@ -30,11 +30,11 @@ private:
         square_type m_dest;
         piece m_with;
         piece m_into;
-        xstd::or_empty<
+        xstd::optional_type<
                 is_contents_precedence_v<Rules>,
                 square_type
         > m_num_captured_kings [[no_unique_address]] {};
-        xstd::or_empty<
+        xstd::optional_type<
                 is_ordering_precedence_v<Rules>,
                 set_type
         > m_piece_order [[no_unique_address]];

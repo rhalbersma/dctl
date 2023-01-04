@@ -99,8 +99,11 @@ struct precedence
         }
 };
 
+template<class Action>
+precedence(Action) -> precedence<Action, rules_t<Action>, precedence_v<rules_t<Action>>>;
+
 inline constexpr auto to_precedence = [](auto&& action) {
-        return precedence(std::forward<decltype(action)>(action));
+        return precedence{std::forward<decltype(action)>(action)};
 };
 
 struct keep_duplicates_tag : std::false_type {};

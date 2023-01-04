@@ -18,14 +18,14 @@ enum struct piece
         size
 };
 
-template<piece N>
-using piece_ = std::integral_constant<piece, N>;
+template<piece P>
+using piece_ = std::integral_constant<piece, P>;
 
 using pawn_ = piece_<piece::pawn>;
 using king_ = piece_<piece::king>;
 
-template<piece N>
-inline constexpr auto piece_c = piece_<N>();
+template<piece P>
+inline constexpr auto piece_c = piece_<P>();
 
 inline constexpr auto pawn_c = piece_c<piece::pawn>;
 inline constexpr auto king_c = piece_c<piece::king>;

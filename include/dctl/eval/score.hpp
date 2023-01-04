@@ -14,8 +14,7 @@
 
 namespace dctl::eval {
 
-template<class State>
-static int score (State const& s)
+constexpr auto score(auto const& s)
 {
         return s.to_move() == core::color::black ?
                 Delta<core::black_>::value(s) :
@@ -23,8 +22,7 @@ static int score (State const& s)
         ;
 }
 
-template<class State>
-[[maybe_unused]] static void print_break_down(State const& s)
+[[maybe_unused]] constexpr auto print_break_down(auto const& s)
 {
         std::cout << "Term    " << " BLACK"                                                                         << " WHITE"                                         << " DELTA"                                                      << '\n';
         for (auto i = 0; i < 26; ++i) {

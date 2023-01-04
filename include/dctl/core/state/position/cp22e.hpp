@@ -10,9 +10,8 @@
 #include <dctl/core/state/piece.hpp>            // piece,  pawn_c,  king_c, board_, empty_, occup_
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/utility.hpp>                     // to_underlying
 #include <array>                                // array
-#include <utility>                              // forward
+#include <utility>                              // forward, to_underlying
 
 namespace dctl::core::cp22e {
 
@@ -28,9 +27,9 @@ private:
         std::array<
                 std::array<
                         set_type,
-                        xstd::to_underlying(piece::size)
+                        std::to_underlying(piece::size)
                 >,
-                xstd::to_underlying(color::size)
+                std::to_underlying(color::size)
         > m_color_piece;
         set_type m_empty;
 
@@ -81,13 +80,13 @@ public:
 private:
         [[nodiscard]] constexpr auto& pieces(color c, piece p) noexcept
         {
-                return m_color_piece[xstd::to_underlying(c)][xstd::to_underlying(p)];
+                return m_color_piece[std::to_underlying(c)][std::to_underlying(p)];
         }
 
 public:
         [[nodiscard]] constexpr auto pieces(color c, piece p) const noexcept
         {
-                return m_color_piece[xstd::to_underlying(c)][xstd::to_underlying(p)];
+                return m_color_piece[std::to_underlying(c)][std::to_underlying(p)];
         }
 
         [[nodiscard]] constexpr auto pieces(board_) const noexcept
@@ -102,7 +101,7 @@ public:
 
         [[nodiscard]] constexpr auto pieces(occup_) const noexcept
         {
-                return mask_type::squares ^ m_empty;
+                return pieces(board_c) ^ pieces(empty_c);
         }
 
         [[nodiscard]] constexpr auto num_pieces(auto&&... args) const noexcept

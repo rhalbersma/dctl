@@ -6,8 +6,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl/core/state/color.hpp>    // black, white
-#include <xstd/utility.hpp>             // to_underlying
 #include <cassert>                      // assert
+#include <utility>                      // to_underlying
 
 namespace dctl::core {
 
@@ -24,7 +24,7 @@ constexpr auto read_color(char const c) noexcept
 template<class Token>
 constexpr char write_color(color const c) noexcept
 {
-        return Token::color[xstd::to_underlying(c)];
+        return Token::color[std::to_underlying(c)];
 }
 
 }       // namespace dctl::core

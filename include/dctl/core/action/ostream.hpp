@@ -8,11 +8,11 @@
 #include <dctl/core/action/basic_action.hpp>    // basic_action
 #include <dctl/core/rules/type_traits.hpp>      // pushsep_v, jumpsep_v, notation_v
 #include <dctl/util/type_traits.hpp>            // board_t, rules_t
-#include <xstd/utility.hpp>                     // to_underlying
 #include <cassert>                              // assert
 #include <ios>                                  // ios_base
 #include <ostream>                              // basic_ostream
 #include <sstream>                              // stringstream
+#include <utility>                              // to_underlying
 
 namespace dctl::core {
 
@@ -155,13 +155,13 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_action<Rules, Bo
 
 inline auto& algebraic(std::ios_base& str)
 {
-        str.iword(detail::setnotation()) = xstd::to_underlying(notation::algebraic);
+        str.iword(detail::setnotation()) = std::to_underlying(notation::algebraic);
         return str;
 }
 
 inline auto& numeric(std::ios_base& str)
 {
-        str.iword(detail::setnotation()) = xstd::to_underlying(notation::numeric);
+        str.iword(detail::setnotation()) = std::to_underlying(notation::numeric);
         return str;
 }
 

@@ -10,9 +10,8 @@
 #include <dctl/core/state/piece.hpp>            // piece,  pawn_c,  king_c, board_, empty_, occup_
 #include <dctl/core/state/position/legal.hpp>   // is_legal
 #include <dctl/util/type_traits.hpp>            // set_t
-#include <xstd/utility.hpp>                     // to_underlying
 #include <array>                                // array
-#include <utility>                              // forward
+#include <utility>                              // forward, to_underlying
 
 namespace dctl::core::c2p2e {
 
@@ -25,8 +24,8 @@ public:
         using   set_type = set_t<mask_type>;
 
 private:
-        std::array<set_type, xstd::to_underlying(color::size)> m_color;
-        std::array<set_type, xstd::to_underlying(piece::size)> m_piece;
+        std::array<set_type, std::to_underlying(color::size)> m_color;
+        std::array<set_type, std::to_underlying(piece::size)> m_piece;
         set_type m_empty;
 
 public:
@@ -70,23 +69,23 @@ public:
 private:
         [[nodiscard]] constexpr auto& pieces(color c) noexcept
         {
-                return m_color[xstd::to_underlying(c)];
+                return m_color[std::to_underlying(c)];
         }
 
         [[nodiscard]] constexpr auto& pieces(piece p) noexcept
         {
-                return m_piece[xstd::to_underlying(p)];
+                return m_piece[std::to_underlying(p)];
         }
 
 public:
         [[nodiscard]] constexpr auto pieces(color c) const noexcept
         {
-                return m_color[xstd::to_underlying(c)];
+                return m_color[std::to_underlying(c)];
         }
 
         [[nodiscard]] constexpr auto pieces(piece p) const noexcept
         {
-                return m_piece[xstd::to_underlying(p)];
+                return m_piece[std::to_underlying(p)];
         }
 
         [[nodiscard]] constexpr auto pieces(color c, piece p) const noexcept
@@ -106,7 +105,7 @@ public:
 
         [[nodiscard]] constexpr auto pieces(occup_) const noexcept
         {
-                return mask_type::squares ^ m_empty;
+                return pieces(board_c) ^ pieces(empty_c);
         }
 
         [[nodiscard]] constexpr auto num_pieces(auto&&... args) const noexcept

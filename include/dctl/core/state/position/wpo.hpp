@@ -157,14 +157,14 @@ public:
                 return mask_type::squares;
         }
 
+        [[nodiscard]] constexpr auto pieces(empty_) const noexcept
+        {
+                return pieces(board_c) ^ pieces(occup_c);
+        }
+
         [[nodiscard]] constexpr auto pieces(occup_) const noexcept
         {
                 return m_occup;
-        }
-
-        [[nodiscard]] constexpr auto pieces(empty_) const noexcept
-        {
-                return mask_type::squares ^ m_occup;
         }
 
         [[nodiscard]] constexpr auto num_pieces(auto&&... args) const noexcept
