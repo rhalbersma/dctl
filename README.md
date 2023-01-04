@@ -86,6 +86,6 @@ Special thanks to Aart Bik, Ed Gilbert, Fabien Letouzey, Walter Thoen and Wieger
 
 ## License
 
-Copyright Rein Halbersma 2010-2022.
+Copyright Rein Halbersma 2010-2023.
 Distributed under the [Boost Software License, Version 1.0](http://www.boost.org/users/license.html).
 (See accompanying file LICENSE_1_0.txt or copy at [http://www.boost.org/LICENSE_1_0.txt](http://www.boost.org/LICENSE_1_0.txt))
