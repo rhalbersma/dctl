@@ -47,11 +47,10 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 
 These header-only libraries depend on the C++ Standard Library and [Boost](http://boost.org) and are continuously being tested with the following conforming conforming [C++20](http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n4860.pdf) compilers:
 
-| Platform | Compiler | Versions | Build |
-| :------- | :------- | :------- | :---- |
-| Linux    | GCC | 10, 11-SVN | [![codecov](https://codecov.io/gh/rhalbersma/dctl/branch/master/graph/badge.svg)](https://codecov.io/gh/rhalbersma/dctl) <br> [![Build Status](https://travis-ci.org/rhalbersma/dctl.svg)](https://travis-ci.org/rhalbersma/dctl) |
-
-Note that this library makes liberal use of C++20 features. Only GCC >= 10 is supported at the moment. Clang and Visual Studio are catching up fast, and will be added as soon as possible.
+| Platform | Compiler   | Versions   | Build |
+| :------- | :-------   | -------:   | :---- |
+| Linux    | GCC        | 12, 13-SVN | CI currently being ported to GitHub Actions |
+| Linux    | Clang      |     16-SVN | CI currently being ported to GitHub Actions |
 
 ## Installation
 
