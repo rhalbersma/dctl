@@ -47,10 +47,10 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 
 These header-only libraries depend on the C++ Standard Library and [Boost](http://boost.org) and are continuously being tested with the following conforming conforming [C++20](http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n4860.pdf) compilers:
 
-| Platform | Compiler   | Versions   | Build |
-| :------- | :-------   | -------:   | :---- |
-| Linux    | GCC        | 12, 13-SVN | CI currently being ported to GitHub Actions |
-| Linux    | Clang      |     16-SVN | CI currently being ported to GitHub Actions |
+| Platform | Compiler   | Versions       | Build |
+| :------- | :-------   | -------:       | :---- |
+| Linux    | GCC        | 11, 12, 13-SVN | CI currently being ported to GitHub Actions |
+| Linux    | Clang      |         16-SVN | CI currently being ported to GitHub Actions |
 
 ## Installation
 
@@ -66,11 +66,12 @@ Clone the `dctl` and the `bit_set`, `tabula` and `xstd` repositories as dependen
 
 ### Test-suite
 
-To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost.Test), and from inside the directory in which you downloaded the DCTL, type (where `-jN` builds on `N` cores in parallel)
+To make sure that your build environment is compatible with the DCTL requirements, the DCTL comes with an extensive suite of unit tests, placed in the `dctl/test` sub-directory. To build and run the test-suite, follow the requirements (in particular: compile Boost.Test), and type (where `-j N` builds on `N` cores in parallel)
 
+      cd dctl
       mkdir build && cd build
       cmake ..
-      cmake --build . -- -jN
+      cmake --build . -j N
       ctest -E "search|traversal"
 
 The build will take less than a minute on a 3.5 GHz Intel i7 (and longer for systems with less parallelism). The test-suite itself takes a second to run. Note that the `ctest` command excludes all unit tests that do a tree search or traversal (these tests will take several minutes to hours to run, respectively). If you do not see any errors, the tests succeeded. Congratulations: your system supports the DCTL, and you are now ready to start coding!

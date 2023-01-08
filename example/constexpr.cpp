@@ -4,12 +4,14 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <dctl.hpp>
+#include <version>  // __cpp_lib_constexpr_vector
 
-using namespace dctl::core;
 using namespace dctl::algo;
+using namespace dctl::core;
 
 int main()
 {
+#ifdef __cpp_lib_constexpr_vector
   static_assert(
     traversal::depth_limited_count<true>( // perft with bulk-counting
       basic_state<
@@ -20,4 +22,5 @@ int main()
       drop_duplicates_gen                 // no duplicate captures
     ) == 1'049'442
   );
+#endif
 }

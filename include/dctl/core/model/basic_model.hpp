@@ -17,7 +17,11 @@
 
 namespace dctl::core {
 
-template<class DuplicatesPolicy = drop_duplicates_tag, class ReverseGenerator = std::false_type>
+template
+<
+        class DuplicatesPolicy = drop_duplicates_tag,
+        class ReverseGenerator = std::false_type
+>
 class basic_model
 {
         template<class Color> using jumps = detail::jumps<Color, DuplicatesPolicy>;
