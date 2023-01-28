@@ -29,7 +29,7 @@ int main()
 
         auto const depths = std::vector<int>{ 11, 9, 15, 11, 9 };
 
-        for (auto i = std::size_t(0); i < 3 ; ++i) {
+        for (auto i = std::size_t(0); i < states.size(); ++i) {
                 traversal::perft(states[i], depths[i], drop_duplicates_gen);
         }
 }

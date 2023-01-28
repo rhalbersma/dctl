@@ -12,6 +12,6 @@
 namespace dctl::core {
 
 template<class Action>
-using default_container = std::vector<Action>;//boost::container::static_vector<Action, 128>;
+using default_container = boost::container::small_vector<Action, 128>;
 
 }       // namespace dctl::core
