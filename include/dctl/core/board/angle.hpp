@@ -34,7 +34,7 @@ public:
 inline namespace literals {
 inline namespace angle_literals {
 
-constexpr auto operator"" _deg(unsigned long long n) noexcept
+constexpr auto operator""_deg(unsigned long long n) noexcept
 {
         return angle{static_cast<int>(n)};
 }
