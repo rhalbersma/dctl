@@ -39,7 +39,7 @@ public:
         {
                 return tabula::accumulate(
                         tabula::transform(pawn_move_directions, [&](auto dir) {
-                                return move_dest<Board, decltype(dir)>{}(pawns, empty).ssize();
+                                return static_cast<int>(move_dest<Board, decltype(dir)>{}(pawns, empty).size());
                         })
                 );
         }

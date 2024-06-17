@@ -120,7 +120,7 @@ public:
 
         [[nodiscard]] constexpr auto num_captured_pieces() const noexcept
         {
-                return m_captured_pieces.ssize();
+                return static_cast<int>(m_captured_pieces.size());
         }
 
         [[nodiscard]] constexpr auto from(int sq) noexcept

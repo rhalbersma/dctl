@@ -49,7 +49,7 @@ auto colex_unrank_combination(int64_t index, int const N, int const K, UnaryFunc
                 }
                 is.add(fun(sq));
         }
-        assert(is.ssize() == K);
+        assert(static_cast<int>(is.size()) == K);
         return is;
 }
 
@@ -69,10 +69,10 @@ private:
         static constexpr auto CLANG_WORKAROUND_wp_squares = mask_type::squares - mask_type::promotion(core::white_c);
 
 public:
-        static constexpr auto bp_squares = CLANG_WORKAROUND_bp_squares.ssize();
-        static constexpr auto wp_squares = CLANG_WORKAROUND_wp_squares.ssize();
-        static constexpr auto bk_squares = mask_type::squares.ssize();
-        static constexpr auto wk_squares = mask_type::squares.ssize();
+        static constexpr auto bp_squares = static_cast<int>(CLANG_WORKAROUND_bp_squares.size());
+        static constexpr auto wp_squares = static_cast<int>(CLANG_WORKAROUND_wp_squares.size());
+        static constexpr auto bk_squares = static_cast<int>(mask_type::squares.size());
+        static constexpr auto wk_squares = static_cast<int>(mask_type::squares.size());
 
         int n_count, b_count, w_count;
         int bp_count, wp_count, bk_count, wk_count;
@@ -181,8 +181,8 @@ public:
 private:
         auto count_legal() const
         {
-                auto const b0_squares = mask_type::promotion(core::white_c).ssize();
-                auto const w0_squares = mask_type::promotion(core::black_c).ssize();
+                auto const b0_squares = static_cast<int>(mask_type::promotion(core::white_c).size());
+                auto const w0_squares = static_cast<int>(mask_type::promotion(core::black_c).size());
                 auto const center_squares = board_type::size() - b0_squares - w0_squares;
                 auto n = 0LL;
                 for (auto b0_count  = 0; b0_count <= std::min(b0_squares, bp_count); ++b0_count) {

@@ -16,6 +16,7 @@
 #include <dctl/util/type_traits.hpp>            // set_t
 #include <cassert>                              // assert
 #include <cctype>                               // isdigit
+#include <cstddef>                              // size_t
 #include <sstream>                              // stringstream
 #include <string>                               // string
 #include <utility>                              // to_underlying
@@ -102,10 +103,10 @@ struct write
                         auto c = i ? color::white : color::black;
                         if (!s.pieces(c).empty()) {
                                 sstr << Token::colon;                                   // colon
-                                sstr << Token::color[std::to_underlying(c)];      // color tag
+                                sstr << Token::color[std::to_underlying(c)];            // color tag
                         }
                         auto const bs = s.pieces(c);
-                        auto n = 0;
+                        auto n = std::size_t(0);
                         for (auto const sq : bs) {
                                 if (s.pieces(king_c).contains(sq)) {
                                         sstr << Token::king;                            // king tag
@@ -113,7 +114,7 @@ struct write
                                 sstr << board_type::numeric1(sq);                       // square number
                                 //if (p.is_counted(c) && p.index(c) == sq)
                                 //        sstr << "^" << p.count(c);
-                                if (++n != bs.ssize()) {                                // still pieces remaining
+                                if (++n != bs.size()) {                                 // still pieces remaining
                                         sstr << Token::comma;                           // comma separator
                                 }
                         }

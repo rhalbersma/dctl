@@ -111,7 +111,7 @@ public:
         [[nodiscard]] constexpr auto num_pieces(auto&&... args) const noexcept
                 requires (sizeof...(args) <= 2)
         {
-                return pieces(std::forward<decltype(args)>(args)...).ssize();
+                return static_cast<int>(pieces(std::forward<decltype(args)>(args)...).size());
         }
 };
 

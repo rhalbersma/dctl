@@ -7,6 +7,7 @@
 
 #include <dctl/algo/search/score.hpp>
 #include <dctl/core/model.hpp>
+#include <iterator>                     // ssize
 #include <type_traits>                  // false_type, true_type
 
 namespace dctl::algo {
@@ -45,7 +46,7 @@ struct is_terminal<kingscourt>
         bool operator()(State const& s) const
         {
                 return
-                        (active_kings(s).ssize() - passive_kings(s).ssize() < 0) ||
+                        (std::ssize(active_kings(s)) - std::ssize(passive_kings(s)) < 0) ||
                         is_terminal<NoActionsLeft>{}(s)
                 ;
         }

@@ -87,7 +87,7 @@ public:
         [[nodiscard]] static constexpr auto count(set_type const& kings, set_type const& empty) noexcept
         {
                 return std::accumulate(kings.begin(), kings.end(), 0, [&](auto sum, auto from_sq) {
-                        return sum + attacks(from_sq, empty).ssize();
+                        return sum + static_cast<int>(attacks(from_sq, empty).size());
                 });
         }
 

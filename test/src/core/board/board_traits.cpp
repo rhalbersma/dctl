@@ -12,6 +12,7 @@
 #include <dctl/core/state/color.hpp>
 #include <boost/test/unit_test.hpp>             // BOOST_AUTO_TEST_SUITE, BOOST_AUTO_TEST_SUITE_END, BOOST_AUTO_TEST_CASE, BOOST_AUTO_TEST_CASE_TEMPLATE
 #include <algorithm>                            // all_of
+#include <iterator>                             // ssize
 #include <numeric>                              // accumulate
 #include <ranges>                               // iota
 #include <type_traits>                          // is_same
@@ -56,7 +57,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsRegular, T, BoardSequence)
 BOOST_AUTO_TEST_CASE_TEMPLATE(SquaresCountEqualsBoardSize, T, BoardSequence)
 {
         using mask_type = basic_mask<T>;
-        BOOST_CHECK_EQUAL(mask_type::squares.ssize(), T::size());
+        BOOST_CHECK_EQUAL(std::ssize(mask_type::squares), T::size());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(ColumnsEquivalencePartitionSquares, T, BoardSequence)

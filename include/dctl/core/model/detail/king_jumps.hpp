@@ -100,7 +100,7 @@ private:
                 -> void
         {
                 raii::capture guard{prev<board_type, Direction>{}(sq), builder};
-                auto const n [[maybe_unused]] = king_slide<rules_type, board_type, Direction>(prev<board_type, Direction>{}(sq), builder.pieces(empty_c)).ssize();
+                auto const n [[maybe_unused]] = static_cast<int>(king_slide<rules_type, board_type, Direction>(prev<board_type, Direction>{}(sq), builder.pieces(empty_c)).size());
                 if (!next_target<Direction>(sq, n, builder)) {
                         if constexpr (is_long_ranged_king_v<rules_type> && !is_land_behind_piece_v<rules_type> && is_halt_behind_king_v<rules_type>) {
                                 if (builder.is_last_jumped_king(prev<board_type, Direction>{}(sq))) {
