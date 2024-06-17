@@ -5,6 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <array>        // array
 #include <cctype>       // tolower, toupper
 
 namespace dctl::core {
@@ -16,19 +17,19 @@ struct basic_token_set
         static constexpr auto white = White;
         static constexpr auto empty = Empty;
 
-        inline const static char color[] =
+        static constexpr auto color = std::array
         {
                 black,
                 white
         };
 
-        inline const static char pawns[] =
+        static inline const auto pawns = std::array
         {
                 static_cast<char>(std::tolower(black)),
                 static_cast<char>(std::tolower(white))
         };
 
-        inline const static char kings[] =
+        static inline const auto kings = std::array
         {
                static_cast<char>(std::toupper(black)),
                static_cast<char>(std::toupper(white))

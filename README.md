@@ -47,10 +47,10 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 
 These header-only libraries depend on the C++ Standard Library and [Boost](http://boost.org) and are continuously being tested with the following conforming conforming [C++20](http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n4860.pdf) compilers:
 
-| Platform | Compiler   | Versions       | Build |
-| :------- | :-------   | -------:       | :---- |
-| Linux    | GCC        | 11, 12, 13-SVN | CI currently being ported to GitHub Actions |
-| Linux    | Clang      |         16-SVN | CI currently being ported to GitHub Actions |
+| Platform | Compiler   | Versions   | Build |
+| :------- | :-------   | -------:   | :---- |
+| Linux    | GCC        | 14, 15-SVN | CI currently being ported to GitHub Actions |
+| Linux    | Clang      |     19-SVN | CI currently being ported to GitHub Actions |
 
 ## Installation
 

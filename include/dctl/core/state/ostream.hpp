@@ -46,8 +46,8 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_state<Rules, Boa
         switch (detail::getstateformat(ostr)) {
         case detail::stateformat::diag: return ostr << diagram<Board>{}([&](auto const n) { return content<pdn::token_set>(s, n); });
         case detail::stateformat::fen : return ostr << pdn::write<>{}(s);
+        default: throw std::runtime_error("Invalid stateformat");             
         }
-        return ostr;
 }
 
 inline auto& diag(std::ios_base& str)

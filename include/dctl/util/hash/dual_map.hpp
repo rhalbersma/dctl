@@ -33,7 +33,7 @@ private:
         using const_mapped_pointer = typename map_type::const_mapped_pointer;
 
 private:
-        map_type map_[2];
+        std::array<map_type, 2> map_;
 public:
         explicit dual_set_associative_cache(size_type sz)
         {

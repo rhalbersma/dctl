@@ -8,6 +8,8 @@
 #include <dctl/core/action.hpp>
 #include <dctl/egdb/index.hpp>
 #include <dctl/util/type_traits.hpp>
+#include <array>
+#include <vector>
 
 namespace dctl::egdb {
 

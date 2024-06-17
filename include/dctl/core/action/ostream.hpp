@@ -149,8 +149,8 @@ auto& operator<<(std::basic_ostream<CharT, Traits>& ostr, basic_action<Rules, Bo
         switch (detail::getnotation(ostr, a)) {
         case notation::algebraic: return detail::print_algebraic(ostr, a);
         case notation::numeric  : return detail::print_numeric(ostr, a);
+        default: throw std::runtime_error("Invalid notation");        
         }
-        return ostr;
 }
 
 inline auto& algebraic(std::ios_base& str)

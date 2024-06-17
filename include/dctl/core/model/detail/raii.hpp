@@ -54,24 +54,23 @@ public:
 template<class Builder>
 class king_targets
 {
-        Builder* m_builder = nullptr;
+        Builder& m_builder;
 public:
         ~king_targets() = default;
-        explicit constexpr king_targets(Builder*) noexcept {}
 
         constexpr ~king_targets() noexcept
                 requires is_superior_rank_jump_v<rules_t<Builder>>
         {
-                m_builder->toggle_king_targets();
+                m_builder.toggle_king_targets();
         }
 
-        explicit constexpr king_targets(Builder* b) noexcept
-                requires is_superior_rank_jump_v<rules_t<Builder>>
+        explicit constexpr king_targets(Builder& b) noexcept
         :
-                m_builder{b}
+                m_builder(b)
         {
-                assert(m_builder != nullptr);
-                m_builder->toggle_king_targets();
+                if constexpr (is_superior_rank_jump_v<rules_t<Builder>>) {
+                        m_builder.toggle_king_targets();
+                }
         }
 };
 
@@ -89,7 +88,7 @@ public:
 
         explicit constexpr promotion(Builder& b) noexcept
         :
-                m_builder{b}
+                m_builder(b)
         {
                 assert(m_builder.with() == piece::pawn);
                 assert(m_builder.into() == piece::pawn);
@@ -110,7 +109,7 @@ public:
 
         constexpr Visit(Builder& b, int sq)
         :
-                m_builder{b}
+                m_builder(b)
         {
                 m_builder.visit(sq);
         }

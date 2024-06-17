@@ -10,6 +10,7 @@ set(cxx_compile_definitions
     >
 )
 
+
 set(cxx_compile_options_warnings
     $<$<CXX_COMPILER_ID:MSVC>:
         /W4
@@ -20,20 +21,24 @@ set(cxx_compile_options_warnings
         /wd4459                             # triggered by Boost.Accumulators
         /wd4805                             # triggered by bit-wise XOR on booleans
     >
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
+        -Werror
+        -pedantic-errors
+    >    
     $<$<CXX_COMPILER_ID:Clang>:
         -Weverything
         -Wno-unknown-warning-option         # forward compatibility for new Clang warnings
         -Wno-c++98-compat
         -Wno-c++98-compat-pedantic
-        -Wno-padded
+        -Wno-assume
         -Wno-bitwise-instead-of-logical
-        -Wno-reserved-identifier
+        -Wno-covered-switch-default
+        -Wno-ctad-maybe-unsupported         # triggered by <> elision for <functional> operators
         -Wno-unsafe-buffer-usage
         -Wno-disabled-macro-expansion       # triggered by Boost.Test
         -Wno-global-constructors            # triggered by Boost.Test
         -Wno-used-but-marked-unused         # triggered by Boost.Test
         -Wno-zero-as-null-pointer-constant  # triggered by Boost.Test
-        -Wno-ctad-maybe-unsupported         # triggered by <> elision for <functional> operators
         -Wno-padded                         # only affects performance
     >
     $<$<CXX_COMPILER_ID:GNU>:
@@ -41,15 +46,18 @@ set(cxx_compile_options_warnings
         -Wextra
         -Wpedantic
         -Wconversion
-        -Wno-maybe-uninitialized            # triggered by Boost.Graph
+        -Wnrvo
         -Wshadow
         -Wsign-compare
         -Wsign-conversion
         -Wsign-promo
+        -Wno-maybe-uninitialized            # triggered by Boost.Graph
     >
+)
+
+set(cxx_compile_options_optimization
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:
-        -Werror
-        -pedantic-errors
+        -march=native
     >
 )
 
@@ -59,7 +67,6 @@ set(cxx_compile_options_mbig_obj
     >
 )
 
-set(current_include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(current_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/src)
 file(GLOB_RECURSE targets RELATIVE ${current_source_dir} *.cpp)
 
@@ -76,11 +83,6 @@ foreach(t ${targets})
         ${CMAKE_PROJECT_NAME}
     )
 
-    target_include_directories(
-        ${target_id} PRIVATE
-        ${current_include_dir}
-    )
-
     target_compile_definitions(
         ${target_id} PRIVATE
         ${cxx_compile_definitions}
@@ -89,6 +91,7 @@ foreach(t ${targets})
     target_compile_options(
         ${target_id} PRIVATE
         ${cxx_compile_options_warnings}
+        ${cxx_compile_options_optimization}
         ${cxx_compile_options_mbig_obj}
     )
 endforeach()

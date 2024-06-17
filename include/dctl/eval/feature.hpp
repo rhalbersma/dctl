@@ -46,7 +46,8 @@ public:
                 using  mask_type = core:: mask_t<state_type>;
                 auto score = 0;
                 for (auto i = 1; i < board_type::height; ++i) {
-                        score += Weight<rules_type, board_type>::tempo[i] * static_cast<int>((state.pieces(Color{}) & mask_type::rank(Color{}, i)).size());
+                        score += Weight<rules_type, board_type>::tempo[static_cast<std::size_t>(i)] * 
+                                static_cast<int>((state.pieces(Color{}) & mask_type::rank(Color{}, i)).size());
                 }
                 return score;
         }
@@ -59,7 +60,7 @@ public:
                 using  mask_type = core:: mask_t<state_type>;
                 auto score = 0;
                 for (auto i = 1; i < board_type::width / 2; ++i) {
-                        score += Weight<rules_type, board_type>::center[i] *
+                        score += Weight<rules_type, board_type>::center[static_cast<std::size_t>(i)] *
                         (
                                 static_cast<int>((state.pieces(Color{}) & mask_type::file( Color{}, i)).size()) +
                                 static_cast<int>((state.pieces(Color{}) & mask_type::file(!Color{}, i)).size())
@@ -76,7 +77,7 @@ public:
                 using  mask_type = core:: mask_t<state_type>;
                 auto score = 0;
                 for (auto i = 0; i < board_type::width / 2; ++i) {
-                        score += Weight<rules_type, board_type>::balance[i] *
+                        score += Weight<rules_type, board_type>::balance[static_cast<std::size_t>(i)] *
                         (
                                 static_cast<int>((state.pieces(Color{}) & mask_type::file( Color{}, i)).size()) -
                                 static_cast<int>((state.pieces(Color{}) & mask_type::file(!Color{}, i)).size())

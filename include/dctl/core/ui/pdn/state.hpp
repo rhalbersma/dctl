@@ -14,6 +14,7 @@
 #include <dctl/core/ui/basic_token_set.hpp>     // basic_token_set
 #include <dctl/core/ui/color.hpp>               // read_color, write_color
 #include <dctl/util/type_traits.hpp>            // set_t
+#include <array>                                // array
 #include <cassert>                              // assert
 #include <cctype>                               // isdigit
 #include <cstddef>                              // size_t
@@ -40,7 +41,7 @@ struct read
                 -> basic_state<Rules, Board>
         {
                 using set_type = set_t<basic_mask<Board>>;
-                set_type by_color_piece[2][2];
+                auto by_color_piece = std::array<std::array<set_type, 2>, 2>{};
                 auto p_side = color::black;
 
                 assert(by_color_piece[0][0].empty());

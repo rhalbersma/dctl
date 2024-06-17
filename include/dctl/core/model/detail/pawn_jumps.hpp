@@ -51,7 +51,7 @@ public:
         [[nodiscard]] static constexpr auto generate(auto& builder) noexcept
         {
                 builder.with(piece::pawn);
-                raii::king_targets guard1{&builder};
+                raii::king_targets guard1{builder};
                 tabula::for_each(pawn_jump_directions, [&](auto dir) {
                         using direction_t = decltype(dir);
                         for (auto from_sq : jump_from<board_type, direction_t>{}(builder.pieces(color_c<Side>, pawn_c), builder.targets(), builder.pieces(empty_c))) {
@@ -68,7 +68,7 @@ private:
                 raii::capture guard1{prev<board_type, Direction>{}(sq), builder};
                 if constexpr (is_passing_promotion_v<rules_type>) {
                         if (mask_type::promotion(Side).contains(sq)) {
-                                raii::king_targets guard2{&builder};
+                                raii::king_targets guard2{builder};
                                 if (!king_jumps::template next_target_passing_promotion<Direction>(sq, builder)) {
                                         builder.finalize(sq, piece::king);
                                 }
