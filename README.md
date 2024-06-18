@@ -1,7 +1,7 @@
 # DCTL: Draughts and Checkers Template Library
 
 [![Language](https://img.shields.io/badge/language-C++-blue.svg)](https://isocpp.org/)
-[![Standard](https://img.shields.io/badge/c%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
+[![Standard](https://img.shields.io/badge/c%2B%2B-23-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
 [![License](https://img.shields.io/badge/license-Boost-blue.svg)](https://opensource.org/licenses/BSL-1.0)
 [![Lines of Code](https://tokei.rs/b1/github/rhalbersma/dctl?category=code)](https://github.com/rhalbersma/dctl)
 
@@ -45,12 +45,12 @@ The DCTL does not yet provide a fully functioning game engine that can be plugge
 
 ## Requirements
 
-These header-only libraries depend on the C++ Standard Library and [Boost](http://boost.org) and are continuously being tested with the following conforming conforming [C++20](http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n4860.pdf) compilers:
+These header-only libraries depend on the C++ Standard Library and [Boost](http://boost.org) and are continuously being tested with the following conforming conforming [C++23](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/n4950.pdf) compilers:
 
-| Platform | Compiler   | Versions   | Build |
-| :------- | :-------   | -------:   | :---- |
-| Linux    | GCC        | 14, 15-SVN | CI currently being ported to GitHub Actions |
-| Linux    | Clang      |     19-SVN | CI currently being ported to GitHub Actions |
+| Platform | Compiler   | Versions     | Build |
+| :------- | :-------   | -------:     | :---- |
+| Linux    | GCC        | 14, 15-trunk | CI currently being ported to GitHub Actions |
+| Linux    | Clang      | 18, 19-trunk | CI currently being ported to GitHub Actions |
 
 ## Installation
 

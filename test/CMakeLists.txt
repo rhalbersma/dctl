@@ -37,7 +37,6 @@ set(cxx_compile_options_warnings
         -Wno-unknown-warning-option         # forward compatibility for new Clang warnings
         -Wno-c++98-compat
         -Wno-c++98-compat-pedantic
-        -Wno-assume
         -Wno-bitwise-instead-of-logical
         -Wno-covered-switch-default
         -Wno-ctad-maybe-unsupported

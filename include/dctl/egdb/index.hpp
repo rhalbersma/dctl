@@ -64,13 +64,8 @@ public:
         using  mask_type = core:: mask_t<Position>;
         using   set_type = core::  set_t<Position>;
 
-private:
-        static constexpr auto CLANG_WORKAROUND_bp_squares = mask_type::squares - mask_type::promotion(core::black_c);
-        static constexpr auto CLANG_WORKAROUND_wp_squares = mask_type::squares - mask_type::promotion(core::white_c);
-
-public:
-        static constexpr auto bp_squares = static_cast<int>(CLANG_WORKAROUND_bp_squares.size());
-        static constexpr auto wp_squares = static_cast<int>(CLANG_WORKAROUND_wp_squares.size());
+        static constexpr auto bp_squares = static_cast<int>((mask_type::squares - mask_type::promotion(core::black_c)).size());
+        static constexpr auto wp_squares = static_cast<int>((mask_type::squares - mask_type::promotion(core::white_c)).size());
         static constexpr auto bk_squares = static_cast<int>(mask_type::squares.size());
         static constexpr auto wk_squares = static_cast<int>(mask_type::squares.size());
 
