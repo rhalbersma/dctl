@@ -51,6 +51,7 @@ These header-only libraries depend on the C++ Standard Library and [Boost](http:
 | :------- | :-------   | -------:     | :---- |
 | Linux    | GCC        | 14, 15-trunk | CI currently being ported to GitHub Actions |
 | Linux    | Clang      | 18, 19-trunk | CI currently being ported to GitHub Actions |
+| Windows  | Visual C++ | 17.10        | CI currently being ported to GitHub Actions |
 
 ## Installation
 
